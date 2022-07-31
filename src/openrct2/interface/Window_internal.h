@@ -134,7 +134,7 @@ struct rct_window
     virtual void OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi)
     {
     }
-    virtual OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback)
+    virtual OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, StringId fallback)
     {
         return { fallback, {} };
     }

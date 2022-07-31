@@ -48,7 +48,7 @@ enum class NetworkPermission : uint32_t
 class NetworkAction final
 {
 public:
-    rct_string_id Name;
+    StringId Name;
     std::string PermissionName;
     std::vector<GameCommand> Commands;
 };

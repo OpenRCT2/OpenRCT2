@@ -1478,7 +1478,7 @@ void context_force_close_window_by_class(rct_windowclass windowClass)
     windowManager->ForceClose(windowClass);
 }
 
-rct_window* context_show_error(rct_string_id title, rct_string_id message, const Formatter& args)
+rct_window* context_show_error(StringId title, StringId message, const Formatter& args)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->ShowError(title, message, args);

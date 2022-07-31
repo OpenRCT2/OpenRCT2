@@ -18,7 +18,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
+static constexpr const StringId WINDOW_TITLE = STR_SACK_STAFF;
 static constexpr const int32_t WW = 200;
 static constexpr const int32_t WH = 100;
 

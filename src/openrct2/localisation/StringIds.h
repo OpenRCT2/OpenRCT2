@@ -11,8 +11,8 @@
 
 #include "../common.h"
 
-constexpr const rct_string_id STR_NONE = 0xFFFF;
-constexpr const rct_string_id STR_VIEWPORT = 0xFFFE;
+constexpr const StringId STR_NONE = 0xFFFF;
+constexpr const StringId STR_VIEWPORT = 0xFFFE;
 
 enum : uint16_t
 {

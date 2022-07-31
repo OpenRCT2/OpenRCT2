@@ -79,11 +79,11 @@ using ShopItemIndex = ShopItem;
 
 struct ShopItemStrings
 {
-    rct_string_id PriceLabel; // Balloon price:
-    rct_string_id Singular;   // Balloon
-    rct_string_id Plural;     // Balloons
-    rct_string_id Indefinite; // a Balloon
-    rct_string_id Display;    // "Diamond Heights" Balloon
+    StringId PriceLabel; // Balloon price:
+    StringId Singular;   // Balloon
+    StringId Plural;     // Balloons
+    StringId Indefinite; // a Balloon
+    StringId Display;    // "Diamond Heights" Balloon
 };
 
 struct ShopItemDescriptor

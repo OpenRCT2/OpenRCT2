@@ -65,9 +65,9 @@ struct ResearchItem
     void SetNull();
     bool Exists() const;
     bool IsAlwaysResearched() const;
-    rct_string_id GetName() const;
-    rct_string_id GetCategoryInventionString() const;
-    rct_string_id GetCategoryName() const;
+    StringId GetName() const;
+    StringId GetCategoryInventionString() const;
+    StringId GetCategoryName() const;
 
     ResearchItem() = default;
     constexpr ResearchItem(uint32_t _rawValue, ResearchCategory _category, uint8_t _flags)

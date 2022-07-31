@@ -332,7 +332,7 @@ void WindowPlayerOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 90, 24 };
 
     auto ft = Formatter();
-    ft.Add<rct_string_id>(STR_PING);
+    ft.Add<StringId>(STR_PING);
     DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
@@ -345,11 +345,11 @@ void WindowPlayerOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
     ft = Formatter();
     if (lastaction != -999)
     {
-        ft.Add<rct_string_id>(network_get_action_name_string_id(lastaction));
+        ft.Add<StringId>(network_get_action_name_string_id(lastaction));
     }
     else
     {
-        ft.Add<rct_string_id>(STR_ACTION_NA);
+        ft.Add<StringId>(STR_ACTION_NA);
     }
     DrawTextEllipsised(dpi, screenCoords, width, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
 

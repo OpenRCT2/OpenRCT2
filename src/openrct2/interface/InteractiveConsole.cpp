@@ -166,7 +166,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     for (int32_t i = 0; i < static_cast<uint8_t>(RideMode::Count); i++)
                     {
                         char mode_name[128] = { 0 };
-                        rct_string_id mode_string_id = RideModeNames[i];
+                        StringId mode_string_id = RideModeNames[i];
                         format_string(mode_name, 128, mode_string_id, nullptr);
                         console.WriteFormatLine("%02d - %s", i, mode_name);
                     }
@@ -467,7 +467,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                 for (int32_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
                 {
                     char costume_name[128] = { 0 };
-                    rct_string_id costume = StaffCostumeNames[i];
+                    StringId costume = StaffCostumeNames[i];
                     format_string(costume_name, 128, STR_DROPDOWN_MENU_LABEL, &costume);
                     // That's a terrible hack here. Costume names include inline sprites
                     // that don't work well with the console, so manually skip past them.

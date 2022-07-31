@@ -29,11 +29,11 @@ public:
     GameActions::Result Execute() const override;
 
 private:
-    rct_string_id CheckParameters() const;
+    StringId CheckParameters() const;
     TileElement* CheckTreeObstructions() const;
     money32 GetSmallSceneryRemovalCost() const;
     void SmallSceneryRemoval() const;
-    rct_string_id CheckRideSupports() const;
+    StringId CheckRideSupports() const;
     TileElement* CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const;
     money32 GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const;
     void SetSurfaceHeight(TileElement* surfaceElement) const;

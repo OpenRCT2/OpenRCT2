@@ -64,7 +64,7 @@ constexpr const ScreenSize TAB_SIZE = { 31, 27 };
 
 constexpr rct_widget MakeWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
-    uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+    uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
     rct_widget out = {};
     out.left = origin.x;
@@ -81,12 +81,12 @@ constexpr rct_widget MakeWidget(
 
 constexpr rct_widget MakeRemapWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
-    uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+    uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
     return MakeWidget(origin, size, type, colour, IMAGE_TYPE_REMAP | content, tooltip);
 }
 
-constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, rct_string_id tooltip = STR_NONE)
+constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NONE)
 {
     const ScreenSize size = TAB_SIZE;
     const WindowWidgetType type = WindowWidgetType::Tab;
@@ -101,7 +101,7 @@ constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, rct_string_id tooltip
 
 constexpr rct_widget MakeSpinnerDecreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 26;
     const int16_t yPos = origin.y + 1;
@@ -113,7 +113,7 @@ constexpr rct_widget MakeSpinnerDecreaseWidget(
 
 constexpr rct_widget MakeSpinnerIncreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 13;
     const int16_t yPos = origin.y + 1;
@@ -127,14 +127,14 @@ constexpr rct_widget MakeSpinnerIncreaseWidget(
 
 constexpr rct_widget MakeDropdownBoxWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
     return MakeWidget(origin, size, type, colour, content);
 }
 
 constexpr rct_widget MakeDropdownButtonWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 11;
     const int16_t yPos = origin.y + 1;

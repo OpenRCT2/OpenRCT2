@@ -73,9 +73,9 @@ public:
 class MasterServerException : public std::exception
 {
 public:
-    rct_string_id StatusText;
+    StringId StatusText;
 
-    MasterServerException(rct_string_id statusText)
+    MasterServerException(StringId statusText)
         : StatusText(statusText)
     {
     }

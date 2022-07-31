@@ -17,7 +17,7 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
+static constexpr const StringId WINDOW_TITLE = STR_STRING;
 static constexpr const int32_t WH = 44;
 static constexpr const int32_t WW = 250;
 static constexpr const int32_t WH_DELETE_PROMPT = 74;

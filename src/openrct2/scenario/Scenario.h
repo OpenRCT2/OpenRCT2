@@ -91,7 +91,7 @@ struct Objective
     union
     {
         uint16_t NumGuests;
-        rct_string_id RideId;
+        StringId RideId;
         uint16_t MinimumLength; // For the "Build 10 coasters of minimum length" objective.
     };
     union
@@ -148,7 +148,7 @@ enum
 
 static constexpr money64 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x8000000000000001;
 
-extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
+extern const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 extern random_engine_t gScenarioRand;
 

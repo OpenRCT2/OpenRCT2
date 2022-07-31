@@ -25,7 +25,7 @@ enum EDITOR_INPUT_FLAGS
     INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED = (1 << 3)
 };
 
-extern std::optional<rct_string_id> _gSceneryGroupPartialSelectError;
+extern std::optional<StringId> _gSceneryGroupPartialSelectError;
 extern std::vector<uint8_t> _objectSelectionFlags;
 extern int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 

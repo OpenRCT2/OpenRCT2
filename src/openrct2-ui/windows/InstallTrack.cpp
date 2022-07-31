@@ -41,7 +41,7 @@ enum {
     WIDX_CANCEL
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE;
 static constexpr const int32_t WW = 380;
 static constexpr const int32_t WH = 460;
 constexpr int32_t PREVIEW_BUTTONS_LEFT = WW - 25;
@@ -251,12 +251,12 @@ static void WindowInstallTrackPaint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
             auto rideName = get_ride_naming(td6->type, get_ride_entry(groupIndex));
-            ft.Add<rct_string_id>(rideName.Name);
+            ft.Add<StringId>(rideName.Name);
         }
         else
         {
             // Fall back on the technical track name if the vehicle object cannot be loaded
-            ft.Add<rct_string_id>(GetRideTypeDescriptor(td6->type).Naming.Name);
+            ft.Add<StringId>(GetRideTypeDescriptor(td6->type).Naming.Name);
         }
 
         DrawTextBasic(dpi, screenPos, STR_TRACK_DESIGN_TYPE, ft);
@@ -319,7 +319,7 @@ static void WindowInstallTrackPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
         // Ride length
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
+        ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
         ft.Add<uint16_t>(td6->ride_length);
         DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
         screenPos.y += LIST_ROW_HEIGHT;

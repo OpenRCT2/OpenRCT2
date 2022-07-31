@@ -115,13 +115,13 @@ static char _filter_string[MAX_PATH];
 #define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
 #define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_SELECTION;
+static constexpr const StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
 static constexpr const int32_t WH = 400;
 static constexpr const int32_t WW = 755;
 
 struct ObjectPageDesc
 {
-    rct_string_id Caption;
+    StringId Caption;
     uint32_t Image;
     bool IsAdvanced;
 };
@@ -240,7 +240,7 @@ static constexpr const int32_t window_editor_object_selection_animation_divisor[
     2, // Stall
 };
 
-static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item);
+static StringId GetRideTypeStringId(const ObjectRepositoryItem* item);
 static bool VisibleListSortRideType(const ObjectListItem& a, const ObjectListItem& b);
 static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b);
 void EditorLoadSelectedObjects();
@@ -617,8 +617,8 @@ public:
         const auto objectSelectResult = window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem);
         if (!objectSelectResult.Successful)
         {
-            rct_string_id error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
-                                                                                       : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+            StringId error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
+                                                                                  : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
             context_show_error(error_title, objectSelectResult.Message, {});
             return;
@@ -751,7 +751,7 @@ public:
                 {
                     width_limit /= 2;
                     // Draw ride type
-                    rct_string_id rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
+                    StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
                     safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
                     auto ft = Formatter();
                     ft.Add<const char*>(gCommonStringFormatBuffer);
@@ -780,12 +780,12 @@ public:
      *
      * rct2: 0x006AB058
      */
-    OpenRCT2String OnTooltip(const rct_widgetindex widgetIndex, const rct_string_id fallback) override
+    OpenRCT2String OnTooltip(const rct_widgetindex widgetIndex, const StringId fallback) override
     {
         if (widgetIndex >= WIDX_TAB_1 && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
+            ft.Add<StringId>(ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
             return { fallback, ft };
         }
         return { fallback, {} };
@@ -843,7 +843,7 @@ public:
 
         // Set window title and buttons
         auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(ObjectSelectionPages[selected_tab].Caption);
+        ft.Add<StringId>(ObjectSelectionPages[selected_tab].Caption);
         auto& titleWidget = widgets[WIDX_TITLE];
         auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
@@ -1034,10 +1034,9 @@ public:
         if (listSortTypeWidget.type != WindowWidgetType::Empty)
         {
             auto ft = Formatter();
-            auto stringId = _listSortType == RIDE_SORT_TYPE
-                ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                : STR_NONE;
-            ft.Add<rct_string_id>(stringId);
+            auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
+                                                            : STR_NONE;
+            ft.Add<StringId>(stringId);
             auto screenPos = windowPos + ScreenCoordsXY{ listSortTypeWidget.left + 1, listSortTypeWidget.top + 1 };
             DrawTextEllipsised(&dpi, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
         }
@@ -1045,10 +1044,9 @@ public:
         if (listSortRideWidget.type != WindowWidgetType::Empty)
         {
             auto ft = Formatter();
-            auto stringId = _listSortType == RIDE_SORT_RIDE
-                ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                : STR_NONE;
-            ft.Add<rct_string_id>(stringId);
+            auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
+                                                            : STR_NONE;
+            ft.Add<StringId>(stringId);
             auto screenPos = windowPos + ScreenCoordsXY{ listSortRideWidget.left + 1, listSortRideWidget.top + 1 };
             DrawTextEllipsised(&dpi, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
         }
@@ -1075,7 +1073,7 @@ public:
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.midX() + 1, previewWidget.bottom + 3 };
             _width = this->width - widgets[WIDX_LIST].right - 6;
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
             DrawTextEllipsised(&dpi, screenPos, _width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
         }
@@ -1201,7 +1199,7 @@ private:
         if (!description.empty())
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(description.c_str());
 
             screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
@@ -1277,7 +1275,7 @@ private:
         {
             auto path = Path::GetFileName(listItem->repositoryItem->Path);
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const utf8*>(path.c_str());
             DrawTextBasic(
                 dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
@@ -1297,7 +1295,7 @@ private:
                 }
                 authorsString.append(listItem->repositoryItem->Authors[i]);
             }
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(authorsString.c_str());
             DrawTextEllipsised(
                 dpi, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
@@ -1536,9 +1534,9 @@ static bool VisibleListSortRideType(const ObjectListItem& a, const ObjectListIte
     return result != 0 ? result < 0 : VisibleListSortRideName(a, b);
 }
 
-static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item)
+static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
 {
-    rct_string_id result = STR_NONE;
+    StringId result = STR_NONE;
     for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
         uint8_t rideType = item->RideInfo.RideType[i];

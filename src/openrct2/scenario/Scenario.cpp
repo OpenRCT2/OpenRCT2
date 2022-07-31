@@ -58,7 +58,7 @@
 
 #include <algorithm>
 
-const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
+const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
 
     STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS,
@@ -120,7 +120,7 @@ void scenario_reset()
         utf8 normalisedName[64];
         ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gScenarioName.c_str());
 
-        rct_string_id localisedStringIds[3];
+        StringId localisedStringIds[3];
         if (language_get_localised_scenario_strings(normalisedName, localisedStringIds))
         {
             if (localisedStringIds[0] != STR_NONE)

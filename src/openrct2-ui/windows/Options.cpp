@@ -212,7 +212,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_PATH_TO_RCT1_CLEAR,
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OPTIONS_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
 static constexpr const int32_t WW = 310;
 static constexpr const int32_t WH = 332;
 
@@ -607,7 +607,7 @@ public:
         }
     }
 
-    OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback) override
+    OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, StringId fallback) override
     {
         if (page == WINDOW_OPTIONS_PAGE_ADVANCED)
             return AdvancedTooltip(widgetIndex, fallback);
@@ -1031,7 +1031,7 @@ private:
         SetCheckboxValue(WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
         SetCheckboxValue(WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
-        static constexpr rct_string_id _virtualFloorStyleStrings[] = {
+        static constexpr StringId _virtualFloorStyleStrings[] = {
             STR_VIRTUAL_FLOOR_STYLE_DISABLED,
             STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
             STR_VIRTUAL_FLOOR_STYLE_GLASSY,
@@ -1259,7 +1259,7 @@ private:
 
         // Distance: metric / imperial / si
         {
-            rct_string_id stringId = STR_NONE;
+            StringId stringId = STR_NONE;
             switch (gConfigGeneral.measurement_format)
             {
                 case MeasurementFormat::Imperial:
@@ -1466,7 +1466,7 @@ private:
         return { 500, 0 };
     }
 
-    rct_string_id GetTitleMusicName()
+    StringId GetTitleMusicName()
     {
         auto index = EnumValue(gConfigSound.title_music);
         if (index < 0 || static_cast<size_t>(index) >= std::size(TitleMusicNames))
@@ -1479,7 +1479,7 @@ private:
     void AudioPrepareDraw()
     {
         // Sound device
-        rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
+        StringId audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
         const char* audioDeviceName = nullptr;
         const int32_t currentDeviceIndex = OpenRCT2::Audio::GetCurrentDeviceIndex();
         if (currentDeviceIndex == -1 || OpenRCT2::Audio::GetDeviceCount() == 0)
@@ -1814,12 +1814,12 @@ private:
         auto ft = Formatter::Common();
         if (gConfigInterface.random_title_sequence)
         {
-            ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RANDOM);
+            ft.Add<StringId>(STR_TITLE_SEQUENCE_RANDOM);
         }
         else
         {
             auto name = title_sequence_manager_get_name(title_get_config_sequence());
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<utf8*>(name);
         }
 
@@ -2027,7 +2027,7 @@ private:
         DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
     }
 
-    OpenRCT2String AdvancedTooltip(rct_widgetindex widgetIndex, rct_string_id fallback)
+    OpenRCT2String AdvancedTooltip(rct_widgetindex widgetIndex, StringId fallback)
     {
         if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
         {
@@ -2147,19 +2147,19 @@ private:
         return !rct1path.empty();
     }
 
-    static constexpr rct_string_id AutosaveNames[] = {
+    static constexpr StringId AutosaveNames[] = {
         STR_SAVE_EVERY_MINUTE,    STR_SAVE_EVERY_5MINUTES, STR_SAVE_EVERY_15MINUTES,
         STR_SAVE_EVERY_30MINUTES, STR_SAVE_EVERY_HOUR,     STR_SAVE_NEVER,
     };
 
-    static constexpr rct_string_id TitleMusicNames[] = {
+    static constexpr StringId TitleMusicNames[] = {
         STR_OPTIONS_MUSIC_VALUE_NONE,
         STR_ROLLERCOASTER_TYCOON_1_DROPDOWN,
         STR_ROLLERCOASTER_TYCOON_2_DROPDOWN,
         STR_OPTIONS_MUSIC_VALUE_RANDOM,
     };
 
-    static constexpr rct_string_id FullscreenModeNames[] = {
+    static constexpr StringId FullscreenModeNames[] = {
         STR_OPTIONS_DISPLAY_WINDOWED,
         STR_OPTIONS_DISPLAY_FULLSCREEN,
         STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,

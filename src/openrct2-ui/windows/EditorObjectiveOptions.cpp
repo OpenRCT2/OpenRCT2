@@ -33,7 +33,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
+static constexpr const StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
 static constexpr const int32_t WH = 229;
 static constexpr const int32_t WW = 450;
 
@@ -46,7 +46,7 @@ enum {
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
 };
 
-static constexpr const rct_string_id ObjectiveDropdownOptionNames[] = {
+static constexpr const StringId ObjectiveDropdownOptionNames[] = {
     STR_OBJECTIVE_DROPDOWN_NONE,
     STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE,
     STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE,
@@ -770,7 +770,7 @@ static void WindowEditorObjectiveOptionsMainInvalidate(rct_window* w)
 static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t width;
-    rct_string_id stringId;
+    StringId stringId;
 
     WindowDrawWidgets(*w, dpi);
     WindowEditorObjectiveOptionsDrawTabImages(w, dpi);
@@ -782,7 +782,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
     // Objective value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE].left + 1, w->widgets[WIDX_OBJECTIVE].top };
     auto ft = Formatter();
-    ft.Add<rct_string_id>(ObjectiveDropdownOptionNames[gScenarioObjective.Type]);
+    ft.Add<StringId>(ObjectiveDropdownOptionNames[gScenarioObjective.Type]);
     DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WindowWidgetType::Empty)
@@ -871,7 +871,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
         auto parkName = park.Name.c_str();
 
         ft = Formatter();
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(parkName);
         DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft);
     }
@@ -881,7 +881,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
     width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
     ft = Formatter();
-    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<StringId>(STR_STRING);
     ft.Add<const char*>(gScenarioName.c_str());
     DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft);
 
@@ -894,7 +894,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
     width = w->widgets[WIDX_DETAILS].left - 4;
 
     ft = Formatter();
-    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<StringId>(STR_STRING);
     ft.Add<const char*>(gScenarioDetails.c_str());
     DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft);
 
@@ -905,7 +905,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
     // Scenario category value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CATEGORY].left + 1, w->widgets[WIDX_CATEGORY].top };
     ft = Formatter();
-    ft.Add<rct_string_id>(ScenarioCategoryStringIds[gScenarioCategory]);
+    ft.Add<StringId>(ScenarioCategoryStringIds[gScenarioCategory]);
     DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 }
 

@@ -990,7 +990,7 @@ std::string_view get_ride_entry_name(ObjectEntryIndex index);
 
 extern money16 gTotalRideValueForMoney;
 
-extern const rct_string_id ColourSchemeNames[4];
+extern const StringId ColourSchemeNames[4];
 
 extern ObjectEntryIndex gLastEntranceStyle;
 

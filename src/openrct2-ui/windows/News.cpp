@@ -21,7 +21,7 @@
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RECENT_MESSAGES;
+static constexpr const StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
 static constexpr const int32_t WH = 300;
 static constexpr const int32_t WW = 400;
 
@@ -197,8 +197,8 @@ public:
             // Date text
             {
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
-                ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
+                ft.Add<StringId>(DateDayNames[newsItem.Day - 1]);
+                ft.Add<StringId>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
                 DrawTextBasic(&dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontSpriteBase::SMALL });
             }
             // Item text

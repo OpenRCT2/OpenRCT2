@@ -270,7 +270,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, FontSpriteBase fontSpriteBase
  * Draws text that is left aligned and vertically centred.
  */
 void gfx_draw_string_left_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, colour_t colour, const ScreenCoordsXY& coords)
+    rct_drawpixelinfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords)
 {
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
@@ -429,7 +429,7 @@ int32_t string_get_height_raw(std::string_view text, FontSpriteBase fontBase)
  * ticks    : ebp >> 16
  */
 void DrawNewsTicker(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, rct_string_id format, void* args,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, void* args,
     int32_t ticks)
 {
     int32_t numLines, lineHeight, lineY;

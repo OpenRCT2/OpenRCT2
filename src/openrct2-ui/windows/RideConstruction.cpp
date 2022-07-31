@@ -42,7 +42,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
 static constexpr const int32_t WH = 394;
 static constexpr const int32_t WW = 166;
 static constexpr const uint16_t ARROW_PULSE_DURATION = 200;
@@ -151,10 +151,10 @@ static ScreenCoordsXY _trackPlaceShiftStart;
 static int32_t _trackPlaceShiftZ;
 static int32_t _trackPlaceZ;
 static money32 _trackPlaceCost;
-static rct_string_id _trackPlaceErrorMessage;
+static StringId _trackPlaceErrorMessage;
 static bool _autoRotatingShop;
 
-static constexpr const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
+static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_90,  STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_45,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_0,       STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_45,
@@ -1430,7 +1430,7 @@ public:
             return;
         }
 
-        rct_string_id stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
+        StringId stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
         if (_currentTrackCurve & RideConstructionSpecialPieceSelected)
         {
             const auto& ted = GetTrackElementDescriptor(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
@@ -2236,7 +2236,7 @@ private:
         if (res.Error != GameActions::Status::Ok)
         {
             _trackPlaceCost = MONEY32_UNDEFINED;
-            _trackPlaceErrorMessage = std::get<rct_string_id>(res.ErrorMessage);
+            _trackPlaceErrorMessage = std::get<StringId>(res.ErrorMessage);
         }
         else
         {
@@ -2492,7 +2492,7 @@ private:
             track_type_t trackPiece = _currentPossibleRideConfigurations[i];
 
             const auto& ted = GetTrackElementDescriptor(trackPiece);
-            rct_string_id trackPieceStringId = ted.Description;
+            StringId trackPieceStringId = ted.Description;
             if (trackPieceStringId == STR_RAPIDS)
             {
                 auto currentRide = get_ride(_currentRideIndex);
@@ -3489,7 +3489,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             else
             {
                 _trackPlaceCost = MONEY32_UNDEFINED;
-                _trackPlaceErrorMessage = std::get<rct_string_id>(mazeSetTrackResult.ErrorMessage);
+                _trackPlaceErrorMessage = std::get<StringId>(mazeSetTrackResult.ErrorMessage);
             }
 
             gDisableErrorWindowSound = false;
@@ -3497,7 +3497,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             if (mazeSetTrackResult.Error != GameActions::Status::Ok)
             {
                 _rideConstructionState = RideConstructionState::Place;
-                rct_string_id errorText = std::get<rct_string_id>(mazeSetTrackResult.ErrorMessage);
+                StringId errorText = std::get<StringId>(mazeSetTrackResult.ErrorMessage);
                 z -= 8;
                 if (errorText == STR_NOT_ENOUGH_CASH_REQUIRES || errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER
                     || errorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER || errorText == STR_RIDE_CANT_BUILD_THIS_UNDERWATER
@@ -3547,7 +3547,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
         if (_trackPlaceCost == MONEY32_UNDEFINED)
         {
-            rct_string_id errorText = _trackPlaceErrorMessage;
+            StringId errorText = _trackPlaceErrorMessage;
             z -= 8;
             if (errorText == STR_NOT_ENOUGH_CASH_REQUIRES || errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER
                 || errorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND

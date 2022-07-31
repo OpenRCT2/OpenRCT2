@@ -53,7 +53,7 @@ static constexpr uint16_t MapColourUnowned(uint16_t colour)
 
 constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_MAP_LABEL;
+static constexpr const StringId WINDOW_TITLE = STR_MAP_LABEL;
 static constexpr const int32_t WH = 259;
 static constexpr const int32_t WW = 245;
 
@@ -880,7 +880,7 @@ public:
             {
                 screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP].bottom + 2 };
 
-                static constexpr rct_string_id _mapLabels[] = {
+                static constexpr StringId _mapLabels[] = {
                     STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
                     STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
                 };

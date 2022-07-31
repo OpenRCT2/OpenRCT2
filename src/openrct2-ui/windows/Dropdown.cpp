@@ -179,7 +179,7 @@ public:
                     gfx_filter_rect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                 }
 
-                rct_string_id item = gDropdownItems[i].Format;
+                StringId item = gDropdownItems[i].Format;
                 if (item == Dropdown::FormatLandPicker || item == Dropdown::FormatColourPicker)
                 {
                     // Image item

@@ -148,14 +148,14 @@ struct TrackDesign
     std::string name;
 
 public:
-    rct_string_id CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
-    rct_string_id CreateTrackDesignScenery(TrackDesignState& tds);
+    StringId CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
+    StringId CreateTrackDesignScenery(TrackDesignState& tds);
     void Serialise(DataSerialiser& stream);
 
 private:
     uint8_t _saveDirection;
-    rct_string_id CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
-    rct_string_id CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
+    StringId CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
+    StringId CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
     CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 

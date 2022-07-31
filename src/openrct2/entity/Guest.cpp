@@ -1651,7 +1651,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
     {
         auto ft = Formatter();
         FormatNameTo(ft);
-        ft.Add<rct_string_id>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
+        ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
@@ -3849,7 +3849,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         FormatNameTo(ft);
         ride->FormatNameTo(ft);
 
-        rct_string_id msg_string;
+        StringId msg_string;
         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE))
             msg_string = STR_PEEP_TRACKING_PEEP_IS_IN_X;
         else
@@ -6803,7 +6803,7 @@ bool Guest::HeadingForRideOrParkExit() const
  */
 void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft)
 {
-    ft.Add<rct_string_id>(PeepThoughts[EnumValue(thought->type)]);
+    ft.Add<StringId>(PeepThoughts[EnumValue(thought->type)]);
 
     PeepThoughtToActionFlag flags = PeepThoughtToActionMap[EnumValue(thought->type)].flags;
     if (flags & PEEP_THOUGHT_ACTION_FLAG_RIDE)
@@ -6815,16 +6815,16 @@ void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft)
         }
         else
         {
-            ft.Add<rct_string_id>(STR_NONE);
+            ft.Add<StringId>(STR_NONE);
         }
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR)
     {
-        ft.Add<rct_string_id>(GetShopItemDescriptor(thought->shopItem).Naming.Singular);
+        ft.Add<StringId>(GetShopItemDescriptor(thought->shopItem).Naming.Singular);
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE)
     {
-        ft.Add<rct_string_id>(GetShopItemDescriptor(thought->shopItem).Naming.Indefinite);
+        ft.Add<StringId>(GetShopItemDescriptor(thought->shopItem).Naming.Indefinite);
     }
 }
 

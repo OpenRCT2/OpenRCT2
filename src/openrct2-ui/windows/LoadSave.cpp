@@ -40,7 +40,7 @@
 
 #pragma region Widgets
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const StringId WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WW = 350;
 static constexpr const int32_t WH = 400;
 
@@ -356,7 +356,7 @@ static u8string Browse(bool isSave)
     OpenRCT2::Ui::FileDialogDesc desc = {};
     u8string extension{};
     auto fileType = FileExtension::Unknown;
-    rct_string_id title = STR_NONE;
+    StringId title = STR_NONE;
     switch (_type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
@@ -712,7 +712,7 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextEllipsised(dpi, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8, STR_STRING, ft);
 
     // Name button text
-    rct_string_id id = STR_NONE;
+    StringId id = STR_NONE;
     if (gConfigGeneral.load_save_sort == Sort::NameAscending)
         id = STR_UP;
     else if (gConfigGeneral.load_save_sort == Sort::NameDescending)
@@ -721,7 +721,7 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw name button indicator.
     rct_widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
     ft = Formatter();
-    ft.Add<rct_string_id>(id);
+    ft.Add<StringId>(id);
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ sort_name_widget.left + 11, sort_name_widget.top + 1 }, STR_NAME, ft,
         { COLOUR_GREY });
@@ -736,7 +736,7 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     rct_widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
     ft = Formatter();
-    ft.Add<rct_string_id>(id);
+    ft.Add<StringId>(id);
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ sort_date_widget.left + 5, sort_date_widget.top + 1 }, STR_DATE, ft,
         { COLOUR_GREY });
@@ -759,7 +759,7 @@ static void WindowLoadsaveScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int
         if (y + SCROLLABLE_ROW_HEIGHT < dpi->y)
             continue;
 
-        rct_string_id stringId = STR_BLACK_STRING;
+        StringId stringId = STR_BLACK_STRING;
 
         // If hovering over item, change the color and fill the backdrop.
         if (i == w->selected_list_item)
@@ -771,13 +771,13 @@ static void WindowLoadsaveScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int
         if (_listItems[i].loaded)
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_RIGHTGUILLEMET);
+            ft.Add<StringId>(STR_RIGHTGUILLEMET);
             DrawTextBasic(dpi, { 0, y }, stringId, ft);
         }
 
         // Print filename
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<char*>(_listItems[i].name.c_str());
         int32_t max_file_width = w->widgets[WIDX_SORT_NAME].width() - 10;
         DrawTextEllipsised(dpi, { 10, y }, max_file_width, stringId, ft);
@@ -786,12 +786,12 @@ static void WindowLoadsaveScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int
         if (_listItems[i].type == TYPE_FILE)
         {
             ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<char*>(_listItems[i].date_formatted.c_str());
             DrawTextEllipsised(dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
 
             ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<char*>(_listItems[i].time_formatted.c_str());
             DrawTextEllipsised(dpi, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth, stringId, ft);
         }
@@ -1196,7 +1196,7 @@ static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(*w, dpi);
 
     auto ft = Formatter();
-    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<StringId>(STR_STRING);
     ft.Add<char*>(_window_overwrite_prompt_name);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);

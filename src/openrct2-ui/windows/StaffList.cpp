@@ -60,7 +60,7 @@ enum WindowStaffListWidgetIdx
     WIDX_STAFF_LIST_MAP,
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STAFF;
+static constexpr const StringId WINDOW_TITLE = STR_STAFF;
 static constexpr const int32_t WW = 320;
 static constexpr const int32_t WH = 270;
 constexpr int32_t MAX_WW = 500;
@@ -89,9 +89,9 @@ class StaffListWindow final : public Window
 private:
     struct StaffNamingConvention
     {
-        rct_string_id Plural;
-        rct_string_id Singular;
-        rct_string_id ActionHire;
+        StringId Plural;
+        StringId Singular;
+        StringId ActionHire;
     };
 
     std::vector<EntityId> _staffList;
@@ -300,7 +300,7 @@ public:
 
         auto ft = Formatter();
         ft.Add<uint16_t>(_staffList.size());
-        ft.Add<rct_string_id>(staffTypeStringId);
+        ft.Add<StringId>(staffTypeStringId);
 
         DrawTextBasic(
             &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_STAFF_LIST_LIST].bottom + 2 }, STR_STAFF_LIST_COUNTER, ft);
@@ -460,7 +460,7 @@ public:
             else
             {
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(GetStaffNamingConvention(GetSelectedStaffType()).Plural);
+                ft.Add<StringId>(GetStaffNamingConvention(GetSelectedStaffType()).Plural);
                 context_show_error(STR_NO_THING_IN_PARK_YET, STR_NONE, ft);
             }
         }

@@ -70,7 +70,7 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
 uint8_t gToolbarDirtyFlags;
 
 static void WindowGameBottomToolbarMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
+static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback);
 static void WindowGameBottomToolbarInvalidate(rct_window *w);
 static void WindowGameBottomToolbarPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowGameBottomToolbarUpdate(rct_window* w);
@@ -188,8 +188,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widget
     }
 }
 
-static OpenRCT2String WindowGameBottomToolbarTooltip(
-    rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
+static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback)
 {
     int32_t month, day;
     auto ft = Formatter();
@@ -207,8 +206,8 @@ static OpenRCT2String WindowGameBottomToolbarTooltip(
             month = date_get_month(gDateMonthsElapsed);
             day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
-            ft.Add<rct_string_id>(DateDayNames[day]);
-            ft.Add<rct_string_id>(DateGameMonthNames[month]);
+            ft.Add<StringId>(DateDayNames[day]);
+            ft.Add<StringId>(DateGameMonthNames[month]);
             break;
     }
     return { fallback, ft };
@@ -410,19 +409,19 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
             = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
                    ? COLOUR_WHITE
                    : NOT_TRANSLUCENT(w->colours[0]));
-        rct_string_id stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
+        StringId stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
         auto ft = Formatter();
         ft.Add<money64>(gCash);
         DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
-    static constexpr const rct_string_id _guestCountFormats[] = {
+    static constexpr const StringId _guestCountFormats[] = {
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE,
     };
 
-    static constexpr const rct_string_id _guestCountFormatsSingular[] = {
+    static constexpr const StringId _guestCountFormatsSingular[] = {
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE_SINGULAR,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE_SINGULAR,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE_SINGULAR,
@@ -433,8 +432,8 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(), w->windowPos.y + widget.midY() - 6 };
 
-        rct_string_id stringId = gNumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
-                                                       : _guestCountFormats[gGuestChangeModifier];
+        StringId stringId = gNumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
+                                                  : _guestCountFormats[gGuestChangeModifier];
         colour_t colour
             = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
                    ? COLOUR_WHITE
@@ -506,9 +505,9 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
         = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
                ? COLOUR_WHITE
                : NOT_TRANSLUCENT(w->colours[0]));
-    rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
+    StringId stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
     auto ft = Formatter();
-    ft.Add<rct_string_id>(DateDayNames[day]);
+    ft.Add<StringId>(DateDayNames[day]);
     ft.Add<int16_t>(month);
     ft.Add<int16_t>(year);
     DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
@@ -521,7 +520,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
                      static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
     int32_t temperature = gClimateCurrent.Temperature;
-    rct_string_id format = STR_CELSIUS_VALUE;
+    StringId format = STR_CELSIUS_VALUE;
     if (gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit)
     {
         temperature = climate_celsius_to_fahrenheit(temperature);
@@ -670,9 +669,9 @@ static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo* dpi, rct_w
     int32_t width = middleOutsetWidget->width() - 62;
 
     // Check if there is a map tooltip to draw
-    rct_string_id stringId;
+    StringId stringId;
     auto ft = GetMapTooltip();
-    std::memcpy(&stringId, ft.Data(), sizeof(rct_string_id));
+    std::memcpy(&stringId, ft.Data(), sizeof(StringId));
     if (stringId == STR_NONE)
     {
         DrawTextWrapped(

@@ -195,7 +195,7 @@ void NetworkConnection::SetLastDisconnectReason(std::string_view src)
     _lastDisconnectReason = src;
 }
 
-void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void* args)
+void NetworkConnection::SetLastDisconnectReason(const StringId string_id, void* args)
 {
     char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
     format_string(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);

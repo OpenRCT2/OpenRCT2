@@ -26,7 +26,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const StringId WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 240;
 static constexpr const int32_t WW = 340;
 
@@ -99,7 +99,7 @@ enum
     DROPDOWN_LIST_COUNT,
 };
 
-static constexpr const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr const StringId ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
     STR_STATUS,
     STR_POPULARITY,
     STR_SATISFACTION,
@@ -120,7 +120,7 @@ static constexpr const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST
     STR_RIDE_LIST_NAUSEA,
 };
 
-static constexpr const rct_string_id ride_list_statusbar_count_strings[PAGE_COUNT] = {
+static constexpr const StringId ride_list_statusbar_count_strings[PAGE_COUNT] = {
     STR_NUMBER_RIDES,
     STR_NUMBER_SHOPS_AND_STALLS,
     STR_NUMBER_RESTROOMS_AND_INFORMATION_KIOSKS,
@@ -147,7 +147,7 @@ static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = 
     false, // Nausea
 };
 
-static constexpr const rct_string_id page_names[] = {
+static constexpr const StringId page_names[] = {
     STR_RIDES,
     STR_SHOPS_AND_STALLS,
     STR_RESTROOMS_AND_INFORMATION_KIOSKS,
@@ -536,7 +536,7 @@ public:
         auto y = 0;
         for (size_t i = 0; i < _rideList.size(); i++)
         {
-            rct_string_id format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
+            StringId format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
             if (i == static_cast<size_t>(selected_list_item))
             {
                 // Background highlight
@@ -558,7 +558,7 @@ public:
             ft = Formatter();
             ft.Increment(2);
             auto formatSecondaryEnabled = true;
-            rct_string_id formatSecondary = 0;
+            StringId formatSecondary = 0;
             switch (_windowRideListInformationType)
             {
                 case INFORMATION_TYPE_STATUS:
@@ -727,7 +727,7 @@ public:
             if (formatSecondaryEnabled)
             {
                 ft.Rewind();
-                ft.Add<rct_string_id>(formatSecondary);
+                ft.Add<StringId>(formatSecondary);
             }
             DrawTextEllipsised(&dpi, { 160, y - 1 }, 157, format, ft);
             y += SCROLLABLE_ROW_HEIGHT;

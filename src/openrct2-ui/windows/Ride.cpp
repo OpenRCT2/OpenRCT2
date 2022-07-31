@@ -66,7 +66,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
 static constexpr const int32_t WH = 207;
 static constexpr const int32_t WW = 316;
 
@@ -445,7 +445,7 @@ static void WindowRideVehicleResize(rct_window* w);
 static void WindowRideVehicleMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void WindowRideVehicleDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void WindowRideVehicleUpdate(rct_window* w);
-static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback);
+static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const rct_widgetindex widgetIndex, StringId fallback);
 static void WindowRideVehicleInvalidate(rct_window* w);
 static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
@@ -507,7 +507,7 @@ static void WindowRideGraphsMousedown(rct_window* w, rct_widgetindex widgetIndex
 static void WindowRideGraphsUpdate(rct_window* w);
 static void WindowRideGraphsScrollgetheight(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
 static void WindowRideGraphs15(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
-static OpenRCT2String WindowRideGraphsTooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
+static OpenRCT2String WindowRideGraphsTooltip(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback);
 static void WindowRideGraphsInvalidate(rct_window* w);
 static void WindowRideGraphsPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
@@ -714,7 +714,7 @@ static constexpr const int32_t window_ride_tab_animation_frames[] = {
 static_assert(std::size(window_ride_tab_animation_frames) == WINDOW_RIDE_PAGE_COUNT);
 
 // clang-format off
-static constexpr const rct_string_id RatingNames[] = {
+static constexpr const StringId RatingNames[] = {
     STR_RATING_LOW,
     STR_RATING_MEDIUM,
     STR_RATING_HIGH,
@@ -724,7 +724,7 @@ static constexpr const rct_string_id RatingNames[] = {
 };
 // clang-format on
 
-static constexpr const rct_string_id RideBreakdownReasonNames[] = {
+static constexpr const StringId RideBreakdownReasonNames[] = {
     STR_RIDE_BREAKDOWN_SAFETY_CUT_OUT,          // BREAKDOWN_SAFETY_CUT_OUT
     STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_CLOSED, // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
     STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_OPEN,   // BREAKDOWN_RESTRAINTS_STUCK_OPEN
@@ -736,7 +736,7 @@ static constexpr const rct_string_id RideBreakdownReasonNames[] = {
 };
 static_assert(std::size(RideBreakdownReasonNames) == BREAKDOWN_COUNT);
 
-const rct_string_id ColourSchemeNames[] = {
+const StringId ColourSchemeNames[] = {
     STR_MAIN_COLOUR_SCHEME,          // RIDE_COLOUR_SCHEME_MAIN
     STR_ALTERNATIVE_COLOUR_SCHEME_1, // RIDE_COLOUR_SCHEME_ADDITIONAL_1
     STR_ALTERNATIVE_COLOUR_SCHEME_2, // RIDE_COLOUR_SCHEME_ADDITIONAL_2
@@ -744,7 +744,7 @@ const rct_string_id ColourSchemeNames[] = {
 };
 static_assert(std::size(ColourSchemeNames) == RIDE_COLOUR_SCHEME_COUNT);
 
-static constexpr const rct_string_id VehicleLoadNames[] = {
+static constexpr const StringId VehicleLoadNames[] = {
     STR_QUARTER_LOAD,       //  WAIT_FOR_LOAD_QUARTER
     STR_HALF_LOAD,          //  WAIT_FOR_LOAD_HALF
     STR_THREE_QUARTER_LOAD, //  WAIT_FOR_LOAD_THREE_QUARTER
@@ -753,14 +753,14 @@ static constexpr const rct_string_id VehicleLoadNames[] = {
 };
 static_assert(std::size(VehicleLoadNames) == WAIT_FOR_LOAD_COUNT);
 
-static constexpr const rct_string_id VehicleColourSchemeNames[] = {
+static constexpr const StringId VehicleColourSchemeNames[] = {
     STR_ALL_VEHICLES_IN_SAME_COLOURS,  // RIDE_COLOUR_SCHEME_MODE_ALL_SAME,
     STR_DIFFERENT_COLOURS_PER,         // RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN,
     STR_DIFFERENT_COLOURS_PER_VEHICLE, // RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR,
 };
 static_assert(std::size(VehicleColourSchemeNames) == RIDE_COLOUR_SCHEME_MODE_COUNT);
 
-static constexpr const rct_string_id VehicleStatusNames[] = {
+static constexpr const StringId VehicleStatusNames[] = {
     STR_MOVING_TO_END_OF,          // Vehicle::Status::MovingToEndOfStation
     STR_WAITING_FOR_PASSENGERS_AT, // Vehicle::Status::WaitingForPassengers
     STR_WAITING_TO_DEPART,         // Vehicle::Status::WaitingToDepart
@@ -794,7 +794,7 @@ static constexpr const rct_string_id VehicleStatusNames[] = {
     STR_STOPPED_BY_BLOCK_BRAKES,   // Vehicle::Status::StoppedByBlockBrakes
 };
 
-static constexpr const rct_string_id SingleSessionVehicleStatusNames[] = {
+static constexpr const StringId SingleSessionVehicleStatusNames[] = {
     STR_STOPPING_0,             // Vehicle::Status::MovingToEndOfStation
     STR_WAITING_FOR_PASSENGERS, // Vehicle::Status::WaitingForPassengers
     STR_WAITING_TO_START,       // Vehicle::Status::WaitingToDepart
@@ -806,7 +806,7 @@ static constexpr const rct_string_id SingleSessionVehicleStatusNames[] = {
 
 struct WindowRideMazeDesignOption
 {
-    rct_string_id text;
+    StringId text;
     uint32_t sprite;
 };
 
@@ -822,7 +822,7 @@ struct GraphsYAxis
     uint8_t interval;
     int8_t unit;
     int8_t unit_interval;
-    rct_string_id label;
+    StringId label;
 };
 
 /** rct2: 0x0098DD98 */
@@ -840,7 +840,7 @@ static constexpr auto RIDE_G_FORCES_RED_LATERAL = FIXED_2DP(2, 80);
 struct RideTypeLabel
 {
     uint8_t ride_type_id;
-    rct_string_id label_id;
+    StringId label_id;
     const char* label_string;
 };
 
@@ -851,7 +851,7 @@ static std::vector<RideTypeLabel> RideDropdownData;
 struct VehicleTypeLabel
 {
     ObjectEntryIndex subtype_id;
-    rct_string_id label_id;
+    StringId label_id;
     const char* label_string;
 };
 
@@ -1824,7 +1824,7 @@ struct RideStatusDropdownInfo
     int32_t DefaultIndex = -1;
 };
 
-static void WindowRideSetDropdown(RideStatusDropdownInfo& info, RideStatus status, rct_string_id text)
+static void WindowRideSetDropdown(RideStatusDropdownInfo& info, RideStatus status, StringId text)
 {
     if (info.Ride->SupportsStatus(status))
     {
@@ -1864,7 +1864,7 @@ static void WindowRideShowOpenDropdown(rct_window* w, rct_widget* widget)
     gDropdownDefaultIndex = info.DefaultIndex;
 }
 
-static rct_string_id GetRideTypeNameForDropdown(uint8_t rideType)
+static StringId GetRideTypeNameForDropdown(uint8_t rideType)
 {
     switch (rideType)
     {
@@ -2421,7 +2421,7 @@ static void WindowRideMainInvalidate(rct_window* w)
  *
  *  rct2: 0x006AF10A
  */
-static rct_string_id WindowRideGetStatusOverallView(rct_window* w, Formatter& ft)
+static StringId WindowRideGetStatusOverallView(rct_window* w, Formatter& ft)
 {
     auto stringId = STR_NONE;
     auto ride = get_ride(w->rideId);
@@ -2441,7 +2441,7 @@ static rct_string_id WindowRideGetStatusOverallView(rct_window* w, Formatter& ft
  *
  *  rct2: 0x006AEFEF
  */
-static rct_string_id WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
+static StringId WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -2460,7 +2460,7 @@ static rct_string_id WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
         {
             if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
             {
-                ft.Add<rct_string_id>(STR_STOPPED_BY_BLOCK_BRAKES);
+                ft.Add<StringId>(STR_STOPPED_BY_BLOCK_BRAKES);
                 return STR_BLACK_STRING;
             }
         }
@@ -2476,11 +2476,11 @@ static rct_string_id WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
         stringId = SingleSessionVehicleStatusNames[static_cast<size_t>(vehicle->status)];
     }
 
-    ft.Add<rct_string_id>(stringId);
+    ft.Add<StringId>(stringId);
     uint16_t speedInMph = (abs(vehicle->velocity) * 9) >> 18;
     ft.Add<uint16_t>(speedInMph);
     const RideComponentName stationName = GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station);
-    ft.Add<rct_string_id>(ride->num_stations > 1 ? stationName.number : stationName.singular);
+    ft.Add<StringId>(ride->num_stations > 1 ? stationName.number : stationName.singular);
     ft.Add<uint16_t>(vehicle->current_station.ToUnderlying() + 1);
     return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
 }
@@ -2489,7 +2489,7 @@ static rct_string_id WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
  *
  *  rct2: 0x006AEF65
  */
-static rct_string_id WindowRideGetStatusStation(rct_window* w, Formatter& ft)
+static StringId WindowRideGetStatusStation(rct_window* w, Formatter& ft)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -2502,7 +2502,7 @@ static rct_string_id WindowRideGetStatusStation(rct_window* w, Formatter& ft)
     }
 
     const auto& station = ride->GetStation(*stationIndex);
-    rct_string_id stringId = STR_EMPTY;
+    StringId stringId = STR_EMPTY;
     // Entrance / exit
     if (ride->status == RideStatus::Closed)
     {
@@ -2526,12 +2526,12 @@ static rct_string_id WindowRideGetStatusStation(rct_window* w, Formatter& ft)
         else if (queueLength > 1)
             stringId = STR_QUEUE_PEOPLE;
 
-        ft.Add<rct_string_id>(stringId);
+        ft.Add<StringId>(stringId);
         ft.Add<uint16_t>(queueLength);
     }
     else
     {
-        ft.Add<rct_string_id>(stringId);
+        ft.Add<StringId>(stringId);
     }
 
     return STR_BLACK_STRING;
@@ -2541,7 +2541,7 @@ static rct_string_id WindowRideGetStatusStation(rct_window* w, Formatter& ft)
  *
  *  rct2: 0x006AEE73
  */
-static rct_string_id WindowRideGetStatus(rct_window* w, Formatter& ft)
+static StringId WindowRideGetStatus(rct_window* w, Formatter& ft)
 {
     auto ride = get_ride(w->rideId);
     if (w->ride.view == 0)
@@ -2582,18 +2582,18 @@ static void WindowRideMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         if (w->ride.view > ride->num_vehicles)
         {
-            ft.Add<rct_string_id>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).number);
+            ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).number);
             ft.Add<uint16_t>(w->ride.view - ride->num_vehicles);
         }
         else
         {
-            ft.Add<rct_string_id>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).number);
+            ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).number);
             ft.Add<uint16_t>(w->ride.view);
         }
     }
     else
     {
-        ft.Add<rct_string_id>(STR_OVERALL_VIEW);
+        ft.Add<StringId>(STR_OVERALL_VIEW);
     }
 
     widget = &window_ride_main_widgets[WIDX_VIEW];
@@ -2604,7 +2604,7 @@ static void WindowRideMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Status
     ft = Formatter();
     widget = &window_ride_main_widgets[WIDX_STATUS];
-    rct_string_id rideStatus = WindowRideGetStatus(w, ft);
+    StringId rideStatus = WindowRideGetStatus(w, ft);
     DrawTextEllipsised(
         dpi, w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width(), rideStatus, ft,
         { TextAlignment::CENTRE });
@@ -2720,7 +2720,7 @@ static void WindowRideVehicleUpdate(rct_window* w)
     widget_invalidate(*w, WIDX_TAB_2);
 }
 
-static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback)
+static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const rct_widgetindex widgetIndex, StringId fallback)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -2736,12 +2736,12 @@ static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const rct_wi
             ft.Increment(12);
 
             RideComponentType vehicleType = ride->GetRideTypeDescriptor().NameConvention.vehicle;
-            rct_string_id stringId = GetRideComponentName(vehicleType).count;
+            StringId stringId = GetRideComponentName(vehicleType).count;
             if (ride->max_trains > 1)
             {
                 stringId = GetRideComponentName(vehicleType).count_plural;
             }
-            ft.Add<rct_string_id>(stringId);
+            ft.Add<StringId>(stringId);
             ft.Add<uint16_t>(ride->max_trains);
             return { fallback, ft };
         }
@@ -2757,12 +2757,12 @@ static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const rct_wi
             ft.Increment(16);
             ft.Add<uint16_t>(std::max(uint8_t(1), ride->MaxCarsPerTrain) - rideEntry->zero_cars);
 
-            rct_string_id stringId = GetRideComponentName(RideComponentType::Car).singular;
+            StringId stringId = GetRideComponentName(RideComponentType::Car).singular;
             if (ride->MaxCarsPerTrain - rideEntry->zero_cars > 1)
             {
                 stringId = GetRideComponentName(RideComponentType::Car).plural;
             }
-            ft.Add<rct_string_id>(stringId);
+            ft.Add<StringId>(stringId);
             return { fallback, ft };
         }
     }
@@ -2777,7 +2777,7 @@ static void WindowRideVehicleInvalidate(rct_window* w)
 {
     rct_widget* widgets;
     rct_ride_entry* rideEntry;
-    rct_string_id stringId;
+    StringId stringId;
     int32_t carsPerTrain;
 
     widgets = window_ride_page_widgets[w->page];
@@ -2840,7 +2840,7 @@ static void WindowRideVehicleInvalidate(rct_window* w)
     {
         stringId = GetRideComponentName(vehicleType).count_plural;
     }
-    ft.Add<rct_string_id>(stringId);
+    ft.Add<StringId>(stringId);
     ft.Add<uint16_t>(ride->num_vehicles);
 
     ft.Increment(8);
@@ -2881,13 +2881,13 @@ static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Description
     auto ft = Formatter();
-    ft.Add<rct_string_id>(rideEntry->naming.Description);
+    ft.Add<StringId>(rideEntry->naming.Description);
     screenCoords.y += DrawTextWrapped(dpi, screenCoords, 300, STR_BLACK_STRING, ft, { TextAlignment::LEFT });
     screenCoords.y += 2;
 
     // Capacity
     ft = Formatter();
-    ft.Add<rct_string_id>(rideEntry->capacity);
+    ft.Add<StringId>(rideEntry->capacity);
     DrawTextBasic(dpi, screenCoords, STR_CAPACITY, ft);
 
     // Excitement Factor
@@ -3457,7 +3457,7 @@ static void WindowRideOperatingTextinput(rct_window* w, rct_widgetindex widgetIn
 static void WindowRideOperatingInvalidate(rct_window* w)
 {
     rct_widget* widgets;
-    rct_string_id format, caption, tooltip;
+    StringId format, caption, tooltip;
 
     widgets = window_ride_page_widgets[w->page];
     if (w->widgets != widgets)
@@ -3577,9 +3577,9 @@ static void WindowRideOperatingInvalidate(rct_window* w)
 
         ft.Rewind();
         ft.Increment(10);
-        ft.Add<rct_string_id>(STR_FORMAT_SECONDS);
+        ft.Add<StringId>(STR_FORMAT_SECONDS);
         ft.Add<uint16_t>(ride->min_waiting_time);
-        ft.Add<rct_string_id>(STR_FORMAT_SECONDS);
+        ft.Add<StringId>(STR_FORMAT_SECONDS);
         ft.Add<uint16_t>(ride->max_waiting_time);
 
         if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
@@ -4135,7 +4135,7 @@ static void WindowRideMaintenancePaint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += 26;
 
     // Last inspection
-    rct_string_id stringId;
+    StringId stringId;
     if (ride->last_inspection <= 1)
         stringId = STR_TIME_SINCE_LAST_INSPECTION_MINUTE;
     else if (ride->last_inspection <= 240)
@@ -4154,7 +4154,7 @@ static void WindowRideMaintenancePaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     stringId = (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) ? STR_CURRENT_BREAKDOWN : STR_LAST_BREAKDOWN;
     ft = Formatter();
-    ft.Add<rct_string_id>(RideBreakdownReasonNames[ride->breakdown_reason]);
+    ft.Add<StringId>(RideBreakdownReasonNames[ride->breakdown_reason]);
     DrawTextBasic(dpi, screenCoords, stringId, ft);
     screenCoords.y += 12;
 
@@ -4341,7 +4341,7 @@ static void WindowRideColourMousedown(rct_window* w, rct_widgetindex widgetIndex
 {
     VehicleColour vehicleColour;
     int32_t i, numItems;
-    rct_string_id stringId;
+    StringId stringId;
 
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -4815,9 +4815,9 @@ static void WindowRideColourInvalidate(rct_window* w)
         }
         ft.Rewind();
         ft.Increment(6);
-        ft.Add<rct_string_id>(VehicleColourSchemeNames[vehicleColourSchemeType]);
-        ft.Add<rct_string_id>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).singular);
-        ft.Add<rct_string_id>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).capitalised);
+        ft.Add<StringId>(VehicleColourSchemeNames[vehicleColourSchemeType]);
+        ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).singular);
+        ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).capitalised);
         ft.Add<uint16_t>(w->vehicleIndex + 1);
 
         // Vehicle index
@@ -4849,7 +4849,7 @@ static void WindowRideColourInvalidate(rct_window* w)
 
     ft.Rewind();
     ft.Increment(14);
-    ft.Add<rct_string_id>(ColourSchemeNames[colourScheme]);
+    ft.Add<StringId>(ColourSchemeNames[colourScheme]);
 
     WindowRideAnchorBorderWidgets(w);
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
@@ -5209,7 +5209,7 @@ static void WindowRideMusicInvalidate(rct_window* w)
     ride->FormatNameTo(ft);
 
     // Set selected music
-    rct_string_id musicName = STR_NONE;
+    StringId musicName = STR_NONE;
     auto& objManager = GetContext()->GetObjectManager();
     auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
     if (musicObj != nullptr)
@@ -5251,7 +5251,7 @@ static void WindowRideMusicPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Measurements
 
-static rct_string_id GetRatingName(ride_rating rating)
+static StringId GetRatingName(ride_rating rating)
 {
     int32_t index = std::clamp<int32_t>(rating >> 8, 0, static_cast<int32_t>(std::size(RatingNames)) - 1);
     return RatingNames[index];
@@ -5647,11 +5647,11 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
         {
             // Excitement
-            rct_string_id ratingName = GetRatingName(ride->excitement);
+            StringId ratingName = GetRatingName(ride->excitement);
             auto ft = Formatter();
             ft.Add<uint32_t>(ride->excitement);
-            ft.Add<rct_string_id>(ratingName);
-            rct_string_id stringId = !ride_has_ratings(ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
+            ft.Add<StringId>(ratingName);
+            StringId stringId = !ride_has_ratings(ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
             DrawTextBasic(dpi, screenCoords, stringId, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
@@ -5659,7 +5659,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
             ratingName = GetRatingName(ride->intensity);
             ft = Formatter();
             ft.Add<uint32_t>(ride->intensity);
-            ft.Add<rct_string_id>(ratingName);
+            ft.Add<StringId>(ratingName);
 
             stringId = STR_INTENSITY_RATING;
             if (!ride_has_ratings(ride))
@@ -5674,7 +5674,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
             ratingName = GetRatingName(ride->nausea);
             ft = Formatter();
             ft.Add<uint32_t>(ride->nausea);
-            ft.Add<rct_string_id>(ratingName);
+            ft.Add<StringId>(ratingName);
             stringId = !ride_has_ratings(ride) ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
             DrawTextBasic(dpi, screenCoords, stringId, ft);
             screenCoords.y += 2 * LIST_ROW_HEIGHT;
@@ -5756,14 +5756,14 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
                     if (length != 0)
                     {
                         length >>= 16;
-                        ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY_WITH_SEPARATOR);
+                        ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY_WITH_SEPARATOR);
                         ft.Add<uint16_t>(length & 0xFFFF);
                         numLengths++;
                     }
                 }
                 if (numLengths == 0)
                 {
-                    ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
+                    ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
                     ft.Add<uint16_t>(0);
                     numLengths++;
                 }
@@ -5773,7 +5773,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
                     // therefore we set the last entry to use the no-separator format now, post-format
                     ft.Rewind();
                     ft.Increment((numLengths - 1) * 4);
-                    ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
+                    ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
                 }
                 ft.Rewind();
                 ft.Increment(numLengths * 4);
@@ -6011,7 +6011,7 @@ static void WindowRideGraphs15(rct_window* w, int32_t scrollIndex, int32_t scrol
  *
  *  rct2: 0x006AEA05
  */
-static OpenRCT2String WindowRideGraphsTooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
+static OpenRCT2String WindowRideGraphsTooltip(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback)
 {
     if (widgetIndex == WIDX_GRAPH)
     {
@@ -6023,7 +6023,7 @@ static OpenRCT2String WindowRideGraphsTooltip(rct_window* w, const rct_widgetind
             {
                 auto ft = Formatter();
                 ft.Increment(2);
-                ft.Add<rct_string_id>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).number);
+                ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).number);
                 ft.Add<uint16_t>(measurement->vehicle_index + 1);
                 return { fallback, ft };
             }
@@ -6159,7 +6159,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     // Horizontal grid lines
     int32_t listType = w->list_information_type & 0xFF;
     int16_t yUnit = window_graphs_y_axi[listType].unit;
-    rct_string_id stringID = window_graphs_y_axi[listType].label;
+    StringId stringID = window_graphs_y_axi[listType].label;
     int16_t yUnitInterval = window_graphs_y_axi[listType].unit_interval;
     int16_t yInterval = window_graphs_y_axi[listType].interval;
 
@@ -6721,7 +6721,7 @@ static void WindowRideIncomeInvalidate(rct_window* w)
  */
 static void WindowRideIncomePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    rct_string_id stringId;
+    StringId stringId;
     money64 profit;
     ShopItem primaryItem, secondaryItem;
 
@@ -6950,7 +6950,7 @@ static void WindowRideCustomerPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     ShopItem shopItem;
     int16_t popularity, satisfaction, queueTime;
-    rct_string_id stringId;
+    StringId stringId;
 
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -7026,7 +7026,7 @@ static void WindowRideCustomerPaint(rct_window* w, rct_drawpixelinfo* dpi)
     if (shopItem != ShopItem::None)
     {
         ft = Formatter();
-        ft.Add<rct_string_id>(GetShopItemDescriptor(shopItem).Naming.Plural);
+        ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
         ft.Add<uint32_t>(ride->no_primary_items_sold);
         DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
@@ -7038,7 +7038,7 @@ static void WindowRideCustomerPaint(rct_window* w, rct_drawpixelinfo* dpi)
     if (shopItem != ShopItem::None)
     {
         ft = Formatter();
-        ft.Add<rct_string_id>(GetShopItemDescriptor(shopItem).Naming.Plural);
+        ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
         ft.Add<uint32_t>(ride->no_secondary_items_sold);
         DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
         screenCoords.y += LIST_ROW_HEIGHT;

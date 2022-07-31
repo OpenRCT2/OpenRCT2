@@ -1085,7 +1085,7 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
 
     CursorID cursorId = CursorID::Arrow;
     auto ft = Formatter();
-    ft.Add<rct_string_id>(STR_NONE);
+    ft.Add<StringId>(STR_NONE);
     SetMapTooltip(ft);
     window = window_find_from_point(screenCoords);
 
@@ -1370,7 +1370,7 @@ void InputStateWidgetPressed(
             gDropdownLastColourHover = dropdown_index;
             WindowTooltipClose();
 
-            static constexpr const rct_string_id _colourTooltips[] = {
+            static constexpr const StringId _colourTooltips[] = {
                 STR_COLOUR_BLACK_TIP,
                 STR_COLOUR_GREY_TIP,
                 STR_COLOUR_WHITE_TIP,

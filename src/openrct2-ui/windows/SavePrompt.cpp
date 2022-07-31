@@ -60,7 +60,7 @@ static rct_widget window_quit_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-static constexpr const rct_string_id window_save_prompt_labels[][2] = {
+static constexpr const StringId window_save_prompt_labels[][2] = {
     { STR_LOAD_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_LOADING },
     { STR_QUIT_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_QUITTING },
     { STR_QUIT_GAME_2_PROMPT_TITLE, STR_SAVE_BEFORE_QUITTING_2 },
@@ -87,7 +87,7 @@ static rct_window_event_list window_save_prompt_events([](auto& events)
 rct_window* WindowSavePromptOpen()
 {
     int32_t width, height;
-    rct_string_id stringId;
+    StringId stringId;
     rct_window* window;
     PromptMode prompt_mode;
     rct_widget* widgets;

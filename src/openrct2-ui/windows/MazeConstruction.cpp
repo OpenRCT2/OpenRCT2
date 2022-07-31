@@ -28,7 +28,7 @@
 
 #pragma region Widgets
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
 static constexpr const int32_t WH = 200;
 static constexpr const int32_t WW = 166;
 
@@ -287,7 +287,7 @@ public:
         else
         {
             ft.Increment(4);
-            ft.Add<rct_string_id>(STR_NONE);
+            ft.Add<StringId>(STR_NONE);
         }
     }
 

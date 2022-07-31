@@ -23,7 +23,7 @@ namespace Editor
     bool LoadLandscape(const utf8* path);
 
     ResultWithMessage CheckPark();
-    std::pair<ObjectType, rct_string_id> CheckObjectSelection();
+    std::pair<ObjectType, StringId> CheckObjectSelection();
 
     void OpenWindowsForCurrentStep();
 

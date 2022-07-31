@@ -48,7 +48,7 @@ enum {
     WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT
 };
 
-static constexpr const rct_string_id ClimateNames[] = {
+static constexpr const StringId ClimateNames[] = {
     STR_CLIMATE_COOL_AND_WET,
     STR_CLIMATE_WARM,
     STR_CLIMATE_HOT_AND_DRY,
@@ -1300,11 +1300,11 @@ static void WindowEditorScenarioOptionsParkPaint(rct_window* w, rct_drawpixelinf
         auto ft = Formatter();
         // Pay for park and/or rides value
         if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-            ft.Add<rct_string_id>(STR_PAID_ENTRY_PAID_RIDES);
+            ft.Add<StringId>(STR_PAID_ENTRY_PAID_RIDES);
         else if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-            ft.Add<rct_string_id>(STR_FREE_PARK_ENTER);
+            ft.Add<StringId>(STR_FREE_PARK_ENTER);
         else
-            ft.Add<rct_string_id>(STR_PAY_PARK_ENTER);
+            ft.Add<StringId>(STR_PAY_PARK_ENTER);
 
         DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
@@ -1331,7 +1331,7 @@ static void WindowEditorScenarioOptionsParkPaint(rct_window* w, rct_drawpixelinf
     // Climate value
     screenCoords = w->windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
     auto ft = Formatter();
-    ft.Add<rct_string_id>(ClimateNames[static_cast<uint8_t>(gClimate)]);
+    ft.Add<StringId>(ClimateNames[static_cast<uint8_t>(gClimate)]);
     DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 }
 

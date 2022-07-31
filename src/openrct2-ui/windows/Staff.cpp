@@ -34,7 +34,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
 
 static constexpr const int32_t WW = 190;
 static constexpr const int32_t WH = 180;

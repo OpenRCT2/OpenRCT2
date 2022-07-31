@@ -15,7 +15,7 @@
 class FootpathRailingsObject final : public Object
 {
 public:
-    rct_string_id NameStringId{};
+    StringId NameStringId{};
     uint32_t PreviewImageId{};
     uint32_t BridgeImageId{};
     uint32_t RailingsImageId{};
