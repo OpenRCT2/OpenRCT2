@@ -665,7 +665,7 @@ public:
         width = stringWidth;
         Invalidate();
 
-        InputWindowPositionBegin(this, 0, gTooltipCursor);
+        InputWindowPositionBegin(*this, 0, gTooltipCursor);
     }
 
     const ResearchItem& GetItem() const

@@ -459,12 +459,12 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
 
 #pragma region Window positioning / resizing
 
-void InputWindowPositionBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+void InputWindowPositionBegin(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     _inputState = InputState::PositioningWindow;
-    gInputDragLast = screenCoords - w->windowPos;
-    _dragWidget.window_classification = w->classification;
-    _dragWidget.window_number = w->number;
+    gInputDragLast = screenCoords - w.windowPos;
+    _dragWidget.window_classification = w.classification;
+    _dragWidget.window_number = w.number;
     _dragWidget.widget_index = widgetIndex;
 }
 
@@ -1048,7 +1048,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
             }
             break;
         case WindowWidgetType::Caption:
-            InputWindowPositionBegin(w, widgetIndex, screenCoords);
+            InputWindowPositionBegin(*w, widgetIndex, screenCoords);
             break;
         case WindowWidgetType::Scroll:
             InputScrollBegin(*w, widgetIndex, screenCoords);
