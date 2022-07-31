@@ -233,7 +233,7 @@ namespace OpenRCT2
             while (!it.eol())
             {
                 auto token = *it++;
-                if (token.kind == FormatToken::StringId)
+                if (token.kind == FormatToken::StringById)
                 {
                     if constexpr (std::is_integral<TArg0>())
                     {

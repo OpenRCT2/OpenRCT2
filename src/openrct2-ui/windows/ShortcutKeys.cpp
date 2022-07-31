@@ -159,7 +159,7 @@ private:
     struct ShortcutStringPair
     {
         std::string ShortcutId;
-        StringId StringId = STR_NONE;
+        ::StringId StringId = STR_NONE;
         std::string CustomString;
         std::string Binding;
     };

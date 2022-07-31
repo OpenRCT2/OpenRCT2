@@ -682,7 +682,7 @@ namespace OpenRCT2
     {
         for (const auto& token : fmt)
         {
-            if (token.kind == FormatToken::StringId)
+            if (token.kind == FormatToken::StringById)
             {
                 if (argIndex < args.size())
                 {
@@ -782,7 +782,7 @@ namespace OpenRCT2
                 case FormatToken::Comma1dp16:
                     anyArgs.push_back(ReadFromArgs<int16_t>(args));
                     break;
-                case FormatToken::StringId:
+                case FormatToken::StringById:
                 {
                     auto stringId = ReadFromArgs<StringId>(args);
                     anyArgs.push_back(stringId);

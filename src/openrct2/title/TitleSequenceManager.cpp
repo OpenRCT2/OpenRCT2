@@ -32,7 +32,7 @@ namespace TitleSequenceManager
     {
         const utf8* ConfigId;
         const utf8* Filename;
-        StringId StringId;
+        ::StringId StringId;
     };
 
     static constexpr PredefinedSequence PredefinedSequences[] = {
