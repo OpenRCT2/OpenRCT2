@@ -111,7 +111,7 @@ public:
     {
         widgets = _windowChangelogWidgets;
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         min_width = MIN_WW;
         min_height = MIN_WH;
         max_width = MIN_WW;

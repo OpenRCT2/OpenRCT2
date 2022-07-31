@@ -20,7 +20,7 @@ namespace OpenRCT2::Title
         {
             for (uint_fast8_t i = 0; i < Rotations; i++)
             {
-                window_rotate_camera(w, 1);
+                window_rotate_camera(*w, 1);
             }
         }
 

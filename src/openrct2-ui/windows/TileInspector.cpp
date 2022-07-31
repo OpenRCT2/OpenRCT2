@@ -527,7 +527,7 @@ rct_window* WindowTileInspectorOpen()
     window->max_width = MAX_WW;
     window->max_height = MAX_WH;
     windowTileInspectorSelectedIndex = -1;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     windowTileInspectorTileSelected = false;
 
@@ -782,7 +782,7 @@ static void WindowTileInspectorMouseup(rct_window* w, rct_widgetindex widgetInde
     {
         case WIDX_CLOSE:
             tool_cancel();
-            window_close(w);
+            window_close(*w);
             return;
         case WIDX_BUTTON_REMOVE:
         {
@@ -893,11 +893,11 @@ static void WindowTileInspectorMouseup(rct_window* w, rct_widgetindex widgetInde
             {
                 case WIDX_TRACK_CHECK_APPLY_TO_ALL:
                     windowTileInspectorApplyToAll ^= 1;
-                    widget_invalidate(w, widgetIndex);
+                    widget_invalidate(*w, widgetIndex);
                     break;
                 case WIDX_TRACK_CHECK_CHAIN_LIFT:
                 {
-                    bool entireTrackBlock = WidgetIsPressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL);
+                    bool entireTrackBlock = WidgetIsPressed(*w, WIDX_TRACK_CHECK_APPLY_TO_ALL);
                     bool newLift = !tileElement->AsTrack()->HasChain();
                     WindowTileInspectorTrackBlockSetLift(windowTileInspectorSelectedIndex, entireTrackBlock, newLift);
                     break;
@@ -1042,7 +1042,7 @@ static void WindowTileInspectorMousedown(rct_window* w, rct_widgetindex widgetIn
             switch (widgetIndex)
             {
                 case WIDX_TRACK_SPINNER_HEIGHT_INCREASE:
-                    if (WidgetIsPressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL))
+                    if (WidgetIsPressed(*w, WIDX_TRACK_CHECK_APPLY_TO_ALL))
                     {
                         WindowTileInspectorTrackBlockHeightOffset(windowTileInspectorSelectedIndex, 1);
                     }
@@ -1052,7 +1052,7 @@ static void WindowTileInspectorMousedown(rct_window* w, rct_widgetindex widgetIn
                     }
                     break;
                 case WIDX_TRACK_SPINNER_HEIGHT_DECREASE:
-                    if (WidgetIsPressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL))
+                    if (WidgetIsPressed(*w, WIDX_TRACK_CHECK_APPLY_TO_ALL))
                     {
                         WindowTileInspectorTrackBlockHeightOffset(windowTileInspectorSelectedIndex, -1);
                     }
@@ -1161,14 +1161,14 @@ static void WindowTileInspectorMousedown(rct_window* w, rct_widgetindex widgetIn
 static void WindowTileInspectorUpdate(rct_window* w)
 {
     // Check if the mouse is hovering over the list
-    if (!WidgetIsHighlighted(w, WIDX_LIST))
+    if (!WidgetIsHighlighted(*w, WIDX_LIST))
     {
         windowTileInspectorHighlightedIndex = -1;
-        widget_invalidate(w, WIDX_LIST);
+        widget_invalidate(*w, WIDX_LIST);
     }
 
     if (gCurrentToolWidget.window_classification != WC_TILE_INSPECTOR)
-        window_close(w);
+        window_close(*w);
 }
 
 static void WindowTileInspectorDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
@@ -1358,7 +1358,7 @@ static void WindowTileInspectorScrollmouseover(rct_window* w, int32_t scrollInde
     else
         windowTileInspectorHighlightedIndex = index;
 
-    widget_invalidate(w, WIDX_LIST);
+    widget_invalidate(*w, WIDX_LIST);
 }
 
 static void WindowTileInspectorInvalidate(rct_window* w)
@@ -1406,36 +1406,36 @@ static void WindowTileInspectorInvalidate(rct_window* w)
 
     // X and Y spinners
     WidgetSetEnabled(
-        w, WIDX_SPINNER_X_INCREASE,
+        *w, WIDX_SPINNER_X_INCREASE,
         (windowTileInspectorTileSelected && ((windowTileInspectorToolMap.x / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
     WidgetSetEnabled(
-        w, WIDX_SPINNER_X_DECREASE, (windowTileInspectorTileSelected && ((windowTileInspectorToolMap.x / 32) > 0)));
+        *w, WIDX_SPINNER_X_DECREASE, (windowTileInspectorTileSelected && ((windowTileInspectorToolMap.x / 32) > 0)));
     WidgetSetEnabled(
-        w, WIDX_SPINNER_Y_INCREASE,
+        *w, WIDX_SPINNER_Y_INCREASE,
         (windowTileInspectorTileSelected && ((windowTileInspectorToolMap.y / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
     WidgetSetEnabled(
-        w, WIDX_SPINNER_Y_DECREASE, (windowTileInspectorTileSelected && ((windowTileInspectorToolMap.y / 32) > 0)));
+        *w, WIDX_SPINNER_Y_DECREASE, (windowTileInspectorTileSelected && ((windowTileInspectorToolMap.y / 32) > 0)));
 
     // Sort buttons
-    WidgetSetEnabled(w, WIDX_BUTTON_SORT, (windowTileInspectorTileSelected && windowTileInspectorElementCount > 1));
+    WidgetSetEnabled(*w, WIDX_BUTTON_SORT, (windowTileInspectorTileSelected && windowTileInspectorElementCount > 1));
 
     // Move Up button
     WidgetSetEnabled(
-        w, WIDX_BUTTON_MOVE_UP,
+        *w, WIDX_BUTTON_MOVE_UP,
         (windowTileInspectorSelectedIndex != -1 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount - 1));
-    widget_invalidate(w, WIDX_BUTTON_MOVE_UP);
+    widget_invalidate(*w, WIDX_BUTTON_MOVE_UP);
 
     // Move Down button
-    WidgetSetEnabled(w, WIDX_BUTTON_MOVE_DOWN, (windowTileInspectorSelectedIndex > 0));
-    widget_invalidate(w, WIDX_BUTTON_MOVE_DOWN);
+    WidgetSetEnabled(*w, WIDX_BUTTON_MOVE_DOWN, (windowTileInspectorSelectedIndex > 0));
+    widget_invalidate(*w, WIDX_BUTTON_MOVE_DOWN);
 
     // Copy button
-    WidgetSetEnabled(w, WIDX_BUTTON_COPY, windowTileInspectorSelectedIndex >= 0);
-    widget_invalidate(w, WIDX_BUTTON_COPY);
+    WidgetSetEnabled(*w, WIDX_BUTTON_COPY, windowTileInspectorSelectedIndex >= 0);
+    widget_invalidate(*w, WIDX_BUTTON_COPY);
 
     // Paste button
-    WidgetSetEnabled(w, WIDX_BUTTON_PASTE, windowTileInspectorTileSelected && windowTileInspectorElementCopied);
-    widget_invalidate(w, WIDX_BUTTON_PASTE);
+    WidgetSetEnabled(*w, WIDX_BUTTON_PASTE, windowTileInspectorTileSelected && windowTileInspectorElementCopied);
+    widget_invalidate(*w, WIDX_BUTTON_PASTE);
 
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 
@@ -1495,19 +1495,19 @@ static void WindowTileInspectorInvalidate(rct_window* w)
             w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].top = GBBT(propertiesAnchor, 3) + 7 * 1;
             w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].bottom = w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].top + 13;
             WidgetSetCheckboxValue(
-                w, WIDX_SURFACE_CHECK_CORNER_N,
+                *w, WIDX_SURFACE_CHECK_CORNER_N,
                 tileElement->AsSurface()->GetSlope() & (1 << ((2 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_SURFACE_CHECK_CORNER_E,
+                *w, WIDX_SURFACE_CHECK_CORNER_E,
                 tileElement->AsSurface()->GetSlope() & (1 << ((3 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_SURFACE_CHECK_CORNER_S,
+                *w, WIDX_SURFACE_CHECK_CORNER_S,
                 tileElement->AsSurface()->GetSlope() & (1 << ((0 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_SURFACE_CHECK_CORNER_W,
+                *w, WIDX_SURFACE_CHECK_CORNER_W,
                 tileElement->AsSurface()->GetSlope() & (1 << ((1 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
+                *w, WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
             break;
         case TileElementType::Path:
             w->widgets[WIDX_PATH_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
@@ -1536,24 +1536,24 @@ static void WindowTileInspectorInvalidate(rct_window* w)
             w->widgets[WIDX_PATH_CHECK_EDGE_W].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_W].top + 13;
             w->widgets[WIDX_PATH_CHECK_EDGE_NW].top = GBBT(propertiesAnchor, 3) + 7 * 1;
             w->widgets[WIDX_PATH_CHECK_EDGE_NW].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_NW].top + 13;
-            WidgetSetCheckboxValue(w, WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
-            WidgetSetCheckboxValue(w, WIDX_PATH_CHECK_BROKEN, tileElement->AsPath()->IsBroken());
+            WidgetSetCheckboxValue(*w, WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
+            WidgetSetCheckboxValue(*w, WIDX_PATH_CHECK_BROKEN, tileElement->AsPath()->IsBroken());
             WidgetSetCheckboxValue(
-                w, WIDX_PATH_CHECK_EDGE_NE, tileElement->AsPath()->GetEdges() & (1 << ((0 - get_current_rotation()) & 3)));
+                *w, WIDX_PATH_CHECK_EDGE_NE, tileElement->AsPath()->GetEdges() & (1 << ((0 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_PATH_CHECK_EDGE_SE, tileElement->AsPath()->GetEdges() & (1 << ((1 - get_current_rotation()) & 3)));
+                *w, WIDX_PATH_CHECK_EDGE_SE, tileElement->AsPath()->GetEdges() & (1 << ((1 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_PATH_CHECK_EDGE_SW, tileElement->AsPath()->GetEdges() & (1 << ((2 - get_current_rotation()) & 3)));
+                *w, WIDX_PATH_CHECK_EDGE_SW, tileElement->AsPath()->GetEdges() & (1 << ((2 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_PATH_CHECK_EDGE_NW, tileElement->AsPath()->GetEdges() & (1 << ((3 - get_current_rotation()) & 3)));
+                *w, WIDX_PATH_CHECK_EDGE_NW, tileElement->AsPath()->GetEdges() & (1 << ((3 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_PATH_CHECK_EDGE_E, tileElement->AsPath()->GetCorners() & (1 << ((0 - get_current_rotation()) & 3)));
+                *w, WIDX_PATH_CHECK_EDGE_E, tileElement->AsPath()->GetCorners() & (1 << ((0 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_PATH_CHECK_EDGE_S, tileElement->AsPath()->GetCorners() & (1 << ((1 - get_current_rotation()) & 3)));
+                *w, WIDX_PATH_CHECK_EDGE_S, tileElement->AsPath()->GetCorners() & (1 << ((1 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_PATH_CHECK_EDGE_W, tileElement->AsPath()->GetCorners() & (1 << ((2 - get_current_rotation()) & 3)));
+                *w, WIDX_PATH_CHECK_EDGE_W, tileElement->AsPath()->GetCorners() & (1 << ((2 - get_current_rotation()) & 3)));
             WidgetSetCheckboxValue(
-                w, WIDX_PATH_CHECK_EDGE_N, tileElement->AsPath()->GetCorners() & (1 << ((3 - get_current_rotation()) & 3)));
+                *w, WIDX_PATH_CHECK_EDGE_N, tileElement->AsPath()->GetCorners() & (1 << ((3 - get_current_rotation()) & 3)));
             break;
         case TileElementType::Track:
             w->widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].top = GBBT(propertiesAnchor, 0);
@@ -1570,10 +1570,10 @@ static void WindowTileInspectorInvalidate(rct_window* w)
             w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].bottom = GBBB(propertiesAnchor, 3);
             w->widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].top = GBBT(propertiesAnchor, 4);
             w->widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].bottom = GBBB(propertiesAnchor, 4);
-            WidgetSetCheckboxValue(w, WIDX_TRACK_CHECK_APPLY_TO_ALL, windowTileInspectorApplyToAll);
-            WidgetSetCheckboxValue(w, WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->AsTrack()->HasChain());
-            WidgetSetCheckboxValue(w, WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED, tileElement->AsTrack()->BlockBrakeClosed());
-            WidgetSetCheckboxValue(w, WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->AsTrack()->IsIndestructible());
+            WidgetSetCheckboxValue(*w, WIDX_TRACK_CHECK_APPLY_TO_ALL, windowTileInspectorApplyToAll);
+            WidgetSetCheckboxValue(*w, WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->AsTrack()->HasChain());
+            WidgetSetCheckboxValue(*w, WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED, tileElement->AsTrack()->BlockBrakeClosed());
+            WidgetSetCheckboxValue(*w, WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->AsTrack()->IsIndestructible());
             break;
         case TileElementType::SmallScenery:
         {
@@ -1599,10 +1599,10 @@ static void WindowTileInspectorInvalidate(rct_window* w)
             bool E = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((1 - get_current_rotation()) & 3);
             bool S = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((2 - get_current_rotation()) & 3);
             bool W = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((3 - get_current_rotation()) & 3);
-            WidgetSetCheckboxValue(w, WIDX_SCENERY_CHECK_QUARTER_N, N);
-            WidgetSetCheckboxValue(w, WIDX_SCENERY_CHECK_QUARTER_E, E);
-            WidgetSetCheckboxValue(w, WIDX_SCENERY_CHECK_QUARTER_S, S);
-            WidgetSetCheckboxValue(w, WIDX_SCENERY_CHECK_QUARTER_W, W);
+            WidgetSetCheckboxValue(*w, WIDX_SCENERY_CHECK_QUARTER_N, N);
+            WidgetSetCheckboxValue(*w, WIDX_SCENERY_CHECK_QUARTER_E, E);
+            WidgetSetCheckboxValue(*w, WIDX_SCENERY_CHECK_QUARTER_S, S);
+            WidgetSetCheckboxValue(*w, WIDX_SCENERY_CHECK_QUARTER_W, W);
 
             // Collision checkboxes
             w->widgets[WIDX_SCENERY_CHECK_COLLISION_N].top = GBBT(propertiesAnchor, 2) + 5 + 7 * 0;
@@ -1618,10 +1618,10 @@ static void WindowTileInspectorInvalidate(rct_window* w)
             E = (occupiedQuadrants & (1 << ((3 - get_current_rotation()) & 3))) != 0;
             S = (occupiedQuadrants & (1 << ((0 - get_current_rotation()) & 3))) != 0;
             W = (occupiedQuadrants & (1 << ((1 - get_current_rotation()) & 3))) != 0;
-            WidgetSetCheckboxValue(w, WIDX_SCENERY_CHECK_COLLISION_N, N);
-            WidgetSetCheckboxValue(w, WIDX_SCENERY_CHECK_COLLISION_E, E);
-            WidgetSetCheckboxValue(w, WIDX_SCENERY_CHECK_COLLISION_S, S);
-            WidgetSetCheckboxValue(w, WIDX_SCENERY_CHECK_COLLISION_W, W);
+            WidgetSetCheckboxValue(*w, WIDX_SCENERY_CHECK_COLLISION_N, N);
+            WidgetSetCheckboxValue(*w, WIDX_SCENERY_CHECK_COLLISION_E, E);
+            WidgetSetCheckboxValue(*w, WIDX_SCENERY_CHECK_COLLISION_S, S);
+            WidgetSetCheckboxValue(*w, WIDX_SCENERY_CHECK_COLLISION_W, W);
             break;
         }
         case TileElementType::Entrance:
@@ -1634,7 +1634,7 @@ static void WindowTileInspectorInvalidate(rct_window* w)
             w->widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].top = GBBT(propertiesAnchor, 1);
             w->widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].bottom = GBBB(propertiesAnchor, 1);
             WidgetSetEnabled(
-                w, WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
+                *w, WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
                 tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE);
             break;
         case TileElementType::Wall:
@@ -1667,14 +1667,14 @@ static void WindowTileInspectorInvalidate(rct_window* w)
             w->widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE].bottom = GBBB(propertiesAnchor, 2) - 4;
 
             // Wall slope dropdown
-            WidgetSetEnabled(w, WIDX_WALL_DROPDOWN_SLOPE, canBeSloped);
-            widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE);
-            WidgetSetEnabled(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON, canBeSloped);
-            widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
+            WidgetSetEnabled(*w, WIDX_WALL_DROPDOWN_SLOPE, canBeSloped);
+            widget_invalidate(*w, WIDX_WALL_DROPDOWN_SLOPE);
+            WidgetSetEnabled(*w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON, canBeSloped);
+            widget_invalidate(*w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
             // Wall animation frame spinner
-            WidgetSetEnabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME, hasAnimation);
-            WidgetSetEnabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE, hasAnimation);
-            WidgetSetEnabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE, hasAnimation);
+            WidgetSetEnabled(*w, WIDX_WALL_SPINNER_ANIMATION_FRAME, hasAnimation);
+            WidgetSetEnabled(*w, WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE, hasAnimation);
+            WidgetSetEnabled(*w, WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE, hasAnimation);
             break;
         }
         case TileElementType::LargeScenery:
@@ -1701,16 +1701,16 @@ static void WindowTileInspectorInvalidate(rct_window* w)
             w->widgets[WIDX_BANNER_CHECK_BLOCK_NW].top = GBBT(propertiesAnchor, 1);
             w->widgets[WIDX_BANNER_CHECK_BLOCK_NW].bottom = GBBB(propertiesAnchor, 1);
             WidgetSetCheckboxValue(
-                w, WIDX_BANNER_CHECK_BLOCK_NE,
+                *w, WIDX_BANNER_CHECK_BLOCK_NE,
                 !(tileElement->AsBanner()->GetAllowedEdges() & (1 << ((0 - get_current_rotation()) & 3))));
             WidgetSetCheckboxValue(
-                w, WIDX_BANNER_CHECK_BLOCK_SE,
+                *w, WIDX_BANNER_CHECK_BLOCK_SE,
                 !(tileElement->AsBanner()->GetAllowedEdges() & (1 << ((1 - get_current_rotation()) & 3))));
             WidgetSetCheckboxValue(
-                w, WIDX_BANNER_CHECK_BLOCK_SW,
+                *w, WIDX_BANNER_CHECK_BLOCK_SW,
                 !(tileElement->AsBanner()->GetAllowedEdges() & (1 << ((2 - get_current_rotation()) & 3))));
             WidgetSetCheckboxValue(
-                w, WIDX_BANNER_CHECK_BLOCK_NW,
+                *w, WIDX_BANNER_CHECK_BLOCK_NW,
                 !(tileElement->AsBanner()->GetAllowedEdges() & (1 << ((3 - get_current_rotation()) & 3))));
             break;
         default:
@@ -1720,7 +1720,7 @@ static void WindowTileInspectorInvalidate(rct_window* w)
 
 static void WindowTileInspectorPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     ScreenCoordsXY screenCoords(w->windowPos.x, w->windowPos.y);
 
@@ -2153,7 +2153,7 @@ static void WindowTileInspectorPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
                 // Current animation frame
                 colour_t colour = w->colours[1];
-                if (WidgetIsDisabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME))
+                if (WidgetIsDisabled(*w, WIDX_WALL_SPINNER_ANIMATION_FRAME))
                 {
                     colour = w->colours[0] | COLOUR_FLAG_INSET;
                 }

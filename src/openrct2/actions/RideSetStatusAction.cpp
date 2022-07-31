@@ -203,7 +203,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             rct_window* constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, _rideIndex.ToUnderlying());
             if (constructionWindow != nullptr)
             {
-                window_close(constructionWindow);
+                window_close(*constructionWindow);
             }
 
             if (_status == RideStatus::Testing)

@@ -110,7 +110,7 @@ rct_window* WindowTitleMenuOpen()
     window->windowPos.x = (context_get_width() - window->width) / 2;
     window->colours[1] = TRANSLUCENT(COLOUR_LIGHT_ORANGE);
 
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     return window;
 }
@@ -133,7 +133,7 @@ static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
             windowToOpen = window_find_by_class(WC_SCENARIO_SELECT);
             if (windowToOpen != nullptr)
             {
-                window_bring_to_front(windowToOpen);
+                window_bring_to_front(*windowToOpen);
             }
             else
             {
@@ -146,7 +146,7 @@ static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
             windowToOpen = window_find_by_class(WC_LOADSAVE);
             if (windowToOpen != nullptr)
             {
-                window_bring_to_front(windowToOpen);
+                window_bring_to_front(*windowToOpen);
             }
             else
             {
@@ -160,7 +160,7 @@ static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
             windowToOpen = window_find_by_class(WC_SERVER_LIST);
             if (windowToOpen != nullptr)
             {
-                window_bring_to_front(windowToOpen);
+                window_bring_to_front(*windowToOpen);
             }
             else
             {
@@ -296,5 +296,5 @@ static void WindowTitleMenuInvalidate(rct_window* w)
 static void WindowTitleMenuPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     gfx_filter_rect(dpi, _filterRect, FilterPaletteID::Palette51);
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 }

@@ -95,7 +95,7 @@ public:
     void OnOpen() override
     {
         widgets = window_shortcut_change_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void OnClose() override
@@ -194,13 +194,13 @@ public:
 
     void OnResize() override
     {
-        window_set_resize(this, min_width, min_height, max_width, max_height);
+        window_set_resize(*this, min_width, min_height, max_width, max_height);
     }
 
     void OnUpdate() override
     {
         // Remove highlight when the mouse is not hovering over the list
-        if (_highlightedItem != -1 && !WidgetIsHighlighted(this, WIDX_SCROLL))
+        if (_highlightedItem != -1 && !WidgetIsHighlighted(*this, WIDX_SCROLL))
         {
             _highlightedItem = -1;
             InvalidateWidget(WIDX_SCROLL);
@@ -445,7 +445,7 @@ private:
         _widgets.push_back(WIDGETS_END);
         widgets = _widgets.data();
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void SetTab(size_t index)

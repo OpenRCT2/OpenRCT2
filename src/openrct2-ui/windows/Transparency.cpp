@@ -93,7 +93,7 @@ public:
     void OnOpen() override
     {
         widgets = window_transparency_main_widgets;
-        window_push_others_below(this);
+        window_push_others_below(*this);
 
         auto* w = window_get_main();
         if (w != nullptr)

@@ -65,7 +65,7 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep)
     w = WindowCreateCentred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
     w->widgets = window_staff_fire_widgets;
 
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 
     w->number = peep->sprite_index.ToUnderlying();
 
@@ -88,7 +88,7 @@ static void WindowStaffFireMouseup(rct_window* w, rct_widgetindex widgetIndex)
         }
         case WIDX_CANCEL:
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
     }
 }
 
@@ -98,7 +98,7 @@ static void WindowStaffFireMouseup(rct_window* w, rct_widgetindex widgetIndex)
  */
 static void WindowStaffFirePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(w->number));
     auto ft = Formatter();

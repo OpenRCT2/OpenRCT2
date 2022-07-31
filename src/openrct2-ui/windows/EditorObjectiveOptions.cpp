@@ -206,7 +206,7 @@ rct_window* WindowEditorObjectiveOptionsOpen()
     w->widgets = window_editor_objective_options_main_widgets;
     w->pressed_widgets = 0;
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
     w->no_list_items = 0;
     w->selected_list_item = -1;
@@ -249,7 +249,7 @@ static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpix
     gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
-    if (!WidgetIsDisabled(w, WIDX_TAB_2))
+    if (!WidgetIsDisabled(*w, WIDX_TAB_2))
     {
         widget = &w->widgets[WIDX_TAB_2];
         spriteIndex = SPR_TAB_RIDE_0;
@@ -281,7 +281,7 @@ static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
     WindowEditorObjectiveOptionsUpdateDisabledWidgets(w);
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
 
@@ -340,7 +340,7 @@ static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, rct_widgetind
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -372,7 +372,7 @@ static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, rct_widgetind
  */
 static void WindowEditorObjectiveOptionsMainResize(rct_window* w)
 {
-    window_set_resize(w, 450, 229, 450, 229);
+    window_set_resize(*w, 450, 229, 450, 229);
 }
 
 static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
@@ -656,7 +656,7 @@ static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
 
     w->frame_no++;
     window_event_invalidate_call(w);
-    widget_invalidate(w, WIDX_TAB_1);
+    widget_invalidate(*w, WIDX_TAB_1);
 
     parkFlags = gParkFlags;
     objectiveType = gScenarioObjective.Type;
@@ -717,7 +717,7 @@ static void WindowEditorObjectiveOptionsMainInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowEditorObjectiveOptionsSetPressedTab(w);
@@ -772,7 +772,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
     int32_t width;
     rct_string_id stringId;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowEditorObjectiveOptionsDrawTabImages(w, dpi);
 
     // Objective label
@@ -918,7 +918,7 @@ static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, rct_widgetin
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -933,7 +933,7 @@ static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, rct_widgetin
  */
 static void WindowEditorObjectiveOptionsRidesResize(rct_window* w)
 {
-    window_set_resize(w, 380, 224, 380, 224);
+    window_set_resize(*w, 380, 224, 380, 224);
 }
 
 /**
@@ -945,7 +945,7 @@ static void WindowEditorObjectiveOptionsRidesUpdate(rct_window* w)
     w->frame_no++;
     window_event_invalidate_call(w);
     window_event_resize_call(w);
-    widget_invalidate(w, WIDX_TAB_2);
+    widget_invalidate(*w, WIDX_TAB_2);
 
     auto numItems = 0;
     for (auto& ride : GetRideManager())
@@ -1026,7 +1026,7 @@ static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowEditorObjectiveOptionsSetPressedTab(w);
@@ -1044,7 +1044,7 @@ static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
  */
 static void WindowEditorObjectiveOptionsRidesPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowEditorObjectiveOptionsDrawTabImages(w, dpi);
 
     DrawTextBasic(

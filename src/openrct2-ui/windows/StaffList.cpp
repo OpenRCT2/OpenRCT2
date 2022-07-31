@@ -104,7 +104,7 @@ public:
     void OnOpen() override
     {
         widgets = window_staff_list_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
         min_width = WW;

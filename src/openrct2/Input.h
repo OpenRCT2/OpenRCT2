@@ -92,7 +92,7 @@ extern InputState _inputState;
 extern uint8_t _inputFlags;
 extern uint16_t _tooltipNotShownTicks;
 
-void InputWindowPositionBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+void InputWindowPositionBegin(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 
 void title_handle_keyboard_input();
 void GameHandleInput();

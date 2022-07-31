@@ -81,7 +81,7 @@ public:
     void OnOpen() override
     {
         widgets = window_sign_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     /*
@@ -285,7 +285,7 @@ public:
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
         }
     }
 

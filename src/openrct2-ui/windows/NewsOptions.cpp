@@ -229,7 +229,7 @@ private:
     {
         rct_widgetindex widgetIndex = WIDX_FIRST_TAB + p;
 
-        if (!WidgetIsDisabled(this, widgetIndex))
+        if (!WidgetIsDisabled(*this, widgetIndex))
         {
             if (page == p)
             {

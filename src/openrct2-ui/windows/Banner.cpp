@@ -126,7 +126,7 @@ public:
     void OnOpen() override
     {
         widgets = window_banner_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void Initialise(rct_windownumber _number)
@@ -260,7 +260,7 @@ public:
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
         }
     }
 

@@ -3808,7 +3808,7 @@ void Ride::ConstructMissingEntranceOrExit() const
     if (type != RIDE_TYPE_MAZE)
     {
         auto location = incompleteStation->GetStart();
-        window_scroll_to_location(w, location);
+        window_scroll_to_location(*w, location);
 
         CoordsXYE trackElement;
         ride_try_get_origin_element(this, &trackElement);
@@ -3834,7 +3834,7 @@ static void ride_scroll_to_track_error(CoordsXYE* trackElement)
     auto* w = window_get_main();
     if (w != nullptr)
     {
-        window_scroll_to_location(w, { *trackElement, trackElement->element->GetBaseZ() });
+        window_scroll_to_location(*w, { *trackElement, trackElement->element->GetBaseZ() });
         ride_modify(trackElement);
     }
 }

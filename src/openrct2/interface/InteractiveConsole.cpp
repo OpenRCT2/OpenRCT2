@@ -1148,7 +1148,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             }
             else if (newRotation != currentRotation && mainWindow != nullptr)
             {
-                window_rotate_camera(mainWindow, newRotation - currentRotation);
+                window_rotate_camera(*mainWindow, newRotation - currentRotation);
             }
             console.Execute("get current_rotation");
         }

@@ -122,7 +122,7 @@ rct_window* WindowSavePromptOpen()
     window = window_bring_to_front_by_class(WC_SAVE_PROMPT);
     if (window != nullptr)
     {
-        window_close(window);
+        window_close(*window);
     }
 
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
@@ -146,7 +146,7 @@ rct_window* WindowSavePromptOpen()
     window = WindowCreateCentred(width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 
     window->widgets = widgets;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     // Pause the game if not network play.
     if (network_get_mode() == NETWORK_MODE_NONE)
@@ -199,7 +199,7 @@ static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
                 break;
             case WQIDX_CLOSE:
             case WQIDX_CANCEL:
-                window_close(w);
+                window_close(*w);
                 break;
         }
         return;
@@ -221,7 +221,7 @@ static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
             {
                 intent = create_save_game_as_intent();
             }
-            window_close(w);
+            window_close(*w);
             intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
             context_open_intent(intent.get());
             break;
@@ -231,14 +231,14 @@ static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
             return;
         case WIDX_CLOSE:
         case WIDX_CANCEL:
-            window_close(w);
+            window_close(*w);
             return;
     }
 }
 
 static void WindowSavePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 }
 
 static void WindowSavePromptCallback(int32_t result, const utf8* path)

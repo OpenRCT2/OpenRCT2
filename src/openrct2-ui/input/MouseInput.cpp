@@ -76,23 +76,23 @@ void InputStateWidgetPressed(
     const ScreenCoordsXY& screenCoords, MouseState state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
 void SetCursor(CursorID cursor_id);
 static void InputWindowPositionContinue(
-    rct_window* w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords);
-static void InputWindowPositionEnd(rct_window* w, const ScreenCoordsXY& screenCoords);
-static void InputWindowResizeBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void InputWindowResizeContinue(rct_window* w, const ScreenCoordsXY& screenCoords);
+    rct_window& w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords);
+static void InputWindowPositionEnd(rct_window& w, const ScreenCoordsXY& screenCoords);
+static void InputWindowResizeBegin(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void InputWindowResizeContinue(rct_window& w, const ScreenCoordsXY& screenCoords);
 static void InputWindowResizeEnd();
-static void InputViewportDragBegin(rct_window* w);
+static void InputViewportDragBegin(rct_window& w);
 static void InputViewportDragContinue();
 static void InputViewportDragEnd();
-static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void InputScrollContinue(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void InputScrollBegin(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void InputScrollContinue(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void InputScrollEnd();
-static void InputScrollPartUpdateHThumb(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t scroll_id);
-static void InputScrollPartUpdateHLeft(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id);
-static void InputScrollPartUpdateHRight(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id);
-static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetIndex, int32_t y, int32_t scroll_id);
-static void InputScrollPartUpdateVTop(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id);
-static void InputScrollPartUpdateVBottom(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id);
+static void InputScrollPartUpdateHThumb(rct_window& w, rct_widgetindex widgetIndex, int32_t x, int32_t scroll_id);
+static void InputScrollPartUpdateHLeft(rct_window& w, rct_widgetindex widgetIndex, int32_t scroll_id);
+static void InputScrollPartUpdateHRight(rct_window& w, rct_widgetindex widgetIndex, int32_t scroll_id);
+static void InputScrollPartUpdateVThumb(rct_window& w, rct_widgetindex widgetIndex, int32_t y, int32_t scroll_id);
+static void InputScrollPartUpdateVTop(rct_window& w, rct_widgetindex widgetIndex, int32_t scroll_id);
+static void InputScrollPartUpdateVBottom(rct_window& w, rct_widgetindex widgetIndex, int32_t scroll_id);
 static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 
 #pragma region Mouse input
@@ -182,7 +182,7 @@ static void InputScrollDragBegin(const ScreenCoordsXY& screenCoords, rct_window*
     _dragWidget.widget_index = widgetIndex;
     _ticksSinceDragStart = 0;
 
-    _dragScrollIndex = window_get_scroll_data_index(w, widgetIndex);
+    _dragScrollIndex = window_get_scroll_data_index(*w, widgetIndex);
     context_hide_cursor();
 }
 
@@ -218,7 +218,7 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, rct_wind
         scroll.v_top = std::min<uint16_t>(std::max(0, scroll.v_top + differentialCoords.y), size);
     }
 
-    WidgetScrollUpdateThumbs(w, widgetIndex);
+    WidgetScrollUpdateThumbs(*w, widgetIndex);
     window_invalidate_by_number(w->classification, w->number);
 
     ScreenCoordsXY fixedCursorPosition = { static_cast<int32_t>(std::ceil(gInputDragLast.x * gConfigGeneral.window_scale)),
@@ -275,7 +275,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
 
     // Get window and widget under cursor position
     w = window_find_from_point(screenCoords);
-    widgetIndex = w == nullptr ? -1 : window_find_widget_from_point(w, screenCoords);
+    widgetIndex = w == nullptr ? -1 : window_find_widget_from_point(*w, screenCoords);
     widget = widgetIndex == -1 ? nullptr : &w->widgets[widgetIndex];
 
     switch (_inputState)
@@ -297,7 +297,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
 
                     if (w != nullptr)
                     {
-                        w = window_bring_to_front(w);
+                        w = window_bring_to_front(*w);
                     }
 
                     if (widgetIndex != -1)
@@ -307,7 +307,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                             case WindowWidgetType::Viewport:
                                 if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
                                 {
-                                    InputViewportDragBegin(w);
+                                    InputViewportDragBegin(*w);
                                 }
                                 break;
                             case WindowWidgetType::Scroll:
@@ -335,10 +335,10 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
             }
             else
             {
-                InputWindowPositionContinue(w, gInputDragLast, screenCoords);
+                InputWindowPositionContinue(*w, gInputDragLast, screenCoords);
                 if (state == MouseState::LeftRelease)
                 {
-                    InputWindowPositionEnd(w, screenCoords);
+                    InputWindowPositionEnd(*w, screenCoords);
                 }
             }
             break;
@@ -421,7 +421,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
             switch (state)
             {
                 case MouseState::Released:
-                    InputScrollContinue(w, widgetIndex, screenCoords);
+                    InputScrollContinue(*w, widgetIndex, screenCoords);
                     break;
                 case MouseState::LeftRelease:
                     InputScrollEnd();
@@ -447,7 +447,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                 }
                 if (state == MouseState::Released || state == MouseState::LeftRelease)
                 {
-                    InputWindowResizeContinue(w, screenCoords);
+                    InputWindowResizeContinue(*w, screenCoords);
                 }
             }
             break;
@@ -459,50 +459,50 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
 
 #pragma region Window positioning / resizing
 
-void InputWindowPositionBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+void InputWindowPositionBegin(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     _inputState = InputState::PositioningWindow;
-    gInputDragLast = screenCoords - w->windowPos;
-    _dragWidget.window_classification = w->classification;
-    _dragWidget.window_number = w->number;
+    gInputDragLast = screenCoords - w.windowPos;
+    _dragWidget.window_classification = w.classification;
+    _dragWidget.window_number = w.number;
     _dragWidget.widget_index = widgetIndex;
 }
 
 static void InputWindowPositionContinue(
-    rct_window* w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords)
+    rct_window& w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords)
 {
     int32_t snapProximity;
 
-    snapProximity = (w->flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
+    snapProximity = (w.flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
     window_move_and_snap(w, newScreenCoords - lastScreenCoords, snapProximity);
 }
 
-static void InputWindowPositionEnd(rct_window* w, const ScreenCoordsXY& screenCoords)
+static void InputWindowPositionEnd(rct_window& w, const ScreenCoordsXY& screenCoords)
 {
     _inputState = InputState::Normal;
     gTooltipTimeout = 0;
     gTooltipWidget = _dragWidget;
-    window_event_moved_call(w, screenCoords);
+    window_event_moved_call(&w, screenCoords);
 }
 
-static void InputWindowResizeBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void InputWindowResizeBegin(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     _inputState = InputState::Resizing;
     gInputDragLast = screenCoords;
-    _dragWidget.window_classification = w->classification;
-    _dragWidget.window_number = w->number;
+    _dragWidget.window_classification = w.classification;
+    _dragWidget.window_number = w.number;
     _dragWidget.widget_index = widgetIndex;
-    _originalWindowWidth = w->width;
-    _originalWindowHeight = w->height;
+    _originalWindowWidth = w.width;
+    _originalWindowHeight = w.height;
 }
 
-static void InputWindowResizeContinue(rct_window* w, const ScreenCoordsXY& screenCoords)
+static void InputWindowResizeContinue(rct_window& w, const ScreenCoordsXY& screenCoords)
 {
     if (screenCoords.y < static_cast<int32_t>(context_get_height()) - 2)
     {
         auto differentialCoords = screenCoords - gInputDragLast;
-        int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w->width;
-        int32_t targetHeight = _originalWindowHeight + differentialCoords.y - w->height;
+        int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w.width;
+        int32_t targetHeight = _originalWindowHeight + differentialCoords.y - w.height;
 
         window_resize(w, targetWidth, targetHeight);
     }
@@ -519,12 +519,12 @@ static void InputWindowResizeEnd()
 
 #pragma region Viewport dragging
 
-static void InputViewportDragBegin(rct_window* w)
+static void InputViewportDragBegin(rct_window& w)
 {
-    w->flags &= ~WF_SCROLLING_TO_LOCATION;
+    w.flags &= ~WF_SCROLLING_TO_LOCATION;
     _inputState = InputState::ViewportRight;
-    _dragWidget.window_classification = w->classification;
-    _dragWidget.window_number = w->number;
+    _dragWidget.window_classification = w.classification;
+    _dragWidget.window_number = w.number;
     _ticksSinceDragStart = 0;
     auto cursorPosition = context_get_cursor_position();
     gInputDragLast = cursorPosition;
@@ -603,13 +603,13 @@ static void InputViewportDragEnd()
 
 #pragma region Scroll bars
 
-static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void InputScrollBegin(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    const auto& widget = w->widgets[widgetIndex];
+    const auto& widget = w.widgets[widgetIndex];
 
     _inputState = InputState::ScrollLeft;
-    gPressedWidget.window_classification = w->classification;
-    gPressedWidget.window_number = w->number;
+    gPressedWidget.window_classification = w.classification;
+    gPressedWidget.window_number = w.number;
     gPressedWidget.widget_index = widgetIndex;
     gTooltipCursor = screenCoords;
 
@@ -620,15 +620,15 @@ static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const S
 
     _currentScrollArea = scroll_area;
     _currentScrollIndex = scroll_id;
-    window_event_unknown_15_call(w, scroll_id, scroll_area);
+    window_event_unknown_15_call(&w, scroll_id, scroll_area);
     if (scroll_area == SCROLL_PART_VIEW)
     {
-        window_event_scroll_mousedown_call(w, scroll_id, scrollCoords);
+        window_event_scroll_mousedown_call(&w, scroll_id, scrollCoords);
         return;
     }
 
-    const auto& widg = w->widgets[widgetIndex];
-    auto& scroll = w->scrolls[scroll_id];
+    const auto& widg = w.widgets[widgetIndex];
+    auto& scroll = w.scrolls[scroll_id];
 
     int32_t widget_width = widg.width() - 1;
     if (scroll.flags & VSCROLLBAR_VISIBLE)
@@ -670,17 +670,15 @@ static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const S
             break;
     }
     WidgetScrollUpdateThumbs(w, widgetIndex);
-    window_invalidate_by_number(widgetIndex, w->classification);
+    window_invalidate_by_number(widgetIndex, w.classification);
 }
 
-static void InputScrollContinue(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void InputScrollContinue(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t scroll_part, scroll_id;
 
-    assert(w != nullptr);
-
-    const auto& widget = w->widgets[widgetIndex];
-    if (w->classification != gPressedWidget.window_classification || w->number != gPressedWidget.window_number
+    const auto& widget = w.widgets[widgetIndex];
+    if (w.classification != gPressedWidget.window_classification || w.number != gPressedWidget.window_number
         || widgetIndex != gPressedWidget.widget_index)
     {
         InvalidateScroll();
@@ -715,7 +713,7 @@ static void InputScrollContinue(rct_window* w, rct_widgetindex widgetIndex, cons
     switch (scroll_part)
     {
         case SCROLL_PART_VIEW:
-            window_event_scroll_mousedrag_call(w, scroll_id, newScreenCoords);
+            window_event_scroll_mousedrag_call(&w, scroll_id, newScreenCoords);
             break;
         case SCROLL_PART_HSCROLLBAR_LEFT:
             InputScrollPartUpdateHLeft(w, widgetIndex, scroll_id);
@@ -742,12 +740,12 @@ static void InputScrollEnd()
  *
  *  rct2: 0x006E98F2
  */
-static void InputScrollPartUpdateHThumb(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t scroll_id)
+static void InputScrollPartUpdateHThumb(rct_window& w, rct_widgetindex widgetIndex, int32_t x, int32_t scroll_id)
 {
-    const auto& widget = w->widgets[widgetIndex];
-    auto& scroll = w->scrolls[scroll_id];
+    const auto& widget = w.widgets[widgetIndex];
+    auto& scroll = w.scrolls[scroll_id];
 
-    if (window_find_by_number(w->classification, w->number) != nullptr)
+    if (window_find_by_number(w.classification, w.number) != nullptr)
     {
         int32_t newLeft;
         newLeft = scroll.h_right;
@@ -773,7 +771,7 @@ static void InputScrollPartUpdateHThumb(rct_window* w, rct_widgetindex widgetInd
             newLeft = x;
         scroll.h_left = newLeft;
         WidgetScrollUpdateThumbs(w, widgetIndex);
-        widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+        widget_invalidate_by_number(w.classification, w.number, widgetIndex);
     }
 }
 
@@ -781,13 +779,12 @@ static void InputScrollPartUpdateHThumb(rct_window* w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006E99A9
  */
-static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetIndex, int32_t y, int32_t scroll_id)
+static void InputScrollPartUpdateVThumb(rct_window& w, rct_widgetindex widgetIndex, int32_t y, int32_t scroll_id)
 {
-    assert(w != nullptr);
-    const auto& widget = w->widgets[widgetIndex];
-    auto& scroll = w->scrolls[scroll_id];
+    const auto& widget = w.widgets[widgetIndex];
+    auto& scroll = w.scrolls[scroll_id];
 
-    if (window_find_by_number(w->classification, w->number) != nullptr)
+    if (window_find_by_number(w.classification, w.number) != nullptr)
     {
         int32_t newTop;
         newTop = scroll.v_bottom;
@@ -813,7 +810,7 @@ static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetInd
             newTop = y;
         scroll.v_top = newTop;
         WidgetScrollUpdateThumbs(w, widgetIndex);
-        widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+        widget_invalidate_by_number(w.classification, w.number, widgetIndex);
     }
 }
 
@@ -821,17 +818,16 @@ static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006E9A60
  */
-static void InputScrollPartUpdateHLeft(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id)
+static void InputScrollPartUpdateHLeft(rct_window& w, rct_widgetindex widgetIndex, int32_t scroll_id)
 {
-    assert(w != nullptr);
-    if (window_find_by_number(w->classification, w->number) != nullptr)
+    if (window_find_by_number(w.classification, w.number) != nullptr)
     {
-        auto& scroll = w->scrolls[scroll_id];
+        auto& scroll = w.scrolls[scroll_id];
         scroll.flags |= HSCROLLBAR_LEFT_PRESSED;
         if (scroll.h_left >= 3)
             scroll.h_left -= 3;
         WidgetScrollUpdateThumbs(w, widgetIndex);
-        widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+        widget_invalidate_by_number(w.classification, w.number, widgetIndex);
     }
 }
 
@@ -839,13 +835,12 @@ static void InputScrollPartUpdateHLeft(rct_window* w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006E9ABF
  */
-static void InputScrollPartUpdateHRight(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id)
+static void InputScrollPartUpdateHRight(rct_window& w, rct_widgetindex widgetIndex, int32_t scroll_id)
 {
-    assert(w != nullptr);
-    const auto& widget = w->widgets[widgetIndex];
-    if (window_find_by_number(w->classification, w->number) != nullptr)
+    const auto& widget = w.widgets[widgetIndex];
+    if (window_find_by_number(w.classification, w.number) != nullptr)
     {
-        auto& scroll = w->scrolls[scroll_id];
+        auto& scroll = w.scrolls[scroll_id];
         scroll.flags |= HSCROLLBAR_RIGHT_PRESSED;
         scroll.h_left += 3;
         int32_t newLeft = widget.width() - 1;
@@ -858,7 +853,7 @@ static void InputScrollPartUpdateHRight(rct_window* w, rct_widgetindex widgetInd
         if (scroll.h_left > newLeft)
             scroll.h_left = newLeft;
         WidgetScrollUpdateThumbs(w, widgetIndex);
-        widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+        widget_invalidate_by_number(w.classification, w.number, widgetIndex);
     }
 }
 
@@ -866,17 +861,16 @@ static void InputScrollPartUpdateHRight(rct_window* w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006E9C37
  */
-static void InputScrollPartUpdateVTop(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id)
+static void InputScrollPartUpdateVTop(rct_window& w, rct_widgetindex widgetIndex, int32_t scroll_id)
 {
-    assert(w != nullptr);
-    if (window_find_by_number(w->classification, w->number) != nullptr)
+    if (window_find_by_number(w.classification, w.number) != nullptr)
     {
-        auto& scroll = w->scrolls[scroll_id];
+        auto& scroll = w.scrolls[scroll_id];
         scroll.flags |= VSCROLLBAR_UP_PRESSED;
         if (scroll.v_top >= 3)
             scroll.v_top -= 3;
         WidgetScrollUpdateThumbs(w, widgetIndex);
-        widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+        widget_invalidate_by_number(w.classification, w.number, widgetIndex);
     }
 }
 
@@ -884,13 +878,12 @@ static void InputScrollPartUpdateVTop(rct_window* w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x006E9C96
  */
-static void InputScrollPartUpdateVBottom(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id)
+static void InputScrollPartUpdateVBottom(rct_window& w, rct_widgetindex widgetIndex, int32_t scroll_id)
 {
-    assert(w != nullptr);
-    const auto& widget = w->widgets[widgetIndex];
-    if (window_find_by_number(w->classification, w->number) != nullptr)
+    const auto& widget = w.widgets[widgetIndex];
+    if (window_find_by_number(w.classification, w.number) != nullptr)
     {
-        auto& scroll = w->scrolls[scroll_id];
+        auto& scroll = w.scrolls[scroll_id];
         scroll.flags |= VSCROLLBAR_DOWN_PRESSED;
         scroll.v_top += 3;
         int32_t newTop = widget.height() - 1;
@@ -903,7 +896,7 @@ static void InputScrollPartUpdateVBottom(rct_window* w, rct_widgetindex widgetIn
         if (scroll.v_top > newTop)
             scroll.v_top = newTop;
         WidgetScrollUpdateThumbs(w, widgetIndex);
-        widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+        widget_invalidate_by_number(w.classification, w.number, widgetIndex);
     }
 }
 
@@ -934,7 +927,7 @@ static void InputWidgetOver(const ScreenCoordsXY& screenCoords, rct_window* w, r
     {
         int32_t scroll_part, scrollId;
         ScreenCoordsXY newScreenCoords;
-        WidgetScrollGetPart(w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
+        WidgetScrollGetPart(*w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
 
         if (scroll_part != SCROLL_PART_VIEW)
             WindowTooltipClose();
@@ -1019,7 +1012,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
     if (w == nullptr)
         return;
 
-    w = window_bring_to_front(w);
+    w = window_bring_to_front(*w);
     if (widgetIndex == -1)
         return;
 
@@ -1035,9 +1028,9 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
     {
         case WindowWidgetType::Frame:
         case WindowWidgetType::Resize:
-            if (window_can_resize(w)
+            if (window_can_resize(*w)
                 && (screenCoords.x >= w->windowPos.x + w->width - 19 && screenCoords.y >= w->windowPos.y + w->height - 19))
-                InputWindowResizeBegin(w, widgetIndex, screenCoords);
+                InputWindowResizeBegin(*w, widgetIndex, screenCoords);
             break;
         case WindowWidgetType::Viewport:
             _inputState = InputState::ViewportLeft;
@@ -1055,13 +1048,13 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
             }
             break;
         case WindowWidgetType::Caption:
-            InputWindowPositionBegin(w, widgetIndex, screenCoords);
+            InputWindowPositionBegin(*w, widgetIndex, screenCoords);
             break;
         case WindowWidgetType::Scroll:
-            InputScrollBegin(w, widgetIndex, screenCoords);
+            InputScrollBegin(*w, widgetIndex, screenCoords);
             break;
         default:
-            if (!WidgetIsDisabled(w, widgetIndex))
+            if (!WidgetIsDisabled(*w, widgetIndex))
             {
                 OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget.midX());
 
@@ -1098,7 +1091,7 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
 
     if (window != nullptr)
     {
-        rct_widgetindex widgetId = window_find_widget_from_point(window, screenCoords);
+        rct_widgetindex widgetId = window_find_widget_from_point(*window, screenCoords);
         if (widgetId != -1)
         {
             switch (window->widgets[widgetId].type)
@@ -1138,7 +1131,7 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
                     int32_t output_scroll_area, scroll_id;
                     ScreenCoordsXY scrollCoords;
                     WidgetScrollGetPart(
-                        window, &window->widgets[widgetId], screenCoords, scrollCoords, &output_scroll_area, &scroll_id);
+                        *window, &window->widgets[widgetId], screenCoords, scrollCoords, &output_scroll_area, &scroll_id);
                     if (output_scroll_area != SCROLL_PART_VIEW)
                     {
                         cursorId = CursorID::Arrow;
@@ -1207,7 +1200,7 @@ void InputStateWidgetPressed(
                 || widgetIndex != cursor_widgetIndex)
                 break;
 
-            if (WidgetIsDisabled(w, widgetIndex))
+            if (WidgetIsDisabled(*w, widgetIndex))
                 break;
 
             if (_clickRepeatTicks != 0)
@@ -1217,7 +1210,7 @@ void InputStateWidgetPressed(
                 // Handle click repeat
                 if (_clickRepeatTicks >= 16 && (_clickRepeatTicks & 3) == 0)
                 {
-                    if (WidgetIsHoldable(w, widgetIndex))
+                    if (WidgetIsHoldable(*w, widgetIndex))
                     {
                         window_event_mouse_down_call(w, widgetIndex);
                     }
@@ -1334,7 +1327,7 @@ void InputStateWidgetPressed(
             if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                 break;
 
-            if (WidgetIsDisabled(w, widgetIndex))
+            if (WidgetIsDisabled(*w, widgetIndex))
                 break;
 
             widget_invalidate_by_number(cursor_w_class, cursor_w_number, widgetIndex);
@@ -1441,7 +1434,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
         if (gTooltipCursor == screenCoords)
         {
             _tooltipNotShownTicks++;
-            if (_tooltipNotShownTicks > 50 && w != nullptr && WidgetIsVisible(w, widgetIndex))
+            if (_tooltipNotShownTicks > 50 && w != nullptr && WidgetIsVisible(*w, widgetIndex))
             {
                 gTooltipTimeout = 0;
                 WindowTooltipOpen(w, widgetIndex, screenCoords);
@@ -1457,7 +1450,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
 
         if (w == nullptr || gTooltipWidget.window_classification != w->classification
             || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex
-            || !WidgetIsVisible(w, widgetIndex))
+            || !WidgetIsVisible(*w, widgetIndex))
         {
             WindowTooltipClose();
         }

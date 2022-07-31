@@ -184,7 +184,7 @@ rct_window* WindowResearchOpen()
     w->event_handlers = window_research_page_events[0];
     w->pressed_widgets = 0;
     w->disabled_widgets = 0;
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 
     return w;
 }
@@ -200,7 +200,7 @@ static void WindowResearchDevelopmentMouseup(rct_window* w, rct_widgetindex widg
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -221,7 +221,7 @@ static void WindowResearchDevelopmentUpdate(rct_window* w)
     // Tab animation
     if (++w->frame_no >= window_research_tab_animation_loops[w->page])
         w->frame_no = 0;
-    widget_invalidate(w, WIDX_TAB_1);
+    widget_invalidate(*w, WIDX_TAB_1);
 }
 
 /**
@@ -233,7 +233,7 @@ static void WindowResearchDevelopmentInvalidate(rct_window* w)
     if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT])
     {
         w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowResearchSetPressedTab(w);
@@ -255,7 +255,7 @@ static void WindowResearchDevelopmentInvalidate(rct_window* w)
  */
 static void WindowResearchDevelopmentPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowResearchDrawTabImages(dpi, w);
 
     WindowResearchDevelopmentPagePaint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
@@ -396,7 +396,7 @@ static void WindowResearchFundingMouseup(rct_window* w, rct_widgetindex widgetIn
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -468,7 +468,7 @@ static void WindowResearchFundingUpdate(rct_window* w)
     // Tab animation
     if (++w->frame_no >= window_research_tab_animation_loops[w->page])
         w->frame_no = 0;
-    widget_invalidate(w, WIDX_TAB_2);
+    widget_invalidate(*w, WIDX_TAB_2);
 }
 
 /**
@@ -480,7 +480,7 @@ static void WindowResearchFundingInvalidate(rct_window* w)
     if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING])
     {
         w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING];
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowResearchSetPressedTab(w);
@@ -533,7 +533,7 @@ static void WindowResearchFundingInvalidate(rct_window* w)
  */
 static void WindowResearchFundingPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowResearchDrawTabImages(dpi, w);
 
     WindowResearchFundingPagePaint(w, dpi, WIDX_RESEARCH_FUNDING);
@@ -584,7 +584,7 @@ static void WindowResearchSetPage(rct_window* w, int32_t page)
     window_event_resize_call(w);
     window_event_invalidate_call(w);
 
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
 
@@ -600,7 +600,7 @@ static void WindowResearchDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, in
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (!WidgetIsDisabled(w, widgetIndex))
+    if (!WidgetIsDisabled(*w, widgetIndex))
     {
         if (w->page == page)
         {

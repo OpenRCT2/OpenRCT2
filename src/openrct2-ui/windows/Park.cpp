@@ -436,7 +436,7 @@ private:
     void OnResizeEntrance()
     {
         flags |= WF_RESIZABLE;
-        window_set_resize(this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
+        window_set_resize(*this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
         InitViewport();
     }
 
@@ -486,7 +486,7 @@ private:
     void OnUpdateEntrance()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_1);
+        widget_invalidate(*this, WIDX_TAB_1);
     }
 
     void OnTextInputEntrance(rct_widgetindex widgetIndex, std::string_view text)
@@ -516,9 +516,9 @@ private:
         }
         widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
         widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2
-            + WidgetIsPressed(this, WIDX_CLOSE_LIGHT);
+            + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
         widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2
-            + WidgetIsPressed(this, WIDX_OPEN_LIGHT);
+            + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
 
         // Only allow closing of park for guest / rating objective
         if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
@@ -592,7 +592,7 @@ private:
         // Draw viewport
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
                 gfx_draw_sprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
         }
@@ -659,13 +659,13 @@ private:
 #pragma region Rating page
     void OnResizeRating()
     {
-        window_set_resize(this, 255, 182, 255, 182);
+        window_set_resize(*this, 255, 182, 255, 182);
     }
 
     void OnUpdateRating()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_2);
     }
 
     void OnPrepareDrawRating()
@@ -731,14 +731,14 @@ private:
 #pragma region Guests page
     void OnResizeGuests()
     {
-        window_set_resize(this, 255, 182, 255, 182);
+        window_set_resize(*this, 255, 182, 255, 182);
     }
 
     void OnUpdateGuests()
     {
         frame_no++;
         _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
-        widget_invalidate(this, WIDX_TAB_3);
+        widget_invalidate(*this, WIDX_TAB_3);
     }
 
     void OnPrepareDrawGuests()
@@ -817,7 +817,7 @@ private:
 #pragma region Price page
     void OnResizePrice()
     {
-        window_set_resize(this, 230, 124, 230, 124);
+        window_set_resize(*this, 230, 124, 230, 124);
     }
 
     void OnMouseDownPrice(rct_widgetindex widgetIndex)
@@ -842,7 +842,7 @@ private:
     void OnUpdatePrice()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_4);
+        widget_invalidate(*this, WIDX_TAB_4);
     }
 
     void OnPrepareDrawPrice()
@@ -908,20 +908,20 @@ private:
 #pragma region Stats page
     void OnResizeStats()
     {
-        window_set_resize(this, 230, 119, 230, 119);
+        window_set_resize(*this, 230, 119, 230, 119);
     }
 
     void OnUpdateStats()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_5);
+        widget_invalidate(*this, WIDX_TAB_5);
 
         // Invalidate ride count if changed
         const auto rideCount = ride_get_count();
         if (_numberOfRides != rideCount)
         {
             _numberOfRides = rideCount;
-            widget_invalidate(this, WIDX_PAGE_BACKGROUND);
+            widget_invalidate(*this, WIDX_PAGE_BACKGROUND);
         }
 
         // Invalidate number of staff if changed
@@ -929,7 +929,7 @@ private:
         if (_numberOfStaff != staffCount)
         {
             _numberOfStaff = staffCount;
-            widget_invalidate(this, WIDX_PAGE_BACKGROUND);
+            widget_invalidate(*this, WIDX_PAGE_BACKGROUND);
         }
     }
 
@@ -1017,16 +1017,16 @@ private:
     {
 #ifndef NO_TTF
         if (gCurrentTTFFontSet != nullptr)
-            window_set_resize(this, 230, 270, 230, 270);
+            window_set_resize(*this, 230, 270, 230, 270);
         else
 #endif
-            window_set_resize(this, 230, 226, 230, 226);
+            window_set_resize(*this, 230, 226, 230, 226);
     }
 
     void OnUpdateObjective()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_6);
+        widget_invalidate(*this, WIDX_TAB_6);
     }
 
     void OnTextInputObjective(rct_widgetindex widgetIndex, std::string_view text)
@@ -1123,13 +1123,13 @@ private:
 #pragma region Awards page
     void OnResizeAwards()
     {
-        window_set_resize(this, 230, 182, 230, 182);
+        window_set_resize(*this, 230, 182, 230, 182);
     }
 
     void OnUpdateAwards()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_7);
+        widget_invalidate(*this, WIDX_TAB_7);
     }
 
     void OnPrepareDrawAwards()
@@ -1219,7 +1219,7 @@ private:
     void DrawTabImages(rct_drawpixelinfo& dpi)
     {
         // Entrance tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_1))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_1))
         {
             gfx_draw_sprite(
                 &dpi, ImageId(SPR_TAB_PARK_ENTRANCE),
@@ -1227,7 +1227,7 @@ private:
         }
 
         // Rating tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_2))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_2))
         {
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_RATING)
@@ -1242,7 +1242,7 @@ private:
         }
 
         // Guests tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_3))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_3))
         {
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_GUESTS)
@@ -1258,7 +1258,7 @@ private:
         }
 
         // Price tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_4))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_4))
         {
             ImageId spriteIdx(SPR_TAB_ADMISSION_0);
             if (page == WINDOW_PARK_PAGE_PRICE)
@@ -1267,7 +1267,7 @@ private:
         }
 
         // Statistics tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_5))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_5))
         {
             ImageId spriteIdx(SPR_TAB_STATS_0);
             if (page == WINDOW_PARK_PAGE_STATS)
@@ -1276,7 +1276,7 @@ private:
         }
 
         // Objective tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_6))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_6))
         {
             ImageId spriteIdx(SPR_TAB_OBJECTIVE_0);
             if (page == WINDOW_PARK_PAGE_OBJECTIVE)
@@ -1285,7 +1285,7 @@ private:
         }
 
         // Awards tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_7))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_7))
         {
             gfx_draw_sprite(
                 &dpi, ImageId(SPR_TAB_AWARDS), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_7].left, widgets[WIDX_TAB_7].top });

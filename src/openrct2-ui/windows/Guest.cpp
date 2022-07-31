@@ -411,14 +411,14 @@ private:
         // Ensure min size is large enough for all tabs to fit
         for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
         {
-            if (!WidgetIsDisabled(this, i))
+            if (!WidgetIsDisabled(*this, i))
             {
                 minWidth = std::max(minWidth, widgets[i].right + 3);
             }
         }
         maxWidth = std::max(minWidth, maxWidth);
 
-        window_set_resize(this, minWidth, minHeight, maxWidth, maxHeight);
+        window_set_resize(*this, minWidth, minHeight, maxWidth, maxHeight);
     }
 
     void OnPrepareDrawCommon()
@@ -461,13 +461,13 @@ private:
 
         if (peep->CanBePickedUp())
         {
-            if (WidgetIsDisabled(this, WIDX_PICKUP))
+            if (WidgetIsDisabled(*this, WIDX_PICKUP))
                 Invalidate();
         }
         else
         {
             newDisabledWidgets = (1ULL << WIDX_PICKUP);
-            if (!WidgetIsDisabled(this, WIDX_PICKUP))
+            if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                 Invalidate();
         }
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -520,7 +520,7 @@ private:
 
     void OverviewTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_1))
+        if (WidgetIsDisabled(*this, WIDX_TAB_1))
             return;
 
         const auto& widget = widgets[WIDX_TAB_1];
@@ -586,7 +586,7 @@ private:
         DisableWidgets();
         OnPrepareDraw();
 
-        widget_invalidate(this, WIDX_MARQUEE);
+        widget_invalidate(*this, WIDX_MARQUEE);
 
         OnResizeCommon();
 
@@ -697,7 +697,7 @@ private:
     void GuestFollow()
     {
         rct_window* main = window_get_main();
-        window_follow_sprite(main, EntityId::FromUnderlying(number));
+        window_follow_sprite(*main, EntityId::FromUnderlying(number));
     }
 
     void OnViewportRotateOverview()
@@ -756,7 +756,7 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
                 gfx_draw_sprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
@@ -859,8 +859,8 @@ private:
         newAnimationFrame %= 24;
         _guestAnimationFrame = newAnimationFrame;
 
-        widget_invalidate(this, WIDX_TAB_1);
-        widget_invalidate(this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_1);
+        widget_invalidate(*this, WIDX_TAB_2);
 
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -870,7 +870,7 @@ private:
         if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
         {
             peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
-            widget_invalidate(this, WIDX_ACTION_LBL);
+            widget_invalidate(*this, WIDX_ACTION_LBL);
         }
 
         _marqueePosition += 2;
@@ -990,7 +990,7 @@ private:
 #pragma region Stats
     void StatsTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_2))
+        if (WidgetIsDisabled(*this, WIDX_TAB_2))
             return;
 
         const auto& widget = widgets[WIDX_TAB_2];
@@ -1209,7 +1209,7 @@ private:
 #pragma region Rides
     void RidesTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_3))
+        if (WidgetIsDisabled(*this, WIDX_TAB_3))
             return;
 
         const auto& widget = widgets[WIDX_TAB_3];
@@ -1229,8 +1229,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_3);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_3);
 
         const auto guest = GetGuest();
         if (guest == nullptr)
@@ -1384,7 +1384,7 @@ private:
 #pragma region Finance
     void FinanceTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_4))
+        if (WidgetIsDisabled(*this, WIDX_TAB_4))
             return;
 
         const auto& widget = widgets[WIDX_TAB_4];
@@ -1404,8 +1404,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_4);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_4);
     }
 
     void OnDrawFinance(rct_drawpixelinfo& dpi)
@@ -1522,7 +1522,7 @@ private:
 #pragma region Thoughts
     void ThoughtsTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_5))
+        if (WidgetIsDisabled(*this, WIDX_TAB_5))
             return;
 
         const auto& widget = widgets[WIDX_TAB_5];
@@ -1542,8 +1542,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_5);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_5);
 
         auto peep = GetGuest();
         if (peep == nullptr)
@@ -1604,7 +1604,7 @@ private:
 #pragma region Inventory
     void InventoryTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_6))
+        if (WidgetIsDisabled(*this, WIDX_TAB_6))
             return;
 
         const auto& widget = widgets[WIDX_TAB_6];
@@ -1617,8 +1617,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_6);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_6);
 
         auto peep = GetGuest();
         if (peep == nullptr)
@@ -1793,7 +1793,7 @@ private:
 #pragma region Debug
     void DebugTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_7))
+        if (WidgetIsDisabled(*this, WIDX_TAB_7))
             return;
 
         const auto& widget = widgets[WIDX_TAB_7];

@@ -129,7 +129,7 @@ rct_window* WindowServerListOpen()
 
     window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
     window->widgets = window_server_list_widgets;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
     window->frame_no = 0;
@@ -141,7 +141,7 @@ rct_window* WindowServerListOpen()
     window->page = 0;
     window->list_information_type = 0;
 
-    window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+    window_set_resize(*window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
     safe_strcpy(_playerName, gConfigNetwork.player_name.c_str(), sizeof(_playerName));
 
@@ -164,10 +164,10 @@ static void WindowServerListMouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_PLAYER_NAME_INPUT:
-            window_start_textbox(w, widgetIndex, STR_STRING, _playerName, 63);
+            window_start_textbox(*w, widgetIndex, STR_STRING, _playerName, 63);
             break;
         case WIDX_LIST:
         {
@@ -202,7 +202,7 @@ static void WindowServerListMouseup(rct_window* w, rct_widgetindex widgetIndex)
 
 static void WindowServerListResize(rct_window* w)
 {
-    window_set_resize(w, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+    window_set_resize(*w, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 }
 
 static void WindowServerListDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
@@ -240,7 +240,7 @@ static void WindowServerListUpdate(rct_window* w)
     if (gCurrentTextBox.window.classification == w->classification && gCurrentTextBox.window.number == w->number)
     {
         window_update_textbox_caret();
-        widget_invalidate(w, WIDX_PLAYER_NAME_INPUT);
+        widget_invalidate(*w, WIDX_PLAYER_NAME_INPUT);
     }
     ServerListFetchServersCheck(w);
 }
@@ -326,7 +326,7 @@ static void WindowServerListTextinput(rct_window* w, rct_widgetindex widgetIndex
                 config_save_default();
             }
 
-            widget_invalidate(w, WIDX_PLAYER_NAME_INPUT);
+            widget_invalidate(*w, WIDX_PLAYER_NAME_INPUT);
             break;
 
         case WIDX_ADD_SERVER:
@@ -380,7 +380,7 @@ static void WindowServerListInvalidate(rct_window* w)
 
 static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {}, { COLOUR_WHITE });

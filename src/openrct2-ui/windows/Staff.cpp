@@ -528,7 +528,7 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(dpi, this);
+            window_draw_viewport(dpi, *this);
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
@@ -1200,7 +1200,7 @@ private:
     void FollowPeep()
     {
         rct_window* main = window_get_main();
-        window_follow_sprite(main, EntityId::FromUnderlying(number));
+        window_follow_sprite(*main, EntityId::FromUnderlying(number));
     }
 
     void DrawTabImages(rct_drawpixelinfo* dpi)

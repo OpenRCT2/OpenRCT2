@@ -94,7 +94,7 @@ public:
     void OnOpen() override
     {
         widgets = window_maze_construction_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         rideId = _currentRideIndex;
         show_gridlines();
     }
@@ -179,7 +179,7 @@ public:
         {
             if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
             {
-                widget_invalidate(this, i);
+                widget_invalidate(*this, i);
             }
         }
         disabled_widgets = disabledWidgets;
@@ -213,14 +213,14 @@ public:
         switch (_rideConstructionState)
         {
             case RideConstructionState::Place:
-                if (!WidgetIsActiveTool(this, WIDX_MAZE_DIRECTION_GROUPBOX))
+                if (!WidgetIsActiveTool(*this, WIDX_MAZE_DIRECTION_GROUPBOX))
                 {
                     Close();
                     return;
                 }
                 break;
             case RideConstructionState::EntranceExit:
-                if (!WidgetIsActiveTool(this, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(this, WIDX_MAZE_EXIT))
+                if (!WidgetIsActiveTool(*this, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(*this, WIDX_MAZE_EXIT))
                 {
                     _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
                     WindowMazeConstructionUpdatePressedWidgets();

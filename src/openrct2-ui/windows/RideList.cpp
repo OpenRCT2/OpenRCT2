@@ -164,7 +164,7 @@ public:
     void OnOpen() override
     {
         widgets = window_ride_list_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         page = PAGE_RIDES;
         selected_list_item = -1;
         frame_no = 0;
@@ -215,7 +215,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 break;
             case WIDX_SORT:
                 list_information_type = _windowRideListInformationType;
@@ -358,7 +358,7 @@ public:
     void OnUpdate() override
     {
         frame_no = (frame_no + 1) % 64;
-        widget_invalidate(this, WIDX_TAB_1 + page);
+        widget_invalidate(*this, WIDX_TAB_1 + page);
         if (_windowRideListInformationType != INFORMATION_TYPE_STATUS)
             Invalidate();
     }
@@ -490,9 +490,9 @@ public:
             }
 
             widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2
-                + WidgetIsPressed(this, WIDX_CLOSE_LIGHT);
+                + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen ? 1 : 0) * 2
-                + WidgetIsPressed(this, WIDX_OPEN_LIGHT);
+                + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_LIGHT].bottom + 3;
         }
         else
@@ -513,7 +513,7 @@ public:
      */
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
         DrawTabImages(&dpi);
 
         // Draw number of attractions on bottom

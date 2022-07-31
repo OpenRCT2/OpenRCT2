@@ -296,7 +296,7 @@ public:
         if (widgets != targetWidgets)
         {
             widgets = targetWidgets;
-            WindowInitScrollWidgets(this);
+            WindowInitScrollWidgets(*this);
         }
 
         for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
@@ -464,7 +464,7 @@ public:
         window_event_resize_call(this);
         window_event_invalidate_call(this);
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         // Scroll summary all the way to the right, initially.
         if (p == WINDOW_FINANCES_PAGE_SUMMARY)
@@ -983,7 +983,7 @@ public:
         const auto& widget = this->widgets[widgetIndex];
         scrolls[scrollId].h_left = std::max(0, scrolls[scrollId].h_right - (widget.width() - 2));
 
-        WidgetScrollUpdateThumbs(this, widgetIndex);
+        WidgetScrollUpdateThumbs(*this, widgetIndex);
     }
 
     void DrawTabImage(rct_drawpixelinfo& dpi, int32_t tabPage, int32_t spriteIndex)

@@ -71,8 +71,8 @@ public:
     {
         widgets = window_land_widgets;
         hold_down_widgets = (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        WindowInitScrollWidgets(*this);
+        window_push_others_below(*this);
 
         gLandToolSize = 1;
         gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
@@ -253,8 +253,8 @@ public:
             screenCoords = { windowPos.x + previewWidget->left, windowPos.y + previewWidget->top };
             auto sprite = ImageId(gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD);
             gfx_draw_sprite(&dpi, sprite, screenCoords);
-            WidgetDraw(&dpi, this, WIDX_DECREMENT);
-            WidgetDraw(&dpi, this, WIDX_INCREMENT);
+            WidgetDraw(&dpi, *this, WIDX_DECREMENT);
+            WidgetDraw(&dpi, *this, WIDX_INCREMENT);
         }
 
         screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->bottom + 5 };

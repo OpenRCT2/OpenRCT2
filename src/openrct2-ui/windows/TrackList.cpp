@@ -213,7 +213,7 @@ public:
             widgets[WIDX_BACK].type = WindowWidgetType::TableHeader;
         }
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         track_list.track_list_being_updated = false;
         track_list.reload_track_designs = false;
         // Start with first track highlighted
@@ -223,7 +223,7 @@ public:
             selected_list_item = 1;
         }
         gTrackDesignSceneryToggle = false;
-        window_push_others_right(this);
+        window_push_others_right(*this);
         _currentTrackPieceDirection = 2;
         _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
@@ -279,8 +279,8 @@ public:
                 }
                 break;
             case WIDX_FILTER_STRING:
-                window_start_textbox(this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this
-                                                                                                           // out
+                window_start_textbox(
+                    *this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this out
                 break;
             case WIDX_FILTER_CLEAR:
                 // Keep the highlighted item selected
@@ -421,7 +421,7 @@ public:
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
             window_update_textbox_caret();
-            widget_invalidate(this, WIDX_FILTER_STRING); // TODO Check this
+            widget_invalidate(*this, WIDX_FILTER_STRING); // TODO Check this
         }
 
         if (track_list.reload_track_designs)

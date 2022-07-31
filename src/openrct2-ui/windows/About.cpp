@@ -94,7 +94,7 @@ public:
     {
         widgets = _windowAboutOpenRCT2Widgets;
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         SetPage(WINDOW_ABOUT_PAGE_OPENRCT2);
     }
 
@@ -171,7 +171,7 @@ private:
         widgets = _windowAboutPageWidgets[p];
 
         pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         Invalidate();
     }
 

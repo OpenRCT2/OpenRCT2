@@ -642,7 +642,7 @@ public:
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            window_scroll_to_location(mainWindow, { mapCoords, mapZ });
+            window_scroll_to_location(*mainWindow, { mapCoords, mapZ });
         }
 
         if (LandToolIsActive())
@@ -665,7 +665,7 @@ public:
                 gLandToolTerrainSurface, gLandToolTerrainEdge);
             GameActions::Execute(&surfaceSetStyleAction);
         }
-        else if (WidgetIsActiveTool(this, WIDX_SET_LAND_RIGHTS))
+        else if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS))
         {
             // Set land rights
             int32_t landRightsToolSize = std::max<int32_t>(1, _landRightsToolSize);
@@ -856,7 +856,7 @@ public:
             + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
 
         // Draw land tool size
-        if (WidgetIsActiveTool(this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(_landRightsToolSize);
@@ -900,7 +900,7 @@ public:
                 }
             }
         }
-        else if (!WidgetIsActiveTool(this, WIDX_SET_LAND_RIGHTS))
+        else if (!WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS))
         {
             DrawTextBasic(
                 &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},
@@ -962,7 +962,7 @@ private:
 
         scrolls[0].h_left = cx;
         scrolls[0].v_top = dx;
-        WidgetScrollUpdateThumbs(this, WIDX_MAP);
+        WidgetScrollUpdateThumbs(*this, WIDX_MAP);
     }
 
     void IncreaseMapSize()

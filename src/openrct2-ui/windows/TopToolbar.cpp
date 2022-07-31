@@ -342,7 +342,7 @@ rct_window* WindowTopToolbarOpen()
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_top_toolbar_widgets;
 
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     return window;
 }
@@ -366,11 +366,11 @@ static void WindowTopToolbarMouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_ZOOM_OUT:
             if ((mainWindow = window_get_main()) != nullptr)
-                window_zoom_out(mainWindow, false);
+                window_zoom_out(*mainWindow, false);
             break;
         case WIDX_ZOOM_IN:
             if ((mainWindow = window_get_main()) != nullptr)
-                window_zoom_in(mainWindow, false);
+                window_zoom_in(*mainWindow, false);
             break;
         case WIDX_CLEAR_SCENERY:
             ToggleClearSceneryWindow(w, WIDX_CLEAR_SCENERY);
@@ -884,7 +884,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t imgId;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     ScreenCoordsXY screenPos{};
     // Draw staff button image (setting masks to the staff colours)
@@ -893,7 +893,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_STAFF].left,
                       w->windowPos.y + window_top_toolbar_widgets[WIDX_STAFF].top };
         imgId = SPR_TOOLBAR_STAFF;
-        if (WidgetIsPressed(w, WIDX_STAFF))
+        if (WidgetIsPressed(*w, WIDX_STAFF))
             imgId++;
         gfx_draw_sprite(dpi, ImageId(imgId, gStaffHandymanColour, gStaffMechanicColour), screenPos);
     }
@@ -903,7 +903,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_FASTFORWARD].left + 0,
                       w->windowPos.y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0 };
-        if (WidgetIsPressed(w, WIDX_FASTFORWARD))
+        if (WidgetIsPressed(*w, WIDX_FASTFORWARD))
             screenPos.y++;
         gfx_draw_sprite(dpi, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
 
@@ -923,7 +923,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHEATS].left - 1,
                               window_top_toolbar_widgets[WIDX_CHEATS].top - 1 };
-        if (WidgetIsPressed(w, WIDX_CHEATS))
+        if (WidgetIsPressed(*w, WIDX_CHEATS))
             screenPos.y++;
         gfx_draw_sprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
 
@@ -941,7 +941,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHAT].left, window_top_toolbar_widgets[WIDX_CHAT].top - 2 };
-        if (WidgetIsPressed(w, WIDX_CHAT))
+        if (WidgetIsPressed(*w, WIDX_CHAT))
             screenPos.y++;
         gfx_draw_sprite(dpi, ImageId(SPR_G2_CHAT), screenPos);
     }
@@ -951,7 +951,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_DEBUG].left, window_top_toolbar_widgets[WIDX_DEBUG].top - 1 };
-        if (WidgetIsPressed(w, WIDX_DEBUG))
+        if (WidgetIsPressed(*w, WIDX_DEBUG))
             screenPos.y++;
         gfx_draw_sprite(dpi, ImageId(SPR_TAB_GEARS_0), screenPos);
     }
@@ -962,7 +962,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_RESEARCH].left - 1,
                               window_top_toolbar_widgets[WIDX_RESEARCH].top };
-        if (WidgetIsPressed(w, WIDX_RESEARCH))
+        if (WidgetIsPressed(*w, WIDX_RESEARCH))
             screenPos.y++;
         gfx_draw_sprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
     }
@@ -973,7 +973,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_FINANCES].left + 3,
                               window_top_toolbar_widgets[WIDX_FINANCES].top + 1 };
-        if (WidgetIsPressed(w, WIDX_FINANCES))
+        if (WidgetIsPressed(*w, WIDX_FINANCES))
             screenPos.y++;
         gfx_draw_sprite(dpi, ImageId(SPR_FINANCE), screenPos);
     }
@@ -983,7 +983,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NEWS].left + 3, window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
-        if (WidgetIsPressed(w, WIDX_NEWS))
+        if (WidgetIsPressed(*w, WIDX_NEWS))
             screenPos.y++;
         gfx_draw_sprite(dpi, ImageId(SPR_G2_TAB_NEWS), screenPos);
     }
@@ -994,7 +994,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NETWORK].left + 3,
                               window_top_toolbar_widgets[WIDX_NETWORK].top + 0 };
-        if (WidgetIsPressed(w, WIDX_NETWORK))
+        if (WidgetIsPressed(*w, WIDX_NETWORK))
             screenPos.y++;
 
         // Draw (de)sync icon.
@@ -3073,7 +3073,7 @@ static void WindowTopToolbarLandToolDrag(const ScreenCoordsXY& screenPos)
     rct_window* window = window_find_from_point(screenPos);
     if (window == nullptr)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, screenPos);
+    rct_widgetindex widget_index = window_find_widget_from_point(*window, screenPos);
     if (widget_index == -1)
         return;
     const auto& widget = window->widgets[widget_index];
@@ -3116,7 +3116,7 @@ static void WindowTopToolbarWaterToolDrag(const ScreenCoordsXY& screenPos)
     rct_window* window = window_find_from_point(screenPos);
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, screenPos);
+    rct_widgetindex widget_index = window_find_widget_from_point(*window, screenPos);
     if (widget_index == -1)
         return;
     const auto& widget = window->widgets[widget_index];
@@ -3446,12 +3446,12 @@ static void TopToolbarRotateMenuDropdown(int16_t dropdownIndex)
     {
         if (dropdownIndex == 0)
         {
-            window_rotate_camera(w, 1);
+            window_rotate_camera(*w, 1);
             w->Invalidate();
         }
         else if (dropdownIndex == 1)
         {
-            window_rotate_camera(w, -1);
+            window_rotate_camera(*w, -1);
             w->Invalidate();
         }
     }

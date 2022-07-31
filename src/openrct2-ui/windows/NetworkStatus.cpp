@@ -66,7 +66,7 @@ rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose)
     window = WindowCreateCentred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
 
     window->widgets = window_network_status_widgets;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
     window->frame_no = 0;
@@ -112,14 +112,14 @@ static void WindowNetworkStatusMouseup(rct_window* w, rct_widgetindex widgetInde
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
     }
 }
 
 static void WindowNetworkStatusUpdate(rct_window* w)
 {
-    widget_invalidate(w, WIDX_BACKGROUND);
+    widget_invalidate(*w, WIDX_BACKGROUND);
 }
 
 static void WindowNetworkStatusTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
@@ -153,7 +153,7 @@ static void WindowNetworkStatusInvalidate(rct_window* w)
 
 static void WindowNetworkStatusPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     thread_local std::string _buffer;
     _buffer.assign("{BLACK}");

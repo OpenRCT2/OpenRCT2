@@ -434,7 +434,7 @@ static void WindowNewRideRestoreScrollPositionForCurrentTab(rct_window* w)
     currentTabScroll = std::min<uint16_t>(currentTabScroll, std::max(0, scrollHeight - listWidgetHeight));
 
     w->scrolls[0].v_top = currentTabScroll;
-    WidgetScrollUpdateThumbs(w, WIDX_RIDE_LIST);
+    WidgetScrollUpdateThumbs(*w, WIDX_RIDE_LIST);
 }
 
 /**
@@ -456,7 +456,7 @@ rct_window* WindowNewRideOpen()
     w = WindowCreateAutoPos(WW, WH, &window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
     w->widgets = window_new_ride_widgets;
     WindowNewRidePopulateList();
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 
     w->frame_no = 0;
     w->new_ride.SelectedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
@@ -589,7 +589,7 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
         w->Invalidate();
     }
 
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 }
 
 static void WindowNewRideSetPressedTab(rct_window* w)
@@ -608,7 +608,7 @@ static void WindowNewRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (w->widgets[widgetIndex].type != WindowWidgetType::Empty && !WidgetIsDisabled(w, widgetIndex))
+    if (w->widgets[widgetIndex].type != WindowWidgetType::Empty && !WidgetIsDisabled(*w, widgetIndex))
     {
         int32_t frame = 0;
         if (_windowNewRideCurrentTab == page)
@@ -642,7 +642,7 @@ static void WindowNewRideMouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_LAST_DEVELOPMENT_BUTTON:
             News::OpenSubject(News::ItemType::Research, gResearchLastItem->rawValue);
@@ -678,7 +678,7 @@ static void WindowNewRideUpdate(rct_window* w)
     if (w->frame_no >= window_new_ride_tab_animation_loops[_windowNewRideCurrentTab])
         w->frame_no = 0;
 
-    widget_invalidate(w, WIDX_TAB_1 + _windowNewRideCurrentTab);
+    widget_invalidate(*w, WIDX_TAB_1 + _windowNewRideCurrentTab);
 
     if (w->new_ride.SelectedRide.Type != RIDE_TYPE_NULL && w->new_ride.selected_ride_countdown-- == 0)
         WindowNewRideSelect(w);
@@ -690,10 +690,10 @@ static void WindowNewRideUpdate(rct_window* w)
         _windowNewRideTabScroll[_windowNewRideCurrentTab] = w->scrolls[0].v_top;
 
         // Remove highlight when mouse leaves rides list
-        if (!WidgetIsHighlighted(w, WIDX_RIDE_LIST))
+        if (!WidgetIsHighlighted(*w, WIDX_RIDE_LIST))
         {
             w->new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
-            widget_invalidate(w, WIDX_RIDE_LIST);
+            widget_invalidate(*w, WIDX_RIDE_LIST);
         }
     }
 }
@@ -791,7 +791,7 @@ static void WindowNewRideInvalidate(rct_window* w)
  */
 static void WindowNewRidePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowNewRideDrawTabImages(dpi, w);
 
     if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH)
@@ -992,7 +992,7 @@ static void WindowNewRideSelect(rct_window* w)
     if (item.Type == RIDE_TYPE_NULL)
         return;
 
-    window_close(w);
+    window_close(*w);
     window_close_construction_windows();
 
     if (_lastTrackDesignCount > 0)

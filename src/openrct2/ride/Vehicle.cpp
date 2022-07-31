@@ -804,7 +804,7 @@ bool Vehicle::SoundCanPlay() const
     auto left = g_music_tracking_viewport->viewPos.x;
     auto bottom = g_music_tracking_viewport->viewPos.y;
 
-    if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    if (window_get_classification(*gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
         left -= quarter_w;
         bottom -= quarter_h;
@@ -816,7 +816,7 @@ bool Vehicle::SoundCanPlay() const
     auto right = g_music_tracking_viewport->view_width + left;
     auto top = g_music_tracking_viewport->view_height + bottom;
 
-    if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    if (window_get_classification(*gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
         right += quarter_w + quarter_w;
         top += quarter_h + quarter_h;

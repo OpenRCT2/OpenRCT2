@@ -156,7 +156,7 @@ public:
     {
         widgets = window_new_campaign_widgets;
         hold_down_widgets = (1ULL << WIDX_WEEKS_INCREASE_BUTTON) | (1ULL << WIDX_WEEKS_DECREASE_BUTTON);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void SetCampaign(int16_t campaignType)
@@ -337,9 +337,9 @@ public:
         widgets[WIDX_WEEKS_SPINNER].text = STR_NONE;
 
         // Enable / disable start button based on ride dropdown
-        WidgetSetDisabled(this, WIDX_START_BUTTON, false);
+        WidgetSetDisabled(*this, WIDX_START_BUTTON, false);
         if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && campaign.RideId == RideId::GetNull())
-            WidgetSetDisabled(this, WIDX_START_BUTTON, true);
+            WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -379,7 +379,7 @@ rct_window* WindowNewCampaignOpen(int16_t campaignType)
         if (w->campaign.campaign_type == campaignType)
             return w;
 
-        window_close(w);
+        window_close(*w);
     }
 
     w = WindowCreate<NewCampaignWindow>(WC_NEW_CAMPAIGN, WW, WH, 0);

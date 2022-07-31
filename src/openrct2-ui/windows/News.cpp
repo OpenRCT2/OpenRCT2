@@ -57,14 +57,14 @@ public:
     void OnOpen() override
     {
         widgets = window_news_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         _pressedNewsItemIndex = -1;
 
         int32_t w = 0, h = 0;
         rct_widget* widget = &widgets[WIDX_SCROLL];
         window_get_scroll_size(this, 0, &w, &h);
         scrolls[0].v_top = std::max(0, h - (widget->height() - 1));
-        WidgetScrollUpdateThumbs(this, WIDX_SCROLL);
+        WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
@@ -114,7 +114,7 @@ public:
             auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
             if (subjectLoc.has_value() && (_mainWindow = window_get_main()) != nullptr)
             {
-                window_scroll_to_location(_mainWindow, subjectLoc.value());
+                window_scroll_to_location(*_mainWindow, subjectLoc.value());
             }
         }
     }
