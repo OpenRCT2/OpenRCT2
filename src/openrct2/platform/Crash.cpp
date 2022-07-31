@@ -34,6 +34,7 @@
 #    include "../core/Guard.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
+#    include "../drawing/IDrawingEngine.h"
 #    include "../interface/Screenshot.h"
 #    include "../localisation/Language.h"
 #    include "../object/ObjectManager.h"
@@ -203,11 +204,23 @@ static bool OnCrash(
         uploadFiles[L"attachment_config.ini"] = configFilePath;
     }
 
-    std::string screenshotPath = screenshot_dump();
-    if (!screenshotPath.empty())
+    // janisozaur: https://github.com/OpenRCT2/OpenRCT2/pull/17634
+    // By the time we reach this point, OpenGL context is already lost causing *any* call to gl* to stall or fail in unexpected
+    // way. Implementing a proof of concept with glGetGraphicsResetStatus in
+    // https://github.com/OpenRCT2/OpenRCT2/commit/3974594fc36e24d14549921d378251242e3a23e2 yielded no additional information,
+    // while potentially significantly raising the required OpenGL version.
+    // There are (at least) two ways out of this:
+    // 1. Create the screenshot with software renderer - requires allocations
+    // 2. Not create screenshot at all.
+    // Discovering which of the approaches got implemented is left as an excercise for the reader.
+    if (OpenRCT2::GetContext()->GetDrawingEngineType() != DrawingEngine::OpenGL)
     {
-        auto screenshotPathW = String::ToWideChar(screenshotPath.c_str());
-        uploadFiles[L"attachment_screenshot.png"] = screenshotPathW;
+        std::string screenshotPath = screenshot_dump();
+        if (!screenshotPath.empty())
+        {
+            auto screenshotPathW = String::ToWideChar(screenshotPath.c_str());
+            uploadFiles[L"attachment_screenshot.png"] = screenshotPathW;
+        }
     }
 
     if (with_record)
