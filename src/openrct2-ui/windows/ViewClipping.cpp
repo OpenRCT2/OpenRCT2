@@ -44,7 +44,7 @@ enum class DisplayType {
 
 #pragma region Widgets
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
 static constexpr const int32_t WW = 180;
 static constexpr const int32_t WH = 155;
 

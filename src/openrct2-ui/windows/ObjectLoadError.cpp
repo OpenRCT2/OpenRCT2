@@ -264,7 +264,7 @@ enum WindowObjectLoadErrorWidgetIdx {
     WIDX_DOWNLOAD_ALL
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
 static constexpr const int32_t WW = 450;
 static constexpr const int32_t WH = 400;
 static constexpr const int32_t WW_LESS_PADDING = WW - 5;
@@ -288,12 +288,12 @@ static rct_widget window_object_load_error_widgets[] = {
 // clang-format on
 
 /**
- *  Returns an rct_string_id that represents an rct_object_entry's type.
+ *  Returns an StringId that represents an rct_object_entry's type.
  *
  *  Could possibly be moved out of the window file if other
  *  uses exist and a suitable location is found.
  */
-static constexpr rct_string_id GetStringFromObjectType(const ObjectType type)
+static constexpr StringId GetStringFromObjectType(const ObjectType type)
 {
     switch (type)
     {
@@ -489,12 +489,12 @@ public:
 
         // Draw explanatory message
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
+        ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
         DrawTextWrapped(&dpi, windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
 
         // Draw file name
         ft = Formatter();
-        ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_FILE);
+        ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_FILE);
         ft.Add<utf8*>(_filePath.c_str());
         DrawTextEllipsised(&dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
     }

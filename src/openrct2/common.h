@@ -133,7 +133,7 @@ constexpr money16 ToMoney16(money64 value)
 }
 
 using EMPTY_ARGS_VOID_POINTER = void();
-using rct_string_id = uint16_t;
+using StringId = uint16_t;
 
 #define SafeFree(x)                                                                                                            \
     do                                                                                                                         \

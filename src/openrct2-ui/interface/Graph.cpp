@@ -164,7 +164,7 @@ namespace Graph
             {
                 // Draw month text
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
+                ft.Add<StringId>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
                     dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
                     { FontSpriteBase::SMALL, TextAlignment::CENTRE });

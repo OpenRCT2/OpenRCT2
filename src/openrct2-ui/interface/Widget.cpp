@@ -443,7 +443,7 @@ static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetind
     WidgetText(dpi, w, widgetIndex);
 }
 
-static std::pair<rct_string_id, void*> WidgetGetStringidAndArgs(const rct_widget& widget)
+static std::pair<StringId, void*> WidgetGetStringidAndArgs(const rct_widget& widget)
 {
     auto stringId = widget.text;
     void* formatArgs = gCommonFormatArgs;

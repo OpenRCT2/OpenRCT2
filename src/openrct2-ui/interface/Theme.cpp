@@ -96,7 +96,7 @@ struct WindowThemeDesc
 {
     rct_windowclass WindowClass;
     const utf8* WindowClassSZ;
-    rct_string_id WindowName;
+    StringId WindowName;
     uint8_t NumColours;
     WindowTheme DefaultTheme;
 };
@@ -232,7 +232,7 @@ const UITheme PredefinedThemeRCT2 = UITheme::CreatePredefined("*RCT2", Predefine
 struct PredefinedTheme
 {
     const UITheme* Theme;
-    rct_string_id Name;
+    StringId Name;
 };
 
 static constexpr const PredefinedTheme PredefinedThemes[] = {
@@ -859,7 +859,7 @@ uint8_t ThemeDescGetNumColours(rct_windowclass wc)
     return desc->NumColours;
 }
 
-rct_string_id ThemeDescGetName(rct_windowclass wc)
+StringId ThemeDescGetName(rct_windowclass wc)
 {
     const WindowThemeDesc* desc = GetWindowThemeDescriptor(wc);
     if (desc == nullptr)

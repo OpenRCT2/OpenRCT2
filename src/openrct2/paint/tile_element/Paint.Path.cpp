@@ -449,12 +449,12 @@ static void sub_6A4101(
 
             if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
-                ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
+                ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
                 ride->FormatNameTo(ft);
             }
             else
             {
-                ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_CLOSED);
+                ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
             }
             if (gConfigGeneral.upper_case_banners)
             {

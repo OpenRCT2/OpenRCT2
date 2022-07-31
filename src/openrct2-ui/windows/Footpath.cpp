@@ -31,7 +31,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_FOOTPATHS;
+static constexpr const StringId WINDOW_TITLE = STR_FOOTPATHS;
 static constexpr const int32_t WH = 421;
 static constexpr const int32_t WW = 106;
 static constexpr const uint16_t ARROW_PULSE_DURATION = 200;

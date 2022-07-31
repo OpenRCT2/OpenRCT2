@@ -4,7 +4,7 @@
 
 namespace GameActions
 {
-    Result::Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args /*= nullptr*/)
+    Result::Result(GameActions::Status error, StringId title, StringId message, uint8_t* args /*= nullptr*/)
         : Error(error)
         , ErrorTitle(title)
         , ErrorMessage(message)
@@ -23,7 +23,7 @@ namespace GameActions
         {
             return str;
         }
-        std::string operator()(const rct_string_id strId) const
+        std::string operator()(const StringId strId) const
         {
             return format_string(strId, ErrorMessageArgs);
         }

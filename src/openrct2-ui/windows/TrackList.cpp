@@ -27,7 +27,7 @@
 #include <openrct2/windows/Intent.h>
 #include <vector>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_DESIGN;
+static constexpr const StringId WINDOW_TITLE = STR_SELECT_DESIGN;
 static constexpr const int32_t WH = 441;
 static constexpr const int32_t WW = 600;
 static constexpr const int32_t DEBUG_PATH_HEIGHT = 12;
@@ -361,7 +361,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        rct_string_id stringId = STR_NONE;
+        StringId stringId = STR_NONE;
         rct_ride_entry* entry = get_ride_entry(_window_track_list_item.EntryIndex);
 
         if (entry != nullptr)
@@ -370,7 +370,7 @@ public:
             stringId = rideName.Name;
         }
 
-        Formatter::Common().Add<rct_string_id>(stringId);
+        Formatter::Common().Add<StringId>(stringId);
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
             window_track_list_widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
@@ -580,7 +580,7 @@ public:
 
                 // Ride length
                 ft = Formatter();
-                ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
+                ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
                 ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
                 DrawTextEllipsised(&dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
                 screenPos.y += LIST_ROW_HEIGHT;
@@ -683,7 +683,7 @@ public:
         else
         {
             // Build custom track item
-            rct_string_id stringId;
+            StringId stringId;
             if (listIndex == static_cast<size_t>(selected_list_item))
             {
                 // Highlight
@@ -698,7 +698,7 @@ public:
             }
 
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_BUILD_CUSTOM_DESIGN);
+            ft.Add<StringId>(STR_BUILD_CUSTOM_DESIGN);
             DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
             screenCoords.y += SCROLLABLE_ROW_HEIGHT;
             listIndex++;
@@ -708,7 +708,7 @@ public:
         {
             if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi.y && screenCoords.y < dpi.y + dpi.height)
             {
-                rct_string_id stringId;
+                StringId stringId;
                 if (listIndex == static_cast<size_t>(selected_list_item))
                 {
                     // Highlight
@@ -724,7 +724,7 @@ public:
 
                 // Draw track name
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(STR_TRACK_LIST_NAME_FORMAT);
+                ft.Add<StringId>(STR_TRACK_LIST_NAME_FORMAT);
                 ft.Add<const utf8*>(_trackDesigns[i].name.c_str());
                 DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
             }

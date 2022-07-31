@@ -608,8 +608,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
         }
         default:
             log_error("Invalid map selection %u", _selectionType);
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, std::get<rct_string_id>(res.ErrorTitle), STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, std::get<StringId>(res.ErrorTitle), STR_NONE);
     } // switch selectionType
 
     // Raise / lower the land tool selection area

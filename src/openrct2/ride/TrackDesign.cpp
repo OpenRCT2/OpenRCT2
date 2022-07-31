@@ -91,7 +91,7 @@ static uint8_t TrackDesignGetEntranceStyle(const Ride& ride)
     return GetStationStyleFromIdentifier(objectName);
 }
 
-rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
+StringId TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
 {
     type = ride.type;
 
@@ -173,7 +173,7 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
     }
 }
 
-rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
+StringId TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
 {
     CoordsXYE trackElement;
     if (!ride_try_get_origin_element(&ride, &trackElement))
@@ -351,7 +351,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
     return STR_NONE;
 }
 
-rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
+StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
 {
     auto startLoc = MazeGetFirstElement(ride);
 
@@ -494,7 +494,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
     return tile;
 }
 
-rct_string_id TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
+StringId TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
 {
     scenery_elements = _trackSavedTileElementsDesc;
     // Run an element loop

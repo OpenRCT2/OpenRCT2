@@ -39,13 +39,13 @@ using ride_ratings_calculation = void (*)(Ride* ride, RideRatingUpdateState& sta
 
 struct RideComponentName
 {
-    rct_string_id singular;
-    rct_string_id plural;
-    rct_string_id capitalised;
-    rct_string_id capitalised_plural;
-    rct_string_id count;
-    rct_string_id count_plural;
-    rct_string_id number;
+    StringId singular;
+    StringId plural;
+    StringId capitalised;
+    StringId capitalised_plural;
+    StringId count;
+    StringId count_plural;
+    StringId number;
 };
 
 enum class RideComponentType
@@ -374,7 +374,7 @@ extern const CarEntry CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
 
-extern const rct_string_id RideModeNames[static_cast<uint8_t>(RideMode::Count)];
+extern const StringId RideModeNames[static_cast<uint8_t>(RideMode::Count)];
 
 // clang-format off
 constexpr const RideTypeDescriptor DummyRTD =

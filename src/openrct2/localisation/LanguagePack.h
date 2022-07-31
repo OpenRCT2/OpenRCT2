@@ -23,11 +23,11 @@ struct ILanguagePack
     virtual uint16_t GetId() const abstract;
     virtual uint32_t GetCount() const abstract;
 
-    virtual void RemoveString(rct_string_id stringId) abstract;
-    virtual void SetString(rct_string_id stringId, const std::string& str) abstract;
-    virtual const utf8* GetString(rct_string_id stringId) const abstract;
-    virtual rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) abstract;
-    virtual rct_string_id GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) abstract;
+    virtual void RemoveString(StringId stringId) abstract;
+    virtual void SetString(StringId stringId, const std::string& str) abstract;
+    virtual const utf8* GetString(StringId stringId) const abstract;
+    virtual StringId GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) abstract;
+    virtual StringId GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) abstract;
 };
 
 namespace LanguagePackFactory

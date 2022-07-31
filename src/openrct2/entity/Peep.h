@@ -477,7 +477,7 @@ int32_t peep_compare(const EntityId sprite_index_a, const EntityId sprite_index_
 
 void peep_update_names(bool realNames);
 
-rct_string_id get_real_name_string_id_from_id(uint32_t id);
+StringId get_real_name_string_id_from_id(uint32_t id);
 
 inline const rct_peep_animation& GetPeepAnimation(
     PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None)

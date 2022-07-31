@@ -34,7 +34,7 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WH = 224;
 
 // clang-format off
@@ -162,7 +162,7 @@ static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
 };
 
 struct WindowParkAward {
-    rct_string_id text;
+    StringId text;
     uint32_t sprite;
 };
 
@@ -402,7 +402,7 @@ private:
         auto parkName = park.Name.c_str();
 
         auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(parkName);
     }
 
@@ -511,7 +511,7 @@ private:
             auto parkName = park.Name.c_str();
 
             auto ft = Formatter::Common();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(parkName);
         }
         widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
@@ -599,7 +599,7 @@ private:
 
         // Draw park closed / open label
         auto ft = Formatter();
-        ft.Add<rct_string_id>(park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
+        ft.Add<StringId>(park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
         auto* labelWidget = &widgets[WIDX_STATUS];
         DrawTextEllipsised(
@@ -1067,7 +1067,7 @@ private:
         auto screenCoords = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 7 };
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(gScenarioDetails.c_str());
         screenCoords.y += DrawTextWrapped(&dpi, screenCoords, 222, STR_BLACK_STRING, ft);
         screenCoords.y += 5;
@@ -1080,13 +1080,13 @@ private:
         ft = Formatter();
         if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
         {
-            rct_string_id rideTypeString = STR_NONE;
+            StringId rideTypeString = STR_NONE;
             auto rideTypeId = gScenarioObjective.RideId;
             if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
             {
                 rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
             }
-            ft.Add<rct_string_id>(rideTypeString);
+            ft.Add<StringId>(rideTypeString);
         }
         else
         {

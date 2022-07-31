@@ -34,7 +34,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WH = 157;
 static constexpr const int32_t WW = 192;
 
@@ -1190,7 +1190,7 @@ private:
 
         // Nausea tolerance
         {
-            static constexpr const rct_string_id _nauseaTolerances[] = {
+            static constexpr const StringId _nauseaTolerances[] = {
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_NONE,
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_LOW,
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_AVERAGE,
@@ -1199,7 +1199,7 @@ private:
             screenCoords.y += LIST_ROW_HEIGHT;
             auto nausea_tolerance = EnumValue(peep->NauseaTolerance) & 0x3;
             auto ft = Formatter();
-            ft.Add<rct_string_id>(_nauseaTolerances[nausea_tolerance]);
+            ft.Add<StringId>(_nauseaTolerances[nausea_tolerance]);
             DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_NAUSEA_TOLERANCE, ft);
         }
     }
@@ -1348,7 +1348,7 @@ private:
         }
         else
         {
-            ft.Add<rct_string_id>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
+            ft.Add<StringId>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
         }
 
         DrawTextEllipsised(&dpi, screenCoords, width - 14, STR_FAVOURITE_RIDE, ft);
@@ -1362,7 +1362,7 @@ private:
         for (int32_t listIndex = 0; listIndex < no_list_items; listIndex++)
         {
             auto y = listIndex * 10;
-            rct_string_id stringId = STR_BLACK_STRING;
+            StringId stringId = STR_BLACK_STRING;
             if (listIndex == selected_list_item)
             {
                 gfx_filter_rect(&dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
@@ -1632,7 +1632,7 @@ private:
         }
     }
 
-    std::pair<rct_string_id, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
+    std::pair<StringId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
     {
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto parkName = park.Name.c_str();
@@ -1640,8 +1640,8 @@ private:
         // Default arguments
         auto ft = Formatter();
         ft.Add<uint32_t>(GetShopItemDescriptor(item).Image);
-        ft.Add<rct_string_id>(GetShopItemDescriptor(item).Naming.Display);
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(GetShopItemDescriptor(item).Naming.Display);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(parkName);
 
         // Special overrides
@@ -1672,8 +1672,8 @@ private:
                     case VOUCHER_TYPE_PARK_ENTRY_FREE:
                         ft.Rewind();
                         ft.Increment(6);
-                        ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
-                        ft.Add<rct_string_id>(STR_STRING);
+                        ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
+                        ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                         break;
                     case VOUCHER_TYPE_RIDE_FREE:
@@ -1682,22 +1682,22 @@ private:
                         {
                             ft.Rewind();
                             ft.Increment(6);
-                            ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
+                            ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
                             invRide->FormatNameTo(ft);
                         }
                         break;
                     case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
                         ft.Rewind();
                         ft.Increment(6);
-                        ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
-                        ft.Add<rct_string_id>(STR_STRING);
+                        ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
+                        ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                         break;
                     case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
                         ft.Rewind();
                         ft.Increment(6);
-                        ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                        ft.Add<rct_string_id>(GetShopItemDescriptor(guest.VoucherShopItem).Naming.Singular);
+                        ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
+                        ft.Add<StringId>(GetShopItemDescriptor(guest.VoucherShopItem).Naming.Singular);
                         break;
                 }
                 break;

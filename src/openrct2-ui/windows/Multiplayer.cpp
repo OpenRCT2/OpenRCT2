@@ -111,7 +111,7 @@ static rct_widget *window_multiplayer_page_widgets[] = {
     window_multiplayer_options_widgets,
 };
 
-static constexpr rct_string_id WindowMultiplayerPageTitles[] = {
+static constexpr StringId WindowMultiplayerPageTitles[] = {
     STR_MULTIPLAYER_INFORMATION_TITLE,
     STR_MULTIPLAYER_PLAYERS_TITLE,
     STR_MULTIPLAYER_GROUPS_TITLE,
@@ -559,7 +559,7 @@ static void WindowMultiplayerPlayersInvalidate(rct_window* w)
 
 static void WindowMultiplayerPlayersPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    rct_string_id stringId;
+    StringId stringId;
 
     WindowDrawWidgets(*w, dpi);
     WindowMultiplayerDrawTabImages(w, dpi);
@@ -632,11 +632,11 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
             auto ft = Formatter();
             if (action != -999)
             {
-                ft.Add<rct_string_id>(network_get_action_name_string_id(action));
+                ft.Add<StringId>(network_get_action_name_string_id(action));
             }
             else
             {
-                ft.Add<rct_string_id>(STR_ACTION_NA);
+                ft.Add<StringId>(STR_ACTION_NA);
             }
             DrawTextEllipsised(dpi, { 256, screenCoords.y }, 100, STR_BLACK_STRING, ft);
 

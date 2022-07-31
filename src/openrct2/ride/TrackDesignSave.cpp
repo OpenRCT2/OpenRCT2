@@ -49,14 +49,14 @@ std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 struct TrackDesignAddStatus
 {
     bool IsSuccess{};
-    rct_string_id Message{};
+    StringId Message{};
 
     static TrackDesignAddStatus Success()
     {
-        return { true, rct_string_id() };
+        return { true, StringId() };
     }
 
-    static TrackDesignAddStatus Fail(rct_string_id message)
+    static TrackDesignAddStatus Fail(StringId message)
     {
         return { false, message };
     }

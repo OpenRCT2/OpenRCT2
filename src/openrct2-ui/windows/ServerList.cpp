@@ -37,9 +37,9 @@
 
 static char _playerName[32 + 1];
 static ServerList _serverList;
-static std::future<std::tuple<std::vector<ServerListEntry>, rct_string_id>> _fetchFuture;
+static std::future<std::tuple<std::vector<ServerListEntry>, StringId>> _fetchFuture;
 static uint32_t _numPlayersOnline = 0;
-static rct_string_id _statusText = STR_SERVER_LIST_CONNECTING;
+static StringId _statusText = STR_SERVER_LIST_CONNECTING;
 
 enum
 {
@@ -82,7 +82,7 @@ static void WindowServerListScrollGetsize(rct_window* w, int32_t scrollIndex, in
 static void WindowServerListScrollMousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowServerListScrollMouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowServerListTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
-static OpenRCT2String WindowServerListTooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback);
+static OpenRCT2String WindowServerListTooltip(rct_window* const w, const rct_widgetindex widgetIndex, StringId fallback);
 static void WindowServerListInvalidate(rct_window* w);
 static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
@@ -296,7 +296,7 @@ static void WindowServerListScrollMouseover(rct_window* w, int32_t scrollIndex, 
         w->selected_list_item = itemIndex;
         _showNetworkVersionTooltip = showNetworkVersionTooltip;
 
-        listWidget.tooltip = showNetworkVersionTooltip ? static_cast<rct_string_id>(STR_NETWORK_VERSION_TIP) : STR_NONE;
+        listWidget.tooltip = showNetworkVersionTooltip ? static_cast<StringId>(STR_NETWORK_VERSION_TIP) : STR_NONE;
         WindowTooltipClose();
 
         w->Invalidate();
@@ -343,7 +343,7 @@ static void WindowServerListTextinput(rct_window* w, rct_widgetindex widgetIndex
     }
 }
 
-static OpenRCT2String WindowServerListTooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback)
+static OpenRCT2String WindowServerListTooltip(rct_window* const w, const rct_widgetindex widgetIndex, StringId fallback)
 {
     auto ft = Formatter();
     ft.Add<char*>(_version.c_str());

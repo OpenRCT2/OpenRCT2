@@ -46,7 +46,7 @@ static constexpr const uint8_t AwardPositiveMap[] = {
     POSITIVE, // AwardType::BestGentleRides
 };
 
-static constexpr const rct_string_id AwardNewsStrings[] = {
+static constexpr const StringId AwardNewsStrings[] = {
     STR_NEWS_ITEM_AWARD_MOST_UNTIDY,
     STR_NEWS_ITEM_MOST_TIDY,
     STR_NEWS_ITEM_BEST_ROLLERCOASTERS,

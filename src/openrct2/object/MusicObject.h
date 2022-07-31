@@ -48,7 +48,7 @@ private:
     MusicNiceFactor _niceFactor;
 
 public:
-    rct_string_id NameStringId{};
+    StringId NameStringId{};
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;

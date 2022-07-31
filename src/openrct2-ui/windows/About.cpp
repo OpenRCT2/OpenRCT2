@@ -23,7 +23,7 @@ using namespace OpenRCT2;
 
 static constexpr const int32_t WW = 400;
 static constexpr const int32_t WH = 352;
-static constexpr const rct_string_id WINDOW_TITLE = STR_ABOUT;
+static constexpr const StringId WINDOW_TITLE = STR_ABOUT;
 static constexpr const int32_t TABHEIGHT = 50;
 
 // clang-format off
@@ -138,13 +138,13 @@ public:
         // Draw tab names
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
+            ft.Add<StringId>(STR_TITLE_SEQUENCE_OPENRCT2);
             DrawTextWrapped(
                 &dpi, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
         }
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RCT2);
+            ft.Add<StringId>(STR_TITLE_SEQUENCE_RCT2);
             DrawTextWrapped(
                 &dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
         }

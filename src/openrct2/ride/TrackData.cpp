@@ -6167,7 +6167,7 @@ static constexpr TrackComputeFunction GetVerticalFunction(const uint16_t type)
     }
 }
 
-static constexpr const rct_string_id RideConfigurationStringIds[] = {
+static constexpr const StringId RideConfigurationStringIds[] = {
     STR_EMPTY,                         // 0
     STR_STATION_PLATFORM,              // 1
     STR_EMPTY,                         // 2

@@ -1898,7 +1898,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                     break;
                 }
 
-                if (const auto* message = std::get_if<rct_string_id>(&res.ErrorMessage))
+                if (const auto* message = std::get_if<StringId>(&res.ErrorMessage))
                 {
                     if (*message == STR_NOT_ENOUGH_CASH_REQUIRES || *message == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
                     {
@@ -1952,7 +1952,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                     break;
                 }
 
-                if (const auto* message = std::get_if<rct_string_id>(&res.ErrorMessage))
+                if (const auto* message = std::get_if<StringId>(&res.ErrorMessage))
                 {
                     if (*message == STR_NOT_ENOUGH_CASH_REQUIRES || *message == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
                     {

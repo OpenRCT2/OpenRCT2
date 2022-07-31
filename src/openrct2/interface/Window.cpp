@@ -1596,7 +1596,7 @@ void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t sc
             w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
 }
 
-OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
+OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback)
 {
     if (w->event_handlers == nullptr)
     {
@@ -1968,7 +1968,7 @@ void textinput_cancel()
 }
 
 void window_start_textbox(
-    rct_window& call_w, rct_widgetindex call_widget, rct_string_id existing_text, char* existing_args, int32_t maxLength)
+    rct_window& call_w, rct_widgetindex call_widget, StringId existing_text, char* existing_args, int32_t maxLength)
 {
     if (gUsingWidgetTextBox)
         window_cancel_textbox();

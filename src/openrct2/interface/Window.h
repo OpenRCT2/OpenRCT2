@@ -96,11 +96,11 @@ struct rct_widget
     union
     { // 0x0A
         uint32_t image;
-        rct_string_id text;
+        StringId text;
         uint32_t content;
         utf8* string;
     };
-    rct_string_id tooltip; // 0x0E
+    StringId tooltip; // 0x0E
 
     // New properties
     WidgetFlags flags{};
@@ -248,7 +248,7 @@ struct rct_window_event_list
     void (*text_input)(struct rct_window*, rct_widgetindex, char*){};
     void (*viewport_rotate)(struct rct_window*){};
     void (*unknown_15)(struct rct_window*, int32_t, int32_t){};
-    OpenRCT2String (*tooltip)(struct rct_window*, const rct_widgetindex, const rct_string_id){};
+    OpenRCT2String (*tooltip)(struct rct_window*, const rct_widgetindex, const StringId){};
     void (*cursor)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&, CursorID*){};
     void (*moved)(struct rct_window*, const ScreenCoordsXY&){};
     void (*invalidate)(struct rct_window*){};
@@ -780,7 +780,7 @@ void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, cons
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text);
 void window_event_viewport_rotate_call(rct_window* w);
 void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
-OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
+OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback);
 CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_event_moved_call(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_event_invalidate_call(rct_window* w);
@@ -794,7 +794,7 @@ void window_move_and_snap(rct_window& w, ScreenCoordsXY newWindowCoords, int32_t
 int32_t window_can_resize(const rct_window& w);
 
 void window_start_textbox(
-    rct_window& call_w, rct_widgetindex call_widget, rct_string_id existing_text, char* existing_args, int32_t maxLength);
+    rct_window& call_w, rct_widgetindex call_widget, StringId existing_text, char* existing_args, int32_t maxLength);
 void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();

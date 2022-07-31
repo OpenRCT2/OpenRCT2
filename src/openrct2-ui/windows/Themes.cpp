@@ -95,7 +95,7 @@ enum WindowThemesWidgetIdx
     WIDX_THEMES_RCT1_BOTTOM_TOOLBAR
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_THEMES_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_THEMES_TITLE;
 static constexpr const int32_t WW = 320;
 static constexpr const int32_t WH = 107;
 

@@ -50,5 +50,5 @@ private:
     bool ride_is_valid_lift_hill_speed(Ride* ride) const;
     bool ride_is_valid_num_circuits() const;
     bool ride_is_valid_operation_option(Ride* ride) const;
-    rct_string_id GetOperationErrorMessage(Ride* ride) const;
+    StringId GetOperationErrorMessage(Ride* ride) const;
 };

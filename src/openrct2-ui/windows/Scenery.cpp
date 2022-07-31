@@ -27,7 +27,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const StringId WINDOW_TITLE = STR_NONE;
 constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 180;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
@@ -459,7 +459,7 @@ public:
         }
     }
 
-    OpenRCT2String OnTooltip(const rct_widgetindex widgetIndex, const rct_string_id fallback) override
+    OpenRCT2String OnTooltip(const rct_widgetindex widgetIndex, const StringId fallback) override
     {
         if (widgetIndex >= WIDX_SCENERY_TAB_1)
         {
@@ -470,7 +470,7 @@ public:
                 if (tabInfo.IsMisc())
                 {
                     auto ft = Formatter();
-                    ft.Add<rct_string_id>(STR_MISCELLANEOUS);
+                    ft.Add<StringId>(STR_MISCELLANEOUS);
                     return { fallback, ft };
                 }
 
@@ -478,7 +478,7 @@ public:
                 if (sceneryEntry != nullptr)
                 {
                     auto ft = Formatter();
-                    ft.Add<rct_string_id>(sceneryEntry->name);
+                    ft.Add<StringId>(sceneryEntry->name);
                     return { fallback, ft };
                 }
             }
@@ -489,7 +489,7 @@ public:
     void OnPrepareDraw() override
     {
         // Set the window title
-        rct_string_id titleStringId = STR_MISCELLANEOUS;
+        StringId titleStringId = STR_MISCELLANEOUS;
         const auto tabIndex = _activeTabIndex;
         if (tabIndex < _tabEntries.size())
         {
@@ -680,7 +680,7 @@ public:
         }
 
         auto ft = Formatter();
-        ft.Add<rct_string_id>(name);
+        ft.Add<StringId>(name);
         DrawTextEllipsised(&dpi, { windowPos.x + 3, windowPos.y + height - 13 }, width - 19, STR_BLACK_STRING, ft);
     }
 
@@ -1107,9 +1107,9 @@ private:
         }
     }
 
-    std::pair<rct_string_id, money32> GetNameAndPrice(ScenerySelection selectedScenery)
+    std::pair<StringId, money32> GetNameAndPrice(ScenerySelection selectedScenery)
     {
-        rct_string_id name = STR_UNKNOWN_OBJECT_TYPE;
+        StringId name = STR_UNKNOWN_OBJECT_TYPE;
         money32 price = MONEY32_UNDEFINED;
         if (selectedScenery.IsUndefined() && gSceneryPlaceCost != MONEY32_UNDEFINED)
         {

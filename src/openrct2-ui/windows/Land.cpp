@@ -21,7 +21,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_LAND;
+static constexpr const StringId WINDOW_TITLE = STR_LAND;
 static constexpr const int32_t WH = 160;
 static constexpr const int32_t WW = 98;
 

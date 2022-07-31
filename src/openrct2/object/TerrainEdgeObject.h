@@ -15,7 +15,7 @@ class TerrainEdgeObject final : public Object
 {
 private:
 public:
-    rct_string_id NameStringId{};
+    StringId NameStringId{};
     uint32_t IconImageId{};
     uint32_t BaseImageId{};
     bool HasDoors{};

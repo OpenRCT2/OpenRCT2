@@ -753,8 +753,8 @@ void Window::Close()
 }
 
 void Window::TextInputOpen(
-    rct_widgetindex callWidget, rct_string_id title, rct_string_id description, const Formatter& descriptionArgs,
-    rct_string_id existingText, uintptr_t existingArgs, int32_t maxLength)
+    rct_widgetindex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
+    uintptr_t existingArgs, int32_t maxLength)
 {
     WindowTextInputOpen(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
 }

@@ -45,4 +45,4 @@ void ThemeDuplicate(const utf8* name);
 void ThemeDelete();
 
 uint8_t ThemeDescGetNumColours(rct_windowclass wc);
-rct_string_id ThemeDescGetName(rct_windowclass wc);
+StringId ThemeDescGetName(rct_windowclass wc);

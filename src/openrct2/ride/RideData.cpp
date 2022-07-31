@@ -193,7 +193,7 @@ const uint16_t RideFilmLength[3] = {
     7000, // SPACE_RAIDERS
 };
 
-const rct_string_id RideModeNames[] = {
+const StringId RideModeNames[] = {
         STR_RIDE_MODE_NORMAL,
         STR_RIDE_MODE_CONTINUOUS_CIRCUIT,
         STR_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,

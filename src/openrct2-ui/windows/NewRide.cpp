@@ -38,7 +38,7 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const StringId WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 382;
 static constexpr const int32_t WW = 601;
 static constexpr const int32_t NEW_RIDE_LIST_ITEMS_MAX = 384;
@@ -250,7 +250,7 @@ static rct_window_event_list window_new_ride_events([](auto& events) {
 
 #pragma endregion
 
-static constexpr const rct_string_id window_new_ride_titles[] = {
+static constexpr const StringId window_new_ride_titles[] = {
     STR_NEW_TRANSPORT_RIDES,      // WINDOW_NEW_RIDE_PAGE_TRANSPORT
     STR_NEW_GENTLE_RIDES,         // WINDOW_NEW_RIDE_PAGE_GENTLE
     STR_NEW_ROLLER_COASTERS,      // WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER
@@ -917,8 +917,8 @@ static void WindowNewRidePaintRideInformation(
     WindowNewRideUpdateVehicleAvailability(item.Type);
 
     // Ride name and description
-    ft.Add<rct_string_id>(rideNaming.Name);
-    ft.Add<rct_string_id>(rideNaming.Description);
+    ft.Add<StringId>(rideNaming.Name);
+    ft.Add<StringId>(rideNaming.Description);
     DrawTextWrapped(dpi, screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
 
     if (!_vehicleAvailability.empty())
@@ -926,7 +926,7 @@ static void WindowNewRidePaintRideInformation(
         if (gConfigInterface.list_ride_vehicles_separately)
         {
             ft = Formatter();
-            ft.Add<rct_string_id>(rideEntry->naming.Name);
+            ft.Add<StringId>(rideEntry->naming.Name);
             DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
         }
         else
@@ -945,7 +945,7 @@ static void WindowNewRidePaintRideInformation(
     }
     ft.Add<int32_t>(_lastTrackDesignCount);
 
-    rct_string_id designCountStringId;
+    StringId designCountStringId;
     switch (_lastTrackDesignCount)
     {
         case 0:
@@ -972,7 +972,7 @@ static void WindowNewRidePaintRideInformation(
         price = (price >> 16) * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
 
         //
-        rct_string_id stringId = STR_NEW_RIDE_COST;
+        StringId stringId = STR_NEW_RIDE_COST;
         if (!GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
             stringId = STR_NEW_RIDE_COST_FROM;
 

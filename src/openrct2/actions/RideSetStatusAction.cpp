@@ -22,7 +22,7 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
-static rct_string_id _StatusErrorTitles[] = {
+static StringId _StatusErrorTitles[] = {
     STR_CANT_CLOSE,
     STR_CANT_OPEN,
     STR_CANT_TEST,

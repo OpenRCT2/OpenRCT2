@@ -98,7 +98,7 @@ static std::vector<Ride> _rides;
 struct StationIndexWithMessage
 {
     ::StationIndex StationIndex;
-    rct_string_id Message = STR_NONE;
+    StringId Message = STR_NONE;
 };
 
 // Static function declarations
@@ -782,11 +782,11 @@ void Ride::FormatStatusTo(Formatter& ft) const
 {
     if (lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
     {
-        ft.Add<rct_string_id>(STR_CRASHED);
+        ft.Add<StringId>(STR_CRASHED);
     }
     else if (lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        ft.Add<rct_string_id>(STR_BROKEN_DOWN);
+        ft.Add<StringId>(STR_BROKEN_DOWN);
     }
     else if (status == RideStatus::Closed)
     {
@@ -794,49 +794,49 @@ void Ride::FormatStatusTo(Formatter& ft) const
         {
             if (num_riders != 0)
             {
-                ft.Add<rct_string_id>(num_riders == 1 ? STR_CLOSED_WITH_PERSON : STR_CLOSED_WITH_PEOPLE);
+                ft.Add<StringId>(num_riders == 1 ? STR_CLOSED_WITH_PERSON : STR_CLOSED_WITH_PEOPLE);
                 ft.Add<uint16_t>(num_riders);
             }
             else
             {
-                ft.Add<rct_string_id>(STR_CLOSED);
+                ft.Add<StringId>(STR_CLOSED);
             }
         }
         else
         {
-            ft.Add<rct_string_id>(STR_CLOSED);
+            ft.Add<StringId>(STR_CLOSED);
         }
     }
     else if (status == RideStatus::Simulating)
     {
-        ft.Add<rct_string_id>(STR_SIMULATING);
+        ft.Add<StringId>(STR_SIMULATING);
     }
     else if (status == RideStatus::Testing)
     {
-        ft.Add<rct_string_id>(STR_TEST_RUN);
+        ft.Add<StringId>(STR_TEST_RUN);
     }
     else if (mode == RideMode::Race && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && !race_winner.IsNull())
     {
         auto peep = GetEntity<Guest>(race_winner);
         if (peep != nullptr)
         {
-            ft.Add<rct_string_id>(STR_RACE_WON_BY);
+            ft.Add<StringId>(STR_RACE_WON_BY);
             peep->FormatNameTo(ft);
         }
         else
         {
-            ft.Add<rct_string_id>(STR_RACE_WON_BY);
-            ft.Add<rct_string_id>(STR_NONE);
+            ft.Add<StringId>(STR_RACE_WON_BY);
+            ft.Add<StringId>(STR_NONE);
         }
     }
     else if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
     {
-        ft.Add<rct_string_id>(num_riders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
+        ft.Add<StringId>(num_riders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
         ft.Add<uint16_t>(num_riders);
     }
     else
     {
-        ft.Add<rct_string_id>(STR_OPEN);
+        ft.Add<StringId>(STR_OPEN);
     }
 }
 
@@ -2113,8 +2113,8 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     }
 
     auto ft = Formatter();
-    ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.vehicle).singular);
-    ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.station).singular);
+    ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.vehicle).singular);
+    ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.station).singular);
     return { nullptr, { STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES, ft } };
 }
 
@@ -2367,7 +2367,7 @@ static void ride_track_set_map_tooltip(TileElement* tileElement)
     if (ride != nullptr)
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
+        ft.Add<StringId>(STR_RIDE_MAP_TIP);
         ride->FormatNameTo(ft);
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
@@ -2383,7 +2383,7 @@ static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
     if (ride != nullptr)
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
+        ft.Add<StringId>(STR_RIDE_MAP_TIP);
         ride->FormatNameTo(ft);
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
@@ -2404,10 +2404,10 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
                 stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
 
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
-        ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
+        ft.Add<StringId>(STR_RIDE_MAP_TIP);
+        ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
         ride->FormatNameTo(ft);
-        ft.Add<rct_string_id>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).capitalised);
+        ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).capitalised);
         ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
@@ -2436,8 +2436,8 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
                 queueLength = ride->GetStation(stationIndex).QueueLength;
 
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
-            ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
+            ft.Add<StringId>(STR_RIDE_MAP_TIP);
+            ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
             ride->FormatNameTo(ft);
 
             // String IDs have an extra pop16 for some reason
@@ -2446,15 +2446,15 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
             ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
             if (queueLength == 0)
             {
-                ft.Add<rct_string_id>(STR_QUEUE_EMPTY);
+                ft.Add<StringId>(STR_QUEUE_EMPTY);
             }
             else if (queueLength == 1)
             {
-                ft.Add<rct_string_id>(STR_QUEUE_ONE_PERSON);
+                ft.Add<StringId>(STR_QUEUE_ONE_PERSON);
             }
             else
             {
-                ft.Add<rct_string_id>(STR_QUEUE_PEOPLE);
+                ft.Add<StringId>(STR_QUEUE_PEOPLE);
             }
             ft.Add<uint16_t>(queueLength);
             auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
@@ -2470,7 +2470,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
                     stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
 
             auto ft = Formatter();
-            ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
+            ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
             ride->FormatNameTo(ft);
 
             // String IDs have an extra pop16 for some reason
@@ -5768,7 +5768,7 @@ void Ride::FormatNameTo(Formatter& ft) const
     if (!custom_name.empty())
     {
         auto str = custom_name.c_str();
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(str);
     }
     else
@@ -5782,7 +5782,7 @@ void Ride::FormatNameTo(Formatter& ft) const
                 rideTypeName = rideEntry->naming.Name;
             }
         }
-        ft.Add<rct_string_id>(1).Add<rct_string_id>(rideTypeName).Add<uint16_t>(default_name_number);
+        ft.Add<StringId>(1).Add<StringId>(rideTypeName).Add<uint16_t>(default_name_number);
     }
 }
 

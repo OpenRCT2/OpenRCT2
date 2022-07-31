@@ -26,7 +26,7 @@ struct LargeSceneryText;
 
 struct SceneryEntryBase
 {
-    rct_string_id name;
+    StringId name;
     uint32_t image;
 };
 
@@ -189,7 +189,7 @@ struct LargeSceneryText
 
 struct rct_scenery_group_entry
 {
-    rct_string_id name;
+    StringId name;
     uint32_t image;
     std::vector<ScenerySelection> SceneryEntries;
     uint8_t priority;

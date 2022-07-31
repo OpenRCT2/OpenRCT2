@@ -551,11 +551,11 @@ void gfx_draw_string_no_formatting(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint);
 
 void gfx_draw_string_left_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, colour_t colour, const ScreenCoordsXY& coords);
+    rct_drawpixelinfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords);
 void draw_string_centred_raw(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text, FontSpriteBase fontSpriteBase);
 void DrawNewsTicker(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, rct_string_id format, void* args,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, void* args,
     int32_t ticks);
 void gfx_draw_string_with_y_offsets(
     rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
@@ -579,8 +579,7 @@ void scrolling_text_invalidate();
 class Formatter;
 
 int32_t scrolling_text_setup(
-    struct paint_session& session, rct_string_id stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode,
-    colour_t colour);
+    struct paint_session& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour);
 
 rct_size16 FASTCALL gfx_get_sprite_size(uint32_t image_id);
 size_t g1_calculate_data_size(const rct_g1_element* g1);

@@ -44,10 +44,10 @@ private:
     widget_identifier _parentWidget{};
 
     std::string _title;
-    rct_string_id _titleStringId = STR_NONE;
+    StringId _titleStringId = STR_NONE;
 
     std::string _description;
-    rct_string_id _descriptionStringId = STR_NONE;
+    StringId _descriptionStringId = STR_NONE;
     Formatter _descriptionArgs;
 
     std::function<void(std::string_view)> _callback;
@@ -90,7 +90,7 @@ public:
         }
     }
 
-    void SetTitle(rct_string_id title, rct_string_id description, const Formatter& decriptionArgs)
+    void SetTitle(StringId title, StringId description, const Formatter& decriptionArgs)
     {
         _titleStringId = title;
         _descriptionStringId = description;
@@ -371,8 +371,8 @@ private:
 };
 
 void WindowTextInputRawOpen(
-    rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    const Formatter& descriptionArgs, const_utf8string existing_text, int32_t maxLength)
+    rct_window* call_w, rct_widgetindex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    const_utf8string existing_text, int32_t maxLength)
 {
     window_close_by_class(WC_TEXTINPUT);
 
@@ -401,8 +401,8 @@ void WindowTextInputOpen(
 }
 
 void WindowTextInputOpen(
-    rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    const Formatter& descriptionArgs, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
+    rct_window* call_w, rct_widgetindex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    StringId existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     auto existingText = format_string(existing_text, &existing_args);
     WindowTextInputRawOpen(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
