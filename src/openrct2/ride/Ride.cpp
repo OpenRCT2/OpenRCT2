@@ -2544,12 +2544,9 @@ static ResultWithMessage ride_mode_check_valid_station_numbers(Ride* ride)
         }
     }
 
-    if (ride->type == RIDE_TYPE_GO_KARTS || ride->type == RIDE_TYPE_MINI_GOLF)
-    {
-        if (numStations <= 1)
-            return { true };
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ONE_STATION) && numStations > 1)
         return { false, STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE };
-    }
 
     return { true };
 }
