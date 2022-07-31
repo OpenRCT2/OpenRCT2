@@ -631,7 +631,7 @@ void window_update_scroll_widgets(rct_window& w)
     }
 }
 
-int32_t window_get_scroll_data_index(rct_window& w, rct_widgetindex widget_index)
+int32_t window_get_scroll_data_index(const rct_window& w, rct_widgetindex widget_index)
 {
     int32_t i, result;
 
@@ -953,7 +953,7 @@ void window_rotate_camera(rct_window& w, int32_t direction)
 }
 
 void window_viewport_get_map_coords_by_cursor(
-    rct_window& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
+    const rct_window& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
 {
     // Get mouse position to offset against.
     auto mouseCoords = context_get_cursor_position_scaled();
@@ -1953,7 +1953,7 @@ void window_move_and_snap(rct_window& w, ScreenCoordsXY newWindowCoords, int32_t
     window_set_position(w, newWindowCoords);
 }
 
-int32_t window_can_resize(rct_window& w)
+int32_t window_can_resize(const rct_window& w)
 {
     return (w.flags & WF_RESIZABLE) && (w.min_width != w.max_width || w.min_height != w.max_height);
 }
@@ -2178,7 +2178,7 @@ rct_window* window_get_listening()
     return nullptr;
 }
 
-rct_windowclass window_get_classification(rct_window& window)
+rct_windowclass window_get_classification(const rct_window& window)
 {
     return window.classification;
 }

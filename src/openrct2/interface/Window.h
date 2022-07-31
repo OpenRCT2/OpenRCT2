@@ -713,7 +713,7 @@ void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex);
 void WindowInitScrollWidgets(rct_window& w);
 void window_update_scroll_widgets(rct_window& w);
-int32_t window_get_scroll_data_index(rct_window& w, rct_widgetindex widget_index);
+int32_t window_get_scroll_data_index(const rct_window& w, rct_widgetindex widget_index);
 
 void window_push_others_right(rct_window& w);
 void window_push_others_below(rct_window& w1);
@@ -723,7 +723,7 @@ rct_window* window_get_main();
 void window_scroll_to_location(rct_window& w, const CoordsXYZ& coords);
 void window_rotate_camera(rct_window& w, int32_t direction);
 void window_viewport_get_map_coords_by_cursor(
-    rct_window& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y);
+    const rct_window& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y);
 void window_viewport_centre_tile_around_cursor(rct_window& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y);
 void window_check_all_valid_zoom();
 void window_zoom_set(rct_window& w, ZoomLevel zoomLevel, bool atCursor);
@@ -791,7 +791,7 @@ void InvalidateAllWindowsAfterInput();
 void textinput_cancel();
 
 void window_move_and_snap(rct_window& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
-int32_t window_can_resize(rct_window& w);
+int32_t window_can_resize(const rct_window& w);
 
 void window_start_textbox(
     rct_window& call_w, rct_widgetindex call_widget, rct_string_id existing_text, char* existing_args, int32_t maxLength);
@@ -840,4 +840,4 @@ money32 place_provisional_track_piece(
 extern RideConstructionState _rideConstructionState2;
 
 rct_window* window_get_listening();
-rct_windowclass window_get_classification(rct_window& window);
+rct_windowclass window_get_classification(const rct_window& window);
