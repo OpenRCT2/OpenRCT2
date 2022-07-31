@@ -261,7 +261,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_HAS_NO_TRACK = (1ULL << 15),
     RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = (1ULL << 16), // Set by flat rides where the vehicle is integral to the structure, like
     // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
-    RIDE_TYPE_FLAG_IS_SHOP = (1ULL << 17),
+    RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY = (1ULL << 17),
     RIDE_TYPE_FLAG_TRACK_NO_WALLS = (1ULL << 18), // if set, wall scenery can not share a tile with the ride's track
     RIDE_TYPE_FLAG_FLAT_RIDE = (1ULL << 19),
     RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN = (1ULL << 20), // whether or not guests will go on the ride again if they liked it

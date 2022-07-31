@@ -1057,7 +1057,7 @@ static void WindowRideDisableTabs(rct_window* w)
         disabled_tabs |= (1ULL << WIDX_TAB_5); // 0x100
     }
 
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         disabled_tabs |= (1ULL << WIDX_TAB_3 | 1ULL << WIDX_TAB_4 | 1ULL << WIDX_TAB_7); // 0x4C0
 
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
@@ -4223,7 +4223,7 @@ static int32_t WindowRideHasTrackColour(Ride* ride, int32_t trackColour)
 {
     // Get station flags (shops don't have them)
     auto stationObjFlags = 0;
-    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
     {
         auto stationObj = ride->GetStationObject();
         if (stationObj != nullptr)
@@ -6930,7 +6930,7 @@ static void WindowRideCustomerInvalidate(rct_window* w)
         ride->FormatNameTo(ft);
 
         window_ride_customer_widgets[WIDX_SHOW_GUESTS_THOUGHTS].type = WindowWidgetType::FlatBtn;
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         {
             window_ride_customer_widgets[WIDX_SHOW_GUESTS_ON_RIDE].type = WindowWidgetType::Empty;
             window_ride_customer_widgets[WIDX_SHOW_GUESTS_QUEUING].type = WindowWidgetType::Empty;

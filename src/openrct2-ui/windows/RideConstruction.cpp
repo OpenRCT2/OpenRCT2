@@ -1530,7 +1530,7 @@ public:
         int32_t rideType = RideGetAlternativeType(currentRide);
 
         hold_down_widgets = 0;
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP) || !currentRide->HasStation())
+        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
         {
             widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
             widgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
@@ -2356,7 +2356,7 @@ private:
             // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
             auto currentRide = get_ride(_currentRideIndex);
             const auto& rtd = currentRide->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
             {
                 ride_initialise_construction_window(currentRide);
             }
@@ -3269,7 +3269,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     }
 
     if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
-        && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+        && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
     {
         TileElement* pathsByDir[NumOrthogonalDirections];
 

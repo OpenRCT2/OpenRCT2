@@ -2229,7 +2229,7 @@ void PaintTrack(paint_session& session, Direction direction, int32_t height, con
 
             if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
                 LightFxAddKioskLights(session.MapPosition, height, zOffset);
-            else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+            else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
                 LightFxAddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
 
