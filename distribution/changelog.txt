@@ -25,6 +25,7 @@
 - Fix: [#17542] Stalls will autorotate towards paths outside the park.
 - Fix: [#17553] Crash when moving invention list items to empty list.
 - Fix: [#17605] Crash when opening parks which have had objects removed externally.
+- Fix: [#17639] When building upside down, the special elements list contains many items twice (original bug).
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
