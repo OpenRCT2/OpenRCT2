@@ -1889,8 +1889,9 @@ public:
         widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Empty;
         widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Empty;
         widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Empty;
-        if ((rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT)
-            && _selectedTrackType != TrackElemType::Brakes
+
+        const auto& rtd = GetRideTypeDescriptor(rideType);
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_SEAT_ROTATION) && _selectedTrackType != TrackElemType::Brakes
             && _currentTrackCurve != (RideConstructionSpecialPieceSelected | TrackElemType::Brakes))
         {
             widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Groupbox;
