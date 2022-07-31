@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(RatingsMultipliers, { 15, 8, 0 }),
     SET_FIELD(UpkeepCosts, { 30, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 32.50_GBP, 1.00_GBP, 1, }),
-    SET_FIELD(DefaultPrices, { 10, 0 }),
+    SET_FIELD(DefaultPrices, { 6, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 22),
