@@ -2223,7 +2223,7 @@ void PaintTrack(paint_session& session, Direction direction, int32_t height, con
         {
             uint8_t zOffset = 16;
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) || ride->type == RIDE_TYPE_FIRST_AID
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID)
                 || rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
                 zOffset = 23;
 

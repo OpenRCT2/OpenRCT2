@@ -1065,7 +1065,8 @@ static void WindowRideDisableTabs(rct_window* w)
         disabled_tabs |= (1ULL << WIDX_TAB_6); // 0x200
     }
 
-    if (ride->type == RIDE_TYPE_CASH_MACHINE || ride->type == RIDE_TYPE_FIRST_AID || (gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID)
+        || (gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
         disabled_tabs |= (1ULL << WIDX_TAB_9); // 0x1000
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)

@@ -437,7 +437,6 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
 static void peep_update_hunger(Guest* peep);
 static void peep_decide_whether_to_leave_park(Guest* peep);
 static void peep_leave_park(Guest* peep);
-static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
 static void PeepHeadForNearestRideWithFlags(Guest* peep, int64_t rideTypeFlags);
 bool loc_690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
@@ -1117,7 +1116,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 if (Nausea >= 200)
                 {
                     thought_type = PeepThoughtType::VerySick;
-                    peep_head_for_nearest_ride_type(this, RIDE_TYPE_FIRST_AID);
+                    PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_IS_FIRST_AID);
                 }
                 InsertNewThought(thought_type);
             }
@@ -2233,7 +2232,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
         }
     }
 
-    if (ride->type == RIDE_TYPE_FIRST_AID)
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID))
     {
         if (Nausea < 128)
         {
@@ -3210,13 +3209,6 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
         peep->TimeLost = 0;
     }
-}
-
-static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
-{
-    auto considerOnlyCloseRides = rideType == RIDE_TYPE_FIRST_AID;
-    return peep_head_for_nearest_ride(
-        peep, considerOnlyCloseRides, [rideType](const Ride& ride) { return ride.type == rideType; });
 }
 
 static void PeepHeadForNearestRideWithFlags(Guest* peep, int64_t rideTypeFlags)
@@ -5004,7 +4996,9 @@ void Guest::UpdateRideShopInteract()
 
     const int16_t tileCentreX = NextLoc.x + 16;
     const int16_t tileCentreY = NextLoc.y + 16;
-    if (ride->type == RIDE_TYPE_FIRST_AID)
+
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID))
     {
         if (Nausea <= 35)
         {
