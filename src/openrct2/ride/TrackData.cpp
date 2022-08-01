@@ -285,6 +285,22 @@ static constexpr rct_track_coordinates TrackCoordinates[TrackElemType::Count] = 
         {    0,    2,    0,    0,    0,   32 }, // TrackElemType::FlatTrack1x1B
         {    0,    2,    0,    0,    0,   32 }, // TrackElemType::FlatTrack1x4C
         {    0,    0,    0,   96,   32,    0 }, // TrackElemType::FlatTrack3x3
+        { 0, 3, 0, 112, -64, -64 },  // TrackElemType::LeftCorkscrewUp
+        { 0, 1, 0, 112, -64, 64 },   // TrackElemType::RightCorkscrewUp
+        { 0, 3, 0, -112, -64, -64 }, // TrackElemType::LeftCorkscrewDown
+        { 0, 1, 0, -112, -64, 64 },  // TrackElemType::RightCorkscrewDown
+        { 0, 2, 0, 216, -32, -32 },  // TrackElemType::LeftMediumHalfLoopUp
+        { 0, 2, 0, 216, -32, 32 },   // TrackElemType::RightMediumHalfLoopUp
+        { 0, 2, 0, -216, 32, -32 },  // TrackElemType::RightMediumHalfLoopDown
+        { 0, 2, 0, -216, 32, 32 },   // TrackElemType::LeftMediumHalfLoopDown
+        { 0, 0, 0, 56, -64, 0 },     // TrackElemType::LeftZeroGRollUp
+        { 0, 0, 0, 56, -64, 0 },     // TrackElemType::RightZeroGRollUp
+        { 0, 0, 0, -56,-64, 0 },     // TrackElemType::RightZeroGRollDown
+        { 0, 0, 0, -56,-64, 0 },     // TrackElemType::LeftZeroGRollDown
+        { 0, 0, 0, 152, -96, 0 },    // TrackElemType::LeftLargeZeroGRollUp
+        { 0, 0, 0, 152, -96, 0 },    // TrackElemType::RightLargeZeroGRollUp
+        { 0, 0, 0, -152,-96, 0 },    // TrackElemType::RightLargeZeroGRollDown
+        { 0, 0, 0, -152,-96, 0 },    // TrackElemType::LeftLargeZeroGRollDown
 };
 
 /** rct2: 0x0099BA64 */
@@ -556,6 +572,23 @@ static constexpr uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
     /* TrackElemType::FlatTrack1x1B    */ { TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     /* TrackElemType::FlatTrack1x4C    */ { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     /* TrackElemType::FlatTrack3x3     */ { TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_0, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2, TRACK_SEQUENCE_FLAG_DIRECTION_2, 0, 0, 0, 0, 0, 0, 0 },
+    { 0 }, // TrackElemType::LeftCorkscrewUp
+    { 0 }, // TrackElemType::RightCorkscrewUp
+    { 0 }, // TrackElemType::LeftCorkscrewDown
+    { 0 }, // TrackElemType::RightCorkscrewDown
+    { 0 }, // TrackElemType::LeftMediumHalfLoopUp
+    { 0 }, // TrackElemType::RightMediumHalfLoopUp
+    { 0 }, // TrackElemType::RightMediumHalfLoopDown
+    { 0 }, // TrackElemType::LeftMediumHalfLoopDown
+    { 0 }, // TrackElemType::LeftZeroGRollUp
+    { 0 }, // TrackElemType::RightZeroGRollUp
+    { 0 }, // TrackElemType::RightZeroGRollDown
+    { 0 }, // TrackElemType::LeftZeroGRollDown
+    { 0 }, // TrackElemType::LeftLargeZeroGRollUp
+    { 0 }, // TrackElemType::RightLargeZeroGRollUp
+    { 0 }, // TrackElemType::RightLargeZeroGRollDown
+    { 0 }, // TrackElemType::LeftLargeZeroGRollDown
+
 };
 
 #define TRACK_BLOCK_END { 255, 255, 255, 255, 255, {255, 255}, 255 }
@@ -2545,6 +2578,145 @@ static constexpr const rct_preview_track TrackBlocksFlatTrack3x3[] = {
     TRACK_BLOCK_END
 };
 
+
+static constexpr const rct_preview_track TrackBlocksLeftLargeCorkscrewUp[] = {
+    { 0,   0,   0,  0, 16, { 0b1111, 0 }, 0 },
+    { 1, -32,   0,  8, 32, { 0b1111, 0 }, 0 },
+    { 2, -64,   0, 32, 24, { 0b0111, 0 }, 0 },
+    { 3, -32, -32, 32, 24, { 0b1000, 0 }, 0 },
+    { 4, -64, -32, 48, 40, { 0b1111, 0 }, 0 },
+    { 5, -64, -64, 72, 24, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightLargeCorkscrewUp[] = {
+    { 0,   0,   0 ,  0, 16, { 0b1111, 0 }, 0 },
+    { 1, -32,   0,   8, 32, { 0b1111, 0 }, 0 },
+    { 2, -64,   0,  32, 24, { 0b1011, 0 }, 0 },
+    { 3, -32,  32,  32, 24, { 0b0100, 0 }, 0 },
+    { 4, -64,  32,  48, 40, { 0b1111, 0 }, 0 },
+    { 5, -64,  64,  72, 24, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksLeftLargeCorkscrewDown[] = {
+    { 0,   0,   0 ,  -40, 24, { 0b1111, 0 }, 0 },
+    { 1, -32,   0,   -64, 40, { 0b1111, 0 }, 0 },
+    { 2, -32, -32,   -80, 24, { 0b1000, 0 }, 0 },
+    { 3, -64,   0,   -80, 24, { 0b0111, 0 }, 0 },
+    { 4, -64, -32,  -104, 32, { 0b1111, 0 }, 0 },
+    { 5, -64, -64,  -112, 16, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightLargeCorkscrewDown[] = {
+    { 0,   0,   0 ,  -40, 24, { 0b1111, 0 }, 0 },
+    { 1, -32,   0,   -64, 40, { 0b1111, 0 }, 0 },
+    { 2, -32,  32,   -80, 24, { 0b0100, 0 }, 0 },
+    { 3, -64,   0,   -80, 24, { 0b1011, 0 }, 0 },
+    { 4, -64,  32,  -104, 32, { 0b1111, 0 }, 0 },
+    { 5, -64,  64,  -112, 16, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksLeftMediumHalfLoopUp[] = {
+    { 0,   0,   0,  0, 24, { 0b1111, 0 }, 0 },
+    { 1, -32,   0, 16, 48, { 0b1111, 0 }, 0 },
+    { 2, -64,   0, 56,120, { 0b1111, 0 }, 0 },
+    { 3, -64, -32, 56,120, { 0b1111, 0 }, 0 },
+    { 4, -32, -32,168, 24, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightMediumHalfLoopUp[] = {
+    { 0,   0,   0,  0, 24, { 0b1111, 0 }, 0 },
+    { 1, -32,   0, 16, 48, { 0b1111, 0 }, 0 },
+    { 2, -64,   0, 56,120, { 0b1111, 0 }, 0 },
+    { 3, -64,  32, 56,120, { 0b1111, 0 }, 0 },
+    { 4, -32,  32,168, 24, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksLeftMediumHalfLoopDown[] = {
+    { 0,   0,   0,  -48, 24, { 0b1111, 0 }, 0 },
+    { 1, -32,   0, -160,120, { 0b1111, 0 }, 0 },
+    { 2, -32, -32, -160,120, { 0b1111, 0 }, 0 },
+    { 3,   0, -32, -200, 48, { 0b1111, 0 }, 0 },
+    { 4,  32, -32, -216, 24, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightMediumHalfLoopDown[] = {
+    { 0,   0,   0 ,  -48,  24, { 0b1111, 0 }, 0 },
+    { 1, -32,   0,  -160, 120, { 0b1111, 0 }, 0 },
+    { 2, -32,  32,  -160, 120, { 0b1111, 0 }, 0 },
+    { 3,   0,  32,  -200,  48, { 0b1111, 0 }, 0 },
+    { 4,  32,  32,  -216,  24, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksLeftZeroGRollUp[] = {
+    { 0,   0,   0,  0, 16, { 0b1111, 0 }, 0 },
+    { 1, -32,   0,  8, 24, { 0b1111, 0 }, 0 },
+    { 2, -64,   0,  24, 16, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightZeroGRollUp[] = {
+    { 0,   0,   0,  0, 16, { 0b1111, 0 }, 0 },
+    { 1, -32,   0,  8, 24, { 0b1111, 0 }, 0 },
+    { 2, -64,   0,  24, 16, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksLeftZeroGRollDown[] = {
+    { 0,   0,   0, -32, 16, { 0b1111, 0 }, 0 },
+    { 1, -32,   0, -48, 24, { 0b1111, 0 }, 0 },
+    { 2, -64,   0, -56, 16, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightZeroGRollDown[] = {
+    { 0,   0,   0 ,-32, 16, { 0b1111, 0 }, 0 },
+    { 1, -32,   0, -48, 24, { 0b1111, 0 }, 0 },
+    { 2, -64,   0, -56, 16, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+
+static constexpr const rct_preview_track TrackBlocksLeftLargeZeroGRollUp[] = {
+    { 0,   0,   0,  0, 64, { 0b1111, 0 }, 0 },
+    { 1, -32,   0, 56, 48, { 0b1111, 0 }, 0 },
+    { 2, -64,   0, 96, 40, { 0b1111, 0 }, 0 },
+    { 3, -96,   0,120, 16, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightLargeZeroGRollUp[] = {
+    { 0,   0,   0,   0, 64, { 0b1111, 0 }, 0 },
+    { 1, -32,   0,  56, 48, { 0b1111, 0 }, 0 },
+    { 2, -64,   0,  96, 40, { 0b1111, 0 }, 0 },
+    { 3, -96,   0, 120, 16, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksLeftLargeZeroGRollDown[] = {
+    { 0,   0,   0,  -32, 16, { 0b1111, 0 }, 0 },
+    { 1, -32,   0,  -56, 40, { 0b1111, 0 }, 0 },
+    { 2, -64,   0,  -96, 48, { 0b1111, 0 }, 0 },
+    { 3, -96,   0,  -152, 64, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightLargeZeroGRollDown[] = {
+    { 0,   0,   0 , -32, 16, { 0b1111, 0 }, 0 },
+    { 1, -32,   0,  -56, 40, { 0b1111, 0 }, 0 },
+    { 2, -64,   0,  -96, 48, { 0b1111, 0 }, 0 },
+    { 3, -96,   0, -152, 64, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+
 // rct2: 0x00994638
 static constexpr std::array<const rct_preview_track*, TrackElemType::Count> TrackBlocks = {
     TrackBlocks000,
@@ -2815,6 +2987,22 @@ static constexpr std::array<const rct_preview_track*, TrackElemType::Count> Trac
     TrackBlocksFlatTrack1x1B,
     TrackBlocksFlatTrack1x4C,
     TrackBlocksFlatTrack3x3,
+    TrackBlocksLeftLargeCorkscrewUp,
+    TrackBlocksRightLargeCorkscrewUp,
+    TrackBlocksLeftLargeCorkscrewDown,
+    TrackBlocksRightLargeCorkscrewDown,
+    TrackBlocksLeftMediumHalfLoopUp,
+    TrackBlocksRightMediumHalfLoopUp,
+    TrackBlocksLeftMediumHalfLoopDown,
+    TrackBlocksRightMediumHalfLoopDown,
+    TrackBlocksLeftZeroGRollUp,
+    TrackBlocksRightZeroGRollUp,
+    TrackBlocksLeftZeroGRollDown,
+    TrackBlocksRightZeroGRollDown,
+    TrackBlocksLeftLargeZeroGRollUp,
+    TrackBlocksRightLargeZeroGRollUp,
+    TrackBlocksLeftLargeZeroGRollDown,
+    TrackBlocksRightLargeZeroGRollDown,
 };
 
 static constexpr uint8_t TrackPieceLengths[TrackElemType::Count] = {
@@ -3085,6 +3273,22 @@ static constexpr uint8_t TrackPieceLengths[TrackElemType::Count] = {
     0,      // TrackElemType::FlatTrack1x1B
     0,      // TrackElemType::FlatTrack1x4C
     0,      // TrackElemType::FlatTrack3x3
+    96,     // TrackElemType::LeftCorkscrewUp
+    96,     // TrackElemType::RightCorkscrewUp
+    96,     // TrackElemType::LeftCorkscrewDown
+    96,     // TrackElemType::RightCorkscrewDown
+    80,     // TrackElemType::LeftMediumHalfLoopUp
+    80,     // TrackElemType::RightMediumHalfLoopUp
+    80,     // TrackElemType::RightMediumHalfLoopDown
+    80,     // TrackElemType::LeftMediumHalfLoopDown
+    96,     // TrackElemType::LeftZeroGRollUp
+    96,     // TrackElemType::RightZeroGRollUp
+    96,     // TrackElemType::RightZeroGRollDown
+    96,     // TrackElemType::LeftZeroGRollDown
+    165,    // TrackElemType::LeftLargeZeroGRollUp
+    165,    // TrackElemType::RightLargeZeroGRollUp
+    165,    // TrackElemType::RightLargeZeroGRollDown
+    165     // TrackElemType::LeftLargeZeroGRollDown
 };
 
 // rct2: 0x00998C95
@@ -3356,6 +3560,22 @@ static constexpr track_curve_chain gTrackCurveChain[TrackElemType::Count] = {
     { 65535, 65535 },                       // TrackElemType::FlatTrack1x1B
     { 65535, 65535 },                       // TrackElemType::FlatTrack1x4C
     { 65535, 65535 },                       // TrackElemType::FlatTrack3x3
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeCorkscrewDown, TRACK_CURVE_NONE }, // TrackElemType::LeftLargeCorkscrewUp
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeCorkscrewDown, TRACK_CURVE_NONE },  // TrackElemType::RightLargeCorkscrewUp
+    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightLargeCorkscrewUp },   // TrackElemType::LeftLargeCorkscrewDown
+    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeCorkscrewUp },    // TrackElemType::RightCorkscrewDown
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopDown, TRACK_CURVE_NONE }, // TrackElemType::LeftMediumHalfLoopUp
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopDown, TRACK_CURVE_NONE },  // TrackElemType::RightMediumHalfLoopUp
+    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopUp },    // TrackElemType::LeftMediumHalfLoopDown
+    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopUp },   // TrackElemType::RightMediumHalfLoopDown
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftZeroGRollDown, TRACK_CURVE_NONE },       // TrackElemType::LeftZeroGRollUp
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightZeroGRollDown, TRACK_CURVE_NONE },      // TrackElemType::RightZeroGRollUp
+    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftZeroGRollUp },         // TrackElemType::LeftZeroGRollDown
+    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightZeroGRollUp },        // TrackElemType::RightZeroGRollDown
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeZeroGRollDown, TRACK_CURVE_NONE },  // TrackElemType::LeftLargeZeroGRollUp
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeZeroGRollDown, TRACK_CURVE_NONE }, // TrackElemType::RightLargeZeroGRollUp
+    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeZeroGRollUp },    // TrackElemType::LeftLargeZeroGRollDown
+    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightLargeZeroGRollUp },   // TrackElemType::RightLargeZeroGRollDown
 };
 
 const track_descriptor gTrackDescriptors[142] = {
@@ -3772,6 +3992,22 @@ static constexpr track_type_t AlternativeTrackTypes[TrackElemType::Count] = {
     TrackElemType::None, // TrackElemType::FlatTrack1x1B
     TrackElemType::None, // TrackElemType::FlatTrack1x4C
     TrackElemType::None, // TrackElemType::FlatTrack3x3
+    TrackElemType::None, // TrackElemType::LeftLargeCorkscrewUp
+    TrackElemType::None, // TrackElemType::RightLargeCorkscrewUp
+    TrackElemType::None, // TrackElemType::LeftLargeCorkscrewDown
+    TrackElemType::None, // TrackElemType::RightCorkscrewDown
+    TrackElemType::None, // TrackElemType::LeftMediumHalfLoopUp
+    TrackElemType::None, // TrackElemType::RightMediumHalfLoopUp
+    TrackElemType::None, // TrackElemType::LeftMediumHalfLoopDown
+    TrackElemType::None, // TrackElemType::RightMediumHalfLoopDown
+    TrackElemType::None, // TrackElemType::LeftZeroGRollUp
+    TrackElemType::None, // TrackElemType::RightZeroGRollUp
+    TrackElemType::None, // TrackElemType::LeftZeroGRollDown
+    TrackElemType::None, // TrackElemType::RightZeroGRollDown
+    TrackElemType::None, // TrackElemType::LeftLargeZeroGRollUp
+    TrackElemType::None, // TrackElemType::RightLargeZeroGRollUp
+    TrackElemType::None, // TrackElemType::LeftLargeZeroGRollDown
+    TrackElemType::None  // TrackElemType::RightLargeZeroGRollDown
 };
 
 /** rct2: 0x0099DA34 */
@@ -4043,6 +4279,22 @@ static constexpr money32 TrackPricing[TrackElemType::Count] = {
     65536,  // TrackElemType::FlatTrack1x1B
     262144, // TrackElemType::FlatTrack1x4C
     524288, // TrackElemType::FlatTrack3x3
+    360448, // TrackElemType::LeftLargeCorkscrewUp
+    360448, // TrackElemType::RightLargeCorkscrewUp
+    360448, // TrackElemType::LeftLargeCorkscrewDown
+    360448, // TrackElemType::RightCorkscrewDown
+    589824, // TrackElemType::LeftMediumHalfLoopUp
+    589824, // TrackElemType::RightMediumHalfLoopUp
+    589824, // TrackElemType::LeftMediumHalfLoopDown
+    589824, // TrackElemType::RightMediumHalfLoopDown
+    229376, // TrackElemType::LeftZeroGRollUp
+    229376, // TrackElemType::RightZeroGRollUp
+    229376, // TrackElemType::LeftZeroGRollDown
+    229376, // TrackElemType::RightZeroGRollDown
+    425984, // TrackElemType::LeftLargeZeroGRollUp
+    425984, // TrackElemType::RightLargeZeroGRollUp
+    425984, // TrackElemType::LeftLargeZeroGRollDown
+    425984, // TrackElemType::RightLargeZeroGRollDown
 };
 
 /** rct2: 0x0099EA1C */
@@ -4314,6 +4566,22 @@ static constexpr track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
     TrackElemType::FlatTrack1x1B, // TrackElemType::FlatTrack1x1B
     TrackElemType::FlatTrack1x4C, // TrackElemType::FlatTrack1x4C
     TrackElemType::FlatTrack3x3, // TrackElemType::FlatTrack3x3
+    TrackElemType::RightLargeCorkscrewUp, // TrackElemType::LeftLargeCorkscrewUp
+    TrackElemType::LeftLargeCorkscrewUp, // TrackElemType::RightLargeCorkscrewUp
+    TrackElemType::RightLargeCorkscrewDown, // TrackElemType::LeftLargeCorkscrewDown
+    TrackElemType::LeftLargeCorkscrewDown, // TrackElemType::RightLargeCorkscrewDown
+    TrackElemType::RightMediumHalfLoopUp, // TrackElemType::LeftMediumHalfLoopUp
+    TrackElemType::LeftMediumHalfLoopUp, // TrackElemType::RightMediumHalfLoopUp
+    TrackElemType::RightMediumHalfLoopDown, // TrackElemType::LeftMediumHalfLoopDown
+    TrackElemType::LeftMediumHalfLoopDown, // TrackElemType::RightMediumHalfLoopDown
+    TrackElemType::RightZeroGRollUp, // TrackElemType::LeftZeroGRollUp
+    TrackElemType::LeftZeroGRollUp, // TrackElemType::RightZeroGRollUp
+    TrackElemType::RightZeroGRollDown, // TrackElemType::LeftZeroGRollDown
+    TrackElemType::LeftZeroGRollDown, // TrackElemType::RightZeroGRollDown
+    TrackElemType::RightLargeZeroGRollUp, // TrackElemType::LeftLargeZeroGRollUp
+    TrackElemType::LeftLargeZeroGRollUp, // TrackElemType::RightLargeZeroGRollUp
+    TrackElemType::RightLargeZeroGRollDown, // TrackElemType::LeftLargeZeroGRollDown
+    TrackElemType::LeftLargeZeroGRollDown, // TrackElemType::RightLargeZeroGRollDown
 };
 
 /** rct2: 0x00999694 */
@@ -4585,6 +4853,22 @@ static constexpr uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
     (1 << 0), // TrackElemType::FlatTrack1x1B
     (1 << 0), // TrackElemType::FlatTrack1x4C
     (1 << 0), // TrackElemType::FlatTrack3x3
+    (1 << 0) | (1 << 5), // TrackElemType::LeftLargeCorkscrewUp
+    (1 << 0) | (1 << 5), // TrackElemType::RightLargeCorkscrewUp
+    (1 << 0) | (1 << 5), // TrackElemType::LeftLargeCorkscrewDown
+    (1 << 0) | (1 << 5), // TrackElemType::RightLargeCorkscrewDown
+    (1 << 0) | (1 << 4), // TrackElemType::LeftMediumHalfLoopUp
+    (1 << 0) | (1 << 4), // TrackElemType::RightMediumHalfLoopUp
+    (1 << 0) | (1 << 4), // TrackElemType::LeftMediumHalfLoopDown
+    (1 << 0) | (1 << 4), // TrackElemType::RightMediumHalfLoopDown
+    (1 << 0) | (1 << 2), // TrackElemType::LeftZeroGRollUp
+    (1 << 0) | (1 << 2), // TrackElemType::RightZeroGRollUp
+    (1 << 0) | (1 << 2), // TrackElemType::LeftZeroGRollDown
+    (1 << 0) | (1 << 2), // TrackElemType::RightZeroGRollDown
+    (1 << 0) | (1 << 3), // TrackElemType::LeftLargeZeroGRollUp
+    (1 << 0) | (1 << 3), // TrackElemType::RightLargeZeroGRollUp
+    (1 << 0) | (1 << 3), // TrackElemType::LeftLargeZeroGRollDown
+    (1 << 0) | (1 << 3), // TrackElemType::RightLargeZeroGRollDown
 };
 
 /** rct2: 0x00999A94 */
@@ -4856,6 +5140,23 @@ static constexpr uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Cou
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack1x1B
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack1x4C
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack3x3
+    { 0b1010, 0b0010, 0b0011, 0b1100, 0b0001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftLargeCorkscrewUp
+    { 0b1010, 0b1000, 0b1001, 0b0110, 0b0001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightLargeCorkscrewUp
+    { 0b1010, 0b0010, 0b1100, 0b0011, 0b0001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftLargeCorkscrewDown
+    { 0b1010, 0b1000, 0b0110, 0b1001, 0b0001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightLargeCorkscrewDown
+    { 0b1010, 0b0010, 0b0011, 0b1001, 0b1000,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftMediumHalfLoopUp
+    { 0b1010, 0b1000, 0b1001, 0b0011, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightMediumHalfLoopUp
+    { 0b0010, 0b0011, 0b1001, 0b1000, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftMediumHalfLoopDown
+    { 0b1000, 0b1001, 0b0011, 0b0010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightMediumHalfLoopDown
+    { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftZeroGRollUp
+    { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightZeroGRollUp
+    { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftZeroGRollDown
+    { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightZeroGRollDown
+    { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftLargeZeroGRollUp
+    { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightLargeZeroGRollUp
+    { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftLargeZeroGRollDown
+    { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightLargeZeroGRollDown
+
 };
 
 /** rct2: 0x0099423C */
@@ -5127,6 +5428,22 @@ static constexpr uint16_t TrackFlags[TrackElemType::Count] = {
     /* TrackElemType::FlatTrack1x1B                                 */   0,
     /* TrackElemType::FlatTrack1x4C                                 */   0,
     /* TrackElemType::FlatTrack3x3                                  */   0,
+    /* TrackElemType::LeftLargeCorkscrewUp                          */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::RightLargeCorkscrewUp                         */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::LeftLargeCorkscrewDown                        */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::RightLargeCorkscrewDown                       */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::LeftMediumHalfLoopUp                          */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::RightMediumHalfLoopUp                         */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::RightMediumHalfLoopDown                       */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::LeftMediumHalfLoopDown                        */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::LeftZeroGRollUp                               */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::RightZeroGRollUp                              */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::RightZeroGRollDown                            */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::LeftZeroGRollDown                             */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::LeftLargeZeroGRollUp                          */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::RightLargeZeroGRollUp                         */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::RightLargeZeroGRollDown                       */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::LeftLargeZeroGRollDown                        */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
 };
 // clang-format on
 
@@ -5402,7 +5719,24 @@ static constexpr rct_trackdefinition TrackDefinitions[TrackElemType::Count] =
     { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x1B
     { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        -40                },  // TrackElemType::FlatTrack1x4C
     { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack3x3
+    { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // TrackElemType::LeftLargeCorkscrewUp
+    { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // TrackElemType::RightLargeCorkscrewUp
+    { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -32                },  // TrackElemType::LeftLargeCorkscrewDown
+    { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -32                },  // TrackElemType::RightLargeCorkscrewDown
+    { TRACK_HALF_LOOP_MEDIUM,       TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // TrackElemType::LeftMediumHalfLoopUp
+    { TRACK_HALF_LOOP_MEDIUM,       TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // TrackElemType::RightMediumHalfLoopUp
+    { TRACK_HALF_LOOP_MEDIUM,       TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -64                },  // TrackElemType::LeftMediumHalfLoopDown
+    { TRACK_HALF_LOOP_MEDIUM,       TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -64                },  // TrackElemType::RightMediumHalfLoopDown
+    { TRACK_ZERO_G_ROLL,            TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // TrackElemType::LeftZeroGRollUp
+    { TRACK_ZERO_G_ROLL,            TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // TrackElemType::RightZeroGRollUp
+    { TRACK_ZERO_G_ROLL,            TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // TrackElemType::LeftZeroGRollDown
+    { TRACK_ZERO_G_ROLL,            TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // TrackElemType::RightZeroGRollDown
+    { TRACK_ZERO_G_ROLL_LARGE,      TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_60,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // TrackElemType::LeftLargeZeroGRollUp
+    { TRACK_ZERO_G_ROLL_LARGE,      TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_60,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // TrackElemType::RightLargeZeroGRollUp
+    { TRACK_ZERO_G_ROLL_LARGE,      TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // TrackElemType::LeftLargeZeroGRollDown
+    { TRACK_ZERO_G_ROLL_LARGE,      TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // TrackElemType::RightLargeZeroGRollDown
 };
+
 // clang-format on
 
 constexpr static uint8_t TrackTypeToSpinFunction[TrackElemType::Count] = {
@@ -5448,6 +5782,60 @@ static int32_t EvaluatorHalfLoopDown(const int16_t progress)
     return (progress / 2) + 28;
 }
 
+static int32_t EvaluatorLargeZeroGRollUp(const int16_t progress)
+{
+    if (progress > 114)
+        return (371 - 2 * progress);
+    return 0;
+}
+
+static int32_t EvaluatorLargeZeroGRollDown(const int16_t progress)
+{
+    if (progress < 38)
+        return 67 + 2 * progress;
+    return 0;
+}
+
+static int32_t EvaluatorLargeZeroGRollUpLeft(const int16_t progress)
+{
+    return 387 - 2 * progress;
+}
+
+static int32_t EvaluatorLargeZeroGRollUpRight(const int16_t progress)
+{
+    return 2 * progress - 387;
+}
+
+static int32_t EvaluatorLargeZeroGRollDownLeft(const int16_t progress)
+{
+    return 83 + 2 * progress;
+}
+
+static int32_t EvaluatorLargeZeroGRollDownRight(const int16_t progress)
+{
+    return -(83 + 2 * progress);
+}
+
+static int32_t EvaluatorZeroGRollUpLeft(const int16_t progress)
+{
+    return 174 - progress;
+}
+
+static int32_t EvaluatorZeroGRollUpRight(const int16_t progress)
+{
+    return progress - 174;
+}
+
+static int32_t EvaluatorZeroGRollDownLeft(const int16_t progress)
+{
+    return 73 + progress;
+}
+
+static int32_t EvaluatorZeroGRollDownRight(const int16_t progress)
+{
+    return -(73 + progress);
+}
+
 static int32_t EvaluatorWaterSplash(const int16_t progress)
 {
     if (progress < 32)
@@ -5464,6 +5852,16 @@ static int32_t EvaluatorWaterSplash(const int16_t progress)
 static int32_t EvaluatorQuarterTurn3Tiles(const int16_t progress)
 {
     return -(progress / 2) + 134;
+}
+
+static int32_t EvaluatorMediumHalfLoopUp(const int16_t progress)
+{
+    return (244 - progress) / 4 + 51;
+}
+
+static int32_t EvaluatorMediumHalfLoopDown(const int16_t progress)
+{
+    return (progress / 4) + 51;
 }
 
 static int32_t EvaluatorLargeHalfLoopUp(const int16_t progress)
@@ -5717,6 +6115,12 @@ static constexpr TrackComputeFunction GetLateralFunction(const uint16_t type)
         case TrackElemType::HalfLoopDown:
         case TrackElemType::FlyerHalfLoopDown:
             return EvaluatorConst<0>;
+        case TrackElemType::LeftLargeCorkscrewUp:
+        case TrackElemType::RightLargeCorkscrewDown:
+            return EvaluatorConst<117>;
+        case TrackElemType::RightLargeCorkscrewUp:
+        case TrackElemType::LeftLargeCorkscrewDown:
+            return EvaluatorConst<-117>;
         case TrackElemType::LeftCorkscrewUp:
         case TrackElemType::RightCorkscrewDown:
         case TrackElemType::LeftFlyerCorkscrewUp:
@@ -5801,6 +6205,22 @@ static constexpr TrackComputeFunction GetLateralFunction(const uint16_t type)
         case TrackElemType::RightBarrelRollUpToDown:
         case TrackElemType::RightBarrelRollDownToUp:
             return EvaluatorConst<-115>;
+        case TrackElemType::LeftZeroGRollUp:
+            return EvaluatorZeroGRollUpLeft;
+        case TrackElemType::RightZeroGRollUp:
+            return EvaluatorZeroGRollUpRight;
+        case TrackElemType::LeftZeroGRollDown:
+            return EvaluatorZeroGRollDownLeft;
+        case TrackElemType::RightZeroGRollDown:
+            return EvaluatorZeroGRollDownRight;
+        case TrackElemType::LeftLargeZeroGRollUp:
+            return EvaluatorLargeZeroGRollUpLeft;
+        case TrackElemType::RightLargeZeroGRollUp:
+            return EvaluatorLargeZeroGRollUpRight;
+        case TrackElemType::LeftLargeZeroGRollDown:
+            return EvaluatorLargeZeroGRollDownLeft;
+        case TrackElemType::RightLargeZeroGRollDown:
+            return EvaluatorLargeZeroGRollDownRight;
         case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
             return EvaluatorConst<90>;
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
@@ -6041,6 +6461,12 @@ static constexpr TrackComputeFunction GetVerticalFunction(const uint16_t type)
         case TrackElemType::HalfLoopDown:
         case TrackElemType::FlyerHalfLoopDown:
             return EvaluatorHalfLoopDown;
+        case TrackElemType::LeftLargeCorkscrewUp:
+        case TrackElemType::RightLargeCorkscrewDown:
+            return EvaluatorConst<89>;
+        case TrackElemType::RightLargeCorkscrewUp:
+        case TrackElemType::LeftLargeCorkscrewDown:
+            return EvaluatorConst<89>;
         case TrackElemType::LeftCorkscrewUp:
         case TrackElemType::RightCorkscrewDown:
         case TrackElemType::LeftFlyerCorkscrewUp:
@@ -6125,11 +6551,29 @@ static constexpr TrackComputeFunction GetVerticalFunction(const uint16_t type)
         case TrackElemType::RightBarrelRollUpToDown:
         case TrackElemType::RightBarrelRollDownToUp:
             return EvaluatorConst<170>;
+        case TrackElemType::LeftZeroGRollUp:
+        case TrackElemType::RightZeroGRollUp:
+            return EvaluatorConst<250>;
+        case TrackElemType::LeftZeroGRollDown:
+        case TrackElemType::RightZeroGRollDown:
+            return EvaluatorConst<250>;
+        case TrackElemType::LeftLargeZeroGRollUp:
+        case TrackElemType::RightLargeZeroGRollUp:
+            return EvaluatorLargeZeroGRollUp;
+        case TrackElemType::LeftLargeZeroGRollDown:
+        case TrackElemType::RightLargeZeroGRollDown:
+            return EvaluatorLargeZeroGRollDown;
         case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
         case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
         case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
             return EvaluatorQuarterTurn3Tiles;
+        case TrackElemType::LeftMediumHalfLoopUp:
+        case TrackElemType::RightMediumHalfLoopUp:
+            return EvaluatorMediumHalfLoopUp;
+        case TrackElemType::RightMediumHalfLoopDown:
+        case TrackElemType::LeftMediumHalfLoopDown:
+            return EvaluatorMediumHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopUp:
         case TrackElemType::RightLargeHalfLoopUp:
             return EvaluatorLargeHalfLoopUp;
@@ -6435,6 +6879,22 @@ static constexpr const StringId RideConfigurationStringIds[] = {
     STR_EMPTY,                         // 264
     STR_EMPTY,                         // 265
     STR_EMPTY,                         // 266
+    STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewUp
+    STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewUp
+    STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewDown
+    STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewDown
+    STR_MEDIUM_HALF_LOOP_LEFT,         // TrackElemType::LeftMediumHalfLoopUp
+    STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::RightMediumHalfLoopUp
+    STR_MEDIUM_HALF_LOOP_LEFT,         // TrackElemType::RightMediumHalfLoopDown
+    STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::LeftMediumHalfLoopDown
+    STR_ZERO_G_ROLL_LEFT,              // TrackElemType::LeftZeroGRollUp
+    STR_ZERO_G_ROLL_RIGHT,             // TrackElemType::RightZeroGRollUp
+    STR_ZERO_G_ROLL_LEFT,              // TrackElemType::RightZeroGRollDown
+    STR_ZERO_G_ROLL_RIGHT,             // TrackElemType::LeftZeroGRollDown
+    STR_LARGE_ZERO_G_ROLL_LEFT,        // TrackElemType::LeftLargeZeroGRollUp
+    STR_LARGE_ZERO_G_ROLL_RIGHT,       // TrackElemType::RightLargeZeroGRollUp
+    STR_LARGE_ZERO_G_ROLL_LEFT,        // TrackElemType::RightLargeZeroGRollDown
+    STR_LARGE_ZERO_G_ROLL_RIGHT,       // TrackElemType::LeftLargeZeroGRollDown
 };
 
 namespace OpenRCT2

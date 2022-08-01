@@ -187,8 +187,8 @@ class RideConstructionWindow final : public Window
 {
 private:
     uint8_t _currentlyShowingBrakeOrBoosterSpeed{};
-    uint32_t _currentDisabledSpecialTrackPieces{};
-    track_type_t _currentPossibleRideConfigurations[32]{};
+    uint64_t _currentDisabledSpecialTrackPieces{};
+    track_type_t _currentPossibleRideConfigurations[64]{};
     uint16_t _numCurrentPossibleRideConfigurations{};
     uint16_t _numCurrentPossibleSpecialTrackPieces{};
     bool _autoOpeningShop{};
@@ -2113,12 +2113,12 @@ public:
                 continue;
 
             _currentPossibleRideConfigurations[currentPossibleRideConfigurationIndex] = trackType;
-            _currentDisabledSpecialTrackPieces |= (1 << currentPossibleRideConfigurationIndex);
+            _currentDisabledSpecialTrackPieces |= (1ULL << currentPossibleRideConfigurationIndex);
             if (_currentTrackPieceDirection < 4 && slope == _previousTrackSlopeEnd && bank == _previousTrackBankEnd
                 && (trackType != TrackElemType::TowerBase
                     || currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES)))
             {
-                _currentDisabledSpecialTrackPieces &= ~(1 << currentPossibleRideConfigurationIndex);
+                _currentDisabledSpecialTrackPieces &= ~(1ULL << currentPossibleRideConfigurationIndex);
                 _numCurrentPossibleSpecialTrackPieces++;
             }
             currentPossibleRideConfigurationIndex++;
@@ -2512,9 +2512,9 @@ private:
             { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 0,
             _numCurrentPossibleRideConfigurations, widget->width());
 
-        for (int32_t i = 0; i < 32; i++)
+        for (int32_t i = 0; i < 64; i++)
         {
-            if (_currentDisabledSpecialTrackPieces & (1 << i))
+            if (_currentDisabledSpecialTrackPieces & (1ULL << i))
             {
                 Dropdown::SetDisabled(i, true);
             }
