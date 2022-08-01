@@ -18,7 +18,7 @@ STR_0016    :Observatietoren
 STR_0017    :Stalen achtbaan
 STR_0018    :Waterglijbaan
 STR_0019    :Mijntreinachtbaan
-STR_0020    :Kabelbaan
+STR_0020    :Stoeltjeslift
 STR_0021    :Stalen schroefachtbaan
 STR_0022    :Doolhof
 STR_0023    :Spiraalglijbaan
