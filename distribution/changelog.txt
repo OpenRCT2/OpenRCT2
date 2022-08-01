@@ -8,6 +8,7 @@
 - Change: [#18381] Convert custom invisible paths to the built-in ones.
 - Fix: [#14312] Research ride type message incorrect.
 - Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
+- Fix: [#17657] When switching from buying lands rights to buying construction rights, grid disables and won't re-enable afterwards.
 - Fix: [#17763] Missing validation on invalid characters in file name.
 - Fix: [#17853] Invention name tears while being dragged.
 - Fix: [#18064] Unable to dismiss notification messages.

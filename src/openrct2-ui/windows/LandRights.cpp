@@ -66,7 +66,6 @@ public:
 
         gLandToolSize = 1;
 
-        show_gridlines();
         tool_set(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
         input_set_flag(INPUT_FLAG_6, true);
 
@@ -318,7 +317,6 @@ public:
 
     void OnToolAbort(WidgetIndex widgetIndex) override
     {
-        hide_gridlines();
         if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
         {
             hide_land_rights();
