@@ -283,13 +283,13 @@ namespace OpenRCT2::RideAudio
         }
     }
 
-    static std::pair<size_t, size_t> RideMusicGetTrackOffsetLength(const Ride& ride)
+    std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Circus(const Ride& ride)
     {
-        if (ride.type == RIDE_TYPE_CIRCUS)
-        {
-            return { 1378, 12427456 };
-        }
+        return { 1378, 12427456 };
+    }
 
+    std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Default(const Ride& ride)
+    {
         auto& objManager = GetContext()->GetObjectManager();
         auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride.music));
         if (musicObj != nullptr)
@@ -302,6 +302,12 @@ namespace OpenRCT2::RideAudio
             }
         }
         return { 0, 0 };
+    }
+
+    static std::pair<size_t, size_t> RideMusicGetTrackOffsetLength(const Ride& ride)
+    {
+        const auto& rtd = ride.GetRideTypeDescriptor();
+        return rtd.MusicTrackOffsetLength(ride);
     }
 
     static void RideUpdateMusicPosition(Ride& ride)

@@ -54,5 +54,10 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::CircusStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
     SET_FIELD(MusicUpdateFunction, CircusMusicUpdate),
+    SET_FIELD(Classification,RideClassification::Ride),
+    SET_FIELD(UpdateLeaveEntrance,PeepUpdateRideLeaveEntranceDefault),
+    SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
+    SET_FIELD(UpdateMeasurementsSpecialElements, RideUpdateMeasurementsSpecialElements_Default),
+    SET_FIELD(MusicTrackOffsetLength, OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Circus),
 };
 // clang-format on

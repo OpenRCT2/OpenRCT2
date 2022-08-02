@@ -161,6 +161,7 @@ using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
 using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
 using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const track_type_t trackType);
+using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 
 enum class RideConstructionWindowContext : uint8_t
 {
@@ -229,6 +230,8 @@ struct RideTypeDescriptor
     RideConstructionWindowContext ConstructionWindowContext = RideConstructionWindowContext::Default;
 
     RideUpdateMeasurementsSpecialElementsFunc UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default;
+
+    MusicTrackOffsetLengthFunc MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
