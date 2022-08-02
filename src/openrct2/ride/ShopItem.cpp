@@ -149,6 +149,34 @@ bool shop_item_has_common_price(const ShopItem shopItem)
     return (gSamePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
 }
 
+bool shop_item_sold_elsewhere(const ShopItem shopItem, RideId excludeRideId)
+{
+    if (shopItem == ShopItem::None)
+        return false;
+
+    for (const auto& ride : GetRideManager())
+    {
+        if (ride.id == excludeRideId)
+            continue;
+
+        if (shopItem == ShopItem::Admission && ride.type == RIDE_TYPE_TOILETS)
+            return true;
+
+        const auto rideEntry = ride.GetRideEntry();
+        if (rideEntry == nullptr)
+            continue;
+
+        for (auto currentShopItem : rideEntry->shop_item)
+        {
+            if (currentShopItem == shopItem) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 bool ShopItemDescriptor::IsFood() const
 {
     return HasFlag(SHOP_ITEM_FLAG_IS_FOOD);

@@ -132,5 +132,6 @@ extern uint64_t gSamePriceThroughoutPark;
 
 money32 shop_item_get_common_price(Ride* forRide, const ShopItem shopItem);
 bool shop_item_has_common_price(const ShopItem shopItem);
+bool shop_item_sold_elsewhere(const ShopItem shopItem, RideId excludeRideId);
 
 const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

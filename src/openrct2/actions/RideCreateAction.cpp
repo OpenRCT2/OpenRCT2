@@ -11,6 +11,8 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../actions/ParkSetParameterAction.h"
+#include "../config/Config.h"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
@@ -245,6 +247,13 @@ GameActions::Result RideCreateAction::Execute() const
                     ride->price[0] = static_cast<money16>(price);
                 }
             }
+            else if (gConfigGeneral.same_price_shops && !shop_item_sold_elsewhere(ShopItem::Admission, ride->id))
+            {
+                uint64_t priceFlags = gSamePriceThroughoutPark;
+                priceFlags |= EnumToFlag(ShopItem::Admission);
+                auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, priceFlags);
+                GameActions::Execute(&parkSetParameter);
+            }
         }
 
         for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
@@ -258,6 +267,18 @@ GameActions::Result RideCreateAction::Execute() const
                     {
                         ride->price[i] = static_cast<money16>(price);
                     }
+                }
+
+                // Enable "Same price throughout park" if:
+                // 1. The "Same price by default" Interface Tweak is enabled and
+                // 2. There are no other ShopItems of this type in the park
+                else if (gConfigGeneral.same_price_shops && !shop_item_sold_elsewhere(rideEntry->shop_item[i], ride->id))
+                {
+                    uint64_t priceFlags;
+                    priceFlags = gSamePriceThroughoutPark;
+                    priceFlags |= EnumToFlag(rideEntry->shop_item[i]);
+                    auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, priceFlags);
+                    GameActions::Execute(&parkSetParameter);
                 }
             }
         }
