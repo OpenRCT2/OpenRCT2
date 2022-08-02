@@ -102,7 +102,10 @@ struct rct_window
     void RemoveViewport();
 
     rct_window() = default;
+    rct_window(rct_window&) = delete;
     virtual ~rct_window() = default;
+
+    rct_window& operator=(const rct_window&) = delete;
 
     virtual bool IsLegacy()
     {
