@@ -729,7 +729,7 @@ rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
  */
 void window_push_others_right(rct_window& window)
 {
-    window_visit_each([window](rct_window* w) {
+    window_visit_each([&window](rct_window* w) {
         if (w == &window)
             return;
         if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
@@ -761,7 +761,7 @@ void window_push_others_right(rct_window& window)
 void window_push_others_below(rct_window& w1)
 {
     // Enumerate through all other windows
-    window_visit_each([w1](rct_window* w2) {
+    window_visit_each([&w1](rct_window* w2) {
         if (&w1 == w2)
             return;
         // ?
