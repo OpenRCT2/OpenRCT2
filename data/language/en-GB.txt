@@ -729,10 +729,10 @@ STR_1339    :{BLACK}No test results yet…
 STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
-STR_1343    :{DURATION} / 
+STR_1343    :{DURATION} /
 STR_1344    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1345    :{LENGTH}
-STR_1346    :{LENGTH} / 
+STR_1346    :{LENGTH} /
 STR_1347    :{WINDOW_COLOUR_2}Average speed: {BLACK}{VELOCITY}
 STR_1348    :{WINDOW_COLOUR_2}Max. positive vertical Gs: {BLACK}{COMMA2DP32}g
 STR_1349    :{WINDOW_COLOUR_2}Max. positive vertical Gs: {OUTLINE}{RED}{COMMA2DP32}g
@@ -1115,7 +1115,7 @@ STR_1727    :Construction rights not for sale!
 STR_1728    :Can’t buy construction rights here…
 STR_1729    :Land not owned by park!
 STR_1730    :{RED}Closed
-STR_1731    :{WHITE}{STRINGID} - - 
+STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Build
 STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Number of laps:
@@ -1156,7 +1156,7 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1777    :Ride music
-STR_1778    :{STRINGID} - - 
+STR_1778    :{STRINGID} - -
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
 STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
@@ -1979,8 +1979,8 @@ STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings
 STR_2781    :{STRINGID}:
-STR_2782    :SHIFT + 
-STR_2783    :CTRL + 
+STR_2782    :SHIFT +
+STR_2783    :CTRL +
 STR_2784    :Change keyboard shortcut
 STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}“{STRINGID}”
 STR_2786    :Click on shortcut description to select new key
@@ -2214,10 +2214,10 @@ STR_3143    :Show people on map
 STR_3144    :Show rides and stalls on map
 STR_3160    :Select the number of circuits per ride
 STR_3162    :Unable to allocate enough memory
-STR_3163    :Installing new data: 
+STR_3163    :Installing new data:
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
 STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
-STR_3169    :Data for the following object not found: 
+STR_3169    :Data for the following object not found:
 STR_3170    :Not enough space for graphics
 STR_3171    :Too many objects of this type selected
 STR_3172    :The following object must be selected first: {STRING}
@@ -2485,7 +2485,7 @@ STR_5182    :{INT32}
 STR_5183    :Base height
 STR_5184    :Enter base height between {COMMA16} and {COMMA16}
 STR_5185    :Water level
-STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5186    :Enter water level between {COMMA16} and {COMMA16}
 STR_5187    :Finances
 STR_5188    :New Campaign
 STR_5189    :Research
@@ -2671,7 +2671,7 @@ STR_5463    :Goal: Have fun!
 STR_5464    :General
 STR_5465    :Weather
 STR_5466    :Staff
-STR_5467    :ALT + 
+STR_5467    :ALT +
 STR_5468    :Recent messages
 STR_5469    :Scroll map up
 STR_5470    :Scroll map left
@@ -2831,8 +2831,8 @@ STR_5629    :Difficulty level
 STR_5630    :Enable progressive unlocking
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own…
-STR_5633    :CMD + 
-STR_5634    :OPTION + 
+STR_5633    :CMD +
+STR_5634    :OPTION +
 STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
 STR_5637    :Can’t do this…
@@ -3039,7 +3039,7 @@ STR_5880    :Selected only
 STR_5881    :Non-selected only
 STR_5882    :Custom currency
 STR_5883    :Custom currency configuration
-STR_5884    :{WINDOW_COLOUR_2}Exchange rate: 
+STR_5884    :{WINDOW_COLOUR_2}Exchange rate:
 STR_5885    :{WINDOW_COLOUR_2}is equivalent to {COMMA32} GBP (£)
 STR_5886    :{WINDOW_COLOUR_2}Currency symbol:
 STR_5887    :Prefix
@@ -3618,6 +3618,8 @@ STR_6510    :Zero G Roll (left)
 STR_6511    :Zero G Roll (right)
 STR_6512    :Large Zero G Roll (left)
 STR_6513    :Large Zero G Roll (right)
+STR_6514    :Same price by default for shops and stalls
+STR_6515    :New shop items and stalls will have "same price throughout park" enabled by default
 
 #############
 # Scenarios #

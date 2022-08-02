@@ -3897,6 +3897,8 @@ enum : uint16_t
     STR_LARGE_ZERO_G_ROLL_LEFT = 6512,
     STR_LARGE_ZERO_G_ROLL_RIGHT = 6513,
 
+    STR_SHOPS_SAME_PRICE_BY_DEFAULT = 6514,
+    STR_SHOPS_SAME_PRICE_BY_DEFAULT_TIP = 6515,
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
