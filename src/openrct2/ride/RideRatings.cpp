@@ -898,12 +898,8 @@ static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, Ride* ride)
     }
 
     // Add maintenance cost for reverser track pieces
-    uint16_t reverserMaintenanceCost = 80;
-    if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER)
-    {
-        reverserMaintenanceCost = 10;
-    }
-    upkeep += reverserMaintenanceCost * state.AmountOfReversers;
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    upkeep += rtd.ReverserUpkeepCost * state.AmountOfReversers;
 
     // Add maintenance cost for brake track pieces
     upkeep += 20 * state.AmountOfBrakes;
