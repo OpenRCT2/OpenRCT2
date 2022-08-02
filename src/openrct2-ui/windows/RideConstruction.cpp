@@ -1435,10 +1435,11 @@ public:
         {
             const auto& ted = GetTrackElementDescriptor(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
             stringId = ted.Description;
-            if (stringId == STR_RAPIDS
-                && (currentRide->type == RIDE_TYPE_MONSTER_TRUCKS || currentRide->type == RIDE_TYPE_CAR_RIDE))
+
+            const auto& rtd = currentRide->GetRideTypeDescriptor();
+            if (stringId == STR_RAPIDS && rtd.HasFlag(RIDE_TYPE_FLAG_USE_ALT_SPECIAL_TRACK_ELEM_DESC))
             {
-                stringId = STR_LOG_BUMPS;
+                stringId = ted.AlternateDescription;
             }
         }
         auto ft = Formatter::Common();

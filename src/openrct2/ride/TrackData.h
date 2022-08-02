@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../localisation/StringIds.h"
 #include "Track.h"
 #include "TrackPaint.h"
 
@@ -97,6 +98,8 @@ struct TrackElementDescriptor
 
     TrackComputeFunction VerticalFactor;
     TrackComputeFunction LateralFactor;
+
+    StringId AlternateDescription = STR_LOG_BUMPS;
 };
 
 namespace OpenRCT2
