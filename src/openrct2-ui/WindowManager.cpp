@@ -174,6 +174,8 @@ public:
                 return WindowChangelogOpen(WV_CHANGELOG);
             case WV_NEW_VERSION_INFO:
                 return WindowChangelogOpen(WV_NEW_VERSION_INFO);
+            case WV_FINANCE_MARKETING:
+                return WindowFinancesMarketingOpen();
             default:
                 return nullptr;
         }
