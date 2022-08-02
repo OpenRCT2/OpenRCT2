@@ -97,6 +97,7 @@ struct GeneralConfiguration
     bool auto_staff_placement;
     bool handymen_mow_default;
     bool auto_open_shops;
+    bool same_price_shops;
     int32_t default_inspection_interval;
     int32_t window_limit;
     int32_t scenario_select_mode;

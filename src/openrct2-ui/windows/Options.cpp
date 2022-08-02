@@ -190,6 +190,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_REAL_NAME_CHECKBOX,
     WIDX_AUTO_STAFF_PLACEMENT,
     WIDX_AUTO_OPEN_SHOPS,
+    WIDX_SHOPS_SAME_PRICE_BY_DEFAULT,
     WIDX_DEFAULT_INSPECTION_INTERVAL_LABEL,
     WIDX_DEFAULT_INSPECTION_INTERVAL,
     WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
@@ -365,13 +366,14 @@ static rct_widget window_options_misc_widgets[] = {
     MakeWidget({ 5,  SCENARIO_OPTIONS_START + 0}, {300, 35}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_SCENARIO_OPTIONS                                ),
     MakeWidget({10, SCENARIO_OPTIONS_START + 15}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
 
-    MakeWidget({  5,  TWEAKS_START + 0}, {300, 81}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TWEAKS                                                  ),
-    MakeWidget({ 10, TWEAKS_START + 15}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_REAL_NAME,            STR_REAL_NAME_TIP                         ), // Show 'real' names of guests
-    MakeWidget({ 10, TWEAKS_START + 30}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
-    MakeWidget({ 10, TWEAKS_START + 45}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
-    MakeWidget({ 10, TWEAKS_START + 62}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
-    MakeWidget({175, TWEAKS_START + 61}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
-    MakeWidget({288, TWEAKS_START + 62}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
+    MakeWidget({  5,  TWEAKS_START + 0}, {300, 96}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TWEAKS                                                  ),
+    MakeWidget({ 10, TWEAKS_START + 15}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_REAL_NAME,                   STR_REAL_NAME_TIP                  ), // Show 'real' names of guests
+    MakeWidget({ 10, TWEAKS_START + 30}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_STAFF_PLACEMENT,        STR_AUTO_STAFF_PLACEMENT_TIP       ), // Auto staff placement
+    MakeWidget({ 10, TWEAKS_START + 45}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_OPEN_SHOPS,             STR_AUTO_OPEN_SHOPS_TIP            ), // Automatically open shops & stalls
+    MakeWidget({ 10, TWEAKS_START + 60}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_SHOPS_SAME_PRICE_BY_DEFAULT, STR_SHOPS_SAME_PRICE_BY_DEFAULT_TIP), // Same price by default for shops & stalls
+    MakeWidget({ 10, TWEAKS_START + 77}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
+    MakeWidget({175, TWEAKS_START + 76}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
+    MakeWidget({288, TWEAKS_START + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,              STR_DEFAULT_INSPECTION_INTERVAL_TIP), // Default inspection time dropdown button
     WIDGETS_END,
 };
 
@@ -1690,6 +1692,11 @@ private:
                 config_save_default();
                 Invalidate();
                 break;
+            case WIDX_SHOPS_SAME_PRICE_BY_DEFAULT:
+                gConfigGeneral.same_price_shops ^= 1;
+                config_save_default();
+                Invalidate();
+                break;
             case WIDX_ALLOW_EARLY_COMPLETION:
                 gConfigGeneral.allow_early_completion ^= 1;
                 // Only the server can control this setting and needs to send the
@@ -1842,6 +1849,7 @@ private:
         SetCheckboxValue(WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
         SetCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
         SetCheckboxValue(WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
+        SetCheckboxValue(WIDX_SHOPS_SAME_PRICE_BY_DEFAULT, gConfigGeneral.same_price_shops);
         SetCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
 
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY)

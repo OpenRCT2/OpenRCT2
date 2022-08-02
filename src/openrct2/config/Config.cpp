@@ -199,6 +199,7 @@ namespace Config
             model->multithreading = reader->GetBoolean("multi_threading", false);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);
             model->auto_open_shops = reader->GetBoolean("auto_open_shops", false);
+            model->same_price_shops = reader->GetBoolean("same_price_shops", false);
             model->scenario_select_mode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
             model->scenario_unlocking_enabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->scenario_hide_mega_park = reader->GetBoolean("scenario_hide_mega_park", true);
@@ -283,6 +284,7 @@ namespace Config
         writer->WriteBoolean("multi_threading", model->multithreading);
         writer->WriteBoolean("trap_cursor", model->trap_cursor);
         writer->WriteBoolean("auto_open_shops", model->auto_open_shops);
+        writer->WriteBoolean("same_price_shops", model->same_price_shops);
         writer->WriteInt32("scenario_select_mode", model->scenario_select_mode);
         writer->WriteBoolean("scenario_unlocking_enabled", model->scenario_unlocking_enabled);
         writer->WriteBoolean("scenario_hide_mega_park", model->scenario_hide_mega_park);
