@@ -142,8 +142,8 @@ namespace RCT2
     bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
     {
         // Boosters share their ID with the Spinning Control track.
-        return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && rideType != RIDE_TYPE_STEEL_WILD_MOUSE
-            && trackType == TrackElemType::Booster;
+        const auto& rtd = GetRideTypeDescriptor(rideType);
+        return !rtd.HasFlag(RIDE_TYPE_FLAG_NO_BOOSTERS) && trackType == TrackElemType::Booster;
     }
 
     track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType, bool convertFlat)

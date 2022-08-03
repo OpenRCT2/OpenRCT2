@@ -306,6 +306,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_HAS_ONE_STATION = (1ULL << 55),
     RIDE_TYPE_FLAG_HAS_SEAT_ROTATION = (1ULL << 56),
     RIDE_TYPE_FLAG_USE_ALT_SPECIAL_TRACK_ELEM_DESC = (1ULL << 57),
+    RIDE_TYPE_FLAG_NO_BOOSTERS = (1ULL << 58),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
