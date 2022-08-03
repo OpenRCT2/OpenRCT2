@@ -551,8 +551,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                     RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
                     if (ride->mode == RideMode::PoweredLaunch)
                     {
-                        if (ride->GetRideTypeDescriptor().RideModes
-                                & (1ULL << static_cast<uint8_t>(RideMode::PoweredLaunchBlockSectioned))
+                        if (ride->GetRideTypeDescriptor().SupportsRideMode(RideMode::PoweredLaunchBlockSectioned)
                             || gCheatsShowAllOperatingModes)
                             newMode = RideMode::PoweredLaunchBlockSectioned;
                         else

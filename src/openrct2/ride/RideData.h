@@ -220,6 +220,7 @@ struct RideTypeDescriptor
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
     ResearchCategory GetResearchCategory() const;
+    bool SupportsRideMode(RideMode rideMode) const;
 };
 
 #ifdef _WIN32
