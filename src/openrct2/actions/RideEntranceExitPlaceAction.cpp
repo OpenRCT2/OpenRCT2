@@ -97,6 +97,11 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
+    if (!map_is_location_in_park(_loc - CoordsDirectionDelta[_direction]))
+    {
+        return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_FACING_PARK_FENCE);
+    }
+
     if (!MapCheckCapacityAndReorganise(_loc))
     {
         return GameActions::Result(GameActions::Status::NoFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
