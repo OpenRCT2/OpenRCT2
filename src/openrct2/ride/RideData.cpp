@@ -376,6 +376,11 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
     return ResearchCategory::Transport;
 }
 
+bool RideTypeDescriptor::SupportsRideMode(RideMode rideMode) const
+{
+    return RideModes & EnumToFlag(rideMode);
+}
+
 static RideTrackGroup _enabledRidePieces = {};
 
 bool IsTrackEnabled(int32_t trackFlagIndex)
