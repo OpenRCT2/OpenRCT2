@@ -168,9 +168,8 @@ bool shop_item_sold_elsewhere(const ShopItem shopItem, RideId excludeRideId)
 
         for (auto currentShopItem : rideEntry->shop_item)
         {
-            if (currentShopItem == shopItem) {
+            if (currentShopItem == shopItem)
                 return true;
-            }
         }
     }
 
