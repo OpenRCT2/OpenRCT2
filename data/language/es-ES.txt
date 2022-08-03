@@ -1955,8 +1955,6 @@ STR_2738    :Música menú principal:
 STR_2739    :Ninguna
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat no encontrado
-STR_2743    :Copia ‘data/css17.dat’ de tu instalación de RCT1 en ‘data/css50.dat’ de tu instalación de RCT2, o asegúrate de que la carpeta de RCT1 en la sección ‘Avanzado’ esté establecido correctamente.
 STR_2749    :Mi nuevo escenario
 STR_2750    :Mover todo hacia arriba
 STR_2751    :Mover todo hacia abajo
@@ -2229,7 +2227,6 @@ STR_3174    :Este objeto es requerido por otro objeto
 STR_3175    :Este objeto es requerido
 STR_3176    :No se puede seleccionar este objeto
 STR_3177    :No se puede des-seleccionar este objeto
-#STR_3178    :Al menos un sendero debe ser seleccionado
 STR_3179    :Al menos una atracción debe ser seleccionada
 STR_3180    :Selecc. inválida de objetos
 STR_3181    :Selección de Objetos - {STRINGID}
@@ -2559,8 +2556,6 @@ STR_5250    :Color del botón salir
 STR_5251    :Color de botones de opciones
 STR_5252    :Color selección de escenarios
 STR_5253    :Información del parque
-STR_5254    :Crear
-STR_5255    :Crear una secuencia desde cero.
 STR_5256    :Crea un nuevo tema para hacer cambios
 STR_5257    :Crear tema basado en el actual
 STR_5258    :Borrar tema actual
@@ -2655,75 +2650,10 @@ STR_5373    :Nombre {STRINGID}
 STR_5374    :Fecha {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Partidas a cargar
-STR_5378    :Instrucciones
-STR_5379    :Ir al siguiente comando de espera
-STR_5380    :Iniciar la secuencia de la pantalla de inicio
-STR_5381    :Detener la secuencia de la pantalla de inicio
-STR_5382    :Reiniciar secuencia de la pantalla de inicio
-STR_5383    :Crear una secuencia de la pantalla de inicio basada en la actual
-STR_5384    :Borrar la secuencia de la pantalla de inicio actual
-STR_5385    :Renombrar la secuencia de la pantalla de inicio actual
-STR_5386    :Insertar un nuevo comando
-STR_5387    :Editar comando seleccionado
-STR_5388    :Eliminar comando seleccionado
-STR_5389    :Ir al comando seleccionado en la ventana de Secuencias de la pantalla de inicio
-STR_5390    :Mover comando seleccionado arriba
-STR_5391    :Mover comando seleccionado abajo
-STR_5392    :Añadir partida al secuenciador
-STR_5393    :Quitar la partida seleccionada del secuenciador
-STR_5394    :Renombrar partida seleccionada
-STR_5395    :Cargar partida en juego
-STR_5396    :Reinicia la secuencia de la pantalla de inicio si se han realizado cambios fuera del juego
-STR_5397    :Sólo se puede usar en la ventana principal
-STR_5398    :No puedes editar la secuencia de la pantalla de inicio mientras se usa
-STR_5399    :Presiona el botón de Parar para continuar con la edición
-STR_5400    :No se puede editar esta secuencia de la pantalla de inicio
-STR_5401    :Crear una nueva secuencia de la pantalla de inicio para hacer cambios a
-STR_5402    :Falló la carga de la secuencia de la pantalla de inicio
-STR_5403    :Es posible que no haya ningún comando Cargar o Esperar, o el guardado puede no ser válido
 STR_5404    :El nombre ya existe
-STR_5405    :Escribe un nombre para la partida
-STR_5406    :Escribe un nombre para la secuencia
-STR_5407    :Añadir
-STR_5408    :Quitar
-STR_5409    :Insertar
-STR_5410    :Editar
-STR_5411    :Recargar
-STR_5412    :Cambiar a
-STR_5413    :Cargar
-STR_5415    :Cargar{MOVE_X}{87}{STRING}
-STR_5416    :Cargar{MOVE_X}{87}No seleccionado
-STR_5417    :Localización
-STR_5418    :Localización{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Rotar
-STR_5420    :Rotar{MOVE_X}{87}{COMMA16}
-STR_5421    :Enfocar
-STR_5422    :Enfocar{MOVE_X}{87}{COMMA16}
-STR_5423    :Esperar
-STR_5424    :Esperar{MOVE_X}{87}{UINT16}
-STR_5425    :Reiniciar
-STR_5426    :Fin
-STR_5427    :Coordenadas:
-STR_5428    :Rotaciones en contra del reloj:
-STR_5429    :Nivel de enfoque
-STR_5430    :Tiempo en milisegundos:
-STR_5431    :Partida a cargar:
-STR_5432    :Comando:
-STR_5433    :Secuencias del Menú Principal
-STR_5434    :Añadir comando
-STR_5435    :Renombrar
-STR_5436    :Editar secuencias
-STR_5437    :Partida no seleccionada
-STR_5438    :No se pueden hacer cambios mientras el editor de comandos está abierto
-STR_5439    :Un comando de espera con al menos 4 segundos es necesario con un comando de reinicio
 STR_5440    :Minimizar desde pantalla completa al perder el foco
 STR_5441    :Identifica atracciones por tipo de pista{NEWLINE}por lo que los vehículos pueden modificarse posteriormente.{NEWLINE}(Como en RCT1).
 STR_5442    :Forzar valoración:
-STR_5443    :Velocidad{MOVE_X}{87}{STRINGID}
-STR_5444    :Velocidad:
-STR_5445    :Velocidad
-STR_5446    :Obtener
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Juego / Vehículo {STRINGID}
 STR_5449    :Reducir velocidad del juego
@@ -2838,8 +2768,6 @@ STR_5560    :Establece el tiempo de inspección a ‘Cada 10 minutos’ en todas
 STR_5561    :No se pudo cargar el idioma.
 STR_5562    :ADVERTENCIA!
 STR_5563    :Esta configuración es inestable, toma precauciones.
-#STR_5564    :Insertar Elemento Corrupto
-#STR_5565    :Insertar un elemento corrupto en la parte superior de la cuadricula del mapa. Esto ocultará cualquier elemento sobre este elemento corrupto.
 STR_5566    :Contraseña:
 STR_5567    :Mostrar en la lista de servidores
 STR_5568    :Contraseña requerida
@@ -3082,7 +3010,6 @@ STR_5844    :Mantenerse conectado en el servidor multijugador incluso si ocurre 
 STR_5845    :Añadir un botón para las herramientas de depuración en la barra de herramienta superior. Con esto se permite el atajo del teclado para abrir la consola de desarrollo.
 STR_5846    :Establece con cuanta frecuencia OpenRCT2 guarda la partida automáticamente.
 STR_5847    :Selecciona la secuencia del parque usada en el menú principal. Secuencias de RCT1/RCT2 requieren la importación de los escenarios para funcionar.
-STR_5848    :Crea o modifica las secuencias del menú principal.
 STR_5849    :Colocar automáticamente los nuevos empleados contratados.
 STR_5851    :Establece el tiempo de inspección por defecto en las atracciones nuevas.
 STR_5853    :Habilitar/Deshabilitar efectos de sonido.
@@ -3282,7 +3209,6 @@ STR_6047    :Suavizar cuadricula
 STR_6048    :Error de mapa de altura
 STR_6049    :Error al leer PNG
 STR_6050    :Error al leer bitmap
-STR_6051    :El ancho y la altura deben ser la misma.
 STR_6052    :El mapa de altura es muy grande, será cortado.
 STR_6053    :El mapa de altura no puede ser normalizado.
 STR_6054    :Sólo bitmaps de 24-bits son soportados
@@ -3396,23 +3322,8 @@ STR_6170    :Ajustes de interfaz
 STR_6171    :Buscar
 STR_6172    :Buscar
 STR_6173    :Introduzca el nombre a buscar:
-STR_6174    :Cargar partida
-STR_6175    :Cargar escenario
-STR_6176    :Escenario a cargar:
-STR_6177    :Cargar{MOVE_X}{87}No se eligió escenario
-STR_6178    :Cargar{MOVE_X}{87}{RED}Escenario Faltante
-STR_6179    :Elegir
-STR_6180    :No se eligió escenario
-STR_6181    :{RED}Escenario faltante
-STR_6182    :Seguir{MOVE_X}{87}{STRING}
-STR_6183    :Seguir{MOVE_X}{87}No se eligió figura
-STR_6184    :Seguir figura
-STR_6185    :Elegir figura
-STR_6186    :No se eligió figura
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomito
 STR_6189    :Pato
-STR_6190    :No puedes elegir una figura mientras la ventana principal está activa
 STR_6191    :Superficie
 STR_6192    :Pared
 STR_6193    :{COMMA16} huésped
@@ -3534,7 +3445,6 @@ STR_6331    :Crear patos
 STR_6332    :Remover patos
 STR_6333    :Incrementar factor de escala
 STR_6334    :Disminuir factor de escala
-#STR_6335    :Inspector de cuadrícula: Insertar elemento corrupto
 STR_6336    :Inspector de cuadrícula: Copiar elemento
 STR_6337    :Inspector de cuadrícula: Pegar elemento
 STR_6338    :Inspector de cuadrícula: Borrar elemento

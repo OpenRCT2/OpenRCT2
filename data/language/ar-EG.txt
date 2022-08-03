@@ -5,7 +5,7 @@ STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :أفعوانية حلزونية دائرية
 STR_0003    :أفعوانية حلزونية عمودية
-STR_0004    :أفعوانية دائرة معلقة
+STR_0004    :أفعوانية دائرية معلقة
 STR_0005    :أفعوانية حلزونية معكوسة
 STR_0006    :أفعوانية حلزونية للصغار
 STR_0007    :قطار سكة حديدية مصغر
@@ -94,6 +94,7 @@ STR_0089    :إفعوانية دائرية مصغرة
 STR_0090    :رحلة مصغرة
 STR_0091    :رحلة غير معروفة (59)
 STR_0092    :LIM أفعوانية مُطلقة بواسطة
+STR_0093    :أفعوانية هجينة
 STR_0512    :أفعوانية دوارة مدمجة مع مرتفع حلزوني و إنخفاضات ملتفة ناعمة.
 STR_0513    :أفعوانية دوارة للأعلي حيث يبقي الركاب في مسار أفقي.
 STR_0514    :تتحرك القطارات المعلقة أسفل مسار الإفعوانية الدوارة إلى الجانب وحول الزوايا
@@ -116,10 +117,10 @@ STR_0530    :Cars hang from a steel cable which runs continuously from one end o
 STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :تم بناء المتاهة من السياجات أو الجدران بطول 6 أقدام، يتجول الزوار حول المتاهة ويمكنهم المغادرة فقط عندما يعثورن على المخرج
 STR_0533    :مبنى خشبي مع درج داخلي ومزلفة لولبية خارجية للاستخدام مع المزالق
-STR_0534    :سيارات الكارتينج ذاتية القيادة بمحرك يعمل بالبنزين
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
+STR_0534    :يتسابق الزوار مع بعضهم البعض في عربات صغيرة على مضمار أسفلتي
+STR_0535    :تتحرك القوارب على طول قناة مائية، وتهبط على منحدرات شديدة الانحدار مبللة الراكبين
 STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
-STR_0537    :سيارات قيادة ذاتية تعمل بالكهرباء
+STR_0537    :يصطدم الضيوف ببعضهم البعض بسيارة إصطدامية ذاتية القيادة عاملة بالكهرباء
 STR_0538    :سفينة قراصنة كبيرة تقوم بأرجحة
 STR_0539    :سفينة متصلة بزراع مع ثقل موازن في الجهة الأخري، وتتأرجح مكونة لفة بدرجة 360
 STR_0540    :كشك حيث يمكن للضيوف شراء الطعام
@@ -158,7 +159,7 @@ STR_0578    :Cars run along track enclosed by circular hoops, traversing steep d
 STR_0579    :A gentle game of miniature golf
 STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
 STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
-STR_0582    :Self-drive hovercraft vehicles
+STR_0582    :يركب الزائرون مركبات حوامة يتحكمون بها بحرية
 STR_0583    :Building containing warped rooms and angled corridors to disorientate people walking through it
 STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
 STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
@@ -173,6 +174,7 @@ STR_0598    :Inverted roller coaster trains are accelerated out of the station t
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_0603    :أفعوانية خشبية مع مسار فولاذي، تسمح بإنحدارت وإنعكاسات حادة.
 STR_0767    :زائر {INT32}
 STR_0768    :رجل مساعد {INT32}
 STR_0769    :ميكانيكي {INT32}
@@ -1573,7 +1575,7 @@ STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn’t returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
-STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
+STR_2219    :{RED}{COMMA16} أشخاص قد ماتوا بحادثة علي {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
 STR_2221    :Park Rating: {COMMA16}
 STR_2222    :{BLACK}{STRINGID}
@@ -1951,21 +1953,19 @@ STR_2738    :Title screen music:
 STR_2739    :لاشئ
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat not found
-STR_2743    :انسخ ‘data/css17.dat’ من “محاكي الأفعوانيات الجزء الأول” إلي ‘data/css50.dat’ في “محاكي الأفعوانيات الجزء الثاني”، أو تأكد من أن المسار لـ“محاكي الأفعوانيات الجزء الأول” صحيح في صفحة متقدم في الإعدادات.
 STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :حرك كل العناصر إلي الأعلي
 STR_2751    :حرك كل العناصر إلي الأسفل
 STR_2752    :Clear grass
-STR_2753    :Mowed grass
+STR_2753    :جز العشب
 STR_2754    :Water plants
 STR_2755    :Fix vandalism
 STR_2756    :Remove litter
 STR_2763    :???
 STR_2765    :Large Tram
 STR_2766    :Win scenario
-STR_2767    :جمد الطقس
+STR_2767    :تعطيل تغييرات الطقس
 STR_2769    :افتح الحديقة
 STR_2770    :أغلق الحديقة
 STR_2773    :وضع النافذة
@@ -2225,7 +2225,6 @@ STR_3174    :This object is required by another object
 STR_3175    :This object is always required
 STR_3176    :Unable to select this object
 STR_3177    :Unable to de-select this object
-STR_3178    :At least one path object must be selected
 STR_3179    :At least one ride vehicle/attraction object must be selected
 STR_3180    :Invalid selection of objects
 STR_3181    :Object Selection - {STRINGID}
@@ -2376,8 +2375,8 @@ STR_3329    :Park entrance not yet built
 STR_3330    :Park must own some land
 STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
-STR_3333    :Export plug-in objects with saved games
-STR_3334    :Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn’t have the additional object data
+STR_3333    :تصدير عناصر مخصصة مع الألعاب المحفوظة
+STR_3334    :{SMALLFONT}{BLACK}حدد ما إذا كنت تريد حفظ أي بيانات عناصر مخصصة إضافية مطلوبة (بيانات وظائف إضافية غير متوفرة مع اللعبة الرئيسية) في الألعاب المحفوظة أو المشاهد المحفوظة، مما يتيح إمكانية تحميلها لشخص ليس لديه بيانات العناصر الإضافية
 STR_3335    :Track Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
 STR_3338    :{BLACK}Custom-designed layout
@@ -2431,7 +2430,7 @@ STR_3390    :Too many items selected
 # End of tutorial strings
 STR_3437    :Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here…
-STR_3439    :Clear Scenery
+STR_3439    :إخلاء المشهد
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
 
@@ -2555,8 +2554,6 @@ STR_5250    :Title Exit Button
 STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
 STR_5253    :معلومات الحديقة
-STR_5254    :أنشئ
-STR_5255    :Create a new title sequence from scratch
 STR_5256    :Create a new theme to make changes to
 STR_5257    :Create a new theme based on the current one
 STR_5258    :Delete the current theme
@@ -2611,8 +2608,8 @@ STR_5309    :OpenRCT2
 STR_5310    :عشوائي
 STR_5311    :Debug tools
 STR_5312    :أظهر الكونسول
-STR_5313    :Show tile inspector
-STR_5314    :Tile inspector
+STR_5313    :Show معاين البلاط
+STR_5314    :معاين البلاط
 STR_5335    :مدخل الرحلة
 STR_5336    :مخرج الرحلة
 STR_5337    :مدخل الحديقة
@@ -2651,75 +2648,10 @@ STR_5373    :الأسم {STRINGID}
 STR_5374    :التاريخ {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :المحفوضات
-STR_5378    :Script
-STR_5379    :Skip to next wait command
-STR_5380    :Start playing title sequence
-STR_5381    :Stop playing title sequence
-STR_5382    :Restart title sequence
-STR_5383    :Create a new title sequence based on the current one
-STR_5384    :Delete the current title sequence
-STR_5385    :Rename the current title sequence
-STR_5386    :Insert a new command
-STR_5387    :Edit the selected command
-STR_5388    :Delete the selected command
-STR_5389    :Skip to the selected command in the title sequence
-STR_5390    :Move the selected command down
-STR_5391    :Move the selected command up
-STR_5392    :Add a save to the title sequence
-STR_5393    :Remove the selected save from the title sequence
-STR_5394    :Rename the selected save
-STR_5395    :Load the selected save in game
-STR_5396    :Reload the title sequence if changes have been made to it outside of the game
-STR_5397    :Can only be used on the title screen
-STR_5398    :Cannot edit title sequence while it’s playing
-STR_5399    :Press the stop button to continue editing
-STR_5400    :Can’t change this title sequence
-STR_5401    :Create a new title sequence to make changes to
-STR_5402    :Failed to load title sequence
-STR_5403    :There may be no Load or Wait command or a save may be invalid
 STR_5404    :الأسم موجود بالفعل
-STR_5405    :Enter a name for the save
-STR_5406    :Enter a name for the title sequence
-STR_5407    :إضافة
-STR_5408    :مسح
-STR_5409    :إدخال
-STR_5410    :تعديل
-STR_5411    :إعادة تحميل
-STR_5412    :تخطي لـ
-STR_5413    :تحميل
-STR_5415    :تحميل{MOVE_X}{87}{STRING}
-STR_5416    :تحميل{MOVE_X}{87}لا ملف حفظ محدد
-STR_5417    :الموقع
-STR_5418    :الموقع{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :تدوير
-STR_5420    :تدوير{MOVE_X}{87}{COMMA16}
-STR_5421    :تقريب
-STR_5422    :تقريب{MOVE_X}{87}{COMMA16}
-STR_5423    :إنتظر
-STR_5424    :إنتظر{MOVE_X}{87}{UINT16}
-STR_5425    :إعادة تشغيل
-STR_5426    :إنهاء
-STR_5427    :الإحداثيات:
-STR_5428    :Anticlockwise rotations:
-STR_5429    :Zoom level:
-STR_5430    :Milliseconds to wait:
-STR_5431    :Save to load:
-STR_5432    :Command:
-STR_5433    :Title Sequences
-STR_5434    :Command Editor
-STR_5435    :Rename save
-STR_5436    :Edit Title Sequences…
-STR_5437    :No save selected
-STR_5438    :Can’t make changes while command editor is open
-STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimise fullscreen on focus loss
 STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
-STR_5443    :Speed{MOVE_X}{87}{STRINGID}
-STR_5444    :السرعة:
-STR_5445    :سرعة
-STR_5446    :أحصل
 STR_5447    :النوع {STRINGID}
 STR_5448    :رحلة / مركبة {STRINGID}
 STR_5449    :تقليل سرعة اللعبة
@@ -2828,14 +2760,12 @@ STR_5554    :تفعيل أدوات الجبال
 STR_5555    :Show vehicles from other track types
 STR_5556    :طرد اللاعب
 STR_5557    :Stay connected after desynchronisation (Multiplayer)
-STR_5558    :إعادة التشغيل مطلوبة لتطبيق هذا التغيير
+STR_5558    :لن يسري هذا الإعداد إلا بعد إعادة تشغيل اللعبة
 STR_5559    :10 min. inspections
 STR_5560    :Sets the inspection time to ‘Every 10 minutes’ on all rides
 STR_5561    :فشل في تحميل اللغه
 STR_5562    :تحذير!
 STR_5563    :This feature is currently unstable, take extra caution.
-STR_5564    :Insert Corrupt Element
-STR_5565    :Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
 STR_5566    :كلمة السر:
 STR_5567    :إعلان
 STR_5568    :كلمة السر مطلوبة
@@ -2961,8 +2891,8 @@ STR_5721    :غائم
 STR_5722    :ممطر
 STR_5723    :عاصفة مطرية
 STR_5724    :عاصفة برقية
-STR_5725    :{BLACK}طبق الجو الأتي بالقوة:
-STR_5726    :يُحدد الجو الحالي في الحديقة
+STR_5725    :{BLACK}تغيير الطقس إلى:
+STR_5726    :يُحدد الطقس الحالي بالحديقة
 # tooltip for tab in options window
 STR_5734    :Rendering
 STR_5735    :حالة الشبكة
@@ -2976,8 +2906,8 @@ STR_5742    :يصادق …
 STR_5743    :يتصل …
 STR_5744    :يفك الإرتباط …
 STR_5745    :Network desync detected
-STR_5746    :Disconnected
-STR_5747    :Disconnected: {STRING}
+STR_5746    :إنقطع الإتصال
+STR_5747    :إنقطع الإتصال: {STRING}
 STR_5748    :طُرد
 STR_5749    :أخرج من السرفر!
 STR_5750    :الإتصال أغلق
@@ -2989,14 +2919,14 @@ STR_5755    :نسخة برنامج خاطئة (السرفر يستخدم الن�
 STR_5756    :كلمة سر خاطئة
 STR_5757    :السرفر ممتلئ
 STR_5758    :{OUTLINE}{GREEN}{STRING} قد إنظم للعبة
-STR_5759    :يُحمل الخريطة … ({INT32} / {INT32}) كيلو يايت
-STR_5760    :دولار هونج كونج (HK$)
-STR_5761    :دولار تيوان الجديدة (NT$)
-STR_5762    :الين الصيني (CN¥)
+STR_5759    :يُحمل الخريطة … ({INT32} / {INT32}) كيلو بايت
+STR_5760    :دولار هونج كونج (دهونج)
+STR_5761    :دولار تيوان الجديدة (دتيوان)
+STR_5762    :الين الصيني (ين)
 STR_5763    :كل الملفات
 STR_5764    :نوع رحلة غير صحيح
 STR_5765    :لا يمكن تعديل رحلة من النوع الغير صحيح
-STR_5766    :<available string id>
+STR_5766    :الفورنت المجري (فرنت) 
 STR_5767    :الدخل
 STR_5768    :العملاء الكلين
 STR_5769    :الربح الكلي
@@ -3077,7 +3007,6 @@ STR_5844    :Stay connected to a multiplayer server{NEWLINE}even if a desync or 
 STR_5845    :Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
 STR_5846    :Set often OpenRCT2 automatically saves
 STR_5847    :Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
-STR_5848    :Create and manage custom title sequences
 STR_5849    :Automatically place{NEWLINE}newly hired staff members
 STR_5851    :Sets the default inspection interval{NEWLINE}on newly built rides
 STR_5853    :Toggle sound effects on/off
@@ -3098,7 +3027,7 @@ STR_5867    :{WINDOW_COLOUR_2}Provider Name: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Provider E-mail: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Provider Website: {BLACK}{STRING}
 STR_5870    :Show server information
-STR_5871    :Plants don’t age
+STR_5871    :تعطيل ذبول النباتات
 STR_5872    :Disable plant ageing such that they don’t wilt.
 STR_5873    :Allow chain lifts on all track pieces
 STR_5874    :Allows any piece of track to be made into a chain lift
@@ -3263,7 +3192,7 @@ STR_6033    :Path to RCT1 installation:
 STR_6034    :{BLACK}{STRING}
 STR_6035    :Please select your RCT1 directory
 STR_6036    :Clear
-STR_6037    :Please select a valid RCT1 directory
+STR_6037    :لا يحتوي المجلد المُحدد على تثبيت RollerCoaster Tycoon 1 صالح.
 STR_6038    :If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
 STR_6039    :Quick demolish ride
 STR_6040    :تغيير إعدادات المشهد
@@ -3277,7 +3206,6 @@ STR_6047    :Smooth tiles
 STR_6048    :Height map error
 STR_6049    :PNG خطأ في قراءة ملف
 STR_6050    :Error reading bitmap
-STR_6051    :The width and height need to match
 STR_6052    :The heightmap is too big, and will be cut off
 STR_6053    :The heightmap cannot be normalised
 STR_6054    :Only 24-bit bitmaps are supported
@@ -3391,23 +3319,8 @@ STR_6170    :ضبط الواجهة
 STR_6171    :البحث
 STR_6172    :بحث
 STR_6173    :من فضلك وفر الأسم للبحث:
-STR_6174    :تحميل الحفظ
-STR_6175    :تحميل المشهد
-STR_6176    :المشهد للتحميل:
-STR_6177    :تحميل{MOVE_X}{87}لا مشهدد محدد
-STR_6178    :تحميل{MOVE_X}{87}{RED}مشهد مفقود
-STR_6179    :تحديد
-STR_6180    :لا مشهد محدد
-STR_6181    :{RED}مشهد مفقود
-STR_6182    :متابعة{MOVE_X}{87}{STRING}
-STR_6183    :مابعة{MOVE_X}{87}لا نقطة محددة
-STR_6184    :متابعة النقطة
-STR_6185    :تحديد النقطة
-STR_6186    :لا نقطة متابعة
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :إخراج
 STR_6189    :إدخال
-STR_6190    :لا يمكنك تحديد نقطة في حين أن القائمة الرئيسية مفعلة.
 STR_6191    :السطح
 STR_6192    :الحائط
 STR_6193    :{COMMA16} زائر
@@ -3496,7 +3409,7 @@ STR_6302    :.إنسخ قائمة العناصر المفقودة كلها إل�
 STR_6303    :({COMMA16} / {COMMA16}): [{STRING}] يُحمل العنصر
 STR_6304    :إفتح مُحدد المشهد
 STR_6305    :المعالجة المتعددة
-STR_6306    :.اعداد إختباري لإستخدام  عدة معالجات لكي ترسم المشهد، ربما يسبب عدم الإتزان
+STR_6306    :.اعداد إختباري لإستخدام عدة معالجات لكي ترسم المشهد، ربما يسبب عدم الإتزان
 STR_6307    :{BLACK}{STRINGID} :نمط اللون
 STR_6309    :إعادة الإتصال
 STR_6310    :{WINDOW_COLOUR_2} {BLACK}{INT32} {INT32} {INT32} :الموقع
@@ -3518,7 +3431,76 @@ STR_6325    :حاكي الرحلة/المزار
 STR_6326    :…{POP16}{POP16}{POP16}{STRINGID} لا يمكن محاكاة
 STR_6327    :خلفية شفافة للقطات الشاشة العملاقة
 STR_6328    :.مع هذا الإعداد، صور لقطة الشاشة العملاقة ستحصل علي خلفية شفافة بدلاً من الخلفية السوداء الإفتراضية
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :يُحمل [{STRING}] من {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :إنشاء البط
+STR_6332    :حذف البط
+STR_6333    :زيادة عامل الحجم
+STR_6334    :تقليل عامل الحجم
+STR_6335    :معاين البلاط: أدرج العنصر التالف
+STR_6336    :معاين البلاط: نسخ العنصر
+STR_6337    :معاين البلاط: لصق العنصر
+STR_6338    :معاين البلاط: حذف العنصر
+STR_6339    :معاين البلاط: حرك العنصر للأعلي
+STR_6340    :معاين البلاط: حرك العنصر للأسفل
+STR_6341    :معاين البلاط: زيادة إحداثيات X
+STR_6342    :معاين البلاط: تقليل إحداثيات X
+STR_6343    :معاين البلاط: زيادة إحداثيات Y
+STR_6344    :معاين البلاط: تقليل إحداثيات  Y 
+STR_6345    :معاين البلاط: زيادة طول العنصر
+STR_6346    :معاين البلاط: تقليل طول العنصر
+STR_6347    :إضافات المسار لا يمكن وضعها علي المزلقان!
+STR_6348    :قم بحذف المزلقان أولاً!
+STR_6349    :تسلسل عنوان عشوائي
+STR_6350    :المُبعثر
+STR_6351    :أداة مُبعثر المشهد
+STR_6352    :الكثافة
+STR_6353    :{SMALLFONT}{BLACK}كثافة منخفضة
+STR_6354    :{SMALLFONT}{BLACK}كثافة متوسطة
+STR_6355    :{SMALLFONT}{BLACK}كثافة عالية
+STR_6356    :{SMALLFONT}{BLACK}ينشئ البط إذا كانت الحديقة تحتوي على ماء
+STR_6357    :{SMALLFONT}{BLACK}حذف كل البط من الخريطة
+STR_6358    :الصفحة {UINT16}
+STR_6359    :{POP16}{POP16}الصفحة {UINT16}
 STR_6360    :{BLACK}{COMMA32}
+STR_6361    :تفعيل تأثيرات الإضاءة على الرحلات (تجريبي)
+STR_6362    :{SMALLFONT}{BLACK}في حالة التفعيل، ستضيء مركبات الرحلات في الليل.
+STR_6363    :تم نسخ النص إلى الحافظة
+STR_6364    :{RED}{COMMA16} توفي شخص بحادثة في {STRINGID}
+STR_6365    :إصابات الرحلة
+STR_6366    :عربة متوقفة او عالقة
+STR_6367    :{WINDOW_COLOUR_2}إطارات الحركة:
+STR_6368    :لأسباب تتعلق بالتوافق، لا يوصى بتشغيل OpenRCT2 مع برنامج واين. يحتوي OpenRCT2 "على دعم أصلي لأنظمة "ماك أو إس" و"لينكس" و"فري بي إس دي" و"أوبن بي إس دي.
+STR_6369    :السماح ببناء المسار على ارتفاعات غير صالحة
+STR_6370    :{SMALLFONT}{BLACK}يسمح بوضع قطع المسار في أي مساحة إرتفاع
+STR_6371    :يحتوي المسار المحدد على تثبيت RollerCoaster Tycoon 1 ، لكن ملف "csg1i.dat" مفقود. يجب نسخ هذا الملف من القرص المضغوط RollerCoaster Tycoon 1 إلى مجلد "Data" الخاص بتثبيت RollerCoaster Tycoon 1 على الهارد لديك.
+STR_6372    :يحتوي المسار المحدد على تثبيت RollerCoaster Tycoon 1 ، لكن هذا الإصدار غير مناسب. يحتاج OpenRCT2 إلى تثبيت Loopy Landscapes أو RCT Deluxe من أجل استخدام أصول RollerCoaster Tycoon 1.
+STR_6373    :تفعيل التحقق من الترخيص
+STR_6374    :C
+STR_6375    :رحلة غير معروفة
+STR_6376    :{WINDOW_COLOUR_2}عربة الرحلة:{NEWLINE}{BLACK}{STRINGID} لـ {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}النوع: {BLACK}{STRINGID} لـ {STRINGID}
+STR_6378    :يستقبل قائمة العناصر: {INT32} / {INT32}
+STR_6379    :أستقبل بيانات خاطئة
+STR_6380    :يتوفر تحديث للعبة!
+STR_6381    :إنضم لديسكورد الرسمي!
+STR_6382    :تتوفر نسخة احدث من اللعبة: {STRING}!
+STR_6383    :فتح صفحة التحميل
+STR_6384    :ثلوج
+STR_6385    :ثلوج كثيفة
+STR_6386    :عاصفة ثلجية
+STR_6387    :لا يمكن خفض العنصر هنا...
+STR_6388    :لا يمكن رفع العنصر هنا...
+STR_6389    :فسحة غير صالحة
+STR_6390    :تحتاج OpenRCT2  إلى ملفات من لعبة RollerCoaster Tycoon 2 الاصلية لكي تعمل. الرجاء تحديد المسار التي تتواجد به RollerCoaster Tycoon 2.
+STR_6391    :من فضلك حدد مسار اللعبة الاصلية
+STR_6392    :لا يمكن إيجاد {STRING} في هذا المسار.
+STR_6393    :التحديد الموضوعي
+STR_6394    :الموضوع
+STR_6395    :الصيانة
+STR_6396    :تعطيل شاشة التوقف وتوفير طاقة الشاشة
+STR_6397    :{SMALLFONT}{BLACK}إذا تم تفعيلة، فسيتم منع شاشة التوقف وميزات توفير طاقة الشاشة الأخرى أثناء تشغيل OpenRCT2.
+
 
 #############
 # Scenarios #
@@ -3528,7 +3510,7 @@ STR_6360    :{BLACK}{COMMA32}
 <Forest Frontiers>
 STR_SCNR    :حدود الغابات
 STR_PARK    :حدود الغابات
-STR_DTLS    :عميقا في الغابة، أبني متنزه مزدهر في منطقة خالية كبيرة
+STR_DTLS    :عميقًا في الغابة، أبني حديقة مزدهرة في منطقة خالية كبيرة
 
 <Dynamite Dunes>
 STR_SCNR    :كثبان الديناميت

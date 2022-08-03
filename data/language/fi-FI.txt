@@ -1960,8 +1960,6 @@ STR_2738    :Päävalikon musiikki:
 STR_2739    :Ei mitään
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat ei löydy
-STR_2743    :Kopioi data/css17.dat RCT1-asennuksestasi tiedostoon data/css50.dat RCT2-asennuksessasi.
 STR_2749    :Uusi skenaario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Siirrä kaikki esineet ylös
@@ -2234,7 +2232,6 @@ STR_3174    :Tätä esinettä tarvitaan toisessa projektissa
 STR_3175    :Tätä esinettä tarvitaan aina
 STR_3176    :Tätä esinettä ei voi valita
 STR_3177    :Tämän esineen valintaa ei voi poistaa
-STR_3178    :Ainakin yksi polkuesine tulee olla valittuna
 STR_3179    :Ainakin yksi vaunutyyppi tai kohde-esine tulee olla valittuna
 STR_3180    :Virheellinen esineiden valinta
 STR_3181    :Esineiden valinta - {STRINGID}
@@ -2562,8 +2559,6 @@ STR_5250    :Päävalikon lopetuspainike
 STR_5251    :Päävalikon asetukset-painike
 STR_5252    :Päävalikon skenaarionvalinta
 STR_5253    :Puiston tiedot
-STR_5254    :Luo
-STR_5255    :Luo uusi valikkotausta tyhjästä
 STR_5256    :Luo uusi teema muokattavaksi
 STR_5257    :Luo uusi teema nykyisestä
 STR_5258    :Poista nykyinen teema
@@ -2659,75 +2654,10 @@ STR_5373    :Nimi {STRINGID}
 STR_5374    :Päiväys {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Tallenteet
-STR_5378    :Komentosarja
-STR_5379    :Siirry seuraavaan odotuskomentoon
-STR_5380    :Toista valikkotausta
-STR_5381    :Lopeta valikkotaustan toisto
-STR_5382    :Aloita valikkotausta alusta
-STR_5383    :Luo uusi valikkotausta nykyisestä
-STR_5384    :Poista nykyinen valikkotausta
-STR_5385    :Nimeä nykyinen valikkotausta uudelleen
-STR_5386    :Lisää uusi komento
-STR_5387    :Muokkaa uusi komento
-STR_5388    :Poista valittu komento
-STR_5389    :Siirry valittuun komentoon valikkotaustassa
-STR_5390    :Siirrä valittu komento alas
-STR_5391    :Siirrä valittu komento ylös
-STR_5392    :Lisää tallenne valikkotaustaan
-STR_5393    :Poista valittu tallenne valikkotaustasta
-STR_5394    :Uudelleennimeä valittu tallenne
-STR_5395    :Lataa valittu tallenne pelissä
-STR_5396    :Lataa valikkotausta uudestaan jos siihen on tehty muutoksia pelin ulkopuolella
-STR_5397    :Voidaan käyttää ainoastaan otsikkoruudussa
-STR_5398    :Valikkotaustaa ei voi muokata kun se on käytössä
-STR_5399    :Paina stop-painiketta jatkaaksesi muokkausta
-STR_5400    :Tätä valikkotaustaa ei voi muuttaa
-STR_5401    :Luo uusi valikkotausta johon tehdä muutoksia
-STR_5402    :Valikkotaustan lataus ei onnistunut
-STR_5403    :Lataus- tai odotuskomentoa ei ole olemassa, tai tallenne on epäkelpo
 STR_5404    :Nimi on jo olemassa
-STR_5405    :Anna nimi tallenteelle
-STR_5406    :Anna nimi valikkotaustalle
-STR_5407    :Lisää
-STR_5408    :Poista
-STR_5409    :Lisää
-STR_5410    :Muokkaa
-STR_5411    :Lataa uudelleen
-STR_5412    :Siirry
-STR_5413    :Lataa
-STR_5415    :Lataa{MOVE_X}{87}{STRING}
-STR_5416    :Lataa{MOVE_X}{87}Tallennetta ei ole valittu
-STR_5417    :Sijainti
-STR_5418    :Sijainti{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Käännä
-STR_5420    :Käännä{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoomaa
-STR_5422    :Zoomaa{MOVE_X}{87}{COMMA16}
-STR_5423    :Odota
-STR_5424    :Odota{MOVE_X}{87}{UINT16}
-STR_5425    :Uudelleen käynnistä
-STR_5426    :Lopeta
-STR_5427    :Koordinaatit:
-STR_5428    :Vastapäivään käännökset:
-STR_5429    :Suurennus:
-STR_5430    :Sekuntia odottaa:
-STR_5431    :Tallenna lataakseen:
-STR_5432    :Komento:
-STR_5433    :Valikkotaustat
-STR_5434    :Komentojenmuokkain
-STR_5435    :Uudelleen nimeä tallenne
-STR_5436    :Muokkaa valikkotaustoja…
-STR_5437    :Tallennusta ei valittuna
-STR_5438    :Muutosten teko ei onnistu komentojenmuokkaimen ollessa päällä
-STR_5439    :Ainakin 4 sekunnin odotuskomento tarvitaan uudelleenkäynnistyskomennon kanssa
 STR_5440    :Pienennä kokonäyttötila kohdistuksen poistuessa
 STR_5441    :Tunnistaa laitteet ratatyypin perusteella, jotta vaunut voi vaihtaa jälkikäteen, kuten RCT1:ssä.
 STR_5442    :Pakota puiston taso:
-STR_5443    :Nopeus{MOVE_X}{87}{STRINGID}
-STR_5444    :Nopeus:
-STR_5445    :Nopeus
-STR_5446    :Hanki
 STR_5447    :Tyyppi {STRINGID}
 STR_5448    :Laite / Vaunu {STRINGID}
 STR_5449    :Vähennä pelin nopeutta
@@ -2842,8 +2772,6 @@ STR_5560    :Asettaa tarkastusvälin ‘10 minuutin välein’ kaikkiin laitteis
 STR_5561    :Kielen lataus epäonnistui
 STR_5562    :VAROITUS!
 STR_5563    :Tämä ominaisuus on epävakaa, olethan varovainen
-STR_5564    :Lisää vioittunut elementti
-STR_5565    :Lisää ruudun pinnalle vioittuneen tasoelementin. Tämä piilottaa näkyvistä sen yläpuolella olevan elementin.
 STR_5566    :Salasana:
 STR_5567    :Mainosta
 STR_5568    :Salasana vaaditaan
@@ -3085,7 +3013,6 @@ STR_5844    :Pysy yhteydessä moninpelipalvelimeen myös epätahdistuksen tai vi
 STR_5845    :Lisää työkalupalkkiin painikkeen virheenkorjaustyökaluihin.{NEWLINE}Ottaa käyttöön pikanäppäimen kehittäjäkonsoliin
 STR_5846    :Valitse kuinka usein OpenRCT2 tallentaa pelin automaattisesti
 STR_5847    :Valitse puistotausta päävalikon taustalle.{NEWLINE}RCT1/2:n valikkotaustat tarvitsevat tuodut skenaariot toimiakseen
-STR_5848    :Luo ja hallitse mukautettuja valikkotaustoja
 STR_5849    :Sijoita juuri palkatut työntekijät polulle automaattisesti
 STR_5851    :Asettaa oletustarkastusvälin uusille laitteille
 STR_5853    :Kytke äänitehosteet päälle/pois
@@ -3285,7 +3212,6 @@ STR_6047    :Sileät ruudut
 STR_6048    :Korkeuskarttavirhe
 STR_6049    :Virhe lukiessa PNG:tä
 STR_6050    :Virhe lukiessa bittikarttakuvaa
-STR_6051    :Leveyden ja pituuden tulee olla samat
 STR_6052    :Korkeuskartta on liian iso, ja leikkautuu
 STR_6053    :Korkeuskarttaa ei voi normalisoida
 STR_6054    :Vain 24-bittisiä bittikarttakuvia tuetaan
@@ -3399,23 +3325,8 @@ STR_6170    :Käyttöliittymän asetukset
 STR_6171    :Haku
 STR_6172    :Haku
 STR_6173    :Anna haettava nimi:
-STR_6174    :Lataa tallennus
-STR_6175    :Lataa skenaario
-STR_6176    :Ladattava skenaario:
-STR_6177    :Lataa{MOVE_X}{87}Ei valittua skenaariota
-STR_6178    :Lataa{MOVE_X}{87}{RED}Puuttuva skenaario
-STR_6179    :Valitse
-STR_6180    :Ei valittua skenaariota
-STR_6181    :{RED}Puuttuva skenaario
-STR_6182    :Seuraa{MOVE_X}{87}{STRING}
-STR_6183    :Seuraa{MOVE_X}{87}Ei valittua spriteä
-STR_6184    :Seuraa spriteä
-STR_6185    :Valitse sprite
-STR_6186    :Ei valittua spriteä
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Oksennus
 STR_6189    :Ankka
-STR_6190    :Et voi valita spriteä kun päävalikko on käytössä.
 STR_6191    :Pinta
 STR_6192    :Seinä
 STR_6193    :{COMMA16} kävijä
@@ -3537,7 +3448,6 @@ STR_6331    :Luo ankkoja
 STR_6332    :Poista ankat
 STR_6333    :Nosta skaalauskerrointa
 STR_6334    :Laske skaalauskerrointa
-STR_6335    :Ruututyökalu: Lisää vioittunut elementti
 STR_6336    :Ruututyökalu: Kopioi elementti
 STR_6337    :Ruututyökalu: Liitä elementti
 STR_6338    :Ruututyökalu: Poista elementti
