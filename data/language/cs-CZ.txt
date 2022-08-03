@@ -1953,8 +1953,6 @@ STR_2738    :Hudba úvodní obrazovky:
 STR_2739    :Žádná
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat nenalezen
-STR_2743    :Nakopírujte „data/css17.dat“ z vaší instalace RCT1 do „data/css50.dat“ ve vaší instalaci RCT2, nebo se přesvědčte, že cesta k instalaci RCT1 je správně nastavena v záložce „Pokročilé“.
 STR_2749    :Můj nový scénář
 # New strings used in the cheats window previously these were ???
 STR_2750    :Posunout všechny položky nahoru
@@ -2227,7 +2225,6 @@ STR_3174    :Tento objekt je vyžadován jiným objektem
 STR_3175    :Tento objekt je vždy vyžadován
 STR_3176    :Nelze vybrat objekt
 STR_3177    :Nelze zrušit výběr objektu
-STR_3178    :Alespoň jeden objekt cesty musí být vybrán
 STR_3179    :Alespoň jeden objekt atrakce musí být vybrán
 STR_3180    :Neplatný výběr objektů
 STR_3181    :Výběr objektů - {STRINGID}
@@ -2555,8 +2552,6 @@ STR_5250    :Tlačítko titulního menu pro odchod
 STR_5251    :Tlačítko titulního menu pro nastavení
 STR_5252    :Tlačítko titulního menu pro výběr scénáře
 STR_5253    :Informace o zábavním parku
-STR_5254    :Vytvořit
-STR_5255    :Vytvořit novou herní sekvenci
 STR_5256    :Vytvořit nový motiv
 STR_5257    :Vytvořit nový motiv na základě současného
 STR_5258    :Odstranit současný motiv
@@ -2651,75 +2646,10 @@ STR_5373    :Název {STRINGID}
 STR_5374    :Datum {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Uložené hry
-STR_5378    :Skripty
-STR_5379    :Přeskočit na následující příkaz „Čekat“
-STR_5380    :Spustit herní sekvenci
-STR_5381    :Zastavit herní sekvenci
-STR_5382    :Restartovat herní sekvenci
-STR_5383    :Vytvořit stejnou novou herní sekvenci
-STR_5384    :Odebrat herní sekvenci
-STR_5385    :Přejmenovat herní sekvenci
-STR_5386    :Vložit nový příkaz
-STR_5387    :Upravit vybraný příkaz
-STR_5388    :Odebrat vybraný příkaz
-STR_5389    :Přeskočit na následující příkaz v sekvenci
-STR_5390    :Přesunout příkaz níže
-STR_5391    :Přesunout příkaz výše
-STR_5392    :Přidat uloženou hru do sekvence
-STR_5393    :Odebrat uloženou hru ze sekvence
-STR_5394    :Přejmenovat uloženou hru
-STR_5395    :Načíst vybranou uloženou hru
-STR_5396    :Znovu načíst herní sekvenci, pokud byla upravována mimo hru
-STR_5397    :Může být použito pouze na titulní obrazovce
-STR_5398    :Nelze upravovat herní sekvenci, když právě hraje
-STR_5399    :Stiskněte tlačítko „stop“ pro pokračování v úpravách
-STR_5400    :Tuto herní sekvenci nelze měnit
-STR_5401    :Vytvořit novou herní sekvenci
-STR_5402    :Nepodařilo se načíst herní sekvenci
-STR_5403    :Patrně chybí příkaz Načti, Čekej, nebo je uložená hra neplatná
 STR_5404    :Název již existuje
-STR_5405    :Zadejte název pro uloženou hru
-STR_5406    :Zadejte název herní sekvence
-STR_5407    :Přidat
-STR_5408    :Odebrat
-STR_5409    :Vložit
-STR_5410    :Upravit
-STR_5411    :Znovu načíst
-STR_5412    :Přeskočit na
-STR_5413    :Načíst
-STR_5415    :Načíst{MOVE_X}{87}{STRING}
-STR_5416    :Načíst{MOVE_X}{87}Nebyla vybrána uložená hra
-STR_5417    :Umístění
-STR_5418    :Umístění{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Otočit
-STR_5420    :Otočit{MOVE_X}{87}{COMMA16}
-STR_5421    :Přiblížit
-STR_5422    :Přiblížit{MOVE_X}{87}{COMMA16}
-STR_5423    :Čekat
-STR_5424    :Čekat{MOVE_X}{87}{UINT16}
-STR_5425    :Restart
-STR_5426    :Konec
-STR_5427    :Souřadnice:
-STR_5428    :Počet otočení proti směru hod.ruč.:
-STR_5429    :Úroveň přiblížení:
-STR_5430    :Délka čekání (v milisekundách):
-STR_5431    :Uložená hra k načtení:
-STR_5432    :Příkaz:
-STR_5433    :Herní sekvence
-STR_5434    :Editor příkazů
-STR_5435    :Přejmenovat uloženou hru
-STR_5436    :Upravit herní sekvence…
-STR_5437    :Nevybrána žádná uložená hra
-STR_5438    :Nelze vytvářet změny, když je otevřený editor příkazů
-STR_5439    :Příkaz „Čekat“ alespoň 4 vteřiny je vyžadován společně s příkazem „Restart“
 STR_5440    :Minimalizovat celoobrazovkový režim při přepnutí ze hry
 STR_5441    :Identifikovat atrakce podle typu,{NEWLINE}aby šly měnit vozy (RCT1 chování)
 STR_5442    :Hodnocení parku:
-STR_5443    :Rychlost{MOVE_X}{87}{STRINGID}
-STR_5444    :Rychlost:
-STR_5445    :Rychlost
-STR_5446    :Získat
 STR_5447    :Typ {STRINGID}
 STR_5448    :Atrakce/vůz {STRINGID}
 STR_5449    :Snížit rychlost hry
@@ -2834,8 +2764,6 @@ STR_5560    :Nastaví interval inspekcí „Každých 10 minut“ pro všechny a
 STR_5561    :Nahrání souborů jazyka selhalo
 STR_5562    :POZOR!
 STR_5563    :Tato funkce není stabilní, postupujte opatrně.
-STR_5564    :Vložit neplatný prvek
-STR_5565    :Vloží neplatný prvek mapy na vrchol dlaždice, a tím zakryje všechny ostatní prvky
 STR_5566    :Heslo:
 STR_5567    :Propagovat
 STR_5568    :Vyžadovat heslo
@@ -3075,7 +3003,6 @@ STR_5844    :Zachovat připojení do hry více hráčů,{NEWLINE}i když dojde k
 STR_5845    :Přidá tlačítko s vývojářskými nástroji na nástrojovou lištu.{NEWLINE}Povolí klávesovou zkratku pro vývojářskou konzoli
 STR_5846    :Nastavení frekvence automatického ukládání hry
 STR_5847    :Vyberte ukázky parků na hlavní obrazovce. Ukázky parků z her RCT1/2 vyžadují importované scénáře
-STR_5848    :Vytvořit a spravovat vlastní ukázky parků pro hlavní obrazovku
 STR_5849    :Automaticky umisťovat{NEWLINE}nově najatý personál
 STR_5851    :Nastaví výchozí interval inspekcí{NEWLINE}na nově postavených atrakcích
 STR_5853    :Povolit/zakázat zvukové efekty
@@ -3275,7 +3202,6 @@ STR_6047    :Vyhladit dlaždice
 STR_6048    :Chyba výškové mapy
 STR_6049    :Chyba při čtení PNG
 STR_6050    :Chyba při čtení bitmapy
-STR_6051    :Šířka a výška musí být stejné
 STR_6052    :Výšková mapa je moc velká a bude oříznuta
 STR_6053    :Výškovou mapu nelze normalizovat
 STR_6054    :Podporovány jsou pouze 24-bitové bitmapy
@@ -3389,23 +3315,8 @@ STR_6170    :Vychytávky
 STR_6171    :Vyhledávání
 STR_6172    :Vyhledávání
 STR_6173    :Zadejte jméno k vyhledání:
-STR_6174    :Načíst uloženou hru
-STR_6175    :Načíst scénář
-STR_6176    :Scénář k načtení:
-STR_6177    :Načíst{MOVE_X}{87}Zvolte scénář
-STR_6178    :Načíst{MOVE_X}{87}{RED}Chybějící scénář
-STR_6179    :Vybrat
-STR_6180    :Zvolte scénář
-STR_6181    :{RED}Chybějící scénář
-STR_6182    :Následovat{MOVE_X}{87}{STRING}
-STR_6183    :Následovat{MOVE_X}{87}Zvolte sprite
-STR_6184    :Následovat sprite
-STR_6185    :Zvolit sprite
-STR_6186    :Nezvolen žádný sprite
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Zvratky
 STR_6189    :Kachna
-STR_6190    :Nelze zvolit sprite, když je aktivní hlavní obrazovka.
 STR_6191    :Povrch
 STR_6192    :Stěna
 STR_6193    :{COMMA16} návštěvník
@@ -3527,7 +3438,6 @@ STR_6331    :Přivolat kachny
 STR_6332    :Zmizet kachny
 STR_6333    :Zvýšit koeficient škálování
 STR_6334    :Snížit koeficient škálování
-STR_6335    :Průzkumník dlaždic: Vložit neplatný prvek
 STR_6336    :Průzkumník dlaždic: Kopírovat prvek
 STR_6337    :Průzkumník dlaždic: Vložit prvek
 STR_6338    :Průzkumník dlaždic: Smazat prvek

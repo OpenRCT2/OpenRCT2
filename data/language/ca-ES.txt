@@ -1955,8 +1955,6 @@ STR_2738    :Música del menú principal:
 STR_2739    :Cap
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :El fitxer «css50.dat» no s’ha trobat.
-STR_2743    :Copieu «data/css17.dat» de la vostra instal·lació del RCT1 en «data/css50.dat» a la instal·lació del RCT2, o establiu correctament el camí del RCT1 a la pestanya «Avançat» de les opcions de configuració.
 STR_2749    :El meu nou escenari
 # New strings used in the cheats window previously these were ???
 STR_2750    :Moure tots els ítems cap amunt
@@ -2229,7 +2227,6 @@ STR_3174    :Aquest objecte és necessari per un altre.
 STR_3175    :Aquest objecte és necessari sempre.
 STR_3176    :Aquest objecte no es pot seleccionar.
 STR_3177    :Aquest objecte no es pot treure de la selecció.
-STR_3178    :Cal seleccionar almenys un camí.
 STR_3179    :S’ha de seleccionar almenys una atracció.
 STR_3180    :Selecció d’objectes no vàlida
 STR_3181    :Selecció d’objectes - {STRINGID}
@@ -2559,8 +2556,6 @@ STR_5250    :Botó del títol de sortida
 STR_5251    :Botó del títol d’opcions
 STR_5252    :Selecció del títol d’escenaris
 STR_5253    :Informació del parc
-STR_5254    :Crea
-STR_5255    :Crea una seqüència del títol des de zero.
 STR_5256    :Crea un tema nou per fer-hi canvis.
 STR_5257    :Duplica el tema actual per modificar-lo sense fer canvis a l’original.
 STR_5258    :Esborra el tema actual.
@@ -2655,75 +2650,10 @@ STR_5373    :Nom {STRINGID}
 STR_5374    :Data {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Desades
-STR_5378    :Instruccions
-STR_5379    :Avança a la pròxima ordre d’espera.
-STR_5380    :Inicia la seqüència del menú principal.
-STR_5381    :Para la seqüència del menú principal.
-STR_5382    :Reinicia la seqüència.
-STR_5383    :Crea una nova seqüència per al menú principal basada en l’actual.
-STR_5384    :Esborra la seqüència del menú principal actual.
-STR_5385    :Canvia el nom de la seqüència actual.
-STR_5386    :Afegeix una nova ordre.
-STR_5387    :Edita l’ordre seleccionada.
-STR_5388    :Esborra l’ordre seleccionada.
-STR_5389    :Salta a l’ordre seleccionada de la seqüència.
-STR_5390    :Mou l’ordre seleccionada cap avall.
-STR_5391    :Mou l’ordre seleccionada cap amunt.
-STR_5392    :Afegeix una partida desada a la seqüència.
-STR_5393    :Esborra la partida desada seleccionada de la seqüència del menú principal.
-STR_5394    :Canvia el nom de la desada seleccionada.
-STR_5395    :Carrega la partida desada.
-STR_5396    :Recarrega la seqüència si se’n fan canvis fora del joc.
-STR_5397    :Només es pot usar al menú principal.
-STR_5398    :No es pot editar la seqüència mentre s’està reproduint.
-STR_5399    :Prem el botó de parada per continuar editant-la.
-STR_5400    :Aquesta seqüència no es pot editar.
-STR_5401    :Crea una nova seqüència per al menú principal i poder fer-hi canvis.
-STR_5402    :No s’ha pogut carregar la seqüència per al menú principal.
-STR_5403    :Potser no hi ha cap ordre de «Carrega» o d’«Espera» o bé la partida desada no és vàlida.
 STR_5404    :El nom ja existeix.
-STR_5405    :Escriviu un nom per a la partida
-STR_5406    :Escriviu un nom per a la seqüència
-STR_5407    :Afegeix
-STR_5408    :Treu
-STR_5409    :Inserta
-STR_5410    :Edita
-STR_5411    :Recarrega
-STR_5412    :Salta a
-STR_5413    :Carrega
-STR_5415    :Carrega{MOVE_X}{87}{STRING}
-STR_5416    :Carrega{MOVE_X}{87}Sense partida seleccionada
-STR_5417    :Posició
-STR_5418    :Posició{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Gira
-STR_5420    :Gira{MOVE_X}{87}{COMMA16}
-STR_5421    :Enfoca
-STR_5422    :Enfoca{MOVE_X}{87}{COMMA16}
-STR_5423    :Espera
-STR_5424    :Espera{MOVE_X}{87}{UINT16}
-STR_5425    :Torna a començar
-STR_5426    :Acaba
-STR_5427    :Coordenades:
-STR_5428    :Rotacions antihoràries:
-STR_5429    :Nivell de zoom:
-STR_5430    :Mil·lisegons que cal esperar:
-STR_5431    :Partida que s’ha de carregar:
-STR_5432    :Ordre:
-STR_5433    :Seqüències del menú principal
-STR_5434    :Editor d’ordres
-STR_5435    :Canvia el nom de la desada
-STR_5436    :Edita seqüències del menú principal…
-STR_5437    :No s’ha escollit cap desada
-STR_5438    :No es poden fer canvis mentre l’editor d’ordres estigui obert.
-STR_5439    :Cal una ordre d’espera d’almenys 4 segons per a una ordre de «Torna a començar».
 STR_5440    :Minimitza la pantalla completa si es perd el focus
 STR_5441    :Identifica les atraccions per tipus de via.{NEWLINE}Així els vehicles després{NEWLINE}poden modificar-se (com al RCT1).
 STR_5442    :Força la valoració del parc:
-STR_5443    :Velocitat{MOVE_X}{87}{STRINGID}
-STR_5444    :Velocitat:
-STR_5445    :Velocitat
-STR_5446    :Obté
 STR_5447    :Tipus {STRINGID}
 STR_5448    :Atracció/Vehicle {STRINGID}
 STR_5449    :Redueix la velocitat del joc
@@ -2838,8 +2768,6 @@ STR_5560    :Estableix revisions cada 10 minuts per totes les atraccions.
 STR_5561    :L’idioma no s’ha pogut carregar.
 STR_5562    :Avís!
 STR_5563    :Aquesta funció actualment és inestable. Useu-la amb cautela.
-STR_5564    :Inserta un element corrupte
-STR_5565    :Inserta un element corrupte a la casella superior. Això amagarà qualsevol element per dalt d’aquest element.
 STR_5566    :Contrasenya:
 STR_5567    :Fes públic
 STR_5568    :Amb contrasenya
@@ -3081,7 +3009,6 @@ STR_5844    :Mantén la connexió al servidor multijugador{NEWLINE}fins i tot si
 STR_5845    :Afegeix un botó a la barra d’eines{NEWLINE}per a les eines de depuració.{NEWLINE}Permet usar la drecera de teclat per a la consola de desenvolupament.
 STR_5846    :Estableix el període de desades automàtiques de l’OpenRCT2.
 STR_5847    :Seleccioneu la seqüència de parcs que s’usarà al menú principal.{NEWLINE}Les seqüències del RCT1/2 necessitaran que s’importin els escenaris corresponents.
-STR_5848    :Crea i organitza les seqüències del menú principal.
 STR_5849    :Coloca automàticament{NEWLINE}els empleats acabats de contractar.
 STR_5851    :Estableix l’interval de revisió per defecte{NEWLINE}per a les atraccions noves.
 STR_5853    :Activa/Desactiva els efectes de so.
@@ -3281,7 +3208,6 @@ STR_6047    :Suavitza les caselles
 STR_6048    :Error del mapa d’alçades
 STR_6049    :S’ha produït un error mentre es llegia el fitxer PNG.
 STR_6050    :S’ha produït un error mentre es llegia el bitmap.
-STR_6051    :Cal que l’amplada i l’alçada coincideixin
 STR_6052    :El mapa d’alçades és massa gran i es retallarà
 STR_6053    :Aquest mapa d’alçades no es pot normalitzar
 STR_6054    :Només es poden usar bitmaps de 24 bits
@@ -3395,23 +3321,8 @@ STR_6170    :Ajustaments de la interfície
 STR_6171    :Cerca
 STR_6172    :Cerca
 STR_6173    :Si us plau, introduïu el nom que cal buscar:
-STR_6174    :Carrega una partida
-STR_6175    :Carrega un escenari
-STR_6176    :Escenari a carregar:
-STR_6177    :Carrega{MOVE_X}{87}No s’ha seleccionat cap escenari
-STR_6178    :Carrega{MOVE_X}{87}{RED}No s’ha trobat l’escenari
-STR_6179    :Selecciona
-STR_6180    :No s’ha seleccionat cap escenari
-STR_6181    :{RED}No s’ha trobat l’escenari
-STR_6182    :Segueix{MOVE_X}{87}{STRING}
-STR_6183    :Segueix{MOVE_X}{87}No s’ha seleccionat cap sprite
-STR_6184    :Segueix sprite
-STR_6185    :Selecciona sprite
-STR_6186    :No s’ha seleccionat cap sprite
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vòmit
 STR_6189    :Ànec
-STR_6190    :No podeu seleccionar cap sprite mentre la pantalla del menú de presentació estigui activa.
 STR_6191    :Superfície
 STR_6192    :Paret
 STR_6193    :{COMMA16} visitant
@@ -3533,7 +3444,6 @@ STR_6331    :Afegeix ànecs
 STR_6332    :Treu els ànecs
 STR_6333    :Augmenta el factor d’escala
 STR_6334    :Redueix el factor d’escala
-STR_6335    :Inspecció de casella: Insereix un element corromput
 STR_6336    :Inspecció de casella: Copia l’element
 STR_6337    :Inspecció de casella: Enganxa l’element
 STR_6338    :Inspecció de casella: Esborra l’element
