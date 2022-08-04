@@ -2328,7 +2328,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
               "collect more information about this issue, if this did not happen due to missing permissions, lack of space, "
               "etc. please consider submitting a bug report. To collect information we would like to trigger an assert.";
 
-        std::string report_bug_button = "Report bug, trigger an assert";
+        std::string report_bug_button = "Report bug, trigger an assert, potentially terminating the game";
         std::string skip_button = "Skip reporting, let me continue";
 
         std::vector<std::string> buttons{ std::move(report_bug_button), std::move(skip_button) };
