@@ -20,9 +20,9 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr const uint32_t BM_BLOCK_BRAKE_SW_NE_OPEN = 17150;
+static constexpr const uint32_t BM_BLOCK_BRAKE_SW_NE_OPEN = SPR_G2_BM_BLOCK_OPEN;
 static constexpr const uint32_t BM_BLOCK_BRAKE_NW_SE_OPEN = 17151;
-static constexpr const uint32_t BM_BLOCK_BRAKE_SW_NE_CLOSED = 17152;
+static constexpr const uint32_t BM_BLOCK_BRAKE_SW_NE_CLOSED = SPR_G2_BM_BLOCK_CLOSED;
 static constexpr const uint32_t BM_BLOCK_BRAKE_NW_SE_CLOSED = 17153;
 
 static constexpr const uint32_t _BolligerMabillardBlockBrakeImages[NumOrthogonalDirections][2] = {
@@ -57,9 +57,9 @@ static void bolliger_mabillard_track_flat(
     else
     {
         static constexpr const uint32_t imageIds[] = {
-            17146,
+            SPR_G2_BM_FLAT,
             17147,
-            17146,
+            SPR_G2_BM_FLAT,
             17147,
         };
 
@@ -84,9 +84,9 @@ static void bolliger_mabillard_track_station(
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
-        { 17154, SPR_STATION_BASE_A_SW_NE },
+        { SPR_G2_BM_STATION, SPR_STATION_BASE_A_SW_NE },
         { 17155, SPR_STATION_BASE_A_NW_SE },
-        { 17154, SPR_STATION_BASE_A_SW_NE },
+        { SPR_G2_BM_STATION, SPR_STATION_BASE_A_SW_NE },
         { 17155, SPR_STATION_BASE_A_NW_SE },
     };
 
@@ -4437,7 +4437,7 @@ static void bolliger_mabillard_track_brakes(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK] | 17148, { 0, 0, height }, { 32, 20, 3 },
+                session, direction, session.TrackColours[SCHEME_TRACK] | SPR_G2_BM_BRAKE, { 0, 0, height }, { 32, 20, 3 },
                 { 0, 6, height });
             break;
         case 1:

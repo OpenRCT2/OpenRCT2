@@ -15888,5 +15888,35 @@
         "x_offset": -5,
         "y_offset": -20,
         "palette": "keep"
+    },
+    {
+        "path": "track/bm/block_closed.png",
+        "x_offset": -25,
+        "y_offset": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/block_open.png",
+        "x_offset": -25,
+        "y_offset": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/brake.png",
+        "x_offset": -25,
+        "y_offset": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/flat.png",
+        "x_offset": -26,
+        "y_offset": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/station.png",
+        "x_offset": -26,
+        "y_offset": -4,
+        "palette": "keep"
     }
 ]
