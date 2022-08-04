@@ -7139,8 +7139,8 @@ static constexpr const StringId RideConfigurationStringIds[] = {
     STR_LARGE_HALF_LOOP_RIGHT,         // TrackElemType::RightFlyerLargeHalfLoopInvertedUp
     STR_LARGE_HALF_LOOP_RIGHT,         // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
     STR_LARGE_HALF_LOOP_LEFT,          // TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown
-    STR_HALF_LOOP, // TrackElemType::FlyerHalfLoopInvertedUp
-    STR_HALF_LOOP, // TrackElemType::FlyerHalfLoopUninvertedDown
+    STR_HALF_LOOP,                     // TrackElemType::FlyerHalfLoopInvertedUp
+    STR_HALF_LOOP,                     // TrackElemType::FlyerHalfLoopUninvertedDown
 };
 
 namespace OpenRCT2
