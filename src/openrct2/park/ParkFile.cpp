@@ -926,6 +926,10 @@ namespace OpenRCT2
                     {
                         gNewsItems[offset + i] = archived[i];
                     }
+
+                    // Still need to set the correct type to properly terminate the queue
+                    if (archived.size() < News::MaxItemsArchive)
+                        gNewsItems[offset + archived.size()].Type = News::ItemType::Null;
                 }
                 else
                 {
