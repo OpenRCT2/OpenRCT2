@@ -171,8 +171,8 @@ enum
     TRACK_QUARTER_LOOP_INVERTED_UP,
     TRACK_QUARTER_LOOP_INVERTED_DOWN,
     TRACK_RAPIDS,
-    TRACK_HALF_LOOP_UNINVERTED,
-    TRACK_HALF_LOOP_INVERTED,
+    TRACK_FLYING_HALF_LOOP_UNINVERTED_UP,
+    TRACK_FLYING_HALF_LOOP_INVERTED_DOWN,
 
     TRACK_WATERFALL,
     TRACK_WHIRLPOOL,
@@ -193,6 +193,10 @@ enum
     TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_DOWN,
     TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_DOWN,
     TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_UP,
+
+    TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN,
+    TRACK_FLYING_HALF_LOOP_INVERTED_UP,
+
     TRACK_GROUP_COUNT,
 };
 
@@ -447,8 +451,8 @@ namespace TrackElemType
     constexpr track_type_t RightFlyerTwistUp = 188;
     constexpr track_type_t LeftFlyerTwistDown = 189;
     constexpr track_type_t RightFlyerTwistDown = 190;
-    constexpr track_type_t FlyerHalfLoopUp = 191;
-    constexpr track_type_t FlyerHalfLoopDown = 192;
+    constexpr track_type_t FlyerHalfLoopUninvertedUp = 191;
+    constexpr track_type_t FlyerHalfLoopInvertedDown = 192;
     constexpr track_type_t LeftFlyerCorkscrewUp = 193;
     constexpr track_type_t RightFlyerCorkscrewUp = 194;
     constexpr track_type_t LeftFlyerCorkscrewDown = 195;
@@ -568,7 +572,10 @@ namespace TrackElemType
     constexpr track_type_t RightFlyerLargeHalfLoopUninvertedDown = 289;
     constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedDown = 290;
 
-    constexpr track_type_t Count = 291;
+    constexpr track_type_t FlyerHalfLoopInvertedUp = 291;
+    constexpr track_type_t FlyerHalfLoopUninvertedDown = 292;
+
+    constexpr track_type_t Count = 293;
     constexpr track_type_t None = 65535;
 
 }; // namespace TrackElemType
