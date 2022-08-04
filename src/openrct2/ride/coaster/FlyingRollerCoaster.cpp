@@ -18281,7 +18281,7 @@ static void flying_rc_track_left_flying_large_half_loop_inverted_up(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_INVERTED_4);
+                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -18470,7 +18470,7 @@ static void flying_rc_track_left_flying_large_half_loop_inverted_up(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
+                paint_util_push_tunnel_rotated(session, direction, height + 32, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session,
@@ -18514,7 +18514,7 @@ static void flying_rc_track_right_flying_large_half_loop_inverted_up(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
+                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -18703,7 +18703,7 @@ static void flying_rc_track_right_flying_large_half_loop_inverted_up(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
+                paint_util_push_tunnel_rotated(session, direction, height + 32, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session,

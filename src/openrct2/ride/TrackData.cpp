@@ -2732,8 +2732,7 @@ static constexpr const rct_preview_track TrackBlocksRightLargeZeroGRollDown[] = 
     TRACK_BLOCK_END
 };
 
-
-static constexpr const rct_preview_track TrackBlocksLeftFlyerLargeHalfLoopUp[] = {
+static constexpr const rct_preview_track TrackBlocksLeftFlyerLargeHalfLoopUninvertedUp[] = {
     { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
     { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
     { 2, -64, 0, 32, 56, { 0b1111, 0 }, 0 },
@@ -2744,7 +2743,7 @@ static constexpr const rct_preview_track TrackBlocksLeftFlyerLargeHalfLoopUp[] =
     TRACK_BLOCK_END
 };
 
-static constexpr const rct_preview_track TrackBlocksRightFlyerLargeHalfLoopUp[] = {
+static constexpr const rct_preview_track TrackBlocksRightFlyerLargeHalfLoopUninvertedUp[] = {
     { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
     { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
     { 2, -64, 0, 32, 56, { 0b1111, 0 }, 0 },
@@ -2755,7 +2754,30 @@ static constexpr const rct_preview_track TrackBlocksRightFlyerLargeHalfLoopUp[] 
     TRACK_BLOCK_END
 };
 
-static constexpr const rct_preview_track TrackBlocksRightFlyerLargeHalfLoopDown[] = {
+
+static constexpr const rct_preview_track TrackBlocksLeftFlyerLargeHalfLoopInvertedUp[] = {
+    { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
+    { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
+    { 2, -64, 0, 32, 56, { 0b1111, 0 }, 0 },
+    { 3, -96, 0, 64, 192, { 0b1111, 0 }, 0 },
+    { 4, -128, -32, 120, 96, { 0b1111, 0 }, 0 },
+    { 5, -96, -32, 64, 192, { 0b1111, 0 }, 0 },
+    { 6, -64, -32, 248, 32, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightFlyerLargeHalfLoopInvertedUp[] = {
+    { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
+    { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
+    { 2, -64, 0, 32, 56, { 0b1111, 0 }, 0 },
+    { 3, -96, 0, 64, 192, { 0b1111, 0 }, 0 },
+    { 4, -128, 32, 120, 96, { 0b1111, 0 }, 0 },
+    { 5, -96, 32, 64, 192, { 0b1111, 0 }, 0 },
+    { 6, -64, 32, 248, 32, { 0b1111, 0 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightFlyerLargeHalfLoopInvertedDown[] = {
     { 0, 0, 0, 0, 24, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -184, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -128, 96, { 0b1111, 0 }, 0 },
@@ -2766,7 +2788,7 @@ static constexpr const rct_preview_track TrackBlocksRightFlyerLargeHalfLoopDown[
     TRACK_BLOCK_END
 };
 
-static constexpr const rct_preview_track TrackBlocksLeftFlyerLargeHalfLoopDown[] = {
+static constexpr const rct_preview_track TrackBlocksLeftFlyerLargeHalfLoopInvertedDown[] = {
     { 0, 0, 0, 0, 24, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -184, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -128, 96, { 0b1111, 0 }, 0 },
@@ -2774,6 +2796,28 @@ static constexpr const rct_preview_track TrackBlocksLeftFlyerLargeHalfLoopDown[]
     { 4, 0, 32, -216, 56, { 0b1111, 0 }, 0 },
     { 5, 32, 32, -232, 40, { 0b1111, 0b1100 }, 0 },
     { 6, 64, 32, -248, 24, { 0b1111, 0b1100 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksRightFlyerLargeHalfLoopUninvertedDown[] = {
+    { 0, 0, 0, -32, 40, { 0b1111, 0 }, 0 },
+    { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
+    { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
+    { 3, -32, -32, -216, 192, { 0b1111, 0 }, 0 },
+    { 4, 0, -32, -248, 56, { 0b1111, 0 }, 0 },
+    { 5, 32, -32, -264, 40, { 0b1111, 0b1100 }, 0 },
+    { 6, 64, -32, -280, 24, { 0b1111, 0b1100 }, 0 },
+    TRACK_BLOCK_END
+};
+
+static constexpr const rct_preview_track TrackBlocksLeftFlyerLargeHalfLoopUninvertedDown[] = {
+    { 0, 0, 0, -32, 40, { 0b1111, 0 }, 0 },
+    { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
+    { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
+    { 3, -32, 32, -216, 192, { 0b1111, 0 }, 0 },
+    { 4, 0, 32, -248, 56, { 0b1111, 0 }, 0 },
+    { 5, 32, 32, -264, 40, { 0b1111, 0b1100 }, 0 },
+    { 6, 64, 32, -280, 24, { 0b1111, 0b1100 }, 0 },
     TRACK_BLOCK_END
 };
 
@@ -3065,14 +3109,14 @@ static constexpr std::array<const rct_preview_track*, TrackElemType::Count> Trac
     TrackBlocksLeftLargeZeroGRollDown,
     TrackBlocksRightLargeZeroGRollDown,
 
-    TrackBlocks183, // LeftFlyerLargeHalfLoopUninvertedUp
-    TrackBlocks184, // RightFlyerLargeHalfLoopUninvertedUp
-    TrackBlocksRightFlyerLargeHalfLoopDown, // RightFlyerLargeHalfLoopInvertedDown
-    TrackBlocksLeftFlyerLargeHalfLoopDown, // LeftFlyerLargeHalfLoopInvertedDown
-    TrackBlocksLeftFlyerLargeHalfLoopUp,    // TrackElemType::LeftFlyerLargeHalfLoopInvertedUp
-    TrackBlocksRightFlyerLargeHalfLoopUp,    // TrackElemType::RightFlyerLargeHalfLoopInvertedUp
-    TrackBlocks185,    // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
-    TrackBlocks186,    // TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown
+    TrackBlocksLeftFlyerLargeHalfLoopUninvertedUp,    // LeftFlyerLargeHalfLoopUninvertedUp
+    TrackBlocksRightFlyerLargeHalfLoopUninvertedUp,   // RightFlyerLargeHalfLoopUninvertedUp
+    TrackBlocksRightFlyerLargeHalfLoopInvertedDown,   // RightFlyerLargeHalfLoopInvertedDown
+    TrackBlocksLeftFlyerLargeHalfLoopInvertedDown,    // LeftFlyerLargeHalfLoopInvertedDown
+    TrackBlocksLeftFlyerLargeHalfLoopInvertedUp,      // TrackElemType::LeftFlyerLargeHalfLoopInvertedUp
+    TrackBlocksRightFlyerLargeHalfLoopInvertedUp,     // TrackElemType::RightFlyerLargeHalfLoopInvertedUp
+    TrackBlocksRightFlyerLargeHalfLoopUninvertedDown, // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
+    TrackBlocksLeftFlyerLargeHalfLoopUninvertedDown,  // TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown
 };
 
 static constexpr uint8_t TrackPieceLengths[TrackElemType::Count] = {
