@@ -23,6 +23,7 @@
 #include "../audio/audio.h"
 #include "../common.h"
 #include "../config/Config.h"
+#include "../core/BitSet.hpp"
 #include "../core/FixedVector.h"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
@@ -4829,7 +4830,7 @@ struct NecessarySpriteGroup
 };
 
 // Finds track pieces that a given ride entry has sprites for
-uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
+OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
 {
     // TODO: Use a std::span when C++20 available as 6 is due to jagged array
     static const std::array<NecessarySpriteGroup, 6> trackPieceRequiredSprites[TRACK_GROUP_COUNT] = {
@@ -4945,7 +4946,8 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
 
     // Only check default vehicle; it's assumed the others will have correct sprites if this one does (I've yet to find an
     // exception, at least)
-    auto supportedPieces = std::numeric_limits<uint64_t>::max();
+    auto supportedPieces = OpenRCT2::BitSet<TRACK_GROUP_COUNT>();
+    supportedPieces.flip();
     auto defaultVehicle = rideEntry->GetDefaultCar();
     if (defaultVehicle != nullptr)
     {
@@ -4955,7 +4957,7 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
             {
                 auto precision = defaultVehicle->SpriteGroups[static_cast<uint8_t>(group.VehicleSpriteGroup)].spritePrecision;
                 if (precision < group.MinPrecision)
-                    supportedPieces &= ~(1ULL << i);
+                    supportedPieces.set(i, false);
             }
         }
     }

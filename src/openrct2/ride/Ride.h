@@ -12,6 +12,7 @@
 #include "../Limits.h"
 #include "../actions/ResultWithMessage.h"
 #include "../common.h"
+#include "../core/BitSet.hpp"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
@@ -19,6 +20,7 @@
 #include "RideColour.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
+#include "Track.h"
 #include "VehicleColour.h"
 
 #include <array>
@@ -1061,7 +1063,8 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);
 
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void ride_update_vehicle_colours(Ride* ride);
-uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
+
+OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
 
 enum class RideSetSetting : uint8_t;
 money32 set_operating_setting(RideId rideId, RideSetSetting setting, uint8_t value);
