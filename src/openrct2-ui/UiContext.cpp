@@ -640,7 +640,8 @@ public:
         _platformUiContext->ShowMessageBox(_window, message);
     }
 
-    int ShowMessageBox(const std::string& title, const std::string& message, const std::vector<std::string>& options) override
+    int32_t ShowMessageBox(
+        const std::string& title, const std::string& message, const std::vector<std::string>& options) override
     {
         auto message_box_button_data = std::make_unique<SDL_MessageBoxButtonData[]>(options.size());
         for (size_t i = 0; i < options.size(); i++)

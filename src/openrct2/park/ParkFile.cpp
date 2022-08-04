@@ -2331,7 +2331,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         std::string report_bug_button = "Report bug, trigger an assert";
         std::string skip_button = "Skip reporting, let me continue";
 
-        std::vector<std::string> buttons{ report_bug_button, skip_button };
+        std::vector<std::string> buttons{ std::move(report_bug_button), std::move(skip_button) };
         int choice = uictx->ShowMessageBox(title, message, buttons);
 
         if (choice == 0)

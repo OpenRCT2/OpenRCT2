@@ -120,7 +120,7 @@ namespace OpenRCT2
             virtual void TriggerResize() abstract;
 
             virtual void ShowMessageBox(const std::string& message) abstract;
-            virtual int ShowMessageBox(
+            virtual int32_t ShowMessageBox(
                 const std::string& title, const std::string& message, const std::vector<std::string>& options) abstract;
 
             virtual bool HasMenuSupport() abstract;
