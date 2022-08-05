@@ -18444,28 +18444,28 @@ static void flying_rc_track_left_flying_large_half_loop_inverted_up(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27645, { 0, 0, height - 4 }, { 32, 16, 0 },
                         { 0, 16, height + 32 });
                     metal_a_supports_paint_setup(
-                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 27, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27652, { 0, 0, height - 4 }, { 32, 16, 0 },
                         { 0, 16, height });
                     metal_a_supports_paint_setup(
-                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 27, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27659, { 0, 0, height - 4 }, { 32, 16, 0 },
                         { 0, 0, height });
                     metal_a_supports_paint_setup(
-                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27666, { 0, 0, height - 4 }, { 32, 16, 0 },
                         { 0, 0, height + 32 });
                     metal_a_supports_paint_setup(
-                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 27, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -18677,28 +18677,28 @@ static void flying_rc_track_right_flying_large_half_loop_inverted_up(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27694, { 0, 0, height - 4 }, { 32, 16, 0 },
                         { 0, 0, height + 32 });
                     metal_a_supports_paint_setup(
-                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 27, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27687, { 0, 0, height - 4 }, { 32, 16, 0 },
                         { 0, 0, height });
                     metal_a_supports_paint_setup(
-                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27680, { 0, 0, height - 4 }, { 32, 16, 0 },
                         { 0, 16, height });
                     metal_a_supports_paint_setup(
-                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 27, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27673, { 0, 0, height - 4 }, { 32, 16, 0 },
                         { 0, 16, height + 32 });
                     metal_a_supports_paint_setup(
-                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 27, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, METAL_SUPPORTS_TUBES_INVERTED, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
