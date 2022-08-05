@@ -537,9 +537,9 @@ enum
 
 enum
 {
-    SOUND_RANGE_SCREAMS_0 = 0,
-    SOUND_RANGE_SCREAMS_1_WOODEN_COASTERS = 1,
-    SOUND_RANGE_SCREAMS_2 = 2,
+    SOUND_RANGE_SCREAMS_NON_COASTER = 0, // Used by rides where the screams should not include rolling sounds.
+    SOUND_RANGE_SCREAMS_WOODEN_COASTERS = 1,
+    SOUND_RANGE_SCREAMS_STEEL = 2,
     SOUND_RANGE_WHISTLE = 3,
     SOUND_RANGE_BELL = 4,
     SOUND_RANGE_NONE = 255
