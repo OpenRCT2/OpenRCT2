@@ -14,6 +14,7 @@
 #include "../PlatformEnvironment.h"
 #include "../audio/AudioContext.h"
 #include "../audio/AudioSource.h"
+#include "../core/File.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
@@ -187,7 +188,13 @@ ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view 
     {
         auto platformEnvironment = GetContext()->GetPlatformEnvironment();
         auto dir = platformEnvironment->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-        auto path2 = Path::Combine(dir, std::string(path.substr(11)));
+        auto datPath = std::string(path.substr(11));
+        auto path2 = Path::Combine(dir, datPath);
+        if (!File::Exists(path2))
+        {
+            path2 = path2.substr(0, path2.length() - 3) + "ogg";
+        }
+
         return ObjectAsset(path2);
     }
 

@@ -87,7 +87,11 @@ static SourceInfo ParseSource(std::string_view source)
         }
 
         auto env = GetContext()->GetPlatformEnvironment();
-        info.Path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, name);
+        auto path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, name);
+        if (path.empty())
+            path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, u8string(name.substr(0, name.length() - 3)) + "ogg");
+
+        info.Path = path;
     }
     else if (String::StartsWith(source, "$["))
     {
