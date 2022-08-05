@@ -318,8 +318,8 @@ STR_0927    :No puede construir esto aquí…
 STR_0928    :Cadena elevadora para propulsar coches por una pendiente.
 STR_0929    :Curva ‘S’ (izquierda)
 STR_0930    :Curva ‘S’ (derecha)
-STR_0931    :Vuelta vertical (izquierda)
-STR_0932    :Vuelta vertical (derecha)
+STR_0931    :Rizo vertical (izquierda)
+STR_0932    :Rizo vertical (derecha)
 STR_0933    :Sube o baja el terreno primero
 STR_0934    :Entrada de la atracción interfiere
 STR_0935    :Salida de la atracción interfiere
@@ -754,14 +754,14 @@ STR_1363    :¡Muy alto para los soportes!
 STR_1364    :¡Los soportes del tramo anterior no se pueden extender más!
 STR_1365    :Giro en-línea (izquierda)
 STR_1366    :Giro en-línea (derecha)
-STR_1367    :Media vuelta
+STR_1367    :Medio Rizo pequeño
 STR_1368    :Medio Sacacorchos (izq)
 STR_1369    :Medio Sacacorchos (der)
 STR_1370    :Tonel (izquierdo)
 STR_1371    :Tonel (derecho)
 STR_1372    :Subida propulsada
-STR_1373    :Media vuelta larga (izq)
-STR_1374    :Media vuelta larga (der)
+STR_1373    :Medio Rizo grande (izq)
+STR_1374    :Medio Rizo grande (der)
 STR_1375    :Transferencia superior
 STR_1376    :Transferencia inferior
 STR_1377    :Giro med. alt. (der)
@@ -770,7 +770,7 @@ STR_1379    :Inversor (izq)
 STR_1380    :Inversor (der)
 STR_1381    :Subida en curva (izq)
 STR_1382    :Subida en curva (der)
-STR_1383    :Cuarto de vuelta
+STR_1383    :Cuarto de Rizo
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :Otros tipos de tramos
 STR_1386    :Tramo especial…
@@ -3610,6 +3610,7 @@ STR_6498    :Activa para mantener el mapa con forma cuadrada.
 STR_6499    :Tipo de vehiculo no compatible con el formato de diseño de la via
 STR_6500    :Elementos no compatibles con el formato de diseño de la via
 STR_6501    :Color aleatorio
+STR_6502    :Introduce un valor entre {COMMA16} y {COMMA16}
 
 ##############
 # Escenarios #
