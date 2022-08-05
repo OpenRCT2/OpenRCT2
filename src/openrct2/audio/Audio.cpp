@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../config/Config.h"
 #include "../core/File.h"
 #include "../core/FileStream.h"
@@ -97,8 +98,18 @@ namespace OpenRCT2::Audio
 
     void LoadAudioObjects()
     {
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto css1Path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, "CSS1.DAT");
+        auto isRCTC = css1Path.empty();
+        log_error(css1Path.c_str());
+
         auto& objManager = GetContext()->GetObjectManager();
-        auto* baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2Base);
+        Object* baseAudio;
+        if (isRCTC)
+            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2BaseRCTC);
+        else
+            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2Base);
+
         if (baseAudio != nullptr)
         {
             _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
