@@ -898,8 +898,7 @@ static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, Ride* ride)
     }
 
     // Add maintenance cost for reverser track pieces
-    const auto& rtd = ride->GetRideTypeDescriptor();
-    upkeep += rtd.ReverserUpkeepCost * state.AmountOfReversers;
+    upkeep += 10 * state.AmountOfReversers;
 
     // Add maintenance cost for brake track pieces
     upkeep += 20 * state.AmountOfBrakes;

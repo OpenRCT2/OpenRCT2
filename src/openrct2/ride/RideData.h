@@ -216,8 +216,6 @@ struct RideTypeDescriptor
 
     PeepUpdateRideLeaveEntranceFunc UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault;
 
-    uint16_t ReverserUpkeepCost = 80;
-
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;

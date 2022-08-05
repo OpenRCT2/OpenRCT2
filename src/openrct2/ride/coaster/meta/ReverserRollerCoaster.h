@@ -51,12 +51,5 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_REVERSER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_REVERSER_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "reverser_rc"),
-    SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
-    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
-    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
-    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
-    SET_FIELD(Classification, RideClassification::Ride),
-    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
-    SET_FIELD(ReverserUpkeepCost, 10),
 };
 // clang-format on
