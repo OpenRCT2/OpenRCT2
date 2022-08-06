@@ -340,7 +340,6 @@ STR_0950    :Load Game
 STR_0951    :Quit Game
 STR_0952    :Quit Game
 STR_0953    :Load Landscape
-STR_0954    :
 STR_0955    :Select seat rotation angle for this track section
 STR_0956    :-180°
 STR_0957    :-135°
@@ -3618,6 +3617,7 @@ STR_6510    :Zero G Roll (left)
 STR_6511    :Zero G Roll (right)
 STR_6512    :Large Zero G Roll (left)
 STR_6513    :Large Zero G Roll (right)
+STR_6514    :Invalid height!
 
 #############
 # Scenarios #

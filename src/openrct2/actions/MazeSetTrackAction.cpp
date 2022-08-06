@@ -56,7 +56,7 @@ GameActions::Result MazeSetTrackAction::Query() const
     if ((_loc.z & 0xF) != 0 && _mode == GC_SET_MAZE_TRACK_BUILD)
     {
         res.Error = GameActions::Status::Unknown;
-        res.ErrorMessage = STR_CONSTRUCTION_ERR_UNKNOWN;
+        res.ErrorMessage = STR_INVALID_HEIGHT;
         return res;
     }
 
