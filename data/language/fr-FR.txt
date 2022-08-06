@@ -2265,7 +2265,7 @@ STR_3208    :Gestionnaire de voies
 STR_3209    :Retour étape précédente :
 STR_3210    :Passer à l’étape suivante :
 STR_3211    :Taille carte :
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Impossible de diminuer davantage la taille de la carte
 STR_3214    :Impossible d’augmenter davantage la taille de le carte
 STR_3215    :Trop proche du bord de la carte

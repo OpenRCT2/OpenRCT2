@@ -2259,7 +2259,7 @@ STR_3208    :Diseñador de Vías
 STR_3209    :Regresar al paso anterior:
 STR_3210    :Avanzar al siguiente paso:
 STR_3211    :Tamaño de Mapa:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :No puedes disminuir más el tamaño del mapa
 STR_3214    :No puedes aumentar más el tamaño del mapa
 STR_3215    :Demasiado cerca del borde del mapa

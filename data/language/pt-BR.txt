@@ -2258,7 +2258,7 @@ STR_3208    :Gerenciador de Projetos de Pista
 STR_3209    :Voltar para o Passo Anterior:
 STR_3210    :Avançar para o Próximo Passo:
 STR_3211    :Tamanho do Mapa:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Impossível diminuir ainda mais o tamanho do mapa
 STR_3214    :Impossível aumentar ainda mais o tamanho do mapa
 STR_3215    :Muito perto da borda do mapa

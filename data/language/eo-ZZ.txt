@@ -2258,7 +2258,7 @@ STR_3208    :Administrilo de Trakdesegnaĵoj
 STR_3209    :Reiri al Pasinta Etapo:
 STR_3210    :Iri al Sekva Etapo:
 STR_3211    :Dimensioj de mapo:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Ne eblas malpliigi mapodimensiojn plu
 STR_3214    :Ne eblas pliigi mapodimensiojn plu
 STR_3215    :Tro proksime al mapbordo

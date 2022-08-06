@@ -2256,7 +2256,7 @@ STR_3208    :Banedesign Manager
 STR_3209    :Tilbage til tidligere skridt:
 STR_3210    :Videre til næste skridt:
 STR_3211    :Kortstørrelse:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan ikke reducere kortstørrelsen yderligere
 STR_3214    :Kan ikke forøge kortstørrelsen yderligere
 STR_3215    :For tæt på kanten af kortet

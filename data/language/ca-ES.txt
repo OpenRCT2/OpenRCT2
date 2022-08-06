@@ -96,6 +96,7 @@ STR_0091    :Atracció desconeguda (59)
 STR_0092    :Muntanya russa d’impuls LIM
 STR_0093    :Muntanya russa híbrida
 STR_0094    :Muntanya russa d’un sol rail
+STR_0095    :Muntanya russa alpina
 STR_0512    :Muntanya russa compacta amb una pujada en espiral i caigudes sinuoses suaus.
 STR_0513    :Muntanya russa amb inversions en la qual els passatgers es mantenen drets.
 STR_0514    :Els cotxes que pengen per sota dels rails es balancegen cap a fora en les corbes.
@@ -177,6 +178,7 @@ STR_0600    :Trens d’estil miner autopropulsats per un recorregut amb girs sua
 STR_0602    :Els vagons d’aquesta muntanya russa s’acceleren fora de l’andana per motors d’inducció lineal per accelerar durant les inversions tortuoses.
 STR_0603    :Una muntanya russa de fusta amb una via d’acer, el que permet unes caigudes empinades i inversions.
 STR_0604    :Els passatgers van en fila per una via monorail estreta i passen a gran velocitat per tirabuixons i inversions.
+STR_0605    :Els passatgers baixen per una via d’acer sinuosa, frenant per controlar la velocitat.
 STR_0767    :Visitant {INT32}
 STR_0768    :Encarregat de neteja {INT32}
 STR_0769    :Mecànic {INT32}
@@ -424,7 +426,7 @@ STR_1035    :Les autoritats locals no permeten les construccions massa altes!
 STR_1036    :Carrega una partida
 STR_1037    :Carrega un paisatge
 STR_1038    :Converteix la partida desada a escenari
-STR_1039    :Instal·la un nou disseny de via
+STR_1039    :Instal·la un disseny de via nou
 STR_1040    :Desa la partida
 STR_1041    :Desa l’escenari
 STR_1042    :Desa el paisatge
@@ -752,7 +754,7 @@ STR_1363    :Massa alt per als suports!
 STR_1364    :Els suports per a la secció no es poden fer més llargs.
 STR_1365    :Gir en línia (a l’esquerra)
 STR_1366    :Gir en línia (a la dreta)
-STR_1367    :Mitja volta
+STR_1367    :Mitja volta petita
 STR_1368    :Mig tirabuixó (a l’esquerra)
 STR_1369    :Mig tirabuixó (a la dreta)
 STR_1370    :Barrel roll (a l’esquerra)
@@ -858,8 +860,8 @@ STR_1469    :L’atracció ha de començar i acabar amb andanes.
 STR_1470    :L’andana no és prou llarga
 STR_1471    :{WINDOW_COLOUR_2}Velocitat:
 STR_1472    :Velocitat d’aquesta atracció
-STR_1473    :{WINDOW_COLOUR_2}Nivell d’intensitat: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Nivell d’intensitat: {BLACK}Encara no se sap
+STR_1473    :{WINDOW_COLOUR_2}Nivell d’emoció: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Nivell d’emoció: {BLACK}Encara no se sap
 STR_1475    :{WINDOW_COLOUR_2}Nivell d’intensitat: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1476    :{WINDOW_COLOUR_2}Nivell d’intensitat: {BLACK}Encara no se sap
 STR_1477    :{WINDOW_COLOUR_2}Nivell d’intensitat: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
@@ -1955,7 +1957,7 @@ STR_2738    :Música del menú principal:
 STR_2739    :Cap
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2749    :El meu nou escenari
+STR_2749    :El meu escenari nou
 # New strings used in the cheats window previously these were ???
 STR_2750    :Moure tots els ítems cap amunt
 STR_2751    :Moure tots els ítems cap avall
@@ -2047,8 +2049,8 @@ STR_2845    :{TOPAZ}El vostre parc ha rebut el «Premi als esquemes de colors m�
 STR_2846    :{TOPAZ}El vostre parc ha rebut el «Premi als camins més confusos»!
 STR_2847    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millors atraccions suaus»!
 STR_2848    :{WINDOW_COLOUR_2}Sense premis recents
-STR_2849    :S’ha instal·lat un nou escenari.
-STR_2850    :S’ha instal·lat un nou disseny de via.
+STR_2849    :S’ha instal·lat un escenari nou.
+STR_2850    :S’ha instal·lat un disseny de via nou.
 STR_2851    :L’escenari ja està instal·lat.
 STR_2852    :El disseny de via ja està instal·lat.
 STR_2853    :Les autoritats competents no ho permeten!
@@ -2259,7 +2261,7 @@ STR_3208    :Gestor dels dissenys de via
 STR_3209    :Torna al pas anterior:
 STR_3210    :Avança al pas següent:
 STR_3211    :Mida del mapa:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :La mida del mapa no es pot baixar més.
 STR_3214    :La mida del mapa no es pot augmentar més.
 STR_3215    :Massa prop de la vora del mapa.
@@ -3605,6 +3607,26 @@ STR_6494    :Agrupa per tipus d’atracció
 STR_6495    :Agrupa les atraccions per tipus en lloc de mostrar els vehicles per separat.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Feu clic en una casella per mostrar els seus elements.{NEWLINE}Amb Ctrl + clic en una casella, seleccioneu l’element directament.
+STR_6498    :Si s’activa, el mapa tindrà forma quadrada.
+STR_6474    :Visitants invisibles
+STR_6475    :Empleats invisibles
+STR_6486    :Mostra o amaga els visitants
+STR_6487    :Mostra o amaga els empleats
+STR_6499    :Tipus de vehicle no suportat pel format de disseny de vies
+STR_6500    :Elements de via no suportats pel format de disseny de vies
+STR_6501    :Color aleatori
+STR_6502    :Escriviu un valor entre {COMMA16} i {COMMA16}
+STR_6503    :S’ha de seleccionar com a mínim un objecte d’estació.
+STR_6504    :S’ha de seleccionar com a mínim una superfície de terreny.
+STR_6505    :S’ha de seleccionar com a mínim una vora de terreny.
+STR_6506    :Mig tirabuixó gran (a l’esquerra)
+STR_6507    :Mig tirabuixó gran (a la dreta)
+STR_6508    :Mitja volta mitjana (a l’esquerra)
+STR_6509    :Mitja volta mitjana (a la dreta)
+STR_6510    :Volta de gravetat zero (a l’esquerra)
+STR_6511    :Volta de gravetat zero (a la dreta)
+STR_6512    :Volta de gravetat zero gran (a l’esquerra)
+STR_6513    :Volta de gravetat zero gran (a la dreta)
 
 #############
 # Scenarios #
@@ -3991,7 +4013,7 @@ STR_DTLS    :S’ha de completar la construcció de 5 muntanyes russes en aquest
 <Nevermore Park>
 STR_SCNR    :Parc Nevermore
 STR_PARK    :Parc Nevermore
-STR_DTLS    :Un parc gran amb un nou sistema de transport que el voreja.
+STR_DTLS    :Un parc gran amb un sistema de transport nou que el voreja.
 
 <Pacifica>
 STR_SCNR    :L’illa Pacífica

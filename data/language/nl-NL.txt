@@ -2257,7 +2257,7 @@ STR_3208    :Baanontwerpbeheer
 STR_3209    :Terug naar de vorige stap:
 STR_3210    :Verder naar de volgende stap:
 STR_3211    :Kaartgrootte:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan de kaart niet verder verkleinen
 STR_3214    :Kan de kaart niet verder vergroten
 STR_3215    :Te dicht bij de rand van de kaart

@@ -2259,7 +2259,7 @@ STR_3208    :Bandesignhanterare
 STR_3209    :Tillbaka till tidigare steg:
 STR_3210    :Vidare till nästa steg:
 STR_3211    :Kartstorlek:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan inte minska kartstorleken mer
 STR_3214    :Kan inte utöka kartstorleken mer
 STR_3215    :För nära kanten av kartan

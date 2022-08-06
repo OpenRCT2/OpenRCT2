@@ -2258,7 +2258,7 @@ STR_3208    :Menedżer tworzenia tras
 STR_3209    :Powrót do poprzedniego kroku:
 STR_3210    :Do następnego kroku:
 STR_3211    :Rozmiar mapy:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Nie można bardziej zmniejszyć mapy
 STR_3214    :Nie można bardziej zwiększyć mapy
 STR_3215    :Za blisko do krawędzi mapy

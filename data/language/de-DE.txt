@@ -2260,7 +2260,7 @@ STR_3208    :Streckenentwurf-Manager
 STR_3209    :Zurück zum vorherigen Schritt:
 STR_3210    :Weiter zum nächsten Schritt:
 STR_3211    :Kartengröße:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kartengröße kann nicht mehr verkleinert werden
 STR_3214    :Kartengröße kann nicht mehr vergrößert werden
 STR_3215    :Zu nahe am Rand der Karte

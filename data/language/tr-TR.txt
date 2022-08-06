@@ -2252,7 +2252,7 @@ STR_3208    :Alet Meneceri
 STR_3209    :Bir önceki adım:
 STR_3210    :Bir sonraki adım:
 STR_3211    :Harita büyüklüğü:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Arazi daha fazla alçaltılamıyor
 STR_3214    :Arazi daha fazla yükseltilemiyor
 STR_3215    :Arazi sınırına çok fazla yakın

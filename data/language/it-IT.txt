@@ -2258,7 +2258,7 @@ STR_3208    :Gestione tracciati salvati
 STR_3209    :Indietro al passo precedente:
 STR_3210    :Avanti al passo successivo:
 STR_3211    :Dimens. mappa:
-STR_3212    :{COMMA16} × {COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Impossibile rimpicciolire ulteriormente la mappa
 STR_3214    :Impossibile ingrandire ulteriormente la mappa
 STR_3215    :Troppo vicino al bordo della mappa
