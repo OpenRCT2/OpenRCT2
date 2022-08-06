@@ -223,6 +223,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS) %(AdditionalOptions)</AdditionalOptions>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Lib>
       <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>

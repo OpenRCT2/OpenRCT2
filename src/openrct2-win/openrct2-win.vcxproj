@@ -45,6 +45,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS) %(AdditionalOptions)</AdditionalOptions>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libopenrct2.lib;libopenrct2ui.lib;%(AdditionalDependencies)</AdditionalDependencies>

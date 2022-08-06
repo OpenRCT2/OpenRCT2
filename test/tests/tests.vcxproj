@@ -47,6 +47,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>GTEST_LANG_CXX11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libopenrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
