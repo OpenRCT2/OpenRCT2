@@ -1028,7 +1028,8 @@ void research_determine_first_of_type()
     for (auto& researchItem : gResearchItemsUninvented)
     {
         // The next research item is (sometimes?) also present in gResearchItemsUninvented
-        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == gResearchNextItem.value())
+        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull()
+            && researchItem.baseRideType == gResearchNextItem.value().baseRideType)
         {
             // Copy the "first of type" flag.
             researchItem.flags = gResearchNextItem->flags;
