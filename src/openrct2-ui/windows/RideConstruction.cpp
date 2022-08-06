@@ -113,7 +113,7 @@ static rct_widget window_ride_construction_widgets[] = {
     MakeWidget        ({116,  29}, { 22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_RIGHT_CURVE,       STR_RIDE_CONSTRUCTION_RIGHT_CURVE_TIP               ),
     MakeWidget        ({138,  29}, { 22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL, STR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL_TIP         ),
     MakeWidget        ({138,  29}, { 22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL, STR_RIDE_CONSTRUCTION_RIGHT_CURVE_VERY_SMALL_TIP    ),
-    MakeWidget        ({ 17,  55}, {132,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_YELLOW_STRING,                       STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
+    MakeWidget        ({  6,  55}, {154,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_YELLOW_STRING,                       STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
     MakeWidget        ({ 23,  88}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP,  STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP          ),
     MakeWidget        ({ 47,  88}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,        STR_RIDE_CONSTRUCTION_SLOPE_DOWN_TIP                ),
     MakeWidget        ({ 71,  88}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL,       STR_RIDE_CONSTRUCTION_LEVEL_TIP                     ),
