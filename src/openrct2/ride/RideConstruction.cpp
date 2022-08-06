@@ -1640,7 +1640,7 @@ bool ride_select_forwards_from_back()
  */
 ResultWithMessage ride_are_all_possible_entrances_and_exits_built(Ride* ride)
 {
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         return { true };
 
     for (auto& station : ride->GetStations())

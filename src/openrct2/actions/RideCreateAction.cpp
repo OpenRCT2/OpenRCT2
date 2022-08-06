@@ -235,7 +235,7 @@ GameActions::Result RideCreateAction::Execute() const
             ride->price[0] = 0;
         }
 
-        if (ride->type == RIDE_TYPE_TOILETS)
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
         {
             if (shop_item_has_common_price(ShopItem::Admission))
             {
@@ -263,7 +263,7 @@ GameActions::Result RideCreateAction::Execute() const
         }
 
         // Set the on-ride photo price, whether the ride has one or not (except shops).
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) && shop_item_has_common_price(ShopItem::Photo))
         {
             money32 price = shop_item_get_common_price(ride, ShopItem::Photo);
             if (price != MONEY32_UNDEFINED)

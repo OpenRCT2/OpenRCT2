@@ -234,11 +234,12 @@ int32_t ride_get_count()
 size_t Ride::GetNumPrices() const
 {
     size_t result = 0;
-    if (type == RIDE_TYPE_CASH_MACHINE || type == RIDE_TYPE_FIRST_AID)
+    const auto& rtd = GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID))
     {
         result = 0;
     }
-    else if (type == RIDE_TYPE_TOILETS)
+    else if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
     {
         result = 1;
     }
@@ -791,7 +792,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
     }
     else if (status == RideStatus::Closed)
     {
-        if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+        if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         {
             if (num_riders != 0)
             {
@@ -830,7 +831,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
             ft.Add<StringId>(STR_NONE);
         }
     }
-    else if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+    else if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
     {
         ft.Add<StringId>(num_riders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
         ft.Add<uint16_t>(num_riders);
@@ -2230,7 +2231,7 @@ void ride_check_all_reachable()
         if (ride.status != RideStatus::Open || ride.connected_message_throttle != 0)
             continue;
 
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
             ride_shop_connected(&ride);
         else
             ride_entrance_exit_connected(&ride);
@@ -2584,7 +2585,7 @@ static ResultWithMessage ride_check_for_entrance_exit(RideId rideIndex)
     if (ride == nullptr)
         return { false };
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         return { true };
 
     uint8_t entrance = 0;

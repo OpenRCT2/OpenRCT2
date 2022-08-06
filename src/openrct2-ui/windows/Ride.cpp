@@ -1057,7 +1057,7 @@ static void WindowRideDisableTabs(rct_window* w)
         disabled_tabs |= (1ULL << WIDX_TAB_5); // 0x100
     }
 
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         disabled_tabs |= (1ULL << WIDX_TAB_3 | 1ULL << WIDX_TAB_4 | 1ULL << WIDX_TAB_7); // 0x4C0
 
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
@@ -1065,7 +1065,8 @@ static void WindowRideDisableTabs(rct_window* w)
         disabled_tabs |= (1ULL << WIDX_TAB_6); // 0x200
     }
 
-    if (ride->type == RIDE_TYPE_CASH_MACHINE || ride->type == RIDE_TYPE_FIRST_AID || (gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID)
+        || (gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
         disabled_tabs |= (1ULL << WIDX_TAB_9); // 0x1000
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
@@ -4222,7 +4223,7 @@ static int32_t WindowRideHasTrackColour(Ride* ride, int32_t trackColour)
 {
     // Get station flags (shops don't have them)
     auto stationObjFlags = 0;
-    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
     {
         auto stationObj = ride->GetStationObject();
         if (stationObj != nullptr)
@@ -6321,7 +6322,8 @@ static void WindowRideIncomeTogglePrimaryPrice(rct_window* w)
         return;
 
     ShopItem shop_item;
-    if (ride->type == RIDE_TYPE_TOILETS)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
     {
         shop_item = ShopItem::Admission;
     }
@@ -6440,7 +6442,8 @@ static bool WindowRideIncomeCanModifyPrimaryPrice(rct_window* w)
         return false;
 
     auto rideEntry = ride->GetRideEntry();
-    return park_ride_prices_unlocked() || ride->type == RIDE_TYPE_TOILETS
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    return park_ride_prices_unlocked() || rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET)
         || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::None);
 }
 
@@ -6639,7 +6642,8 @@ static void WindowRideIncomeInvalidate(rct_window* w)
     window_ride_income_widgets[WIDX_PRIMARY_PRICE].tooltip = STR_NONE;
 
     // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
-    if (!park_ride_prices_unlocked() && rideEntry->shop_item[0] == ShopItem::None && ride->type != RIDE_TYPE_TOILETS)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (!park_ride_prices_unlocked() && rideEntry->shop_item[0] == ShopItem::None && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
     {
         w->disabled_widgets |= (1ULL << WIDX_PRIMARY_PRICE);
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
@@ -6658,7 +6662,7 @@ static void WindowRideIncomeInvalidate(rct_window* w)
         window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
     ShopItem primaryItem = ShopItem::Admission;
-    if (ride->type == RIDE_TYPE_TOILETS || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
     {
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Checkbox;
 
@@ -6926,7 +6930,7 @@ static void WindowRideCustomerInvalidate(rct_window* w)
         ride->FormatNameTo(ft);
 
         window_ride_customer_widgets[WIDX_SHOW_GUESTS_THOUGHTS].type = WindowWidgetType::FlatBtn;
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         {
             window_ride_customer_widgets[WIDX_SHOW_GUESTS_ON_RIDE].type = WindowWidgetType::Empty;
             window_ride_customer_widgets[WIDX_SHOW_GUESTS_QUEUING].type = WindowWidgetType::Empty;
