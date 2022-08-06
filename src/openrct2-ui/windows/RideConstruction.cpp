@@ -1433,10 +1433,10 @@ public:
         StringId stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
         if (_currentTrackCurve & RideConstructionSpecialPieceSelected)
         {
+            const auto& rtd = currentRide->GetRideTypeDescriptor();
             const auto& ted = GetTrackElementDescriptor(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
             stringId = ted.Description;
-            if (stringId == STR_RAPIDS
-                && (currentRide->type == RIDE_TYPE_MONSTER_TRUCKS || currentRide->type == RIDE_TYPE_CAR_RIDE))
+            if (stringId == STR_RAPIDS && rtd.Category != RIDE_CATEGORY_WATER)
             {
                 stringId = STR_LOG_BUMPS;
             }
@@ -2497,9 +2497,12 @@ private:
             if (trackPieceStringId == STR_RAPIDS)
             {
                 auto currentRide = get_ride(_currentRideIndex);
-                if (currentRide != nullptr
-                    && (currentRide->type == RIDE_TYPE_MONSTER_TRUCKS || currentRide->type == RIDE_TYPE_CAR_RIDE))
-                    trackPieceStringId = STR_LOG_BUMPS;
+                if (currentRide != nullptr)
+                {
+                    const auto& rtd = currentRide->GetRideTypeDescriptor();
+                    if (rtd.Category != RIDE_CATEGORY_WATER)
+                        trackPieceStringId = STR_LOG_BUMPS;
+                }
             }
             gDropdownItems[i].Format = trackPieceStringId;
             if ((trackPiece | RideConstructionSpecialPieceSelected) == _currentTrackCurve)
