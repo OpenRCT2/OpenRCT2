@@ -194,8 +194,7 @@ GameActions::Result TrackPlaceAction::Query() const
             if ((_origin.z & 0x0F) != 8)
             {
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
-                    STR_CONSTRUCTION_ERR_UNKNOWN);
+                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_INVALID_HEIGHT);
             }
         }
         else
@@ -203,8 +202,7 @@ GameActions::Result TrackPlaceAction::Query() const
             if ((_origin.z & 0x0F) != 0)
             {
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
-                    STR_CONSTRUCTION_ERR_UNKNOWN);
+                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_INVALID_HEIGHT);
             }
         }
     }

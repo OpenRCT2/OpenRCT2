@@ -372,7 +372,7 @@ enum : uint16_t
     STR_QUIT_GAME_PROMPT_TITLE = 951,
     STR_QUIT_GAME_2_PROMPT_TITLE = 952,
     STR_LOAD_LANDSCAPE_PROMPT_TITLE = 953,
-    STR_CONSTRUCTION_ERR_UNKNOWN = 954,
+
     STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP = 955,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180 = 956,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135 = 957,
@@ -3896,6 +3896,8 @@ enum : uint16_t
     STR_ZERO_G_ROLL_RIGHT = 6511,
     STR_LARGE_ZERO_G_ROLL_LEFT = 6512,
     STR_LARGE_ZERO_G_ROLL_RIGHT = 6513,
+
+    STR_INVALID_HEIGHT = 6514,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

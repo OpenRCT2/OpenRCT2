@@ -29,6 +29,7 @@
 - Fix: [#17571] All researched tracked rides show up as new vehicles in .park scenarios.
 - Fix: [#17605] Crash when opening parks which have had objects removed externally.
 - Fix: [#17639] When building upside down, the special elements list contains many items twice (original bug).
+- Fix: [#17703] (undefined string) when building on invalid height.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
