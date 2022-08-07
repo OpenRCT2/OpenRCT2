@@ -11,7 +11,6 @@
 
 // Windows.h needs to be included first
 #    include <windows.h>
-
 // Then the rest
 #    include "../Version.h"
 
@@ -19,10 +18,12 @@
 #    include <lmcons.h>
 #    include <memory>
 #    include <shlobj.h>
+#    include <wbemcli.h>
 #    undef GetEnvironmentVariable
 
 #    include "../OpenRCT2.h"
 #    include "../common.h"
+#    include "../core/Console.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Date.h"
@@ -88,6 +89,100 @@ namespace Platform
             delete[] wlvalue;
         }
         return String::ToUtf8(result);
+    }
+
+    std::string GetOsName()
+    {
+        auto hModule = GetModuleHandleA("ntdll.dll");
+        RTL_OSVERSIONINFOW rovi = {};
+        if (hModule != nullptr)
+        {
+            using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
+#    if defined(__GNUC__) && __GNUC__ >= 8
+#        pragma GCC diagnostic push
+#        pragma GCC diagnostic ignored "-Wcast-function-type"
+#    endif
+            auto fn = reinterpret_cast<RtlGetVersionPtr>(GetProcAddress(hModule, "RtlGetVersion"));
+#    if defined(__GNUC__) && __GNUC__ >= 8
+#        pragma GCC diagnostic pop
+#    endif
+            if (fn != nullptr)
+            {
+                rovi.dwOSVersionInfoSize = sizeof(rovi);
+            }
+            else
+            {
+                Console::WriteLine("Error: Couldn't Retrieve OS");
+                return std::string{};
+            }
+        }
+        std::string output = "";
+        SYSTEM_INFO si;
+        GetNativeSystemInfo(&si);
+
+        if (rovi.dwMajorVersion == 10 && rovi.dwBuildNumber >= 22000)
+        {
+            output += "Windows 11";
+        }
+        else if (rovi.dwMajorVersion == 10 && rovi.dwBuildNumber < 22000)
+        {
+            output += "Windows 10";
+        }
+        else if (rovi.dwMajorVersion == 6 && rovi.dwMinorVersion == 3)
+        {
+            output += "Windows 8.1";
+        }
+        else if (rovi.dwMajorVersion == 6 && rovi.dwMinorVersion == 2)
+        {
+            output += "Windows 8";
+        }
+        else if (rovi.dwMajorVersion == 6 && rovi.dwMinorVersion == 1)
+        {
+            output += "Windows 7";
+        }
+        else if (rovi.dwMajorVersion == 6 && rovi.dwMinorVersion == 0)
+        {
+            output += "Windows Vista";
+        }
+        else if (rovi.dwMajorVersion == 5 && rovi.dwMinorVersion >= 1)
+        {
+            output += "Windows XP";
+        }
+        else if (rovi.dwMajorVersion == 5 && rovi.dwMinorVersion == 0)
+        {
+            output += "Windows 2000";
+        }
+        else
+        {
+            output += "Windows";
+        }
+
+        if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+        {
+            output += ", x64";
+        }
+        else if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM)
+        {
+            output += ", ARM";
+        }
+        else if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM64)
+        {
+            output += ", ARM64";
+        }
+        else if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_IA64)
+        {
+            output += ", Itanium";
+        }
+        else if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
+        {
+            output += ", x86";
+        }
+        else
+        {
+            output += ", Unknown";
+        }
+
+        return output;
     }
 
     static std::string GetHomePathViaEnvironment()

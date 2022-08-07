@@ -117,6 +117,7 @@ namespace Platform
     jclass AndroidFindClass(JNIEnv* env, std::string_view name);
 #endif
 
+    std::string GetOsName();
     bool IsRunningInWine();
     bool IsColourTerminalSupported();
     bool HandleSpecialCommandLineArgument(const char* argument);
