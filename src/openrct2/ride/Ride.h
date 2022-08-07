@@ -279,6 +279,10 @@ struct Ride
     uint8_t current_issues;
     uint32_t last_issue_time;
 
+    // TO-DO: those friend functions are temporary, find a way to not access the private fields
+    friend void UpdateSpiralSlide(Ride& ride);
+    friend void UpdateChairlift(Ride& ride);
+
 private:
     std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide> stations;
 
@@ -298,8 +302,6 @@ public:
 
 private:
     void Update();
-    void UpdateChairlift();
-    void UpdateSpiralSlide();
     void UpdateQueueLength(StationIndex stationIndex);
     ResultWithMessage CreateVehicles(const CoordsXYE& element, bool isApplying);
     void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
@@ -396,6 +398,8 @@ public:
     bool HasRecolourableShopItems() const;
     bool HasStation() const;
 };
+void UpdateSpiralSlide(Ride& ride);
+void UpdateChairlift(Ride& ride);
 
 #pragma pack(push, 1)
 

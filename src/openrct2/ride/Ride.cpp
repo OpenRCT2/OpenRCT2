@@ -1062,10 +1062,9 @@ void Ride::Update()
     }
 
     // Ride specific updates
-    if (type == RIDE_TYPE_CHAIRLIFT)
-        UpdateChairlift();
-    else if (type == RIDE_TYPE_SPIRAL_SLIDE)
-        UpdateSpiralSlide();
+    const auto& rtd = GetRideTypeDescriptor();
+    if (rtd.RideUpdate != nullptr)
+        rtd.RideUpdate(*this);
 
     ride_breakdown_update(this);
 
@@ -1104,23 +1103,23 @@ void Ride::Update()
  *
  *  rct2: 0x006AC489
  */
-void Ride::UpdateChairlift()
+void UpdateChairlift(Ride& ride)
 {
-    if (!(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
         return;
-    if ((lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
-        && breakdown_reason_pending == 0)
-        return;
-
-    uint16_t old_chairlift_bullwheel_rotation = chairlift_bullwheel_rotation >> 14;
-    chairlift_bullwheel_rotation += speed * 2048;
-    if (old_chairlift_bullwheel_rotation == speed / 8)
+    if ((ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
+        && ride.breakdown_reason_pending == 0)
         return;
 
-    auto bullwheelLoc = ChairliftBullwheelLocation[0].ToCoordsXYZ();
+    uint16_t old_chairlift_bullwheel_rotation = ride.chairlift_bullwheel_rotation >> 14;
+    ride.chairlift_bullwheel_rotation += ride.speed * 2048;
+    if (old_chairlift_bullwheel_rotation == ride.speed / 8)
+        return;
+
+    auto bullwheelLoc = ride.ChairliftBullwheelLocation[0].ToCoordsXYZ();
     map_invalidate_tile_zoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * COORDS_Z_STEP) });
 
-    bullwheelLoc = ChairliftBullwheelLocation[1].ToCoordsXYZ();
+    bullwheelLoc = ride.ChairliftBullwheelLocation[1].ToCoordsXYZ();
     map_invalidate_tile_zoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * COORDS_Z_STEP) });
 }
 
@@ -1196,19 +1195,20 @@ static constexpr const CoordsXY ride_spiral_slide_main_tile_offset[][4] = {
  *
  *  rct2: 0x006AC545
  */
-void Ride::UpdateSpiralSlide()
+
+void UpdateSpiralSlide(Ride& ride)
 {
     if (gCurrentTicks & 3)
         return;
-    if (slide_in_use == 0)
+    if (ride.slide_in_use == 0)
         return;
 
-    spiral_slide_progress++;
-    if (spiral_slide_progress >= 48)
+    ride.spiral_slide_progress++;
+    if (ride.spiral_slide_progress >= 48)
     {
-        slide_in_use--;
+        ride.slide_in_use--;
 
-        auto* peep = GetEntity<Guest>(slide_peep);
+        auto* peep = GetEntity<Guest>(ride.slide_peep);
         if (peep != nullptr)
         {
             auto destination = peep->GetDestination();
@@ -1221,12 +1221,12 @@ void Ride::UpdateSpiralSlide()
     // Invalidate something related to station start
     for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
-        if (stations[i].Start.IsNull())
+        if (ride.stations[i].Start.IsNull())
             continue;
 
-        auto startLoc = stations[i].Start;
+        auto startLoc = ride.stations[i].Start;
 
-        TileElement* tileElement = ride_get_station_start_track_element(this, StationIndex::FromUnderlying(i));
+        TileElement* tileElement = ride_get_station_start_track_element(&ride, StationIndex::FromUnderlying(i));
         if (tileElement == nullptr)
             continue;
 
