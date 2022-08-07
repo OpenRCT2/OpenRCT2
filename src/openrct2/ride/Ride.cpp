@@ -737,11 +737,6 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
     if (ride == nullptr || input == nullptr || input->element == nullptr || input->element->GetType() != TileElementType::Track)
         return 0;
 
-    if (ride->type == RIDE_TYPE_MAZE)
-    {
-        return 0;
-    }
-
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == ride->id)
     {
