@@ -477,3 +477,6 @@ void decrement_guests_heading_for_park();
 void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
 void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
 void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
+
+CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
+CoordsXY GetGuestWaypointLocationEnterprise(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
