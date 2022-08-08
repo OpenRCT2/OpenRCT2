@@ -222,7 +222,7 @@ namespace Config
             model->invisible_trees = reader->GetBoolean("invisible_trees", false);
             model->invisible_scenery = reader->GetBoolean("invisible_scenery", false);
             model->invisible_paths = reader->GetBoolean("invisible_paths", false);
-            model->invisible_supports = reader->GetBoolean("invisible_supports", false);
+            model->invisible_supports = reader->GetBoolean("invisible_supports", true);
 
             model->last_version_check_time = reader->GetInt64("last_version_check_time", 0);
         }
