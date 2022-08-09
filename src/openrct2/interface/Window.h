@@ -726,13 +726,6 @@ void window_ride_construction_keyboard_shortcut_next_track();
 void window_ride_construction_keyboard_shortcut_build_current();
 void window_ride_construction_keyboard_shortcut_demolish_current();
 
-void window_footpath_keyboard_shortcut_turn_left();
-void window_footpath_keyboard_shortcut_turn_right();
-void window_footpath_keyboard_shortcut_slope_down();
-void window_footpath_keyboard_shortcut_slope_up();
-void window_footpath_keyboard_shortcut_build_current();
-void window_footpath_keyboard_shortcut_demolish_current();
-
 void window_follow_sprite(rct_window& w, EntityId spriteIndex);
 void window_unfollow_sprite(rct_window& w);
 

@@ -638,7 +638,7 @@ static void ShortcutConstructionTurnLeft()
     rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
-        window_footpath_keyboard_shortcut_turn_left();
+        window->OnShortcutPressed(ShortcutId::WindowRideConstructionTurnLeft);
     }
     else
     {
@@ -653,7 +653,7 @@ static void ShortcutConstructionTurnRight()
     rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
-        window_footpath_keyboard_shortcut_turn_right();
+        window->OnShortcutPressed(ShortcutId::WindowRideConstructionTurnRight);
     }
     else
     {
@@ -669,7 +669,7 @@ static void ShortcutConstructionSlopeUp()
     rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
-        window_footpath_keyboard_shortcut_slope_up();
+        window->OnShortcutPressed(ShortcutId::WindowRideConstructionSlopeUp);
     }
     else
     {
@@ -685,7 +685,7 @@ static void ShortcutConstructionBuildCurrent()
     rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
-        window_footpath_keyboard_shortcut_build_current();
+        window->OnShortcutPressed(ShortcutId::WindowRideConstructionBuild);
     }
     else
     {
@@ -701,7 +701,7 @@ static void ShortcutConstructionSlopeDown()
     rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
-        window_footpath_keyboard_shortcut_slope_down();
+        window->OnShortcutPressed(ShortcutId::WindowRideConstructionSlopeDown);
     }
     else
     {
@@ -717,7 +717,7 @@ static void ShortcutConstructionDemolishCurrent()
     rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
-        window_footpath_keyboard_shortcut_demolish_current();
+        window->OnShortcutPressed(ShortcutId::WindowRideConstructionDemolish);
     }
     else
     {
