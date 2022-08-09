@@ -407,7 +407,8 @@ void format_readable_size(char* buf, size_t bufSize, uint64_t sizeBytes)
     char sizeType[128] = {};
     format_string(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
 
-    sprintf(buf, "%.03f %s", size, sizeType);
+    // sprintf(buf, "%.03f %s", size, sizeType);
+    snprintf(buf, sizeof(buf), "%.03f %s", size, sizeType);
 }
 
 void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytes)
