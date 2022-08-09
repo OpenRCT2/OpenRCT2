@@ -99,7 +99,7 @@ GameActions::Result RideSetPriceAction::Execute() const
         shopItem = ShopItem::Admission;
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
         {
             shopItem = rideEntry->shop_item[0];
             if (shopItem == ShopItem::None)
