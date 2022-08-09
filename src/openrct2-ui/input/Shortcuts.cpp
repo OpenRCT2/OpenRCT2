@@ -725,6 +725,22 @@ static void ShortcutConstructionDemolishCurrent()
     }
 }
 
+static void ShortcutConstructionUseDefault()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    if (window != nullptr)
+    {
+        window->OnShortcutPressed(ShortcutId::WindowRideConstructionDefault);
+    }
+    else
+    {
+        window_ride_construction_keyboard_shortcut_use_track_default();
+    }
+}
+
 static void ShortcutToggleTransparentWater()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
@@ -871,7 +887,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     // Window
     RegisterShortcut(ShortcutId::WindowRideConstructionTurnLeft, STR_SHORTCUT_CONSTRUCTION_TURN_LEFT, "Keypad 4", []() { ShortcutConstructionTurnLeft(); });
     RegisterShortcut(ShortcutId::WindowRideConstructionTurnRight, STR_SHORTCUT_CONSTRUCTION_TURN_RIGHT, "Keypad 6", []() { ShortcutConstructionTurnRight(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionDefault, STR_SHORTCUT_CONSTRUCTION_USE_TRACK_DEFAULT, "Keypad 5", []() { window_ride_construction_keyboard_shortcut_use_track_default(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionDefault, STR_SHORTCUT_CONSTRUCTION_USE_TRACK_DEFAULT, "Keypad 5", []() { ShortcutConstructionUseDefault(); });
     RegisterShortcut(ShortcutId::WindowRideConstructionSlopeDown, STR_SHORTCUT_CONSTRUCTION_SLOPE_DOWN, "Keypad 2", []() { ShortcutConstructionSlopeDown(); });
     RegisterShortcut(ShortcutId::WindowRideConstructionSlopeUp, STR_SHORTCUT_CONSTRUCTION_SLOPE_UP, "Keypad 8", []() { ShortcutConstructionSlopeUp(); });
     RegisterShortcut(ShortcutId::WindowRideConstructionChainLift, STR_SHORTCUT_CONSTRUCTION_CHAIN_LIFT_TOGGLE, "Keypad +", []() { window_ride_construction_keyboard_shortcut_chain_lift_toggle(); });

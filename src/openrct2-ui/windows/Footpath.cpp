@@ -33,6 +33,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
+using namespace OpenRCT2::Ui;
+
 // clang-format off
 enum
 {
@@ -503,32 +505,36 @@ public:
             }
         }
     }
-
+    
     void OnShortcutPressed(const std::string_view shortcutId) override
     {
-        if (shortcutId == OpenRCT2::Ui::ShortcutId::WindowRideConstructionBuild)
+        if (shortcutId == ShortcutId::WindowRideConstructionBuild)
         {
             KeyboardShortcutBuildCurrent();
         }
-        else if (shortcutId == OpenRCT2::Ui::ShortcutId::WindowRideConstructionDemolish)
+        else if (shortcutId == ShortcutId::WindowRideConstructionDemolish)
         {
             KeyboardShortcutDemolishCurrent();
         }
-        else if (shortcutId == OpenRCT2::Ui::ShortcutId::WindowRideConstructionTurnLeft)
+        else if (shortcutId == ShortcutId::WindowRideConstructionTurnLeft)
         {
             KeyboardShortcutTurnLeft();
         }
-        else if (shortcutId == OpenRCT2::Ui::ShortcutId::WindowRideConstructionTurnRight)
+        else if (shortcutId == ShortcutId::WindowRideConstructionTurnRight)
         {
             KeyboardShortcutTurnRight();
         }
-        else if (shortcutId == OpenRCT2::Ui::ShortcutId::WindowRideConstructionSlopeDown)
+        else if (shortcutId == ShortcutId::WindowRideConstructionSlopeDown)
         {
             KeyboardShortcutShortcutSlopeDown();
         }
-        else if (shortcutId == OpenRCT2::Ui::ShortcutId::WindowRideConstructionSlopeUp)
+        else if (shortcutId == ShortcutId::WindowRideConstructionSlopeUp)
         {
             KeyboardShortcutSlopeUp();
+        }
+        else if (shortcutId == ShortcutId::WindowRideConstructionDefault)
+        {
+            KeyboardShortcutSlopeLevel();
         }
     }
 
@@ -1383,6 +1389,17 @@ private:
             case 2:
                 return;
         }
+    }
+
+    void KeyboardShortcutSlopeLevel()
+    {
+        if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL) || IsWidgetDisabled(WIDX_SLOPEUP)
+            || widgets[WIDX_LEVEL].type == WindowWidgetType::Empty || gFootpathConstructSlope == 0)
+        {
+            return;
+        }
+
+        OnMouseDown(WIDX_LEVEL);
     }
 
     void KeyboardShortcutDemolishCurrent()
