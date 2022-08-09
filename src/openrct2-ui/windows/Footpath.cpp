@@ -433,7 +433,7 @@ public:
         WindowDrawWidgets(*this, &dpi);
         WindowFootpathDrawDropdownButtons(&dpi);
 
-        if (!WidgetIsDisabled(*this, WIDX_CONSTRUCT))
+        if (!IsWidgetDisabled(WIDX_CONSTRUCT))
         {
             // Get construction image
             uint8_t direction = (_footpathConstructDirection + get_current_rotation()) % 4;
@@ -516,7 +516,7 @@ public:
         }
         else if (shortcutId == OpenRCT2::Ui::ShortcutId::WindowRideConstructionTurnLeft)
         {
-            window_footpath_keyboard_shortcut_turn_left();
+            KeyboardShortcutTurnLeft();
         }
         else if (shortcutId == OpenRCT2::Ui::ShortcutId::WindowRideConstructionTurnRight)
         {
@@ -1315,10 +1315,10 @@ private:
 
     #pragma region Keyboard Shortcuts Events
 
-    void window_footpath_keyboard_shortcut_turn_left()
+    void KeyboardShortcutTurnLeft()
     {
-        if (WidgetIsDisabled(*this, WIDX_DIRECTION_NW) || WidgetIsDisabled(*this, WIDX_DIRECTION_NE)
-            || WidgetIsDisabled(*this, WIDX_DIRECTION_SW) || WidgetIsDisabled(*this, WIDX_DIRECTION_SE)
+        if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE)
+            || IsWidgetDisabled(WIDX_DIRECTION_SW) || IsWidgetDisabled(WIDX_DIRECTION_SE)
             || _footpathConstructionMode != 2)
         {
             return;
@@ -1330,8 +1330,8 @@ private:
 
     void KeyboardShortcutTurnRight()
     {
-        if (WidgetIsDisabled(*this, WIDX_DIRECTION_NW) || WidgetIsDisabled(*this, WIDX_DIRECTION_NE)
-            || WidgetIsDisabled(*this, WIDX_DIRECTION_SW) || WidgetIsDisabled(*this, WIDX_DIRECTION_SE)
+        if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE)
+            || IsWidgetDisabled(WIDX_DIRECTION_SW) || IsWidgetDisabled(WIDX_DIRECTION_SE)
             || _footpathConstructionMode != 2)
         {
             return;
@@ -1343,7 +1343,7 @@ private:
 
     void KeyboardShortcutShortcutSlopeDown()
     {
-        if (WidgetIsDisabled(*this, WIDX_SLOPEDOWN) || WidgetIsDisabled(*this, WIDX_LEVEL) || WidgetIsDisabled(*this, WIDX_SLOPEUP)
+        if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL) || IsWidgetDisabled(WIDX_SLOPEUP)
             || widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
         {
             return;
@@ -1352,10 +1352,10 @@ private:
         switch (gFootpathConstructSlope)
         {
             case 0:
-                window_event_mouse_down_call(this, WIDX_SLOPEDOWN);
+                OnMouseDown(WIDX_SLOPEDOWN);
                 break;
             case 2:
-                window_event_mouse_down_call(this, WIDX_LEVEL);
+                OnMouseDown(WIDX_LEVEL);
                 break;
             default:
             case 6:
@@ -1365,9 +1365,8 @@ private:
 
     void KeyboardShortcutSlopeUp()
     {
-        rct_window* w = window_find_by_class(WindowClass::Footpath);
-        if (w == nullptr || WidgetIsDisabled(*this, WIDX_SLOPEDOWN) || WidgetIsDisabled(*this, WIDX_LEVEL)
-            || WidgetIsDisabled(*this, WIDX_SLOPEUP) || widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
+        if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL)
+            || IsWidgetDisabled(WIDX_SLOPEUP) || widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
         {
             return;
         }
@@ -1375,10 +1374,10 @@ private:
         switch (gFootpathConstructSlope)
         {
             case 6:
-                window_event_mouse_down_call(w, WIDX_LEVEL);
+                OnMouseDown(WIDX_LEVEL);
                 break;
             case 0:
-                window_event_mouse_down_call(w, WIDX_SLOPEUP);
+                OnMouseDown(WIDX_SLOPEUP);
                 break;
             default:
             case 2:
@@ -1388,8 +1387,7 @@ private:
 
     void KeyboardShortcutDemolishCurrent()
     {
-        rct_window* w = window_find_by_class(WindowClass::Footpath);
-        if (w == nullptr || WidgetIsDisabled(*this, WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
+        if (IsWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
             || (!gCheatsBuildInPauseMode && game_is_paused()))
         {
             return;
@@ -1400,12 +1398,12 @@ private:
 
     void KeyboardShortcutBuildCurrent()
     {
-        if (WidgetIsDisabled(*this, WIDX_CONSTRUCT) || widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
+        if (IsWidgetDisabled(WIDX_CONSTRUCT) || widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
         {
             return;
         }
 
-        window_event_mouse_up_call(this, WIDX_CONSTRUCT);
+        OnMouseUp(WIDX_CONSTRUCT);
     }
 
     #pragma endregion
