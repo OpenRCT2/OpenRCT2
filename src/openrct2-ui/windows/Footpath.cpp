@@ -7,11 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/input/ShortcutIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2-ui/input/ShortcutIds.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -160,7 +160,7 @@ private:
     bool _footpathErrorOccured = false;
 
 public:
-    #pragma region Window Override Events
+#pragma region Window Override Events
 
     void OnOpen() override
     {
@@ -494,7 +494,8 @@ public:
 
         // Draw cost
         screenCoords = this->windowPos
-            + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(), window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
+            + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
+                              window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
         if (_windowFootpathCost != MONEY32_UNDEFINED)
         {
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -505,7 +506,7 @@ public:
             }
         }
     }
-    
+
     void OnShortcutPressed(const std::string_view shortcutId) override
     {
         if (shortcutId == ShortcutId::WindowRideConstructionBuild)
@@ -538,7 +539,7 @@ public:
         }
     }
 
-    #pragma endregion
+#pragma endregion
 
 private:
     /**
@@ -651,8 +652,7 @@ private:
         }
     }
 
-    void WindowFootpathDrawDropdownButton(
-        rct_drawpixelinfo* dpi, WidgetIndex widgetIndex, ImageIndex image)
+    void WindowFootpathDrawDropdownButton(rct_drawpixelinfo* dpi, WidgetIndex widgetIndex, ImageIndex image)
     {
         const auto& widget = widgets[widgetIndex];
         gfx_draw_sprite(dpi, ImageId(image), { windowPos.x + widget.left, windowPos.y + widget.top });
@@ -674,7 +674,8 @@ private:
         std::optional<size_t> defaultIndex;
         for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
         {
-            const auto* pathType = static_cast<FootpathSurfaceObject*>(objManager.GetLoadedObject(ObjectType::FootpathSurface, i));
+            const auto* pathType = static_cast<FootpathSurfaceObject*>(
+                objManager.GetLoadedObject(ObjectType::FootpathSurface, i));
             if (pathType == nullptr)
             {
                 continue;
@@ -727,8 +728,8 @@ private:
 
         auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numPathTypes);
         WindowDropdownShowImage(
-            windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numPathTypes, 47,
-            36, itemsPerRow);
+            windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numPathTypes, 47, 36,
+            itemsPerRow);
         if (defaultIndex)
             gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
     }
@@ -760,8 +761,8 @@ private:
 
         auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numRailingsTypes);
         WindowDropdownShowImage(
-            windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numRailingsTypes,
-            47, 36, itemsPerRow);
+            windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numRailingsTypes, 47,
+            36, itemsPerRow);
         if (defaultIndex)
             gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
     }
@@ -1124,9 +1125,9 @@ private:
             }
         }
 
-    gFootpathConstructFromPosition.z = tileElement->GetBaseZ();
-    auto action = FootpathRemoveAction(gFootpathConstructFromPosition);
-    GameActions::Execute(&action);
+        gFootpathConstructFromPosition.z = tileElement->GetBaseZ();
+        auto action = FootpathRemoveAction(gFootpathConstructFromPosition);
+        GameActions::Execute(&action);
 
         // Move selection
         edge = direction_reverse(edge);
@@ -1231,8 +1232,8 @@ private:
         }
 
         uint64_t pressedWidgets = pressed_widgets
-            & ~((1LL << WIDX_DIRECTION_NW) | (1LL << WIDX_DIRECTION_NE) | (1LL << WIDX_DIRECTION_SW) | (1LL << WIDX_DIRECTION_SE)
-                | (1LL << WIDX_SLOPEDOWN) | (1LL << WIDX_LEVEL) | (1LL << WIDX_SLOPEUP));
+            & ~((1LL << WIDX_DIRECTION_NW) | (1LL << WIDX_DIRECTION_NE) | (1LL << WIDX_DIRECTION_SW)
+                | (1LL << WIDX_DIRECTION_SE) | (1LL << WIDX_SLOPEDOWN) | (1LL << WIDX_LEVEL) | (1LL << WIDX_SLOPEUP));
         uint64_t disabledWidgets = 0;
         int32_t currentRotation = get_current_rotation();
         if (_footpathConstructionMode >= PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
@@ -1271,8 +1272,9 @@ private:
         {
             // Disable all bridge mode widgets
             disabledWidgets |= (1ULL << WIDX_DIRECTION_GROUP) | (1ULL << WIDX_DIRECTION_NW) | (1ULL << WIDX_DIRECTION_NE)
-                | (1ULL << WIDX_DIRECTION_SW) | (1ULL << WIDX_DIRECTION_SE) | (1ULL << WIDX_SLOPE_GROUP) | (1ULL << WIDX_SLOPEDOWN)
-                | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPEUP) | (1ULL << WIDX_CONSTRUCT) | (1ULL << WIDX_REMOVE);
+                | (1ULL << WIDX_DIRECTION_SW) | (1ULL << WIDX_DIRECTION_SE) | (1ULL << WIDX_SLOPE_GROUP)
+                | (1ULL << WIDX_SLOPEDOWN) | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPEUP) | (1ULL << WIDX_CONSTRUCT)
+                | (1ULL << WIDX_REMOVE);
         }
 
         pressed_widgets = pressedWidgets;
@@ -1319,13 +1321,12 @@ private:
         return pathConstructFlags;
     }
 
-    #pragma region Keyboard Shortcuts Events
+#pragma region Keyboard Shortcuts Events
 
     void KeyboardShortcutTurnLeft()
     {
-        if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE)
-            || IsWidgetDisabled(WIDX_DIRECTION_SW) || IsWidgetDisabled(WIDX_DIRECTION_SE)
-            || _footpathConstructionMode != 2)
+        if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE) || IsWidgetDisabled(WIDX_DIRECTION_SW)
+            || IsWidgetDisabled(WIDX_DIRECTION_SE) || _footpathConstructionMode != 2)
         {
             return;
         }
@@ -1336,9 +1337,8 @@ private:
 
     void KeyboardShortcutTurnRight()
     {
-        if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE)
-            || IsWidgetDisabled(WIDX_DIRECTION_SW) || IsWidgetDisabled(WIDX_DIRECTION_SE)
-            || _footpathConstructionMode != 2)
+        if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE) || IsWidgetDisabled(WIDX_DIRECTION_SW)
+            || IsWidgetDisabled(WIDX_DIRECTION_SE) || _footpathConstructionMode != 2)
         {
             return;
         }
@@ -1371,8 +1371,8 @@ private:
 
     void KeyboardShortcutSlopeUp()
     {
-        if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL)
-            || IsWidgetDisabled(WIDX_SLOPEUP) || widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
+        if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL) || IsWidgetDisabled(WIDX_SLOPEUP)
+            || widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
         {
             return;
         }
@@ -1423,7 +1423,7 @@ private:
         OnMouseUp(WIDX_CONSTRUCT);
     }
 
-    #pragma endregion
+#pragma endregion
 };
 
 /**
