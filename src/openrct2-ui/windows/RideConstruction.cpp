@@ -2107,7 +2107,9 @@ public:
                 }
             }
 
-            if (bank == TRACK_BANK_UPSIDE_DOWN && bank != _previousTrackBankEnd)
+
+            if ((ted.Definition.bank_start == TRACK_BANK_UPSIDE_DOWN || ted.Definition.bank_end == TRACK_BANK_UPSIDE_DOWN)
+                && (bank != _previousTrackBankEnd))
                 continue;
 
             _currentPossibleRideConfigurations[currentPossibleRideConfigurationIndex] = trackType;
