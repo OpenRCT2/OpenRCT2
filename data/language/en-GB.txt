@@ -3650,6 +3650,8 @@ STR_6545    :Use RCT1 interest calculation
 STR_6546    :Use the interest calculation algorithm of RollerCoaster Tycoon 1, which used a fixed percentage of approximately 1.33%.
 STR_6547    :All Scenery
 STR_6548    :Show railings at junction
+STR_6549    :Compatibility objects cannot be selected!
+STR_6550    :This entry is included for backwards compatibility with old or damaged objects. It cannot be selected, only deselected.  
 
 #############
 # Scenarios #
