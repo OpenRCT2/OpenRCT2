@@ -11,6 +11,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -62,8 +63,8 @@ public:
         {
             case WIDX_DEMOLISH:
             {
-                auto* currentRide = get_ride(rideId);
-                ride_action_modify(currentRide, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+                auto gameAction = RideDemolishAction(rideId, RIDE_MODIFY_DEMOLISH);
+                GameActions::Execute(&gameAction);
                 break;
             }
             case WIDX_CANCEL:

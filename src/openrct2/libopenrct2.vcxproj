@@ -567,7 +567,6 @@
     <ClCompile Include="actions\FootpathPlaceFromTrackAction.cpp" />
     <ClCompile Include="actions\FootpathRemoveAction.cpp" />
     <ClCompile Include="actions\GameAction.cpp" />
-    <ClCompile Include="actions\GameActionCompat.cpp" />
     <ClCompile Include="actions\GameActionRegistry.cpp" />
     <ClCompile Include="actions\GameActionResult.cpp" />
     <ClCompile Include="actions\GuestSetFlagsAction.cpp" />

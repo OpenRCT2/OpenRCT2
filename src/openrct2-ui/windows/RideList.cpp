@@ -15,6 +15,8 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/RideDemolishAction.h>
+#include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
@@ -400,10 +402,10 @@ public:
 
         // Open ride window
         const auto rideIndex = _rideList[index];
-        auto* ridePtr = get_ride(rideIndex);
         if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
         {
-            ride_action_modify(ridePtr, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+            auto gameAction = RideDemolishAction(rideIndex, RIDE_MODIFY_DEMOLISH);
+            GameActions::Execute(&gameAction);
             RefreshList();
         }
         else
@@ -935,7 +937,8 @@ private:
         {
             if (rideRef.status != RideStatus::Closed && rideRef.GetClassification() == static_cast<RideClassification>(page))
             {
-                ride_set_status(&rideRef, RideStatus::Closed);
+                auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::Closed);
+                GameActions::Execute(&gameAction);
             }
         }
     }
@@ -947,7 +950,8 @@ private:
         {
             if (rideRef.status != RideStatus::Open && rideRef.GetClassification() == static_cast<RideClassification>(page))
             {
-                ride_set_status(&rideRef, RideStatus::Open);
+                auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::Open);
+                GameActions::Execute(&gameAction);
             }
         }
     }

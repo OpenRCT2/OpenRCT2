@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "openrct2/actions/MazeSetTrackAction.h"
-
 #include <algorithm>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -19,7 +17,10 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/MazeSetTrackAction.h>
+#include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
+#include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/actions/TrackPlaceAction.h>
 #include <openrct2/actions/TrackRemoveAction.h>
 #include <openrct2/actions/TrackSetBrakeSpeedAction.h>
@@ -274,7 +275,8 @@ public:
                 if (!_autoOpeningShop)
                 {
                     _autoOpeningShop = true;
-                    ride_set_status(currentRide, RideStatus::Open);
+                    auto gameAction = RideSetStatusAction(currentRide->id, RideStatus::Open);
+                    GameActions::Execute(&gameAction);
                     _autoOpeningShop = false;
                 }
             }
@@ -288,7 +290,8 @@ public:
         {
             int32_t previousPauseState = gGamePaused;
             gGamePaused = 0;
-            ride_action_modify(currentRide, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+            auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+            GameActions::Execute(&gameAction);
             gGamePaused = previousPauseState;
         }
     }
@@ -956,7 +959,8 @@ public:
                 if (currentRide != nullptr)
                 {
                     auto status = currentRide->status == RideStatus::Simulating ? RideStatus::Closed : RideStatus::Simulating;
-                    ride_set_status(currentRide, status);
+                    auto gameAction = RideSetStatusAction(currentRide->id, status);
+                    GameActions::Execute(&gameAction);
                 }
                 break;
             }

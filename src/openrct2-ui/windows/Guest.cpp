@@ -17,6 +17,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/GuestSetFlagsAction.h>
+#include <openrct2/actions/GuestSetNameAction.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/Guest.h>
@@ -903,7 +904,8 @@ private:
         if (text.empty())
             return;
         std::string sText(text);
-        guest_set_name(EntityId::FromUnderlying(number), sText.c_str());
+        auto gameAction = GuestSetNameAction(EntityId::FromUnderlying(number), sText);
+        GameActions::Execute(&gameAction);
     }
 
     void OnToolUpdateOverview(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)

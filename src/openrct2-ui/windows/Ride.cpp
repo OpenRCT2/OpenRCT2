@@ -28,8 +28,10 @@
 #include <openrct2/actions/ParkSetParameterAction.h>
 #include <openrct2/actions/RideSetAppearanceAction.h>
 #include <openrct2/actions/RideSetColourSchemeAction.h>
+#include <openrct2/actions/RideSetNameAction.h>
 #include <openrct2/actions/RideSetPriceAction.h>
 #include <openrct2/actions/RideSetSettingAction.h>
+#include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
@@ -1683,7 +1685,8 @@ static void WindowRideMainMouseup(rct_window* w, rct_widgetindex widgetIndex)
                         status = RideStatus::Open;
                         break;
                 }
-                ride_set_status(ride, status);
+                auto gameAction = RideSetStatusAction(ride->id, status);
+                GameActions::Execute(&gameAction);
             }
             break;
         }
@@ -2174,7 +2177,8 @@ static void WindowRideMainDropdown(rct_window* w, rct_widgetindex widgetIndex, i
                             break;
                     }
                 }
-                ride_set_status(ride, status);
+                auto gameAction = RideSetStatusAction(ride->id, status);
+                GameActions::Execute(&gameAction);
             }
             break;
         }
@@ -2262,7 +2266,8 @@ static void WindowRideMainTextinput(rct_window* w, rct_widgetindex widgetIndex, 
     auto ride = get_ride(w->rideId);
     if (ride != nullptr)
     {
-        ride_set_name(ride, text, 0);
+        auto gameAction = RideSetNameAction(ride->id, text);
+        GameActions::Execute(&gameAction);
     }
 }
 

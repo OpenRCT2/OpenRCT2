@@ -7,14 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "openrct2/actions/MazeSetTrackAction.h"
-
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/MazeSetTrackAction.h>
+#include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
@@ -121,8 +121,9 @@ public:
             {
                 int32_t savedPausedState = gGamePaused;
                 gGamePaused = 0;
-                ride_action_modify(
-                    currentRide, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+                gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                GameActions::Execute(&gameAction);
                 gGamePaused = savedPausedState;
             }
             else
