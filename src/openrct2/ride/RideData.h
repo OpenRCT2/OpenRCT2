@@ -32,6 +32,7 @@
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackPaint.h"
+#include "Vehicle.h"
 
 enum class ResearchCategory : uint8_t;
 
@@ -157,6 +158,7 @@ using RideMusicUpdateFunction = void (*)(Ride*);
 using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
 using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
+using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const track_type_t trackType);
 
 struct RideTypeDescriptor
 {
@@ -215,6 +217,8 @@ struct RideTypeDescriptor
     RideClassification Classification = RideClassification::Ride;
 
     PeepUpdateRideLeaveEntranceFunc UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault;
+
+    RideUpdateMeasurementsSpecialElementsFunc UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
