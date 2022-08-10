@@ -128,7 +128,8 @@ struct RideOperatingSettings
     uint8_t MaxBrakesSpeed;
     uint8_t PoweredLiftAcceleration;
     uint8_t BoosterAcceleration;
-    int8_t BoosterSpeedFactor;              // The factor to shift the raw booster speed with
+    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
+    uint16_t AccelerationFactor = 12;
     uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
 };
 
