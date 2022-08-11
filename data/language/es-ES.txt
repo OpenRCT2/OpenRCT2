@@ -3611,6 +3611,9 @@ STR_6499    :Tipo de vehiculo no compatible con el formato de diseño de la via
 STR_6500    :Elementos no compatibles con el formato de diseño de la via
 STR_6501    :Color aleatorio
 STR_6502    :Introduce un valor entre {COMMA16} y {COMMA16}
+STR_6503    :Al menos un objeto de estación debe estar seleccionado
+STR_6504    :Al menos una superficie de terreno debe estar seleccionada
+STR_6505    :Al menos un borde de terreno debe estar seleccionado
 
 ##############
 # Escenarios #

@@ -232,7 +232,7 @@ STR_0821    :Des.
 STR_0822    :No s’ha pogut accedir al fitxer de gràfics.
 STR_0823    :Falta o no es pot accedir al fitxer de dades.
 STR_0824    :{BLACK}❌
-STR_0825    :El nom ja està usant-se.
+STR_0825    :El nom ja està en ús.
 STR_0826    :S’estan usant massa noms.
 STR_0827    :No hi ha prou diners - fan falta {CURRENCY2DP}.
 STR_0828    :Tanca la finestra.
@@ -493,7 +493,7 @@ STR_1102    :Movent-se a {VELOCITY}
 STR_1103    :Arribant a {POP16}{STRINGID}
 STR_1104    :Descarregant passatgers en {POP16}{STRINGID}
 STR_1105    :Viatjant a {VELOCITY}
-STR_1106    :Està xocant!
+STR_1106    :S’estavella!
 STR_1107    :Sinistre!
 STR_1108    :Viatjant a {VELOCITY}
 STR_1109    :Balancejant-se
@@ -938,7 +938,7 @@ STR_1547    :
 STR_1548    :
 STR_1549    :
 STR_1550    :«Vaja!»
-STR_1551    :«Tinc l’estranya sensació que algú m’està vigilant».
+STR_1551    :«Tinc l’estranya sensació que algú em vigila».
 STR_1552    :«No penso pagar tant per un globus de {STRINGID}».
 STR_1553    :«No penso pagar tant per una joguina de peluix {STRINGID}».
 STR_1554    :«No penso pagar tant per un mapa del parc de {STRINGID}».
@@ -1645,9 +1645,9 @@ STR_2281    :atracció intensa
 STR_2282    :atracció aquàtica
 STR_2283    :estand o botiga
 STR_2284    :decorat o tematització
-STR_2285    :s’està fent la recerca inicial.
-STR_2286    :s’està dissenyant.
-STR_2287    :s’està completant el disseny.
+STR_2285    :es fa la recerca inicial.
+STR_2286    :es va dissenyant.
+STR_2287    :es completa el disseny.
 STR_2288    :desconeguda
 STR_2289    :{STRINGID} {STRINGID}
 STR_2291    :Seleccioneu l’escenari per una nova partida
@@ -2140,7 +2140,7 @@ STR_3050    :Forat B
 STR_3051    :Forat C
 STR_3052    :Forat D
 STR_3053    :Forat E
-STR_3054    :S’està carregant…
+STR_3054    :Es carrega…
 STR_3058    :Parets de maó
 STR_3059    :Bardisses
 STR_3060    :Blocs de gel
@@ -2187,9 +2187,9 @@ STR_3113    :Selecciona un altre disseny
 STR_3114    :Torna a la finestra de selecció de dissenys.
 STR_3115    :Desa el disseny de via
 STR_3116    :Desa el disseny de via (no es podrà desar fins que l’atracció s’hagi provat i se n’hagin obtingut les estadístiques).
-STR_3117    :{BLACK}S’està trucant al mecànic…
+STR_3117    :{BLACK}Es truca al mecànic…
 STR_3118    :{BLACK}{STRINGID} va cap a l’atracció
-STR_3119    :{BLACK}{STRINGID} està arreglant l’atracció
+STR_3119    :{BLACK}{STRINGID} arregla l’atracció
 STR_3120    :Localitza el mecànic disponible més proper o el mecànic assignat per la reparació.
 STR_3121    :No es pot trobar cap mecànic lliure.
 STR_3122    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA16} visitant
@@ -2224,7 +2224,7 @@ STR_3169    :No s’han trobat les dades dels següents objectes:
 STR_3170    :No hi ha prou espai per als gràfics.
 STR_3171    :S’han seleccionat massa objectes d’aquest tipus.
 STR_3172    :Abans s’ha d’escollir aquest objecte: {STRING}
-STR_3173    :Aquest objecte ja s’està usant.
+STR_3173    :Aquest objecte ja està en ús.
 STR_3174    :Aquest objecte és necessari per un altre.
 STR_3175    :Aquest objecte és necessari sempre.
 STR_3176    :Aquest objecte no es pot seleccionar.
@@ -2400,7 +2400,7 @@ STR_3351    :Escriviu un nom per aquest disseny de via:
 STR_3352    :No es pot canviar el nom d’aquest disseny de via…
 STR_3353    :El nom conté caràcters no vàlids.
 STR_3354    :Ja existeix un fitxer amb aquest nom o bé no es pot modificar el fitxer existent.
-STR_3355    :El ftixer existent està bloquejat, protegit o no teniu permisos suficients per modificar-lo.
+STR_3355    :El fitxer existent està blocat, protegit o no teniu permisos suficients per modificar-lo.
 STR_3356    :Esborra el fitxer
 STR_3357    :{WINDOW_COLOUR_2}Esteu segur que voleu esborrar permanentment {STRING}?
 STR_3358    :No es pot esborrar el disseny de via…
@@ -2906,9 +2906,9 @@ STR_5738    :Tancada, {COMMA16} persones a l’atracció
 STR_5739    :{WINDOW_COLOUR_2}Visitants a l’atracció: {BLACK}{COMMA16}
 STR_5740    :Campanyes de màrqueting sense fi
 STR_5741    :Les campanyes de màrqueting no acabaran mai.
-STR_5742    :S’està autenticant…
-STR_5743    :S’està connectant…
-STR_5744    :S’està resolent…
+STR_5742    :S’autentica…
+STR_5743    :Es connecta…
+STR_5744    :Es resol…
 STR_5745    :S’ha detectat una dessincronització amb la xarxa.
 STR_5746    :Desconnectat.
 STR_5747    :Desconnectat: {STRING}
@@ -2923,7 +2923,7 @@ STR_5755    :Versió de programari incorrecta (el servidor usa {STRING}).
 STR_5756    :Contrasenya no vàlida
 STR_5757    :Servidor ple
 STR_5758    :{OUTLINE}{GREEN}{STRING} s’ha unit a la partida.
-STR_5759    :S’està descarregant el mapa… ({INT32}/{INT32} KiB)
+STR_5759    :Es descarrega el mapa… ({INT32}/{INT32} KiB)
 STR_5760    :Dòlars de Hong Kong(HK$)
 STR_5761    :Nou dòlar de Taiwan(NT$)
 STR_5762    :Iuan xinès (CN¥)
@@ -2962,7 +2962,7 @@ STR_5794    :Alguns escenaris desactiven l’edició{NEWLINE}d’algunes atracci
 STR_5795    :Els visitants pugen a totes les atraccions del parc,{NEWLINE}fins i tot si la intensitat és massa elevada.
 STR_5796    :Força que s’obrin o tanquin les entrades del parc.
 STR_5797    :Desactiva els canvis meteorològics{NEWLINE}i manté indefinidament l’estat actual.
-STR_5798    :Permet les accions de construcció mentre s’està en pausa.
+STR_5798    :Permet les accions de construcció amb la partida en pausa.
 STR_5799    :Evita que es produeixin avaries i sinistres per culpa de fallades en els sistemes de frenada.
 STR_5800    :Evita que les atraccions s’avariïn.
 STR_5801    :Desactiva la brutícia
@@ -2984,7 +2984,7 @@ STR_5814    :{WINDOW_COLOUR_1}«{STRING}»
 STR_5815    :Mostra el comptador de FPS del joc.
 STR_5816    :Estableix la relació d’escala del joc.{NEWLINE}Sol ser útil quan es juga amb{NEWLINE}pantalles d’alta resolució.
 STR_5819    :[Requereix renderitzat per maquinari]{NEWLINE}Posa la partida en pausa{NEWLINE}si s’activa l’Steam.
-STR_5820    :Minimitza el joc si es perd el focus{NEWLINE}mentre s’està en mode de pantalla completa.
+STR_5820    :Minimitza el joc si es perd el focus{NEWLINE}en mode de pantalla completa.
 STR_5822    :Mostra el cicle dia/nit.{NEWLINE}El cicle sencer equival a un mes a la partida.
 STR_5823    :Mostra els textos dels cartells en majúscula (com al RCT1).
 STR_5824    :No mostris llampecs{NEWLINE}durant les tempestes.
@@ -3298,7 +3298,7 @@ STR_6144    :Mostra el redibuixat
 STR_6145    :Estableix la velocitat límit pels acceleradors.
 STR_6146    :Activa totes les seccions de via dibuixables
 STR_6147    :Activa totes les peces de via que permet construir aquest tipus d’atracció a la finestra de construcció, sense importar si el vehicle les admet.
-STR_6148    :S’està connectant amb el servidor mestre…
+STR_6148    :Es connecta amb el servidor mestre…
 STR_6149    :No s’ha pogut connectar amb el servidor mestre.
 STR_6150    :Resposta del servidor mestre no vàlida (sense número JSON)
 STR_6151    :El servidor mestre no ha retornat una llista de servidors
@@ -3432,16 +3432,16 @@ STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6318    :S’ha detectat una dessincronització amb la xarxa.{NEWLINE}Fitxer de registre: {STRING}
 STR_6319    :Frens de bloc tancats
 STR_6320    :Indestructible
-STR_6321    :L’adició està trencada
+STR_6321    :L’addició està trencada
 STR_6322    :{WINDOW_COLOUR_2}ID de l’sprite: {BLACK}{INT32}
-STR_6323    :S’està simulant
+STR_6323    :Es simula
 STR_6324    :Simula
 STR_6325    :Simula l’atracció
 STR_6326    :No es pot simular {POP16}{POP16}{POP16}{STRINGID}…
 STR_6327    :Fons transparent per captures de pantalla gegants
 STR_6328    :Si s’activa, les captures de pantalla gegants tindran un fons transparent en lloc del color negre per defecte.
 STR_6329    :{STRING}{STRINGID}
-STR_6330    :S’està descarregant [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
+STR_6330    :Es carrega [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Afegeix ànecs
 STR_6332    :Treu els ànecs
 STR_6333    :Augmenta el factor d’escala
@@ -3488,7 +3488,7 @@ STR_6374    :C
 STR_6375    :Atracció desconeguda
 STR_6376    :{WINDOW_COLOUR_2}Vehicle d’atracció:{NEWLINE}{BLACK}{STRINGID} per {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipus: {BLACK}{STRINGID} per {STRINGID}
-STR_6378    :S’està rebent la llista d’objectes: {INT32} / {INT32}
+STR_6378    :Es va rebent la llista d’objectes: {INT32} / {INT32}
 STR_6379    :S’han rebut dades no vàlides.
 STR_6380    :Actualització disponible!
 STR_6381    :Uniu-vos al canal de l’OpenRCT2 de Discord!
