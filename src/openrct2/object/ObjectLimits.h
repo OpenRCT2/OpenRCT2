@@ -31,5 +31,6 @@ constexpr const uint16_t MAX_MUSIC_OBJECTS = 255;
 constexpr const uint16_t MAX_FOOTPATH_SURFACE_OBJECTS = 255;
 constexpr const uint16_t MAX_FOOTPATH_RAILINGS_OBJECTS = 255;
 constexpr const uint16_t MAX_AUDIO_OBJECTS = 255;
+constexpr const uint16_t MAX_FIREWORK_OBJECTS = 2047;
 
 constexpr const uint8_t DAT_NAME_LENGTH = 8;
