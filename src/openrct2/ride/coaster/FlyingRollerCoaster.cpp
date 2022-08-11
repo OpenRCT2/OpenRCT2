@@ -18814,22 +18814,22 @@ static void flying_rc_track_right_flying_large_half_loop_inverted_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27692, { 0, 0, height - 4 }, { 16, 16, 3 },
-                        { 16, 0, height + 90 });
+                        { 16, 7, height + 90 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27685, { 0, 0, height - 4 }, { 16, 16, 0 },
-                        { 0, 0, height });
+                        { 0, -7, height });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27678, { 0, 0, height - 4 }, { 16, 16, 0 },
-                        { 0, 16, height });
+                        { -7, 16, height });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27671, { 0, 0, height - 4 }, { 2, 16, 3 },
-                        { 30, 16, height + 110 });
+                        { 30, 23, height + 110 });
                     break;
             }
             paint_util_set_segment_support_height(
@@ -18842,7 +18842,7 @@ static void flying_rc_track_right_flying_large_half_loop_inverted_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27693, { 0, 0, height - 4 }, { 2, 16, 3 },
-                        { 30, 0, height + 140 });
+                        { 30, 7, height + 140 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
