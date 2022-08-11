@@ -162,7 +162,7 @@ using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideM
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
 using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const track_type_t trackType);
 
-enum class RideConstructionWindowContext
+enum class RideConstructionWindowContext : uint8_t
 {
     Default,
     Maze,
