@@ -6554,8 +6554,23 @@ static void flying_rc_track_booster(
     }
     else
     {
-        // Should not occur, except when converting from other coaster types.
-        flying_rc_track_brakes(session, ride, trackSequence, direction, height, trackElement);
+        switch (direction)
+        {
+            case 0:
+            case 2:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours[SCHEME_TRACK] | SPR_G2_BM_INVERT_BOOSTER_1, { 0, 0, height + 24 },
+                    { 32, 20, 1 },
+                    { 0, 6, height + 22 });
+                break;
+            case 1:
+            case 3:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours[SCHEME_TRACK] | SPR_G2_BM_INVERT_BOOSTER_2, { 0, 0, height + 24 },
+                    { 32, 20, 1 },
+                    { 0, 6, height + 22 });
+                break;
+        }
     }
 }
 

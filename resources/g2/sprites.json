@@ -15927,5 +15927,15 @@
         "path": "track/wooden/classic_wooden_preview_supports.png",
         "x_offset": 2,
         "y_offset": 1
+	},
+	{
+        "path": "track/bm_invert/booster_1.png",
+        "x_offset": -25,
+        "y_offset": -5
+    },
+    {
+        "path": "track/bm_invert/booster_2.png",
+        "x_offset": -25,
+        "y_offset": -5
     }
 ]
