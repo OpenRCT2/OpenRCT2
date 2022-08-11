@@ -97,7 +97,7 @@ The following people are not part of the development team, but have been contrib
 * Bas Cantrijn (Basssiiie) - Various plugin additions, misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
 * Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
-* Karst van Galen Last (AuraSpecs) - Misc.
+* Karst van Galen Last (AuraSpecs) - Ride paint (bounding boxes, extra track pieces), soundtrack, misc.
 * (8street) - Misc.
 
 ## Bug fixes
