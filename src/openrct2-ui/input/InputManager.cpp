@@ -115,7 +115,7 @@ void InputManager::HandleViewScrolling()
     auto mainWindow = window_get_main();
     if (mainWindow != nullptr && (_viewScroll.x != 0 || _viewScroll.y != 0))
     {
-        window_unfollow_sprite(mainWindow);
+        window_unfollow_sprite(*mainWindow);
     }
     InputScrollViewport(_viewScroll);
 

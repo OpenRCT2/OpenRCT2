@@ -24,6 +24,8 @@ using track_type_t = uint16_t;
 using roll_type_t = uint8_t;
 using pitch_type_t = uint8_t;
 
+struct ResultWithMessage;
+
 struct rct_trackdefinition
 {
     track_type_t type;
@@ -109,6 +111,7 @@ enum
 constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * COORDS_Z_STEP;
 constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
 
+// Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces
 enum
 {
     TRACK_NONE = 0,
@@ -163,11 +166,13 @@ enum
     TRACK_BOOSTER,
     TRACK_INLINE_TWIST_UNINVERTED,
     TRACK_INLINE_TWIST_INVERTED,
-    TRACK_QUARTER_LOOP_UNINVERTED,
-    TRACK_QUARTER_LOOP_INVERTED,
+    TRACK_QUARTER_LOOP_UNINVERTED_UP,
+    TRACK_QUARTER_LOOP_UNINVERTED_DOWN,
+    TRACK_QUARTER_LOOP_INVERTED_UP,
+    TRACK_QUARTER_LOOP_INVERTED_DOWN,
     TRACK_RAPIDS,
-    TRACK_HALF_LOOP_UNINVERTED,
-    TRACK_HALF_LOOP_INVERTED,
+    TRACK_FLYING_HALF_LOOP_UNINVERTED_UP,
+    TRACK_FLYING_HALF_LOOP_INVERTED_DOWN,
 
     TRACK_WATERFALL,
     TRACK_WHIRLPOOL,
@@ -178,6 +183,19 @@ enum
     TRACK_MINI_GOLF_HOLE,
     TRACK_ROTATION_CONTROL_TOGGLE,
     TRACK_SLOPE_STEEP_UP,
+
+    TRACK_CORKSCREW_LARGE,
+    TRACK_HALF_LOOP_MEDIUM,
+    TRACK_ZERO_G_ROLL,
+    TRACK_ZERO_G_ROLL_LARGE,
+
+    TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_UP,
+    TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_DOWN,
+    TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_DOWN,
+    TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_UP,
+
+    TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN,
+    TRACK_FLYING_HALF_LOOP_INVERTED_UP,
 
     TRACK_GROUP_COUNT,
 };
@@ -344,8 +362,6 @@ namespace TrackElemType
     constexpr track_type_t RotationControlToggleAlias = 100;
     constexpr track_type_t Booster = 100;
     constexpr track_type_t Maze = 101;
-    // Used by the multi-dimension coaster, as TD6 cannot handle index 255.
-    constexpr track_type_t InvertedUp90ToFlatQuarterLoopAlias = 101;
     constexpr track_type_t LeftQuarterBankedHelixLargeUp = 102;
     constexpr track_type_t RightQuarterBankedHelixLargeUp = 103;
     constexpr track_type_t LeftQuarterBankedHelixLargeDown = 104;
@@ -435,8 +451,8 @@ namespace TrackElemType
     constexpr track_type_t RightFlyerTwistUp = 188;
     constexpr track_type_t LeftFlyerTwistDown = 189;
     constexpr track_type_t RightFlyerTwistDown = 190;
-    constexpr track_type_t FlyerHalfLoopUp = 191;
-    constexpr track_type_t FlyerHalfLoopDown = 192;
+    constexpr track_type_t FlyerHalfLoopUninvertedUp = 191;
+    constexpr track_type_t FlyerHalfLoopInvertedDown = 192;
     constexpr track_type_t LeftFlyerCorkscrewUp = 193;
     constexpr track_type_t RightFlyerCorkscrewUp = 194;
     constexpr track_type_t LeftFlyerCorkscrewDown = 195;
@@ -513,9 +529,8 @@ namespace TrackElemType
     constexpr track_type_t FlatTrack1x4C = 265;
     constexpr track_type_t FlatTrack3x3 = 266;
 
-    constexpr track_type_t Count = 267;
-    constexpr track_type_t None = 65535;
-
+    // SV6/TD6 element aliases
+    constexpr track_type_t InvertedUp90ToFlatQuarterLoopAlias = 101;
     constexpr track_type_t FlatTrack1x4A_Alias = 95;
     constexpr track_type_t FlatTrack2x2_Alias = 110;
     constexpr track_type_t FlatTrack4x4_Alias = 111;
@@ -526,7 +541,43 @@ namespace TrackElemType
     constexpr track_type_t FlatTrack1x1B_Alias = 121;
     constexpr track_type_t FlatTrack1x4C_Alias = 122;
     constexpr track_type_t FlatTrack3x3_Alias = 123;
+
+    // Highest track element ID that has a TD6 alias
     constexpr track_type_t HighestAlias = 266;
+
+    // Track Elements specific to OpenRCT2
+    constexpr track_type_t LeftLargeCorkscrewUp = 267;
+    constexpr track_type_t RightLargeCorkscrewUp = 268;
+    constexpr track_type_t LeftLargeCorkscrewDown = 269;
+    constexpr track_type_t RightLargeCorkscrewDown = 270;
+    constexpr track_type_t LeftMediumHalfLoopUp = 271;
+    constexpr track_type_t RightMediumHalfLoopUp = 272;
+    constexpr track_type_t LeftMediumHalfLoopDown = 273;
+    constexpr track_type_t RightMediumHalfLoopDown = 274;
+    constexpr track_type_t LeftZeroGRollUp = 275;
+    constexpr track_type_t RightZeroGRollUp = 276;
+    constexpr track_type_t LeftZeroGRollDown = 277;
+    constexpr track_type_t RightZeroGRollDown = 278;
+    constexpr track_type_t LeftLargeZeroGRollUp = 279;
+    constexpr track_type_t RightLargeZeroGRollUp = 280;
+    constexpr track_type_t LeftLargeZeroGRollDown = 281;
+    constexpr track_type_t RightLargeZeroGRollDown = 282;
+
+    constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedUp = 283;
+    constexpr track_type_t RightFlyerLargeHalfLoopUninvertedUp = 284;
+    constexpr track_type_t RightFlyerLargeHalfLoopInvertedDown = 285;
+    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedDown = 286;
+    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedUp = 287;
+    constexpr track_type_t RightFlyerLargeHalfLoopInvertedUp = 288;
+    constexpr track_type_t RightFlyerLargeHalfLoopUninvertedDown = 289;
+    constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedDown = 290;
+
+    constexpr track_type_t FlyerHalfLoopInvertedUp = 291;
+    constexpr track_type_t FlyerHalfLoopUninvertedDown = 292;
+
+    constexpr track_type_t Count = 293;
+    constexpr track_type_t None = 65535;
+
 }; // namespace TrackElemType
 
 enum
@@ -578,10 +629,8 @@ roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank);
 roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank);
 roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement);
 
-bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
-bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
-
-money32 maze_set_track(const CoordsXYZD& coords, uint8_t flags, bool initialPlacement, RideId rideIndex, uint8_t mode);
+ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
+ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);

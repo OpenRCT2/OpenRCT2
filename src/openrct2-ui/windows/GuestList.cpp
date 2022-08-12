@@ -27,7 +27,7 @@
 #include <openrct2/world/Park.h>
 #include <vector>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_GUESTS;
+static constexpr const StringId WINDOW_TITLE = STR_GUESTS;
 static constexpr const int32_t WH = 330;
 static constexpr const int32_t WW = 350;
 
@@ -93,9 +93,9 @@ private:
     {
         uint8_t args[12]{};
 
-        rct_string_id GetFirstStringId()
+        StringId GetFirstStringId()
         {
-            rct_string_id firstStrId{};
+            StringId firstStrId{};
             std::memcpy(&firstStrId, args, sizeof(firstStrId));
             return firstStrId;
         }
@@ -154,7 +154,7 @@ public:
     void OnOpen() override
     {
         widgets = window_guest_list_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         _selectedTab = TabId::Summarised;
         _selectedView = GuestViewType::Thoughts;
@@ -186,7 +186,7 @@ public:
                 auto guestRide = get_ride(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
-                    ft.Add<rct_string_id>(
+                    ft.Add<StringId>(
                         guestRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
                     guestRide->FormatNameTo(ft);
 
@@ -202,7 +202,7 @@ public:
                 auto guestRide = get_ride(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
-                    ft.Add<rct_string_id>(STR_QUEUING_FOR);
+                    ft.Add<StringId>(STR_QUEUING_FOR);
                     guestRide->FormatNameTo(ft);
 
                     _selectedFilter = GuestFilterType::Guests;
@@ -217,7 +217,7 @@ public:
                 auto guestRide = get_ride(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
-                    ft.Add<rct_string_id>(STR_NONE);
+                    ft.Add<StringId>(STR_NONE);
                     guestRide->FormatNameTo(ft);
 
                     _selectedFilter = GuestFilterType::GuestsThinking;
@@ -229,7 +229,7 @@ public:
             }
             case GuestListFilterType::GuestsThinkingX:
             {
-                ft.Add<rct_string_id>(PeepThoughts[index & 0xFF]);
+                ft.Add<StringId>(PeepThoughts[index & 0xFF]);
 
                 _selectedFilter = GuestFilterType::GuestsThinking;
                 _highlightedIndex = {};
@@ -451,7 +451,7 @@ public:
         DrawTabImages(dpi);
 
         // Filter description
-        rct_string_id format;
+        StringId format;
         auto screenCoords = windowPos + ScreenCoordsXY{ 6, widgets[WIDX_TAB_CONTENT_PANEL].top + 3 };
         if (_selectedTab == TabId::Individual)
         {
@@ -672,7 +672,7 @@ private:
                 && y < dpi.y + dpi.height)
             {
                 // Highlight backcolour and text colour (format)
-                rct_string_id format = STR_BLACK_STRING;
+                StringId format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
                     gfx_filter_rect(&dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
@@ -742,7 +742,7 @@ private:
                     break;
 
                 // Highlight backcolour and text colour (format)
-                rct_string_id format = STR_BLACK_STRING;
+                StringId format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
                     gfx_filter_rect(&dpi, { 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
@@ -771,7 +771,7 @@ private:
 
                 // Draw guest count
                 ft = Formatter();
-                ft.Add<rct_string_id>(STR_GUESTS_COUNT_COMMA_SEP);
+                ft.Add<StringId>(STR_GUESTS_COUNT_COMMA_SEP);
                 ft.Add<uint32_t>(group.NumGuests);
                 DrawTextBasic(&dpi, { 326, y }, format, ft, { TextAlignment::RIGHT });
             }
@@ -807,7 +807,7 @@ private:
         auto peepArgs = GetArgumentsFromPeep(peep, guestViewType);
         if (_filterArguments.GetFirstStringId() == STR_NONE && _selectedFilter == GuestFilterType::GuestsThinking)
         {
-            Formatter(peepArgs.args).Add<rct_string_id>(STR_NONE);
+            Formatter(peepArgs.args).Add<StringId>(STR_NONE);
         }
         return _filterArguments == peepArgs;
     }
@@ -904,7 +904,7 @@ private:
         return result;
     }
 
-    static constexpr rct_string_id GetViewName(GuestViewType type)
+    static constexpr StringId GetViewName(GuestViewType type)
     {
         switch (type)
         {
@@ -916,7 +916,7 @@ private:
         }
     }
 
-    static constexpr rct_string_id GetFilterString(GuestFilterType type)
+    static constexpr StringId GetFilterString(GuestFilterType type)
     {
         switch (type)
         {

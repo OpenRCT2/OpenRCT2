@@ -340,7 +340,6 @@ STR_0950    :Load Game
 STR_0951    :Quit Game
 STR_0952    :Quit Game
 STR_0953    :Load Landscape
-STR_0954    :
 STR_0955    :Select seat rotation angle for this track section
 STR_0956    :-180°
 STR_0957    :-135°
@@ -753,7 +752,7 @@ STR_1363    :Too high for supports!
 STR_1364    :Supports for track above can’t be extended any further!
 STR_1365    :In-line Twist (left)
 STR_1366    :In-line Twist (right)
-STR_1367    :Half Loop
+STR_1367    :Small Half Loop
 STR_1368    :Half Corkscrew (left)
 STR_1369    :Half Corkscrew (right)
 STR_1370    :Barrel Roll (left)
@@ -3205,7 +3204,6 @@ STR_6047    :Smooth tiles
 STR_6048    :Height map error
 STR_6049    :Error reading PNG
 STR_6050    :Error reading bitmap
-STR_6051    :The width and height need to match
 STR_6052    :The heightmap is too big, and will be cut off
 STR_6053    :The heightmap cannot be normalised
 STR_6054    :Only 24-bit bitmaps are supported
@@ -3607,6 +3605,19 @@ STR_6498    :Enable to maintain square map shape.
 STR_6499    :Vehicle type not supported by track design format
 STR_6500    :Track elements not supported by track design format
 STR_6501    :Random colour
+STR_6502    :Enter value between {COMMA16} and {COMMA16}
+STR_6503    :At least one station object must be selected
+STR_6504    :At least one terrain surface must be selected
+STR_6505    :At least one terrain edge must be selected
+STR_6506    :Large Half Corkscrew (left)
+STR_6507    :Large Half Corkscrew (right)
+STR_6508    :Medium Half Loop (left)
+STR_6509    :Medium Half Loop (right)
+STR_6510    :Zero G Roll (left)
+STR_6511    :Zero G Roll (right)
+STR_6512    :Large Zero G Roll (left)
+STR_6513    :Large Zero G Roll (right)
+STR_6514    :Invalid height!
 
 #############
 # Scenarios #

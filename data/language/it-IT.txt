@@ -1955,8 +1955,6 @@ STR_2738    :Musica schermata del titolo:
 STR_2739    :Nessuno
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat not found
-STR_2743    :Copiare “data/css17.dat” dalla cartella di installazione di RCT1 come “data/css50.dat” nella cartella di RCT2, oppure impostare il percorso di installazione di RCT1 nella scheda “Avanzate”.
 STR_2749    :Nuovo scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Sposta tutti gli elementi sopra
@@ -2260,7 +2258,7 @@ STR_3208    :Gestione tracciati salvati
 STR_3209    :Indietro al passo precedente:
 STR_3210    :Avanti al passo successivo:
 STR_3211    :Dimens. mappa:
-STR_3212    :{COMMA16} × {COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Impossibile rimpicciolire ulteriormente la mappa
 STR_3214    :Impossibile ingrandire ulteriormente la mappa
 STR_3215    :Troppo vicino al bordo della mappa
@@ -3212,7 +3210,6 @@ STR_6047    :Ammorbidisci celle
 STR_6048    :Errore nella heightmap
 STR_6049    :Errore nella lettura del PNG
 STR_6050    :Errore nella lettura della bitmap
-STR_6051    :Larghezza e altezza devono corrispondere
 STR_6052    :La heightmap è troppo grande e sarà tagliata
 STR_6053    :La heightmap non può essere normalizzata
 STR_6054    :Sono supportate solo le bitmap a 24 bit

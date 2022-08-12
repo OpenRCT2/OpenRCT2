@@ -242,6 +242,26 @@ namespace String
         return false;
     }
 
+    bool Contains(std::string_view haystack, std::string_view needle, bool ignoreCase)
+    {
+        if (needle.size() > haystack.size())
+            return false;
+
+        if (!ignoreCase)
+            return haystack.find(needle) != std::string_view::npos;
+
+        auto end = haystack.size() - needle.size();
+        for (size_t start = 0; start <= end; start++)
+        {
+            auto sub = haystack.substr(start, needle.size());
+            if (Equals(sub, needle, ignoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     size_t IndexOf(const utf8* str, utf8 match, size_t startIndex)
     {
         const utf8* ch = str + startIndex;

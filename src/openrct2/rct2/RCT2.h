@@ -25,7 +25,7 @@ enum class EditorStep : uint8_t;
 
 namespace RCT2
 {
-    constexpr const rct_string_id RCT2_RIDE_STRING_START = 2;
+    constexpr const StringId RCT2_RIDE_STRING_START = 2;
 
     // clang-format off
     constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
@@ -80,15 +80,15 @@ namespace RCT2
         rct_vehicle_colour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x006
         uint8_t pad_046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
         // 0 = closed, 1 = open, 2 = test
-        uint8_t status;     // 0x049
-        rct_string_id name; // 0x04A
+        uint8_t status; // 0x049
+        StringId name;  // 0x04A
         union
         {
             uint32_t name_arguments; // 0x04C
             struct
             {
-                rct_string_id name_arguments_type_name; // 0x04C
-                uint16_t name_arguments_number;         // 0x04E
+                StringId name_arguments_type_name; // 0x04C
+                uint16_t name_arguments_number;    // 0x04E
             };
         };
         RCT12xy8 overall_view;                               // 0x050
@@ -552,16 +552,16 @@ namespace RCT2
     struct Peep : RCT12SpriteBase
     {
         uint8_t pad_1F[0x22 - 0x1F];
-        rct_string_id name_string_idx; // 0x22
-        uint16_t next_x;               // 0x24
-        uint16_t next_y;               // 0x26
-        uint8_t next_z;                // 0x28
-        uint8_t next_flags;            // 0x29
-        uint8_t outside_of_park;       // 0x2A
-        uint8_t state;                 // 0x2B
-        uint8_t sub_state;             // 0x2C
-        uint8_t sprite_type;           // 0x2D
-        uint8_t peep_type;             // 0x2E
+        StringId name_string_idx; // 0x22
+        uint16_t next_x;          // 0x24
+        uint16_t next_y;          // 0x26
+        uint8_t next_z;           // 0x28
+        uint8_t next_flags;       // 0x29
+        uint8_t outside_of_park;  // 0x2A
+        uint8_t state;            // 0x2B
+        uint8_t sub_state;        // 0x2C
+        uint8_t sprite_type;      // 0x2D
+        uint8_t peep_type;        // 0x2E
         union
         {
             uint8_t staff_type;  // 0x2F
@@ -838,7 +838,7 @@ namespace RCT2
         Entity sprites[Limits::MaxEntities];
         uint16_t sprite_lists_head[static_cast<uint8_t>(EntityListId::Count)];
         uint16_t sprite_lists_count[static_cast<uint8_t>(EntityListId::Count)];
-        rct_string_id park_name;
+        StringId park_name;
         uint8_t pad_013573D6[2];
         uint32_t park_name_args;
         money32 initial_cash;
@@ -1024,9 +1024,9 @@ namespace RCT2
 
     struct StexEntry
     {
-        rct_string_id scenario_name; // 0x00
-        rct_string_id park_name;     // 0x02
-        rct_string_id details;       // 0x04
+        StringId scenario_name; // 0x00
+        StringId park_name;     // 0x02
+        StringId details;       // 0x04
         uint8_t var_06;
     };
     assert_struct_size(StexEntry, 7);

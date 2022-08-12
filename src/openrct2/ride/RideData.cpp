@@ -160,7 +160,7 @@ const CarEntry CableLiftVehicle = {
     /* .SpriteGroups[Slopes12Banked45] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Slopes25Banked67] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Slopes25Banked90] = */ 0, SpritePrecision::None,
-    /* .SpriteGroups[SlopesInlineTwists] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes25InlineTwists] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Slopes42Banked22] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Slopes42Banked45] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Slopes42Banked67] = */ 0, SpritePrecision::None,
@@ -193,7 +193,7 @@ const uint16_t RideFilmLength[3] = {
     7000, // SPACE_RAIDERS
 };
 
-const rct_string_id RideModeNames[] = {
+const StringId RideModeNames[] = {
         STR_RIDE_MODE_NORMAL,
         STR_RIDE_MODE_CONTINUOUS_CIRCUIT,
         STR_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
@@ -374,6 +374,11 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
     }
     log_error("Cannot get Research Category of invalid RideCategory");
     return ResearchCategory::Transport;
+}
+
+bool RideTypeDescriptor::SupportsRideMode(RideMode rideMode) const
+{
+    return RideModes & EnumToFlag(rideMode);
 }
 
 static RideTrackGroup _enabledRidePieces = {};

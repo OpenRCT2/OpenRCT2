@@ -28,5 +28,5 @@ public:
     GameActions::Result Execute() const override;
 
 private:
-    rct_string_id CheckParameters() const;
+    StringId CheckParameters() const;
 };

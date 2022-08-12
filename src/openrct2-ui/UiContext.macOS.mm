@@ -220,9 +220,9 @@ namespace OpenRCT2::Ui
         }
     };
 
-    IPlatformUiContext* CreatePlatformUiContext()
+    std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext()
     {
-        return new macOSContext();
+        return std::make_unique<macOSContext>();
     }
 } // namespace OpenRCT2::Ui
 

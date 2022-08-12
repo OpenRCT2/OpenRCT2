@@ -36,7 +36,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
+static constexpr const StringId WINDOW_TITLE = STR_STRING;
 static constexpr const int32_t WH = 124;
 static constexpr const int32_t WW = 200;
 constexpr int16_t TRACK_MINI_PREVIEW_WIDTH = 168;
@@ -78,10 +78,10 @@ public:
     void OnOpen() override
     {
         widgets = window_track_place_widgets;
-        WindowInitScrollWidgets(this);
-        tool_set(this, WIDX_PRICE, Tool::Crosshair);
+        WindowInitScrollWidgets(*this);
+        tool_set(*this, WIDX_PRICE, Tool::Crosshair);
         input_set_flag(INPUT_FLAG_6, true);
-        window_push_others_right(this);
+        window_push_others_right(*this);
         show_gridlines();
         _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
         _placementCost = MONEY32_UNDEFINED;
@@ -200,7 +200,7 @@ public:
         if (cost != _placementCost)
         {
             _placementCost = cost;
-            widget_invalidate(this, WIDX_PRICE);
+            widget_invalidate(*this, WIDX_PRICE);
         }
 
         TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), GetOrAllocateRide(PreviewRideId), trackLoc);
@@ -243,7 +243,7 @@ public:
                             intent.putExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                             context_open_intent(&intent);
                             auto wnd = window_find_by_class(WC_TRACK_DESIGN_PLACE);
-                            window_close(wnd);
+                            window_close(*wnd);
                         }
                         else
                         {
@@ -288,7 +288,7 @@ public:
     {
         auto ft = Formatter::Common();
         ft.Add<char*>(_trackDesign->name.c_str());
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         // Draw mini tile preview
         rct_drawpixelinfo clippedDpi;
@@ -611,9 +611,9 @@ private:
     }
 };
 
-rct_window* WindowTrackPlaceOpen(const track_design_file_ref* tdFileRef)
+rct_window* WindowTrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
 {
-    std::unique_ptr<TrackDesign> openTrackDesign = TrackDesignImport(tdFileRef->path);
+    std::unique_ptr<TrackDesign> openTrackDesign = TrackDesignImport(tdFileRef->path.c_str());
 
     if (openTrackDesign == nullptr)
     {

@@ -24,7 +24,7 @@ private:
     MapRange _range;
     LandBuyRightSetting _setting{ LandBuyRightSetting::Count };
 
-    constexpr static rct_string_id _ErrorTitles[] = {
+    constexpr static StringId _ErrorTitles[] = {
         STR_CANT_BUY_LAND,
         STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE,
     };

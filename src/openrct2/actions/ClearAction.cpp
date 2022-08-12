@@ -67,7 +67,7 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
 
     auto noValidTiles = true;
     auto error = GameActions::Status::Ok;
-    rct_string_id errorMessage = STR_NONE;
+    StringId errorMessage = STR_NONE;
     money32 totalCost = 0;
 
     auto validRange = ClampRangeWithinMap(_range);

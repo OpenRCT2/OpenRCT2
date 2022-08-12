@@ -141,7 +141,7 @@ enum class EntertainerCostume : uint8_t
     Count
 };
 
-extern const rct_string_id StaffCostumeNames[static_cast<uint8_t>(EntertainerCostume::Count)];
+extern const StringId StaffCostumeNames[static_cast<uint8_t>(EntertainerCostume::Count)];
 
 extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;

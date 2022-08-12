@@ -65,8 +65,8 @@ class UiContext final : public IUiContext
 private:
     constexpr static uint32_t TOUCH_DOUBLE_TIMEOUT = 300;
 
-    IPlatformUiContext* const _platformUiContext;
-    IWindowManager* const _windowManager;
+    const std::unique_ptr<IPlatformUiContext> _platformUiContext;
+    const std::unique_ptr<IWindowManager> _windowManager;
 
     CursorRepository _cursorRepository;
 
@@ -126,9 +126,7 @@ public:
     ~UiContext() override
     {
         UiContext::CloseWindow();
-        delete _windowManager;
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
-        delete _platformUiContext;
     }
 
     void Initialise() override
@@ -642,6 +640,30 @@ public:
         _platformUiContext->ShowMessageBox(_window, message);
     }
 
+    int32_t ShowMessageBox(
+        const std::string& title, const std::string& message, const std::vector<std::string>& options) override
+    {
+        auto message_box_button_data = std::make_unique<SDL_MessageBoxButtonData[]>(options.size());
+        for (size_t i = 0; i < options.size(); i++)
+        {
+            message_box_button_data[i].buttonid = static_cast<int>(i);
+            message_box_button_data[i].text = options[i].c_str();
+        }
+
+        SDL_MessageBoxData message_box_data{};
+        message_box_data.window = _window;
+        message_box_data.title = title.c_str();
+        message_box_data.message = message.c_str();
+        message_box_data.numbuttons = static_cast<int>(options.size());
+        message_box_data.buttons = message_box_button_data.get();
+
+        int buttonid{};
+
+        SDL_ShowMessageBox(&message_box_data, &buttonid);
+
+        return buttonid;
+    }
+
     bool HasMenuSupport() override
     {
         return _platformUiContext->HasMenuSupport();
@@ -679,7 +701,7 @@ public:
 
     IWindowManager* GetWindowManager() override
     {
-        return _windowManager;
+        return _windowManager.get();
     }
 
     bool SetClipboardText(const utf8* target) override

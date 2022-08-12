@@ -13,6 +13,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/MazeSetTrackAction.h>
+#include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
@@ -26,7 +28,7 @@
 
 #pragma region Widgets
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
 static constexpr const int32_t WH = 200;
 static constexpr const int32_t WW = 166;
 
@@ -92,7 +94,7 @@ public:
     void OnOpen() override
     {
         widgets = window_maze_construction_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         rideId = _currentRideIndex;
         show_gridlines();
     }
@@ -119,8 +121,9 @@ public:
             {
                 int32_t savedPausedState = gGamePaused;
                 gGamePaused = 0;
-                ride_action_modify(
-                    currentRide, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+                gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                GameActions::Execute(&gameAction);
                 gGamePaused = savedPausedState;
             }
             else
@@ -177,7 +180,7 @@ public:
         {
             if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
             {
-                widget_invalidate(this, i);
+                widget_invalidate(*this, i);
             }
         }
         disabled_widgets = disabledWidgets;
@@ -211,14 +214,14 @@ public:
         switch (_rideConstructionState)
         {
             case RideConstructionState::Place:
-                if (!WidgetIsActiveTool(this, WIDX_MAZE_DIRECTION_GROUPBOX))
+                if (!WidgetIsActiveTool(*this, WIDX_MAZE_DIRECTION_GROUPBOX))
                 {
                     Close();
                     return;
                 }
                 break;
             case RideConstructionState::EntranceExit:
-                if (!WidgetIsActiveTool(this, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(this, WIDX_MAZE_EXIT))
+                if (!WidgetIsActiveTool(*this, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(*this, WIDX_MAZE_EXIT))
                 {
                     _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
                     WindowMazeConstructionUpdatePressedWidgets();
@@ -285,7 +288,7 @@ public:
         else
         {
             ft.Increment(4);
-            ft.Add<rct_string_id>(STR_NONE);
+            ft.Add<StringId>(STR_NONE);
         }
     }
 
@@ -297,7 +300,7 @@ public:
 private:
     void WindowMazeConstructionEntranceMouseup(rct_widgetindex widgetIndex)
     {
-        if (tool_set(this, widgetIndex, Tool::Crosshair))
+        if (tool_set(*this, widgetIndex, Tool::Crosshair))
             return;
 
         gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
@@ -355,7 +358,7 @@ private:
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
             auto currentRide = get_ride(rideIndex);
-            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(currentRide))
+            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(currentRide).Successful)
             {
                 tool_cancel();
                 if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
@@ -377,7 +380,7 @@ private:
 
     void WindowMazeConstructionConstruct(int32_t direction)
     {
-        int32_t x, y, z, actionFlags, mode;
+        int32_t x, y, z, actionFlags = 0, mode;
 
         _currentTrackSelectionFlags = 0;
         _rideConstructionNextArrowPulse = 0;
@@ -391,22 +394,22 @@ private:
         {
             case RideConstructionState::MazeBuild:
                 mode = GC_SET_MAZE_TRACK_BUILD;
-                actionFlags = GAME_COMMAND_FLAG_APPLY;
                 break;
             case RideConstructionState::MazeMove:
                 mode = GC_SET_MAZE_TRACK_MOVE;
-                actionFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
+                actionFlags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
                 break;
             default:
             case RideConstructionState::MazeFill:
                 mode = GC_SET_MAZE_TRACK_FILL;
-                actionFlags = GAME_COMMAND_FLAG_APPLY;
                 break;
         }
 
-        money32 cost = maze_set_track(
-            CoordsXYZD{ x, y, z, static_cast<uint8_t>(direction) }, actionFlags, false, _currentRideIndex, mode);
-        if (cost == MONEY32_UNDEFINED)
+        const auto loc = CoordsXYZD{ x, y, z, static_cast<uint8_t>(direction) };
+        auto action = MazeSetTrackAction(loc, false, _currentRideIndex, mode);
+        action.SetFlags(actionFlags);
+        const auto res = GameActions::Execute(&action);
+        if (res.Error != GameActions::Status::Ok)
         {
             return;
         }

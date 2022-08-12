@@ -24,7 +24,7 @@ namespace STATION_OBJECT_FLAGS
 class StationObject final : public Object
 {
 public:
-    rct_string_id NameStringId{};
+    StringId NameStringId{};
     ImageIndex BaseImageId = ImageIndexUndefined;
     ImageIndex ShelterImageId = ImageIndexUndefined;
     uint32_t Flags{};

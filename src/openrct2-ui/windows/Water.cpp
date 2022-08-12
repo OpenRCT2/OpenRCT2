@@ -17,7 +17,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_WATER;
+static constexpr const StringId WINDOW_TITLE = STR_WATER;
 static constexpr const int32_t WH = 77;
 static constexpr const int32_t WW = 76;
 
@@ -47,8 +47,8 @@ public:
     {
         widgets = window_water_widgets;
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        WindowInitScrollWidgets(*this);
+        window_push_others_below(*this);
 
         gLandToolSize = 1;
         gWaterToolRaiseCost = MONEY64_UNDEFINED;

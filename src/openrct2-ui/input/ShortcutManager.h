@@ -13,6 +13,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <memory>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/localisation/StringIds.h>
 #include <optional>
@@ -56,7 +57,7 @@ namespace OpenRCT2::Ui
     {
     public:
         std::string Id;
-        rct_string_id LocalisedName = STR_NONE;
+        StringId LocalisedName = STR_NONE;
         std::string CustomName;
         std::vector<ShortcutInput> Default;
         std::vector<ShortcutInput> Current;
@@ -70,7 +71,7 @@ namespace OpenRCT2::Ui
         {
         }
 
-        RegisteredShortcut(std::string_view id, rct_string_id localisedName, const std::function<void()>& action)
+        RegisteredShortcut(std::string_view id, StringId localisedName, const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)
             , Action(action)
@@ -78,8 +79,7 @@ namespace OpenRCT2::Ui
         }
 
         RegisteredShortcut(
-            std::string_view id, rct_string_id localisedName, std::string_view defaultChord,
-            const std::function<void()>& action)
+            std::string_view id, StringId localisedName, std::string_view defaultChord, const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)
             , Default({ defaultChord })
@@ -89,7 +89,7 @@ namespace OpenRCT2::Ui
         }
 
         RegisteredShortcut(
-            std::string_view id, rct_string_id localisedName, std::string_view defaultChordA, std::string_view defaultChordB,
+            std::string_view id, StringId localisedName, std::string_view defaultChordA, std::string_view defaultChordB,
             const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)

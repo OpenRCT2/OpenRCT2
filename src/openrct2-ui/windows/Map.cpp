@@ -53,7 +53,7 @@ static constexpr uint16_t MapColourUnowned(uint16_t colour)
 
 constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_MAP_LABEL;
+static constexpr const StringId WINDOW_TITLE = STR_MAP_LABEL;
 static constexpr const int32_t WH = 259;
 static constexpr const int32_t WW = 245;
 
@@ -194,7 +194,7 @@ public:
                 break;
             case WIDX_SET_LAND_RIGHTS:
                 Invalidate();
-                if (tool_set(this, widgetIndex, Tool::UpArrow))
+                if (tool_set(*this, widgetIndex, Tool::UpArrow))
                     break;
                 _activeTool = 2;
                 // Prevent mountain tool size.
@@ -237,7 +237,7 @@ public:
                 break;
             case WIDX_BUILD_PARK_ENTRANCE:
                 Invalidate();
-                if (tool_set(this, widgetIndex, Tool::UpArrow))
+                if (tool_set(*this, widgetIndex, Tool::UpArrow))
                     break;
 
                 gParkEntranceGhostExists = false;
@@ -251,7 +251,7 @@ public:
                 gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
                 break;
             case WIDX_PEOPLE_STARTING_POSITION:
-                if (tool_set(this, widgetIndex, Tool::UpArrow))
+                if (tool_set(*this, widgetIndex, Tool::UpArrow))
                     break;
 
                 show_gridlines();
@@ -513,7 +513,16 @@ public:
         }
 
         park_entrance_remove_ghost();
-        park_entrance_place_ghost(parkEntrancePosition);
+
+        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
+        gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
+
+        auto result = GameActions::Execute(&gameAction);
+        if (result.Error == GameActions::Status::Ok)
+        {
+            gParkEntranceGhostPosition = parkEntrancePosition;
+            gParkEntranceGhostExists = true;
+        }
     }
 
     void PlaceParkEntranceToolDown(const ScreenCoordsXY& screenCoords)
@@ -642,7 +651,7 @@ public:
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            window_scroll_to_location(mainWindow, { mapCoords, mapZ });
+            window_scroll_to_location(*mainWindow, { mapCoords, mapZ });
         }
 
         if (LandToolIsActive())
@@ -665,7 +674,7 @@ public:
                 gLandToolTerrainSurface, gLandToolTerrainEdge);
             GameActions::Execute(&surfaceSetStyleAction);
         }
-        else if (WidgetIsActiveTool(this, WIDX_SET_LAND_RIGHTS))
+        else if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS))
         {
             // Set land rights
             int32_t landRightsToolSize = std::max<int32_t>(1, _landRightsToolSize);
@@ -856,7 +865,7 @@ public:
             + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
 
         // Draw land tool size
-        if (WidgetIsActiveTool(this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(_landRightsToolSize);
@@ -880,7 +889,7 @@ public:
             {
                 screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP].bottom + 2 };
 
-                static constexpr rct_string_id _mapLabels[] = {
+                static constexpr StringId _mapLabels[] = {
                     STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
                     STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
                 };
@@ -900,7 +909,7 @@ public:
                 }
             }
         }
-        else if (!WidgetIsActiveTool(this, WIDX_SET_LAND_RIGHTS))
+        else if (!WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS))
         {
             DrawTextBasic(
                 &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},
@@ -962,7 +971,7 @@ private:
 
         scrolls[0].h_left = cx;
         scrolls[0].v_top = dx;
-        WidgetScrollUpdateThumbs(this, WIDX_MAP);
+        WidgetScrollUpdateThumbs(*this, WIDX_MAP);
     }
 
     void IncreaseMapSize()

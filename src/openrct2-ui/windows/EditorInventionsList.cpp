@@ -29,7 +29,7 @@
 
 static constexpr const int32_t WW = 600;
 static constexpr const int32_t WH = 400;
-static constexpr const rct_string_id WINDOW_TITLE = STR_INVENTION_LIST;
+static constexpr const StringId WINDOW_TITLE = STR_INVENTION_LIST;
 
 // clang-format off
 enum {
@@ -94,24 +94,24 @@ static void ResearchRidesSetup()
     }
 }
 
-static std::pair<rct_string_id, Formatter> WindowEditorInventionsListPrepareName(const ResearchItem& researchItem, bool withGap)
+static std::pair<StringId, Formatter> WindowEditorInventionsListPrepareName(const ResearchItem& researchItem, bool withGap)
 {
-    rct_string_id drawString;
-    rct_string_id stringId = researchItem.GetName();
+    StringId drawString;
+    StringId stringId = researchItem.GetName();
     auto ft = Formatter();
 
     if (researchItem.type == Research::EntryType::Ride
         && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
-        rct_string_id rideTypeName = get_ride_naming(researchItem.baseRideType, get_ride_entry(researchItem.entryIndex)).Name;
-        ft.Add<rct_string_id>(rideTypeName);
-        ft.Add<rct_string_id>(stringId);
+        StringId rideTypeName = get_ride_naming(researchItem.baseRideType, get_ride_entry(researchItem.entryIndex)).Name;
+        ft.Add<StringId>(rideTypeName);
+        ft.Add<StringId>(stringId);
     }
     else
     {
         drawString = STR_WINDOW_COLOUR_2_STRINGID;
-        ft.Add<rct_string_id>(stringId);
+        ft.Add<StringId>(stringId);
     }
 
     return std::make_pair(drawString, ft);
@@ -199,7 +199,7 @@ public:
     {
         frame_no++;
         OnPrepareDraw();
-        widget_invalidate(this, WIDX_TAB_1);
+        widget_invalidate(*this, WIDX_TAB_1);
 
         if (WindowEditorInventionsListDragGetItem() != nullptr)
             return;
@@ -305,24 +305,24 @@ public:
                 colour = colours[1] | COLOUR_FLAG_INSET;
             }
 
-            const rct_string_id itemNameId = researchItem.GetName();
+            const StringId itemNameId = researchItem.GetName();
 
             if (researchItem.type == Research::EntryType::Ride
                 && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
                 const auto rideEntry = get_ride_entry(researchItem.entryIndex);
-                const rct_string_id rideTypeName = get_ride_naming(researchItem.baseRideType, rideEntry).Name;
+                const StringId rideTypeName = get_ride_naming(researchItem.baseRideType, rideEntry).Name;
 
                 // Draw group name
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(rideTypeName);
+                ft.Add<StringId>(rideTypeName);
                 DrawTextEllipsised(
                     &dpi, { 1, itemY }, columnSplitOffset - 11, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, ft,
                     { colour, fontSpriteBase });
 
                 // Draw vehicle name
                 ft = Formatter();
-                ft.Add<rct_string_id>(itemNameId);
+                ft.Add<StringId>(itemNameId);
                 DrawTextEllipsised(
                     &dpi, { columnSplitOffset + 1, itemY }, columnSplitOffset - 11, STR_BLACK_STRING, ft,
                     { colour, fontSpriteBase });
@@ -331,7 +331,7 @@ public:
             {
                 // Scenery group, flat ride or shop
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(itemNameId);
+                ft.Add<StringId>(itemNameId);
                 DrawTextEllipsised(&dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, { colour, fontSpriteBase });
             }
         }
@@ -429,7 +429,7 @@ public:
         // Item category
         screenPos.x = windowPos.x + widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
         ft = Formatter();
-        ft.Add<rct_string_id>(researchItem->GetCategoryInventionString());
+        ft.Add<StringId>(researchItem->GetCategoryInventionString());
         DrawTextBasic(&dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
     }
 
@@ -483,7 +483,7 @@ public:
         if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
             && windowPos.y + height > screenCoords.y)
         {
-            rct_widgetindex widgetIndex = window_find_widget_from_point(this, screenCoords);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(*this, screenCoords);
             auto& widget = widgets[widgetIndex];
             if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
             {
@@ -491,7 +491,7 @@ public:
                 int32_t outScrollArea{};
                 ScreenCoordsXY outScrollCoords{};
                 int32_t outScrollId{};
-                WidgetScrollGetPart(this, &widget, screenCoords, outScrollCoords, &outScrollArea, &outScrollId);
+                WidgetScrollGetPart(*this, &widget, screenCoords, outScrollCoords, &outScrollArea, &outScrollId);
                 if (outScrollArea == SCROLL_PART_VIEW)
                 {
                     const auto isInvented = outScrollId == 0;
@@ -640,16 +640,16 @@ public:
     void Init(ResearchItem& researchItem)
     {
         _draggedItem = researchItem;
-        rct_string_id stringId = researchItem.GetName();
+        StringId stringId = researchItem.GetName();
         char buffer[256] = {};
         if (researchItem.type == Research::EntryType::Ride
             && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             const auto rideEntry = get_ride_entry(researchItem.entryIndex);
-            const rct_string_id rideTypeName = get_ride_naming(researchItem.baseRideType, rideEntry).Name;
+            const StringId rideTypeName = get_ride_naming(researchItem.baseRideType, rideEntry).Name;
             Formatter ft;
-            ft.Add<rct_string_id>(stringId);
-            ft.Add<rct_string_id>(rideTypeName);
+            ft.Add<StringId>(stringId);
+            ft.Add<StringId>(rideTypeName);
             format_string(buffer, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &ft);
         }
         else
@@ -665,7 +665,7 @@ public:
         width = stringWidth;
         Invalidate();
 
-        InputWindowPositionBegin(this, 0, gTooltipCursor);
+        InputWindowPositionBegin(*this, 0, gTooltipCursor);
     }
 
     const ResearchItem& GetItem() const

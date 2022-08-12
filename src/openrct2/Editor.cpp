@@ -18,6 +18,7 @@
 #include "ParkImporter.h"
 #include "actions/LandBuyRightsAction.h"
 #include "actions/LandSetRightsAction.h"
+#include "actions/ResultWithMessage.h"
 #include "audio/audio.h"
 #include "core/Path.hpp"
 #include "entity/EntityList.h"
@@ -468,7 +469,7 @@ namespace Editor
      *
      *  rct2: 0x006AB9B8
      */
-    std::pair<ObjectType, rct_string_id> CheckObjectSelection()
+    std::pair<ObjectType, StringId> CheckObjectSelection()
     {
         bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
 
@@ -492,6 +493,19 @@ namespace Editor
         {
             return { ObjectType::Ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED };
         }
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::Station))
+        {
+            return { ObjectType::Station, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED };
+        }
+
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::TerrainSurface))
+        {
+            return { ObjectType::TerrainSurface, STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED };
+        }
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::TerrainEdge))
+        {
+            return { ObjectType::TerrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED };
+        }
 
         if (!isTrackDesignerManager)
         {
@@ -513,7 +527,7 @@ namespace Editor
      *
      *  rct2: 0x0066FEAC
      */
-    std::pair<bool, rct_string_id> CheckPark()
+    ResultWithMessage CheckPark()
     {
         int32_t parkSize = park_calculate_size();
         if (parkSize == 0)

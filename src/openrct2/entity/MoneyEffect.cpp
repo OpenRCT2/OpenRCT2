@@ -140,11 +140,11 @@ void MoneyEffect::Update()
     EntityRemove(this);
 }
 
-std::pair<rct_string_id, money64> MoneyEffect::GetStringId() const
+std::pair<StringId, money64> MoneyEffect::GetStringId() const
 {
-    rct_string_id spentStringId = Vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
-    rct_string_id receiveStringId = Vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
-    rct_string_id stringId = receiveStringId;
+    StringId spentStringId = Vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
+    StringId receiveStringId = Vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
+    StringId stringId = receiveStringId;
     money64 outValue = Value;
     if (Value < 0)
     {

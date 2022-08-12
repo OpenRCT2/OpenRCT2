@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../object/Object.h"
 
+#include <memory>
 #include <vector>
 
 struct IObjectRepository;
@@ -54,4 +55,4 @@ struct IObjectManager
 Object* object_manager_load_object(const rct_object_entry* entry);
 void object_manager_unload_objects(const std::vector<ObjectEntryDescriptor>& entries);
 void object_manager_unload_all_objects();
-[[nodiscard]] rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame);
+[[nodiscard]] StringId object_manager_get_source_game_string(const ObjectSourceGame sourceGame);

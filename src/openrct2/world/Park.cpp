@@ -137,9 +137,6 @@ void update_park_fences(const CoordsXY& coords)
 
         if (fenceRequired)
         {
-            // As map_is_location_in_park sets the error text
-            // will require to back it up.
-            rct_string_id previous_error = gGameCommandErrorText;
             if (map_is_location_in_park({ coords.x - COORDS_XY_STEP, coords.y }))
             {
                 newFences |= 0x8;
@@ -159,8 +156,6 @@ void update_park_fences(const CoordsXY& coords)
             {
                 newFences |= 0x1;
             }
-
-            gGameCommandErrorText = previous_error;
         }
     }
 

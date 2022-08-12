@@ -22,8 +22,8 @@ static uint8_t constexpr NoFlatRideCars = 0xFF;
 
 struct RideNaming
 {
-    rct_string_id Name;
-    rct_string_id Description;
+    StringId Name;
+    StringId Description;
 };
 
 struct track_colour_preset_list
@@ -69,7 +69,7 @@ struct rct_ride_entry
     int8_t nausea_multiplier;
     uint8_t max_height;
     ShopItem shop_item[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
-    rct_string_id capacity;
+    StringId capacity;
     void* obj;
 
     const CarEntry* GetCar(size_t id) const

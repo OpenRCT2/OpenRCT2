@@ -305,7 +305,7 @@ News::Item* News::ItemQueues::FirstOpenOrNewSlot()
  *
  *  rct2: 0x0066DF55
  */
-News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc, const Formatter& formatter)
+News::Item* News::AddItemToQueue(News::ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter)
 {
     utf8 buffer[256];
 
@@ -315,7 +315,7 @@ News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, u
 }
 
 // TODO: Use variant for assoc, requires strong type for each possible input.
-News::Item* News::AddItemToQueue(ItemType type, rct_string_id string_id, EntityId assoc, const Formatter& formatter)
+News::Item* News::AddItemToQueue(ItemType type, StringId string_id, EntityId assoc, const Formatter& formatter)
 {
     return AddItemToQueue(type, string_id, assoc.ToUnderlying(), formatter);
 }

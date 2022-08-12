@@ -37,7 +37,7 @@ private:
     static constexpr auto NUM_IMAGES_IN_ENTRY = 19;
 
 public:
-    rct_string_id NameStringId{};
+    StringId NameStringId{};
     uint32_t IconImageId{};
     uint32_t PatternBaseImageId{};
     uint32_t EntryBaseImageId{};

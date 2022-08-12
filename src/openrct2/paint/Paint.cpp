@@ -894,7 +894,7 @@ bool PaintAttachToPreviousPS(paint_session& session, ImageId image_id, int32_t x
  * @param rotation (ebp)
  */
 void PaintFloatingMoneyEffect(
-    paint_session& session, money64 amount, rct_string_id string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
+    paint_session& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation)
 {
     auto* ps = session.AllocateStringPaintEntry();

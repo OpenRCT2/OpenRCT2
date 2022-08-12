@@ -60,7 +60,7 @@ static void RotateCamera(int32_t direction)
         auto window = window_get_main();
         if (window != nullptr)
         {
-            window_rotate_camera(window, direction);
+            window_rotate_camera(*window, direction);
         }
     }
 }
@@ -85,7 +85,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate scenery
     rct_window* w = window_find_by_class(WC_SCENERY);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
         && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
@@ -94,7 +94,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate construction track piece
     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
         && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
         // Check if building a maze...
@@ -107,7 +107,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate track design preview
     w = window_find_by_class(WC_TRACK_DESIGN_LIST);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
@@ -116,7 +116,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate track design placement
     w = window_find_by_class(WC_TRACK_DESIGN_PLACE);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
@@ -125,7 +125,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate park entrance
     w = window_find_by_class(WC_MAP);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_MAP__WIDX_ROTATE_90)
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_MAP__WIDX_ROTATE_90)
         && w->widgets[WC_MAP__WIDX_ROTATE_90].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, WC_MAP__WIDX_ROTATE_90);
@@ -134,7 +134,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate selected element in tile inspector
     w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
@@ -148,10 +148,10 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     {
         if (window_find_by_class(WC_TITLE_LOGO) != nullptr)
         {
-            window_close(window_find_by_class(WC_TITLE_LOGO));
-            window_close(window_find_by_class(WC_TITLE_OPTIONS));
-            window_close(window_find_by_class(WC_TITLE_MENU));
-            window_close(window_find_by_class(WC_TITLE_EXIT));
+            window_close(*window_find_by_class(WC_TITLE_LOGO));
+            window_close(*window_find_by_class(WC_TITLE_OPTIONS));
+            window_close(*window_find_by_class(WC_TITLE_MENU));
+            window_close(*window_find_by_class(WC_TITLE_EXIT));
             title_set_hide_version_info(true);
         }
         else
@@ -163,9 +163,9 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     {
         if (window_find_by_class(WC_TOP_TOOLBAR) != nullptr)
         {
-            window_close(window_find_by_class(WC_DROPDOWN));
-            window_close(window_find_by_class(WC_TOP_TOOLBAR));
-            window_close(window_find_by_class(WC_BOTTOM_TOOLBAR));
+            window_close(*window_find_by_class(WC_DROPDOWN));
+            window_close(*window_find_by_class(WC_TOP_TOOLBAR));
+            window_close(*window_find_by_class(WC_BOTTOM_TOOLBAR));
         }
         else
         {
@@ -385,7 +385,7 @@ static void ShortcutOpenCheatWindow()
     rct_window* window = window_find_by_class(WC_CHEATS);
     if (window != nullptr)
     {
-        window_close(window);
+        window_close(*window);
         return;
     }
     context_open_window(WC_CHEATS);
@@ -462,7 +462,7 @@ static void ShortcutOpenSceneryPicker()
     }
 
     window_scenery = window_find_by_class(WC_SCENERY);
-    if (window_scenery != nullptr && !WidgetIsDisabled(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
+    if (window_scenery != nullptr && !WidgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
         && window_scenery->widgets[WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON].type != WindowWidgetType::Empty
         && !gWindowSceneryEyedropperEnabled)
     {
@@ -494,7 +494,7 @@ static void ShortcutScaleDown()
 static void TileInspectorMouseUp(rct_widgetindex widgetIndex)
 {
     auto w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !WidgetIsDisabled(w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
+    if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, widgetIndex);
     }
@@ -503,7 +503,7 @@ static void TileInspectorMouseUp(rct_widgetindex widgetIndex)
 static void TileInspectorMouseDown(rct_widgetindex widgetIndex)
 {
     auto w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !WidgetIsDisabled(w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
+    if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
     {
         window_event_mouse_down_call(w, widgetIndex);
     }
@@ -563,7 +563,7 @@ static void ShortcutIncreaseElementHeight()
             case TileInspectorPage::Default:
                 break;
         }
-        if (action != -1 && !WidgetIsDisabled(w, action) && w->widgets[action].type != WindowWidgetType::Empty)
+        if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
             window_event_mouse_down_call(w, action);
         return;
     }
@@ -604,7 +604,7 @@ static void ShortcutDecreaseElementHeight()
             case TileInspectorPage::Default:
                 break;
         }
-        if (action != -1 && !WidgetIsDisabled(w, action) && w->widgets[action].type != WindowWidgetType::Empty)
+        if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
             window_event_mouse_down_call(w, action);
         return;
     }
@@ -762,7 +762,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
             auto window = window_find_by_class(WC_ERROR);
             if (window != nullptr)
             {
-                window_close(window);
+                window_close(*window);
             }
             else if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
             {
@@ -909,7 +909,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
             auto window = window_find_by_class(WC_DEBUG_PAINT);
             if (window != nullptr)
             {
-                window_close(window);
+                window_close(*window);
             }
             else
             {

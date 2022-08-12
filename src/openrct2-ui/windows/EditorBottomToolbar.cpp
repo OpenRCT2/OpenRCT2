@@ -49,7 +49,7 @@ class EditorBottomToolbarWindow final : public Window
 private:
     using FuncPtr = void (EditorBottomToolbarWindow::*)() const;
 
-    static constexpr const rct_string_id _editorStepNames[] = {
+    static constexpr const StringId _editorStepNames[] = {
         STR_EDITOR_STEP_OBJECT_SELECTION,       STR_EDITOR_STEP_LANDSCAPE_EDITOR,      STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP,
         STR_EDITOR_STEP_OPTIONS_SELECTION,      STR_EDITOR_STEP_OBJECTIVE_SELECTION,   STR_EDITOR_STEP_SAVE_SCENARIO,
         STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,
@@ -250,9 +250,10 @@ private:
 
     void JumpForwardToSaveScenario() const
     {
-        if (!scenario_prepare_for_save())
+        const auto savePrepareResult = scenario_prepare_for_save();
+        if (!savePrepareResult.Successful)
         {
-            context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, gGameCommandErrorText, {});
+            context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});
             gfx_invalidate_screen();
             return;
         }
@@ -305,7 +306,7 @@ private:
         int16_t textX = (widgets[WIDX_PREVIOUS_IMAGE].left + 30 + widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + windowPos.x;
         int16_t textY = widgets[WIDX_PREVIOUS_IMAGE].top + 6 + windowPos.y;
 
-        rct_string_id stringId = _editorStepNames[EnumValue(gEditorStep) - 1];
+        StringId stringId = _editorStepNames[EnumValue(gEditorStep) - 1];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
@@ -342,7 +343,7 @@ private:
         int16_t textX = (widgets[WIDX_NEXT_IMAGE].left + widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + windowPos.x;
         int16_t textY = widgets[WIDX_NEXT_IMAGE].top + 6 + windowPos.y;
 
-        rct_string_id stringId = _editorStepNames[EnumValue(gEditorStep) + 1];
+        StringId stringId = _editorStepNames[EnumValue(gEditorStep) + 1];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 

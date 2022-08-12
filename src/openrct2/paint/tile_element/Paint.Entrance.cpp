@@ -50,14 +50,14 @@ static void PaintRideEntranceExitScrollingText(
         return;
 
     auto ft = Formatter();
-    ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
+    ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
     if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         ride->FormatNameTo(ft);
     }
     else
     {
-        ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_CLOSED);
+        ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
     }
 
     char text[256];
@@ -79,7 +79,6 @@ static void PaintRideEntranceExitScrollingText(
 
 static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t height, const EntranceElement& entranceEl)
 {
-#ifdef __ENABLE_LIGHTFX__
     PROFILED_FUNCTION();
 
     if (lightfx_is_available())
@@ -105,7 +104,6 @@ static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t he
                 break;
         }
     }
-#endif
 }
 
 static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
@@ -224,12 +222,12 @@ static void PaintParkEntranceScrollingText(
     {
         const auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto name = park.Name.c_str();
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(name);
     }
     else
     {
-        ft.Add<rct_string_id>(STR_BANNER_TEXT_CLOSED);
+        ft.Add<StringId>(STR_BANNER_TEXT_CLOSED);
         ft.Add<uint32_t>(0);
     }
 
@@ -253,14 +251,12 @@ static void PaintParkEntranceScrollingText(
 
 static void PaintParkEntranceLightEffects(paint_session& session)
 {
-#ifdef __ENABLE_LIGHTFX__
     PROFILED_FUNCTION();
 
     if (lightfx_is_available())
     {
         lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, 0, 155, LightType::Lantern3);
     }
-#endif
 }
 
 static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)

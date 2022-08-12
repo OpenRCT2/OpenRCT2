@@ -16,6 +16,8 @@
 #include "drawing/Drawing.h"
 #include "sprites.h"
 
+#include <memory>
+
 using namespace OpenRCT2::Audio;
 
 #define BACKROUND_COLOUR_DARK PALETTE_INDEX_10

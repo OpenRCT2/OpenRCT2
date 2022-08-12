@@ -863,19 +863,7 @@ std::vector<VehicleColour> RideObject::ReadJsonColourConfiguration(json_t& jColo
 
 bool RideObject::IsRideTypeShopOrFacility(uint8_t rideType)
 {
-    switch (rideType)
-    {
-        case RIDE_TYPE_TOILETS:
-        case RIDE_TYPE_SHOP:
-        case RIDE_TYPE_DRINK_STALL:
-        case RIDE_TYPE_FOOD_STALL:
-        case RIDE_TYPE_INFORMATION_KIOSK:
-        case RIDE_TYPE_CASH_MACHINE:
-        case RIDE_TYPE_FIRST_AID:
-            return true;
-        default:
-            return false;
-    }
+    return GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY);
 }
 
 uint8_t RideObject::ParseRideType(const std::string& s)

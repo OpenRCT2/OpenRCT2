@@ -22,14 +22,17 @@
 #include "../audio/audio.h"
 #include "../common.h"
 #include "../core/BitSet.hpp"
+#include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Ride.h"
+#include "RideAudio.h"
 #include "RideEntry.h"
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackPaint.h"
+#include "Vehicle.h"
 
 enum class ResearchCategory : uint8_t;
 
@@ -37,13 +40,13 @@ using ride_ratings_calculation = void (*)(Ride* ride, RideRatingUpdateState& sta
 
 struct RideComponentName
 {
-    rct_string_id singular;
-    rct_string_id plural;
-    rct_string_id capitalised;
-    rct_string_id capitalised_plural;
-    rct_string_id count;
-    rct_string_id count_plural;
-    rct_string_id number;
+    StringId singular;
+    StringId plural;
+    StringId capitalised;
+    StringId capitalised_plural;
+    StringId count;
+    StringId count_plural;
+    StringId number;
 };
 
 enum class RideComponentType
@@ -126,6 +129,8 @@ struct RideOperatingSettings
     uint8_t PoweredLiftAcceleration;
     uint8_t BoosterAcceleration;
     int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
+    uint16_t AccelerationFactor = 12;
+    uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
 };
 
 struct UpkeepCostsDescriptor
@@ -151,6 +156,11 @@ struct UpkeepCostsDescriptor
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
 using RideMusicUpdateFunction = void (*)(Ride*);
+using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
+using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
+using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
+using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const track_type_t trackType);
+
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -199,15 +209,23 @@ struct RideTypeDescriptor
     // json name lookup
     std::string_view Name;
 
+    LightFXAddLightsMagicVehicleFunction LightFXAddLightsMagicVehicle = nullptr;
+    StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
+
     TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
 
     RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
     RideClassification Classification = RideClassification::Ride;
 
+    PeepUpdateRideLeaveEntranceFunc UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault;
+
+    RideUpdateMeasurementsSpecialElementsFunc UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default;
+
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
     ResearchCategory GetResearchCategory() const;
+    bool SupportsRideMode(RideMode rideMode) const;
 };
 
 #ifdef _WIN32
@@ -248,7 +266,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_HAS_NO_TRACK = (1ULL << 15),
     RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = (1ULL << 16), // Set by flat rides where the vehicle is integral to the structure, like
     // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
-    RIDE_TYPE_FLAG_IS_SHOP = (1ULL << 17),
+    RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY = (1ULL << 17),
     RIDE_TYPE_FLAG_TRACK_NO_WALLS = (1ULL << 18), // if set, wall scenery can not share a tile with the ride's track
     RIDE_TYPE_FLAG_FLAT_RIDE = (1ULL << 19),
     RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN = (1ULL << 20), // whether or not guests will go on the ride again if they liked it
@@ -291,6 +309,9 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT = (1ULL << 52),
     RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA = (1ULL << 53),
     RIDE_TYPE_FLAG_IS_CASH_MACHINE = (1ULL << 54),
+    RIDE_TYPE_FLAG_HAS_ONE_STATION = (1ULL << 55),
+    RIDE_TYPE_FLAG_HAS_SEAT_ROTATION = (1ULL << 56),
+    RIDE_TYPE_FLAG_IS_FIRST_AID = (1ULL << 57),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -360,7 +381,7 @@ extern const CarEntry CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
 
-extern const rct_string_id RideModeNames[static_cast<uint8_t>(RideMode::Count)];
+extern const StringId RideModeNames[static_cast<uint8_t>(RideMode::Count)];
 
 // clang-format off
 constexpr const RideTypeDescriptor DummyRTD =
@@ -395,6 +416,12 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "invalid"),
+    SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
+    SET_FIELD(Classification, RideClassification::Ride),
+    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
 };
 // clang-format on
 

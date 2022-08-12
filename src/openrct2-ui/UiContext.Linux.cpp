@@ -417,9 +417,9 @@ namespace OpenRCT2::Ui
         }
     };
 
-    IPlatformUiContext* CreatePlatformUiContext()
+    std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext()
     {
-        return new LinuxContext();
+        return std::make_unique<LinuxContext>();
     }
 } // namespace OpenRCT2::Ui
 

@@ -41,14 +41,14 @@ enum
     WINDOW_CHEATS_PAGE_COUNT,
 };
 
-static rct_string_id _staffSpeedNames[] =
+static StringId _staffSpeedNames[] =
 {
     STR_FROZEN,
     STR_NORMAL,
     STR_FAST,
 };
 
-static constexpr const rct_string_id WeatherTypes[] =
+static constexpr const StringId WeatherTypes[] =
 {
     STR_SUNNY,
     STR_PARTIALLY_CLOUDY,
@@ -175,7 +175,7 @@ enum WindowCheatsWidgetIdx
 
 #pragma region MEASUREMENTS
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_CHEAT_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_CHEAT_TITLE;
 static constexpr const int32_t WW = 249;
 static constexpr const int32_t WH = 300;
 
@@ -338,7 +338,7 @@ static uint64_t window_cheats_page_hold_down_widgets[] = {
     0,
 };
 
-static rct_string_id window_cheats_page_titles[] = {
+static StringId window_cheats_page_titles[] = {
     STR_CHEAT_TITLE_FINANCIAL,
     STR_CHEAT_TITLE_GUEST,
     STR_CHEAT_TITLE_PARK,
@@ -430,7 +430,7 @@ public:
         if (widgets != targetWidgets)
         {
             widgets = targetWidgets;
-            WindowInitScrollWidgets(this);
+            WindowInitScrollWidgets(*this);
         }
 
         pressed_widgets = 0;
@@ -590,7 +590,7 @@ public:
         }
     }
 
-    OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback) override
+    OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, StringId fallback) override
     {
         if (page == WINDOW_CHEATS_PAGE_RIDES && widgetIndex == WIDX_UNLOCK_OPERATING_LIMITS)
         {

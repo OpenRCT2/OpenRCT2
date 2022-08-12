@@ -16,6 +16,7 @@
 
 #    include <SDL.h>
 #    include <jni.h>
+#    include <memory>
 
 AndroidClassLoader::~AndroidClassLoader()
 {

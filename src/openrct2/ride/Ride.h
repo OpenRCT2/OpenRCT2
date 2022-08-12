@@ -10,7 +10,9 @@
 #pragma once
 
 #include "../Limits.h"
+#include "../actions/ResultWithMessage.h"
 #include "../common.h"
+#include "../core/BitSet.hpp"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
@@ -18,10 +20,12 @@
 #include "RideColour.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
+#include "Track.h"
 #include "VehicleColour.h"
 
 #include <array>
 #include <limits>
+#include <memory>
 #include <string_view>
 
 struct IObjectManager;
@@ -33,6 +37,7 @@ struct Guest;
 struct Staff;
 struct Vehicle;
 struct rct_ride_entry;
+struct ResultWithMessage;
 
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
@@ -296,7 +301,7 @@ private:
     void UpdateChairlift();
     void UpdateSpiralSlide();
     void UpdateQueueLength(StationIndex stationIndex);
-    bool CreateVehicles(const CoordsXYE& element, bool isApplying);
+    ResultWithMessage CreateVehicles(const CoordsXYE& element, bool isApplying);
     void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
     money64 CalculateIncomePerHour() const;
     void ChainQueues() const;
@@ -332,8 +337,8 @@ public:
     void StopGuestsQueuing();
     void ValidateStations();
 
-    bool Open(bool isApplying);
-    bool Test(RideStatus newStatus, bool isApplying);
+    ResultWithMessage Open(bool isApplying);
+    ResultWithMessage Test(RideStatus newStatus, bool isApplying);
 
     RideMode GetDefaultMode() const;
 
@@ -389,6 +394,7 @@ public:
     void SetLifecycleFlag(uint32_t flag, bool on);
 
     bool HasRecolourableShopItems() const;
+    bool HasStation() const;
 };
 
 #pragma pack(push, 1)
@@ -986,7 +992,7 @@ std::string_view get_ride_entry_name(ObjectEntryIndex index);
 
 extern money16 gTotalRideValueForMoney;
 
-extern const rct_string_id ColourSchemeNames[4];
+extern const StringId ColourSchemeNames[4];
 
 extern ObjectEntryIndex gLastEntranceStyle;
 
@@ -998,7 +1004,6 @@ void ride_check_all_reachable();
 
 bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
 int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);
-void ride_construct_new(RideSelection listItem);
 void ride_construct(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
@@ -1015,8 +1020,6 @@ void ride_set_map_tooltip(TileElement* tileElement);
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
 TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex stationIndex);
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos);
-void ride_set_status(Ride* ride, RideStatus status);
-void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 money32 ride_get_common_price(Ride* forRide);
@@ -1052,12 +1055,13 @@ void window_ride_construction_update_active_elements();
 money32 ride_entrance_exit_place_ghost(
     Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
 
-bool ride_are_all_possible_entrances_and_exits_built(Ride* ride);
+ResultWithMessage ride_are_all_possible_entrances_and_exits_built(Ride* ride);
 void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);
 
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void ride_update_vehicle_colours(Ride* ride);
-uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
+
+OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
 
 enum class RideSetSetting : uint8_t;
 money32 set_operating_setting(RideId rideId, RideSetSetting setting, uint8_t value);
@@ -1074,7 +1078,6 @@ uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
 
 Vehicle* ride_get_broken_vehicle(const Ride* ride);
 
-void window_ride_construction_do_station_check();
 void window_ride_construction_do_entrance_exit_check();
 
 money16 ride_get_price(const Ride* ride);
@@ -1090,8 +1093,6 @@ void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
 
 int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
-
-void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);

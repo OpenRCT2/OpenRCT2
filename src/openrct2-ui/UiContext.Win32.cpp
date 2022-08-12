@@ -241,9 +241,9 @@ namespace OpenRCT2::Ui
         }
     };
 
-    IPlatformUiContext* CreatePlatformUiContext()
+    std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext()
     {
-        return new Win32Context();
+        return std::make_unique<Win32Context>();
     }
 } // namespace OpenRCT2::Ui
 

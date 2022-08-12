@@ -34,7 +34,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
 
 static constexpr const int32_t WW = 190;
 static constexpr const int32_t WH = 180;
@@ -381,7 +381,7 @@ private:
                     rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
                     if (wind != nullptr)
                     {
-                        tool_set(wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                        tool_set(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
                     }
                 });
                 GameActions::Execute(&pickupAction);
@@ -528,7 +528,7 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(dpi, this);
+            window_draw_viewport(dpi, *this);
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
@@ -1200,7 +1200,7 @@ private:
     void FollowPeep()
     {
         rct_window* main = window_get_main();
-        window_follow_sprite(main, EntityId::FromUnderlying(number));
+        window_follow_sprite(*main, EntityId::FromUnderlying(number));
     }
 
     void DrawTabImages(rct_drawpixelinfo* dpi)

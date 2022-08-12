@@ -243,7 +243,7 @@ namespace RCT1
 
             String::Set(dst->internal_name, sizeof(dst->internal_name), desc.title);
 
-            rct_string_id localisedStringIds[3];
+            StringId localisedStringIds[3];
             if (language_get_localised_scenario_strings(desc.title, localisedStringIds))
             {
                 if (localisedStringIds[0] != STR_NONE)
@@ -1158,7 +1158,7 @@ namespace RCT1
 
             // In RCT1 and AA, the maze was always hedges.
             // LL has 4 types, like RCT2. For LL, only guard against invalid values.
-            if (dst->type == RIDE_TYPE_MAZE)
+            if (src->type == RideType::HedgeMaze)
             {
                 if (_gameVersion < FILE_VERSION_RCT1_LL || src->track_colour_supports[0] > 3)
                     dst->track_colour[0].supports = MAZE_WALL_TYPE_HEDGE;
@@ -2101,7 +2101,7 @@ namespace RCT1
         void ImportParkName()
         {
             std::string parkName = std::string(_s4.scenario_name);
-            if (is_user_string_id(static_cast<rct_string_id>(_s4.park_name_string_index)))
+            if (is_user_string_id(static_cast<StringId>(_s4.park_name_string_index)))
             {
                 std::string userString = GetUserString(_s4.park_name_string_index);
                 if (!userString.empty())
@@ -2299,7 +2299,7 @@ namespace RCT1
                 source_desc sourceDesc;
                 if (ScenarioSources::TryGetById(scNumber, &sourceDesc))
                 {
-                    rct_string_id localisedStringIds[3];
+                    StringId localisedStringIds[3];
                     if (language_get_localised_scenario_strings(sourceDesc.title, localisedStringIds))
                     {
                         if (localisedStringIds[0] != STR_NONE)
@@ -2465,7 +2465,7 @@ namespace RCT1
             return _s4.research_items;
         }
 
-        std::string GetUserString(rct_string_id stringId)
+        std::string GetUserString(StringId stringId)
         {
             const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
             auto originalStringView = std::string_view(

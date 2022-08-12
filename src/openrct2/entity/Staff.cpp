@@ -47,7 +47,7 @@
 #include <iterator>
 
 // clang-format off
-const rct_string_id StaffCostumeNames[] = {
+const StringId StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_PANDA,
         STR_STAFF_OPTION_COSTUME_TIGER,
         STR_STAFF_OPTION_COSTUME_ELEPHANT,

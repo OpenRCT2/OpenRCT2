@@ -57,7 +57,7 @@ struct currency_descriptor
     utf8 symbol_unicode[CURRENCY_SYMBOL_MAX_SIZE];
     CurrencyAffix affix_ascii;
     char symbol_ascii[CURRENCY_SYMBOL_MAX_SIZE];
-    rct_string_id stringId;
+    StringId stringId;
 };
 
 // List of currency formats

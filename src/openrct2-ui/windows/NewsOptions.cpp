@@ -14,7 +14,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/sprites.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
+static constexpr const StringId WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
 static constexpr const int32_t WH = 300;
 static constexpr const int32_t WW = 400;
 
@@ -30,7 +30,7 @@ enum
 struct NotificationDef
 {
     uint8_t category;
-    rct_string_id caption;
+    StringId caption;
     size_t config_offset;
 };
 
@@ -229,7 +229,7 @@ private:
     {
         rct_widgetindex widgetIndex = WIDX_FIRST_TAB + p;
 
-        if (!WidgetIsDisabled(this, widgetIndex))
+        if (!WidgetIsDisabled(*this, widgetIndex))
         {
             if (page == p)
             {

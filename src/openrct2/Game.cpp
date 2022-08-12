@@ -86,9 +86,6 @@ bool gLoadKeepWindowsOpen = false;
 uint32_t gCurrentTicks;
 uint32_t gCurrentRealTimeTicks;
 
-rct_string_id gGameCommandErrorTitle;
-rct_string_id gGameCommandErrorText;
-
 #ifdef ENABLE_SCRIPTING
 static bool _mapChangedExpected;
 #endif
@@ -471,7 +468,7 @@ void game_load_init()
     else
     {
         auto* mainWindow = window_get_main();
-        window_unfollow_sprite(mainWindow);
+        window_unfollow_sprite(*mainWindow);
     }
 
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();

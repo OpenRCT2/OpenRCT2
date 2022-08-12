@@ -95,7 +95,7 @@ enum WindowThemesWidgetIdx
     WIDX_THEMES_RCT1_BOTTOM_TOOLBAR
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_THEMES_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_THEMES_TITLE;
 static constexpr const int32_t WW = 320;
 static constexpr const int32_t WH = 107;
 
@@ -328,7 +328,7 @@ rct_window* WindowThemesOpen()
 
     WindowThemesInitVars();
 
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
     window->list_information_type = 0;
     _colour_index_1 = -1;
     _colour_index_2 = -1;
@@ -348,7 +348,7 @@ static void WindowThemesMouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_THEMES_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_THEMES_DUPLICATE_BUTTON:;
             activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
@@ -596,7 +596,7 @@ void WindowThemesUpdate(rct_window* w)
     if (w->frame_no >= window_themes_tab_animation_loops[_selected_tab])
         w->frame_no = 0;
 
-    widget_invalidate(w, WIDX_THEMES_SETTINGS_TAB + _selected_tab);
+    widget_invalidate(*w, WIDX_THEMES_SETTINGS_TAB + _selected_tab);
 }
 
 void WindowThemesScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
@@ -654,7 +654,7 @@ void WindowThemesScrollmousedown(rct_window* w, int32_t scrollIndex, const Scree
 
                     uint8_t colour = ThemeGetColour(wc, _colour_index_2);
                     WindowDropdownShowColour(w, &(window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]), w->colours[1], colour);
-                    widget_invalidate(w, WIDX_THEMES_LIST);
+                    widget_invalidate(*w, WIDX_THEMES_LIST);
                 }
             }
             else if (
@@ -783,11 +783,11 @@ void WindowThemesInvalidate(rct_window* w)
         window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WindowWidgetType::Empty;
         window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::Empty;
 
-        WidgetSetCheckboxValue(w, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
-        WidgetSetCheckboxValue(w, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
+        WidgetSetCheckboxValue(*w, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
+        WidgetSetCheckboxValue(*w, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
         WidgetSetCheckboxValue(
-            w, WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
-        WidgetSetCheckboxValue(w, WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+            *w, WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
+        WidgetSetCheckboxValue(*w, WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
     }
     else
     {
@@ -810,7 +810,7 @@ void WindowThemesInvalidate(rct_window* w)
 void WindowThemesPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     // Widgets
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowThemesDrawTabImages(dpi, w);
 
     if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)

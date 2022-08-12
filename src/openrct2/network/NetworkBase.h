@@ -11,6 +11,7 @@
 #include "NetworkUser.h"
 
 #include <fstream>
+#include <memory>
 
 #ifndef DISABLE_NETWORK
 
@@ -92,7 +93,7 @@ public: // Server
     void Server_Send_PINGLIST();
     void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
     void Server_Send_GAMEINFO(NetworkConnection& connection);
-    void Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message);
+    void Server_Send_SHOWERROR(NetworkConnection& connection, StringId title, StringId message);
     void Server_Send_GROUPLIST(NetworkConnection& connection);
     void Server_Send_EVENT_PLAYER_JOINED(const char* playerName);
     void Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, const char* reason);

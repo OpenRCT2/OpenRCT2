@@ -211,7 +211,7 @@ void context_set_cursor_trap(bool value);
 rct_window* context_open_window(rct_windowclass wc);
 rct_window* context_open_detail_window(uint8_t type, int32_t id);
 rct_window* context_open_window_view(uint8_t view);
-rct_window* context_show_error(rct_string_id title, rct_string_id message, const class Formatter& args);
+rct_window* context_show_error(StringId title, StringId message, const class Formatter& args);
 rct_window* context_open_intent(Intent* intent);
 void context_broadcast_intent(Intent* intent);
 void context_force_close_window_by_class(rct_windowclass wc);

@@ -28,7 +28,7 @@ const std::string_view DefaultSelectedObjects[] = {
     "rct2.ride.lfb1",     // Ride: Log Flume
     "rct2.ride.vcr",      // Ride: Vintage Cars
     "rct2.ride.mgr1",     // Ride: Merry-Go-Round
-    "rct2.ride.tlt1",     // Ride: Restroom
+    "rct2.ride.tlt1",     // Ride: Toilet
     "rct2.ride.atm1",     // Ride: Cash Machine
     "rct2.ride.faid1",    // Ride: First Aid Room
     "rct2.ride.infok",    // Ride: Information Kiosk

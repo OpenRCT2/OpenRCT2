@@ -102,14 +102,14 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep);
 rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor);
 rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking);
 
-rct_window* WindowErrorOpen(rct_string_id title, rct_string_id message, const class Formatter& formatter);
+rct_window* WindowErrorOpen(StringId title, StringId message, const class Formatter& formatter);
 rct_window* WindowErrorOpen(std::string_view title, std::string_view message);
 struct TrackDesign;
 rct_window* WindowLoadsaveOpen(
     int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
     TrackDesign* trackDesign);
-rct_window* WindowTrackPlaceOpen(const struct track_design_file_ref* tdFileRef);
-rct_window* WindowTrackManageOpen(struct track_design_file_ref* tdFileRef);
+rct_window* WindowTrackPlaceOpen(const struct TrackDesignFileRef* tdFileRef);
+rct_window* WindowTrackManageOpen(struct TrackDesignFileRef* tdFileRef);
 
 void TrackPlaceClearProvisionalTemporarily();
 void TrackPlaceRestoreProvisional();
@@ -151,11 +151,11 @@ void WindowNetworkStatusClose();
 
 void WindowTextInputKey(rct_window* w, char keychar);
 void WindowTextInputOpen(
-    rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    const Formatter& descriptionArgs, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength);
+    rct_window* call_w, rct_widgetindex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    StringId existing_text, uintptr_t existing_args, int32_t maxLength);
 void WindowTextInputRawOpen(
-    rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    const Formatter& descriptionArgs, const_utf8string existing_text, int32_t maxLength);
+    rct_window* call_w, rct_widgetindex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    const_utf8string existing_text, int32_t maxLength);
 
 void WindowTextInputOpen(
     std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,

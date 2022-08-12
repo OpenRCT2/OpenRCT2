@@ -17,11 +17,12 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
+static constexpr const StringId WINDOW_TITLE = STR_STRING;
 static constexpr const int32_t WH = 44;
 static constexpr const int32_t WW = 250;
 static constexpr const int32_t WH_DELETE_PROMPT = 74;
 static constexpr const int32_t WW_DELETE_PROMPT = 250;
+static constexpr const int32_t TrackDesignNameMaxLength = 127;
 
 #pragma region Widgets
 
@@ -82,7 +83,7 @@ static rct_window_event_list window_track_delete_prompt_events([](auto& events)
 
 #pragma endregion
 
-static track_design_file_ref* _trackDesignFileReference;
+static TrackDesignFileRef* _trackDesignFileReference;
 
 static void WindowTrackDeletePromptOpen();
 static void WindowTrackDesignListReloadTracks();
@@ -91,14 +92,14 @@ static void WindowTrackDesignListReloadTracks();
  *
  *  rct2: 0x006D348F
  */
-rct_window* WindowTrackManageOpen(track_design_file_ref* tdFileRef)
+rct_window* WindowTrackManageOpen(TrackDesignFileRef* tdFileRef)
 {
     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 
     rct_window* w = WindowCreateCentred(
         WW, WH, &window_track_manage_events, WC_MANAGE_TRACK_DESIGN, WF_STICK_TO_FRONT | WF_TRANSPARENT);
     w->widgets = window_track_manage_widgets;
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 
     rct_window* trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
     if (trackDesignListWindow != nullptr)
@@ -134,12 +135,12 @@ static void WindowTrackManageMouseup(rct_window* w, rct_widgetindex widgetIndex)
     {
         case WIDX_CLOSE:
             window_close_by_class(WC_TRACK_DELETE_PROMPT);
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_RENAME:
             WindowTextInputRawOpen(
                 w, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, {},
-                _trackDesignFileReference->name, 127);
+                _trackDesignFileReference->name.c_str(), TrackDesignNameMaxLength);
             break;
         case WIDX_DELETE:
             WindowTrackDeletePromptOpen();
@@ -173,7 +174,7 @@ static void WindowTrackManageTextinput(rct_window* w, rct_widgetindex widgetInde
     if (track_repository_rename(_trackDesignFileReference->path, text))
     {
         window_close_by_class(WC_TRACK_DELETE_PROMPT);
-        window_close(w);
+        window_close(*w);
         WindowTrackDesignListReloadTracks();
     }
     else
@@ -188,8 +189,8 @@ static void WindowTrackManageTextinput(rct_window* w, rct_widgetindex widgetInde
  */
 static void WindowTrackManagePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    Formatter::Common().Add<char*>(_trackDesignFileReference->name);
-    WindowDrawWidgets(w, dpi);
+    Formatter::Common().Add<const utf8*>(_trackDesignFileReference->name.c_str());
+    WindowDrawWidgets(*w, dpi);
 }
 
 /**
@@ -207,7 +208,7 @@ static void WindowTrackDeletePromptOpen()
             std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2),
         WW_DELETE_PROMPT, WH_DELETE_PROMPT, &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_track_delete_prompt_widgets;
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->flags |= WF_TRANSPARENT;
 }
 
@@ -221,10 +222,10 @@ static void WindowTrackDeletePromptMouseup(rct_window* w, rct_widgetindex widget
     {
         case WIDX_CLOSE:
         case WIDX_PROMPT_CANCEL:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_PROMPT_DELETE:
-            window_close(w);
+            window_close(*w);
             if (track_repository_delete(_trackDesignFileReference->path))
             {
                 window_close_by_class(WC_MANAGE_TRACK_DESIGN);
@@ -244,10 +245,10 @@ static void WindowTrackDeletePromptMouseup(rct_window* w, rct_widgetindex widget
  */
 static void WindowTrackDeletePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     auto ft = Formatter();
-    ft.Add<const char*>(_trackDesignFileReference->name);
+    ft.Add<const utf8*>(_trackDesignFileReference->name.c_str());
     DrawTextWrapped(
         dpi, { w->windowPos.x + (WW_DELETE_PROMPT / 2), w->windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) }, (WW_DELETE_PROMPT - 4),
         STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });

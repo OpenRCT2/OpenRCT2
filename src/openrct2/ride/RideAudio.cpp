@@ -20,6 +20,7 @@
 #include "../object/MusicObject.h"
 #include "../object/ObjectManager.h"
 #include "Ride.h"
+#include "RideData.h"
 
 #include <algorithm>
 #include <vector>
@@ -30,21 +31,6 @@ using namespace OpenRCT2::Audio;
 namespace OpenRCT2::RideAudio
 {
     constexpr size_t MAX_RIDE_MUSIC_CHANNELS = 32;
-
-    /**
-     * Represents a particular instance of ride music that can be heard in a viewport.
-     * These are created each frame via enumerating each ride / viewport.
-     */
-    struct ViewportRideMusicInstance
-    {
-        ::RideId RideId;
-        uint8_t TrackIndex{};
-
-        size_t Offset{};
-        int16_t Volume{};
-        int16_t Pan{};
-        uint16_t Frequency{};
-    };
 
     /**
      * Represents an audio channel to play a particular ride's music track.
@@ -186,55 +172,59 @@ namespace OpenRCT2::RideAudio
         _musicInstances.clear();
     }
 
-    static void StartRideMusicChannel(const ViewportRideMusicInstance& instance)
+    void DefaultStartRideMusicChannel(const ViewportRideMusicInstance& instance)
     {
         auto& objManager = GetContext()->GetObjectManager();
-
-        // Create new music channel
         auto ride = get_ride(instance.RideId);
-        if (ride->type == RIDE_TYPE_CIRCUS)
+        auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
+        if (musicObj != nullptr)
         {
-            ObjectEntryDescriptor desc(ObjectType::Audio, AudioObjectIdentifiers::Rct2Circus);
-            auto audioObj = static_cast<AudioObject*>(objManager.GetLoadedObject(desc));
-            if (audioObj != nullptr)
+            auto track = musicObj->GetTrack(instance.TrackIndex);
+            if (track != nullptr)
             {
-                auto source = audioObj->GetSample(0);
-                if (source != nullptr)
+                auto stream = track->Asset.GetStream();
+                if (stream != nullptr)
                 {
-                    auto channel = CreateAudioChannel(source, MixerGroup::Sound, false, 0);
-                    if (channel != nullptr)
+                    auto audioContext = GetContext()->GetAudioContext();
+                    auto source = audioContext->CreateStreamFromWAV(std::move(stream));
+                    if (source != nullptr)
                     {
-                        _musicChannels.emplace_back(instance, channel, nullptr);
-                    }
-                }
-            }
-        }
-        else
-        {
-            auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
-            if (musicObj != nullptr)
-            {
-                auto track = musicObj->GetTrack(instance.TrackIndex);
-                if (track != nullptr)
-                {
-                    auto stream = track->Asset.GetStream();
-                    if (stream != nullptr)
-                    {
-                        auto audioContext = GetContext()->GetAudioContext();
-                        auto source = audioContext->CreateStreamFromWAV(std::move(stream));
-                        if (source != nullptr)
+                        auto shouldLoop = musicObj->GetTrackCount() == 1;
+                        auto channel = CreateAudioChannel(source, MixerGroup::RideMusic, shouldLoop, 0);
+                        if (channel != nullptr)
                         {
-                            auto shouldLoop = musicObj->GetTrackCount() == 1;
-                            auto channel = CreateAudioChannel(source, MixerGroup::RideMusic, shouldLoop, 0);
-                            if (channel != nullptr)
-                            {
-                                _musicChannels.emplace_back(instance, channel, source);
-                            }
+                            _musicChannels.emplace_back(instance, channel, source);
                         }
                     }
                 }
             }
         }
+    }
+    void CircusStartRideMusicChannel(const ViewportRideMusicInstance& instance)
+    {
+        auto& objManager = GetContext()->GetObjectManager();
+        ObjectEntryDescriptor desc(ObjectType::Audio, AudioObjectIdentifiers::Rct2Circus);
+        auto audioObj = static_cast<AudioObject*>(objManager.GetLoadedObject(desc));
+        if (audioObj != nullptr)
+        {
+            auto source = audioObj->GetSample(0);
+            if (source != nullptr)
+            {
+                auto channel = CreateAudioChannel(source, MixerGroup::Sound, false, 0);
+                if (channel != nullptr)
+                {
+                    _musicChannels.emplace_back(instance, channel, nullptr);
+                }
+            }
+        }
+    }
+
+    static void StartRideMusicChannel(const ViewportRideMusicInstance& instance)
+    {
+        // Create new music channel
+        auto ride = get_ride(instance.RideId);
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        rtd.StartRideMusic(instance);
     }
 
     static void StopInactiveRideMusicChannels()

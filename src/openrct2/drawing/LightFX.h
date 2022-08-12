@@ -9,9 +9,7 @@
 
 #pragma once
 
-#ifdef __ENABLE_LIGHTFX__
-
-#    include "../common.h"
+#include "../common.h"
 
 struct CoordsXY;
 struct Vehicle;
@@ -65,7 +63,13 @@ void LightfxAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsX
 void lightfx_add_3d_light_magic_from_drawing_tile(
     const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, LightType lightType);
 
-void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle);
+void LightfxAddLightsMagicVehicle(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_ObservationTower(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_MineTrainCoaster(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_ChairLift(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_BoatHire(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_Monorail(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_MiniatureRailway(const Vehicle* vehicle);
 
 void LightFxAddKioskLights(const CoordsXY& mapPosition, const int32_t height, const uint8_t zOffset);
 void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, const int32_t height, const uint8_t zOffset);
@@ -76,5 +80,3 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 void lightfx_render_to_texture(
     void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height, const uint32_t* palette,
     const uint32_t* lightPalette);
-
-#endif // __ENABLE_LIGHTFX__

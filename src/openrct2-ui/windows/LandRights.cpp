@@ -22,7 +22,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_LAND_RIGHTS;
+static constexpr const StringId WINDOW_TITLE = STR_LAND_RIGHTS;
 static constexpr const int32_t WH = 94;
 static constexpr const int32_t WW = 98;
 
@@ -59,15 +59,15 @@ public:
     {
         widgets = window_land_rights_widgets;
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        WindowInitScrollWidgets(*this);
+        window_push_others_below(*this);
         _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
         pressed_widgets = (1ULL << WIDX_BUY_LAND_RIGHTS);
 
         gLandToolSize = 1;
 
         show_gridlines();
-        tool_set(this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
+        tool_set(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
         input_set_flag(INPUT_FLAG_6, true);
 
         show_land_rights();
@@ -103,7 +103,7 @@ public:
             case WIDX_BUY_LAND_RIGHTS:
                 if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
                 {
-                    tool_set(this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
+                    tool_set(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
                     _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
                     show_land_rights();
                     Invalidate();
@@ -112,7 +112,7 @@ public:
             case WIDX_BUY_CONSTRUCTION_RIGHTS:
                 if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
                 {
-                    tool_set(this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
+                    tool_set(*this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
                     _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
                     show_construction_rights();
                     Invalidate();

@@ -19,6 +19,7 @@
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 
+#    include <memory>
 #    include <optional>
 
 namespace OpenRCT2::Scripting

@@ -78,8 +78,8 @@ void WindowMapTooltipUpdateVisibility()
     _lastCursor = cursor;
 
     // Show or hide tooltip
-    rct_string_id stringId;
-    std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(rct_string_id));
+    StringId stringId;
+    std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
 
     if (_cursorHoldDuration < 25 || stringId == STR_NONE
         || InputTestPlaceObjectModifier(
@@ -139,8 +139,8 @@ static void WindowMapTooltipUpdate(rct_window* w)
  */
 static void WindowMapTooltipPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    rct_string_id stringId;
-    std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(rct_string_id));
+    StringId stringId;
+    std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
     if (stringId == STR_NONE)
     {
         return;
