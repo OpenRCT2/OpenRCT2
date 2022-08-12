@@ -835,10 +835,8 @@ public:
         {
             case WINDOW_RIDE_PAGE_VEHICLE:
                 return WindowRideVehicleTooltip(widgetIndex, fallback);
-                break;
             case WINDOW_RIDE_PAGE_GRAPHS:
                 return WindowRideVehicleTooltip(widgetIndex, fallback);
-                break;
             default:
                 return { fallback, {} };
         };
@@ -965,7 +963,6 @@ public:
         {
             case WINDOW_RIDE_PAGE_GRAPHS:
                 return WindowRideGraphsScrollgetheight(scrollIndex);
-                break;
             default:
                 return {};
         };
