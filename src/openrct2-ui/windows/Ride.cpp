@@ -971,7 +971,7 @@ public:
         };
     }
 
-    void OnScrollSelect(int32_t scrollIndex, int32_t scrollType)
+    void OnScrollSelect(int32_t scrollIndex, int32_t scrollType) override
     {
         switch (page)
         {
@@ -7112,6 +7112,7 @@ private:
 rct_window* WindowRideOpen(Ride* windowRide)
 {
     auto* window = WindowCreate<RideWindow>(WindowClass::Ride, 316, 207, WF_10 | WF_RESIZABLE);
+    window->OnWindowRideOpen(windowRide);
 
     return window;
 }
@@ -7151,25 +7152,25 @@ rct_window* WindowRideMainOpen(Ride* windowRide)
  *
  *  rct2: 0x006ACCCE
  */
-rct_window* WindowRideOpenStation(Ride* windowRide, StationIndex stationIndex)
+rct_window* WindowRideOpenStation(Ride* ride, StationIndex stationIndex)
 {
-    if (windowRide->type >= RIDE_TYPE_COUNT)
+    if (ride->type >= RIDE_TYPE_COUNT)
         return nullptr;
 
-    if (windowRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
-        return WindowRideMainOpen(windowRide);
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+        return WindowRideMainOpen(ride);
 
-    auto w = window_bring_to_front_by_number(WindowClass::Ride, windowRide->id.ToUnderlying());
+    auto w = window_bring_to_front_by_number(WindowClass::Ride, ride->id.ToUnderlying());
     if (w == nullptr)
     {
-        w = WindowRideOpen(windowRide);
+        w = WindowRideOpen(ride);
         w->ride.var_482 = -1;
     }
 
     auto rideWindow = static_cast<RideWindow*>(w);
     assert(rideWindow != nullptr);
 
-    rideWindow->OnWindowRideOpenStation(windowRide, stationIndex);
+    rideWindow->OnWindowRideOpenStation(ride, stationIndex);
 
     return w;
 }

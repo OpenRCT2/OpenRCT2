@@ -130,7 +130,9 @@ void WindowNewRideFocus(RideSelection rideItem);
 rct_window* WindowRideListOpen();
 void WindowRideListRefreshList(rct_window* w);
 
+rct_window* WindowRideOpen(Ride* ride);
 rct_window* WindowRideMainOpen(Ride* ride);
+rct_window* WindowRideOpenStation(Ride* ride, StationIndex stationIndex);
 rct_window* WindowRideOpenTrack(TileElement* tileElement);
 rct_window* WindowRideOpenVehicle(Vehicle* vehicle);
 void WindowRideMeasurementsDesignCancel();
