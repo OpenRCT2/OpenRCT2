@@ -341,7 +341,6 @@ STR_0950    :Carrega una partida
 STR_0951    :Abandona la partida
 STR_0952    :Surt del joc
 STR_0953    :Carrega un paisatge
-STR_0954    :
 STR_0955    :Seleccioneu l’angle de rotació dels seients per a aquesta secció de via.
 STR_0956    :-180°
 STR_0957    :-135°
@@ -3627,6 +3626,7 @@ STR_6510    :Volta de gravetat zero (a l’esquerra)
 STR_6511    :Volta de gravetat zero (a la dreta)
 STR_6512    :Volta de gravetat zero gran (a l’esquerra)
 STR_6513    :Volta de gravetat zero gran (a la dreta)
+STR_6514    :Altura no vàlida!
 
 #############
 # Scenarios #

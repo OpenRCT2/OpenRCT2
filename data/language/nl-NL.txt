@@ -338,7 +338,6 @@ STR_0950    :Spel laden
 STR_0951    :Spel afsluiten
 STR_0952    :Spel afsluiten
 STR_0953    :Landschap laden
-STR_0954    :
 STR_0955    :Selecteer de draaiing van de stoelen voor dit gedeelte
 STR_0956    :-180°
 STR_0957    :-135°
@@ -3617,6 +3616,7 @@ STR_6510    :0 g-rol (links)
 STR_6511    :0 g-rol (rechts)
 STR_6512    :Grote 0 g-rol (links)
 STR_6513    :Grote 0 g-rol (rechts)
+STR_6514    :Ongeldige hoogte!
 
 #############
 # Scenarios #

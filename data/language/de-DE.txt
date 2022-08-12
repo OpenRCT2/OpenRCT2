@@ -340,7 +340,6 @@ STR_0950    :Spiel laden
 STR_0951    :Spiel beenden
 STR_0952    :Spiel beenden
 STR_0953    :Landschaft laden
-STR_0954    :
 STR_0955    :Wählen Sie den Sitzrotationswinkel für diesen Streckenabschnitt
 STR_0956    :-180°
 STR_0957    :-135°

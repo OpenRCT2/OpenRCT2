@@ -335,7 +335,6 @@ STR_0950    :Last inn spill
 STR_0951    :Avslutt spill
 STR_0952    :Avslutt spill
 STR_0953    :Last inn landskap
-STR_0954    :
 STR_0955    :Velg seterotasjon for denne baneseksjonen
 STR_0956    :-180°
 STR_0957    :-135°

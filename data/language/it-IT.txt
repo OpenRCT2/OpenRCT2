@@ -338,7 +338,6 @@ STR_0950    :Carica una partita
 STR_0951    :Esci dal gioco
 STR_0952    :Esci dal gioco
 STR_0953    :Carica un paesaggio
-STR_0954    :
 STR_0955    :Seleziona l’angolo di rotazione dei sedili in questa sezione del tracciato
 STR_0956    :-180°
 STR_0957    :-135°

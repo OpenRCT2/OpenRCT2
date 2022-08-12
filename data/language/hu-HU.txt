@@ -327,7 +327,6 @@ STR_0950    :Játék betöltése
 STR_0951    :Kilépés a játékból
 STR_0952    :Kilépés a játékból
 STR_0953    :Táj betöltése
-STR_0954    :
 STR_0955    :Válaszd ki az ülések forgási szögét ezen a pályaszakaszon
 STR_0956    :-180°
 STR_0957    :-135°

@@ -335,7 +335,6 @@ STR_0950    :Nahrát hru
 STR_0951    :Ukončit hru
 STR_0952    :Ukončit hru
 STR_0953    :Nahrát krajinu
-STR_0954    :
 STR_0955    :Vyberte úhel otočení sedadel pro tuto část trati
 STR_0956    :-180°
 STR_0957    :-135°

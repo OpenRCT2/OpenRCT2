@@ -340,7 +340,6 @@ STR_0950    :Wczytaj grę
 STR_0951    :Wyjdź z gry
 STR_0952    :Wyjdź z gry
 STR_0953    :Wczytaj krajobraz
-STR_0954    :
 STR_0955    :Ustaw kąt obrotu siedzeń w tej sekcji toru
 STR_0956    :-180°
 STR_0957    :-135°

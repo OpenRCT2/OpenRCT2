@@ -339,7 +339,6 @@ STR_0950    :Ladda spel
 STR_0951    :Avsluta spel
 STR_0952    :Avsluta spel
 STR_0953    :Ladda landskap
-STR_0954    :
 STR_0955    :Välj säteslutningen för den här sektionen
 STR_0956    :-180°
 STR_0957    :-135°

@@ -344,7 +344,6 @@ STR_0950    :Charger une partie
 STR_0951    :Quitter la partie
 STR_0952    :Quitter la partie
 STR_0953    :Charger un paysage
-STR_0954    :
 STR_0955    :Sélectionne l’angle de rotation des sièges pour cette section de voie
 STR_0956    :-180°
 STR_0957    :-135°

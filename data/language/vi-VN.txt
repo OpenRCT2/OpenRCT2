@@ -338,7 +338,6 @@ STR_0950    :Load Game
 STR_0951    :Quit Game
 STR_0952    :Quit Game
 STR_0953    :Load Landscape
-STR_0954    :
 STR_0955    :Select seat rotation angle for this track section
 STR_0956    :-180°
 STR_0957    :-135°

@@ -338,7 +338,6 @@ STR_0950    :Hent spil
 STR_0951    :Afslut spil
 STR_0952    :Afslut spil
 STR_0953    :Hent Landskab
-STR_0954    :
 STR_0955    :Vælg sæde rotation for denne banesektion
 STR_0956    :-180°
 STR_0957    :-135°

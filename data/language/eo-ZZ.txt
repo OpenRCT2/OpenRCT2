@@ -340,7 +340,6 @@ STR_0950    :Ŝargi Ludon
 STR_0951    :Forlasi Ludon
 STR_0952    :Forlasi Ludon
 STR_0953    :Ŝargi Pejzaĝo
-STR_0954    :
 STR_0955    :Elekti direkton de seĝoj ĉe ĉi tiu parto de trako
 STR_0956    :-180°
 STR_0957    :-135°
@@ -3618,6 +3617,7 @@ STR_6510    :Sengravida Ruliĝo (maldekstre)
 STR_6511    :Sengravida Ruliĝo (dekstre)
 STR_6512    :Granda Sengravida Ruliĝo (maldekstre)
 STR_6513    :Granda Sengravida Ruliĝo (dekstre)
+STR_6514    :Nevalida alteco!
 
 #############
 # Scenarios #

@@ -341,7 +341,6 @@ STR_0950    :Lataa peli
 STR_0951    :Lopeta peli
 STR_0952    :Lopeta peli
 STR_0953    :Lataa maisema
-STR_0954    :
 STR_0955    :Valitse istuimen kiertokulma tälle rataosalle
 STR_0956    :-180°
 STR_0957    :-135°

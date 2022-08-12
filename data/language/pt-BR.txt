@@ -340,7 +340,6 @@ STR_0950    :Carregar Jogo
 STR_0951    :Sair do Jogo
 STR_0952    :Sair do Jogo
 STR_0953    :Carregar Paisagem
-STR_0954    :
 STR_0955    :Escolha um ângulo de rotação do banco para esta seção da pista
 STR_0956    :-180°
 STR_0957    :-135°
@@ -3618,6 +3617,7 @@ STR_6510    :Giro de Gravidade Zero (esquerda)
 STR_6511    :Giro de Gravidade Zero (direita)
 STR_6512    :Giro de Gravidade Zero Grande (esquerda)
 STR_6513    :Giro de Gravidade Zero Grande (direita)
+STR_6514    :Altura inválida!
 
 #############
 # Scenarios #

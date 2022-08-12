@@ -334,7 +334,6 @@ STR_0950    :Oyunu yükle
 STR_0951    :Oyunu kapat
 STR_0952    :Oyunu kapat
 STR_0953    :Arazi yükle
-STR_0954    :
 STR_0955    :Bu kesim için koltuk eğim dereceseni seçiniz
 STR_0956    :-180°
 STR_0957    :-135°
