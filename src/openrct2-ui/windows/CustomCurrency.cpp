@@ -18,7 +18,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
 static constexpr const int32_t WH = 100;
 static constexpr const int32_t WW = 400;
 
@@ -53,7 +53,7 @@ public:
     {
         widgets = window_custom_currency_widgets;
         hold_down_widgets = (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         colours[0] = COLOUR_LIGHT_BROWN;
         colours[1] = COLOUR_LIGHT_BROWN;
         colours[2] = COLOUR_LIGHT_BROWN;
@@ -216,7 +216,7 @@ public:
         auto drawPos = windowPos
             + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
                               window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top };
-        rct_string_id stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
+        StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
             ? STR_PREFIX
             : STR_SUFFIX;
         DrawTextBasic(&dpi, drawPos, stringId, {}, { colours[1] });

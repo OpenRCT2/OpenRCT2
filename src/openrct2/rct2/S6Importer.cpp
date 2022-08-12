@@ -1747,7 +1747,7 @@ namespace RCT2
 
         void ImportEntity(const RCT12SpriteBase& src);
 
-        std::string GetUserString(rct_string_id stringId)
+        std::string GetUserString(StringId stringId)
         {
             const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
             auto originalStringView = std::string_view(
@@ -2235,7 +2235,7 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectR
     return std::make_unique<RCT2::S6Importer>(objectRepository);
 }
 
-static void show_error(uint8_t errorType, rct_string_id errorStringId)
+static void show_error(uint8_t errorType, StringId errorStringId)
 {
     if (errorType == ERROR_TYPE_GENERIC)
     {

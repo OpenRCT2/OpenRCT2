@@ -804,7 +804,7 @@ bool Vehicle::SoundCanPlay() const
     auto left = g_music_tracking_viewport->viewPos.x;
     auto bottom = g_music_tracking_viewport->viewPos.y;
 
-    if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    if (window_get_classification(*gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
         left -= quarter_w;
         bottom -= quarter_h;
@@ -816,7 +816,7 @@ bool Vehicle::SoundCanPlay() const
     auto right = g_music_tracking_viewport->view_width + left;
     auto top = g_music_tracking_viewport->view_height + bottom;
 
-    if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    if (window_get_classification(*gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
         right += quarter_w + quarter_w;
         top += quarter_h + quarter_h;
@@ -1416,6 +1416,36 @@ bool Vehicle::OpenRestraints()
     return restraintsOpen;
 }
 
+void RideUpdateMeasurementsSpecialElements_Default(Ride* ride, const track_type_t trackType)
+{
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    uint16_t trackFlags = ted.Flags;
+    if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
+    {
+        if (ride->inversions < OpenRCT2::Limits::MaxInversions)
+            ride->inversions++;
+    }
+}
+
+void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride* ride, const track_type_t trackType)
+{
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    uint16_t trackFlags = ted.Flags;
+    if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
+    {
+        if (ride->holes < OpenRCT2::Limits::MaxGolfHoles)
+            ride->holes++;
+    }
+}
+
+void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride* ride, const track_type_t trackType)
+{
+    if (trackType >= TrackElemType::FlatCovered && trackType <= TrackElemType::RightQuarterTurn3TilesCovered)
+    {
+        ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+    }
+}
+
 /**
  *
  *  rct2: 0x006D6D1F
@@ -1520,13 +1550,8 @@ void Vehicle::UpdateMeasurements()
             curRide->testing_flags &= ~RIDE_TESTING_POWERED_LIFT;
         }
 
-        if (curRide->type == RIDE_TYPE_WATER_COASTER)
-        {
-            if (trackElemType >= TrackElemType::FlatCovered && trackElemType <= TrackElemType::RightQuarterTurn3TilesCovered)
-            {
-                curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
-            }
-        }
+        const auto& rtd = curRide->GetRideTypeDescriptor();
+        rtd.UpdateMeasurementsSpecialElements(curRide, trackElemType);
 
         switch (trackElemType)
         {
@@ -1550,7 +1575,6 @@ void Vehicle::UpdateMeasurements()
 
         const auto& ted = GetTrackElementDescriptor(trackElemType);
         uint16_t trackFlags = ted.Flags;
-
         uint32_t testingFlags = curRide->testing_flags;
         if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
         {
@@ -1686,23 +1710,6 @@ void Vehicle::UpdateMeasurements()
             curRide->drops |= drops;
 
             curRide->start_drop_height = z / COORDS_Z_STEP;
-        }
-
-        if (curRide->type == RIDE_TYPE_MINI_GOLF)
-        {
-            if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
-            {
-                if (curRide->holes < OpenRCT2::Limits::MaxGolfHoles)
-                    curRide->holes++;
-            }
-        }
-        else
-        {
-            if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
-            {
-                if (curRide->inversions < OpenRCT2::Limits::MaxInversions)
-                    curRide->inversions++;
-            }
         }
 
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
@@ -3157,7 +3164,7 @@ void Vehicle::UpdateDeparting()
     }
 
     CarEntry* carEntry = &rideEntry->Cars[vehicle_type];
-
+    const auto& rtd = curRide->GetRideTypeDescriptor();
     switch (curRide->mode)
     {
         case RideMode::ReverseInclineLaunchedShuttle:
@@ -3169,17 +3176,10 @@ void Vehicle::UpdateDeparting()
         case RideMode::PoweredLaunchBlockSectioned:
         case RideMode::LimPoweredLaunch:
         case RideMode::UpwardLaunch:
-            if (curRide->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER)
-            {
-                if ((curRide->launch_speed << 16) > velocity)
-                {
-                    acceleration = curRide->launch_speed << 13;
-                }
-                break;
-            }
-
             if ((curRide->launch_speed << 16) > velocity)
-                acceleration = curRide->launch_speed << 12;
+            {
+                acceleration = curRide->launch_speed << rtd.OperatingSettings.AccelerationFactor;
+            }
             break;
         case RideMode::DownwardLaunch:
             if (NumLaunches >= 1)
@@ -3408,7 +3408,7 @@ void Vehicle::CheckIfMissing()
     if (gConfigNotifications.ride_stalled_vehicles)
     {
         Formatter ft;
-        ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.vehicle).number);
+        ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.vehicle).number);
 
         uint8_t vehicleIndex = 0;
         for (; vehicleIndex < curRide->num_vehicles; ++vehicleIndex)
@@ -3418,7 +3418,7 @@ void Vehicle::CheckIfMissing()
         vehicleIndex++;
         ft.Add<uint16_t>(vehicleIndex);
         curRide->FormatNameTo(ft);
-        ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.station).singular);
+        ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.station).singular);
 
         News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
     }
@@ -5681,10 +5681,10 @@ void Vehicle::SetMapToolbar() const
                 break;
 
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
-        ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_STRINGID);
+        ft.Add<StringId>(STR_RIDE_MAP_TIP);
+        ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_STRINGID);
         curRide->FormatNameTo(ft);
-        ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.vehicle).capitalised);
+        ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.vehicle).capitalised);
         ft.Add<uint16_t>(vehicleIndex + 1);
         curRide->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);

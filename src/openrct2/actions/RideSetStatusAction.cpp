@@ -22,7 +22,7 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
-static rct_string_id _StatusErrorTitles[] = {
+static StringId _StatusErrorTitles[] = {
     STR_CANT_CLOSE,
     STR_CANT_OPEN,
     STR_CANT_TEST,
@@ -203,7 +203,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             rct_window* constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, _rideIndex.ToUnderlying());
             if (constructionWindow != nullptr)
             {
-                window_close(constructionWindow);
+                window_close(*constructionWindow);
             }
 
             if (_status == RideStatus::Testing)

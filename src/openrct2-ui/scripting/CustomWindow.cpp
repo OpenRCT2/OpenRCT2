@@ -456,7 +456,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         frame_no = 0;
                     }
-                    widget_invalidate(this, WIDX_TAB_0 + this->page);
+                    widget_invalidate(*this, WIDX_TAB_0 + this->page);
                 }
             }
 
@@ -469,7 +469,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (widget->type == WindowWidgetType::Scroll)
                 {
-                    WidgetScrollUpdateThumbs(this, widgetIndex);
+                    WidgetScrollUpdateThumbs(*this, widgetIndex);
                 }
                 widgetIndex++;
             }
@@ -531,14 +531,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(rct_drawpixelinfo& dpi) override
         {
-            WindowDrawWidgets(this, &dpi);
+            WindowDrawWidgets(*this, &dpi);
             DrawTabImages(dpi);
             if (viewport != nullptr)
             {
                 auto widgetIndex = GetViewportWidgetIndex();
-                if (WidgetIsVisible(this, widgetIndex.value_or(false)))
+                if (WidgetIsVisible(*this, widgetIndex.value_or(false)))
                 {
-                    window_draw_viewport(&dpi, this);
+                    window_draw_viewport(&dpi, *this);
                 }
             }
         }
@@ -577,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    window_close(this);
+                    window_close(*this);
                     break;
                 default:
                 {
@@ -602,7 +602,7 @@ namespace OpenRCT2::Ui::Windows
                             widget.flags ^= WIDGET_FLAGS::IS_PRESSED;
                             bool isChecked = widget.flags & WIDGET_FLAGS::IS_PRESSED;
 
-                            WidgetSetCheckboxValue(this, widgetIndex, isChecked);
+                            WidgetSetCheckboxValue(*this, widgetIndex, isChecked);
 
                             std::vector<DukValue> args;
                             auto ctx = widgetDesc->OnChange.context();
@@ -666,7 +666,7 @@ namespace OpenRCT2::Ui::Windows
                 else if (widgetDesc->Type == "textbox")
                 {
                     auto* text = const_cast<char*>(widgetDesc->Text.c_str());
-                    window_start_textbox(this, widgetIndex, STR_STRING, text, widgetDesc->MaxLength + 1);
+                    window_start_textbox(*this, widgetIndex, STR_STRING, text, widgetDesc->MaxLength + 1);
                 }
             }
         }
@@ -829,7 +829,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
             window_event_resize_call(this);
             window_event_invalidate_call(this);
-            WindowInitScrollWidgets(this);
+            WindowInitScrollWidgets(*this);
             Invalidate();
 
             InvokeEventHandler(info.Owner, info.Desc.OnTabChange);
@@ -858,7 +858,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto widgetIndex = static_cast<rct_widgetindex>(WIDX_TAB_0 + tabIndex);
                 auto widget = &widgets[widgetIndex];
-                if (WidgetIsVisible(this, widgetIndex))
+                if (WidgetIsVisible(*this, widgetIndex))
                 {
                     auto leftTop = windowPos + tab.offset + ScreenCoordsXY{ widget->left, widget->top };
                     auto image = tab.imageFrameBase;
@@ -950,7 +950,7 @@ namespace OpenRCT2::Ui::Windows
             widgetList.push_back(WIDGETS_END);
             widgets = widgetList.data();
 
-            WindowInitScrollWidgets(this);
+            WindowInitScrollWidgets(*this);
             UpdateViewport();
         }
 
@@ -1196,7 +1196,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 customWidgetInfo->Text = value;
                 w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
-                widget_invalidate(w, widgetIndex);
+                widget_invalidate(*w, widgetIndex);
             }
         }
     }
@@ -1230,7 +1230,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     customWidgetInfo->Colour = colour;
                     widget.image = GetColourButtonImage(colour);
-                    widget_invalidate(w, widgetIndex);
+                    widget_invalidate(*w, widgetIndex);
 
                     std::vector<DukValue> args;
                     auto ctx = customWidgetInfo->OnChange.context();
@@ -1275,7 +1275,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 customWidgetInfo->SelectedIndex = selectedIndex;
 
-                widget_invalidate(w, widgetIndex);
+                widget_invalidate(*w, widgetIndex);
 
                 if (lastSelectedIndex != selectedIndex)
                 {
@@ -1399,7 +1399,7 @@ namespace OpenRCT2::Ui::Windows
         if (w->custom_info != nullptr)
         {
             auto& info = GetInfo(w);
-            auto scrollIndex = window_get_scroll_data_index(w, widgetIndex);
+            auto scrollIndex = window_get_scroll_data_index(*w, widgetIndex);
             if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
             {
                 return &info.ListViews[scrollIndex];
@@ -1454,7 +1454,7 @@ namespace OpenRCT2::Ui::Windows
 
         for (auto& window : customWindows)
         {
-            window_close(window.get());
+            window_close(*window.get());
         }
     }
 

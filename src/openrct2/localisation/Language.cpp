@@ -66,7 +66,7 @@ uint8_t language_get_id_from_locale(const char* locale)
     return LANGUAGE_UNDEFINED;
 }
 
-const char* language_get_string(rct_string_id id)
+const char* language_get_string(StringId id)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.GetString(id);
@@ -90,7 +90,7 @@ bool language_open(int32_t id)
     }
 }
 
-bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_string_id* outStringIds)
+bool language_get_localised_scenario_strings(const utf8* scenarioFilename, StringId* outStringIds)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     auto result = localisationService.GetLocalisedScenarioStrings(scenarioFilename);
@@ -100,13 +100,13 @@ bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_s
     return outStringIds[0] != STR_NONE || outStringIds[1] != STR_NONE || outStringIds[2] != STR_NONE;
 }
 
-void language_free_object_string(rct_string_id stringId)
+void language_free_object_string(StringId stringId)
 {
     auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     localisationService.FreeObjectString(stringId);
 }
 
-rct_string_id language_allocate_object_string(const std::string& target)
+StringId language_allocate_object_string(const std::string& target)
 {
     auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.AllocateObjectString(target);

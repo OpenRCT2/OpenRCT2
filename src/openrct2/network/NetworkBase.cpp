@@ -42,7 +42,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "2"
+#define NETWORK_STREAM_VERSION "4"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -1598,7 +1598,7 @@ void NetworkBase::Server_Send_GAMEINFO(NetworkConnection& connection)
     connection.QueuePacket(std::move(packet));
 }
 
-void NetworkBase::Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message)
+void NetworkBase::Server_Send_SHOWERROR(NetworkConnection& connection, StringId title, StringId message)
 {
     NetworkPacket packet(NetworkCommand::ShowError);
     packet << title << message;
@@ -3045,7 +3045,7 @@ void NetworkBase::Server_Handle_GAMEINFO(NetworkConnection& connection, [[maybe_
 
 void NetworkBase::Client_Handle_SHOWERROR([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
-    rct_string_id title, message;
+    StringId title, message;
     packet >> title >> message;
     context_show_error(title, message, {});
 }
@@ -3650,7 +3650,7 @@ int32_t network_get_num_actions()
     return static_cast<int32_t>(NetworkActions::Actions.size());
 }
 
-rct_string_id network_get_action_name_string_id(uint32_t index)
+StringId network_get_action_name_string_id(uint32_t index)
 {
     if (index < NetworkActions::Actions.size())
     {
@@ -4076,7 +4076,7 @@ int32_t network_get_num_actions()
 {
     return 0;
 }
-rct_string_id network_get_action_name_string_id(uint32_t index)
+StringId network_get_action_name_string_id(uint32_t index)
 {
     return -1;
 }

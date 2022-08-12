@@ -45,7 +45,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     if ((_loc.z & 0xF) != 0)
     {
         res.Error = GameActions::Status::Unknown;
-        res.ErrorMessage = STR_CONSTRUCTION_ERR_UNKNOWN;
+        res.ErrorMessage = STR_INVALID_HEIGHT;
         return res;
     }
 

@@ -7,14 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "openrct2/actions/MazeSetTrackAction.h"
-
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/MazeSetTrackAction.h>
+#include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
@@ -28,7 +28,7 @@
 
 #pragma region Widgets
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
 static constexpr const int32_t WH = 200;
 static constexpr const int32_t WW = 166;
 
@@ -94,7 +94,7 @@ public:
     void OnOpen() override
     {
         widgets = window_maze_construction_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         rideId = _currentRideIndex;
         show_gridlines();
     }
@@ -121,8 +121,9 @@ public:
             {
                 int32_t savedPausedState = gGamePaused;
                 gGamePaused = 0;
-                ride_action_modify(
-                    currentRide, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+                gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                GameActions::Execute(&gameAction);
                 gGamePaused = savedPausedState;
             }
             else
@@ -179,7 +180,7 @@ public:
         {
             if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
             {
-                widget_invalidate(this, i);
+                widget_invalidate(*this, i);
             }
         }
         disabled_widgets = disabledWidgets;
@@ -213,14 +214,14 @@ public:
         switch (_rideConstructionState)
         {
             case RideConstructionState::Place:
-                if (!WidgetIsActiveTool(this, WIDX_MAZE_DIRECTION_GROUPBOX))
+                if (!WidgetIsActiveTool(*this, WIDX_MAZE_DIRECTION_GROUPBOX))
                 {
                     Close();
                     return;
                 }
                 break;
             case RideConstructionState::EntranceExit:
-                if (!WidgetIsActiveTool(this, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(this, WIDX_MAZE_EXIT))
+                if (!WidgetIsActiveTool(*this, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(*this, WIDX_MAZE_EXIT))
                 {
                     _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
                     WindowMazeConstructionUpdatePressedWidgets();
@@ -287,7 +288,7 @@ public:
         else
         {
             ft.Increment(4);
-            ft.Add<rct_string_id>(STR_NONE);
+            ft.Add<StringId>(STR_NONE);
         }
     }
 

@@ -48,7 +48,7 @@ static uint16_t _window_error_num_lines;
  * bx: title
  * dx: message
  */
-rct_window* WindowErrorOpen(rct_string_id title, rct_string_id message, const Formatter& args)
+rct_window* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
 {
     auto titlez = format_string(title, args.Data());
     auto messagez = format_string(message, args.Data());
@@ -128,7 +128,7 @@ static void WindowErrorUnknown5(rct_window* w)
 {
     w->error.var_480++;
     if (w->error.var_480 >= 8)
-        window_close(w);
+        window_close(*w);
 }
 
 /**

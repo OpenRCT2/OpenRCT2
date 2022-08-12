@@ -685,7 +685,7 @@ std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* ob
 
 void scenario_translate(scenario_index_entry* scenarioEntry)
 {
-    rct_string_id localisedStringIds[3];
+    StringId localisedStringIds[3];
     if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds))
     {
         if (localisedStringIds[0] != STR_NONE)

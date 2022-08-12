@@ -113,7 +113,7 @@ void Litter::RemoveAt(const CoordsXYZ& litterPos)
     }
 }
 
-static const rct_string_id litterNames[12] = {
+static const StringId litterNames[12] = {
     STR_LITTER_VOMIT,
     STR_LITTER_VOMIT,
     STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
@@ -128,7 +128,7 @@ static const rct_string_id litterNames[12] = {
     STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,
 };
 
-rct_string_id Litter::GetName() const
+StringId Litter::GetName() const
 {
     if (EnumValue(SubType) >= std::size(litterNames))
         return STR_NONE;

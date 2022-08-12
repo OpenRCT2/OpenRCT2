@@ -1948,8 +1948,6 @@ STR_2738    :タイトルの音楽:
 STR_2739    :なし
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat not found
-STR_2743    :Copy ‘data/css17.dat’ from your RCT1 installation to ‘data/css50.dat’ in your RCT2 installation, or make sure the path to RCT1 in the Advanced tab is correct.
 STR_2749    :題名なしのシナリオ
 # New strings used in the cheats window previously these were ???
 STR_2750    :全てのオブジェクト上に移動する
@@ -2222,7 +2220,6 @@ STR_3174    :このオブジェクトは他のオブジェクトに必要とさ�
 STR_3175    :このオブジェクトは常に必要です
 STR_3176    :このオブジェクトを選択することができません
 STR_3177    :このオブジェクトは選択解除できません
-STR_3178    :最低ひとつの歩道オブジェクトが選択されている必要があります
 STR_3179    :最低ひとつの乗物の車両/施設オブジェクトが選択されている必要があります
 STR_3180    :オブジェクトの選択が無効です
 STR_3181    :オブジェクト選択 - {STRINGID}
@@ -2255,7 +2252,7 @@ STR_3208    :トラックデザインマネージャー
 STR_3209    :前のステップに戻る:
 STR_3210    :次のステップに進む:
 STR_3211    :マップサイズ:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :これ以上マップサイズを小さくできません
 STR_3214    :これ以上マップサイズを大きくできません
 STR_3215    :マップの端に近すぎます
@@ -2550,8 +2547,6 @@ STR_5250    :タイトルの終了ボタン
 STR_5251    :タイトルの設定ボタン
 STR_5252    :タイトルのシナリオ選択
 STR_5253    :パーク・インフォメーション
-STR_5254    :新規
-STR_5255    :新しいタイトル順序を造るために
 STR_5256    :新しいテーマを造る
 STR_5257    :いまのテーマてき新しいテーマを造る
 STR_5258    :いまのテーマを削除する
@@ -2646,75 +2641,10 @@ STR_5373    :名前 {STRINGID}
 STR_5374    :日時 {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Saves
-STR_5378    :Script
-STR_5379    :Skip to next wait command
-STR_5380    :Start playing title sequence
-STR_5381    :Stop playing title sequence
-STR_5382    :Restart title sequence
-STR_5383    :Create a new title sequence based on the current one
-STR_5384    :Delete the current title sequence
-STR_5385    :Rename the current title sequence
-STR_5386    :Insert a new command
-STR_5387    :Edit the selected command
-STR_5388    :Delete the selected command
-STR_5389    :Skip to the selected command in the title sequence
-STR_5390    :Move the selected command down
-STR_5391    :Move the selected command up
-STR_5392    :Add a save to the title sequence
-STR_5393    :Remove the selected save from the title sequence
-STR_5394    :Rename the selected save
-STR_5395    :Load the selected save in game
-STR_5396    :Reload the title sequence if changes have been made to it outside of the game
-STR_5397    :Can only be used on the title screen
-STR_5398    :Cannot edit title sequence while it’s playing
-STR_5399    :Press the stop button to continue editing
-STR_5400    :Can’t change this title sequence
-STR_5401    :Create a new title sequence to make changes to
-STR_5402    :Failed to load title sequence
-STR_5403    :There may be no Load or Wait command or a save may be invalid
 STR_5404    :Name already exists
-STR_5405    :Enter a name for the save
-STR_5406    :Enter a name for the title sequence
-STR_5407    :追加
-STR_5408    :削除
-STR_5409    :挿入
-STR_5410    :編集
-STR_5411    :リロード
-STR_5412    :スキップ
-STR_5413    :ロード
-STR_5415    :ロード{MOVE_X}{87}{STRING}
-STR_5416    :ロード{MOVE_X}{87}セーブ選定なし
-STR_5417    :場所
-STR_5418    :場所{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :回転
-STR_5420    :回転{MOVE_X}{87}{COMMA16}
-STR_5421    :ズーム
-STR_5422    :ズーム{MOVE_X}{87}{COMMA16}
-STR_5423    :待機
-STR_5424    :待機{MOVE_X}{87}{UINT16}
-STR_5425    :再起動
-STR_5426    :お仕舞い
-STR_5427    :場所:
-STR_5428    :Anticlockwise rotations:
-STR_5429    :Zoom level:
-STR_5430    :Milliseconds to wait:
-STR_5431    :Save to load:
-STR_5432    :Command:
-STR_5433    :タイトル順序
-STR_5434    :Command Editor
-STR_5435    :セーブの名を変える
-STR_5436    :タイトル順序を変更する…
-STR_5437    :No save selected
-STR_5438    :Can’t make changes while command editor is open
-STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :フォーカス損失時に全画面を最小化
 STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
-STR_5443    :スピード{MOVE_X}{87}{STRINGID}
-STR_5444    :スピード:
-STR_5445    :スピード
-STR_5446    :ゲット
 STR_5447    :タイプ {STRINGID}
 STR_5448    :ライド／乗り物 {STRINGID}
 STR_5449    :ゲームのスピードを下げる
@@ -2829,8 +2759,6 @@ STR_5560    :Sets the inspection time to ‘Every 10 minutes’ on all rides
 STR_5561    :Failed to load language
 STR_5562    :ご注意！
 STR_5563    :This feature is currently unstable, take extra caution.
-STR_5564    :Insert Corrupt Element
-STR_5565    :Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
 STR_5566    :パスワード:
 STR_5567    :発表する
 STR_5568    :パスワードが必要
@@ -3072,7 +3000,6 @@ STR_5844    :Stay connected to a multiplayer server{NEWLINE}even if a desync or 
 STR_5845    :Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
 STR_5846    :Set often OpenRCT2 automatically saves
 STR_5847    :Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
-STR_5848    :Create and manage custom title sequences
 STR_5849    :Automatically place{NEWLINE}newly hired staff members
 STR_5851    :Sets the default inspection interval{NEWLINE}on newly built rides
 STR_5853    :Toggle sound effects on/off
@@ -3272,7 +3199,6 @@ STR_6047    :Smooth tiles
 STR_6048    :Height map error
 STR_6049    :Error reading PNG
 STR_6050    :Error reading bitmap
-STR_6051    :The width and height need to match
 STR_6052    :The heightmap is too big, and will be cut off
 STR_6053    :The heightmap cannot be normalised
 STR_6054    :Only 24-bit bitmaps are supported
@@ -3386,23 +3312,8 @@ STR_6170    :インターフェースの微調整
 STR_6171    :検索
 STR_6172    :検索
 STR_6173    :検索の名を入力して下さい。
-STR_6174    :セーブのロード
-STR_6175    :シナリオのロード
-STR_6176    :シナリオを選ぶ:
-STR_6177    :ロード{MOVE_X}{87}シナリオ選択なし
-STR_6178    :ロード{MOVE_X}{87}{RED}シナリオがない
-STR_6179    :選ぶ
-STR_6180    :シナリオ選択なし
-STR_6181    :{RED}シナリオがない
-STR_6182    :フォーロー{MOVE_X}{87}{STRING}
-STR_6183    :フォーロー{MOVE_X}{87}スプライト選択なし
-STR_6184    :スプライトのフォロー
-STR_6185    :スプライトを選ぶ
-STR_6186    :スプライト選択なし
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :嘔吐物
 STR_6189    :鴨
-STR_6190    :タイトルスクリーンからスプライトに選択はでしかせん。
 STR_6191    :面
 STR_6192    :壁
 STR_6193    :{COMMA16}人の来客
@@ -3524,7 +3435,6 @@ STR_6331    :カモを投入する
 STR_6332    :カモを取り除く
 STR_6333    :ウインドウのスケール係数を上げる
 STR_6334    :ウインドウのスケール係数を下げる
-STR_6335    :タイルインスペクター：破損要素を挿入
 STR_6336    :タイルインスペクター：要素のコピー
 STR_6337    :タイルインスペクター：要素を貼り付け
 STR_6338    :タイルインスペクター：要素を削除

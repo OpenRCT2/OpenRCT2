@@ -541,6 +541,18 @@ namespace OpenRCT2
             const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override
         {
             log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
+
+            // Register the file for crash upload if it asserts while loading.
+            crash_register_additional_file("load_park", path);
+            // Deregister park file in case it was processed without hitting an assert.
+            struct foo
+            {
+                ~foo()
+                {
+                    crash_unregister_additional_file("load_park");
+                }
+            } f;
+
             try
             {
                 if (String::Equals(Path::GetExtension(path), ".sea", true))
@@ -1478,7 +1490,7 @@ void context_force_close_window_by_class(rct_windowclass windowClass)
     windowManager->ForceClose(windowClass);
 }
 
-rct_window* context_show_error(rct_string_id title, rct_string_id message, const Formatter& args)
+rct_window* context_show_error(StringId title, StringId message, const Formatter& args)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->ShowError(title, message, args);

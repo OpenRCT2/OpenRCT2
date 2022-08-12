@@ -437,8 +437,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
 static void peep_update_hunger(Guest* peep);
 static void peep_decide_whether_to_leave_park(Guest* peep);
 static void peep_leave_park(Guest* peep);
-static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
-static void PeepHeadForNearestRideWithFlags(Guest* peep, int64_t rideTypeFlags);
+static void PeepHeadForNearestRideWithFlags(Guest* peep, bool considerOnlyCloseRides, int64_t rideTypeFlags);
 bool loc_690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
 template<> bool EntityBase::Is<Guest>() const
@@ -1088,16 +1087,16 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     switch (chosen_thought)
                     {
                         case PeepThoughtType::Hungry:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_SELLS_FOOD);
+                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_SELLS_FOOD);
                             break;
                         case PeepThoughtType::Thirsty:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_SELLS_DRINKS);
+                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_SELLS_DRINKS);
                             break;
                         case PeepThoughtType::Toilet:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_IS_TOILET);
+                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_IS_TOILET);
                             break;
                         case PeepThoughtType::RunningOut:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_IS_CASH_MACHINE);
+                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_IS_CASH_MACHINE);
                             break;
                         default:
                             break;
@@ -1117,7 +1116,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 if (Nausea >= 200)
                 {
                     thought_type = PeepThoughtType::VerySick;
-                    peep_head_for_nearest_ride_type(this, RIDE_TYPE_FIRST_AID);
+                    PeepHeadForNearestRideWithFlags(this, true, RIDE_TYPE_FLAG_IS_FIRST_AID);
                 }
                 InsertNewThought(thought_type);
             }
@@ -1651,7 +1650,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
     {
         auto ft = Formatter();
         FormatNameTo(ft);
-        ft.Add<rct_string_id>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
+        ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
@@ -1938,7 +1937,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
             }
         }
 
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         {
             return ShouldGoToShop(ride, peepAtRide);
         }
@@ -2206,7 +2205,8 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
         return false;
     }
 
-    if (ride->type == RIDE_TYPE_TOILETS)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
     {
         if (Toilet < 70)
         {
@@ -2232,7 +2232,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
         }
     }
 
-    if (ride->type == RIDE_TYPE_FIRST_AID)
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID))
     {
         if (Nausea < 128)
         {
@@ -3211,21 +3211,15 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 }
 
-static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
-{
-    auto considerOnlyCloseRides = rideType == RIDE_TYPE_FIRST_AID;
-    return peep_head_for_nearest_ride(
-        peep, considerOnlyCloseRides, [rideType](const Ride& ride) { return ride.type == rideType; });
-}
-
-static void PeepHeadForNearestRideWithFlags(Guest* peep, int64_t rideTypeFlags)
+static void PeepHeadForNearestRideWithFlags(Guest* peep, bool considerOnlyCloseRides, int64_t rideTypeFlags)
 {
     if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_TOILET) && peep->HasFoodOrDrink())
     {
         return;
     }
-    peep_head_for_nearest_ride(
-        peep, false, [rideTypeFlags](const Ride& ride) { return ride.GetRideTypeDescriptor().HasFlag(rideTypeFlags); });
+    peep_head_for_nearest_ride(peep, considerOnlyCloseRides, [rideTypeFlags](const Ride& ride) {
+        return ride.GetRideTypeDescriptor().HasFlag(rideTypeFlags);
+    });
 }
 
 /**
@@ -3849,7 +3843,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         FormatNameTo(ft);
         ride->FormatNameTo(ft);
 
-        rct_string_id msg_string;
+        StringId msg_string;
         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE))
             msg_string = STR_PEEP_TRACKING_PEEP_IS_IN_X;
         else
@@ -5003,7 +4997,9 @@ void Guest::UpdateRideShopInteract()
 
     const int16_t tileCentreX = NextLoc.x + 16;
     const int16_t tileCentreY = NextLoc.y + 16;
-    if (ride->type == RIDE_TYPE_FIRST_AID)
+
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID))
     {
         if (Nausea <= 35)
         {
@@ -6803,7 +6799,7 @@ bool Guest::HeadingForRideOrParkExit() const
  */
 void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft)
 {
-    ft.Add<rct_string_id>(PeepThoughts[EnumValue(thought->type)]);
+    ft.Add<StringId>(PeepThoughts[EnumValue(thought->type)]);
 
     PeepThoughtToActionFlag flags = PeepThoughtToActionMap[EnumValue(thought->type)].flags;
     if (flags & PEEP_THOUGHT_ACTION_FLAG_RIDE)
@@ -6815,16 +6811,16 @@ void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft)
         }
         else
         {
-            ft.Add<rct_string_id>(STR_NONE);
+            ft.Add<StringId>(STR_NONE);
         }
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR)
     {
-        ft.Add<rct_string_id>(GetShopItemDescriptor(thought->shopItem).Naming.Singular);
+        ft.Add<StringId>(GetShopItemDescriptor(thought->shopItem).Naming.Singular);
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE)
     {
-        ft.Add<rct_string_id>(GetShopItemDescriptor(thought->shopItem).Naming.Indefinite);
+        ft.Add<StringId>(GetShopItemDescriptor(thought->shopItem).Naming.Indefinite);
     }
 }
 

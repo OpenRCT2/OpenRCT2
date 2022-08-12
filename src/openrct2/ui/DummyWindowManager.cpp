@@ -27,7 +27,7 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        rct_window* ShowError(rct_string_id /*title*/, rct_string_id /*message*/, const Formatter& /*formatter*/) override
+        rct_window* ShowError(StringId /*title*/, StringId /*message*/, const Formatter& /*formatter*/) override
         {
             return nullptr;
         }

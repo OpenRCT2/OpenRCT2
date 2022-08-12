@@ -27,7 +27,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const StringId WINDOW_TITLE = STR_NONE;
 constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 180;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
@@ -160,8 +160,8 @@ public:
             _activeTabIndex = 0;
         }
 
-        window_move_position(this, { context_get_width() - GetRequiredWidth(), 0x1D });
-        window_push_others_below(this);
+        window_move_position(*this, { context_get_width() - GetRequiredWidth(), 0x1D });
+        window_push_others_below(*this);
     }
 
     void OnClose() override
@@ -316,13 +316,13 @@ public:
         {
             // Find out what scenery the cursor is over
             const CursorState* state = context_get_cursor_state();
-            rct_widgetindex widgetIndex = window_find_widget_from_point(this, state->position);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(*this, state->position);
             if (widgetIndex == WIDX_SCENERY_LIST)
             {
                 ScreenCoordsXY scrollPos = {};
                 int32_t scrollArea = 0;
                 int32_t scrollId = 0;
-                WidgetScrollGetPart(this, &widgets[WIDX_SCENERY_LIST], state->position, scrollPos, &scrollArea, &scrollId);
+                WidgetScrollGetPart(*this, &widgets[WIDX_SCENERY_LIST], state->position, scrollPos, &scrollArea, &scrollId);
                 if (scrollArea == SCROLL_PART_VIEW)
                 {
                     const ScenerySelection scenery = GetSceneryIdByCursorPos(scrollPos);
@@ -350,7 +350,7 @@ public:
 
             if (window.y < 44 || window.x <= width)
             {
-                rct_widgetindex widgetIndex = window_find_widget_from_point(this, state->position);
+                rct_widgetindex widgetIndex = window_find_widget_from_point(*this, state->position);
                 if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL)
                 {
                     _hoverCounter++;
@@ -459,7 +459,7 @@ public:
         }
     }
 
-    OpenRCT2String OnTooltip(const rct_widgetindex widgetIndex, const rct_string_id fallback) override
+    OpenRCT2String OnTooltip(const rct_widgetindex widgetIndex, const StringId fallback) override
     {
         if (widgetIndex >= WIDX_SCENERY_TAB_1)
         {
@@ -470,7 +470,7 @@ public:
                 if (tabInfo.IsMisc())
                 {
                     auto ft = Formatter();
-                    ft.Add<rct_string_id>(STR_MISCELLANEOUS);
+                    ft.Add<StringId>(STR_MISCELLANEOUS);
                     return { fallback, ft };
                 }
 
@@ -478,7 +478,7 @@ public:
                 if (sceneryEntry != nullptr)
                 {
                     auto ft = Formatter();
-                    ft.Add<rct_string_id>(sceneryEntry->name);
+                    ft.Add<StringId>(sceneryEntry->name);
                     return { fallback, ft };
                 }
             }
@@ -489,7 +489,7 @@ public:
     void OnPrepareDraw() override
     {
         // Set the window title
-        rct_string_id titleStringId = STR_MISCELLANEOUS;
+        StringId titleStringId = STR_MISCELLANEOUS;
         const auto tabIndex = _activeTabIndex;
         if (tabIndex < _tabEntries.size())
         {
@@ -680,7 +680,7 @@ public:
         }
 
         auto ft = Formatter();
-        ft.Add<rct_string_id>(name);
+        ft.Add<StringId>(name);
         DrawTextEllipsised(&dpi, { windowPos.x + 3, windowPos.y + height - 13 }, width - 19, STR_BLACK_STRING, ft);
     }
 
@@ -902,7 +902,7 @@ private:
         scrolls[SceneryContentScrollIndex].v_top = ContentRowsHeight(rowSelected);
         scrolls[SceneryContentScrollIndex].v_top = std::min<int32_t>(maxTop, scrolls[SceneryContentScrollIndex].v_top);
 
-        WidgetScrollUpdateThumbs(this, WIDX_SCENERY_LIST);
+        WidgetScrollUpdateThumbs(*this, WIDX_SCENERY_LIST);
     }
 
     SceneryItem ContentCountRowsWithSelectedItem(const size_t tabIndex)
@@ -1107,9 +1107,9 @@ private:
         }
     }
 
-    std::pair<rct_string_id, money32> GetNameAndPrice(ScenerySelection selectedScenery)
+    std::pair<StringId, money32> GetNameAndPrice(ScenerySelection selectedScenery)
     {
-        rct_string_id name = STR_UNKNOWN_OBJECT_TYPE;
+        StringId name = STR_UNKNOWN_OBJECT_TYPE;
         money32 price = MONEY32_UNDEFINED;
         if (selectedScenery.IsUndefined() && gSceneryPlaceCost != MONEY32_UNDEFINED)
         {

@@ -194,8 +194,7 @@ GameActions::Result TrackPlaceAction::Query() const
             if ((_origin.z & 0x0F) != 8)
             {
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
-                    STR_CONSTRUCTION_ERR_UNKNOWN);
+                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_INVALID_HEIGHT);
             }
         }
         else
@@ -203,8 +202,7 @@ GameActions::Result TrackPlaceAction::Query() const
             if ((_origin.z & 0x0F) != 0)
             {
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
-                    STR_CONSTRUCTION_ERR_UNKNOWN);
+                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_INVALID_HEIGHT);
             }
         }
     }
@@ -547,9 +545,16 @@ GameActions::Result TrackPlaceAction::Execute() const
                     ride->num_block_brakes++;
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
+                    // change the current mode to its circuit blocked equivalent
                     RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
-                    if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
-                        newMode = RideMode::PoweredLaunchBlockSectioned;
+                    if (ride->mode == RideMode::PoweredLaunch)
+                    {
+                        if (ride->GetRideTypeDescriptor().SupportsRideMode(RideMode::PoweredLaunchBlockSectioned)
+                            || gCheatsShowAllOperatingModes)
+                            newMode = RideMode::PoweredLaunchBlockSectioned;
+                        else
+                            newMode = RideMode::PoweredLaunch;
+                    }
 
                     auto rideSetSetting = RideSetSettingAction(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
                     GameActions::ExecuteNested(&rideSetSetting);

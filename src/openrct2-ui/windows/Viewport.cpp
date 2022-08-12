@@ -32,7 +32,7 @@ enum WindowViewportWidgetIdx
 
 #pragma region MEASUREMENTS
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_VIEWPORT_NO;
+static constexpr const StringId WINDOW_TITLE = STR_VIEWPORT_NO;
 static constexpr const int32_t WW = 200;
 static constexpr const int32_t WH = 200;
 
@@ -114,7 +114,7 @@ public:
         }
 
         // Not sure how to invalidate part of the viewport that has changed, this will have to do for now
-        // widget_invalidate(this, WIDX_VIEWPORT);
+        // widget_invalidate(*this, WIDX_VIEWPORT);
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
@@ -144,7 +144,7 @@ public:
                 {
                     auto info = get_map_coordinates_from_pos(
                         { windowPos.x + (width / 2), windowPos.y + (height / 2) }, ViewportInteractionItemAll);
-                    window_scroll_to_location(mainWindow, { info.Loc, tile_element_height(info.Loc) });
+                    window_scroll_to_location(*mainWindow, { info.Loc, tile_element_height(info.Loc) });
                 }
                 break;
         }
@@ -156,7 +156,7 @@ public:
 
         // Draw viewport
         if (viewport != nullptr)
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
     }
 
     void OnResize() override
@@ -170,7 +170,7 @@ public:
         min_width = WW;
         min_height = WH;
 
-        window_set_resize(this, min_width, min_height, max_width, max_height);
+        window_set_resize(*this, min_width, min_height, max_width, max_height);
     }
 
     void OnPrepareDraw() override

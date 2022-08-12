@@ -469,7 +469,7 @@ namespace Editor
      *
      *  rct2: 0x006AB9B8
      */
-    std::pair<ObjectType, rct_string_id> CheckObjectSelection()
+    std::pair<ObjectType, StringId> CheckObjectSelection()
     {
         bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
 

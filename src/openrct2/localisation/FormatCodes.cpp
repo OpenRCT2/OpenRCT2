@@ -37,7 +37,7 @@ static const EnumMap<FormatToken> FormatTokenMap = {
     { "UINT16",               FormatToken::UInt16,              },
     { "CURRENCY2DP",          FormatToken::Currency2dp,         },
     { "CURRENCY",             FormatToken::Currency,            },
-    { "STRINGID",             FormatToken::StringId,            },
+    { "STRINGID",             FormatToken::StringById,          },
     { "STRING",               FormatToken::String,              },
     { "MONTHYEAR",            FormatToken::MonthYear,           },
     { "MONTH",                FormatToken::Month,               },
@@ -116,7 +116,7 @@ bool FormatTokenTakesArgument(FormatToken token)
         case FormatToken::UInt16:
         case FormatToken::Currency2dp:
         case FormatToken::Currency:
-        case FormatToken::StringId:
+        case FormatToken::StringById:
         case FormatToken::String:
         case FormatToken::MonthYear:
         case FormatToken::Month:

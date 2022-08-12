@@ -23,7 +23,7 @@
 
 static constexpr const int32_t WW = 113;
 static constexpr const int32_t WH = 96;
-static constexpr const rct_string_id WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off
 enum WindowBannerWidgetIdx {
@@ -39,7 +39,7 @@ enum WindowBannerWidgetIdx {
     WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
 };
 
-static constexpr const rct_string_id BannerColouredTextFormats[] = {
+static constexpr const StringId BannerColouredTextFormats[] = {
     STR_TEXT_COLOR_BLACK,
     STR_TEXT_COLOR_GREY,
     STR_TEXT_COLOR_WHITE,
@@ -126,7 +126,7 @@ public:
     void OnOpen() override
     {
         widgets = window_banner_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void Initialise(rct_windownumber _number)
@@ -260,7 +260,7 @@ public:
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
         }
     }
 

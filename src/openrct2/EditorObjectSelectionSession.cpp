@@ -33,7 +33,7 @@
 #include <iterator>
 #include <vector>
 
-std::optional<rct_string_id> _gSceneryGroupPartialSelectError;
+std::optional<StringId> _gSceneryGroupPartialSelectError;
 std::vector<uint8_t> _objectSelectionFlags;
 int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::Count)];
@@ -50,7 +50,7 @@ static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
  * optional / required dependants of an
  * object.
  */
-static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, rct_string_id message)
+static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, StringId message)
 {
     if (!isMasterObject)
         reset_selected_object_count_and_size();

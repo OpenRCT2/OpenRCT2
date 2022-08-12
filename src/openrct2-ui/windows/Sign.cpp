@@ -25,7 +25,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SIGN;
+static constexpr const StringId WINDOW_TITLE = STR_SIGN;
 static constexpr const int32_t WW = 113;
 static constexpr const int32_t WH = 96;
 
@@ -81,7 +81,7 @@ public:
     void OnOpen() override
     {
         widgets = window_sign_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     /*
@@ -285,7 +285,7 @@ public:
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
         }
     }
 

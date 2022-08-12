@@ -25,7 +25,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SET_PATROL_AREA;
+static constexpr const StringId WINDOW_TITLE = STR_SET_PATROL_AREA;
 static constexpr const int32_t WH = 54;
 static constexpr const int32_t WW = 104;
 
@@ -56,8 +56,8 @@ public:
     {
         widgets = PatrolAreaWidgets;
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        WindowInitScrollWidgets(*this);
+        window_push_others_below(*this);
         gLandToolSize = 4;
     }
 

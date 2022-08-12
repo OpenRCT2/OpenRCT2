@@ -50,14 +50,14 @@ static void PaintRideEntranceExitScrollingText(
         return;
 
     auto ft = Formatter();
-    ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
+    ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
     if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         ride->FormatNameTo(ft);
     }
     else
     {
-        ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_CLOSED);
+        ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
     }
 
     char text[256];
@@ -222,12 +222,12 @@ static void PaintParkEntranceScrollingText(
     {
         const auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto name = park.Name.c_str();
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(name);
     }
     else
     {
-        ft.Add<rct_string_id>(STR_BANNER_TEXT_CLOSED);
+        ft.Add<StringId>(STR_BANNER_TEXT_CLOSED);
         ft.Add<uint32_t>(0);
     }
 

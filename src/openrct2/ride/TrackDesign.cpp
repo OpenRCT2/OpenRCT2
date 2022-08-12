@@ -20,6 +20,7 @@
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/MazePlaceTrackAction.h"
 #include "../actions/RideCreateAction.h"
+#include "../actions/RideDemolishAction.h"
 #include "../actions/RideEntranceExitPlaceAction.h"
 #include "../actions/SmallSceneryPlaceAction.h"
 #include "../actions/SmallSceneryRemoveAction.h"
@@ -91,7 +92,7 @@ static uint8_t TrackDesignGetEntranceStyle(const Ride& ride)
     return GetStationStyleFromIdentifier(objectName);
 }
 
-rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
+StringId TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
 {
     type = ride.type;
 
@@ -173,7 +174,7 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
     }
 }
 
-rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
+StringId TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
 {
     CoordsXYE trackElement;
     if (!ride_try_get_origin_element(&ride, &trackElement))
@@ -351,7 +352,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
     return STR_NONE;
 }
 
-rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
+StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
 {
     auto startLoc = MazeGetFirstElement(ride);
 
@@ -494,7 +495,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
     return tile;
 }
 
-rct_string_id TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
+StringId TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
 {
     scenery_elements = _trackSavedTileElementsDesc;
     // Run an element loop
@@ -1541,10 +1542,9 @@ static GameActions::Result TrackDesignPlaceMaze(TrackDesignState& tds, TrackDesi
 
     if (tds.PlaceOperation == PTD_OPERATION_REMOVE_GHOST)
     {
-        ride_action_modify(
-            ride, RIDE_MODIFY_DEMOLISH,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                | GAME_COMMAND_FLAG_GHOST);
+        auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+        gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+        GameActions::Execute(&gameAction);
     }
 
     tds.Origin = coords;

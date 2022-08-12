@@ -23,7 +23,7 @@ using namespace OpenRCT2;
 
 static constexpr const int32_t WW = 400;
 static constexpr const int32_t WH = 352;
-static constexpr const rct_string_id WINDOW_TITLE = STR_ABOUT;
+static constexpr const StringId WINDOW_TITLE = STR_ABOUT;
 static constexpr const int32_t TABHEIGHT = 50;
 
 // clang-format off
@@ -94,7 +94,7 @@ public:
     {
         widgets = _windowAboutOpenRCT2Widgets;
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         SetPage(WINDOW_ABOUT_PAGE_OPENRCT2);
     }
 
@@ -138,13 +138,13 @@ public:
         // Draw tab names
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
+            ft.Add<StringId>(STR_TITLE_SEQUENCE_OPENRCT2);
             DrawTextWrapped(
                 &dpi, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
         }
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RCT2);
+            ft.Add<StringId>(STR_TITLE_SEQUENCE_RCT2);
             DrawTextWrapped(
                 &dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
         }
@@ -171,7 +171,7 @@ private:
         widgets = _windowAboutPageWidgets[p];
 
         pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         Invalidate();
     }
 

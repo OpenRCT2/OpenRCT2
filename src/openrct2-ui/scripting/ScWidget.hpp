@@ -296,7 +296,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsDisabled(w, _widgetIndex);
+                return WidgetIsDisabled(*w, _widgetIndex);
             }
             return false;
         }
@@ -305,19 +305,19 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetDisabled(w, _widgetIndex, value);
+                WidgetSetDisabled(*w, _widgetIndex, value);
 
                 auto widget = GetWidget();
                 if (widget != nullptr)
                 {
                     if (widget->type == WindowWidgetType::DropdownMenu)
                     {
-                        WidgetSetDisabled(w, _widgetIndex + 1, value);
+                        WidgetSetDisabled(*w, _widgetIndex + 1, value);
                     }
                     else if (widget->type == WindowWidgetType::Spinner)
                     {
-                        WidgetSetDisabled(w, _widgetIndex + 1, value);
-                        WidgetSetDisabled(w, _widgetIndex + 2, value);
+                        WidgetSetDisabled(*w, _widgetIndex + 1, value);
+                        WidgetSetDisabled(*w, _widgetIndex + 2, value);
                     }
                 }
             }
@@ -328,7 +328,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsVisible(w, _widgetIndex);
+                return WidgetIsVisible(*w, _widgetIndex);
             }
             return false;
         }
@@ -337,19 +337,19 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetVisible(w, _widgetIndex, value);
+                WidgetSetVisible(*w, _widgetIndex, value);
 
                 auto widget = GetWidget();
                 if (widget != nullptr)
                 {
                     if (widget->type == WindowWidgetType::DropdownMenu)
                     {
-                        WidgetSetVisible(w, _widgetIndex + 1, value);
+                        WidgetSetVisible(*w, _widgetIndex + 1, value);
                     }
                     else if (widget->type == WindowWidgetType::Spinner)
                     {
-                        WidgetSetVisible(w, _widgetIndex + 1, value);
-                        WidgetSetVisible(w, _widgetIndex + 2, value);
+                        WidgetSetVisible(*w, _widgetIndex + 1, value);
+                        WidgetSetVisible(*w, _widgetIndex + 2, value);
                     }
                 }
             }
@@ -460,7 +460,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsPressed(w, _widgetIndex);
+                return WidgetIsPressed(*w, _widgetIndex);
             }
             return false;
         }
@@ -469,7 +469,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetCheckboxValue(w, _widgetIndex, value ? 1 : 0);
+                WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
                 Invalidate();
             }
         }
@@ -514,7 +514,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsPressed(w, _widgetIndex);
+                return WidgetIsPressed(*w, _widgetIndex);
             }
             return false;
         }
@@ -523,7 +523,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetCheckboxValue(w, _widgetIndex, value ? 1 : 0);
+                WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
                 Invalidate();
             }
         }

@@ -142,7 +142,7 @@ void ride_construct(Ride* ride)
 
         rct_window* w = window_get_main();
         if (w != nullptr && ride_modify(&trackElement))
-            window_scroll_to_location(w, { trackElement, trackElement.element->GetBaseZ() });
+            window_scroll_to_location(*w, { trackElement, trackElement.element->GetBaseZ() });
     }
     else
     {
@@ -1015,7 +1015,8 @@ bool ride_modify(CoordsXYE* input)
     // Stop the ride again to clear all vehicles and peeps (compatible with network games)
     if (ride->status != RideStatus::Simulating)
     {
-        ride_set_status(ride, RideStatus::Closed);
+        auto gameAction = RideSetStatusAction(ride->id, RideStatus::Closed);
+        GameActions::Execute(&gameAction);
     }
 
     // Check if element is a station entrance or exit
@@ -1640,7 +1641,7 @@ bool ride_select_forwards_from_back()
  */
 ResultWithMessage ride_are_all_possible_entrances_and_exits_built(Ride* ride)
 {
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         return { true };
 
     for (auto& station : ride->GetStations())

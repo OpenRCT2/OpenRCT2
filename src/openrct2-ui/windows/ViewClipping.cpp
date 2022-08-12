@@ -44,7 +44,7 @@ enum class DisplayType {
 
 #pragma region Widgets
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
 static constexpr const int32_t WW = 180;
 static constexpr const int32_t WH = 155;
 
@@ -86,7 +86,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 break;
             case WIDX_CLIP_CHECKBOX_ENABLE:
             {
@@ -188,7 +188,7 @@ public:
             gClipSelectionB = _previousClipSelectionB;
         }
 
-        widget_invalidate(this, WIDX_CLIP_HEIGHT_SLIDER);
+        widget_invalidate(*this, WIDX_CLIP_HEIGHT_SLIDER);
     }
 
     void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -254,12 +254,12 @@ public:
 
     void OnPrepareDraw() override
     {
-        WidgetScrollUpdateThumbs(this, WIDX_CLIP_HEIGHT_SLIDER);
+        WidgetScrollUpdateThumbs(*this, WIDX_CLIP_HEIGHT_SLIDER);
 
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            WidgetSetCheckboxValue(this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+            WidgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
         }
 
         if (IsActive())
@@ -274,7 +274,7 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         // Clip height value
         auto screenCoords = this->windowPos + ScreenCoordsXY{ 8, this->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
@@ -345,14 +345,14 @@ public:
     {
         this->widgets = window_view_clipping_widgets;
         this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         _clipHeightDisplayType = DisplayType::DisplayUnits;
 
         // Initialise the clip height slider from the current clip height value.
         this->SetClipHeight(gClipHeight);
 
-        window_push_others_below(this);
+        window_push_others_below(*this);
 
         // Get the main viewport to set the view clipping flag.
         rct_window* mainWindow = window_get_main();

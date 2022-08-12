@@ -11,6 +11,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -53,7 +54,7 @@ public:
     void OnOpen() override
     {
         widgets = window_ride_demolish_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
@@ -62,8 +63,8 @@ public:
         {
             case WIDX_DEMOLISH:
             {
-                auto* currentRide = get_ride(rideId);
-                ride_action_modify(currentRide, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+                auto gameAction = RideDemolishAction(rideId, RIDE_MODIFY_DEMOLISH);
+                GameActions::Execute(&gameAction);
                 break;
             }
             case WIDX_CANCEL:
@@ -75,7 +76,7 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         auto currentRide = get_ride(rideId);
         if (currentRide != nullptr)
@@ -100,7 +101,7 @@ rct_window* WindowRideDemolishPromptOpen(Ride* ride)
     if (w != nullptr)
     {
         auto windowPos = w->windowPos;
-        window_close(w);
+        window_close(*w);
         newWindow = WindowCreate<DemolishRidePromptWindow>(WC_DEMOLISH_RIDE_PROMPT, windowPos, WW, WH, WF_TRANSPARENT);
     }
     else

@@ -96,11 +96,11 @@ struct rct_widget
     union
     { // 0x0A
         uint32_t image;
-        rct_string_id text;
+        StringId text;
         uint32_t content;
         utf8* string;
     };
-    rct_string_id tooltip; // 0x0E
+    StringId tooltip; // 0x0E
 
     // New properties
     WidgetFlags flags{};
@@ -248,7 +248,7 @@ struct rct_window_event_list
     void (*text_input)(struct rct_window*, rct_widgetindex, char*){};
     void (*viewport_rotate)(struct rct_window*){};
     void (*unknown_15)(struct rct_window*, int32_t, int32_t){};
-    OpenRCT2String (*tooltip)(struct rct_window*, const rct_widgetindex, const rct_string_id){};
+    OpenRCT2String (*tooltip)(struct rct_window*, const rct_widgetindex, const StringId){};
     void (*cursor)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&, CursorID*){};
     void (*moved)(struct rct_window*, const ScreenCoordsXY&){};
     void (*invalidate)(struct rct_window*){};
@@ -645,7 +645,7 @@ void window_update_all();
 
 void window_set_window_limit(int32_t value);
 
-rct_window* window_bring_to_front(rct_window* w);
+rct_window* window_bring_to_front(rct_window& w);
 rct_window* window_bring_to_front_by_class(rct_windowclass cls);
 rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags);
 rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number);
@@ -691,7 +691,7 @@ rct_window* WindowCreateAutoPos(
 rct_window* WindowCreateCentred(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags);
 
-void window_close(rct_window* window);
+void window_close(rct_window& window);
 void window_close_by_class(rct_windowclass cls);
 void window_close_by_number(rct_windowclass cls, rct_windownumber number);
 void window_close_by_number(rct_windowclass cls, EntityId number);
@@ -703,45 +703,43 @@ rct_window* window_find_by_class(rct_windowclass cls);
 rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number);
 rct_window* window_find_by_number(rct_windowclass cls, EntityId id);
 rct_window* window_find_from_point(const ScreenCoordsXY& screenCoords);
-rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsXY& screenCoords);
+rct_widgetindex window_find_widget_from_point(rct_window& w, const ScreenCoordsXY& screenCoords);
 void window_invalidate_by_class(rct_windowclass cls);
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);
 void window_invalidate_by_number(rct_windowclass cls, EntityId id);
 void window_invalidate_all();
-void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex);
+void widget_invalidate(rct_window& w, rct_widgetindex widgetIndex);
 void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex);
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex);
-void WindowInitScrollWidgets(rct_window* w);
-void window_update_scroll_widgets(rct_window* w);
-int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index);
+void WindowInitScrollWidgets(rct_window& w);
+void window_update_scroll_widgets(rct_window& w);
+int32_t window_get_scroll_data_index(const rct_window& w, rct_widgetindex widget_index);
 
-void window_push_others_right(rct_window* w);
-void window_push_others_below(rct_window* w1);
+void window_push_others_right(rct_window& w);
+void window_push_others_below(rct_window& w1);
 
 rct_window* window_get_main();
 
-void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords);
-void window_rotate_camera(rct_window* w, int32_t direction);
+void window_scroll_to_location(rct_window& w, const CoordsXYZ& coords);
+void window_rotate_camera(rct_window& w, int32_t direction);
 void window_viewport_get_map_coords_by_cursor(
-    rct_window* w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y);
-void window_viewport_centre_tile_around_cursor(rct_window* w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y);
+    const rct_window& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y);
+void window_viewport_centre_tile_around_cursor(rct_window& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y);
 void window_check_all_valid_zoom();
-void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor);
-void window_zoom_in(rct_window* w, bool atCursor);
-void window_zoom_out(rct_window* w, bool atCursor);
+void window_zoom_set(rct_window& w, ZoomLevel zoomLevel, bool atCursor);
+void window_zoom_in(rct_window& w, bool atCursor);
+void window_zoom_out(rct_window& w, bool atCursor);
 void main_window_zoom(bool zoomIn, bool atCursor);
 
-void window_show_textinput(rct_window* w, rct_widgetindex widgetIndex, uint16_t title, uint16_t text, int32_t value);
-
 void window_draw_all(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
-void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-void WindowDrawWidgets(rct_window* w, rct_drawpixelinfo* dpi);
-void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w);
+void window_draw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi);
+void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window& w);
 
-void window_set_position(rct_window* w, const ScreenCoordsXY& screenCoords);
-void window_move_position(rct_window* w, const ScreenCoordsXY& screenCoords);
-void window_resize(rct_window* w, int32_t dw, int32_t dh);
-void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
+void window_set_position(rct_window& w, const ScreenCoordsXY& screenCoords);
+void window_move_position(rct_window& w, const ScreenCoordsXY& screenCoords);
+void window_resize(rct_window& w, int32_t dw, int32_t dh);
+void window_set_resize(rct_window& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
 
 bool tool_set(const rct_window& w, rct_widgetindex widgetIndex, Tool tool);
 void tool_cancel();
@@ -756,12 +754,9 @@ rct_viewport* window_get_viewport(rct_window* window);
 void window_relocate_windows(int32_t width, int32_t height);
 void window_resize_gui(int32_t width, int32_t height);
 void window_resize_gui_scenario_editor(int32_t width, int32_t height);
-void window_ride_construct(rct_window* w);
 void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoords);
 void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords);
 void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords);
-
-void window_staff_list_init_vars();
 
 void window_event_close_call(rct_window* w);
 void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex);
@@ -785,7 +780,7 @@ void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, cons
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text);
 void window_event_viewport_rotate_call(rct_window* w);
 void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
-OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
+OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback);
 CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_event_moved_call(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_event_invalidate_call(rct_window* w);
@@ -795,25 +790,22 @@ void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32
 void InvalidateAllWindowsAfterInput();
 void textinput_cancel();
 
-void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
-int32_t window_can_resize(rct_window* w);
+void window_move_and_snap(rct_window& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
+int32_t window_can_resize(const rct_window& w);
 
 void window_start_textbox(
-    rct_window* call_w, rct_widgetindex call_widget, rct_string_id existing_text, char* existing_args, int32_t maxLength);
+    rct_window& call_w, rct_widgetindex call_widget, StringId existing_text, char* existing_args, int32_t maxLength);
 void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();
 
-bool window_is_visible(rct_window* w);
+bool window_is_visible(rct_window& w);
 
 bool scenery_tool_is_active();
 
 rct_viewport* window_get_previous_viewport(rct_viewport* current);
 void window_reset_visibilities();
 void window_init_all();
-
-// Cheat: in-game land ownership editor
-void toggle_ingame_land_ownership_editor();
 
 void window_ride_construction_keyboard_shortcut_turn_left();
 void window_ride_construction_keyboard_shortcut_turn_right();
@@ -835,8 +827,8 @@ void window_footpath_keyboard_shortcut_slope_up();
 void window_footpath_keyboard_shortcut_build_current();
 void window_footpath_keyboard_shortcut_demolish_current();
 
-void window_follow_sprite(rct_window* w, EntityId spriteIndex);
-void window_unfollow_sprite(rct_window* w);
+void window_follow_sprite(rct_window& w, EntityId spriteIndex);
+void window_unfollow_sprite(rct_window& w);
 
 bool window_ride_construction_update_state(
     int32_t* trackType, int32_t* trackDirection, RideId* rideIndex, int32_t* _liftHillAndAlternativeState, CoordsXYZ* trackPos,
@@ -848,4 +840,4 @@ money32 place_provisional_track_piece(
 extern RideConstructionState _rideConstructionState2;
 
 rct_window* window_get_listening();
-rct_windowclass window_get_classification(rct_window* window);
+rct_windowclass window_get_classification(const rct_window& window);

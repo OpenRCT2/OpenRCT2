@@ -459,6 +459,13 @@ static void PrintVersion()
     Console::WriteLine();
     Console::WriteFormat("Minimum park file version: %d", OpenRCT2::PARK_FILE_MIN_VERSION);
     Console::WriteLine();
+#ifdef USE_BREAKPAD
+    Console::WriteFormat("With breakpad support enabled");
+    Console::WriteLine();
+#else
+    Console::WriteFormat("Breakpad support disabled");
+    Console::WriteLine();
+#endif
 }
 
 static void PrintLaunchInformation()

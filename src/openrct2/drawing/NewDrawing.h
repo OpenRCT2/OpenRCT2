@@ -15,7 +15,7 @@ struct rct_drawpixelinfo;
 struct GamePalette;
 enum class DrawingEngine : int32_t;
 
-extern rct_string_id DrawingEngineStringIds[3];
+extern StringId DrawingEngineStringIds[3];
 
 DrawingEngine drawing_engine_get_type();
 bool drawing_engine_requires_new_window(DrawingEngine srcEngine, DrawingEngine dstEngine);

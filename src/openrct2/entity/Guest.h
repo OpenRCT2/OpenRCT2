@@ -467,8 +467,6 @@ extern uint8_t gGuestInitialThirst;
 
 extern uint32_t gNextGuestNumber;
 
-void guest_set_name(EntityId spriteIndex, const char* name);
-
 void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft);
 
 void increment_guests_in_park();

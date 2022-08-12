@@ -38,7 +38,7 @@ enum {
 
 static constexpr const int32_t WW = 500;
 static constexpr const int32_t WH = 400;
-static constexpr const rct_string_id WINDOW_TITLE = STR_CHANGELOG_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_CHANGELOG_TITLE;
 constexpr int32_t MIN_WW = 300;
 constexpr int32_t MIN_WH = 250;
 
@@ -111,7 +111,7 @@ public:
     {
         widgets = _windowChangelogWidgets;
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         min_width = MIN_WW;
         min_height = MIN_WH;
         max_width = MIN_WW;

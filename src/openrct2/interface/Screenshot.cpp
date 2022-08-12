@@ -377,7 +377,7 @@ void screenshot_giant()
         // Show user that screenshot saved successfully
         const auto filename = Path::GetFileName(path.value());
         Formatter ft;
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const utf8*>(filename.c_str());
         context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
     }

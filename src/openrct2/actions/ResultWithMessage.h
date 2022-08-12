@@ -15,5 +15,5 @@
 struct ResultWithMessage
 {
     bool Successful{};
-    rct_string_id Message = STR_NONE;
+    StringId Message = STR_NONE;
 };

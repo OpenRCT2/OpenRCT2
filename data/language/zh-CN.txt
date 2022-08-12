@@ -1,4 +1,4 @@
-# STR_XXXX part is read and XXXX becomes the string id number.
+﻿# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -2226,7 +2226,6 @@ STR_3174    :其他对象需要这个对象
 STR_3175    :这个对象是必需的
 STR_3176    :无法选择这个对象
 STR_3177    :无法取消选择这个对象
-STR_3178    :至少需要选择一项道路款式
 STR_3179    :至少需要选择一项游乐设施/店铺
 STR_3180    :不合适的对象选择
 STR_3181    :对象选择 - {STRINGID}
@@ -2259,7 +2258,7 @@ STR_3208    :轨道设计管理工具
 STR_3209    :上一步:
 STR_3210    :下一步:
 STR_3211    :地图大小:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :不能再缩小地图
 STR_3214    :不能再扩大地图
 STR_3215    :太接近地图的边缘
@@ -3206,7 +3205,6 @@ STR_6047    :平滑网格
 STR_6048    :高度图错误
 STR_6049    :PNG读取错误
 STR_6050    :位图读取错误
-STR_6051    :宽度和高度需要相匹配
 STR_6052    :此高度图过大，将被切开
 STR_6053    :此高度图不能被归一化
 STR_6054    :只支持24位的位图

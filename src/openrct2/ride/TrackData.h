@@ -75,7 +75,7 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
 using TrackComputeFunction = int32_t (*)(const int16_t);
 struct TrackElementDescriptor
 {
-    rct_string_id Description;
+    StringId Description;
     rct_track_coordinates Coordinates;
 
     rct_preview_track* Block;

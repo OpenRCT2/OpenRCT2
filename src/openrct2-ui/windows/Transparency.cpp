@@ -54,7 +54,7 @@ enum WINDOW_TRANSPARENCY_WIDGET_IDX
 
 #pragma region MEASUREMENTS
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_TRANSPARENCY_OPTIONS_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_TRANSPARENCY_OPTIONS_TITLE;
 static constexpr const int32_t WW = 204;
 static constexpr const int32_t WH = 57;
 
@@ -93,7 +93,7 @@ public:
     void OnOpen() override
     {
         widgets = window_transparency_main_widgets;
-        window_push_others_below(this);
+        window_push_others_below(*this);
 
         auto* w = window_get_main();
         if (w != nullptr)

@@ -189,7 +189,7 @@ ShortcutInput::ShortcutInput(std::string_view value)
 
 std::string_view ShortcutInput::GetModifierName(uint32_t key, bool localised)
 {
-    static std::unordered_map<uint32_t, std::pair<const char*, rct_string_id>> _keys{
+    static std::unordered_map<uint32_t, std::pair<const char*, StringId>> _keys{
         { KMOD_SHIFT, { "SHIFT", STR_SHORTCUT_MOD_SHIFT } },    { KMOD_LSHIFT, { "LSHIFT", STR_SHORTCUT_MOD_LSHIFT } },
         { KMOD_RSHIFT, { "RSHIFT", STR_SHORTCUT_MOD_RSHIFT } }, { KMOD_CTRL, { "CTRL", STR_SHORTCUT_MOD_CTRL } },
         { KMOD_LCTRL, { "LCTRL", STR_SHORTCUT_MOD_LCTRL } },    { KMOD_RCTRL, { "RCTRL", STR_SHORTCUT_MOD_RCTRL } },
@@ -214,7 +214,7 @@ std::string_view ShortcutInput::GetModifierName(uint32_t key, bool localised)
 
 std::string_view ShortcutInput::GetLocalisedKeyName(uint32_t key)
 {
-    static std::unordered_map<uint32_t, rct_string_id> _keys{
+    static std::unordered_map<uint32_t, StringId> _keys{
         { SDLK_LEFT, STR_SHORTCUT_LEFT },
         { SDLK_RIGHT, STR_SHORTCUT_RIGHT },
         { SDLK_UP, STR_SHORTCUT_UP },

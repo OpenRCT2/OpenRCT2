@@ -798,8 +798,8 @@ assert_struct_size(RCT12RideMeasurement, 0x4B0C);
 struct RCT12Banner
 {
     RCT12ObjectEntryIndex type;
-    uint8_t flags;            // 0x01
-    rct_string_id string_idx; // 0x02
+    uint8_t flags;       // 0x01
+    StringId string_idx; // 0x02
     union
     {
         uint8_t colour;     // 0x04

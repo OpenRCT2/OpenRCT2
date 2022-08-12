@@ -43,7 +43,7 @@ rct_window* WindowTitleOptionsOpen()
         ScreenCoordsXY(context_get_width() - 80, 0), 80, 15, &window_title_options_events, WC_TITLE_OPTIONS,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_options_widgets;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     return window;
 }
@@ -63,5 +63,5 @@ static void WindowTitleOptionsMouseup(rct_window* w, rct_widgetindex widgetIndex
 
 static void WindowTitleOptionsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 }
