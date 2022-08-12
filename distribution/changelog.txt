@@ -24,7 +24,7 @@
 - Fix: [#17508] Grid doesn’t disable after setting patrol area.
 - Fix: [#17532] Object Selection window allows unselecting all station types.
 - Fix: [#17533] Missing audio when specifying ‘--rct2-data-path’.
-- Fix: [#17535] Network desync when placing rides with scenery.
+- Fix: [#17535] Multiplayer desync when placing rides with scenery.
 - Fix: [#17541] Station style not correctly saved to TD6.
 - Fix: [#17542] Stalls will autorotate towards paths outside the park.
 - Fix: [#17553] Crash when moving invention list items to empty list.
