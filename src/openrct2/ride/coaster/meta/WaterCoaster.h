@@ -60,6 +60,7 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::Ride),
     SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
+    SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
     SET_FIELD(UpdateMeasurementsSpecialElements, RideUpdateMeasurementsSpecialElements_WaterCoaster),
 };
 // clang-format on

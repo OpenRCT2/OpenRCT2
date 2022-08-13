@@ -58,5 +58,6 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::Ride),
     SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceMaze),
+    SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Maze),
 };
 // clang-format on

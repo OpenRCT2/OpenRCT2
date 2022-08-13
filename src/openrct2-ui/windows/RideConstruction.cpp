@@ -2723,11 +2723,15 @@ rct_window* WindowRideConstructionOpen()
         return nullptr;
     }
 
-    if (currentRide->type == RIDE_TYPE_MAZE)
+    const auto& rtd = currentRide->GetRideTypeDescriptor();
+    switch (rtd.ConstructionWindowContext)
     {
-        return context_open_window_view(WV_MAZE_CONSTRUCTION);
+        case RideConstructionWindowContext::Maze:
+            return context_open_window_view(WV_MAZE_CONSTRUCTION);
+        case RideConstructionWindowContext::Default:
+            return WindowCreate<RideConstructionWindow>(
+                WC_RIDE_CONSTRUCTION, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
     }
-
     return WindowCreate<RideConstructionWindow>(WC_RIDE_CONSTRUCTION, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
 }
 

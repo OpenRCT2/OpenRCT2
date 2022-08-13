@@ -28,6 +28,7 @@
 #include "../util/Util.h"
 #include "Ride.h"
 #include "RideAudio.h"
+#include "RideConstruction.h"
 #include "RideEntry.h"
 #include "ShopItem.h"
 #include "Track.h"
@@ -161,6 +162,12 @@ using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideM
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
 using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const track_type_t trackType);
 
+enum class RideConstructionWindowContext : uint8_t
+{
+    Default,
+    Maze,
+};
+
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -218,6 +225,8 @@ struct RideTypeDescriptor
     RideClassification Classification = RideClassification::Ride;
 
     PeepUpdateRideLeaveEntranceFunc UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault;
+
+    RideConstructionWindowContext ConstructionWindowContext = RideConstructionWindowContext::Default;
 
     RideUpdateMeasurementsSpecialElementsFunc UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default;
 
