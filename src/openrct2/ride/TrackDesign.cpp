@@ -113,9 +113,7 @@ StringId TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
 
     for (int32_t i = 0; i < RCT2::Limits::MaxTrainsPerRide; i++)
     {
-        vehicle_colours[i].body_colour = ride.vehicle_colours[i].Body;
-        vehicle_colours[i].trim_colour = ride.vehicle_colours[i].Trim;
-        vehicle_additional_colour[i] = ride.vehicle_colours[i].Tertiary;
+        vehicle_colours[i] = ride.vehicle_colours[i];
     }
 
     for (int32_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
@@ -608,7 +606,6 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(vehicle_object);
     stream << DS_TAG(space_required_x);
     stream << DS_TAG(space_required_y);
-    stream << DS_TAG(vehicle_additional_colour);
     stream << DS_TAG(lift_hill_speed);
     stream << DS_TAG(num_circuits);
 
@@ -2014,9 +2011,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     {
         for (int32_t i = 0; i < RCT12::Limits::MaxVehicleColours; i++)
         {
-            ride->vehicle_colours[i].Body = td6->vehicle_colours[i].body_colour;
-            ride->vehicle_colours[i].Trim = td6->vehicle_colours[i].trim_colour;
-            ride->vehicle_colours[i].Tertiary = td6->vehicle_additional_colour[i];
+            ride->vehicle_colours[i] = td6->vehicle_colours[i];
         }
     }
 

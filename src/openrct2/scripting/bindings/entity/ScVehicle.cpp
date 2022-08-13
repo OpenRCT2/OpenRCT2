@@ -337,11 +337,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            VehicleColour colours;
-            colours.Body = vehicle->colours.body_colour;
-            colours.Trim = vehicle->colours.trim_colour;
-            colours.Tertiary = vehicle->colours_extended;
-            return ToDuk<VehicleColour>(ctx, colours);
+            return ToDuk<VehicleColour>(ctx, vehicle->colours);
         }
         return ToDuk(ctx, nullptr);
     }
@@ -351,10 +347,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            auto colours = FromDuk<VehicleColour>(value);
-            vehicle->colours.body_colour = colours.Body;
-            vehicle->colours.trim_colour = colours.Trim;
-            vehicle->colours_extended = colours.Tertiary;
+            vehicle->colours = FromDuk<VehicleColour>(value);
         }
     }
 

@@ -9389,7 +9389,6 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << mini_golf_current_animation;
     stream << mini_golf_flags;
     stream << ride_subtype;
-    stream << colours_extended;
     stream << seat_rotation;
     stream << target_seat_rotation;
     stream << BoatLocation;
