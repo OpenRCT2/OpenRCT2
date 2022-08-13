@@ -2664,15 +2664,18 @@ void Ride::ChainQueues() const
  *
  *  rct2: 0x006D3319
  */
-static ResultWithMessage ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
+static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE* output)
 {
-    RideId rideIndex = input->element->AsTrack()->GetRideIndex();
+    if (input.element == nullptr || input.element->GetType() != TileElementType::Track)
+        return { false };
+
+    RideId rideIndex = input.element->AsTrack()->GetRideIndex();
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         ride_construction_invalidate_current_track();
 
     track_circuit_iterator it;
-    track_circuit_iterator_begin(&it, *input);
+    track_circuit_iterator_begin(&it, input);
     while (track_circuit_iterator_next(&it))
     {
         if (it.current.element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
@@ -3926,7 +3929,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
 
     if (IsBlockSectioned())
     {
-        auto blockBrakeCheck = ride_check_block_brakes(&trackElement, &problematicTrackElement);
+        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
         if (!blockBrakeCheck.Successful)
         {
             ride_scroll_to_track_error(&problematicTrackElement);
@@ -4061,7 +4064,7 @@ ResultWithMessage Ride::Open(bool isApplying)
 
     if (IsBlockSectioned())
     {
-        auto blockBrakeCheck = ride_check_block_brakes(&trackElement, &problematicTrackElement);
+        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
         if (!blockBrakeCheck.Successful)
         {
             ride_scroll_to_track_error(&problematicTrackElement);
