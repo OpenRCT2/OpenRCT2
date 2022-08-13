@@ -1298,7 +1298,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
  *  rct2: 0x006D0964
  */
 static GameActions::Result TrackDesignPlaceAllScenery(
-    TrackDesignState& tds, const std::vector<TrackDesignSceneryElement>& sceneryList)
+    TrackDesignState& tds, const std::vector<TrackDesignSceneryElement>& sceneryList, uint8_t rotation)
 {
     const auto& origin = tds.Origin;
 
@@ -1318,8 +1318,6 @@ static GameActions::Result TrackDesignPlaceAllScenery(
 
         for (const auto& scenery : sceneryList)
         {
-            uint8_t rotation = _currentTrackPieceDirection;
-
             auto mapCoord = CoordsXYZ{ CoordsXY(origin) + scenery.loc.Rotate(rotation), origin.z };
             TrackDesignUpdatePreviewBounds(tds, mapCoord);
 
@@ -1889,7 +1887,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
     }
 
     // Scenery elements
-    auto sceneryPlaceRes = TrackDesignPlaceAllScenery(tds, td6->scenery_elements);
+    auto sceneryPlaceRes = TrackDesignPlaceAllScenery(tds, td6->scenery_elements, coords.direction);
     if (sceneryPlaceRes.Error != GameActions::Status::Ok)
     {
         return sceneryPlaceRes;
