@@ -141,7 +141,7 @@ void ride_construct(Ride* ride)
         ride_find_track_gap(ride, &trackElement, &trackElement);
 
         rct_window* w = window_get_main();
-        if (w != nullptr && ride_modify(&trackElement))
+        if (w != nullptr && ride_modify(trackElement))
             window_scroll_to_location(*w, { trackElement, trackElement.element->GetBaseZ() });
     }
     else
@@ -985,9 +985,9 @@ static bool ride_modify_maze(const CoordsXYE& tileElement)
  *
  *  rct2: 0x006CC056
  */
-bool ride_modify(CoordsXYE* input)
+bool ride_modify(const CoordsXYE& input)
 {
-    auto tileElement = *input;
+    auto tileElement = input;
     if (tileElement.element == nullptr)
         return false;
 
