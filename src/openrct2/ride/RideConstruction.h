@@ -35,8 +35,6 @@ enum class RideConstructionState : uint8_t
     MazeFill
 };
 
-extern bool gGotoStartPlacementMode;
-
 extern money32 _currentTrackPrice;
 
 extern uint32_t _currentTrackCurve;

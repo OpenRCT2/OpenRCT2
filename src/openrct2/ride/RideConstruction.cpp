@@ -49,7 +49,6 @@
 #include "Vehicle.h"
 
 using namespace OpenRCT2::TrackMetaData;
-bool gGotoStartPlacementMode = false;
 
 money16 gTotalRideValueForMoney;
 
