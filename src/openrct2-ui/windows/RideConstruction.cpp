@@ -154,6 +154,7 @@ static int32_t _trackPlaceZ;
 static money32 _trackPlaceCost;
 static StringId _trackPlaceErrorMessage;
 static bool _autoRotatingShop;
+static bool _gotoStartPlacementMode = false;
 
 static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
@@ -2330,7 +2331,7 @@ private:
             *newCoords = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
             direction = trackBeginEnd.begin_direction;
             type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-            gGotoStartPlacementMode = false;
+            _gotoStartPlacementMode = false;
         }
         else if (track_block_get_next(&inputElement, &outputElement, &newCoords->z, &direction))
         {
@@ -2338,7 +2339,7 @@ private:
             newCoords->y = outputElement.y;
             direction = outputElement.element->GetDirection();
             type = outputElement.element->AsTrack()->GetTrackType();
-            gGotoStartPlacementMode = false;
+            _gotoStartPlacementMode = false;
         }
         else
         {
@@ -2356,7 +2357,7 @@ private:
             const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
             const rct_preview_track* trackBlock = ted.Block;
             newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
-            gGotoStartPlacementMode = true;
+            _gotoStartPlacementMode = true;
 
             // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
             auto currentRide = get_ride(_currentRideIndex);
@@ -4492,7 +4493,7 @@ void window_ride_construction_keyboard_shortcut_demolish_current()
 
 static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type)
 {
-    if (gGotoStartPlacementMode)
+    if (_gotoStartPlacementMode)
     {
         _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
         _rideConstructionState = RideConstructionState::Front;
