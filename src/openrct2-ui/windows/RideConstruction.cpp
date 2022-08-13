@@ -875,7 +875,10 @@ public:
             Close();
             return;
         }
-
+        if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        {
+            Close();
+        }
         switch (_currentTrackCurve)
         {
             case TrackElemType::SpinningTunnel | RideConstructionSpecialPieceSelected:

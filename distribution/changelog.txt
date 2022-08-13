@@ -33,6 +33,7 @@
 - Fix: [#17639] When building upside down, the special elements list contains many items twice (original bug).
 - Fix: [#17703] (undefined string) when building on invalid height.
 - Fix: [#17776] “Other Parks” tab uses separate lists for SC4/SC6 and .park scenarios.
+- Fix: [#17472] Active windows modifying the reticle did not close on save, leading to improper reticle behavior on save
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
