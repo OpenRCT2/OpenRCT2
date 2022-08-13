@@ -151,6 +151,7 @@
     <ClCompile Include="windows\EditorScenarioOptions.cpp" />
     <ClCompile Include="windows\Error.cpp" />
     <ClCompile Include="windows\Finances.cpp" />
+    <ClCompile Include="windows\FireworksEditor.cpp" />
     <ClCompile Include="windows\Footpath.cpp" />
     <ClCompile Include="windows\GameBottomToolbar.cpp" />
     <ClCompile Include="windows\Guest.cpp" />

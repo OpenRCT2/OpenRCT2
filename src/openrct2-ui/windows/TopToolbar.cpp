@@ -86,6 +86,7 @@ enum
     WIDX_SCENERY,
     WIDX_PATH,
     WIDX_CONSTRUCT_RIDE,
+    WIDX_FIREWORKS,
     WIDX_RIDES,
     WIDX_PARK,
     WIDX_STAFF,
@@ -236,6 +237,7 @@ static constexpr const int32_t right_aligned_widgets_order[] = {
 
     WIDX_SEPARATOR,
 
+    WIDX_FIREWORKS,
     WIDX_CONSTRUCT_RIDE,
     WIDX_PATH,
     WIDX_SCENERY,
@@ -259,12 +261,13 @@ static rct_widget window_top_toolbar_widgets[] = {
     MakeRemapWidget({297, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
     MakeRemapWidget({327, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
     MakeRemapWidget({357, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
-    MakeRemapWidget({387, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
-    MakeRemapWidget({490, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
-    MakeRemapWidget({520, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
-    MakeRemapWidget({550, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
-    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
-    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
+    MakeRemapWidget({387, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Fireworks
+    MakeRemapWidget({490, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
+    MakeRemapWidget({520, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
+    MakeRemapWidget({550, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
+    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
+    MakeRemapWidget({570, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
+    MakeRemapWidget({570, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
     MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
     MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_CHEATS_TIP                    ), // Cheats
     MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_DEBUG_TIP                     ), // Debug
@@ -390,6 +393,9 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
             break;
         case WIDX_PATH:
             ToggleFootpathWindow();
+            break;
+        case WIDX_FIREWORKS:
+            context_open_window(WC_FIREWORKS);
             break;
         case WIDX_CONSTRUCT_RIDE:
             context_open_window(WindowClass::ConstructRide);
@@ -687,6 +693,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     window_top_toolbar_widgets[WIDX_SCENERY].type = WindowWidgetType::TrnBtn;
     window_top_toolbar_widgets[WIDX_PATH].type = WindowWidgetType::TrnBtn;
     window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_FIREWORKS].type = WindowWidgetType::TrnBtn;
     window_top_toolbar_widgets[WIDX_RIDES].type = WindowWidgetType::TrnBtn;
     window_top_toolbar_widgets[WIDX_PARK].type = WindowWidgetType::TrnBtn;
     window_top_toolbar_widgets[WIDX_STAFF].type = WindowWidgetType::TrnBtn;

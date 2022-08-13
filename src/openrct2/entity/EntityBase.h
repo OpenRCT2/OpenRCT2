@@ -19,8 +19,8 @@ enum class EntityType : uint8_t
     JumpingFountain,
     Balloon,
     Duck,
-    Count,
     Firework,
+    Count,
     Null = 255
 };
 

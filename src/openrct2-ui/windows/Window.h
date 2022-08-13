@@ -35,6 +35,7 @@ extern colour_t gWindowSceneryTertiaryColour;
 extern bool gWindowSceneryEyedropperEnabled;
 
 rct_window* WindowAboutOpen();
+rct_window* WindowFireworksEditorOpen();
 void WindowCampaignRefreshRides();
 rct_window* WindowChangelogOpen(int personality);
 rct_window* WindowCheatsOpen();
