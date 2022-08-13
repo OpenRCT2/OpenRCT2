@@ -88,6 +88,8 @@ namespace OpenRCT2::Scripting
                         return "jumping_fountain";
                     case EntityType::Litter:
                         return "litter";
+                    case EntityType::Firework:
+                        return "firework";
                     case EntityType::Null:
                         return "unknown";
                     default:

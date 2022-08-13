@@ -23,6 +23,7 @@
 #include "AudioObject.h"
 #include "BannerObject.h"
 #include "EntranceObject.h"
+#include "FireworkObject.h"
 #include "FootpathItemObject.h"
 #include "FootpathObject.h"
 #include "FootpathRailingsObject.h"
@@ -379,6 +380,9 @@ namespace ObjectFactory
             case ObjectType::Audio:
                 result = std::make_unique<AudioObject>();
                 break;
+            case ObjectType::Firework:
+                result = std::make_unique<FireworkObject>();
+                break;
             default:
                 throw std::runtime_error("Invalid object type");
         }
@@ -419,6 +423,8 @@ namespace ObjectFactory
             return ObjectType::FootpathRailings;
         if (s == "audio")
             return ObjectType::Audio;
+        if (s == "firework")
+            return ObjectType::Firework;
         return ObjectType::None;
     }
 

@@ -50,7 +50,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libopenrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="'$(Configuration)'=='Debug'">gtestd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)'=='Debug'">gtestd.lib; gmockd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalDependencies Condition="'$(Configuration)'!='Debug'">gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
@@ -72,6 +72,7 @@
     <ClCompile Include="CryptTests.cpp" />
     <ClCompile Include="Endianness.cpp" />
     <ClCompile Include="EnumMapTest.cpp" />
+    <ClCompile Include="FireworkTests.cpp" />
     <ClCompile Include="FormattingTests.cpp" />
     <ClCompile Include="LanguagePackTest.cpp" />
     <ClCompile Include="ImageImporterTests.cpp" />

@@ -41,7 +41,7 @@
     <ClCompile>
       <PreprocessorDefinitions>__ENABLE_DISCORD__;USE_BENCHMARK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">USE_FRIBIDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">USE_FRIBIDI;GTEST_LINKED_AS_SHARED_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
@@ -234,6 +234,8 @@
     <ClInclude Include="entity\Staff.h" />
     <ClInclude Include="entity\Yaw.hpp" />
     <ClInclude Include="FileClassifier.h" />
+    <ClInclude Include="fireworks\Firework.h" />
+    <ClInclude Include="fireworks\FireworksSequence.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateSnapshots.h" />
@@ -723,6 +725,8 @@
     <ClCompile Include="entity\Peep.cpp" />
     <ClCompile Include="entity\Staff.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
+    <ClCompile Include="fireworks\Firework.cpp" />
+    <ClCompile Include="fireworks\FireworksSequence.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStateSnapshots.cpp" />

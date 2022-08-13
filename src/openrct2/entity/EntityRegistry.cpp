@@ -18,6 +18,7 @@
 #include "../core/MemoryStream.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
+#include "../fireworks/Firework.h"
 #include "../interface/Viewport.h"
 #include "../peep/RideUseSystem.h"
 #include "../profiling/Profiling.h"
@@ -87,6 +88,7 @@ constexpr bool EntityTypeIsMiscEntity(const EntityType type)
         case EntityType::JumpingFountain:
         case EntityType::Balloon:
         case EntityType::Duck:
+        case EntityType::Firework:
             return true;
         default:
             return false;
@@ -406,7 +408,7 @@ void UpdateAllMiscEntities()
 
     MiscUpdateAllTypes<
         SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud, CrashSplashParticle, ExplosionFlare, JumpingFountain,
-        Balloon, Duck>();
+        Balloon, Duck, OpenRCT2::Fireworks::Firework>();
 }
 
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order

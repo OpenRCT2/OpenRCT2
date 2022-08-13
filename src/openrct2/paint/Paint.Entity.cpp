@@ -19,6 +19,7 @@
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
 #include "../entity/Staff.h"
+#include "../fireworks/Firework.h"
 #include "../interface/Viewport.h"
 #include "../profiling/Profiling.h"
 #include "../ride/RideData.h"
@@ -155,6 +156,9 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
                 break;
             case EntityType::Litter:
                 spr->As<Litter>()->Paint(session, image_direction);
+                break;
+            case EntityType::Firework:
+                spr->As<OpenRCT2::Fireworks::Firework>()->Paint(session, image_direction);
                 break;
             default:
                 assert(false);

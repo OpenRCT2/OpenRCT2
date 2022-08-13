@@ -20,6 +20,7 @@ enum class EntityType : uint8_t
     Balloon,
     Duck,
     Count,
+    Firework,
     Null = 255
 };
 
