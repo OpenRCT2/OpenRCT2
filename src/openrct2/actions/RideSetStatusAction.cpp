@@ -79,7 +79,6 @@ GameActions::Result RideSetStatusAction::Query() const
     res.ErrorTitle = _StatusErrorTitles[EnumValue(_status)];
 
     Formatter ft(res.ErrorMessageArgs.data());
-    ft.Increment(6);
     ride->FormatNameTo(ft);
     if (_status != ride->status)
     {
