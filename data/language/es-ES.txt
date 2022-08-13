@@ -3456,7 +3456,7 @@ STR_6344    :Inspector de cuadrícula: Disminuir coordenada Y
 STR_6345    :Inspector de cuadrícula: Aumentar altura del elemento
 STR_6346    :Inspector de cuadrícula: Disminuir altura del elemento
 STR_6347    :¡Agregados a los caminos no se pueden añadir en cruces de nivel!
-STR_6348    :¡Primero remueve el cruce de nivel!
+STR_6348    :¡Primero quita el cruce de nivel!
 STR_6349    :Secuencia de la pantalla de inicio al azar
 STR_6350    :Distribuir
 STR_6351    :Herramienta de distribución de escenografía
@@ -3621,6 +3621,7 @@ STR_6510    :Giro de Gravedad Cero (izq)
 STR_6511    :Giro de Gravedad Cero (der)
 STR_6512    :Giro de Gravedad Cero grande (izq)
 STR_6513    :Giro de Gravedad Cero grande (der)
+STR_6514    :¡Altura no válida!
 
 ##############
 # Escenarios #
@@ -4174,7 +4175,7 @@ STR_DTLS    :Comenzando desde cero, construye las atracciones de este Six Flags 
 <Build your own Six Flags Park>
 STR_SCNR    :Construye tu propio parque Six Flags
 STR_PARK    :Six Flags
-STR_DTLS    :Construye tu propio diseño de un parque Six Flags - Ya sea incluyendo atracciones de otros parques Six Flags, o poniendo tu propia impronta.
+STR_DTLS    :Construye tu propio diseño de un parque Six Flags. Ya sea incluyendo atracciones de otros parques Six Flags, o poniendo tu propia impronta.
 
 <Bumbly Bazaar>
 STR_SCNR    :Bazar Ruidoso
@@ -4184,7 +4185,7 @@ STR_DTLS    :Comenzando desde un pequeño mercado, tu desafío es aumentar los i
 <Crazy Castle>
 STR_SCNR    :Castillo Loco
 STR_PARK    :Castillo Loco
-STR_DTLS    :Has heredado un gran castillo - tu trabajo es convertirlo en un pequeño parque temático.
+STR_DTLS    :Has heredado un gran castillo. Tu trabajo es convertirlo en un pequeño parque temático.
 
 <Dusty Greens>
 STR_SCNR    :Greens polvorientos
@@ -4219,7 +4220,7 @@ STR_DTLS    :Constratado por una gran cadena de parque de atracciones, tu tarea 
 <Gravity Gardens>
 STR_SCNR    :Jardines Gravitacionales
 STR_PARK    :Jardines Gravitacionales
-STR_DTLS    :Tu desafío es construir un parque de montañas rusas en los bellos Jardines Gravitacionales - Ninguna otra atracción, sólo Montañas Rusas!
+STR_DTLS    :Tu desafío es construir un parque de montañas rusas en los bellos Jardines Gravitacionales. ¡Ninguna otra atracción, sólo Montañas Rusas!
 
 <Infernal Views>
 STR_SCNR    :Vistas Infernales
@@ -4244,7 +4245,7 @@ STR_DTLS    :Prueba tu capacidad para administrar y mejorar este parque Six Flag
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Atraer mas visitantes al parque!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal. ¡Atraer más visitantes al parque!
 
 <Six Flags Holland>
 STR_SCNR    :Six Flags Holanda
@@ -4254,12 +4255,12 @@ STR_DTLS    :Prueba tu capacidad para administrar y mejorar este parque Six Flag
 <Six Flags Magic Mountain>
 STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Repagar el préstamo y mantener el valor del parque!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal. ¡Pagar el préstamo y mantener el valor del parque!
 
 <Six Flags over Texas>
 STR_SCNR    :Six Flags sobre Tejas
 STR_PARK    :Six Flags sobre Tejas
-STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Atraer mas visitantes al parque!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal. ¡Atraer más visitantes al parque!
 
 ###############################################################################
 ## Wacky Worlds Scenarios
@@ -4431,4 +4432,4 @@ STR_DTLS    :Este antiguo parque temático ha visto tiempos mejores. Ayuda al pr
 <Panda World>
 STR_SCNR    :Mundo Panda
 STR_PARK    :Mundo Panda
-STR_DTLS    :Añade mas atracciones y consigue mas visitantes en este parque pandatemático.
+STR_DTLS    :Añade mas atracciones y consigue más visitantes en este parque pandatemático.
