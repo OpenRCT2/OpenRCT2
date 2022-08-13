@@ -103,7 +103,6 @@ static int32_t ride_check_if_construction_allowed(Ride* ride)
     }
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        ft.Increment(6);
         ride->FormatNameTo(ft);
         context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING, ft);
         return 0;
@@ -111,7 +110,6 @@ static int32_t ride_check_if_construction_allowed(Ride* ride)
 
     if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
-        ft.Increment(6);
         ride->FormatNameTo(ft);
         context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST, ft);
         return 0;
@@ -1005,7 +1003,6 @@ bool ride_modify(const CoordsXYE& input)
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
     {
         Formatter ft;
-        ft.Increment(6);
         ride->FormatNameTo(ft);
         context_show_error(
             STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE, ft);

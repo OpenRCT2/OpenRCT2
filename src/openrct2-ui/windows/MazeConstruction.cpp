@@ -282,12 +282,10 @@ public:
         auto ft = Formatter::Common();
         if (currentRide != nullptr)
         {
-            ft.Increment(4);
             currentRide->FormatNameTo(ft);
         }
         else
         {
-            ft.Increment(4);
             ft.Add<StringId>(STR_NONE);
         }
     }
