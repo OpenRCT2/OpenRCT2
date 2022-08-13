@@ -654,18 +654,6 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
     }
 }
 
-const rct_object_entry* object_list_find(rct_object_entry* entry)
-{
-    const rct_object_entry* result = nullptr;
-    auto& objRepo = GetContext()->GetObjectRepository();
-    auto item = objRepo.FindObject(entry);
-    if (item != nullptr)
-    {
-        result = &item->ObjectEntry;
-    }
-    return result;
-}
-
 std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry)
 {
     std::unique_ptr<Object> object;
