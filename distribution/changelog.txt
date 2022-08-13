@@ -33,6 +33,7 @@
 - Fix: [#17639] When building upside down, the special elements list contains many items twice (original bug).
 - Fix: [#17703] (undefined string) when building on invalid height.
 - Fix: [#17776] “Other Parks” tab uses separate lists for SC4/SC6 and .park scenarios.
+- Fix: [#17784] Colour preset RNG is biased (original bug).
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
