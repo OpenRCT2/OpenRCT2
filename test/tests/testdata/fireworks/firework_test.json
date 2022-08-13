@@ -1,0 +1,44 @@
+{
+  "id": "firework_test",
+  "authors": [
+    "Lucas Malo Belanger"
+  ],
+  "version": "1.0",
+  "sourceGame": "custom",
+  "objectType": "firework",
+  "properties": {
+    "Width": 4,
+    "Height": 4,
+    "SoundId": "firework_sound",
+    "UseRemap1": false,
+    "UseRemap2": false,
+    "UseRemap3": false
+  },
+  "images": [
+    {
+      "path": "images/0.png",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "path": "images/1.png",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "path": "images/2.png",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "path": "images/3.png",
+      "x": 0,
+      "y": 0
+    }
+  ],
+  "strings": {
+    "name": {
+      "en-GB": "firework test"
+    }
+  }
+}

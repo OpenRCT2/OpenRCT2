@@ -49,3 +49,8 @@ void FireworkObject::Unload()
     _firework.Name = 0;
     _firework.Image = 0;
 }
+
+const Firework& FireworkObject::GetFirework() const
+{
+    return _firework;
+}
