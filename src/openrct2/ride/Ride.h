@@ -1075,14 +1075,10 @@ void UpdateGhostTrackAndArrow();
 
 void ride_reset_all_names();
 
-void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type);
-
 uint32_t ride_customers_per_hour(const Ride* ride);
 uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
 
 Vehicle* ride_get_broken_vehicle(const Ride* ride);
-
-void window_ride_construction_do_entrance_exit_check();
 
 money16 ride_get_price(const Ride* ride);
 

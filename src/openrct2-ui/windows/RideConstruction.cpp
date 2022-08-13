@@ -166,6 +166,8 @@ static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_450,     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_495,
 };
 
+static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type);
+
 static int32_t RideGetAlternativeType(Ride* ride)
 {
     return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? ride->GetRideTypeDescriptor().AlternateType
@@ -2753,6 +2755,28 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
     }
 }
 
+static void window_ride_construction_do_entrance_exit_check()
+{
+    auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    auto ride = get_ride(_currentRideIndex);
+    if (w == nullptr || ride == nullptr)
+    {
+        return;
+    }
+
+    if (_rideConstructionState == RideConstructionState::State0)
+    {
+        w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        if (w != nullptr)
+        {
+            if (!ride_are_all_possible_entrances_and_exits_built(ride).Successful)
+            {
+                window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+            }
+        }
+    }
+}
+
 static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActions::Result* result)
 {
     if (result->Error != GameActions::Status::Ok)
@@ -4464,4 +4488,77 @@ void window_ride_construction_keyboard_shortcut_demolish_current()
     }
 
     window_event_mouse_up_call(w, WIDX_DEMOLISH);
+}
+
+static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type)
+{
+    if (gGotoStartPlacementMode)
+    {
+        _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
+        _rideConstructionState = RideConstructionState::Front;
+        _currentTrackSelectionFlags = 0;
+        _currentTrackPieceDirection = piecePos.direction & 3;
+        auto savedCurrentTrackCurve = _currentTrackCurve;
+        int32_t savedPreviousTrackSlopeEnd = _previousTrackSlopeEnd;
+        int32_t savedCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
+        int32_t savedPreviousTrackBankEnd = _previousTrackBankEnd;
+        int32_t savedCurrentTrackBankEnd = _currentTrackBankEnd;
+        int32_t savedCurrentTrackAlternative = _currentTrackAlternative;
+        int32_t savedCurrentTrackLiftHill = _currentTrackLiftHill;
+        ride_construction_set_default_next_piece();
+        window_ride_construction_update_active_elements();
+        auto ride = get_ride(_currentRideIndex);
+        if (!ride_try_get_origin_element(ride, nullptr))
+        {
+            ride_initialise_construction_window(ride);
+            _currentTrackPieceDirection = piecePos.direction & 3;
+            if (!(savedCurrentTrackCurve & RideConstructionSpecialPieceSelected))
+            {
+                _currentTrackCurve = savedCurrentTrackCurve;
+                _previousTrackSlopeEnd = savedPreviousTrackSlopeEnd;
+                _currentTrackSlopeEnd = savedCurrentTrackSlopeEnd;
+                _previousTrackBankEnd = savedPreviousTrackBankEnd;
+                _currentTrackBankEnd = savedCurrentTrackBankEnd;
+                _currentTrackAlternative = savedCurrentTrackAlternative;
+                _currentTrackLiftHill = savedCurrentTrackLiftHill;
+                window_ride_construction_update_active_elements();
+            }
+        }
+    }
+    else
+    {
+        if (_rideConstructionState2 == RideConstructionState::Selected
+            || _rideConstructionState2 == RideConstructionState::Front)
+        {
+            if (type == TrackElemType::MiddleStation || type == TrackElemType::BeginStation)
+            {
+                type = TrackElemType::EndStation;
+            }
+        }
+        if (_rideConstructionState2 == RideConstructionState::Back)
+        {
+            if (type == TrackElemType::MiddleStation)
+            {
+                type = TrackElemType::BeginStation;
+            }
+        }
+        if (network_get_mode() == NETWORK_MODE_CLIENT)
+        {
+            // rideConstructionState needs to be set again to the proper value, this only affects the client
+            _rideConstructionState = RideConstructionState::Selected;
+        }
+        _currentTrackBegin = piecePos;
+        _currentTrackPieceDirection = piecePos.direction;
+        _currentTrackPieceType = type;
+        _currentTrackSelectionFlags = 0;
+        if (_rideConstructionState2 == RideConstructionState::Front)
+        {
+            ride_select_next_section();
+        }
+        else if (_rideConstructionState2 == RideConstructionState::Back)
+        {
+            ride_select_previous_section();
+        }
+        window_ride_construction_update_active_elements();
+    }
 }
