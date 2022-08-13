@@ -199,7 +199,7 @@ void research_finish_item(ResearchItem* researchItem)
     if (researchItem->type == Research::EntryType::Ride)
     {
         // Ride
-        uint32_t base_ride_type = researchItem->baseRideType;
+        auto base_ride_type = researchItem->baseRideType;
         ObjectEntryIndex rideEntryIndex = researchItem->entryIndex;
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
@@ -505,7 +505,7 @@ void research_populate_list_random()
     }
 }
 
-bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched)
+bool research_insert_ride_entry(ride_type_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched)
 {
     if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {

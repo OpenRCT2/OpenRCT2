@@ -1275,7 +1275,7 @@ namespace RCT1
         RCT1_PATH_SUPPORT_TYPE_BAMBOO,
     };
 
-    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType);
+    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType);
 } // namespace RCT1
 
 void load_from_sv4(const char* path);

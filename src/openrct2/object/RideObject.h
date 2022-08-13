@@ -44,7 +44,7 @@ public:
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
-    static uint8_t ParseRideType(const std::string& s);
+    static ride_type_t ParseRideType(const std::string& s);
 
 private:
     void ReadLegacyCar(IReadObjectContext* context, OpenRCT2::IStream* stream, CarEntry* car);
@@ -58,7 +58,7 @@ private:
     static uint8_t CalculateNumVerticalFrames(const CarEntry* carEntry);
     static uint8_t CalculateNumHorizontalFrames(const CarEntry* carEntry);
 
-    static bool IsRideTypeShopOrFacility(uint8_t rideType);
+    static bool IsRideTypeShopOrFacility(ride_type_t rideType);
     static uint8_t ParseRideCategory(const std::string& s);
     static ShopItem ParseShopItem(const std::string& s);
     static colour_t ParseColour(const std::string& s);

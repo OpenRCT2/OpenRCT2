@@ -1404,7 +1404,7 @@ private:
     {
         if (item->Type == ObjectType::Ride)
         {
-            uint8_t rideType = 0;
+            ride_type_t rideType = 0;
             for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
             {
                 if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
@@ -1500,10 +1500,10 @@ private:
             ;
 
         rct_ride_entry* ride_entry = get_ride_entry(entry_index);
-        uint8_t ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);
+        auto rideType = ride_entry_get_first_non_null_ride_type(ride_entry);
 
         auto intent = Intent(WC_TRACK_DESIGN_LIST);
-        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, ride_type);
+        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
         intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
         context_open_intent(&intent);
     }
@@ -1539,7 +1539,7 @@ static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
     StringId result = STR_NONE;
     for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
-        uint8_t rideType = item->RideInfo.RideType[i];
+        auto rideType = item->RideInfo.RideType[i];
         if (rideType != RIDE_TYPE_NULL)
         {
             result = GetRideTypeDescriptor(rideType).Naming.Name;
@@ -1580,7 +1580,7 @@ void EditorLoadSelectedObjects()
                     if (objectType == ObjectType::Ride)
                     {
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
-                        uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                         research_insert_ride_entry(rideType, entryIndex, category, true);
                     }

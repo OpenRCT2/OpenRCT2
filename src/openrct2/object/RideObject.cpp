@@ -861,12 +861,12 @@ std::vector<VehicleColour> RideObject::ReadJsonColourConfiguration(json_t& jColo
     return config;
 }
 
-bool RideObject::IsRideTypeShopOrFacility(uint8_t rideType)
+bool RideObject::IsRideTypeShopOrFacility(ride_type_t rideType)
 {
     return GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY);
 }
 
-uint8_t RideObject::ParseRideType(const std::string& s)
+ride_type_t RideObject::ParseRideType(const std::string& s)
 {
     auto result = std::find_if(
         std::begin(RideTypeDescriptors), std::end(RideTypeDescriptors), [s](const auto& rtd) { return rtd.Name == s; });

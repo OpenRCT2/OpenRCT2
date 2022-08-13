@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../core/String.hpp"
+#include "RideTypes.h"
 
 #include <memory>
 #include <string>
@@ -32,9 +33,9 @@ struct ITrackDesignRepository
     virtual ~ITrackDesignRepository() = default;
 
     [[nodiscard]] virtual size_t GetCount() const abstract;
-    [[nodiscard]] virtual size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const abstract;
+    [[nodiscard]] virtual size_t GetCountForObjectEntry(ride_type_t rideType, const std::string& entry) const abstract;
     [[nodiscard]] virtual std::vector<TrackDesignFileRef> GetItemsForObjectEntry(
-        uint8_t rideType, const std::string& entry) const abstract;
+        ride_type_t rideType, const std::string& entry) const abstract;
 
     virtual void Scan(int32_t language) abstract;
     virtual bool Delete(const std::string& path) abstract;

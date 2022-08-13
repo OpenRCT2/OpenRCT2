@@ -4471,7 +4471,7 @@ void ride_ratings_calculate_alpine_coaster(Ride* ride, RideRatingUpdateState& st
 
 #pragma region Ride rating calculation function table
 
-ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType)
+ride_ratings_calculation ride_ratings_get_calculate_func(ride_type_t rideType)
 {
     return GetRideTypeDescriptor(rideType).RatingsCalculationFunction;
 }

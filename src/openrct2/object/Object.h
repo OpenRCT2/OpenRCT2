@@ -26,6 +26,7 @@
 using ObjectEntryIndex = uint16_t;
 constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 struct ObjectRepositoryItem;
+using ride_type_t = uint16_t;
 
 // First 0xF of rct_object_entry->flags
 enum class ObjectType : uint8_t
@@ -167,12 +168,13 @@ struct rct_object_entry_group
 assert_struct_size(rct_object_entry_group, 8);
 #endif
 
+#pragma pack(pop)
+
 struct rct_ride_filters
 {
     uint8_t category[2];
-    uint8_t ride_type;
+    ride_type_t ride_type;
 };
-assert_struct_size(rct_ride_filters, 3);
 
 struct rct_object_filters
 {
@@ -181,8 +183,6 @@ struct rct_object_filters
         rct_ride_filters ride;
     };
 };
-assert_struct_size(rct_object_filters, 3);
-#pragma pack(pop)
 
 enum class ObjectGeneration : uint8_t
 {
