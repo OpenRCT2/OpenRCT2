@@ -35,7 +35,7 @@ struct TrackRepositoryItem
 {
     std::string Name;
     std::string Path;
-    uint8_t RideType = RIDE_TYPE_NULL;
+    ride_type_t RideType = RIDE_TYPE_NULL;
     std::string ObjectEntry;
     uint32_t Flags = 0;
 };
@@ -57,7 +57,7 @@ class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444954; // TIDX
-    static constexpr uint16_t VERSION = 4;
+    static constexpr uint16_t VERSION = 5;
     static constexpr auto PATTERN = "*.td4;*.td6";
 
 public:
@@ -136,7 +136,7 @@ public:
      * @param entry The entry name to count the track list of. Leave empty to count track list for the non-separated types (e.g.
      * Hyper-Twister, Car Ride)
      */
-    size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const override
+    size_t GetCountForObjectEntry(ride_type_t rideType, const std::string& entry) const override
     {
         size_t count = 0;
         const auto& repo = GetContext()->GetObjectRepository();
@@ -170,7 +170,7 @@ public:
      * @param entry The entry name to build a track list for. Leave empty to build track list for the non-separated types (e.g.
      * Hyper-Twister, Car Ride)
      */
-    std::vector<TrackDesignFileRef> GetItemsForObjectEntry(uint8_t rideType, const std::string& entry) const override
+    std::vector<TrackDesignFileRef> GetItemsForObjectEntry(ride_type_t rideType, const std::string& entry) const override
     {
         std::vector<TrackDesignFileRef> refs;
         const auto& repo = GetContext()->GetObjectRepository();

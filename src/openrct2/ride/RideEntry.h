@@ -11,6 +11,7 @@
 
 #include "../rct2/DATLimits.h"
 #include "RideColour.h"
+#include "RideTypes.h"
 #include "ShopItem.h"
 #include "VehicleColour.h"
 #include "VehicleEntry.h"
@@ -47,7 +48,7 @@ struct rct_ride_entry
     // The first three images are previews. They correspond to the ride_type[] array.
     uint32_t images_offset;
     uint32_t flags;
-    uint8_t ride_type[RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
+    ride_type_t ride_type[RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
     uint8_t min_cars_in_train;
     uint8_t max_cars_in_train;
     uint8_t cars_per_flat_ride;
@@ -88,4 +89,4 @@ struct rct_ride_entry
 };
 
 void set_vehicle_type_image_max_sizes(CarEntry* vehicle_type, int32_t num_images);
-RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
+RideNaming get_ride_naming(const ride_type_t rideType, rct_ride_entry* rideEntry);

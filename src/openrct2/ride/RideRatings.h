@@ -60,7 +60,7 @@ void ride_ratings_update_ride(const Ride& ride);
 void ride_ratings_update_all();
 
 using ride_ratings_calculation = void (*)(Ride* ride, RideRatingUpdateState& state);
-ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType);
+ride_ratings_calculation ride_ratings_get_calculate_func(ride_type_t rideType);
 
 void ride_ratings_calculate_spiral_roller_coaster(Ride* ride, RideRatingUpdateState& state);
 void ride_ratings_calculate_stand_up_roller_coaster(Ride* ride, RideRatingUpdateState& state);

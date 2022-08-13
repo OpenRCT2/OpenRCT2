@@ -4209,11 +4209,11 @@ RideMode Ride::GetDefaultMode() const
     return GetRideTypeDescriptor().DefaultMode;
 }
 
-static bool RideTypeWithTrackColoursExists(uint8_t ride_type, const TrackColour& colours)
+static bool RideTypeWithTrackColoursExists(ride_type_t rideType, const TrackColour& colours)
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.type != ride_type)
+        if (ride.type != rideType)
             continue;
         if (ride.track_colour[0].main != colours.main)
             continue;
@@ -4246,7 +4246,7 @@ bool Ride::NameExists(std::string_view name, RideId excludeRideId)
     return false;
 }
 
-int32_t ride_get_random_colour_preset_index(uint8_t rideType)
+int32_t ride_get_random_colour_preset_index(ride_type_t rideType)
 {
     if (rideType >= std::size(RideTypeDescriptors))
     {
@@ -4338,7 +4338,7 @@ void Ride::SetNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
+RideNaming get_ride_naming(const ride_type_t rideType, rct_ride_entry* rideEntry)
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
@@ -5511,7 +5511,7 @@ bool ride_has_ratings(const Ride* ride)
  *  Searches for a non-null ride type in a ride entry.
  *  If none is found, it will still return RIDE_TYPE_NULL.
  */
-uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
+ride_type_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
 {
     for (uint8_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
@@ -5523,7 +5523,7 @@ uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
     return RIDE_TYPE_NULL;
 }
 
-int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed)
+int32_t get_booster_speed(ride_type_t rideType, int32_t rawSpeed)
 {
     int8_t shiftFactor = GetRideTypeDescriptor(rideType).OperatingSettings.BoosterSpeedFactor;
     if (shiftFactor == 0)

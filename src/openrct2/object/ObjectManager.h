@@ -44,7 +44,7 @@ struct IObjectManager
     virtual void ResetObjects() abstract;
 
     virtual std::vector<const ObjectRepositoryItem*> GetPackableObjects() abstract;
-    virtual const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) abstract;
+    virtual const std::vector<ObjectEntryIndex>& GetAllRideEntries(ride_type_t rideType) abstract;
 };
 
 [[nodiscard]] std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository);

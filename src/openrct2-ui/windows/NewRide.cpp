@@ -52,7 +52,7 @@ static constexpr const int32_t GroupByTrackTypeWidth = 172;
  * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
  * type are kept together.
  */
-static constexpr const char RideTypeViewOrder[] = {
+static constexpr const ride_type_t RideTypeViewOrder[] = {
     // Transport rides
     RIDE_TYPE_MINIATURE_RAILWAY,
     RIDE_TYPE_MONORAIL,
@@ -602,7 +602,7 @@ private:
         // For each ride type in the view order list
         for (int32_t i = 0; i < static_cast<int32_t>(std::size(RideTypeViewOrder)); i++)
         {
-            uint8_t rideType = RideTypeViewOrder[i];
+            auto rideType = RideTypeViewOrder[i];
             if (rideType == RIDE_TYPE_NULL)
                 continue;
 
@@ -616,7 +616,7 @@ private:
         nextListItem->EntryIndex = OBJECT_ENTRY_INDEX_NULL;
     }
 
-    RideSelection* IterateOverRideType(uint8_t rideType, RideSelection* nextListItem, RideSelection* listEnd)
+    RideSelection* IterateOverRideType(ride_type_t rideType, RideSelection* nextListItem, RideSelection* listEnd)
     {
         bool buttonForRideTypeCreated = false;
         bool allowDrawingOverLastButton = false;
@@ -984,7 +984,7 @@ void WindowNewRideFocus(RideSelection rideItem)
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(rideItem.EntryIndex);
-    uint8_t rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
+    auto rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
 
     w->SetPage(GetRideTypeDescriptor(rideTypeIndex).Category);
 }

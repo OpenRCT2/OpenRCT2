@@ -331,7 +331,7 @@ public:
     void OnExitRide(Ride* ride);
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
-    void StopPurchaseThought(uint8_t ride_type);
+    void StopPurchaseThought(ride_type_t rideType);
     void TryGetUpFromSitting();
     bool ShouldRideWhileRaining(const Ride& ride);
     void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);

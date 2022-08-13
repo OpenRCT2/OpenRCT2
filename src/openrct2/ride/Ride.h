@@ -113,7 +113,7 @@ enum class RideStatus : uint8_t;
 struct Ride
 {
     RideId id = RideId::GetNull();
-    uint8_t type = RIDE_TYPE_NULL;
+    ride_type_t type = RIDE_TYPE_NULL;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
     ObjectEntryIndex subtype;
@@ -1025,7 +1025,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
 TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex stationIndex);
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos);
 int32_t ride_get_refund_price(const Ride* ride);
-int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
+int32_t ride_get_random_colour_preset_index(ride_type_t rideType);
 money32 ride_get_common_price(Ride* forRide);
 
 void ride_clear_for_construction(Ride* ride);
@@ -1091,8 +1091,8 @@ bool ride_has_adjacent_station(Ride* ride);
 bool ride_has_station_shelter(Ride* ride);
 bool ride_has_ratings(const Ride* ride);
 
-uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry);
-int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed);
+ride_type_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry);
+int32_t get_booster_speed(ride_type_t rideType, int32_t rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
 
