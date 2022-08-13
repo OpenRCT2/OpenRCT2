@@ -66,6 +66,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: windows-${{ matrix.platform }}
       - name: Git describe for shallow checkout
         id: ghd
         uses: proudust/gh-describe@v1
