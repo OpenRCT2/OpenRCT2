@@ -62,6 +62,7 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::Ride),
     SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
+    SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationDefault),
     SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
     SET_FIELD(RideUpdate, UpdateChairlift),
 };

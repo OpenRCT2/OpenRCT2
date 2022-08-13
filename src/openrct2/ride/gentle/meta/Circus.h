@@ -56,6 +56,7 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(MusicUpdateFunction, CircusMusicUpdate),
     SET_FIELD(Classification,RideClassification::Ride),
     SET_FIELD(UpdateLeaveEntrance,PeepUpdateRideLeaveEntranceDefault),
+    SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationDefault),
     SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
     SET_FIELD(RideUpdate, nullptr),
     SET_FIELD(UpdateMeasurementsSpecialElements, RideUpdateMeasurementsSpecialElements_Default),
