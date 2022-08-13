@@ -219,6 +219,7 @@ const char* PlatformEnvironment::DirectoryNamesRCT2[] = {
     nullptr,       // SHADER
     nullptr,       // THEME
     "Tracks",      // TRACK
+    nullptr,       // SOURCE
 };
 
 const u8string PlatformEnvironment::DirectoryNamesOpenRCT2[] = {
@@ -241,6 +242,7 @@ const u8string PlatformEnvironment::DirectoryNamesOpenRCT2[] = {
     u8"replay",     // REPLAY
     u8"desyncs",    // DESYNCS
     u8"crash",      // CRASH
+    u8"rct2",       // RCT2_SOURCE
 };
 
 const u8string PlatformEnvironment::FileNames[] = {

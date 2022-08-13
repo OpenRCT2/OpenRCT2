@@ -706,6 +706,17 @@ namespace Config
             }
         }
 
+        //        static constexpr u8string_view rctcSearchLocations[] = {
+        //        };
+        //
+        //        for (const auto& location : searchLocations)
+        //        {
+        //            if (Platform::RCTCDataExists(location))
+        //            {
+        //                return Platform::CopyRCTCData(location);
+        //            }
+        //        }
+
         auto steamPath = Platform::GetSteamPath();
         if (!steamPath.empty())
         {
@@ -888,8 +899,8 @@ bool config_find_or_browse_install_directory()
                         return false;
                     }
 
-                    const std::string dest = Path::Combine(
-                        GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::CONFIG), "rct2");
+                    const std::string dest = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+                        DIRBASE::CONFIG, DIRID::RCT2_SOURCE);
 
                     while (true)
                     {
@@ -919,6 +930,11 @@ bool config_find_or_browse_install_directory()
 
                 if (Platform::OriginalGameDataExists(installPath))
                 {
+                    return true;
+                }
+                else if (Platform::RCTCDataExists(installPath))
+                {
+                    gConfigGeneral.rct2_path = Platform::CopyRCTCData(installPath);
                     return true;
                 }
 

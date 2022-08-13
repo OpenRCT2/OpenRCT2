@@ -88,6 +88,8 @@ namespace Platform
     float GetDefaultScale();
 
     bool OriginalGameDataExists(std::string_view path);
+    bool RCTCDataExists(u8string_view path);
+    u8string CopyRCTCData(u8string_view sourceDir);
 
     std::string GetUsername();
 

@@ -3494,7 +3494,7 @@ STR_6386    :Blizzard
 STR_6387    :Can’t lower element here…
 STR_6388    :Can’t raise element here…
 STR_6389    :Invalid clearance
-STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.
+STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic in order to work. Please select the directory where you installed RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic.
 STR_6391    :Please select your RCT2 directory
 STR_6392    :Could not find {STRING} at this path.
 STR_6393    :Objective Selection
@@ -3503,9 +3503,9 @@ STR_6395    :Maintenance
 STR_6396    :Disable screensaver and monitor power saving
 STR_6397    :If checked, screensaver and other monitor power saving features will be inhibited while OpenRCT2 is running.
 STR_6398    :File contains unsupported ride types. Please update to a newer version of OpenRCT2.
-STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please set the “game_path” variable in config.ini to the directory where you installed RollerCoaster Tycoon 2, then restart OpenRCT2.
+STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic in order to work. Please set the “game_path” variable in config.ini to the directory where you installed RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic, then restart OpenRCT2.
 STR_6400    :I have the GOG offline installer for RollerCoaster Tycoon 2 downloaded, but it is not installed
-STR_6401    :I have RollerCoaster Tycoon 2 installed already
+STR_6401    :I have RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic installed already
 STR_6402    :OpenRCT2 Data Setup
 STR_6403    :Select which applies best to you
 STR_6404    :Please select the GOG RollerCoaster Tycoon 2 installer.
