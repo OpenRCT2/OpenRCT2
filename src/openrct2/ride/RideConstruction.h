@@ -88,7 +88,7 @@ void ride_construction_set_default_next_piece();
 void ride_select_next_section();
 void ride_select_previous_section();
 
-bool ride_modify(CoordsXYE* input);
+bool ride_modify(const CoordsXYE& input);
 
 CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenCoordsXY& screenCoords);
 

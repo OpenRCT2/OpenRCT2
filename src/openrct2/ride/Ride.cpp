@@ -3818,7 +3818,7 @@ void Ride::ConstructMissingEntranceOrExit() const
         CoordsXYE trackElement;
         ride_try_get_origin_element(this, &trackElement);
         ride_find_track_gap(this, &trackElement, &trackElement);
-        int32_t ok = ride_modify(&trackElement);
+        int32_t ok = ride_modify(trackElement);
         if (ok == 0)
         {
             return;
@@ -3834,12 +3834,15 @@ void Ride::ConstructMissingEntranceOrExit() const
  *
  *  rct2: 0x006B528A
  */
-static void ride_scroll_to_track_error(CoordsXYE* trackElement)
+static void ride_scroll_to_track_error(const CoordsXYE& trackElement)
 {
+    if (trackElement.element == nullptr)
+        return;
+
     auto* w = window_get_main();
     if (w != nullptr)
     {
-        window_scroll_to_location(*w, { *trackElement, trackElement->element->GetBaseZ() });
+        window_scroll_to_location(*w, { trackElement, trackElement.element->GetBaseZ() });
         ride_modify(trackElement);
     }
 }
@@ -3922,7 +3925,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         if (ride_find_track_gap(this, &trackElement, &problematicTrackElement)
             && (newStatus != RideStatus::Simulating || IsBlockSectioned()))
         {
-            ride_scroll_to_track_error(&problematicTrackElement);
+            ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
         }
     }
@@ -3932,7 +3935,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
         if (!blockBrakeCheck.Successful)
         {
-            ride_scroll_to_track_error(&problematicTrackElement);
+            ride_scroll_to_track_error(problematicTrackElement);
             return { false, blockBrakeCheck.Message };
         }
     }
@@ -3944,7 +3947,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         {
             if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
             {
-                ride_scroll_to_track_error(&problematicTrackElement);
+                ride_scroll_to_track_error(problematicTrackElement);
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
@@ -3952,7 +3955,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         {
             if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
             {
-                ride_scroll_to_track_error(&problematicTrackElement);
+                ride_scroll_to_track_error(problematicTrackElement);
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
@@ -3967,13 +3970,13 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
 
         if (!ride_check_station_length(&trackElement, &problematicTrackElement))
         {
-            ride_scroll_to_track_error(&problematicTrackElement);
+            ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_STATION_NOT_LONG_ENOUGH };
         }
 
         if (!ride_check_start_and_end_is_station(&trackElement))
         {
-            ride_scroll_to_track_error(&problematicTrackElement);
+            ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
     }
@@ -4057,7 +4060,7 @@ ResultWithMessage Ride::Open(bool isApplying)
     {
         if (ride_find_track_gap(this, &trackElement, &problematicTrackElement))
         {
-            ride_scroll_to_track_error(&problematicTrackElement);
+            ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
         }
     }
@@ -4067,7 +4070,7 @@ ResultWithMessage Ride::Open(bool isApplying)
         auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
         if (!blockBrakeCheck.Successful)
         {
-            ride_scroll_to_track_error(&problematicTrackElement);
+            ride_scroll_to_track_error(problematicTrackElement);
             return { false, blockBrakeCheck.Message };
         }
     }
@@ -4079,7 +4082,7 @@ ResultWithMessage Ride::Open(bool isApplying)
         {
             if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
             {
-                ride_scroll_to_track_error(&problematicTrackElement);
+                ride_scroll_to_track_error(problematicTrackElement);
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
@@ -4087,7 +4090,7 @@ ResultWithMessage Ride::Open(bool isApplying)
         {
             if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
             {
-                ride_scroll_to_track_error(&problematicTrackElement);
+                ride_scroll_to_track_error(problematicTrackElement);
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
@@ -4102,13 +4105,13 @@ ResultWithMessage Ride::Open(bool isApplying)
 
         if (!ride_check_station_length(&trackElement, &problematicTrackElement))
         {
-            ride_scroll_to_track_error(&problematicTrackElement);
+            ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_STATION_NOT_LONG_ENOUGH };
         }
 
         if (!ride_check_start_and_end_is_station(&trackElement))
         {
-            ride_scroll_to_track_error(&problematicTrackElement);
+            ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
     }

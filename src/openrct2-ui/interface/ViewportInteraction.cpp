@@ -565,7 +565,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
         break;
         case ViewportInteractionItem::Ride:
             tileElement = { info.Loc, info.Element };
-            ride_modify(&tileElement);
+            ride_modify(tileElement);
             break;
         case ViewportInteractionItem::Scenery:
             ViewportInteractionRemoveScenery(info.Element, info.Loc);
