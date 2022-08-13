@@ -2140,48 +2140,50 @@ VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex)
     return ride->vehicle_colours[vehicleIndex];
 }
 
-static bool ride_does_vehicle_colour_exist(ObjectEntryIndex subType, VehicleColour* vehicleColour)
+static bool RideTypeVehicleColourExists(ObjectEntryIndex subType, const VehicleColour& vehicleColour)
 {
     for (auto& ride : GetRideManager())
     {
         if (ride.subtype != subType)
             continue;
-        if (ride.vehicle_colours[0].Body != vehicleColour->Body)
+        if (ride.vehicle_colours[0].Body != vehicleColour.Body)
             continue;
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 
 int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType)
 {
-    if (subType >= MAX_RIDE_OBJECTS)
-    {
-        return 0;
-    }
-    rct_ride_entry* rideEntry = get_ride_entry(subType);
+    const auto* rideEntry = get_ride_entry(subType);
     if (rideEntry == nullptr)
-    {
         return 0;
-    }
-    vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
-    if (presetList->count == 0)
+
+    const auto* colourPresets = rideEntry->vehicle_preset_list;
+    if (colourPresets == nullptr || colourPresets->count == 0)
         return 0;
-    if (presetList->count == 255)
+    if (colourPresets->count == 255)
         return 255;
 
-    for (int32_t attempt = 0; attempt < 200; attempt++)
+    // Find all the presets that haven't yet been used in the park for this ride type
+    std::vector<uint8_t> unused;
+    unused.reserve(colourPresets->count);
+    for (uint8_t i = 0; i < colourPresets->count; i++)
     {
-        uint8_t numColourConfigurations = presetList->count;
-        int32_t randomConfigIndex = util_rand() % numColourConfigurations;
-        VehicleColour* preset = &presetList->list[randomConfigIndex];
-
-        if (ride_does_vehicle_colour_exist(subType, preset))
+        const auto& preset = colourPresets->list[i];
+        if (!RideTypeVehicleColourExists(subType, preset))
         {
-            return randomConfigIndex;
+            unused.push_back(i);
         }
     }
-    return 0;
+
+    // If all presets have been used, just go with a random preset
+    if (unused.size() == 0)
+        return util_rand() % colourPresets->count;
+
+    // Choose a random preset from the list of unused presets
+    auto unusedIndex = util_rand() % unused.size();
+    return unused[unusedIndex];
 }
 
 /**
@@ -4201,17 +4203,17 @@ RideMode Ride::GetDefaultMode() const
     return GetRideTypeDescriptor().DefaultMode;
 }
 
-static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour* colours)
+static bool RideTypeWithTrackColoursExists(uint8_t ride_type, const TrackColour& colours)
 {
     for (auto& ride : GetRideManager())
     {
         if (ride.type != ride_type)
             continue;
-        if (ride.track_colour[0].main != colours->main)
+        if (ride.track_colour[0].main != colours.main)
             continue;
-        if (ride.track_colour[0].additional != colours->additional)
+        if (ride.track_colour[0].additional != colours.additional)
             continue;
-        if (ride.track_colour[0].supports != colours->supports)
+        if (ride.track_colour[0].supports != colours.supports)
             continue;
 
         return true;
@@ -4238,31 +4240,33 @@ bool Ride::NameExists(std::string_view name, RideId excludeRideId)
     return false;
 }
 
-/**
- *
- *  Based on rct2: 0x006B4776
- */
-int32_t ride_get_random_colour_preset_index(uint8_t ride_type)
+int32_t ride_get_random_colour_preset_index(uint8_t rideType)
 {
-    if (ride_type >= std::size(RideTypeDescriptors))
+    if (rideType >= std::size(RideTypeDescriptors))
     {
         return 0;
     }
 
-    const track_colour_preset_list* colourPresets = &GetRideTypeDescriptor(ride_type).ColourPresets;
-
-    // 200 attempts to find a colour preset that hasn't already been used in the park for this ride type
-    for (int32_t i = 0; i < 200; i++)
+    // Find all the presets that haven't yet been used in the park for this ride type
+    const auto& colourPresets = GetRideTypeDescriptor(rideType).ColourPresets;
+    std::vector<uint8_t> unused;
+    unused.reserve(colourPresets.count);
+    for (uint8_t i = 0; i < colourPresets.count; i++)
     {
-        int32_t listIndex = util_rand() % colourPresets->count;
-        const TrackColour* colours = &colourPresets->list[listIndex];
-
-        if (!ride_with_colour_config_exists(ride_type, colours))
+        const auto& colours = colourPresets.list[i];
+        if (!RideTypeWithTrackColoursExists(rideType, colours))
         {
-            return listIndex;
+            unused.push_back(static_cast<uint8_t>(i));
         }
     }
-    return 0;
+
+    // If all presets have been used, just go with a random preset
+    if (unused.size() == 0)
+        return util_rand() % colourPresets.count;
+
+    // Choose a random preset from the list of unused presets
+    auto unusedIndex = util_rand() % unused.size();
+    return unused[unusedIndex];
 }
 
 /**
