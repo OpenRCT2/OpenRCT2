@@ -1482,6 +1482,7 @@ public:
 
         // Set window title arguments
         ft = Formatter::Common();
+        ft.Increment(4);
         currentRide->FormatNameTo(ft);
     }
 
