@@ -107,7 +107,7 @@ declare global {
      * The direction is between 0 and 3.
      */
     interface CoordsXYZD extends CoordsXYZ {
-        direction: number;
+        direction: Direction;
     }
 
     /**
@@ -1244,6 +1244,11 @@ declare global {
          * Gets a list of the elements that make up the track segment.
          */
         readonly elements: TrackSegmentElement[];
+		
+		/**
+         * Gets a length of the subpositions list for this track segment.
+         */
+        getSubpositionLength(subpositionType: number, direction: Direction): number;
     }
 
     enum TrackSlope {
@@ -1466,6 +1471,12 @@ declare global {
          * The currently projected remaining distance the car will travel.
          */
         readonly remainingDistance: number;
+
+        /**
+         * The type of subposition coordinates that this vehicle is using to find its 
+		 * position on the track.
+         */
+        readonly subposition: number;
 
         /**
          * List of guest IDs ordered by seat.

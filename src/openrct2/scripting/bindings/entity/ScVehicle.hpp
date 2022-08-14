@@ -77,6 +77,8 @@ namespace OpenRCT2::Scripting
 
         int32_t remainingDistance_get() const;
 
+        uint8_t subposition_get() const;
+
         uint8_t poweredAcceleration_get() const;
         void poweredAcceleration_set(uint8_t value);
 

@@ -44,6 +44,7 @@ namespace OpenRCT2::Scripting
         int32_t endBank_get() const;
         int32_t length_get() const;
         DukValue elements_get() const;
+        uint16_t getSubpositionLength(uint8_t trackSubposition, uint8_t direction) const;
     };
 
 } // namespace OpenRCT2::Scripting

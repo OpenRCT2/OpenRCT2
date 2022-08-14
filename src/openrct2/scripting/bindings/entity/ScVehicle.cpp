@@ -75,6 +75,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::trackLocation_get, &ScVehicle::trackLocation_set, "trackLocation");
         dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");
         dukglue_register_property(ctx, &ScVehicle::remainingDistance_get, nullptr, "remainingDistance");
+        dukglue_register_property(ctx, &ScVehicle::subposition_get, nullptr, "subposition");
         dukglue_register_property(
             ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
         dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
@@ -384,6 +385,12 @@ namespace OpenRCT2::Scripting
     {
         auto vehicle = GetVehicle();
         return vehicle != nullptr ? vehicle->remaining_distance : 0;
+    }
+
+    uint8_t ScVehicle::subposition_get() const
+    {
+        auto vehicle = GetVehicle();
+        return vehicle != nullptr ? static_cast<uint8_t>(vehicle->TrackSubposition) : 0;
     }
 
     uint8_t ScVehicle::poweredAcceleration_get() const
