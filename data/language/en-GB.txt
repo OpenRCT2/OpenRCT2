@@ -282,7 +282,7 @@ STR_0892    :Screenshot saved to disk as ‘{STRINGID}’
 STR_0893    :Screenshot failed!
 STR_0894    :Landscape data area full!
 STR_0895    :Can’t build partly above and partly below ground
-STR_0896    :{STRINGID} Construction
+STR_0896    :{POP16}{POP16}{STRINGID} Construction
 STR_0897    :Direction
 STR_0898    :Left-hand curve
 STR_0899    :Right-hand curve
