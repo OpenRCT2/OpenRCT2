@@ -276,7 +276,7 @@ STR_0892    :Screenshot Hard Drive’a bu isim ile kayıt edildi: ‘{STRINGID}�
 STR_0893    :Screenshot çekilemedi!
 STR_0894    :Arazi veri alanı dolu!
 STR_0895    :Yarı yerüstü, yarı yeraltı inşa edilemez!
-STR_0896    :{POP16}{POP16}{STRINGID} Inşası
+STR_0896    :{STRINGID} Inşası
 STR_0897    :Yön
 STR_0898    :Sola viraj
 STR_0899    :Sağa viraj
@@ -381,10 +381,10 @@ STR_0998    :Daha fazla istasyon inşa edilemez
 STR_0999    :Istasyon inşa etmeniz şart
 STR_1000    :Alet tam devre olmalıdır
 STR_1001    :Bu ray bu alet için uyumlu değil
-STR_1002    :{POP16}{POP16}{POP16}{STRINGID} açılamıyor…
-STR_1003    :{POP16}{POP16}{POP16}{STRINGID} test edilemiyor…
-STR_1004    :{POP16}{POP16}{POP16}{STRINGID} kapatılamıyor…
-STR_1005    :{POP16}{POP16}{POP16}{STRINGID} inşa edilemiyor…
+STR_1002    :{STRINGID} açılamıyor…
+STR_1003    :{STRINGID} test edilemiyor…
+STR_1004    :{STRINGID} kapatılamıyor…
+STR_1005    :{STRINGID} inşa edilemiyor…
 STR_1006    :Ilk önce kapatılması lazım
 STR_1007    :Yeterince vagon oluşturulamıyor
 STR_1008    :Aleti aç, kapat veya dene
