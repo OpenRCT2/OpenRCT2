@@ -58,6 +58,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::Ride),
     SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
+    SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_Default),
     SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationDefault),
     SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
     SET_FIELD(RideUpdate, nullptr),

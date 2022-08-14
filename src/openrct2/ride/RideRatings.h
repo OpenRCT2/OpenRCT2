@@ -144,3 +144,8 @@ void ride_ratings_calculate_hybrid_coaster(Ride* ride, RideRatingUpdateState& st
 void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride, RideRatingUpdateState& state);
 void ride_ratings_calculate_alpine_coaster(Ride* ride, RideRatingUpdateState& state);
 void ride_ratings_calculate_drink_stall(Ride* ride, RideRatingUpdateState& state);
+
+// Special Track Element Adjustment functions for RTDs
+void SpecialTrackElementRatingsAjustment_Default(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+void SpecialTrackElementRatingsAjustment_GhostTrain(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+void SpecialTrackElementRatingsAjustment_LogFlume(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);

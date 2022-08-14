@@ -56,6 +56,7 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::Ride),
     SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
+    SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_Default),
     SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationEnterprise),
 };
 // clang-format on

@@ -58,6 +58,7 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::Ride),
     SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceMaze),
+    SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_Default),
     SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationDefault),
     SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Maze),
 };
