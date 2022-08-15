@@ -269,7 +269,7 @@ STR_0892    :A képernyő elmentve ’{STRINGID}’ néven
 STR_0893    :A képmentés sikertelen !
 STR_0894    :Táj-adatterület megtelt !
 STR_0895    :Nem építheted részben a föld felett és részben alatta
-STR_0896    :{STRINGID} építése
+STR_0896    :{POP16}{POP16}{STRINGID} építése
 STR_0897    :Irány
 STR_0898    :Balkanyar
 STR_0899    :Jobbkanyar

@@ -276,7 +276,7 @@ STR_0892    :Screenshot Hard Drive’a bu isim ile kayıt edildi: ‘{STRINGID}�
 STR_0893    :Screenshot çekilemedi!
 STR_0894    :Arazi veri alanı dolu!
 STR_0895    :Yarı yerüstü, yarı yeraltı inşa edilemez!
-STR_0896    :{STRINGID} Inşası
+STR_0896    :{POP16}{POP16}{STRINGID} Inşası
 STR_0897    :Yön
 STR_0898    :Sola viraj
 STR_0899    :Sağa viraj

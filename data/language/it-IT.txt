@@ -280,7 +280,7 @@ STR_0892    :Schermata salvata su disco come “{STRINGID}”
 STR_0893    :Cattura della schermata fallita!
 STR_0894    :Area dati per i paesaggi piena!
 STR_0895    :Non si può costruire contemporaneamente sopra e sotto il livello del terreno
-STR_0896    :{STRINGID} Costruzione
+STR_0896    :{POP16}{POP16}{STRINGID} Costruzione
 STR_0897    :Direzione
 STR_0898    :Curva a sinistra
 STR_0899    :Curva a destra

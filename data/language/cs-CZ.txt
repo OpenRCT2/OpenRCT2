@@ -277,7 +277,7 @@ STR_0892    :Snímek obrazovky byl uložen jako „{STRINGID}“
 STR_0893    :Snímaní obrazovky selhalo!
 STR_0894    :Datová oblast krajiny zaplněna!
 STR_0895    :Nelze stavět částečně pod a nad zemí
-STR_0896    :{STRINGID} - stavba
+STR_0896    :{POP16}{POP16}{STRINGID} - stavba
 STR_0897    :Směr
 STR_0898    :Zatáčka vlevo
 STR_0899    :Zatáčka vpravo

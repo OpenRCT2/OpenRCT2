@@ -281,7 +281,7 @@ STR_0892    :Skärmdumpen sparades som ’{STRINGID}’
 STR_0893    :Skärmdumpen misslyckades!
 STR_0894    :Landskapens minnesutrymme är fullt!
 STR_0895    :Kan inte bygga både ovan och under jord samtidigt
-STR_0896    :{STRINGID} Konstruktion
+STR_0896    :{POP16}{POP16}{STRINGID} Konstruktion
 STR_0897    :Riktning
 STR_0898    :Vänsterkurva
 STR_0899    :Högerkurva

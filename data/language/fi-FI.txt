@@ -283,7 +283,7 @@ STR_0892    :Ruudunkaappaus tallennettu levylle nimellä ”{STRINGID}”
 STR_0893    :Ruudunkaappaus epäonnistui!
 STR_0894    :Maisematietoalue on täynnä!
 STR_0895    :Ei voi rakentaa osittain maan ylle ja alle
-STR_0896    :{STRINGID} rakennus
+STR_0896    :{POP16}{POP16}{STRINGID} rakennus
 STR_0897    :Suunta
 STR_0898    :Kaarre vasempaan
 STR_0899    :Kaarre oikeaan

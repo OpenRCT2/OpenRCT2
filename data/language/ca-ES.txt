@@ -283,7 +283,7 @@ STR_0892    :S’ha desat la captura de pantalla com a «{STRINGID}».
 STR_0893    :La captura de pantalla no s’ha pogut fer.
 STR_0894    :L’àrea de dades de paisatge està plena.
 STR_0895    :No es pot construir part a sobre i part sota terra.
-STR_0896    :Construcció de {STRINGID}
+STR_0896    :Construcció de {POP16}{POP16}{STRINGID}
 STR_0897    :Direcció
 STR_0898    :Corba a l’esquerra
 STR_0899    :Corba a la dreta

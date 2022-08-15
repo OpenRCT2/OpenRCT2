@@ -277,7 +277,7 @@ STR_0892    :Skjermbilde lagret som ‘{STRINGID}’
 STR_0893    :Skjermbilde mislyktes !
 STR_0894    :Landskapets dataområde er fullt !
 STR_0895    :Kan ikke bygge delvis under bakken
-STR_0896    :{STRINGID} Konstruksjon
+STR_0896    :{POP16}{POP16}{STRINGID} Konstruksjon
 STR_0897    :Retning
 STR_0898    :Venstrekurve
 STR_0899    :Høyrekurve

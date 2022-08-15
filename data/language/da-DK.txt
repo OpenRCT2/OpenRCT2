@@ -280,7 +280,7 @@ STR_0892    :Skærmbillede gemt på disken som ‘{STRINGID}’
 STR_0893    :Skærmbillede fejlet !
 STR_0894    :Landskab data område fuld !
 STR_0895    :Kan ikke bygge delvist over og under overfladen
-STR_0896    :{STRINGID} Konstruktion
+STR_0896    :{POP16}{POP16}{STRINGID} Konstruktion
 STR_0897    :Retning
 STR_0898    :Venstresving
 STR_0899    :Højresving

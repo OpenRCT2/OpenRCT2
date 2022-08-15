@@ -283,7 +283,7 @@ STR_0892    :Captura de pantalla guardada como ‘{STRINGID}’
 STR_0893    :¡No se pudo tomar la Captura de pantalla!
 STR_0894    :¡Datos de paisaje lleno!
 STR_0895    :No se puede construir una parte arriba y otra bajo tierra
-STR_0896    :Construcción de {STRINGID} 
+STR_0896    :Construcción de {POP16}{POP16}{STRINGID} 
 STR_0897    :Dirección
 STR_0898    :Curva izquierda
 STR_0899    :Curva derecha

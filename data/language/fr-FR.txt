@@ -286,7 +286,7 @@ STR_0892    :Capture d’écran sauvegardée en tant que {SMALLFONT}{STRINGID}{M
 STR_0893    :Échec de la capture d’écran !
 STR_0894    :Zone de données du paysage pleine !
 STR_0895    :Impossible de construire à la fois au-dessus et en-dessous du sol
-STR_0896    :{STRINGID} Construction
+STR_0896    :{POP16}{POP16}{STRINGID} Construction
 STR_0897    :Direction
 STR_0898    :Virage à gauche
 STR_0899    :Virage à droite

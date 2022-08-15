@@ -282,7 +282,7 @@ STR_0892    :Zrzut ekranu zapisany jako „{STRINGID}”
 STR_0893    :Zrzut ekranu nieudany!
 STR_0894    :Obszar danych krajobrazu jest pełny !
 STR_0895    :Nie można wybudować częściowo nad i pod ziemią
-STR_0896    :{STRINGID} Budowanie
+STR_0896    :{POP16}{POP16}{STRINGID} Budowanie
 STR_0897    :Kierunek
 STR_0898    :Zakręt w lewo
 STR_0899    :Zakręt w prawo

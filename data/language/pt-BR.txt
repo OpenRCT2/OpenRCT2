@@ -282,7 +282,7 @@ STR_0892    :Captura de tela salva no disco como ‘{STRINGID}’
 STR_0893    :Captura de tela falhou!
 STR_0894    :Dados da área da paisagem cheios!
 STR_0895    :Impossível construir parcialmente acima e abaixo do chão
-STR_0896    :{STRINGID} Construção
+STR_0896    :{POP16}{POP16}{STRINGID} Construção
 STR_0897    :Sentido
 STR_0898    :Curva à Esquerda
 STR_0899    :Curva à Direita

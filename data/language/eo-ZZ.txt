@@ -282,7 +282,7 @@ STR_0892    :Ekrankopio estis konservita al la disko kiel ‘{STRINGID}’
 STR_0893    :Malsukcesis konservi ekrankopion!
 STR_0894    :Zono de pejzaĝodatumoj estas plena!
 STR_0895    :Ne eblas konstrui kaj parte supertere kaj parte subtere
-STR_0896    :{STRINGID} Konstruado
+STR_0896    :{POP16}{POP16}{STRINGID} Konstruado
 STR_0897    :Direkto
 STR_0898    :Maldekstra kurbo
 STR_0899    :Dekstra kurbo

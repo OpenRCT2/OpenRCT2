@@ -282,7 +282,7 @@ STR_0892    :Screenshot auf Festplatte gespeichert als „{STRINGID}“
 STR_0893    :Screenshot fehlgeschlagen!
 STR_0894    :Landschaftsdatenbereich voll!
 STR_0895    :Es kann nicht teils über, teils unter dem Boden gebaut werden
-STR_0896    :{STRINGID} Konstruktion
+STR_0896    :{POP16}{POP16}{STRINGID} Konstruktion
 STR_0897    :Richtung
 STR_0898    :Linkskurve
 STR_0899    :Rechtskurve
