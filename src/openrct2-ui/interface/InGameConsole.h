@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,7 +55,7 @@ namespace OpenRCT2::Ui
         void Close() override;
         void Hide() override;
         void Toggle();
-        void WriteLine(const std::string& s, FormatToken colourFormat) override;
+        void WriteLine(std::string_view s, FormatToken colourFormat) override;
 
         void Input(ConsoleInput input);
         void RefreshCaret(size_t position = 0);

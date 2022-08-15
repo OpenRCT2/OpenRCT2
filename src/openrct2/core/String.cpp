@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -305,9 +305,9 @@ namespace String
         return strlen(str);
     }
 
-    utf8* Set(utf8* buffer, size_t bufferSize, const utf8* src)
+    utf8* Set(utf8* buffer, size_t bufferSize, u8string_view src)
     {
-        return safe_strcpy(buffer, src, bufferSize);
+        return safe_strcpy(buffer, src.data(), bufferSize);
     }
 
     utf8* Set(utf8* buffer, size_t bufferSize, const utf8* src, size_t srcSize)
@@ -325,17 +325,17 @@ namespace String
         return buffer;
     }
 
-    utf8* Append(utf8* buffer, size_t bufferSize, const utf8* src)
+    utf8* Append(utf8* buffer, size_t bufferSize, u8string_view src)
     {
-        return safe_strcat(buffer, src, bufferSize);
+        return safe_strcat(buffer, src.data(), bufferSize);
     }
 
-    utf8* Format(utf8* buffer, size_t bufferSize, const utf8* format, ...)
+    utf8* Format(utf8* buffer, size_t bufferSize, u8string_view format, ...)
     {
         va_list args;
 
         va_start(args, format);
-        vsnprintf(buffer, bufferSize, format, args);
+        vsnprintf(buffer, bufferSize, format.data(), args);
         va_end(args);
 
         // Terminate buffer in case formatted string overflowed
@@ -378,7 +378,7 @@ namespace String
         return u8string{};
     }
 
-    utf8* AppendFormat(utf8* buffer, size_t bufferSize, const utf8* format, ...)
+    utf8* AppendFormat(utf8* buffer, size_t bufferSize, u8string_view format, ...)
     {
         utf8* dst = buffer;
         size_t i;
@@ -393,7 +393,7 @@ namespace String
         {
             va_list args;
             va_start(args, format);
-            vsnprintf(dst, bufferSize - i - 1, format, args);
+            vsnprintf(dst, bufferSize - i - 1, format.data(), args);
             va_end(args);
 
             // Terminate buffer in case formatted string overflowed
@@ -427,9 +427,9 @@ namespace String
         return replacement;
     }
 
-    utf8* DiscardDuplicate(utf8** ptr, const utf8* replacement)
+    utf8* DiscardDuplicate(utf8** ptr, u8string_view replacement)
     {
-        return DiscardUse(ptr, String::Duplicate(replacement));
+        return DiscardUse(ptr, String::Duplicate(replacement.data()));
     }
 
     std::vector<std::string> Split(std::string_view s, std::string_view delimiter)

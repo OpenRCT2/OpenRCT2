@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -146,7 +146,7 @@ template<> struct DataSerializerTraits_t<int64_t> : public DataSerializerTraitsI
 
 template<> struct DataSerializerTraits_t<std::string>
 {
-    static void encode(OpenRCT2::IStream* stream, const std::string& str)
+    static void encode(OpenRCT2::IStream* stream, std::string_view str)
     {
         uint16_t len = static_cast<uint16_t>(str.size());
         uint16_t swapped = ByteSwapBE(len);
@@ -155,7 +155,7 @@ template<> struct DataSerializerTraits_t<std::string>
         {
             return;
         }
-        stream->WriteArray(str.c_str(), len);
+        stream->WriteArray(str.data(), len);
     }
     static void decode(OpenRCT2::IStream* stream, std::string& res)
     {
@@ -170,10 +170,10 @@ template<> struct DataSerializerTraits_t<std::string>
         auto str = stream->ReadArray<char>(len);
         res.assign(str.get(), len);
     }
-    static void log(OpenRCT2::IStream* stream, const std::string& str)
+    static void log(OpenRCT2::IStream* stream, std::string_view str)
     {
         stream->Write("\"", 1);
-        if (str.size() != 0)
+        if (!str.empty())
         {
             stream->Write(str.data(), str.size());
         }

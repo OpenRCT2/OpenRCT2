@@ -216,7 +216,7 @@ namespace OpenRCT2::Scripting
         void UnloadTransientPlugins();
         void StopUnloadRegisterAllPlugins();
         void Tick();
-        std::future<void> Eval(const std::string& s);
+        std::future<void> Eval(std::string_view s);
         DukValue ExecutePluginCall(
             const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args,
             bool isGameStateMutable);
@@ -240,7 +240,7 @@ namespace OpenRCT2::Scripting
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
         void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
-        [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
+        [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(std::string_view actionid, const DukValue& args);
 
         void SaveSharedStorage();
 
@@ -260,7 +260,7 @@ namespace OpenRCT2::Scripting
         void CheckAndStartPlugins();
         void StartIntransientPlugins();
         void StartTransientPlugins();
-        void LoadPlugin(const std::string& path);
+        void LoadPlugin(std::string_view path);
         void LoadPlugin(std::shared_ptr<Plugin>& plugin);
         void UnloadPlugin(std::shared_ptr<Plugin>& plugin);
         void StartPlugin(std::shared_ptr<Plugin> plugin);

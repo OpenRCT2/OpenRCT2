@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@ private:
 
 public:
     CustomAction() = default;
-    CustomAction(const std::string& id, const std::string& json);
+    CustomAction(std::string_view id, std::string_view json);
 
     std::string GetId() const;
     std::string GetJson() const;

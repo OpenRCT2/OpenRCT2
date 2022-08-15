@@ -24,7 +24,7 @@ static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
 static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 
-bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result)
+bool TryClassifyFile(std::string_view path, ClassifiedFileInfo* result)
 {
     try
     {

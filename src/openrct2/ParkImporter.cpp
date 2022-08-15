@@ -19,7 +19,7 @@
 
 namespace ParkImporter
 {
-    std::unique_ptr<IParkImporter> Create(const std::string& hintPath)
+    std::unique_ptr<IParkImporter> Create(u8string_view hintPath)
     {
         std::unique_ptr<IParkImporter> parkImporter;
         std::string extension = Path::GetExtension(hintPath);

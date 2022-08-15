@@ -45,7 +45,7 @@ enum TRACK_REPO_ITEM_FLAGS
     TRIF_READ_ONLY = (1 << 0),
 };
 
-std::string GetNameFromTrackPath(const std::string& path)
+std::string GetNameFromTrackPath(std::string_view path)
 {
     std::string name = Path::GetFileNameWithoutExtension(path);
     // The track name should be the file name until the first instance of a dot
@@ -73,9 +73,9 @@ public:
     }
 
 public:
-    std::optional<TrackRepositoryItem> Create(int32_t, const std::string& path) const override
+    std::optional<TrackRepositoryItem> Create(int32_t, std::string_view path) const override
     {
-        auto td6 = TrackDesignImport(path.c_str());
+        auto td6 = TrackDesignImport(path.data());
         if (td6 != nullptr)
         {
             TrackRepositoryItem item;
@@ -105,7 +105,7 @@ protected:
     }
 
 private:
-    bool IsTrackReadOnly(const std::string& path) const
+    bool IsTrackReadOnly(std::string_view path) const
     {
         return String::StartsWith(path, SearchPaths[0]) || String::StartsWith(path, SearchPaths[1]);
     }
@@ -136,7 +136,7 @@ public:
      * @param entry The entry name to count the track list of. Leave empty to count track list for the non-separated types (e.g.
      * Hyper-Twister, Car Ride)
      */
-    size_t GetCountForObjectEntry(ride_type_t rideType, const std::string& entry) const override
+    size_t GetCountForObjectEntry(ride_type_t rideType, std::string_view entry) const override
     {
         size_t count = 0;
         const auto& repo = GetContext()->GetObjectRepository();
@@ -170,7 +170,7 @@ public:
      * @param entry The entry name to build a track list for. Leave empty to build track list for the non-separated types (e.g.
      * Hyper-Twister, Car Ride)
      */
-    std::vector<TrackDesignFileRef> GetItemsForObjectEntry(ride_type_t rideType, const std::string& entry) const override
+    std::vector<TrackDesignFileRef> GetItemsForObjectEntry(ride_type_t rideType, std::string_view entry) const override
     {
         std::vector<TrackDesignFileRef> refs;
         const auto& repo = GetContext()->GetObjectRepository();
@@ -215,7 +215,7 @@ public:
         SortItems();
     }
 
-    bool Delete(const std::string& path) override
+    bool Delete(std::string_view path) override
     {
         bool result = false;
         size_t index = GetTrackIndex(path);
@@ -234,7 +234,7 @@ public:
         return result;
     }
 
-    std::string Rename(const std::string& path, const std::string& newName) override
+    std::string Rename(std::string_view path, std::string_view newName) override
     {
         std::string result;
         size_t index = GetTrackIndex(path);
@@ -244,7 +244,7 @@ public:
             if (!(item->Flags & TRIF_READ_ONLY))
             {
                 std::string directory = Path::GetDirectory(path);
-                std::string newPath = Path::Combine(directory, newName + Path::GetExtension(path));
+                std::string newPath = Path::Combine(directory, newName.data() + Path::GetExtension(path));
                 if (File::Move(path, newPath))
                 {
                     item->Name = newName;
@@ -257,12 +257,12 @@ public:
         return result;
     }
 
-    std::string Install(const std::string& path, const std::string& name) override
+    std::string Install(std::string_view path, std::string_view name) override
     {
         std::string result;
         std::string installDir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK);
 
-        std::string newPath = Path::Combine(installDir, name + Path::GetExtension(path));
+        std::string newPath = Path::Combine(installDir, name.data() + Path::GetExtension(path));
         if (File::Copy(path, newPath, false))
         {
             auto language = LocalisationService_GetCurrentLanguage();
@@ -288,7 +288,7 @@ private:
         });
     }
 
-    size_t GetTrackIndex(const std::string& path) const
+    size_t GetTrackIndex(std::string_view path) const
     {
         for (size_t i = 0; i < _items.size(); i++)
         {
@@ -300,7 +300,7 @@ private:
         return SIZE_MAX;
     }
 
-    TrackRepositoryItem* GetTrackItem(const std::string& path)
+    TrackRepositoryItem* GetTrackItem(std::string_view path)
     {
         TrackRepositoryItem* result = nullptr;
         size_t index = GetTrackIndex(path);

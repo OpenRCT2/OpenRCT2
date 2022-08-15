@@ -65,7 +65,7 @@ void StdInOutConsole::Start()
     replThread.detach();
 }
 
-std::future<void> StdInOutConsole::Eval(const std::string& s)
+std::future<void> StdInOutConsole::Eval(std::string_view s)
 {
 #ifdef ENABLE_SCRIPTING
     auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -108,7 +108,7 @@ void StdInOutConsole::Close()
     openrct2_finish();
 }
 
-void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
+void StdInOutConsole::WriteLine(std::string_view s, FormatToken colourFormat)
 {
     std::string formatBegin;
     switch (colourFormat)
@@ -125,14 +125,14 @@ void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
 
     if (!Platform::IsColourTerminalSupported())
     {
-        std::printf("%s\n", s.c_str());
+        std::printf("%s\n", s.data());
         std::fflush(stdout);
     }
     else
     {
         if (_isPromptShowing)
         {
-            auto* mainString = s.c_str();
+            auto* mainString = s.data();
 
             // If string contains \n, we need to replace with \r\n
             std::string newString;
@@ -154,7 +154,7 @@ void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
         }
         else
         {
-            std::printf("%s%s\x1b[0m\n", formatBegin.c_str(), s.c_str());
+            std::printf("%s%s\x1b[0m\n", formatBegin.c_str(), s.data());
             std::fflush(stdout);
         }
     }

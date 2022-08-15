@@ -38,16 +38,16 @@ public:
     {
     }
 
-    void Execute(const std::string& s);
-    void WriteLine(const std::string& s);
-    void WriteLineError(const std::string& s);
-    void WriteLineWarning(const std::string& s);
+    void Execute(std::string_view s);
+    void WriteLine(std::string_view s);
+    void WriteLineError(std::string_view s);
+    void WriteLineWarning(std::string_view s);
     void WriteFormatLine(const char* format, ...);
 
     virtual void Clear() abstract;
     virtual void Close() abstract;
     virtual void Hide() abstract;
-    virtual void WriteLine(const std::string& s, FormatToken colourFormat) abstract;
+    virtual void WriteLine(std::string_view s, FormatToken colourFormat) abstract;
 };
 
 class StdInOutConsole final : public InteractiveConsole
@@ -58,7 +58,7 @@ private:
 
 public:
     void Start();
-    std::future<void> Eval(const std::string& s);
+    std::future<void> Eval(std::string_view s);
     void ProcessEvalQueue();
 
     void Clear() override;
@@ -66,9 +66,9 @@ public:
     void Hide() override
     {
     }
-    void WriteLine(const std::string& s)
+    void WriteLine(std::string_view s)
     {
         InteractiveConsole::WriteLine(s);
     }
-    void WriteLine(const std::string& s, FormatToken colourFormat) override;
+    void WriteLine(std::string_view s, FormatToken colourFormat) override;
 };

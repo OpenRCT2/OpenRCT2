@@ -49,7 +49,7 @@ struct ClassifiedFileInfo
 };
 
 #define FILE_TYPE_S4_CUTOFF 2
-bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result);
+bool TryClassifyFile(std::string_view path, ClassifiedFileInfo* result);
 bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 
 FileExtension get_file_extension_type(u8string_view path);

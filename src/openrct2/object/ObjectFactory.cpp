@@ -135,7 +135,7 @@ public:
     }
 
     ReadObjectContext(
-        IObjectRepository& objectRepository, const std::string& identifier, bool loadImages,
+        IObjectRepository& objectRepository, std::string_view identifier, bool loadImages,
         const IFileDataRetriever* fileDataRetriever)
         : _objectRepository(objectRepository)
         , _fileDataRetriever(fileDataRetriever)
@@ -217,9 +217,9 @@ namespace ObjectFactory
     static std::unique_ptr<Object> CreateObjectFromJson(
         IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable);
 
-    static ObjectSourceGame ParseSourceGame(const std::string& s)
+    static ObjectSourceGame ParseSourceGame(std::string_view s)
     {
-        static const std::unordered_map<std::string, ObjectSourceGame> LookupTable{
+        static const std::unordered_map<std::string_view, ObjectSourceGame> LookupTable{
             { "rct1", ObjectSourceGame::RCT1 },
             { "rct1aa", ObjectSourceGame::AddedAttractions },
             { "rct1ll", ObjectSourceGame::LoopyLandscapes },
@@ -250,9 +250,10 @@ namespace ObjectFactory
         }
     }
 
-    std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path, bool loadImages)
+    std::unique_ptr<Object> CreateObjectFromLegacyFile(
+        IObjectRepository& objectRepository, std::string_view path, bool loadImages)
     {
-        log_verbose("CreateObjectFromLegacyFile(..., \"%s\")", path);
+        log_verbose("CreateObjectFromLegacyFile(..., \"%s\")", path.data());
 
         std::unique_ptr<Object> result;
         try
@@ -385,7 +386,7 @@ namespace ObjectFactory
         return result;
     }
 
-    static ObjectType ParseObjectType(const std::string& s)
+    static ObjectType ParseObjectType(std::string_view s)
     {
         if (s == "ride")
             return ObjectType::Ride;
@@ -449,25 +450,25 @@ namespace ObjectFactory
     }
 
     std::unique_ptr<Object> CreateObjectFromJsonFile(
-        IObjectRepository& objectRepository, const std::string& path, bool loadImages)
+        IObjectRepository& objectRepository, std::string_view path, bool loadImages)
     {
-        log_verbose("CreateObjectFromJsonFile(\"%s\")", path.c_str());
+        log_verbose("CreateObjectFromJsonFile(\"%s\")", path.data());
 
         try
         {
-            json_t jRoot = Json::ReadFromFile(path.c_str());
+            json_t jRoot = Json::ReadFromFile(path.data());
             auto fileDataRetriever = FileSystemDataRetriever(Path::GetDirectory(path));
             return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever, loadImages);
         }
         catch (const std::runtime_error& err)
         {
-            Console::Error::WriteLine("Unable to open or read '%s': %s", path.c_str(), err.what());
+            Console::Error::WriteLine("Unable to open or read '%s': %s", path.data(), err.what());
         }
 
         return nullptr;
     }
 
-    static void ExtractSourceGames(const std::string& id, json_t& jRoot, Object& result)
+    static void ExtractSourceGames(std::string_view id, json_t& jRoot, Object& result)
     {
         auto sourceGames = jRoot["sourceGame"];
         if (sourceGames.is_array() || sourceGames.is_string())
@@ -483,7 +484,7 @@ namespace ObjectFactory
             }
             else
             {
-                log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
+                log_error("Object %s has an incorrect sourceGame parameter.", id.data());
                 result.SetSourceGames({ ObjectSourceGame::Custom });
             }
         }
@@ -494,7 +495,7 @@ namespace ObjectFactory
         }
         else
         {
-            log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
+            log_error("Object %s has an incorrect sourceGame parameter.", id.data());
             result.SetSourceGames({ ObjectSourceGame::Custom });
         }
     }

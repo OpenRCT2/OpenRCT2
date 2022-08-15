@@ -209,7 +209,7 @@ void InGameConsole::Toggle()
     }
 }
 
-void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat)
+void InGameConsole::WriteLine(std::string_view input, FormatToken colourFormat)
 {
     // Include text colour format only for special cases
     // The draw function handles the default text colour differently

@@ -142,7 +142,7 @@ public:
     }
 
 protected:
-    std::optional<scenario_index_entry> Create(int32_t, const std::string& path) const override
+    std::optional<scenario_index_entry> Create(int32_t, std::string_view path) const override
     {
         scenario_index_entry entry;
         auto timestamp = File::GetLastModified(path);
@@ -173,7 +173,7 @@ protected:
     }
 
 private:
-    static std::unique_ptr<IStream> GetStreamFromRCT2Scenario(const std::string& path)
+    static std::unique_ptr<IStream> GetStreamFromRCT2Scenario(std::string_view path)
     {
         if (String::Equals(Path::GetExtension(path), ".sea", true))
         {
@@ -192,9 +192,9 @@ private:
     /**
      * Reads basic information from a scenario file.
      */
-    static bool GetScenarioInfo(const std::string& path, uint64_t timestamp, scenario_index_entry* entry)
+    static bool GetScenarioInfo(std::string_view path, uint64_t timestamp, scenario_index_entry* entry)
     {
-        log_verbose("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
+        log_verbose("GetScenarioInfo(%s, %d, ...)", path.data(), timestamp);
         try
         {
             std::string extension = Path::GetExtension(path);
@@ -206,10 +206,10 @@ private:
                 {
                     auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
                     auto importer = ParkImporter::CreateParkFile(objRepository);
-                    importer->LoadScenario(path.c_str(), true);
+                    importer->LoadScenario(path, true);
                     if (importer->GetDetails(entry))
                     {
-                        String::Set(entry->path, sizeof(entry->path), path.c_str());
+                        String::Set(entry->path, sizeof(entry->path), path);
                         entry->timestamp = timestamp;
                         result = true;
                     }
@@ -227,10 +227,10 @@ private:
                 try
                 {
                     auto s4Importer = ParkImporter::CreateS4();
-                    s4Importer->LoadScenario(path.c_str(), true);
+                    s4Importer->LoadScenario(path, true);
                     if (s4Importer->GetDetails(entry))
                     {
-                        String::Set(entry->path, sizeof(entry->path), path.c_str());
+                        String::Set(entry->path, sizeof(entry->path), path);
                         entry->timestamp = timestamp;
                         result = true;
                     }
@@ -261,21 +261,21 @@ private:
                 return true;
             }
 
-            log_verbose("%s is not a scenario", path.c_str());
+            log_verbose("%s is not a scenario", path.data());
         }
         catch (const std::exception&)
         {
-            Console::Error::WriteLine("Unable to read scenario: '%s'", path.c_str());
+            Console::Error::WriteLine("Unable to read scenario: '%s'", path.data());
         }
         return false;
     }
 
-    static scenario_index_entry CreateNewScenarioEntry(const std::string& path, uint64_t timestamp, RCT2::S6Info* s6Info)
+    static scenario_index_entry CreateNewScenarioEntry(std::string_view path, uint64_t timestamp, RCT2::S6Info* s6Info)
     {
         scenario_index_entry entry = {};
 
         // Set new entry
-        String::Set(entry.path, sizeof(entry.path), path.c_str());
+        String::Set(entry.path, sizeof(entry.path), path);
         entry.timestamp = timestamp;
         entry.category = s6Info->category;
         entry.objective_type = s6Info->objective_type;
@@ -524,7 +524,7 @@ private:
      * @param srcPath Full path to mp.dat
      * @param dstPath Full path to sc21.dat
      */
-    void ConvertMegaPark(const std::string& srcPath, const std::string& dstPath)
+    void ConvertMegaPark(std::string_view srcPath, std::string_view dstPath)
     {
         auto directory = Path::GetDirectory(dstPath);
         Platform::EnsureDirectoryExists(directory.c_str());
@@ -642,7 +642,7 @@ private:
         LoadLegacyScores(rct2Path);
     }
 
-    void LoadLegacyScores(const std::string& path)
+    void LoadLegacyScores(std::string_view path)
     {
         if (!File::Exists(path))
         {
@@ -702,7 +702,7 @@ private:
         }
         catch (const std::exception&)
         {
-            Console::Error::WriteLine("Error reading legacy scenario scores file: '%s'", path.c_str());
+            Console::Error::WriteLine("Error reading legacy scenario scores file: '%s'", path.data());
         }
 
         if (highscoresDirty)

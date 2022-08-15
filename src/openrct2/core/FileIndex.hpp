@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -128,7 +128,7 @@ protected:
     /**
      * Loads the given file and creates the item representing the data to store in the index.
      */
-    virtual std::optional<TItem> Create(int32_t language, const std::string& path) const abstract;
+    virtual std::optional<TItem> Create(int32_t language, std::string_view path) const abstract;
 
     /**
      * Serialises/DeSerialises an index item to/from the given stream.
@@ -322,10 +322,10 @@ private:
         }
     }
 
-    static uint32_t GetPathChecksum(const std::string& path)
+    static uint32_t GetPathChecksum(std::string_view path)
     {
         uint32_t hash = 0xD8430DED;
-        for (const utf8* ch = path.c_str(); *ch != '\0'; ch++)
+        for (const utf8* ch = path.data(); *ch != '\0'; ch++)
         {
             hash += (*ch);
             hash += (hash << 10);

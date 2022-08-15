@@ -50,11 +50,11 @@ struct IParkImporter
 public:
     virtual ~IParkImporter() = default;
 
-    virtual ParkLoadResult Load(const utf8* path) abstract;
-    virtual ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) abstract;
-    virtual ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) abstract;
+    virtual ParkLoadResult Load(u8string_view path) abstract;
+    virtual ParkLoadResult LoadSavedGame(u8string_view path, bool skipObjectCheck = false) abstract;
+    virtual ParkLoadResult LoadScenario(u8string_view path, bool skipObjectCheck = false) abstract;
     virtual ParkLoadResult LoadFromStream(
-        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) abstract;
+        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, u8string_view path = String::Empty) abstract;
 
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry* dst) abstract;
@@ -62,7 +62,7 @@ public:
 
 namespace ParkImporter
 {
-    [[nodiscard]] std::unique_ptr<IParkImporter> Create(const std::string& hintPath);
+    [[nodiscard]] std::unique_ptr<IParkImporter> Create(u8string_view hintPath);
     [[nodiscard]] std::unique_ptr<IParkImporter> CreateS4();
     [[nodiscard]] std::unique_ptr<IParkImporter> CreateS6(IObjectRepository& objectRepository);
     [[nodiscard]] std::unique_ptr<IParkImporter> CreateParkFile(IObjectRepository& objectRepository);

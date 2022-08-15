@@ -97,7 +97,7 @@ public:
     }
 
 public:
-    std::optional<ObjectRepositoryItem> Create([[maybe_unused]] int32_t language, const std::string& path) const override
+    std::optional<ObjectRepositoryItem> Create([[maybe_unused]] int32_t language, std::string_view path) const override
     {
         std::unique_ptr<Object> object;
         auto extension = Path::GetExtension(path);
@@ -111,7 +111,7 @@ public:
         }
         else
         {
-            object = ObjectFactory::CreateObjectFromLegacyFile(_objectRepository, path.c_str(), false);
+            object = ObjectFactory::CreateObjectFromLegacyFile(_objectRepository, path, false);
         }
 
         if (object != nullptr)
@@ -166,7 +166,7 @@ protected:
     }
 
 private:
-    bool IsTrackReadOnly(const std::string& path) const
+    bool IsTrackReadOnly(std::string_view path) const
     {
         return String::StartsWith(path, SearchPaths[0]) || String::StartsWith(path, SearchPaths[1]);
     }
@@ -441,7 +441,7 @@ private:
         return false;
     }
 
-    void ScanObject(const std::string& path)
+    void ScanObject(std::string_view path)
     {
         auto language = LocalisationService_GetCurrentLanguage();
         if (auto result = _fileIndex.Create(language, path); result.has_value())

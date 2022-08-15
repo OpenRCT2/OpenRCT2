@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,7 +44,7 @@ private:
         int const Wd;
         std::string const Path;
 
-        WatchDescriptor(int fd, const std::string& path);
+        WatchDescriptor(int fd, std::string_view path);
         ~WatchDescriptor();
     };
 
@@ -53,9 +53,9 @@ private:
 #endif
 
 public:
-    std::function<void(const std::string& path)> OnFileChanged;
+    std::function<void(std::string_view path)> OnFileChanged;
 
-    FileWatcher(const std::string& directoryPath);
+    FileWatcher(std::string_view directoryPath);
     ~FileWatcher();
 
 private:

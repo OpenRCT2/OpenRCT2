@@ -2060,12 +2060,12 @@ static bool invalidArguments(bool* invalid, bool arguments)
     return true;
 }
 
-void InteractiveConsole::Execute(const std::string& s)
+void InteractiveConsole::Execute(std::string_view s)
 {
     arguments_t argv;
     argv.reserve(8);
 
-    const utf8* start = s.c_str();
+    const utf8* start = s.data();
     const utf8* end;
     bool inQuotes = false;
     do
@@ -2124,17 +2124,17 @@ void InteractiveConsole::Execute(const std::string& s)
     }
 }
 
-void InteractiveConsole::WriteLine(const std::string& s)
+void InteractiveConsole::WriteLine(std::string_view s)
 {
     WriteLine(s, FormatToken::ColourWindow2);
 }
 
-void InteractiveConsole::WriteLineError(const std::string& s)
+void InteractiveConsole::WriteLineError(std::string_view s)
 {
     WriteLine(s, FormatToken::ColourRed);
 }
 
-void InteractiveConsole::WriteLineWarning(const std::string& s)
+void InteractiveConsole::WriteLineWarning(std::string_view s)
 {
     WriteLine(s, FormatToken::ColourYellow);
 }

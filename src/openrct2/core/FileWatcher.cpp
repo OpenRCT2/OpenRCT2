@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -58,19 +58,19 @@ void FileWatcher::FileDescriptor::Close()
     }
 }
 
-FileWatcher::WatchDescriptor::WatchDescriptor(int fd, const std::string& path)
+FileWatcher::WatchDescriptor::WatchDescriptor(int fd, std::string_view path)
     : Fd(fd)
-    , Wd(inotify_add_watch(fd, path.c_str(), IN_CLOSE_WRITE))
+    , Wd(inotify_add_watch(fd, path.data(), IN_CLOSE_WRITE))
     , Path(path)
 {
     if (Wd >= 0)
     {
-        log_verbose("FileWatcher: inotify watch added for %s", path.c_str());
+        log_verbose("FileWatcher: inotify watch added for %s", path.data());
     }
     else
     {
-        log_verbose("FileWatcher: inotify_add_watch failed for %s", path.c_str());
-        throw std::runtime_error("inotify_add_watch failed for '" + path + "'");
+        log_verbose("FileWatcher: inotify_add_watch failed for %s", path.data());
+        throw std::runtime_error("inotify_add_watch failed for '" + std::string(path) + "'");
     }
 }
 
@@ -81,16 +81,16 @@ FileWatcher::WatchDescriptor::~WatchDescriptor()
 }
 #endif
 
-FileWatcher::FileWatcher(const std::string& directoryPath)
+FileWatcher::FileWatcher(std::string_view directoryPath)
 {
 #ifdef _WIN32
     _path = directoryPath;
     _directoryHandle = CreateFileA(
-        directoryPath.c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS,
+        directoryPath.data(), FILE_LIST_DIRECTORY, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS,
         nullptr);
     if (_directoryHandle == INVALID_HANDLE_VALUE)
     {
-        throw std::runtime_error("Unable to open directory '" + directoryPath + "'");
+        throw std::runtime_error("Unable to open directory '" + _path + "'");
     }
 #elif defined(__linux__)
     _fileDesc.Initialise();
@@ -177,7 +177,7 @@ void FileWatcher::WatchDirectory()
                         {
                             auto directory = findResult->Path;
                             auto path = fs::path(directory) / fs::path(e->name);
-                            onFileChanged(path);
+                            onFileChanged(path.u8string());
                         }
                     }
                     offset += sizeof(inotify_event) + e->len;

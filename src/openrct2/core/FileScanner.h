@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -52,14 +52,14 @@ namespace Path
      * @param recurse Whether to scan sub directories or not.
      * @returns A new FileScanner, this must be deleted when no longer needed.
      */
-    [[nodiscard]] std::unique_ptr<IFileScanner> ScanDirectory(const std::string& pattern, bool recurse);
+    [[nodiscard]] std::unique_ptr<IFileScanner> ScanDirectory(std::string_view pattern, bool recurse);
 
     /**
      * Scans a directory and all sub directories
      * @param result The query result to modify.
      * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
      */
-    void QueryDirectory(QueryDirectoryResult* result, const std::string& pattern);
+    void QueryDirectory(QueryDirectoryResult* result, std::string_view pattern);
 
-    [[nodiscard]] std::vector<std::string> GetDirectories(const std::string& path);
+    [[nodiscard]] std::vector<std::string> GetDirectories(std::string_view path);
 } // namespace Path

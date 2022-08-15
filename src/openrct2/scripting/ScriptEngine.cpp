@@ -675,7 +675,7 @@ void ScriptEngine::LoadTransientPlugins()
     _transientPluginsEnabled = true;
 }
 
-void ScriptEngine::LoadPlugin(const std::string& path)
+void ScriptEngine::LoadPlugin(std::string_view path)
 {
     auto plugin = std::make_shared<Plugin>(_context, path);
     LoadPlugin(plugin);
@@ -771,7 +771,7 @@ void ScriptEngine::SetupHotReloading()
         if (Path::DirectoryExists(base))
         {
             _pluginFileWatcher = std::make_unique<FileWatcher>(base);
-            _pluginFileWatcher->OnFileChanged = [this](const std::string& path) {
+            _pluginFileWatcher->OnFileChanged = [this](std::string_view path) {
                 std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
                 _changedPluginFiles.emplace(path);
             };
@@ -943,7 +943,7 @@ void ScriptEngine::ProcessREPL()
     }
 }
 
-std::future<void> ScriptEngine::Eval(const std::string& s)
+std::future<void> ScriptEngine::Eval(std::string_view s)
 {
     std::promise<void> barrier;
     auto future = barrier.get_future();
@@ -1356,7 +1356,7 @@ static std::string GetActionName(GameCommand commandId)
     return {};
 }
 
-static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& name)
+static std::unique_ptr<GameAction> CreateGameActionFromActionId(std::string_view name)
 {
     auto result = ActionNameToType.find(name);
     if (result != ActionNameToType.end())
@@ -1435,7 +1435,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
     }
 }
 
-std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& actionid, const DukValue& args)
+std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(std::string_view actionid, const DukValue& args)
 {
     auto action = CreateGameActionFromActionId(actionid);
     if (action != nullptr)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -77,7 +77,7 @@ private:
     utf8* _currentPath;
 
 public:
-    FileScannerBase(const std::string& pattern, bool recurse)
+    FileScannerBase(std::string_view pattern, bool recurse)
     {
         _rootPath = Path::GetDirectory(pattern);
         _recurse = recurse;
@@ -160,10 +160,10 @@ public:
         return false;
     }
 
-    virtual void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) abstract;
+    virtual void GetDirectoryChildren(std::vector<DirectoryChild>& children, std::string_view path) abstract;
 
 private:
-    void PushState(const std::string& directory)
+    void PushState(std::string_view directory)
     {
         DirectoryState newState;
         newState.Path = directory;
@@ -172,11 +172,11 @@ private:
         _directoryStack.push(newState);
     }
 
-    bool PatternMatch(const std::string& fileName)
+    bool PatternMatch(std::string_view fileName)
     {
         for (const auto& pattern : _patterns)
         {
-            if (MatchWildcard(fileName.c_str(), pattern.c_str()))
+            if (MatchWildcard(fileName.data(), pattern.c_str()))
             {
                 return true;
             }
@@ -184,11 +184,11 @@ private:
         return false;
     }
 
-    static std::vector<std::string> GetPatterns(const std::string& delimitedPatterns)
+    static std::vector<std::string> GetPatterns(std::string_view delimitedPatterns)
     {
         std::vector<std::string> patterns;
 
-        const utf8* start = delimitedPatterns.c_str();
+        const utf8* start = delimitedPatterns.data();
         const utf8* ch = start;
         utf8 c;
         do
@@ -216,14 +216,14 @@ private:
 class FileScannerWindows final : public FileScannerBase
 {
 public:
-    FileScannerWindows(const std::string& pattern, bool recurse)
+    FileScannerWindows(std::string_view pattern, bool recurse)
         : FileScannerBase(pattern, recurse)
     {
     }
 
-    void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
+    void GetDirectoryChildren(std::vector<DirectoryChild>& children, std::string_view path) override
     {
-        auto pattern = path + "\\*";
+        auto pattern = std::string(path) + "\\*";
         auto wPattern = String::ToWideChar(pattern.c_str());
 
         WIN32_FIND_DATAW findData;
@@ -269,15 +269,15 @@ private:
 class FileScannerUnix final : public FileScannerBase
 {
 public:
-    FileScannerUnix(const std::string& pattern, bool recurse)
+    FileScannerUnix(std::string_view pattern, bool recurse)
         : FileScannerBase(pattern, recurse)
     {
     }
 
-    void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
+    void GetDirectoryChildren(std::vector<DirectoryChild>& children, std::string_view path) override
     {
         struct dirent** namelist;
-        int32_t count = scandir(path.c_str(), &namelist, FilterFunc, alphasort);
+        int32_t count = scandir(path.data(), &namelist, FilterFunc, alphasort);
         if (count > 0)
         {
             for (int32_t i = 0; i < count; i++)
@@ -285,7 +285,7 @@ public:
                 const struct dirent* node = namelist[i];
                 if (!String::Equals(node->d_name, ".") && !String::Equals(node->d_name, ".."))
                 {
-                    children.push_back(CreateChild(path.c_str(), node));
+                    children.push_back(CreateChild(path, node));
                 }
                 free(namelist[i]);
             }
@@ -299,7 +299,7 @@ private:
         return 1;
     }
 
-    static DirectoryChild CreateChild(const utf8* directory, const struct dirent* node)
+    static DirectoryChild CreateChild(u8string_view directory, const struct dirent* node)
     {
         DirectoryChild result;
         result.Name = std::string(node->d_name);
@@ -335,7 +335,7 @@ private:
 
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
-std::unique_ptr<IFileScanner> Path::ScanDirectory(const std::string& pattern, bool recurse)
+std::unique_ptr<IFileScanner> Path::ScanDirectory(std::string_view pattern, bool recurse)
 {
 #ifdef _WIN32
     return std::make_unique<FileScannerWindows>(pattern, recurse);
@@ -344,7 +344,7 @@ std::unique_ptr<IFileScanner> Path::ScanDirectory(const std::string& pattern, bo
 #endif
 }
 
-void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& pattern)
+void Path::QueryDirectory(QueryDirectoryResult* result, std::string_view pattern)
 {
     auto scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())
@@ -361,7 +361,7 @@ void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& patte
     }
 }
 
-std::vector<std::string> Path::GetDirectories(const std::string& path)
+std::vector<std::string> Path::GetDirectories(std::string_view path)
 {
     auto scanner = ScanDirectory(path, false);
     auto baseScanner = static_cast<FileScannerBase*>(scanner.get());
