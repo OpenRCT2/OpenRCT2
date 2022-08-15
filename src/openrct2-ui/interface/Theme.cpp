@@ -111,7 +111,7 @@ struct WindowThemeDesc
 #define COLOURS_5(c0, c1, c2, c3, c4) 5, { { (c0), (c1), (c2), (c3), (c4), 0 } }
 #define COLOURS_6(c0, c1, c2, c3, c4, c5) 6, { { (c0), (c1), (c2), (c3), (c4), (c5) } }
 
-#define THEME_DEF_END { 0xFF, { 0, 0, 0, 0, 0, 0 } }
+#define THEME_DEF_END { WC_NULL, { 0, 0, 0, 0, 0, 0 } }
 
 #define TWINDOW(window_class, window_name, window_string_id, theme) { window_class, window_name, window_string_id, theme }
 

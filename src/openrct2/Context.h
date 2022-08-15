@@ -11,6 +11,7 @@
 
 #include "common.h"
 #include "core/String.hpp"
+#include "interface/WindowClasses.h"
 #include "world/Location.hpp"
 
 #include <memory>
@@ -31,7 +32,6 @@ struct IGameStateSnapshots;
 
 class Intent;
 struct rct_window;
-using rct_windowclass = uint8_t;
 struct NewVersionInfo;
 
 struct TTFFontDescriptor;

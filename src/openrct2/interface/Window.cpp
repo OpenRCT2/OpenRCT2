@@ -41,7 +41,7 @@
 std::list<std::shared_ptr<rct_window>> g_window_list;
 rct_window* gWindowAudioExclusive;
 
-widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
+widget_identifier gCurrentTextBox = { { WC_NULL, 0 }, 0 };
 char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
 int32_t gMaxTextBoxInputLength = 0;
 int32_t gTextBoxFrameNo = 0;

@@ -670,7 +670,7 @@ static void InputScrollBegin(rct_window& w, rct_widgetindex widgetIndex, const S
             break;
     }
     WidgetScrollUpdateThumbs(w, widgetIndex);
-    window_invalidate_by_number(widgetIndex, w.classification);
+    window_invalidate_by_number(w.classification, w.number);
 }
 
 static void InputScrollContinue(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)

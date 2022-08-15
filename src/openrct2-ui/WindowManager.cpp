@@ -182,17 +182,16 @@ public:
         {
             case WD_BANNER:
                 return WindowBannerOpen(id);
+            case WD_NEW_CAMPAIGN:
+                return WindowNewCampaignOpen(id);
             case WD_DEMOLISH_RIDE:
                 return WindowRideDemolishPromptOpen(get_ride(RideId::FromUnderlying(id)));
             case WD_REFURBISH_RIDE:
                 return WindowRideRefurbishPromptOpen(get_ride(RideId::FromUnderlying(id)));
-            case WD_NEW_CAMPAIGN:
-                return WindowNewCampaignOpen(id);
             case WD_SIGN:
                 return WindowSignOpen(id);
             case WD_SIGN_SMALL:
                 return WindowSignSmallOpen(id);
-
             case WD_PLAYER:
                 return WindowPlayerOpen(id);
 
@@ -280,10 +279,6 @@ public:
             case WC_SCENARIO_SELECT:
                 return WindowScenarioselectOpen(
                     reinterpret_cast<scenarioselect_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK)), false);
-            case WD_VEHICLE:
-                return WindowRideOpenVehicle(static_cast<Vehicle*>(intent->GetPointerExtra(INTENT_EXTRA_VEHICLE)));
-            case WD_TRACK:
-                return WindowRideOpenTrack(static_cast<TileElement*>(intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT)));
             case INTENT_ACTION_NEW_RIDE_OF_TYPE:
             {
                 // Open ride list window
@@ -319,15 +314,23 @@ public:
                 WindowScenerySetSelectedTab(intent->GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));
                 return window;
             }
-            default:
-                Console::Error::WriteLine("Unhandled window class for intent (%d)", intent->GetWindowClass());
-                return nullptr;
         }
+
+        switch (intent->GetWindowDetail())
+        {
+            case WD_VEHICLE:
+                return WindowRideOpenVehicle(static_cast<Vehicle*>(intent->GetPointerExtra(INTENT_EXTRA_VEHICLE)));
+            case WD_TRACK:
+                return WindowRideOpenTrack(static_cast<TileElement*>(intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT)));
+        }
+
+        Console::Error::WriteLine("Unhandled window class for intent (%d)", intent->GetWindowClass());
+        return nullptr;
     }
 
     void BroadcastIntent(const Intent& intent) override
     {
-        switch (intent.GetWindowClass())
+        switch (intent.GetAction())
         {
             case INTENT_ACTION_MAP:
                 WindowMapReset();

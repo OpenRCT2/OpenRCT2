@@ -1460,7 +1460,7 @@ rct_window* context_open_window(rct_windowclass wc)
     return windowManager->OpenWindow(wc);
 }
 
-rct_window* context_open_window_view(rct_windowclass wc)
+rct_window* context_open_window_view(uint8_t wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenView(wc);

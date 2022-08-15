@@ -43,7 +43,7 @@ void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 {
     gTooltipCursor = screenCoords;
     gTooltipTimeout = 0;
-    gTooltipWidget.window_classification = 255;
+    gTooltipWidget.window_classification = WC_NULL;
     input_set_state(InputState::Normal);
     input_set_flag(INPUT_FLAG_4, false);
 }
@@ -148,7 +148,7 @@ void WindowTooltipClose()
 {
     window_close_by_class(WC_TOOLTIP);
     gTooltipTimeout = 0;
-    gTooltipWidget.window_classification = 255;
+    gTooltipWidget.window_classification = WC_NULL;
 }
 
 /**

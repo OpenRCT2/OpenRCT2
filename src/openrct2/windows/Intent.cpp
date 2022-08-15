@@ -13,9 +13,19 @@
 
 #include <utility>
 
-Intent::Intent(rct_windowclass windowclass)
+Intent::Intent(rct_windowclass windowClass)
+    : _Class(windowClass)
 {
-    this->_Class = windowclass;
+}
+
+Intent::Intent(WindowDetail windowDetail)
+    : _WindowDetail(windowDetail)
+{
+}
+
+Intent::Intent(IntentAction intentAction)
+    : _Action(intentAction)
+{
 }
 
 Intent* Intent::putExtra(uint32_t key, uint32_t value)
@@ -76,6 +86,16 @@ Intent* Intent::putExtra(uint32_t key, close_callback value)
 rct_windowclass Intent::GetWindowClass() const
 {
     return this->_Class;
+}
+
+WindowDetail Intent::GetWindowDetail() const
+{
+    return this->_WindowDetail;
+}
+
+IntentAction Intent::GetAction() const
+{
+    return this->_Action;
 }
 
 void* Intent::GetPointerExtra(uint32_t key) const
