@@ -15888,5 +15888,28 @@
         "x_offset": -5,
         "y_offset": -20,
         "palette": "keep"
+    },
+    {
+        "path": "track/wooden/station_block_brake_open_sw_ne.png",
+        "x_offset": -34,
+        "y_offset": -8
+    },
+    {
+        "path": "track/wooden/station_block_brake_open_nw_se.png",
+        "x_offset": -30,
+        "y_offset": -8
+    },
+    {
+        "path": "track/wooden/station_block_brake_closed_sw_ne.png",
+        "x_offset": -34,
+        "y_offset": -8
+    },
+    {
+        "path": "track/wooden/station_block_brake_closed_nw_se.png",
+        "x_offset": -30,
+        "y_offset": -8
+    },
+    {
+        "path": "empty.png"
     }
 ]
