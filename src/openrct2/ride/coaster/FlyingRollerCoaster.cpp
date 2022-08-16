@@ -19289,5 +19289,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType)
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:
             return flying_rc_track_right_flying_large_half_loop_uninverted_down;
     }
-    return nullptr;
+    return get_track_paint_function_bolliger_mabillard<METAL_SUPPORTS_TUBES>(trackType);
 }
