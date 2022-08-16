@@ -410,7 +410,7 @@ public:
         }
         else
         {
-            auto intent = Intent(WC_RIDE);
+            auto intent = Intent(WindowClass::Ride);
             intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
             context_open_intent(&intent);
         }
@@ -964,10 +964,10 @@ private:
 rct_window* WindowRideListOpen()
 {
     // Check if window is already open
-    auto* window = window_bring_to_front_by_class(WC_RIDE_LIST);
+    auto* window = window_bring_to_front_by_class(WindowClass::RideList);
     if (window == nullptr)
     {
-        window = WindowCreate<RideListWindow>(WC_RIDE_LIST, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
+        window = WindowCreate<RideListWindow>(WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
     }
     return window;
 }

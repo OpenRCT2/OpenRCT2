@@ -319,7 +319,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->MinCarsPerTrain = rideEntry->min_cars_in_train;
     ride->MaxCarsPerTrain = rideEntry->max_cars_in_train;
     ride_set_vehicle_colours_to_random_preset(ride, _colour2);
-    window_invalidate_by_class(WC_RIDE_LIST);
+    window_invalidate_by_class(WindowClass::RideList);
 
     res.Expenditure = ExpenditureType::RideConstruction;
     res.SetData(RideId{ rideIndex });

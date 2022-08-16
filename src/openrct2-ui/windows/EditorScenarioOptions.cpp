@@ -281,12 +281,12 @@ rct_window* WindowEditorScenarioOptionsOpen()
 {
     rct_window* w;
 
-    w = window_bring_to_front_by_class(WC_EDITOR_SCENARIO_OPTIONS);
+    w = window_bring_to_front_by_class(WindowClass::EditorScenarioOptions);
     if (w != nullptr)
         return w;
 
     w = WindowCreateCentred(
-        280, 148, window_editor_scenario_options_page_events[0], WC_EDITOR_SCENARIO_OPTIONS, WF_NO_SCROLLING);
+        280, 148, window_editor_scenario_options_page_events[0], WindowClass::EditorScenarioOptions, WF_NO_SCROLLING);
     w->widgets = window_editor_scenario_options_widgets[0];
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[0];
     WindowInitScrollWidgets(*w);
@@ -542,8 +542,8 @@ static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, rct_wid
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
-        window_invalidate_by_class(WC_FINANCES);
-        window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+        window_invalidate_by_class(WindowClass::Finances);
+        window_invalidate_by_class(WindowClass::BottomToolbar);
     }
 }
 

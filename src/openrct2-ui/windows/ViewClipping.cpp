@@ -390,7 +390,7 @@ private:
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
-        if (gCurrentToolWidget.window_classification != WC_VIEW_CLIPPING)
+        if (gCurrentToolWidget.window_classification != WindowClass::ViewClipping)
             return false;
         return _toolActive;
     }
@@ -398,10 +398,10 @@ private:
 
 rct_window* WindowViewClippingOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_VIEW_CLIPPING);
+    auto* window = window_bring_to_front_by_class(WindowClass::ViewClipping);
     if (window == nullptr)
     {
-        window = WindowCreate<ViewClippingWindow>(WC_VIEW_CLIPPING, ScreenCoordsXY(32, 32), WW, WH);
+        window = WindowCreate<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), WW, WH);
     }
     return window;
 }

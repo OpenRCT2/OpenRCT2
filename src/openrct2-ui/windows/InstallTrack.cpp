@@ -106,7 +106,7 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
         return nullptr;
     }
 
-    window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+    window_close_by_class(WindowClass::EditorObjectSelection);
     window_close_construction_windows();
 
     gTrackDesignSceneryToggle = false;
@@ -117,7 +117,7 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
     int32_t x = screenWidth / 2 - 201;
     int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
-    rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
+    rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WindowClass::InstallTrack, 0);
     w->widgets = window_install_track_widgets;
     WindowInitScrollWidgets(*w);
     w->track_list.track_list_being_updated = false;

@@ -273,5 +273,5 @@ private:
 
 rct_window* WindowNewsOptionsOpen()
 {
-    return WindowFocusOrCreate<NewsOptionsWindow>(WC_NOTIFICATION_OPTIONS, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
 }

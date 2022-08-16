@@ -201,7 +201,7 @@ static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t heigh
 }
 
 rct_window* WindowCreate(
-    std::unique_ptr<rct_window>&& wp, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
+    std::unique_ptr<rct_window>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
 {
     if (flags & WF_AUTO_POSITION)
     {
@@ -288,7 +288,7 @@ rct_window* WindowCreate(
 }
 
 rct_window* WindowCreate(
-    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls,
     uint32_t flags)
 {
     auto w = std::make_unique<rct_window>();
@@ -297,14 +297,14 @@ rct_window* WindowCreate(
 }
 
 rct_window* WindowCreateAutoPos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags)
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls, uint32_t flags)
 {
     auto pos = GetAutoPositionForNewWindow(width, height);
     return WindowCreate(pos, width, height, event_handlers, cls, flags);
 }
 
 rct_window* WindowCreateCentred(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags)
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls, uint32_t flags)
 {
     auto pos = GetCentrePositionForNewWindow(width, height);
     return WindowCreate(pos, width, height, event_handlers, cls, flags);
@@ -530,7 +530,7 @@ void WindowAllWheelInput()
         if (w != nullptr)
         {
             // Check if main window
-            if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT)
+            if (w->classification == WindowClass::MainWindow || w->classification == WindowClass::Viewport)
             {
                 WindowViewportWheelInput(*w, relative_wheel);
                 return;

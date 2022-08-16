@@ -421,13 +421,13 @@ static void WindowMapgenChangeMapSize(int32_t sizeOffset)
 
 rct_window* WindowMapgenOpen()
 {
-    rct_window* w = window_bring_to_front_by_class(WC_MAPGEN);
+    rct_window* w = window_bring_to_front_by_class(WindowClass::Mapgen);
     if (w != nullptr)
     {
         return w;
     }
 
-    w = WindowCreateCentred(WW, WH, PageEvents[WINDOW_MAPGEN_PAGE_BASE], WC_MAPGEN, WF_10);
+    w = WindowCreateCentred(WW, WH, PageEvents[WINDOW_MAPGEN_PAGE_BASE], WindowClass::Mapgen, WF_10);
     w->number = 0;
     w->frame_no = 0;
 
@@ -1180,7 +1180,7 @@ static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, const utf8* pa
         }
 
         // The window needs to be open while using the map
-        rct_window* const w = context_open_window(WC_MAPGEN);
+        rct_window* const w = context_open_window(WindowClass::Mapgen);
         _heightmapLoaded = true;
         WindowMapgenSetPage(w, WINDOW_MAPGEN_PAGE_HEIGHTMAP);
 
@@ -1204,7 +1204,7 @@ static void WindowMapgenHeightmapMouseup(rct_window* w, rct_widgetindex widgetIn
             // Page widgets
         case WIDX_HEIGHTMAP_SELECT:
         {
-            auto intent = Intent(WC_LOADSAVE);
+            auto intent = Intent(WindowClass::Loadsave);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
             intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowMapgenHeightmapLoadsaveCallback));
             context_open_intent(&intent);

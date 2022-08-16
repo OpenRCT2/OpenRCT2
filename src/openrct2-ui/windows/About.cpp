@@ -113,7 +113,7 @@ public:
                 OpenRCT2::GetContext()->GetUiContext()->OpenURL("https://discord.gg/ZXZd8D8");
                 break;
             case WIDX_CHANGELOG:
-                context_open_window(WC_CHANGELOG);
+                context_open_window(WindowClass::Changelog);
                 break;
             case WIDX_NEW_VERSION:
                 context_open_window_view(WV_NEW_VERSION_INFO);
@@ -249,5 +249,5 @@ private:
  */
 rct_window* WindowAboutOpen()
 {
-    return WindowFocusOrCreate<AboutWindow>(WC_ABOUT, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<AboutWindow>(WindowClass::About, WW, WH, WF_CENTRE_SCREEN);
 }

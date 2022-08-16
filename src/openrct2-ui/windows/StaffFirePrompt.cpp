@@ -56,13 +56,13 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep)
     rct_window* w;
 
     // Check if the confirm window already exists.
-    w = window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index.ToUnderlying());
+    w = window_bring_to_front_by_number(WindowClass::FirePrompt, peep->sprite_index.ToUnderlying());
     if (w != nullptr)
     {
         return w;
     }
 
-    w = WindowCreateCentred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
+    w = WindowCreateCentred(WW, WH, &window_staff_fire_events, WindowClass::FirePrompt, WF_TRANSPARENT);
     w->widgets = window_staff_fire_widgets;
 
     WindowInitScrollWidgets(*w);

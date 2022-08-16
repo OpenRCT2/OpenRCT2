@@ -128,7 +128,7 @@ public:
             }
             else
             {
-                auto intent = Intent(WC_RIDE);
+                auto intent = Intent(WindowClass::Ride);
                 intent.putExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
                 context_open_intent(&intent);
             }
@@ -237,7 +237,7 @@ public:
             case RideConstructionState::Back:
             case RideConstructionState::Selected:
                 if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-                    && gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION)
+                    && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
                 {
                     tool_cancel();
                 }
@@ -362,12 +362,12 @@ private:
             {
                 tool_cancel();
                 if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
-                    window_close_by_class(WC_RIDE_CONSTRUCTION);
+                    window_close_by_class(WindowClass::RideConstruction);
             }
             else
             {
                 gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-                window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
+                window_invalidate_by_class(WindowClass::RideConstruction);
                 gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     ? WIDX_MAZE_ENTRANCE
                     : WIDX_MAZE_EXIT;
@@ -425,14 +425,15 @@ private:
 
 rct_window* WindowMazeConstructionOpen()
 {
-    return WindowFocusOrCreate<MazeConstructionWindow>(WC_RIDE_CONSTRUCTION, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
+    return WindowFocusOrCreate<MazeConstructionWindow>(
+        WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
 }
 
 void WindowMazeConstructionUpdatePressedWidgets()
 {
     rct_window* w;
 
-    w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr)
         return;
 

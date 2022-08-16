@@ -41,7 +41,7 @@
 std::list<std::shared_ptr<rct_window>> g_window_list;
 rct_window* gWindowAudioExclusive;
 
-widget_identifier gCurrentTextBox = { { WC_NULL, 0 }, 0 };
+widget_identifier gCurrentTextBox = { { WindowClass::Null, 0 }, 0 };
 char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
 int32_t gMaxTextBoxInputLength = 0;
 int32_t gTextBoxFrameNo = 0;
@@ -155,7 +155,7 @@ void window_update_all()
     windowManager->UpdateMouseWheel();
 }
 
-static void window_close_surplus(int32_t cap, int8_t avoid_classification)
+static void window_close_surplus(int32_t cap, WindowClass avoid_classification)
 {
     // find the amount of windows that are currently open
     auto count = static_cast<int32_t>(g_window_list.size());
@@ -173,8 +173,8 @@ static void window_close_surplus(int32_t cap, int8_t avoid_classification)
                 break;
             }
         }
-        // skip window if window matches specified rct_windowclass (as user may be modifying via options)
-        if (avoid_classification != -1 && foundW != nullptr && foundW->classification == avoid_classification)
+        // skip window if window matches specified WindowClass (as user may be modifying via options)
+        if (avoid_classification != WindowClass::Null && foundW != nullptr && foundW->classification == avoid_classification)
         {
             continue;
         }
@@ -195,7 +195,7 @@ void window_set_window_limit(int32_t value)
     // windows if one sets a limit lower than the number of windows open
     if (val < prev)
     {
-        window_close_surplus(val, WC_OPTIONS);
+        window_close_surplus(val, WindowClass::Options);
     }
 }
 
@@ -284,7 +284,7 @@ template<typename TPred> static void window_close_by_condition(TPred pred, uint3
  *  rct2: 0x006ECCF4
  * @param cls (cl) with bit 15 set
  */
-void window_close_by_class(rct_windowclass cls)
+void window_close_by_class(WindowClass cls)
 {
     window_close_by_condition([&](rct_window* w) -> bool { return w->classification == cls; });
 }
@@ -295,13 +295,13 @@ void window_close_by_class(rct_windowclass cls)
  * @param cls (cl) without bit 15 set
  * @param number (dx)
  */
-void window_close_by_number(rct_windowclass cls, rct_windownumber number)
+void window_close_by_number(WindowClass cls, rct_windownumber number)
 {
     window_close_by_condition([cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
 }
 
 // TODO: Refactor this to use variant once the new window class is done.
-void window_close_by_number(rct_windowclass cls, EntityId number)
+void window_close_by_number(WindowClass cls, EntityId number)
 {
     window_close_by_number(cls, static_cast<rct_windownumber>(number.ToUnderlying()));
 }
@@ -312,7 +312,7 @@ void window_close_by_number(rct_windowclass cls, EntityId number)
  * @param cls (cl) with bit 15 set
  * @returns the window or NULL if no window was found.
  */
-rct_window* window_find_by_class(rct_windowclass cls)
+rct_window* window_find_by_class(WindowClass cls)
 {
     for (auto& w : g_window_list)
     {
@@ -331,7 +331,7 @@ rct_window* window_find_by_class(rct_windowclass cls)
  * @param number (dx)
  * @returns the window or NULL if no window was found.
  */
-rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number)
+rct_window* window_find_by_number(WindowClass cls, rct_windownumber number)
 {
     for (auto& w : g_window_list)
     {
@@ -344,7 +344,7 @@ rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number)
 }
 
 // TODO: Use variant for this once the window framework is done.
-rct_window* window_find_by_number(rct_windowclass cls, EntityId id)
+rct_window* window_find_by_number(WindowClass cls, EntityId id)
 {
     return window_find_by_number(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
 }
@@ -356,7 +356,7 @@ rct_window* window_find_by_number(rct_windowclass cls, EntityId id)
  */
 void window_close_top()
 {
-    window_close_by_class(WC_DROPDOWN);
+    window_close_by_class(WindowClass::Dropdown);
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
@@ -375,13 +375,13 @@ void window_close_top()
  */
 void window_close_all()
 {
-    window_close_by_class(WC_DROPDOWN);
+    window_close_by_class(WindowClass::Dropdown);
     window_close_by_condition([](rct_window* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
 }
 
-void window_close_all_except_class(rct_windowclass cls)
+void window_close_all_except_class(WindowClass cls)
 {
-    window_close_by_class(WC_DROPDOWN);
+    window_close_by_class(WindowClass::Dropdown);
 
     window_close_by_condition([cls](rct_window* w) -> bool {
         return w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT));
@@ -488,7 +488,7 @@ template<typename TPred> static void window_invalidate_by_condition(TPred pred)
  *  rct2: 0x006EC3AC
  * @param cls (al) with bit 14 set
  */
-void window_invalidate_by_class(rct_windowclass cls)
+void window_invalidate_by_class(WindowClass cls)
 {
     window_invalidate_by_condition([cls](rct_window* w) -> bool { return w->classification == cls; });
 }
@@ -497,14 +497,14 @@ void window_invalidate_by_class(rct_windowclass cls)
  * Invalidates all windows with the specified window class and number.
  *  rct2: 0x006EC3AC
  */
-void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
+void window_invalidate_by_number(WindowClass cls, rct_windownumber number)
 {
     window_invalidate_by_condition(
         [cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
 }
 
 // TODO: Use variant for this once the window framework is done.
-void window_invalidate_by_number(rct_windowclass cls, EntityId id)
+void window_invalidate_by_number(WindowClass cls, EntityId id)
 {
     window_invalidate_by_number(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
 }
@@ -551,7 +551,7 @@ template<typename TPred> static void widget_invalidate_by_condition(TPred pred)
 /**
  * Invalidates the specified widget of all windows that match the specified window class.
  */
-void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex)
+void widget_invalidate_by_class(WindowClass cls, rct_widgetindex widgetIndex)
 {
     window_visit_each([cls, widgetIndex](rct_window* w) {
         if (w->classification == cls)
@@ -565,7 +565,7 @@ void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex
  * Invalidates the specified widget of all windows that match the specified window class and number.
  *  rct2: 0x006EC3AC
  */
-void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex)
+void widget_invalidate_by_number(WindowClass cls, rct_windownumber number, rct_widgetindex widgetIndex)
 {
     window_visit_each([cls, number, widgetIndex](rct_window* w) {
         if (w->classification == cls && w->number == number)
@@ -684,7 +684,7 @@ rct_window* window_bring_to_front(rct_window& w)
     return &w;
 }
 
-rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags)
+rct_window* window_bring_to_front_by_class_with_flags(WindowClass cls, uint16_t flags)
 {
     rct_window* w = window_find_by_class(cls);
     if (w != nullptr)
@@ -697,7 +697,7 @@ rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint1
     return w;
 }
 
-rct_window* window_bring_to_front_by_class(rct_windowclass cls)
+rct_window* window_bring_to_front_by_class(WindowClass cls)
 {
     return window_bring_to_front_by_class_with_flags(cls, WF_WHITE_BORDER_MASK);
 }
@@ -708,7 +708,7 @@ rct_window* window_bring_to_front_by_class(rct_windowclass cls)
  * cls (cl)
  * number (dx)
  */
-rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number)
+rct_window* window_bring_to_front_by_number(WindowClass cls, rct_windownumber number)
 {
     rct_window* w;
 
@@ -800,7 +800,7 @@ rct_window* window_get_main()
 {
     for (auto& w : g_window_list)
     {
-        if (w->classification == WC_MAIN_WINDOW)
+        if (w->classification == WindowClass::MainWindow)
         {
             return w.get();
         }
@@ -1707,21 +1707,21 @@ void window_resize_gui(int32_t width, int32_t height)
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
-    rct_window* titleWind = window_find_by_class(WC_TITLE_MENU);
+    rct_window* titleWind = window_find_by_class(WindowClass::TitleMenu);
     if (titleWind != nullptr)
     {
         titleWind->windowPos.x = (width - titleWind->width) / 2;
         titleWind->windowPos.y = height - 182;
     }
 
-    rct_window* exitWind = window_find_by_class(WC_TITLE_EXIT);
+    rct_window* exitWind = window_find_by_class(WindowClass::TitleExit);
     if (exitWind != nullptr)
     {
         exitWind->windowPos.x = width - 40;
         exitWind->windowPos.y = height - 64;
     }
 
-    rct_window* optionsWind = window_find_by_class(WC_TITLE_OPTIONS);
+    rct_window* optionsWind = window_find_by_class(WindowClass::TitleOptions);
     if (optionsWind != nullptr)
     {
         optionsWind->windowPos.x = width - 80;
@@ -1752,13 +1752,13 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
         }
     }
 
-    rct_window* topWind = window_find_by_class(WC_TOP_TOOLBAR);
+    rct_window* topWind = window_find_by_class(WindowClass::TopToolbar);
     if (topWind != nullptr)
     {
         topWind->width = std::max(640, width);
     }
 
-    rct_window* bottomWind = window_find_by_class(WC_BOTTOM_TOOLBAR);
+    rct_window* bottomWind = window_find_by_class(WindowClass::BottomToolbar);
     if (bottomWind != nullptr)
     {
         bottomWind->windowPos.y = height - 32;
@@ -1772,10 +1772,10 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
  */
 void window_close_construction_windows()
 {
-    window_close_by_class(WC_RIDE_CONSTRUCTION);
-    window_close_by_class(WC_FOOTPATH);
-    window_close_by_class(WC_TRACK_DESIGN_LIST);
-    window_close_by_class(WC_TRACK_DESIGN_PLACE);
+    window_close_by_class(WindowClass::RideConstruction);
+    window_close_by_class(WindowClass::Footpath);
+    window_close_by_class(WindowClass::TrackDesignList);
+    window_close_by_class(WindowClass::TrackDesignPlace);
 }
 
 /**
@@ -1964,7 +1964,7 @@ int32_t window_can_resize(const rct_window& w)
  */
 void textinput_cancel()
 {
-    window_close_by_class(WC_TEXTINPUT);
+    window_close_by_class(WindowClass::Textinput);
 }
 
 void window_start_textbox(
@@ -1981,7 +1981,7 @@ void window_start_textbox(
 
     gMaxTextBoxInputLength = maxLength;
 
-    window_close_by_class(WC_TEXTINPUT);
+    window_close_by_class(WindowClass::Textinput);
 
     // Clear the text input buffer
     std::fill_n(gTextBoxInput, maxLength, 0x00);
@@ -2007,7 +2007,7 @@ void window_cancel_textbox()
         {
             window_event_textinput_call(w, gCurrentTextBox.widget_index, nullptr);
         }
-        gCurrentTextBox.window.classification = WC_NULL;
+        gCurrentTextBox.window.classification = WindowClass::Null;
         gCurrentTextBox.window.number = 0;
         context_stop_text_input();
         gUsingWidgetTextBox = false;
@@ -2047,7 +2047,7 @@ bool window_is_visible(rct_window& w)
         return false;
 
     // only consider viewports, consider the main window always visible
-    if (w.viewport == nullptr || w.classification == WC_MAIN_WINDOW)
+    if (w.viewport == nullptr || w.classification == WindowClass::MainWindow)
     {
         // default to previous behaviour
         w.visibility = VisibilityCache::Visible;
@@ -2178,7 +2178,7 @@ rct_window* window_get_listening()
     return nullptr;
 }
 
-rct_windowclass window_get_classification(const rct_window& window)
+WindowClass window_get_classification(const rct_window& window)
 {
     return window.classification;
 }

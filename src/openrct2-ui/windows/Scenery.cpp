@@ -171,7 +171,7 @@ public:
         viewport_set_visibility(0);
 
         if (gWindowSceneryScatterEnabled)
-            window_close_by_class(WC_SCENERY_SCATTER);
+            window_close_by_class(WindowClass::SceneryScatter);
 
         if (scenery_tool_is_active())
             tool_cancel();
@@ -183,7 +183,7 @@ public:
         {
             case WIDX_SCENERY_CLOSE:
                 if (gWindowSceneryScatterEnabled)
-                    window_close_by_class(WC_SCENERY_SCATTER);
+                    window_close_by_class(WindowClass::SceneryScatter);
                 Close();
                 break;
             case WIDX_SCENERY_ROTATE_OBJECTS_BUTTON:
@@ -196,14 +196,14 @@ public:
                 gWindowSceneryPaintEnabled ^= 1;
                 gWindowSceneryEyedropperEnabled = false;
                 if (gWindowSceneryScatterEnabled)
-                    window_close_by_class(WC_SCENERY_SCATTER);
+                    window_close_by_class(WindowClass::SceneryScatter);
                 Invalidate();
                 break;
             case WIDX_SCENERY_EYEDROPPER_BUTTON:
                 gWindowSceneryPaintEnabled = 0;
                 gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
                 if (gWindowSceneryScatterEnabled)
-                    window_close_by_class(WC_SCENERY_SCATTER);
+                    window_close_by_class(WindowClass::SceneryScatter);
                 scenery_remove_ghost_tool_placement();
                 Invalidate();
                 break;
@@ -211,7 +211,7 @@ public:
                 gWindowSceneryPaintEnabled = 0;
                 gWindowSceneryEyedropperEnabled = false;
                 if (gWindowSceneryScatterEnabled)
-                    window_close_by_class(WC_SCENERY_SCATTER);
+                    window_close_by_class(WindowClass::SceneryScatter);
                 else if (
                     network_get_mode() != NETWORK_MODE_CLIENT
                     || network_can_perform_command(network_get_current_player_group_index(), -2))
@@ -833,7 +833,7 @@ public:
 
         SortTabs();
         PrepareWidgets();
-        window_invalidate_by_class(WC_SCENERY);
+        window_invalidate_by_class(WindowClass::Scenery);
     }
 
     int32_t GetRequiredWidth() const
@@ -1354,10 +1354,10 @@ private:
 
 rct_window* WindowSceneryOpen()
 {
-    auto* w = static_cast<SceneryWindow*>(window_bring_to_front_by_class(WC_SCENERY));
+    auto* w = static_cast<SceneryWindow*>(window_bring_to_front_by_class(WindowClass::Scenery));
     if (w == nullptr)
     {
-        w = WindowCreate<SceneryWindow>(WC_SCENERY);
+        w = WindowCreate<SceneryWindow>(WindowClass::Scenery);
     }
     return w;
 }
@@ -1366,7 +1366,7 @@ void WindowScenerySetSelectedItem(
     const ScenerySelection& scenery, const std::optional<colour_t> primary, const std::optional<colour_t> secondary,
     const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
 {
-    auto* w = static_cast<SceneryWindow*>(window_bring_to_front_by_class(WC_SCENERY));
+    auto* w = static_cast<SceneryWindow*>(window_bring_to_front_by_class(WindowClass::Scenery));
     if (w != nullptr)
     {
         w->SetSelectedItem(scenery, primary, secondary, tertiary, rotation);
@@ -1376,7 +1376,7 @@ void WindowScenerySetSelectedItem(
 void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
 {
     // Should this bring to front?
-    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WC_SCENERY));
+    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WindowClass::Scenery));
     if (w != nullptr)
     {
         return w->SetSelectedTab(sceneryGroupIndex);
@@ -1402,7 +1402,7 @@ void WindowScenerySetDefaultPlacementConfiguration()
 
 const ScenerySelection WindowSceneryGetTabSelection()
 {
-    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WC_SCENERY));
+    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WindowClass::Scenery));
     if (w != nullptr)
     {
         return w->GetTabSelection();
@@ -1415,7 +1415,7 @@ const ScenerySelection WindowSceneryGetTabSelection()
 
 void WindowSceneryInit()
 {
-    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WC_SCENERY));
+    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WindowClass::Scenery));
     if (w != nullptr)
     {
         w->Init();

@@ -74,16 +74,16 @@ struct IntentData
 class Intent
 {
 private:
-    rct_windowclass _Class{ WC_NULL };
+    WindowClass _Class{ WindowClass::Null };
     WindowDetail _WindowDetail{ WD_NULL };
     IntentAction _Action{ INTENT_ACTION_NULL };
     std::map<uint32_t, IntentData> _Data;
 
 public:
-    explicit Intent(rct_windowclass windowClass);
+    explicit Intent(WindowClass windowClass);
     explicit Intent(WindowDetail windowDetail);
     explicit Intent(IntentAction windowclass);
-    rct_windowclass GetWindowClass() const;
+    WindowClass GetWindowClass() const;
     WindowDetail GetWindowDetail() const;
     IntentAction GetAction() const;
     void* GetPointerExtra(uint32_t key) const;

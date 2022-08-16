@@ -13,7 +13,7 @@
 
 #include <utility>
 
-Intent::Intent(rct_windowclass windowClass)
+Intent::Intent(WindowClass windowClass)
     : _Class(windowClass)
 {
 }
@@ -83,7 +83,7 @@ Intent* Intent::putExtra(uint32_t key, close_callback value)
     return this;
 }
 
-rct_windowclass Intent::GetWindowClass() const
+WindowClass Intent::GetWindowClass() const
 {
     return this->_Class;
 }

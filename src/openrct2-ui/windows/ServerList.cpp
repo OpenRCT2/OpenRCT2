@@ -121,11 +121,12 @@ rct_window* WindowServerListOpen()
     rct_window* window;
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WC_SERVER_LIST);
+    window = window_bring_to_front_by_class(WindowClass::ServerList);
     if (window != nullptr)
         return window;
 
-    window = WindowCreateCentred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
+    window = WindowCreateCentred(
+        WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WindowClass::ServerList, WF_10 | WF_RESIZABLE);
 
     window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
     window->widgets = window_server_list_widgets;
@@ -195,7 +196,7 @@ static void WindowServerListMouseup(rct_window* w, rct_widgetindex widgetIndex)
             WindowTextInputOpen(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, STR_NONE, 0, 128);
             break;
         case WIDX_START_SERVER:
-            context_open_window(WC_SERVER_START);
+            context_open_window(WindowClass::ServerStart);
             break;
     }
 }

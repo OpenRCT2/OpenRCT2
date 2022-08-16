@@ -743,14 +743,14 @@ private:
             {
                 auto setDateAction = ParkSetDateAction(_yearSpinnerValue, _monthSpinnerValue, _daySpinnerValue);
                 GameActions::Execute(&setDateAction);
-                window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+                window_invalidate_by_class(WindowClass::BottomToolbar);
                 break;
             }
             case WIDX_DATE_RESET:
             {
                 auto setDateAction = ParkSetDateAction(1, 1, 1);
                 GameActions::Execute(&setDateAction);
-                window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+                window_invalidate_by_class(WindowClass::BottomToolbar);
                 InvalidateWidget(WIDX_YEAR_BOX);
                 InvalidateWidget(WIDX_MONTH_BOX);
                 InvalidateWidget(WIDX_DAY_BOX);
@@ -1103,10 +1103,10 @@ private:
 
 rct_window* WindowCheatsOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_CHEATS);
+    auto* window = window_bring_to_front_by_class(WindowClass::Cheats);
     if (window == nullptr)
     {
-        window = WindowCreate<CheatsWindow>(WC_CHEATS, ScreenCoordsXY(32, 32), WW, WH);
+        window = WindowCreate<CheatsWindow>(WindowClass::Cheats, ScreenCoordsXY(32, 32), WW, WH);
     }
     return window;
 }

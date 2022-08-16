@@ -137,10 +137,10 @@ rct_window* WindowPlayerOpen(uint8_t id)
 {
     rct_window* window;
 
-    window = window_bring_to_front_by_number(WC_PLAYER, id);
+    window = window_bring_to_front_by_number(WindowClass::Player, id);
     if (window == nullptr)
     {
-        window = WindowCreateAutoPos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
+        window = WindowCreateAutoPos(240, 170, &window_player_overview_events, WindowClass::Player, WF_RESIZABLE);
         window->number = id;
         window->page = 0;
         window->frame_no = 0;

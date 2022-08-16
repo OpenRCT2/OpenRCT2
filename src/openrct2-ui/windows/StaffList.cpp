@@ -147,7 +147,7 @@ public:
                 }
                 break;
             case WIDX_STAFF_LIST_MAP:
-                context_open_window(WC_MAP);
+                context_open_window(WindowClass::Map);
                 break;
             case WIDX_STAFF_LIST_QUICK_FIRE:
                 _quickFireMode = !_quickFireMode;
@@ -184,7 +184,7 @@ public:
             InvalidateWidget(WIDX_STAFF_LIST_HANDYMEN_TAB + _selectedTab);
 
             // Enable highlighting of these staff members in map window
-            if (window_find_by_class(WC_MAP) != nullptr)
+            if (window_find_by_class(WindowClass::Map) != nullptr)
             {
                 gWindowMapFlashingFlags |= MapFlashingFlags::StaffListOpen;
                 for (auto peep : EntityList<Staff>())
@@ -355,7 +355,7 @@ public:
                     auto peep = GetEntity<Staff>(spriteIndex);
                     if (peep != nullptr)
                     {
-                        auto intent = Intent(WC_PEEP);
+                        auto intent = Intent(WindowClass::Peep);
                         intent.putExtra(INTENT_EXTRA_PEEP, peep);
                         context_open_intent(&intent);
                     }
@@ -529,7 +529,7 @@ private:
             auto actionResult = res->GetData<StaffHireNewActionResult>();
             // Open window for new staff.
             auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
-            auto intent = Intent(WC_PEEP);
+            auto intent = Intent(WindowClass::Peep);
             intent.putExtra(INTENT_EXTRA_PEEP, staff);
             context_open_intent(&intent);
         });
@@ -705,12 +705,12 @@ private:
 
 rct_window* WindowStaffListOpen()
 {
-    return WindowFocusOrCreate<StaffListWindow>(WC_STAFF_LIST, WW, WH, WF_10 | WF_RESIZABLE);
+    return WindowFocusOrCreate<StaffListWindow>(WindowClass::StaffList, WW, WH, WF_10 | WF_RESIZABLE);
 }
 
 void WindowStaffListRefresh()
 {
-    auto* window = window_find_by_class(WC_STAFF_LIST);
+    auto* window = window_find_by_class(WindowClass::StaffList);
     if (window != nullptr)
     {
         static_cast<StaffListWindow*>(window)->RefreshList();

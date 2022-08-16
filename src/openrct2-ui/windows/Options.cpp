@@ -1189,7 +1189,7 @@ private:
                 if (dropdownIndex == EnumValue(CurrencyType::Custom) + 1)
                 { // Add 1 because the separator occupies a position
                     gConfigGeneral.currency_format = static_cast<CurrencyType>(dropdownIndex - 1);
-                    context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
+                    context_open_window(WindowClass::CustomCurrencyConfig);
                 }
                 else
                 {
@@ -1305,7 +1305,7 @@ private:
                     OpenRCT2::Audio::Pause();
                 else
                     OpenRCT2::Audio::Resume();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 config_save_default();
                 Invalidate();
                 break;
@@ -1531,7 +1531,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_HOTKEY_DROPDOWN:
-                context_open_window(WC_KEYBOARD_SHORTCUT_LIST);
+                context_open_window(WindowClass::KeyboardShortcutList);
                 break;
             case WIDX_SCREEN_EDGE_SCROLLING:
                 gConfigGeneral.edge_scrolling ^= 1;
@@ -1553,43 +1553,43 @@ private:
                 gConfigInterface.toolbar_show_finances ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_RESEARCH:
                 gConfigInterface.toolbar_show_research ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_CHEATS:
                 gConfigInterface.toolbar_show_cheats ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_NEWS:
                 gConfigInterface.toolbar_show_news ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_MUTE:
                 gConfigInterface.toolbar_show_mute ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_CHAT:
                 gConfigInterface.toolbar_show_chat ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_ZOOM:
                 gConfigInterface.toolbar_show_zoom ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_INVERT_DRAG:
                 gConfigGeneral.invert_viewport_drag ^= 1;
@@ -1597,7 +1597,7 @@ private:
                 Invalidate();
                 break;
             case WIDX_THEMES_BUTTON:
-                context_open_window(WC_THEMES);
+                context_open_window(WindowClass::Themes);
                 Invalidate();
                 break;
         }
@@ -1683,7 +1683,7 @@ private:
             case WIDX_SCENARIO_UNLOCKING:
                 gConfigGeneral.scenario_unlocking_enabled ^= 1;
                 config_save_default();
-                window_close_by_class(WC_SCENARIO_SELECT);
+                window_close_by_class(WindowClass::ScenarioSelect);
                 break;
             case WIDX_AUTO_OPEN_SHOPS:
                 gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
@@ -1803,7 +1803,7 @@ private:
                     gConfigInterface.scenarioselect_last_tab = 0;
                     config_save_default();
                     Invalidate();
-                    window_close_by_class(WC_SCENARIO_SELECT);
+                    window_close_by_class(WindowClass::ScenarioSelect);
                 }
                 break;
         }
@@ -2192,5 +2192,5 @@ private:
  */
 rct_window* WindowOptionsOpen()
 {
-    return WindowFocusOrCreate<OptionsWindow>(WC_OPTIONS, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
 }

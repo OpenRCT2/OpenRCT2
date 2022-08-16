@@ -45,7 +45,7 @@ static rct_window_event_list window_title_logo_events([](auto& events)
 rct_window* WindowTitleLogoOpen()
 {
     rct_window* window = WindowCreate(
-        ScreenCoordsXY(0, 0), WW, WH, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
+        ScreenCoordsXY(0, 0), WW, WH, &window_title_logo_events, WindowClass::TitleLogo, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_logo_widgets;
     WindowInitScrollWidgets(*window);
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);

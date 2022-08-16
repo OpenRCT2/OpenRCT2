@@ -63,7 +63,7 @@ static int16_t _clickRepeatTicks;
 
 static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords);
 static void InputWidgetOver(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex);
-static void InputWidgetOverChangeCheck(rct_windowclass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex);
+static void InputWidgetOverChangeCheck(WindowClass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex);
 static void InputWidgetOverFlatbuttonInvalidate();
 void ProcessMouseOver(const ScreenCoordsXY& screenCoords);
 void ProcessMouseTool(const ScreenCoordsXY& screenCoords);
@@ -293,7 +293,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                     InputWidgetLeft(screenCoords, w, widgetIndex);
                     break;
                 case MouseState::RightPress:
-                    window_close_by_class(WC_TOOLTIP);
+                    window_close_by_class(WindowClass::Tooltip);
 
                     if (w != nullptr)
                     {
@@ -910,7 +910,7 @@ static void InputScrollPartUpdateVBottom(rct_window& w, rct_widgetindex widgetIn
  */
 static void InputWidgetOver(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_windowclass windowClass = WC_NULL;
+    WindowClass windowClass = WindowClass::Null;
     rct_windownumber windowNumber = 0;
     rct_widget* widget = nullptr;
 
@@ -947,7 +947,7 @@ static void InputWidgetOver(const ScreenCoordsXY& screenCoords, rct_window* w, r
  *
  *  rct2: 0x006E9269
  */
-static void InputWidgetOverChangeCheck(rct_windowclass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex)
+static void InputWidgetOverChangeCheck(WindowClass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex)
 {
     // Prevents invalid widgets being clicked source of bug is elsewhere
     if (widgetIndex == -1)
@@ -966,7 +966,7 @@ static void InputWidgetOverChangeCheck(rct_windowclass windowClass, rct_windownu
         gHoverWidget.widget_index = widgetIndex;
 
         // Invalidate new widget cursor is on if widget is a flat button
-        if (windowClass != 255)
+        if (windowClass != WindowClass::Null)
             InputWidgetOverFlatbuttonInvalidate();
     }
 }
@@ -995,7 +995,7 @@ static void InputWidgetOverFlatbuttonInvalidate()
  */
 static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_windowclass windowClass = WC_NULL;
+    WindowClass windowClass = WindowClass::Null;
     rct_windownumber windowNumber = 0;
 
     if (w != nullptr)
@@ -1004,8 +1004,8 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
         windowNumber = w->number;
     }
 
-    window_close_by_class(WC_ERROR);
-    window_close_by_class(WC_TOOLTIP);
+    window_close_by_class(WindowClass::Error);
+    window_close_by_class(WindowClass::Tooltip);
 
     // Window might have changed position in the list, therefore find it again
     w = window_find_by_number(windowClass, windowNumber);
@@ -1180,7 +1180,7 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
 void InputStateWidgetPressed(
     const ScreenCoordsXY& screenCoords, MouseState state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
 {
-    rct_windowclass cursor_w_class;
+    WindowClass cursor_w_class;
     rct_windownumber cursor_w_number;
     cursor_w_class = gPressedWidget.window_classification;
     cursor_w_number = gPressedWidget.window_number;
@@ -1222,7 +1222,7 @@ void InputStateWidgetPressed(
                 if (_inputState == InputState::DropdownActive)
                 {
                     gDropdownHighlightedIndex = gDropdownDefaultIndex;
-                    window_invalidate_by_class(WC_DROPDOWN);
+                    window_invalidate_by_class(WindowClass::Dropdown);
                 }
                 return;
             }
@@ -1241,7 +1241,7 @@ void InputStateWidgetPressed(
                     int32_t dropdown_index = 0;
                     bool dropdownCleanup = false;
 
-                    if (w->classification == WC_DROPDOWN)
+                    if (w->classification == WindowClass::Dropdown)
                     {
                         dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                         dropdownCleanup = dropdown_index == -1
@@ -1270,7 +1270,7 @@ void InputStateWidgetPressed(
                         }
                     }
 
-                    window_close_by_class(WC_DROPDOWN);
+                    window_close_by_class(WindowClass::Dropdown);
 
                     if (dropdownCleanup)
                     {
@@ -1351,13 +1351,13 @@ void InputStateWidgetPressed(
     }
 
     gDropdownHighlightedIndex = -1;
-    window_invalidate_by_class(WC_DROPDOWN);
+    window_invalidate_by_class(WindowClass::Dropdown);
     if (w == nullptr)
     {
         return;
     }
 
-    if (w->classification == WC_DROPDOWN)
+    if (w->classification == WindowClass::Dropdown)
     {
         int32_t dropdown_index = DropdownIndexFromPoint(screenCoords, w);
         if (dropdown_index == -1)
@@ -1418,7 +1418,7 @@ void InputStateWidgetPressed(
         }
 
         gDropdownHighlightedIndex = dropdown_index;
-        window_invalidate_by_class(WC_DROPDOWN);
+        window_invalidate_by_class(WindowClass::Dropdown);
     }
     else
     {
@@ -1429,7 +1429,7 @@ void InputStateWidgetPressed(
 
 static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (gTooltipWidget.window_classification == 255)
+    if (gTooltipWidget.window_classification == WindowClass::Null)
     {
         if (gTooltipCursor == screenCoords)
         {
@@ -1458,7 +1458,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
         gTooltipTimeout += gCurrentDeltaTime;
         if (gTooltipTimeout >= 8000)
         {
-            window_close_by_class(WC_TOOLTIP);
+            window_close_by_class(WindowClass::Tooltip);
         }
     }
 }

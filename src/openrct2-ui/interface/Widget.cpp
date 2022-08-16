@@ -847,14 +847,14 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetind
 
 bool WidgetIsDisabled(const rct_window& w, rct_widgetindex widgetIndex)
 {
-    if (w.classification == WC_CUSTOM)
+    if (w.classification == WindowClass::Custom)
         return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_DISABLED;
     return (w.disabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
 bool WidgetIsHoldable(const rct_window& w, rct_widgetindex widgetIndex)
 {
-    if (w.classification == WC_CUSTOM)
+    if (w.classification == WindowClass::Custom)
         return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_HOLDABLE;
     return (w.hold_down_widgets & (1LL << widgetIndex)) != 0;
 }
@@ -866,7 +866,7 @@ bool WidgetIsVisible(const rct_window& w, rct_widgetindex widgetIndex)
 
 bool WidgetIsPressed(const rct_window& w, rct_widgetindex widgetIndex)
 {
-    if (w.classification == WC_CUSTOM)
+    if (w.classification == WindowClass::Custom)
     {
         if (w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_PRESSED)
         {

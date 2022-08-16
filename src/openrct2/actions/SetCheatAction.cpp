@@ -92,13 +92,13 @@ GameActions::Result SetCheatAction::Execute() const
     {
         case CheatType::SandboxMode:
             gCheatsSandboxMode = _param1 != 0;
-            window_invalidate_by_class(WC_MAP);
-            window_invalidate_by_class(WC_FOOTPATH);
+            window_invalidate_by_class(WindowClass::Map);
+            window_invalidate_by_class(WindowClass::Footpath);
             break;
         case CheatType::DisableClearanceChecks:
             gCheatsDisableClearanceChecks = _param1 != 0;
             // Required to update the clearance checks overlay on the Cheats button.
-            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            window_invalidate_by_class(WindowClass::TopToolbar);
             break;
         case CheatType::DisableSupportLimits:
             gCheatsDisableSupportLimits = _param1 != 0;
@@ -217,7 +217,7 @@ GameActions::Result SetCheatAction::Execute() const
             break;
         case CheatType::AllowArbitraryRideTypeChanges:
             gCheatsAllowArbitraryRideTypeChanges = _param1 != 0;
-            window_invalidate_by_class(WC_RIDE);
+            window_invalidate_by_class(WindowClass::Ride);
             break;
         case CheatType::OwnAllLand:
             OwnAllLand();
@@ -253,7 +253,7 @@ GameActions::Result SetCheatAction::Execute() const
         config_save_default();
     }
 
-    window_invalidate_by_class(WC_CHEATS);
+    window_invalidate_by_class(WindowClass::Cheats);
     return GameActions::Result();
 }
 
@@ -463,7 +463,7 @@ void SetCheatAction::RenewRides() const
     {
         ride.Renew();
     }
-    window_invalidate_by_class(WC_RIDE);
+    window_invalidate_by_class(WindowClass::Ride);
 }
 
 void SetCheatAction::MakeDestructible() const
@@ -473,7 +473,7 @@ void SetCheatAction::MakeDestructible() const
         ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
         ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
     }
-    window_invalidate_by_class(WC_RIDE);
+    window_invalidate_by_class(WindowClass::Ride);
 }
 
 void SetCheatAction::ResetRideCrashStatus() const
@@ -484,7 +484,7 @@ void SetCheatAction::ResetRideCrashStatus() const
         ride.lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
         ride.last_crash_type = RIDE_CRASH_TYPE_NONE;
     }
-    window_invalidate_by_class(WC_RIDE);
+    window_invalidate_by_class(WindowClass::Ride);
 }
 
 void SetCheatAction::Set10MinuteInspection() const
@@ -494,7 +494,7 @@ void SetCheatAction::Set10MinuteInspection() const
         // Set inspection interval to 10 minutes
         ride.inspection_interval = RIDE_INSPECTION_EVERY_10_MINUTES;
     }
-    window_invalidate_by_class(WC_RIDE);
+    window_invalidate_by_class(WindowClass::Ride);
 }
 
 void SetCheatAction::SetScenarioNoMoney(bool enabled) const
@@ -508,29 +508,29 @@ void SetCheatAction::SetScenarioNoMoney(bool enabled) const
         gParkFlags &= ~PARK_FLAGS_NO_MONEY;
     }
     // Invalidate all windows that have anything to do with finance
-    window_invalidate_by_class(WC_RIDE);
-    window_invalidate_by_class(WC_PEEP);
-    window_invalidate_by_class(WC_PARK_INFORMATION);
-    window_invalidate_by_class(WC_FINANCES);
-    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
-    window_invalidate_by_class(WC_CHEATS);
+    window_invalidate_by_class(WindowClass::Ride);
+    window_invalidate_by_class(WindowClass::Peep);
+    window_invalidate_by_class(WindowClass::ParkInformation);
+    window_invalidate_by_class(WindowClass::Finances);
+    window_invalidate_by_class(WindowClass::BottomToolbar);
+    window_invalidate_by_class(WindowClass::TopToolbar);
+    window_invalidate_by_class(WindowClass::Cheats);
 }
 
 void SetCheatAction::SetMoney(money32 amount) const
 {
     gCash = amount;
 
-    window_invalidate_by_class(WC_FINANCES);
-    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+    window_invalidate_by_class(WindowClass::Finances);
+    window_invalidate_by_class(WindowClass::BottomToolbar);
 }
 
 void SetCheatAction::AddMoney(money32 amount) const
 {
     gCash = add_clamp_money32(gCash, amount);
 
-    window_invalidate_by_class(WC_FINANCES);
-    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+    window_invalidate_by_class(WindowClass::Finances);
+    window_invalidate_by_class(WindowClass::BottomToolbar);
 }
 
 void SetCheatAction::ClearLoan() const
@@ -550,7 +550,7 @@ void SetCheatAction::GenerateGuests(int32_t count) const
     {
         park.GenerateGuest();
     }
-    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+    window_invalidate_by_class(WindowClass::BottomToolbar);
 }
 
 void SetCheatAction::SetGuestParameter(int32_t parameter, int32_t value) const
@@ -621,7 +621,7 @@ void SetCheatAction::GiveObjectToGuests(int32_t object) const
                 break;
         }
     }
-    window_invalidate_by_class(WC_PEEP);
+    window_invalidate_by_class(WindowClass::Peep);
 }
 
 void SetCheatAction::RemoveAllGuests() const
@@ -668,7 +668,7 @@ void SetCheatAction::RemoveAllGuests() const
         guest->Remove();
     }
 
-    window_invalidate_by_class(WC_RIDE);
+    window_invalidate_by_class(WindowClass::Ride);
     gfx_invalidate_screen();
 }
 

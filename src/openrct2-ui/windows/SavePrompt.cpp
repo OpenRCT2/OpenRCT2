@@ -119,7 +119,7 @@ rct_window* WindowSavePromptOpen()
     }
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WC_SAVE_PROMPT);
+    window = window_bring_to_front_by_class(WindowClass::SavePrompt);
     if (window != nullptr)
     {
         window_close(*window);
@@ -143,7 +143,8 @@ rct_window* WindowSavePromptOpen()
         log_warning("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
     }
-    window = WindowCreateCentred(width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+    window = WindowCreateCentred(
+        width, height, &window_save_prompt_events, WindowClass::SavePrompt, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 
     window->widgets = widgets;
     WindowInitScrollWidgets(*window);
@@ -155,7 +156,7 @@ rct_window* WindowSavePromptOpen()
         OpenRCT2::Audio::StopAll();
     }
 
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
 
     stringId = window_save_prompt_labels[EnumValue(prompt_mode)][0];
     if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -181,7 +182,7 @@ static void WindowSavePromptClose(rct_window* w)
         OpenRCT2::Audio::Resume();
     }
 
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
 }
 
 /**
@@ -213,7 +214,7 @@ static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
 
             if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
             {
-                intent = std::make_unique<Intent>(WC_LOADSAVE);
+                intent = std::make_unique<Intent>(WindowClass::Loadsave);
                 intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
                 intent->putExtra(INTENT_EXTRA_PATH, gScenarioName);
             }

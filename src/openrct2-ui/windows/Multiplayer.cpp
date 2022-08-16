@@ -232,10 +232,11 @@ static ScreenCoordsXY _windowInformationSize;
 rct_window* WindowMultiplayerOpen()
 {
     // Check if window is already open
-    rct_window* window = window_bring_to_front_by_class(WC_MULTIPLAYER);
+    rct_window* window = window_bring_to_front_by_class(WindowClass::Multiplayer);
     if (window == nullptr)
     {
-        window = WindowCreateAutoPos(320, 144, &window_multiplayer_players_events, WC_MULTIPLAYER, WF_10 | WF_RESIZABLE);
+        window = WindowCreateAutoPos(
+            320, 144, &window_multiplayer_players_events, WindowClass::Multiplayer, WF_10 | WF_RESIZABLE);
         WindowMultiplayerSetPage(window, WINDOW_MULTIPLAYER_PAGE_INFORMATION);
     }
 

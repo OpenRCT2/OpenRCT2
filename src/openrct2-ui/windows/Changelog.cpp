@@ -309,7 +309,7 @@ private:
 
 rct_window* WindowChangelogOpen(int personality)
 {
-    auto* window = window_bring_to_front_by_class(WC_CHANGELOG);
+    auto* window = window_bring_to_front_by_class(WindowClass::Changelog);
     if (window == nullptr)
     {
         // Create a new centred window
@@ -319,7 +319,7 @@ rct_window* WindowChangelogOpen(int personality)
         int32_t height = (screenHeight * 4) / 5;
 
         auto pos = ChangelogWindow::GetCentrePositionForNewWindow(width, height);
-        auto* newWindow = WindowCreate<ChangelogWindow>(WC_CHANGELOG, pos, width, height, WF_RESIZABLE);
+        auto* newWindow = WindowCreate<ChangelogWindow>(WindowClass::Changelog, pos, width, height, WF_RESIZABLE);
         newWindow->SetPersonality(personality);
         return newWindow;
     }

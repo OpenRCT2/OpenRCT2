@@ -187,5 +187,5 @@ private:
 
 rct_window* WindowWaterOpen()
 {
-    return WindowFocusOrCreate<WaterWindow>(WC_WATER, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    return WindowFocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 }

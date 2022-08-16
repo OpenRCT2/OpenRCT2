@@ -56,7 +56,7 @@ using rct_widgetindex = int16_t;
 
 struct window_identifier
 {
-    rct_windowclass classification;
+    WindowClass classification;
     rct_windownumber number;
 };
 
@@ -561,24 +561,24 @@ void window_update_all();
 void window_set_window_limit(int32_t value);
 
 rct_window* window_bring_to_front(rct_window& w);
-rct_window* window_bring_to_front_by_class(rct_windowclass cls);
-rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags);
-rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number);
+rct_window* window_bring_to_front_by_class(WindowClass cls);
+rct_window* window_bring_to_front_by_class_with_flags(WindowClass cls, uint16_t flags);
+rct_window* window_bring_to_front_by_number(WindowClass cls, rct_windownumber number);
 
 rct_window* WindowCreate(
-    std::unique_ptr<rct_window>&& w, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
+    std::unique_ptr<rct_window>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
-T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0)
+T* WindowCreate(WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0)
 {
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
 }
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
-T* WindowCreate(rct_windowclass cls, int32_t width, int32_t height, uint32_t flags = 0)
+T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
 {
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, {}, width, height, flags | WF_AUTO_POSITION));
 }
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
-T* WindowFocusOrCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+T* WindowFocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
 {
     auto* w = window_bring_to_front_by_class(cls);
     if (w == nullptr)
@@ -588,7 +588,7 @@ T* WindowFocusOrCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t w
     return static_cast<T*>(w);
 }
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
-T* WindowFocusOrCreate(rct_windowclass cls, int32_t width, int32_t height, uint32_t flags = 0)
+T* WindowFocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
 {
     auto* w = window_bring_to_front_by_class(cls);
     if (w == nullptr)
@@ -599,33 +599,33 @@ T* WindowFocusOrCreate(rct_windowclass cls, int32_t width, int32_t height, uint3
 }
 
 rct_window* WindowCreate(
-    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls,
     uint32_t flags);
 rct_window* WindowCreateAutoPos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags);
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls, uint32_t flags);
 rct_window* WindowCreateCentred(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags);
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls, uint32_t flags);
 
 void window_close(rct_window& window);
-void window_close_by_class(rct_windowclass cls);
-void window_close_by_number(rct_windowclass cls, rct_windownumber number);
-void window_close_by_number(rct_windowclass cls, EntityId number);
+void window_close_by_class(WindowClass cls);
+void window_close_by_number(WindowClass cls, rct_windownumber number);
+void window_close_by_number(WindowClass cls, EntityId number);
 void window_close_top();
 void window_close_all();
-void window_close_all_except_class(rct_windowclass cls);
+void window_close_all_except_class(WindowClass cls);
 void window_close_all_except_flags(uint16_t flags);
-rct_window* window_find_by_class(rct_windowclass cls);
-rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number);
-rct_window* window_find_by_number(rct_windowclass cls, EntityId id);
+rct_window* window_find_by_class(WindowClass cls);
+rct_window* window_find_by_number(WindowClass cls, rct_windownumber number);
+rct_window* window_find_by_number(WindowClass cls, EntityId id);
 rct_window* window_find_from_point(const ScreenCoordsXY& screenCoords);
 rct_widgetindex window_find_widget_from_point(rct_window& w, const ScreenCoordsXY& screenCoords);
-void window_invalidate_by_class(rct_windowclass cls);
-void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);
-void window_invalidate_by_number(rct_windowclass cls, EntityId id);
+void window_invalidate_by_class(WindowClass cls);
+void window_invalidate_by_number(WindowClass cls, rct_windownumber number);
+void window_invalidate_by_number(WindowClass cls, EntityId id);
 void window_invalidate_all();
 void widget_invalidate(rct_window& w, rct_widgetindex widgetIndex);
-void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex);
-void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex);
+void widget_invalidate_by_class(WindowClass cls, rct_widgetindex widgetIndex);
+void widget_invalidate_by_number(WindowClass cls, rct_windownumber number, rct_widgetindex widgetIndex);
 void WindowInitScrollWidgets(rct_window& w);
 void window_update_scroll_widgets(rct_window& w);
 int32_t window_get_scroll_data_index(const rct_window& w, rct_widgetindex widget_index);
@@ -755,4 +755,4 @@ money32 place_provisional_track_piece(
 extern RideConstructionState _rideConstructionState2;
 
 rct_window* window_get_listening();
-rct_windowclass window_get_classification(const rct_window& window);
+WindowClass window_get_classification(const rct_window& window);

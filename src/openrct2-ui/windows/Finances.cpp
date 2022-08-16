@@ -1014,12 +1014,12 @@ public:
 
 rct_window* WindowFinancesOpen()
 {
-    return WindowFocusOrCreate<FinancesWindow>(WC_FINANCES, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+    return WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
 }
 
 rct_window* WindowFinancesResearchOpen()
 {
-    auto* window = WindowFocusOrCreate<FinancesWindow>(WC_FINANCES, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+    auto* window = WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
 
     if (window != nullptr)
         window->SetPage(WINDOW_FINANCES_PAGE_RESEARCH);

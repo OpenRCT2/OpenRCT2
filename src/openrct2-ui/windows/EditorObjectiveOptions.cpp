@@ -198,11 +198,11 @@ rct_window* WindowEditorObjectiveOptionsOpen()
 {
     rct_window* w;
 
-    w = window_bring_to_front_by_class(WC_EDITOR_OBJECTIVE_OPTIONS);
+    w = window_bring_to_front_by_class(WindowClass::EditorObjectiveOptions);
     if (w != nullptr)
         return w;
 
-    w = WindowCreateCentred(450, 228, &window_objective_options_main_events, WC_EDITOR_OBJECTIVE_OPTIONS, WF_10);
+    w = WindowCreateCentred(450, 228, &window_objective_options_main_events, WindowClass::EditorObjectiveOptions, WF_10);
     w->widgets = window_editor_objective_options_main_widgets;
     w->pressed_widgets = 0;
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];

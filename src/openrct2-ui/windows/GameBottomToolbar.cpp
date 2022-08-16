@@ -116,7 +116,7 @@ rct_window* WindowGameBottomToolbarOpen()
 
     rct_window* window = WindowCreate(
         ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
-        WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
+        WindowClass::BottomToolbar, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
 
     window->frame_no = 0;
@@ -142,7 +142,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widget
         case WIDX_LEFT_OUTSET:
         case WIDX_MONEY:
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-                context_open_window(WC_FINANCES);
+                context_open_window(WindowClass::Finances);
             break;
         case WIDX_GUESTS:
             context_open_window_view(WV_PARK_GUESTS);
@@ -153,7 +153,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widget
         case WIDX_MIDDLE_INSET:
             if (News::IsQueueEmpty())
             {
-                context_open_window(WC_RECENT_NEWS);
+                context_open_window(WindowClass::RecentNews);
             }
             else
             {
@@ -183,7 +183,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widget
             break;
         case WIDX_RIGHT_OUTSET:
         case WIDX_DATE:
-            context_open_window(WC_RECENT_NEWS);
+            context_open_window(WindowClass::RecentNews);
             break;
     }
 }
@@ -338,7 +338,7 @@ void WindowGameBottomToolbarInvalidateNewsItem()
 {
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
-        widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, WIDX_MIDDLE_OUTSET);
+        widget_invalidate_by_class(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);
     }
 }
 
@@ -406,7 +406,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
                                             w->windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
         colour_t colour
-            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
+            = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_MONEY
                    ? COLOUR_WHITE
                    : NOT_TRANSLUCENT(w->colours[0]));
         StringId stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
@@ -435,7 +435,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
         StringId stringId = gNumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
                                                   : _guestCountFormats[gGuestChangeModifier];
         colour_t colour
-            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
+            = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_GUESTS
                    ? COLOUR_WHITE
                    : NOT_TRANSLUCENT(w->colours[0]));
         auto ft = Formatter();
@@ -502,7 +502,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
     int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
     colour_t colour
-        = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
+        = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_DATE
                ? COLOUR_WHITE
                : NOT_TRANSLUCENT(w->colours[0]));
     StringId stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];

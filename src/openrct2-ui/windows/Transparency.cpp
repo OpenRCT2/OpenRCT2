@@ -246,9 +246,9 @@ private:
 
 rct_window* WindowTransparencyOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_TRANSPARENCY);
+    auto* window = window_bring_to_front_by_class(WindowClass::Transparency);
     if (window == nullptr)
-        window = WindowCreate<TransparencyWindow>(WC_TRANSPARENCY, ScreenCoordsXY(32, 32), WW, WH);
+        window = WindowCreate<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), WW, WH);
 
     return window;
 }

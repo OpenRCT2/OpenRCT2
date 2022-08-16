@@ -340,5 +340,5 @@ private:
 
 rct_window* WindowLandOpen()
 {
-    return WindowFocusOrCreate<LandWindow>(WC_LAND, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    return WindowFocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 }
