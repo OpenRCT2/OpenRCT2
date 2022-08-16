@@ -22,6 +22,7 @@ class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
     u8string _basePath[DIRBASE_COUNT];
+    bool _usingRctClassic{};
 
 public:
     explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
@@ -45,8 +46,10 @@ public:
         {
             default:
             case DIRBASE::RCT1:
-            case DIRBASE::RCT2:
                 directoryName = DirectoryNamesRCT2[static_cast<size_t>(did)];
+                break;
+            case DIRBASE::RCT2:
+                directoryName = _usingRctClassic ? "Assets" : DirectoryNamesRCT2[static_cast<size_t>(did)];
                 break;
             case DIRBASE::OPENRCT2:
             case DIRBASE::USER:
@@ -86,6 +89,12 @@ public:
     void SetBasePath(DIRBASE base, u8string_view path) override
     {
         _basePath[static_cast<size_t>(base)] = path;
+
+        if (base == DIRBASE::RCT2)
+        {
+            // Check whether the RCT2 base is RCT2 or RCT Classic
+            _usingRctClassic = Platform::IsRCT2ClassicPath(path);
+        }
     }
 
 private:
