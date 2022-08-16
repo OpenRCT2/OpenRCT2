@@ -379,14 +379,12 @@ public:
         }
 
         // Expenditure / Income values for each month
-        int16_t currentMonthYear = static_cast<int16_t>(gDateMonthsElapsed);
+        uint16_t currentMonthYear = static_cast<uint16_t>(gDateMonthsElapsed);
         for (int32_t i = SummaryMaxAvailableMonth(); i >= 0; i--)
         {
             screenCoords.y = 0;
 
-            int16_t monthyear = currentMonthYear - i;
-            if (monthyear < 0)
-                continue;
+            uint16_t monthyear = currentMonthYear - i;
 
             // Month heading
             auto ft = Formatter();
