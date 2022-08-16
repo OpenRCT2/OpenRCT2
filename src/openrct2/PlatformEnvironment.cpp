@@ -72,6 +72,19 @@ public:
     u8string FindFile(DIRBASE base, DIRID did, u8string_view fileName) const override
     {
         auto dataPath = GetDirectoryPath(base, did);
+
+        std::string alternativeFilename;
+        if (_usingRctClassic && base == DIRBASE::RCT2 && did == DIRID::DATA)
+        {
+            // Special case, handle RCT Classic css ogg files
+            if (String::StartsWith(fileName, "css", true) && String::EndsWith(fileName, ".dat", true))
+            {
+                alternativeFilename = fileName.substr(0, fileName.size() - 3);
+                alternativeFilename.append("ogg");
+                fileName = alternativeFilename;
+            }
+        }
+
         auto path = Path::ResolveCasing(Path::Combine(dataPath, fileName));
         if (base == DIRBASE::RCT1 && did == DIRID::DATA && !File::Exists(path))
         {
@@ -83,6 +96,7 @@ public:
                 path = alternativePath;
             }
         }
+
         return path;
     }
 

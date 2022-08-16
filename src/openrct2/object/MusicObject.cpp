@@ -185,9 +185,8 @@ ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view 
 {
     if (path.find("$RCT2:DATA/") == 0)
     {
-        auto platformEnvironment = GetContext()->GetPlatformEnvironment();
-        auto dir = platformEnvironment->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-        auto path2 = Path::Combine(dir, std::string(path.substr(11)));
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto path2 = env->FindFile(DIRBASE::RCT2, DIRID::DATA, path.substr(11));
         return ObjectAsset(path2);
     }
 
