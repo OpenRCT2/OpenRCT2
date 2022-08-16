@@ -30,7 +30,7 @@
 - Fix: [#17571] All researched tracked rides show up as new vehicles in .park scenarios.
 - Fix: [#17600] Notifications are not properly cleared when loading a park.
 - Fix: [#17605] Crash when opening parks which have had objects removed externally.
-- Fix: [#17639] When building upside down, the special elements list contains many items twice (original bug).
+- Fix: [#17639, 17735] When building upside down, the special elements list contains many items twice (original bug).
 - Fix: [#17703] (undefined string) when building on invalid height.
 - Fix: [#17776] “Other Parks” tab uses separate lists for SC4/SC6 and .park scenarios.
 - Fix: [#17735] When building from an upside down element, the special elements list contains many items twice.
