@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/Version.h>
 #include <openrct2/drawing/Drawing.h>
@@ -45,6 +46,7 @@ enum WindowAboutWidgetIdx {
     WIDX_SPINNER_DELAY,
     WIDX_SPINNER_DELAY_INCREASE,
     WIDX_SPINNER_DELAY_DECREASE,
+    WIDX_BUTTON_ADD_FIREWORK,
 };
 
 #define WIDGETS_MAIN \
@@ -52,7 +54,8 @@ enum WindowAboutWidgetIdx {
     MakeSpinnerWidgets({20, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner X*/ \
     MakeSpinnerWidgets({90, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner X*/ \
     MakeSpinnerWidgets({45, 40}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner Height*/ \
-    MakeSpinnerWidgets({45, 57}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary) /* Spinner Delay*/
+    MakeSpinnerWidgets({45, 57}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner Delay*/ \
+    MakeWidget(  {120, 57},  {100, 12}, WindowWidgetType::Button,      WindowColour::Secondary, STR_FIREWORKS_ADD)
 
 // clang-format on
 static rct_widget _windowFireworksEditorWidgets[] = {
@@ -107,6 +110,9 @@ public:
                 break;
             case WIDX_SPINNER_Y_INCREASE:
                 increaseSpinnerY();
+                break;
+            case WIDX_BUTTON_ADD_FIREWORK:
+                onAddFireworkButtonUp();
                 break;
         }
     }
@@ -224,7 +230,7 @@ public:
 private:
     void increaseSpinnerX()
     {
-        if (_x + 1 < static_cast<uint32_t>(gMapSize.x))
+        if (_x + 1 < gMapSize.x)
             _x++;
     }
 
@@ -235,7 +241,7 @@ private:
     }
     void increaseSpinnerY()
     {
-        if (_x + 1 < static_cast<uint32_t>(gMapSize.y))
+        if (_x + 1 < gMapSize.y)
             _y++;
     }
 
@@ -269,8 +275,21 @@ private:
             _delay--;
     }
 
-    uint32_t _x;
-    uint32_t _y;
+    void onAddFireworkButtonUp()
+    {
+        // add a firework to the sequence in the park
+        auto gameState = GetContext()->GetGameState();
+        auto fireworksMgr = gameState->GetFireworksManager();
+        auto sequence = fireworksMgr.GetSequence();
+        auto spawner = sequence.AddSpawner({ _x, _y });
+
+        //for now, hardcode the object id
+        std::string objectId = "firework_test";
+        sequence.AddEvent(objectId, spawner, _height, _delay);
+    }
+
+    int32_t _x;
+    int32_t _y;
     uint32_t _height;
     uint32_t _delay;
 };

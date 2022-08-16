@@ -235,6 +235,7 @@
     <ClInclude Include="entity\Yaw.hpp" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="fireworks\Firework.h" />
+    <ClInclude Include="fireworks\FireworksManager.h" />
     <ClInclude Include="fireworks\FireworksSequence.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
@@ -726,6 +727,7 @@
     <ClCompile Include="entity\Staff.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
     <ClCompile Include="fireworks\Firework.cpp" />
+    <ClCompile Include="fireworks\FireworksManager.cpp" />
     <ClCompile Include="fireworks\FireworksSequence.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Date.h"
+#include "fireworks/FireworksManager.h"
 #include "world/Location.hpp"
 
 #include <array>
@@ -69,7 +70,7 @@ namespace OpenRCT2
     private:
         std::unique_ptr<Park> _park;
         Date _date;
-
+        Fireworks::FireworksManager _fireworksMgr;
     public:
         GameState();
         GameState(const GameState&) = delete;
@@ -81,6 +82,11 @@ namespace OpenRCT2
         Park& GetPark()
         {
             return *_park;
+        }
+
+        Fireworks::FireworksManager& GetFireworksManager()
+        {
+            return _fireworksMgr;
         }
 
         void InitAll(const TileCoordsXY& mapSize);
