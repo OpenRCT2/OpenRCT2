@@ -3625,6 +3625,8 @@ STR_6517    :One or more objects in this park require RCT1 linked for proper dis
 STR_6518    :{BLACK}Hover over a scenario to view its description and objective. Click it to start playing.
 STR_6519	:Fireworks Editor
 STR_6519	:Add firework
+STR_6520	:Test the fireworks sequence
+STR_6521	:Stop the fireworks sequence
 
 #############
 # Scenarios #

@@ -47,6 +47,8 @@ enum WindowAboutWidgetIdx {
     WIDX_SPINNER_DELAY_INCREASE,
     WIDX_SPINNER_DELAY_DECREASE,
     WIDX_BUTTON_ADD_FIREWORK,
+    WIDX_BUTTON_STOP,
+    WIDX_BUTTON_TEST,
 };
 
 #define WIDGETS_MAIN \
@@ -55,7 +57,9 @@ enum WindowAboutWidgetIdx {
     MakeSpinnerWidgets({90, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner X*/ \
     MakeSpinnerWidgets({45, 40}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner Height*/ \
     MakeSpinnerWidgets({45, 57}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner Delay*/ \
-    MakeWidget(  {120, 57},  {100, 12}, WindowWidgetType::Button,      WindowColour::Secondary, STR_FIREWORKS_ADD)
+    MakeWidget(  {120, 57},  {100, 12}, WindowWidgetType::Button,      WindowColour::Secondary, STR_FIREWORKS_ADD), \
+    MakeWidget({296,  48}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_FIREWORKS_STOP         ), \
+    MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_TEST_BUTTON_1,  STR_FIREWORKS_TEST          ) \
 
 // clang-format on
 static rct_widget _windowFireworksEditorWidgets[] = {
@@ -71,6 +75,7 @@ public:
         , _y(0)
         , _height(0)
         , _delay(0)
+        , _testing(false)
     {
     }
 
@@ -113,6 +118,12 @@ public:
                 break;
             case WIDX_BUTTON_ADD_FIREWORK:
                 onAddFireworkButtonUp();
+                break;
+            case WIDX_BUTTON_STOP:
+                onStopButtonUp();
+                break;
+            case WIDX_BUTTON_TEST:
+                onTestButtonUp();
                 break;
         }
     }
@@ -288,10 +299,53 @@ private:
         sequence.AddEvent(objectId, spawner, _height, _delay);
     }
 
+    void onStopButtonUp()
+    {
+        if (!_testing)
+            return;
+
+        _testing = false;
+
+        //update the button light images
+        auto widget = GetWidgetByIndex(*this, WIDX_BUTTON_STOP);
+        widget->image = SPR_G2_RCT1_CLOSE_BUTTON_0;
+
+        widget = GetWidgetByIndex(*this, WIDX_BUTTON_TEST);
+        widget->image = SPR_G2_RCT1_TEST_BUTTON_1;
+
+        //stop the sequence
+        auto gameState = GetContext()->GetGameState();
+        auto fireworksMgr = gameState->GetFireworksManager();
+        auto sequence = fireworksMgr.GetSequence();
+        sequence.Stop();
+    }
+
+    void onTestButtonUp()
+    {
+        if (_testing)
+            return;
+
+        _testing = true;
+
+        // update the button light images
+        auto widget = GetWidgetByIndex(*this, WIDX_BUTTON_STOP);
+        widget->image = SPR_G2_RCT1_CLOSE_BUTTON_1;
+
+        widget = GetWidgetByIndex(*this, WIDX_BUTTON_TEST);
+        widget->image = SPR_G2_RCT1_TEST_BUTTON_0;
+
+        //start the sequence
+        auto gameState = GetContext()->GetGameState();
+        auto fireworksMgr = gameState->GetFireworksManager();
+        auto sequence = fireworksMgr.GetSequence();
+        sequence.Start();
+    }
+
     int32_t _x;
     int32_t _y;
     uint32_t _height;
     uint32_t _delay;
+    bool _testing;
 };
 
 /**
