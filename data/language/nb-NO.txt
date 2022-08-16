@@ -1067,7 +1067,7 @@ STR_1685    :Base size 2 × 4
 STR_1686    :Base size 5 × 1
 STR_1687    :Water splash
 STR_1688    :Base size 4 × 1
-STR_1689    :Block Brakes
+STR_1689    :Block brakes
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
