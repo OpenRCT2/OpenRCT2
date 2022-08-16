@@ -28,7 +28,9 @@
 #include "../util/Util.h"
 #include "Ride.h"
 #include "RideAudio.h"
+#include "RideConstruction.h"
 #include "RideEntry.h"
+#include "RideRatings.h"
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackPaint.h"
@@ -159,7 +161,17 @@ using RideMusicUpdateFunction = void (*)(Ride*);
 using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
 using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
+using RideLocationFunction = CoordsXY (*)(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
+using RideUpdateFunction = void (*)(Ride& ride);
 using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const track_type_t trackType);
+using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
+using SpecialElementRatingAdjustmentFunc = void (*)(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+
+enum class RideConstructionWindowContext : uint8_t
+{
+    Default,
+    Maze,
+};
 
 struct RideTypeDescriptor
 {
@@ -218,8 +230,16 @@ struct RideTypeDescriptor
     RideClassification Classification = RideClassification::Ride;
 
     PeepUpdateRideLeaveEntranceFunc UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault;
+    SpecialElementRatingAdjustmentFunc SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default;
+
+    RideLocationFunction GetGuestWaypointLocation = GetGuestWaypointLocationDefault;
+
+    RideConstructionWindowContext ConstructionWindowContext = RideConstructionWindowContext::Default;
+    RideUpdateFunction RideUpdate = nullptr;
 
     RideUpdateMeasurementsSpecialElementsFunc UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default;
+
+    MusicTrackOffsetLengthFunc MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;

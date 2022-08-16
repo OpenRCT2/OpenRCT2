@@ -155,7 +155,7 @@ std::optional<uint8_t> MusicObject::GetOriginalStyleId() const
     return _originalStyleId;
 }
 
-bool MusicObject::SupportsRideType(uint8_t rideType)
+bool MusicObject::SupportsRideType(ride_type_t rideType)
 {
     if (_rideTypes.size() == 0)
     {

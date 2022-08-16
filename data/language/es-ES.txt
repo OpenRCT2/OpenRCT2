@@ -283,7 +283,7 @@ STR_0892    :Captura de pantalla guardada como ‘{STRINGID}’
 STR_0893    :¡No se pudo tomar la Captura de pantalla!
 STR_0894    :¡Datos de paisaje lleno!
 STR_0895    :No se puede construir una parte arriba y otra bajo tierra
-STR_0896    :{POP16}{POP16}Construcción de {STRINGID} 
+STR_0896    :Construcción de {POP16}{POP16}{STRINGID} 
 STR_0897    :Dirección
 STR_0898    :Curva izquierda
 STR_0899    :Curva derecha
@@ -316,10 +316,10 @@ STR_0925    :Hélice arriba
 STR_0926    :No se puede quitar esto…
 STR_0927    :No puede construir esto aquí…
 STR_0928    :Cadena elevadora para propulsar coches por una pendiente.
-STR_0929    :Curva ‘S’ (izquierda)
-STR_0930    :Curva ‘S’ (derecha)
-STR_0931    :Rizo vertical (izquierda)
-STR_0932    :Rizo vertical (derecha)
+STR_0929    :Curva ‘S’ (izq)
+STR_0930    :Curva ‘S’ (der)
+STR_0931    :Rizo vertical (izq)
+STR_0932    :Rizo vertical (der)
 STR_0933    :Sube o baja el terreno primero
 STR_0934    :Entrada de la atracción interfiere
 STR_0935    :Salida de la atracción interfiere
@@ -341,7 +341,6 @@ STR_0950    :Cargar Partida
 STR_0951    :Salir del juego
 STR_0952    :Salir del juego
 STR_0953    :Cargar paisaje
-STR_0954    :
 STR_0955    :Angulo de rotación de asiento en este tramo
 STR_0956    :-180°
 STR_0957    :-135°
@@ -389,10 +388,10 @@ STR_0998    :No se permiten más estaciones en esta atracción
 STR_0999    :Requiere un andén de estación
 STR_1000    :El trayecto no completa un circuito
 STR_1001    :Trayecto no adecuado para este tipo de tren
-STR_1002    :No se puede abrir {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :No se puede probar {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :No se puede cerrar {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :No se puede iniciar construcción en {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :No se puede abrir {STRINGID}…
+STR_1003    :No se puede probar {STRINGID}…
+STR_1004    :No se puede cerrar {STRINGID}…
+STR_1005    :No se puede iniciar construcción en {STRINGID}…
 STR_1006    :Debe ser cerrado antes
 STR_1007    :No se puede crear suficientes vehículos
 STR_1008    :Abrir, cerrar o probar esta atracción
@@ -752,8 +751,8 @@ STR_1361    :No puedes cambiar la velocidad…
 STR_1362    :No puedes cambiar la velocidad de lanzamiento…
 STR_1363    :¡Muy alto para los soportes!
 STR_1364    :¡Los soportes del tramo anterior no se pueden extender más!
-STR_1365    :Giro en-línea (izquierda)
-STR_1366    :Giro en-línea (derecha)
+STR_1365    :Giro en-línea (izq)
+STR_1366    :Giro en-línea (der)
 STR_1367    :Medio Rizo pequeño
 STR_1368    :Medio Sacacorchos (izq)
 STR_1369    :Medio Sacacorchos (der)
@@ -3436,7 +3435,7 @@ STR_6322    :{WINDOW_COLOUR_2}Id sprite: {BLACK}{INT32}
 STR_6323    :Simulando
 STR_6324    :Simular
 STR_6325    :Simular Atracción
-STR_6326    :No se puede simular {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :No se puede simular {STRINGID}…
 STR_6327    :Fondo transparente para capturas de pantalla gigantes
 STR_6328    :Con esta opción activada, las capturas gigantes tendrán un fondo transparente en vez del fondo negro por defecto.
 STR_6329    :{STRING}{STRINGID}
@@ -3457,7 +3456,7 @@ STR_6344    :Inspector de cuadrícula: Disminuir coordenada Y
 STR_6345    :Inspector de cuadrícula: Aumentar altura del elemento
 STR_6346    :Inspector de cuadrícula: Disminuir altura del elemento
 STR_6347    :¡Agregados a los caminos no se pueden añadir en cruces de nivel!
-STR_6348    :¡Primero remueve el cruce de nivel!
+STR_6348    :¡Primero quita el cruce de nivel!
 STR_6349    :Secuencia de la pantalla de inicio al azar
 STR_6350    :Distribuir
 STR_6351    :Herramienta de distribución de escenografía
@@ -3614,6 +3613,15 @@ STR_6502    :Introduce un valor entre {COMMA16} y {COMMA16}
 STR_6503    :Al menos un objeto de estación debe estar seleccionado
 STR_6504    :Al menos una superficie de terreno debe estar seleccionada
 STR_6505    :Al menos un borde de terreno debe estar seleccionado
+STR_6506    :Medio Sacacorchos grande (izq) 
+STR_6507    :Medio Sacacorchos grande (der)
+STR_6508    :Medio Rizo mediano (izq)
+STR_6509    :Medio Rizo mediano (der)
+STR_6510    :Giro de Gravedad Cero (izq)
+STR_6511    :Giro de Gravedad Cero (der)
+STR_6512    :Giro de Gravedad Cero grande (izq)
+STR_6513    :Giro de Gravedad Cero grande (der)
+STR_6514    :¡Altura no válida!
 
 ##############
 # Escenarios #
@@ -4167,7 +4175,7 @@ STR_DTLS    :Comenzando desde cero, construye las atracciones de este Six Flags 
 <Build your own Six Flags Park>
 STR_SCNR    :Construye tu propio parque Six Flags
 STR_PARK    :Six Flags
-STR_DTLS    :Construye tu propio diseño de un parque Six Flags - Ya sea incluyendo atracciones de otros parques Six Flags, o poniendo tu propia impronta.
+STR_DTLS    :Construye tu propio diseño de un parque Six Flags. Ya sea incluyendo atracciones de otros parques Six Flags, o poniendo tu propia impronta.
 
 <Bumbly Bazaar>
 STR_SCNR    :Bazar Ruidoso
@@ -4177,7 +4185,7 @@ STR_DTLS    :Comenzando desde un pequeño mercado, tu desafío es aumentar los i
 <Crazy Castle>
 STR_SCNR    :Castillo Loco
 STR_PARK    :Castillo Loco
-STR_DTLS    :Has heredado un gran castillo - tu trabajo es convertirlo en un pequeño parque temático.
+STR_DTLS    :Has heredado un gran castillo. Tu trabajo es convertirlo en un pequeño parque temático.
 
 <Dusty Greens>
 STR_SCNR    :Greens polvorientos
@@ -4212,7 +4220,7 @@ STR_DTLS    :Constratado por una gran cadena de parque de atracciones, tu tarea 
 <Gravity Gardens>
 STR_SCNR    :Jardines Gravitacionales
 STR_PARK    :Jardines Gravitacionales
-STR_DTLS    :Tu desafío es construir un parque de montañas rusas en los bellos Jardines Gravitacionales - Ninguna otra atracción, sólo Montañas Rusas!
+STR_DTLS    :Tu desafío es construir un parque de montañas rusas en los bellos Jardines Gravitacionales. ¡Ninguna otra atracción, sólo Montañas Rusas!
 
 <Infernal Views>
 STR_SCNR    :Vistas Infernales
@@ -4237,7 +4245,7 @@ STR_DTLS    :Prueba tu capacidad para administrar y mejorar este parque Six Flag
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Atraer mas visitantes al parque!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal. ¡Atraer más visitantes al parque!
 
 <Six Flags Holland>
 STR_SCNR    :Six Flags Holanda
@@ -4247,12 +4255,12 @@ STR_DTLS    :Prueba tu capacidad para administrar y mejorar este parque Six Flag
 <Six Flags Magic Mountain>
 STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Repagar el préstamo y mantener el valor del parque!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal. ¡Pagar el préstamo y mantener el valor del parque!
 
 <Six Flags over Texas>
 STR_SCNR    :Six Flags sobre Tejas
 STR_PARK    :Six Flags sobre Tejas
-STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Atraer mas visitantes al parque!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal. ¡Atraer más visitantes al parque!
 
 ###############################################################################
 ## Wacky Worlds Scenarios
@@ -4424,4 +4432,4 @@ STR_DTLS    :Este antiguo parque temático ha visto tiempos mejores. Ayuda al pr
 <Panda World>
 STR_SCNR    :Mundo Panda
 STR_PARK    :Mundo Panda
-STR_DTLS    :Añade mas atracciones y consigue mas visitantes en este parque pandatemático.
+STR_DTLS    :Añade mas atracciones y consigue más visitantes en este parque pandatemático.

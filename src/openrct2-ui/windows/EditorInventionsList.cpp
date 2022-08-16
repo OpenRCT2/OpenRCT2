@@ -414,7 +414,7 @@ public:
             const auto clipHeight = bkWidget.height() - 1;
             if (clip_drawpixelinfo(&clipDPI, &dpi, screenPos, clipWidth, clipHeight))
             {
-                object->DrawPreview(&clipDPI, clipWidth, height);
+                object->DrawPreview(&clipDPI, clipWidth, clipHeight);
             }
         }
 
@@ -509,6 +509,12 @@ public:
         return item == _selectedResearchItem;
     }
 
+    // hack to fix #17544: OnScrollMouseOver never gets called while dragging
+    void SetSelectedResearchItem(ResearchItem* item)
+    {
+        _selectedResearchItem = item;
+    }
+
     void MoveResearchItem(const ResearchItem& item, ResearchItem* beforeItem, bool isInvented)
     {
         _selectedResearchItem = nullptr;
@@ -597,6 +603,7 @@ public:
             auto* research = res.has_value() ? res->research : nullptr;
             if (!inventionListWindow->IsResearchItemSelected(research))
             {
+                inventionListWindow->SetSelectedResearchItem(research);
                 inventionListWindow->Invalidate();
             }
         }

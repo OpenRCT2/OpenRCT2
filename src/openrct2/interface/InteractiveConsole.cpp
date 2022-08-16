@@ -1227,13 +1227,12 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         {
             // Automatically research the ride so it's supported by the game.
             rct_ride_entry* rideEntry;
-            int32_t rideType;
 
             rideEntry = get_ride_entry(groupIndex);
 
             for (int32_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
             {
-                rideType = rideEntry->ride_type[j];
+                auto rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
                 {
                     ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();

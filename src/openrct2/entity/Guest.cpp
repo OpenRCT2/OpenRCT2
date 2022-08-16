@@ -3229,11 +3229,11 @@ static void PeepHeadForNearestRideWithFlags(Guest* peep, bool considerOnlyCloseR
  * such as "I'm hungry" after visiting a food shop.
  * Works for Thirst/Hungry/Low Money/Toilet
  */
-void Guest::StopPurchaseThought(uint8_t ride_type)
+void Guest::StopPurchaseThought(ride_type_t rideType)
 {
     auto thoughtType = PeepThoughtType::Hungry;
 
-    const auto& rtd = GetRideTypeDescriptor(ride_type);
+    const auto& rtd = GetRideTypeDescriptor(rideType);
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
     {
         thoughtType = PeepThoughtType::Thirsty;
@@ -3595,8 +3595,6 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
     Guard::Assert(!station.Entrance.IsNull());
     uint8_t direction_entrance = station.Entrance.direction;
 
-    CoordsXY waypoint = ride.GetStation(CurrentRideStation).Start.ToTileCentre();
-
     TileElement* tile_element = ride_get_station_start_track_element(&ride, CurrentRideStation);
 
     uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
@@ -3612,11 +3610,8 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
 
     Var37 = (direction_entrance | GetWaypointedSeatLocation(ride, vehicle_type, direction_track) * 4) * 4;
 
-    if (ride.type == RIDE_TYPE_ENTERPRISE)
-    {
-        waypoint.x = vehicle->x;
-        waypoint.y = vehicle->y;
-    }
+    const auto& rtd = ride.GetRideTypeDescriptor();
+    CoordsXY waypoint = rtd.GetGuestWaypointLocation(*vehicle, ride, CurrentRideStation);
 
     const auto waypointIndex = Var37 / 4;
     Guard::Assert(vehicle_type->peep_loading_waypoints.size() >= static_cast<size_t>(waypointIndex));
@@ -4237,9 +4232,6 @@ void Guest::UpdateRideLeaveVehicle()
     auto exitLocation = station.Exit.ToCoordsXYZD();
     Guard::Assert(!exitLocation.IsNull());
 
-    auto waypointLoc = CoordsXYZ{ station.Start.ToTileCentre(),
-                                  exitLocation.z + ride->GetRideTypeDescriptor().Heights.PlatformHeight };
-
     TileElement* trackElement = ride_get_station_start_track_element(ride, CurrentRideStation);
 
     Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
@@ -4250,19 +4242,17 @@ void Guest::UpdateRideLeaveVehicle()
         return;
     }
 
+    CoordsXYZ waypointLoc;
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    waypointLoc = { rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation),
+                    exitLocation.z + ride->GetRideTypeDescriptor().Heights.PlatformHeight };
+
     rideEntry = vehicle->GetRideEntry();
     carEntry = &rideEntry->Cars[vehicle->vehicle_type];
     if (carEntry == nullptr)
         return;
 
     Var37 = ((exitLocation.direction | GetWaypointedSeatLocation(*ride, carEntry, station_direction) * 4) * 4) | 1;
-
-    if (ride->type == RIDE_TYPE_ENTERPRISE)
-    {
-        waypointLoc.x = vehicle->x;
-        waypointLoc.y = vehicle->y;
-    }
-
     Guard::Assert(carEntry->peep_loading_waypoints.size() >= static_cast<size_t>(Var37 / 4));
     CoordsXYZ exitWaypointLoc = waypointLoc;
 
@@ -4371,6 +4361,17 @@ void Guest::UpdateRideInExit()
     RideSubState = PeepRideSubState::LeaveExit;
 }
 #pragma warning(default : 6011)
+
+CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation)
+{
+    return ride.GetStation(CurrentRideStation).Start.ToTileCentre();
+}
+
+CoordsXY GetGuestWaypointLocationEnterprise(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation)
+{
+    return { vehicle.x, vehicle.y };
+}
+
 /**
  *
  *  rct2: 0x006926AD
@@ -4428,13 +4429,8 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         return;
     }
 
-    CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start.ToTileCentre();
-
-    if (ride->type == RIDE_TYPE_ENTERPRISE)
-    {
-        targetLoc.x = vehicle->x;
-        targetLoc.y = vehicle->y;
-    }
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
 
     rct_ride_entry* ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
@@ -4499,13 +4495,9 @@ void Guest::UpdateRideApproachExitWaypoints()
         {
             return;
         }
-        CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start.ToTileCentre();
 
-        if (ride->type == RIDE_TYPE_ENTERPRISE)
-        {
-            targetLoc.x = vehicle->x;
-            targetLoc.y = vehicle->y;
-        }
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
 
         rct_ride_entry* rideEntry = vehicle->GetRideEntry();
         CarEntry* carEntry = &rideEntry->Cars[vehicle->vehicle_type];

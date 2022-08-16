@@ -280,7 +280,7 @@ STR_0892    :Screenshot opgeslagen als ‘{STRINGID}’
 STR_0893    :Screenshot maken mislukt!
 STR_0894    :‘Landscape data area’ zit vol!
 STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
-STR_0896    :{POP16}{POP16}Constructie {STRINGID}
+STR_0896    :Constructie {POP16}{POP16}{STRINGID}
 STR_0897    :Richting
 STR_0898    :Bocht naar links
 STR_0899    :Bocht naar rechts
@@ -338,7 +338,6 @@ STR_0950    :Spel laden
 STR_0951    :Spel afsluiten
 STR_0952    :Spel afsluiten
 STR_0953    :Landschap laden
-STR_0954    :
 STR_0955    :Selecteer de draaiing van de stoelen voor dit gedeelte
 STR_0956    :-180°
 STR_0957    :-135°
@@ -386,10 +385,10 @@ STR_0998    :Voor deze attractie zijn meer stations niet mogelijk
 STR_0999    :Vereist een station
 STR_1000    :Baan vormt geen volledig circuit
 STR_1001    :Baan is ongeschikt voor dit type trein
-STR_1002    :Kan {POP16}{POP16}{POP16}{STRINGID} niet openen…
-STR_1003    :Kan {POP16}{POP16}{POP16}{STRINGID} niet testen…
-STR_1004    :Kan {POP16}{POP16}{POP16}{STRINGID} niet sluiten…
-STR_1005    :Kan de verbouwing van {POP16}{POP16}{POP16}{STRINGID} niet starten…
+STR_1002    :Kan {STRINGID} niet openen…
+STR_1003    :Kan {STRINGID} niet testen…
+STR_1004    :Kan {STRINGID} niet sluiten…
+STR_1005    :Kan de verbouwing van {STRINGID} niet starten…
 STR_1006    :Moet eerst worden gesloten
 STR_1007    :Kan niet voldoende voertuigen aanmaken
 STR_1008    :Attractie openen, sluiten of testen
@@ -3431,7 +3430,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
 STR_6323    :Simulatie
 STR_6324    :Simuleren
 STR_6325    :Testrit simuleren
-STR_6326    :Kan {POP16}{POP16}{POP16}{STRINGID} niet in simulatiemodus zetten…
+STR_6326    :Kan {STRINGID} niet in simulatiemodus zetten…
 STR_6327    :Reuzenscreenshots hebben transparante achtergrond
 STR_6328    :Als deze optie is ingeschakeld, worden reuzenscreenshots met een transparante achtergrond genomen, in plaats van de zwarte standaardachtergrond.
 STR_6329    :{STRING}{STRINGID}
@@ -3617,6 +3616,7 @@ STR_6510    :0 g-rol (links)
 STR_6511    :0 g-rol (rechts)
 STR_6512    :Grote 0 g-rol (links)
 STR_6513    :Grote 0 g-rol (rechts)
+STR_6514    :Ongeldige hoogte!
 
 #############
 # Scenarios #

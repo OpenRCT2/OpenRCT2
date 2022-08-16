@@ -340,7 +340,6 @@ STR_0950    :Carregar Jogo
 STR_0951    :Sair do Jogo
 STR_0952    :Sair do Jogo
 STR_0953    :Carregar Paisagem
-STR_0954    :
 STR_0955    :Escolha um ângulo de rotação do banco para esta seção da pista
 STR_0956    :-180°
 STR_0957    :-135°
@@ -388,10 +387,10 @@ STR_0998    :Não há mais estações permitidas nesta atração
 STR_0999    :Requer uma plataforma de estação
 STR_1000    :A pista não é um circuito completo
 STR_1001    :Pista inadequada para este tipo de trem
-STR_1002    :Impossível Abrir {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Impossível Testar {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Impossível Fechar {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Impossível começar a construção no {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Impossível Abrir {STRINGID}…
+STR_1003    :Impossível Testar {STRINGID}…
+STR_1004    :Impossível Fechar {STRINGID}…
+STR_1005    :Impossível começar a construção no {STRINGID}…
 STR_1006    :Deve ser fechado primeiro
 STR_1007    :Impossível criar veículos suficientes
 STR_1008    :Abrir, fechar ou testar atração
@@ -3432,7 +3431,7 @@ STR_6322    :{WINDOW_COLOUR_2}Id da Sprite: {BLACK}{INT32}
 STR_6323    :Simulando
 STR_6324    :Simular
 STR_6325    :Simular brinquedo/atração
-STR_6326    :Não é possível simular {POP16}{POP16}{POP16}{STRINGID}..
+STR_6326    :Não é possível simular {STRINGID}..
 STR_6327    :Fundo transparente para capturas de tela gigantes
 STR_6328    :Com essa opção habilitada, capturas de tela gigantes terão fundo transparente em vez da cor preta padrão.
 STR_6329    :{STRING}{STRINGID}
@@ -3618,6 +3617,7 @@ STR_6510    :Giro de Gravidade Zero (esquerda)
 STR_6511    :Giro de Gravidade Zero (direita)
 STR_6512    :Giro de Gravidade Zero Grande (esquerda)
 STR_6513    :Giro de Gravidade Zero Grande (direita)
+STR_6514    :Altura inválida!
 
 #############
 # Scenarios #

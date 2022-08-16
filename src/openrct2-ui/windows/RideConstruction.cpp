@@ -154,6 +154,7 @@ static int32_t _trackPlaceZ;
 static money32 _trackPlaceCost;
 static StringId _trackPlaceErrorMessage;
 static bool _autoRotatingShop;
+static bool _gotoStartPlacementMode = false;
 
 static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
@@ -165,6 +166,8 @@ static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_360,     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_405,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_450,     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_495,
 };
+
+static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type);
 
 static int32_t RideGetAlternativeType(Ride* ride)
 {
@@ -2328,7 +2331,7 @@ private:
             *newCoords = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
             direction = trackBeginEnd.begin_direction;
             type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-            gGotoStartPlacementMode = false;
+            _gotoStartPlacementMode = false;
         }
         else if (track_block_get_next(&inputElement, &outputElement, &newCoords->z, &direction))
         {
@@ -2336,7 +2339,7 @@ private:
             newCoords->y = outputElement.y;
             direction = outputElement.element->GetDirection();
             type = outputElement.element->AsTrack()->GetTrackType();
-            gGotoStartPlacementMode = false;
+            _gotoStartPlacementMode = false;
         }
         else
         {
@@ -2354,7 +2357,7 @@ private:
             const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
             const rct_preview_track* trackBlock = ted.Block;
             newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
-            gGotoStartPlacementMode = true;
+            _gotoStartPlacementMode = true;
 
             // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
             auto currentRide = get_ride(_currentRideIndex);
@@ -2722,11 +2725,15 @@ rct_window* WindowRideConstructionOpen()
         return nullptr;
     }
 
-    if (currentRide->type == RIDE_TYPE_MAZE)
+    const auto& rtd = currentRide->GetRideTypeDescriptor();
+    switch (rtd.ConstructionWindowContext)
     {
-        return context_open_window_view(WV_MAZE_CONSTRUCTION);
+        case RideConstructionWindowContext::Maze:
+            return context_open_window_view(WV_MAZE_CONSTRUCTION);
+        case RideConstructionWindowContext::Default:
+            return WindowCreate<RideConstructionWindow>(
+                WC_RIDE_CONSTRUCTION, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
     }
-
     return WindowCreate<RideConstructionWindow>(WC_RIDE_CONSTRUCTION, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
 }
 
@@ -2744,6 +2751,28 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
             else
             {
                 window_event_mouse_up_call(w, WIDX_ENTRANCE);
+            }
+        }
+    }
+}
+
+static void window_ride_construction_do_entrance_exit_check()
+{
+    auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    auto ride = get_ride(_currentRideIndex);
+    if (w == nullptr || ride == nullptr)
+    {
+        return;
+    }
+
+    if (_rideConstructionState == RideConstructionState::State0)
+    {
+        w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        if (w != nullptr)
+        {
+            if (!ride_are_all_possible_entrances_and_exits_built(ride).Successful)
+            {
+                window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
             }
         }
     }
@@ -4460,4 +4489,77 @@ void window_ride_construction_keyboard_shortcut_demolish_current()
     }
 
     window_event_mouse_up_call(w, WIDX_DEMOLISH);
+}
+
+static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type)
+{
+    if (_gotoStartPlacementMode)
+    {
+        _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
+        _rideConstructionState = RideConstructionState::Front;
+        _currentTrackSelectionFlags = 0;
+        _currentTrackPieceDirection = piecePos.direction & 3;
+        auto savedCurrentTrackCurve = _currentTrackCurve;
+        int32_t savedPreviousTrackSlopeEnd = _previousTrackSlopeEnd;
+        int32_t savedCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
+        int32_t savedPreviousTrackBankEnd = _previousTrackBankEnd;
+        int32_t savedCurrentTrackBankEnd = _currentTrackBankEnd;
+        int32_t savedCurrentTrackAlternative = _currentTrackAlternative;
+        int32_t savedCurrentTrackLiftHill = _currentTrackLiftHill;
+        ride_construction_set_default_next_piece();
+        window_ride_construction_update_active_elements();
+        auto ride = get_ride(_currentRideIndex);
+        if (!ride_try_get_origin_element(ride, nullptr))
+        {
+            ride_initialise_construction_window(ride);
+            _currentTrackPieceDirection = piecePos.direction & 3;
+            if (!(savedCurrentTrackCurve & RideConstructionSpecialPieceSelected))
+            {
+                _currentTrackCurve = savedCurrentTrackCurve;
+                _previousTrackSlopeEnd = savedPreviousTrackSlopeEnd;
+                _currentTrackSlopeEnd = savedCurrentTrackSlopeEnd;
+                _previousTrackBankEnd = savedPreviousTrackBankEnd;
+                _currentTrackBankEnd = savedCurrentTrackBankEnd;
+                _currentTrackAlternative = savedCurrentTrackAlternative;
+                _currentTrackLiftHill = savedCurrentTrackLiftHill;
+                window_ride_construction_update_active_elements();
+            }
+        }
+    }
+    else
+    {
+        if (_rideConstructionState2 == RideConstructionState::Selected
+            || _rideConstructionState2 == RideConstructionState::Front)
+        {
+            if (type == TrackElemType::MiddleStation || type == TrackElemType::BeginStation)
+            {
+                type = TrackElemType::EndStation;
+            }
+        }
+        if (_rideConstructionState2 == RideConstructionState::Back)
+        {
+            if (type == TrackElemType::MiddleStation)
+            {
+                type = TrackElemType::BeginStation;
+            }
+        }
+        if (network_get_mode() == NETWORK_MODE_CLIENT)
+        {
+            // rideConstructionState needs to be set again to the proper value, this only affects the client
+            _rideConstructionState = RideConstructionState::Selected;
+        }
+        _currentTrackBegin = piecePos;
+        _currentTrackPieceDirection = piecePos.direction;
+        _currentTrackPieceType = type;
+        _currentTrackSelectionFlags = 0;
+        if (_rideConstructionState2 == RideConstructionState::Front)
+        {
+            ride_select_next_section();
+        }
+        else if (_rideConstructionState2 == RideConstructionState::Back)
+        {
+            ride_select_previous_section();
+        }
+        window_ride_construction_update_active_elements();
+    }
 }

@@ -1205,48 +1205,52 @@ static RatingTuple get_inversions_ratings(uint16_t inversions)
     return rating;
 }
 
-static RatingTuple get_special_track_elements_rating(uint8_t type, Ride* ride)
+void SpecialTrackElementRatingsAjustment_Default(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea)
+{
+    if (ride->HasWaterSplash())
+    {
+        excitement += 50;
+        intensity += 30;
+        nausea += 20;
+    }
+    if (ride->HasWaterfall())
+    {
+        excitement += 55;
+        intensity += 30;
+    }
+    if (ride->HasWhirlpool())
+    {
+        excitement += 35;
+        intensity += 20;
+        nausea += 23;
+    }
+}
+
+void SpecialTrackElementRatingsAjustment_GhostTrain(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea)
+{
+    if (ride->HasSpinningTunnel())
+    {
+        excitement += 40;
+        intensity += 25;
+        nausea += 55;
+    }
+}
+
+void SpecialTrackElementRatingsAjustment_LogFlume(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea)
+{
+    if (ride->HasLogReverser())
+    {
+        excitement += 48;
+        intensity += 55;
+        nausea += 65;
+    }
+}
+
+static RatingTuple GetSpecialTrackElementsRating(uint8_t type, Ride* ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
-
-    if (type == RIDE_TYPE_GHOST_TRAIN)
-    {
-        if (ride->HasSpinningTunnel())
-        {
-            excitement += 40;
-            intensity += 25;
-            nausea += 55;
-        }
-    }
-    else if (type == RIDE_TYPE_LOG_FLUME)
-    {
-        if (ride->HasLogReverser())
-        {
-            excitement += 48;
-            intensity += 55;
-            nausea += 65;
-        }
-    }
-    else
-    {
-        if (ride->HasWaterSplash())
-        {
-            excitement += 50;
-            intensity += 30;
-            nausea += 20;
-        }
-        if (ride->HasWaterfall())
-        {
-            excitement += 55;
-            intensity += 30;
-        }
-        if (ride->HasWhirlpool())
-        {
-            excitement += 35;
-            intensity += 20;
-            nausea += 23;
-        }
-    }
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    rtd.SpecialElementRatingAdjustment(ride, excitement, intensity, nausea);
 
     uint8_t helixSections = ride_get_helix_sections(ride);
 
@@ -1272,7 +1276,7 @@ static RatingTuple ride_ratings_get_turns_ratings(Ride* ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
 
-    RatingTuple specialTrackElementsRating = get_special_track_elements_rating(ride->type, ride);
+    RatingTuple specialTrackElementsRating = GetSpecialTrackElementsRating(ride->type, ride);
     excitement += specialTrackElementsRating.Excitement;
     intensity += specialTrackElementsRating.Intensity;
     nausea += specialTrackElementsRating.Nausea;
@@ -4471,7 +4475,7 @@ void ride_ratings_calculate_alpine_coaster(Ride* ride, RideRatingUpdateState& st
 
 #pragma region Ride rating calculation function table
 
-ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType)
+ride_ratings_calculation ride_ratings_get_calculate_func(ride_type_t rideType)
 {
     return GetRideTypeDescriptor(rideType).RatingsCalculationFunction;
 }

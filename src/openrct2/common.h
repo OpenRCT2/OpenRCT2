@@ -132,7 +132,6 @@ constexpr money16 ToMoney16(money64 value)
     return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : static_cast<money16>(value);
 }
 
-using EMPTY_ARGS_VOID_POINTER = void();
 using StringId = uint16_t;
 
 #define SafeFree(x)                                                                                                            \

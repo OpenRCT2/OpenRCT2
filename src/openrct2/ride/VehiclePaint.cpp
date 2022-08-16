@@ -989,7 +989,7 @@ static void vehicle_sprite_paint(
         baseImageId += vehicle->animation_frame;
     }
 
-    auto imageId = ImageId(baseImageId, vehicle->colours.body_colour, vehicle->colours.trim_colour, vehicle->colours_extended);
+    auto imageId = ImageId(baseImageId, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
     if (vehicle->IsGhost())
     {
         imageId = ImageId(baseImageId).WithRemap(FilterPaletteID::Palette44);

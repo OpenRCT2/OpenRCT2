@@ -340,7 +340,6 @@ STR_0950    :Ŝargi Ludon
 STR_0951    :Forlasi Ludon
 STR_0952    :Forlasi Ludon
 STR_0953    :Ŝargi Pejzaĝo
-STR_0954    :
 STR_0955    :Elekti direkton de seĝoj ĉe ĉi tiu parto de trako
 STR_0956    :-180°
 STR_0957    :-135°
@@ -388,10 +387,10 @@ STR_0998    :Ne eblas konstrui pli da stacioj por ĉi tiu atrakcio
 STR_0999    :Ĝi bezonas staciplatformon
 STR_1000    :Trako ne estas kompleta cirkvito
 STR_1001    :Trako ne taŭgas kun tia trajno
-STR_1002    :Ne eblas malfermi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Ne eblas elprovi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Ne eblas fermi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Ne eblas ekkonstrui je {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Ne eblas malfermi je {STRINGID}…
+STR_1003    :Ne eblas elprovi je {STRINGID}…
+STR_1004    :Ne eblas fermi je {STRINGID}…
+STR_1005    :Ne eblas ekkonstrui je {STRINGID}…
 STR_1006    :Tio unue devas esti fermita
 STR_1007    :Ne eblas krei sufiĉe da ĉaroj
 STR_1008    :Malfermi, fermi, aŭ elprovi atrakcion
@@ -3432,7 +3431,7 @@ STR_6322    :{WINDOW_COLOUR_2}Identigilo de rastrumeto: {BLACK}{INT32}
 STR_6323    :Simulas
 STR_6324    :Simuli
 STR_6325    :Simuli atrakcion
-STR_6326    :Ne eblas simuli je {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Ne eblas simuli je {STRINGID}…
 STR_6327    :Transvidebla fono por gigantaj ekranokopioj
 STR_6328    :Kun ĉi tiu opcio ŝaltita, gigantaj ekranokopioj havos transvideblan fonon anstataŭ la defaŭlta nigra koloro.
 STR_6329    :{STRING}{STRINGID}
@@ -3618,6 +3617,7 @@ STR_6510    :Sengravida Ruliĝo (maldekstre)
 STR_6511    :Sengravida Ruliĝo (dekstre)
 STR_6512    :Granda Sengravida Ruliĝo (maldekstre)
 STR_6513    :Granda Sengravida Ruliĝo (dekstre)
+STR_6514    :Nevalida alteco!
 
 #############
 # Scenarios #

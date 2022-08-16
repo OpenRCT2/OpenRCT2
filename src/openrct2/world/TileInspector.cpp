@@ -25,6 +25,7 @@
 #include "Banner.h"
 #include "Footpath.h"
 #include "LargeScenery.h"
+#include "Location.hpp"
 #include "Map.h"
 #include "Park.h"
 #include "Scenery.h"
@@ -251,16 +252,16 @@ namespace OpenRCT2::TileInspector
                         uint8_t z = tileElement->base_height;
 
                         // Make sure this is the correct entrance or exit
-                        if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
-                            && entrance.z == z)
+                        if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / COORDS_XY_STEP
+                            && entrance.y == loc.y / COORDS_XY_STEP && entrance.z == z)
                         {
-                            station.Entrance = { entrance.x, entrance.y, entrance.z, newRotation };
+                            station.Entrance = { entrance, newRotation };
                         }
                         else if (
-                            entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32
-                            && exit.z == z)
+                            entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / COORDS_XY_STEP
+                            && exit.y == loc.y / COORDS_XY_STEP && exit.z == z)
                         {
-                            station.Exit = { exit.x, exit.y, exit.z, newRotation };
+                            station.Exit = { exit, newRotation };
                         }
                     }
                     break;
@@ -483,15 +484,15 @@ namespace OpenRCT2::TileInspector
                     {
                         auto entranceIndex = tileElement->AsEntrance()->GetStationIndex();
                         auto& station = ride->GetStation(entranceIndex);
-                        auto entrance = station.Entrance;
-                        auto exit = station.Exit;
+                        const auto& entranceLoc = station.Entrance;
+                        const auto& exitLoc = station.Exit;
                         uint8_t z = tileElement->base_height;
 
                         // Make sure this is the correct entrance or exit
-                        if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance == TileCoordsXYZ{ loc, z })
-                            station.Entrance = { entrance.x, entrance.y, z + heightOffset, entrance.direction };
-                        else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit == TileCoordsXYZ{ loc, z })
-                            station.Exit = { exit.x, exit.y, z + heightOffset, exit.direction };
+                        if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entranceLoc == TileCoordsXYZ{ loc, z })
+                            station.Entrance = { entranceLoc, z + heightOffset, entranceLoc.direction };
+                        else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exitLoc == TileCoordsXYZ{ loc, z })
+                            station.Exit = { exitLoc, z + heightOffset, exitLoc.direction };
                     }
                 }
             }
@@ -695,12 +696,10 @@ namespace OpenRCT2::TileInspector
             switch (entranceElement->AsEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                    station.Entrance = { loc.x / 32, loc.y / 32, entranceElement->base_height,
-                                         static_cast<uint8_t>(entranceElement->GetDirection()) };
+                    station.Entrance = { loc, entranceElement->base_height, entranceElement->GetDirection() };
                     break;
                 case ENTRANCE_TYPE_RIDE_EXIT:
-                    station.Exit = { loc.x / 32, loc.y / 32, entranceElement->base_height,
-                                     static_cast<uint8_t>(entranceElement->GetDirection()) };
+                    station.Exit = { loc, entranceElement->base_height, entranceElement->GetDirection() };
                     break;
             }
 

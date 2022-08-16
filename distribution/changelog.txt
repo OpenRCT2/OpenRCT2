@@ -24,8 +24,10 @@
 - Fix: [#17508] Grid doesn’t disable after setting patrol area.
 - Fix: [#17532] Object Selection window allows unselecting all station types.
 - Fix: [#17533] Missing audio when specifying ‘--rct2-data-path’.
+- Fix: [#17535] Multiplayer desync when placing rides with scenery.
 - Fix: [#17541] Station style not correctly saved to TD6.
 - Fix: [#17542] Stalls will autorotate towards paths outside the park.
+- Fix: [#17544, #17754] Visual glitches in Invention List window.
 - Fix: [#17553] Crash when moving invention list items to empty list.
 - Fix: [#17571] All researched tracked rides show up as new vehicles in .park scenarios.
 - Fix: [#17600] Notifications are not properly cleared when loading a park.
@@ -33,7 +35,7 @@
 - Fix: [#17639, 17735] When building upside down, the special elements list contains many items twice (original bug).
 - Fix: [#17703] (undefined string) when building on invalid height.
 - Fix: [#17776] “Other Parks” tab uses separate lists for SC4/SC6 and .park scenarios.
-- Fix: [#17735] When building from an upside down element, the special elements list contains many items twice.
+- Fix: [#17784] Colour preset RNG is biased (original bug).
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------

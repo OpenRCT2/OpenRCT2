@@ -46,10 +46,8 @@ void vehicle_visual_submarine(
     const CarEntry* carEntry)
 {
     auto baseImageId = SubmarineVehicleGetBaseImageId(vehicle, carEntry, imageDirection);
-    auto imageId0 = ImageId(
-        baseImageId + 0, vehicle->colours.body_colour, vehicle->colours.trim_colour, vehicle->colours_extended);
-    auto imageId1 = ImageId(
-        baseImageId + 1, vehicle->colours.body_colour, vehicle->colours.trim_colour, vehicle->colours_extended);
+    auto imageId0 = ImageId(baseImageId + 0, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
+    auto imageId1 = ImageId(baseImageId + 1, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
     if (vehicle->IsGhost())
     {
         imageId0 = ImageId(baseImageId + 0).WithRemap(FilterPaletteID::Palette44);
