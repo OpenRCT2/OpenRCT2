@@ -141,6 +141,7 @@
 - Change: [#16710] Changed default view of Guest List to ‘Thoughts’ and selected tab will default to ‘Summarised’ (when opened from the menu).
 - Change: [#16859] Guests with umbrellas no longer always avoid going into a Maze.
 - Change: [#16912] Tired or nauseated guests will no longer jump in a Maze.
+- Fix: [#3588] 1920’s Racing Cars get stuck on turns.
 - Fix: [#6767] Black screen after Alt-Tabbing back into the game.
 - Fix: [#11752] Track pieces with fractional cost are too cheap to build.
 - Fix: [#12556] Allow game to run without audio devices.
