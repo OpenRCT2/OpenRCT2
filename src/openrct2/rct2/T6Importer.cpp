@@ -89,7 +89,7 @@ namespace RCT2
             for (auto i = 0; i < Limits::MaxTrainsPerRide; ++i)
             {
                 td->vehicle_colours[i].Body = td6.vehicle_colours[i].body_colour;
-                td->vehicle_colours[i].Trim = td6.vehicle_colours[i].body_colour;
+                td->vehicle_colours[i].Trim = td6.vehicle_colours[i].trim_colour;
                 td->vehicle_colours[i].Tertiary = td6.vehicle_additional_colour[i];
             }
             td->entrance_style = td6.entrance_style;
