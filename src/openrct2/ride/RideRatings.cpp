@@ -740,7 +740,6 @@ static void ride_ratings_calculate(RideRatingUpdateState& state, Ride* ride)
 
 #ifdef ENABLE_SCRIPTING
     // Only call the 'ride.ratings.calculate' API hook if testing of the ride is complete
-    // https://github.com/OpenRCT2/OpenRCT2/issues/17844
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
     {
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
