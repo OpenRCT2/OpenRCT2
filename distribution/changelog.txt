@@ -14,6 +14,7 @@
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
 - Change: [#17655] Lower default price for the Crooked House.
 - Fix: [#7466] Coaster track not drawn at tunnel exit.
+- Fix: [#15328] Wooden Roller Coaster incorrectly draws a railing on the first station piece (original bug).
 - Fix: [#16392] Scenery on sloped surface is placed at wrong height.
 - Fix: [#16476] The game sometimes crashes when demolishing a maze.
 - Fix: [#17312] (Flying) Inline Twist appearing under the surface when placed on ground level.

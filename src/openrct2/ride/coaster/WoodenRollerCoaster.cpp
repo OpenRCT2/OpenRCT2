@@ -448,6 +448,13 @@ static constexpr const uint32_t _wooden_rc_block_brakes_image_ids[4][3] = {
     { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
 };
 
+static constexpr const uint32_t _wooden_rc_station_block_brakes_image_ids[4][2] = {
+    { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
+    { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
+    { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
+    { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
+};
+
 static uint32_t wooden_rc_get_track_colour(paint_session& session)
 {
     return (session.TrackColours[SCHEME_TRACK] & ~0xF80000) | session.TrackColours[SCHEME_SUPPORTS];
@@ -535,11 +542,9 @@ static void wooden_rc_track_station(
     int32_t trackType = trackElement.GetTrackType();
     if (trackType == TrackElemType::EndStation)
     {
-        const auto brakeImg = trackElement.BlockBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
-                                                              : _wooden_rc_block_brakes_image_ids[direction][0];
-        wooden_rc_track_paint(
-            session, brakeImg, _wooden_rc_block_brakes_image_ids[direction][2], direction, 0, 2, 32, 27, 2, height, 0, 2,
-            height);
+        const auto brakeImg = trackElement.BlockBrakeClosed() ? _wooden_rc_station_block_brakes_image_ids[direction][1]
+                                                              : _wooden_rc_station_block_brakes_image_ids[direction][0];
+        wooden_rc_track_paint(session, brakeImg, SPR_G2_EMPTY, direction, 0, 2, 32, 27, 2, height, 0, 2, height);
     }
     else
     {
