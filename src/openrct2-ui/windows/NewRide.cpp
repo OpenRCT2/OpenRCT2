@@ -429,6 +429,13 @@ public:
         }
 
         new_ride.HighlightedRide = item;
+
+        if (item.Type != _lastTrackDesignCountRideType.Type || item.EntryIndex != _lastTrackDesignCountRideType.EntryIndex)
+        {
+            _lastTrackDesignCountRideType = item;
+            _lastTrackDesignCount = GetNumTrackDesigns(item);
+        }
+
         Invalidate();
     }
 
@@ -848,11 +855,7 @@ private:
         }
 
         ft = Formatter();
-        if (item.Type != _lastTrackDesignCountRideType.Type || item.EntryIndex != _lastTrackDesignCountRideType.EntryIndex)
-        {
-            _lastTrackDesignCountRideType = item;
-            _lastTrackDesignCount = GetNumTrackDesigns(item);
-        }
+
         ft.Add<int32_t>(_lastTrackDesignCount);
 
         StringId designCountStringId;
