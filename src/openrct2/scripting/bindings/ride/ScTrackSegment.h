@@ -19,6 +19,18 @@
 
 namespace OpenRCT2::Scripting
 {
+    template<> inline DukValue ToDuk(duk_context* ctx, const rct_vehicle_info& value)
+    {
+        DukObject dukSubposition(ctx);
+        dukSubposition.Set("x", value.x);
+        dukSubposition.Set("y", value.y);
+        dukSubposition.Set("z", value.z);
+        dukSubposition.Set("direction", value.direction);
+        dukSubposition.Set("angle", value.Pitch);
+        dukSubposition.Set("banking", value.bank_rotation);
+        return dukSubposition.Take();
+    }
+
     class ScTrackSegment
     {
     private:
@@ -45,6 +57,7 @@ namespace OpenRCT2::Scripting
         int32_t length_get() const;
         DukValue elements_get() const;
         uint16_t getSubpositionLength(uint8_t trackSubposition, uint8_t direction) const;
+        std::vector<DukValue> getSubpositions(uint8_t trackSubposition, uint8_t direction) const;
     };
 
 } // namespace OpenRCT2::Scripting

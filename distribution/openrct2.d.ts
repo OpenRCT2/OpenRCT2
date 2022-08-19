@@ -884,7 +884,7 @@ declare global {
         readonly imageId: number;
         readonly spriteNumImages: number;
     }
-     
+
     /**
      * Represents the sprite groups of a vehicle
      */
@@ -915,7 +915,7 @@ declare global {
         readonly restraintAnimation?: SpriteGroup;
         readonly curvedLiftHill?: SpriteGroup;
     }
-     
+
     /**
      * Represents a defined vehicle within a Ride object definition.
      */
@@ -1244,11 +1244,17 @@ declare global {
          * Gets a list of the elements that make up the track segment.
          */
         readonly elements: TrackSegmentElement[];
-		
+
 		/**
          * Gets a length of the subpositions list for this track segment.
          */
         getSubpositionLength(subpositionType: number, direction: Direction): number;
+
+		/**
+         * Gets all of the subpositions for this track segment. These subpositions are used for the
+         * pathing of vehicles when moving along the track.
+         */
+        getSubpositions(subpositionType: number, direction: Direction): TrackSubposition[];
     }
 
     enum TrackSlope {
@@ -1268,7 +1274,16 @@ declare global {
         UpsideDown = 15
     }
 
-    interface TrackSegmentElement extends CoordsXYZ {
+    interface TrackSegmentElement extends Readonly<CoordsXYZ> {
+    }
+
+    /**
+     * A single subposition on a track piece. These subpositions are used for the pathing of vehicles
+     * when moving along the track.
+     */
+    interface TrackSubposition extends Readonly<CoordsXYZD> {
+        readonly angle: TrackSlope;
+        readonly banking: TrackBanking;
     }
 
     interface TrackIterator {
@@ -1473,7 +1488,7 @@ declare global {
         readonly remainingDistance: number;
 
         /**
-         * The type of subposition coordinates that this vehicle is using to find its 
+         * The type of subposition coordinates that this vehicle is using to find its
 		 * position on the track.
          */
         readonly subposition: number;
