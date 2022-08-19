@@ -49,7 +49,7 @@ struct WindowTheme
  */
 struct UIThemeWindowEntry
 {
-    WindowClass WindowClass;
+    WindowClass Class;
     WindowTheme Theme;
 
     json_t ToJson() const;
@@ -94,7 +94,7 @@ public:
  */
 struct WindowThemeDesc
 {
-    WindowClass WindowClass;
+    ::WindowClass WindowClass;
     const utf8* WindowClassSZ;
     StringId WindowName;
     uint8_t NumColours;
@@ -273,7 +273,7 @@ static void ThrowThemeLoadException()
 
 json_t UIThemeWindowEntry::ToJson() const
 {
-    const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(WindowClass);
+    const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(Class);
     if (wtDesc == nullptr)
     {
         return nullptr;
@@ -305,7 +305,7 @@ UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc* wtDesc, j
     }
 
     UIThemeWindowEntry result{};
-    result.WindowClass = wtDesc->WindowClass;
+    result.Class = wtDesc->WindowClass;
     result.Theme = wtDesc->DefaultTheme;
 
     // result.Theme.Colours only has 6 values
@@ -327,7 +327,7 @@ const UIThemeWindowEntry* UITheme::GetEntry(WindowClass windowClass) const
 {
     for (const auto& entry : Entries)
     {
-        if (entry.WindowClass == windowClass)
+        if (entry.Class == windowClass)
         {
             return &entry;
         }
@@ -340,7 +340,7 @@ void UITheme::SetEntry(const UIThemeWindowEntry* newEntry)
     // Try to replace existing entry
     for (auto& entry : Entries)
     {
-        if (entry.WindowClass == newEntry->WindowClass)
+        if (entry.Class == newEntry->Class)
         {
             entry = *newEntry;
             return;
@@ -356,7 +356,7 @@ void UITheme::RemoveEntry(WindowClass windowClass)
     for (size_t i = 0; i < Entries.size(); i++)
     {
         UIThemeWindowEntry* entry = &Entries[i];
-        if (entry->WindowClass == windowClass)
+        if (entry->Class == windowClass)
         {
             Entries.erase(Entries.begin() + i);
             break;
@@ -370,7 +370,7 @@ json_t UITheme::ToJson() const
     json_t jsonEntries;
     for (const UIThemeWindowEntry& entry : Entries)
     {
-        const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(entry.WindowClass);
+        const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(entry.Class);
         if (wtDesc == nullptr)
         {
             return nullptr;
@@ -485,7 +485,7 @@ UITheme UITheme::CreatePredefined(const std::string& name, const UIThemeWindowEn
     theme.Flags = flags | UITHEME_FLAG_PREDEFINED;
 
     size_t numEntries = 0;
-    for (const UIThemeWindowEntry* entry = entries; entry->WindowClass != WindowClass::Null; entry++)
+    for (const UIThemeWindowEntry* entry = entries; entry->Class != WindowClass::Null; entry++)
     {
         numEntries++;
     }
@@ -745,7 +745,7 @@ uint8_t ThemeGetColour(WindowClass wc, uint8_t index)
 void ThemeSetColour(WindowClass wc, uint8_t index, colour_t colour)
 {
     UIThemeWindowEntry entry{};
-    entry.WindowClass = wc;
+    entry.Class = wc;
 
     auto currentEntry = const_cast<UIThemeWindowEntry*>(ThemeManager::CurrentTheme->GetEntry(wc));
     if (currentEntry != nullptr)
