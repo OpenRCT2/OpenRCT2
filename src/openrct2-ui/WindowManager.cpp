@@ -18,6 +18,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
+#include <openrct2/core/Guard.hpp>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
@@ -279,6 +280,14 @@ public:
             case WindowClass::ScenarioSelect:
                 return WindowScenarioselectOpen(
                     reinterpret_cast<scenarioselect_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK)), false);
+
+            case WindowClass::Null:
+                // Intent does not hold a window class
+                break;
+
+            default:
+                Guard::Assert(false, "OpenIntent was called for an unhandled window class.");
+                break;
         }
 
         switch (intent->GetAction())
@@ -318,6 +327,14 @@ public:
                 WindowScenerySetSelectedTab(intent->GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));
                 return window;
             }
+
+            case INTENT_ACTION_NULL:
+                // Intent does not hold an intent action
+                break;
+
+            default:
+                Guard::Assert(false, "OpenIntent was called for an unhandled intent action.");
+                break;
         }
 
         switch (intent->GetWindowDetail())
@@ -326,6 +343,14 @@ public:
                 return WindowRideOpenVehicle(static_cast<Vehicle*>(intent->GetPointerExtra(INTENT_EXTRA_VEHICLE)));
             case WD_TRACK:
                 return WindowRideOpenTrack(static_cast<TileElement*>(intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT)));
+
+            case WD_NULL:
+                // Intent does not hold an window detail
+                break;
+
+            default:
+                Guard::Assert(false, "OpenIntent was called for an unhandled window detail.");
+                break;
         }
 
         Console::Error::WriteLine("Unhandled window class for intent (%d)", intent->GetWindowClass());
@@ -514,6 +539,9 @@ public:
                 }
                 break;
             }
+
+            default:
+                break;
         }
     }
 
