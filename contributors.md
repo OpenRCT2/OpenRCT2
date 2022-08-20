@@ -195,6 +195,7 @@ The following people are not part of the development team, but have been contrib
 * Hoby R. (hobyr)
 * Huu Kim Nguyen (CoderUndefined)
 * Henry Cheng (jazzysoggy)
+* Dan Stevens (MajeureX)
 
 ## Toolchain
 * (Balletie) - macOS
