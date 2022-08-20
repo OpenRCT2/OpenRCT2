@@ -107,7 +107,7 @@ extern int16_t gParkRatingCasualtyPenalty;
 extern uint8_t gParkRatingHistory[32];
 extern uint32_t gGuestsInParkHistory[32];
 extern int32_t _guestGenerationProbability;
-extern uint32_t _suggestedGuestMaximum = 0;
+extern uint32_t _suggestedGuestMaximum;
 
 void set_forced_park_rating(int32_t rating);
 int32_t get_forced_park_rating();

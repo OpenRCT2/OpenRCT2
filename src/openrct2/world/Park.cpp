@@ -264,6 +264,7 @@ void Park::Initialise()
     gParkRating = 0;
     _guestGenerationProbability = 0;
     gTotalRideValueForMoney = 0;
+    _suggestedGuestMaximum = 0;
     gResearchLastItem = std::nullopt;
     gMarketingCampaigns.clear();
 
