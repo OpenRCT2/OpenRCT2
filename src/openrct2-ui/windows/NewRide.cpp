@@ -523,7 +523,8 @@ private:
         Close();
         window_close_construction_windows();
 
-        if (_lastTrackDesignCount > 0)
+        auto count = GetNumTrackDesigns(item);
+        if (count > 0)
         {
             auto intent = Intent(WC_TRACK_DESIGN_LIST);
             intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
@@ -537,6 +538,12 @@ private:
 
     int32_t GetNumTrackDesigns(RideSelection item)
     {
+        // Cache the result
+        if (item.Type == _lastTrackDesignCountRideType.Type && item.EntryIndex == _lastTrackDesignCountRideType.EntryIndex)
+        {
+            return _lastTrackDesignCount;
+        }
+
         std::string entryName;
 
         if (item.Type < 0x80)
@@ -548,7 +555,9 @@ private:
         }
 
         auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-        return static_cast<int32_t>(repo->GetCountForObjectEntry(item.Type, entryName));
+        _lastTrackDesignCount = static_cast<int32_t>(repo->GetCountForObjectEntry(item.Type, entryName));
+        _lastTrackDesignCountRideType = item;
+        return _lastTrackDesignCount;
     }
 
     void UpdateVehicleAvailability(ObjectEntryIndex rideType)
@@ -847,28 +856,10 @@ private:
             }
         }
 
+        auto count = GetNumTrackDesigns(item);
+        auto designCountStringId = GetDesignsAvailableStringId(count);
         ft = Formatter();
-        if (item.Type != _lastTrackDesignCountRideType.Type || item.EntryIndex != _lastTrackDesignCountRideType.EntryIndex)
-        {
-            _lastTrackDesignCountRideType = item;
-            _lastTrackDesignCount = GetNumTrackDesigns(item);
-        }
-        ft.Add<int32_t>(_lastTrackDesignCount);
-
-        StringId designCountStringId;
-        switch (_lastTrackDesignCount)
-        {
-            case 0:
-                designCountStringId = STR_CUSTOM_DESIGNED_LAYOUT;
-                break;
-            case 1:
-                designCountStringId = STR_1_DESIGN_AVAILABLE;
-                break;
-            default:
-                designCountStringId = STR_X_DESIGNS_AVAILABLE;
-                break;
-        }
-
+        ft.Add<int32_t>(count);
         DrawTextBasic(&dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
         // Price
@@ -919,6 +910,19 @@ private:
         DrawTabImage(dpi, WATER_TAB, SPR_TAB_RIDES_WATER_0);
         DrawTabImage(dpi, SHOP_TAB, SPR_TAB_RIDES_SHOP_0);
         DrawTabImage(dpi, RESEARCH_TAB, SPR_TAB_FINANCES_RESEARCH_0);
+    }
+
+    StringId GetDesignsAvailableStringId(int32_t count)
+    {
+        switch (count)
+        {
+            case 0:
+                return STR_CUSTOM_DESIGNED_LAYOUT;
+            case 1:
+                return STR_1_DESIGN_AVAILABLE;
+            default:
+                return STR_X_DESIGNS_AVAILABLE;
+        }
     }
 };
 
