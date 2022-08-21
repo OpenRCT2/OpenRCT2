@@ -38,7 +38,7 @@
 - Fix: [#17776] “Other Parks” tab uses separate lists for SC4/SC6 and .park scenarios.
 - Fix: [#17784] Colour preset RNG is biased (original bug).
 - Fix: [#17834] Finance window becomes blank after 4096 years.
-- Fix: [#17866] Wrong Soft Guest Cap at start of new game
+- Fix: [#17866] [Plugin] Wrong Soft Guest Cap at start of new game
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
