@@ -21,32 +21,32 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 
-static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetText(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
-static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
+static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetText(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
 static void WidgetHScrollbarDraw(
     rct_drawpixelinfo* dpi, const rct_scroll& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
 static void WidgetVScrollbarDraw(
     rct_drawpixelinfo* dpi, const rct_scroll& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
-static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
+static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
 
 /**
  *
  *  rct2: 0x006EB2A8
  */
-void WidgetDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+void WidgetDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     const auto* widget = GetWidgetByIndex(w, widgetIndex);
     if (widget == nullptr)
@@ -116,7 +116,7 @@ void WidgetDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006EB6CE
  */
-static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -150,7 +150,7 @@ static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetind
  *
  *  rct2: 0x006EB765
  */
-static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -181,7 +181,7 @@ static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetin
  *
  *  rct2: 0x006EB8E5
  */
-static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -213,7 +213,7 @@ static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetin
  *
  *  rct2: 0x006EB806
  */
-static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     auto& widget = w.widgets[widgetIndex];
@@ -261,7 +261,7 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex
  *
  *  rct2: 0x006EB861
  */
-static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     if (!WidgetIsDisabled(w, widgetIndex) && WidgetIsHighlighted(w, widgetIndex))
     {
@@ -301,7 +301,7 @@ static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widg
  *
  *  rct2: 0x006EBBEB
  */
-static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -332,7 +332,7 @@ static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetin
  *
  *  rct2: 0x006EBC41
  */
-static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -378,7 +378,7 @@ static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window& w, rct_widgeti
  *
  *  rct2: 0x006EBD52
  */
-static void WidgetText(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetText(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -427,7 +427,7 @@ static void WidgetText(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex wi
  *
  *  rct2: 0x006EBD1F
  */
-static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -467,7 +467,7 @@ static std::pair<StringId, void*> WidgetGetStringidAndArgs(const rct_widget& wid
  *
  *  rct2: 0x006EB535
  */
-static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -528,7 +528,7 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widget
  *
  *  rct2: 0x006EB2F9
  */
-static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto* widget = &w.widgets[widgetIndex];
@@ -576,7 +576,7 @@ static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgeti
  *
  *  rct2: 0x006EBB85
  */
-static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -613,7 +613,7 @@ static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widget
  *
  *  rct2: 0x006EBAD9
  */
-static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -654,7 +654,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widget
  *
  *  rct2: 0x006EBD96
  */
-static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     int32_t scrollIndex = window_get_scroll_data_index(w, widgetIndex);
@@ -796,7 +796,7 @@ static void WidgetVScrollbarDraw(
  *
  *  rct2: 0x006EB951
  */
-static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -845,26 +845,26 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetind
     }
 }
 
-bool WidgetIsDisabled(const rct_window& w, rct_widgetindex widgetIndex)
+bool WidgetIsDisabled(const rct_window& w, WidgetIndex widgetIndex)
 {
     if (w.classification == WindowClass::Custom)
         return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_DISABLED;
     return (w.disabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
-bool WidgetIsHoldable(const rct_window& w, rct_widgetindex widgetIndex)
+bool WidgetIsHoldable(const rct_window& w, WidgetIndex widgetIndex)
 {
     if (w.classification == WindowClass::Custom)
         return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_HOLDABLE;
     return (w.hold_down_widgets & (1LL << widgetIndex)) != 0;
 }
 
-bool WidgetIsVisible(const rct_window& w, rct_widgetindex widgetIndex)
+bool WidgetIsVisible(const rct_window& w, WidgetIndex widgetIndex)
 {
     return w.widgets[widgetIndex].IsVisible();
 }
 
-bool WidgetIsPressed(const rct_window& w, rct_widgetindex widgetIndex)
+bool WidgetIsPressed(const rct_window& w, WidgetIndex widgetIndex)
 {
     if (w.classification == WindowClass::Custom)
     {
@@ -896,7 +896,7 @@ bool WidgetIsPressed(const rct_window& w, rct_widgetindex widgetIndex)
     return false;
 }
 
-bool WidgetIsHighlighted(const rct_window& w, rct_widgetindex widgetIndex)
+bool WidgetIsHighlighted(const rct_window& w, WidgetIndex widgetIndex)
 {
     if (gHoverWidget.window_classification != w.classification)
         return false;
@@ -907,7 +907,7 @@ bool WidgetIsHighlighted(const rct_window& w, rct_widgetindex widgetIndex)
     return true;
 }
 
-bool WidgetIsActiveTool(const rct_window& w, rct_widgetindex widgetIndex)
+bool WidgetIsActiveTool(const rct_window& w, WidgetIndex widgetIndex)
 {
     if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
@@ -1036,10 +1036,10 @@ void WidgetScrollGetPart(
     }
 }
 
-rct_widget* GetWidgetByIndex(const rct_window& w, rct_widgetindex widgetIndex)
+rct_widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
 {
     // Make sure we don't go out of bounds if we are given a bad widget index
-    rct_widgetindex index = 0;
+    WidgetIndex index = 0;
     for (auto* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
     {
         if (index == widgetIndex)
@@ -1054,7 +1054,7 @@ rct_widget* GetWidgetByIndex(const rct_window& w, rct_widgetindex widgetIndex)
     return nullptr;
 }
 
-static void SafeSetWidgetFlag(rct_window& w, rct_widgetindex widgetIndex, WidgetFlags mask, bool value)
+static void SafeSetWidgetFlag(rct_window& w, WidgetIndex widgetIndex, WidgetFlags mask, bool value)
 {
     rct_widget* widget = GetWidgetByIndex(w, widgetIndex);
     if (widget == nullptr)
@@ -1068,12 +1068,12 @@ static void SafeSetWidgetFlag(rct_window& w, rct_widgetindex widgetIndex, Widget
         widget->flags &= ~mask;
 }
 
-void WidgetSetEnabled(rct_window& w, rct_widgetindex widgetIndex, bool enabled)
+void WidgetSetEnabled(rct_window& w, WidgetIndex widgetIndex, bool enabled)
 {
     WidgetSetDisabled(w, widgetIndex, !enabled);
 }
 
-void WidgetSetDisabled(rct_window& w, rct_widgetindex widgetIndex, bool value)
+void WidgetSetDisabled(rct_window& w, WidgetIndex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_DISABLED, value);
     if (value)
@@ -1086,7 +1086,7 @@ void WidgetSetDisabled(rct_window& w, rct_widgetindex widgetIndex, bool value)
     }
 }
 
-void WidgetSetHoldable(rct_window& w, rct_widgetindex widgetIndex, bool value)
+void WidgetSetHoldable(rct_window& w, WidgetIndex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HOLDABLE, value);
     if (value)
@@ -1099,12 +1099,12 @@ void WidgetSetHoldable(rct_window& w, rct_widgetindex widgetIndex, bool value)
     }
 }
 
-void WidgetSetVisible(rct_window& w, rct_widgetindex widgetIndex, bool value)
+void WidgetSetVisible(rct_window& w, WidgetIndex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HIDDEN, !value);
 }
 
-void WidgetSetPressed(rct_window& w, rct_widgetindex widgetIndex, bool value)
+void WidgetSetPressed(rct_window& w, WidgetIndex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_PRESSED, value);
     if (value)
@@ -1113,12 +1113,12 @@ void WidgetSetPressed(rct_window& w, rct_widgetindex widgetIndex, bool value)
         w.pressed_widgets &= ~(1ULL << widgetIndex);
 }
 
-void WidgetSetCheckboxValue(rct_window& w, rct_widgetindex widgetIndex, bool value)
+void WidgetSetCheckboxValue(rct_window& w, WidgetIndex widgetIndex, bool value)
 {
     WidgetSetPressed(w, widgetIndex, value);
 }
 
-static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
+static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     int32_t no_lines = 0;
     char wrapped_string[TEXT_INPUT_SIZE];

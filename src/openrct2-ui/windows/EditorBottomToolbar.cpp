@@ -129,7 +129,7 @@ public:
         DrawStepText(dpi);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
         {

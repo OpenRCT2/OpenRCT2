@@ -105,7 +105,7 @@ void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoord
  *
  *  rct2: 0x006EA10D
  */
-void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCords)
+void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCords)
 {
     if (widgetWindow == nullptr || widgetIndex == -1)
         return;

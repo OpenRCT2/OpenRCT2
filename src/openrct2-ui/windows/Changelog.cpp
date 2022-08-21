@@ -160,7 +160,7 @@ public:
         widgets[WIDX_OPEN_URL].top = height - 19;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {

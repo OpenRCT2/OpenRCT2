@@ -74,15 +74,15 @@ static rct_widget window_server_list_widgets[] = {
 // clang-format on
 
 static void WindowServerListClose(rct_window* w);
-static void WindowServerListMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowServerListMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowServerListResize(rct_window* w);
-static void WindowServerListDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowServerListDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowServerListUpdate(rct_window* w);
 static void WindowServerListScrollGetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
 static void WindowServerListScrollMousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowServerListScrollMouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowServerListTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
-static OpenRCT2String WindowServerListTooltip(rct_window* const w, const rct_widgetindex widgetIndex, StringId fallback);
+static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
+static OpenRCT2String WindowServerListTooltip(rct_window* const w, const WidgetIndex widgetIndex, StringId fallback);
 static void WindowServerListInvalidate(rct_window* w);
 static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
@@ -160,7 +160,7 @@ static void WindowServerListClose(rct_window* w)
     _fetchFuture = {};
 }
 
-static void WindowServerListMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowServerListMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -206,7 +206,7 @@ static void WindowServerListResize(rct_window* w)
     window_set_resize(*w, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 }
 
-static void WindowServerListDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowServerListDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     auto serverIndex = w->selected_list_item;
     if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
@@ -304,7 +304,7 @@ static void WindowServerListScrollMouseover(rct_window* w, int32_t scrollIndex, 
     }
 }
 
-static void WindowServerListTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     if (text == nullptr || text[0] == 0)
         return;
@@ -344,7 +344,7 @@ static void WindowServerListTextinput(rct_window* w, rct_widgetindex widgetIndex
     }
 }
 
-static OpenRCT2String WindowServerListTooltip(rct_window* const w, const rct_widgetindex widgetIndex, StringId fallback)
+static OpenRCT2String WindowServerListTooltip(rct_window* const w, const WidgetIndex widgetIndex, StringId fallback)
 {
     auto ft = Formatter();
     ft.Add<char*>(_version.c_str());

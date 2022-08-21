@@ -89,7 +89,7 @@ public:
         safe_strcpy(_description, gConfigNetwork.server_description.c_str(), sizeof(_description));
         safe_strcpy(_greeting, gConfigNetwork.server_greeting.c_str(), sizeof(_greeting));
     }
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -165,7 +165,7 @@ public:
             widget_invalidate(*this, WIDX_PASSWORD_INPUT);
         }
     }
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (text.empty())
             return;

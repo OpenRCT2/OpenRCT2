@@ -68,7 +68,7 @@ static constexpr const StringId window_save_prompt_labels[][2] = {
 
 
 static void WindowSavePromptClose(rct_window *w);
-static void WindowSavePromptMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowSavePromptMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowSavePromptPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowSavePromptCallback(int32_t result, const utf8 * path);
 
@@ -189,7 +189,7 @@ static void WindowSavePromptClose(rct_window* w)
  *
  *  rct2: 0x0066DDF2
  */
-static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowSavePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
     {

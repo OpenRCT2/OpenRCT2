@@ -404,7 +404,7 @@ public:
         _invalidEntries.shrink_to_fit();
     }
 
-    void OnMouseUp(const rct_widgetindex widgetIndex) override
+    void OnMouseUp(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {

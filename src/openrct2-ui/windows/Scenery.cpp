@@ -177,7 +177,7 @@ public:
             tool_cancel();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -264,7 +264,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -289,7 +289,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (dropdownIndex == -1)
             return;
@@ -316,7 +316,7 @@ public:
         {
             // Find out what scenery the cursor is over
             const CursorState* state = context_get_cursor_state();
-            rct_widgetindex widgetIndex = window_find_widget_from_point(*this, state->position);
+            WidgetIndex widgetIndex = window_find_widget_from_point(*this, state->position);
             if (widgetIndex == WIDX_SCENERY_LIST)
             {
                 ScreenCoordsXY scrollPos = {};
@@ -350,7 +350,7 @@ public:
 
             if (window.y < 44 || window.x <= width)
             {
-                rct_widgetindex widgetIndex = window_find_widget_from_point(*this, state->position);
+                WidgetIndex widgetIndex = window_find_widget_from_point(*this, state->position);
                 if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL)
                 {
                     _hoverCounter++;
@@ -459,7 +459,7 @@ public:
         }
     }
 
-    OpenRCT2String OnTooltip(const rct_widgetindex widgetIndex, const StringId fallback) override
+    OpenRCT2String OnTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
     {
         if (widgetIndex >= WIDX_SCENERY_TAB_1)
         {
@@ -1178,7 +1178,7 @@ private:
     {
         for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
         {
-            auto widgetIndex = static_cast<rct_widgetindex>(WIDX_SCENERY_TAB_1 + tabIndex);
+            auto widgetIndex = static_cast<WidgetIndex>(WIDX_SCENERY_TAB_1 + tabIndex);
             auto scgEntry = _tabEntries[tabIndex].GetSceneryGroupEntry();
             if (scgEntry != nullptr)
             {

@@ -179,24 +179,24 @@ static rct_widget *window_editor_scenario_options_widgets[] = {
 
 #pragma region Events
 
-static void WindowEditorScenarioOptionsFinancialMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorScenarioOptionsFinancialMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowEditorScenarioOptionsFinancialResize(rct_window *w);
-static void WindowEditorScenarioOptionsFinancialMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
+static void WindowEditorScenarioOptionsFinancialMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget *widget);
 static void WindowEditorScenarioOptionsFinancialUpdate(rct_window *w);
 static void WindowEditorScenarioOptionsFinancialInvalidate(rct_window *w);
 static void WindowEditorScenarioOptionsFinancialPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void WindowEditorScenarioOptionsGuestsMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorScenarioOptionsGuestsMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowEditorScenarioOptionsGuestsResize(rct_window *w);
-static void WindowEditorScenarioOptionsGuestsMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
+static void WindowEditorScenarioOptionsGuestsMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget *widget);
 static void WindowEditorScenarioOptionsGuestsUpdate(rct_window *w);
 static void WindowEditorScenarioOptionsGuestsInvalidate(rct_window *w);
 static void WindowEditorScenarioOptionsGuestsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void WindowEditorScenarioOptionsParkMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorScenarioOptionsParkMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowEditorScenarioOptionsParkResize(rct_window *w);
-static void WindowEditorScenarioOptionsParkMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void WindowEditorScenarioOptionsParkDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowEditorScenarioOptionsParkMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget *widget);
+static void WindowEditorScenarioOptionsParkDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowEditorScenarioOptionsParkUpdate(rct_window *w);
 static void WindowEditorScenarioOptionsParkInvalidate(rct_window *w);
 static void WindowEditorScenarioOptionsParkPaint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -373,7 +373,7 @@ static void WindowEditorScenarioOptionsSetPage(rct_window* w, int32_t page)
  *
  *  rct2: 0x0067049D
  */
-static void WindowEditorScenarioOptionsFinancialMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorScenarioOptionsFinancialMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -434,7 +434,7 @@ static void WindowEditorScenarioOptionsShowClimateDropdown(rct_window* w)
  *
  *  rct2: 0x006704C8
  */
-static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -677,7 +677,7 @@ static void WindowEditorScenarioOptionsFinancialPaint(rct_window* w, rct_drawpix
  *
  *  rct2: 0x00670A62
  */
-static void WindowEditorScenarioOptionsGuestsMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorScenarioOptionsGuestsMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -721,7 +721,7 @@ static void WindowEditorScenarioOptionsGuestsResize(rct_window* w)
  *
  *  rct2: 0x00670A89
  */
-static void WindowEditorScenarioOptionsGuestsMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowEditorScenarioOptionsGuestsMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -958,7 +958,7 @@ static void WindowEditorScenarioOptionsGuestsPaint(rct_window* w, rct_drawpixeli
  *
  *  rct2: 0x00670FD8
  */
-static void WindowEditorScenarioOptionsParkMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorScenarioOptionsParkMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -1027,7 +1027,7 @@ static void WindowEditorScenarioOptionsParkResize(rct_window* w)
  *
  *  rct2: 0x00671019
  */
-static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     rct_widget* dropdownWidget;
 
@@ -1141,7 +1141,7 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
  *
  *  rct2: 0x00671060
  */
-static void WindowEditorScenarioOptionsParkDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowEditorScenarioOptionsParkDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
     {

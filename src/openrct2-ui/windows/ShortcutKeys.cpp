@@ -106,7 +106,7 @@ public:
         NotifyShortcutKeysWindow();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -208,10 +208,10 @@ public:
         }
 
         _tabAnimationIndex++;
-        InvalidateWidget(static_cast<rct_widgetindex>(WIDX_TAB_0 + _currentTabIndex));
+        InvalidateWidget(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex));
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -245,14 +245,14 @@ public:
         widgets[WIDX_SCROLL].bottom = height - 19;
         widgets[WIDX_RESET].top = height - 16;
         widgets[WIDX_RESET].bottom = height - 5;
-        window_align_tabs(this, WIDX_TAB_0, static_cast<rct_widgetindex>(WIDX_TAB_0 + _tabs.size()));
+        window_align_tabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size()));
 
         // Set selected tab
         for (size_t i = 0; i < _tabs.size(); i++)
         {
-            SetWidgetPressed(static_cast<rct_widgetindex>(WIDX_TAB_0 + i), false);
+            SetWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + i), false);
         }
-        SetWidgetPressed(static_cast<rct_widgetindex>(WIDX_TAB_0 + _currentTabIndex), true);
+        SetWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex), true);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -485,7 +485,7 @@ private:
     void DrawTabImage(rct_drawpixelinfo& dpi, size_t tabIndex) const
     {
         const auto& tabDesc = _tabs[tabIndex];
-        auto widgetIndex = static_cast<rct_widgetindex>(WIDX_TAB_0 + tabIndex);
+        auto widgetIndex = static_cast<WidgetIndex>(WIDX_TAB_0 + tabIndex);
         if (!IsWidgetDisabled(widgetIndex))
         {
             auto imageId = tabDesc.ImageId;

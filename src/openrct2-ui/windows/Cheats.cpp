@@ -370,7 +370,7 @@ public:
         InvalidateWidget(WIDX_TAB_1 + page);
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (page)
         {
@@ -383,7 +383,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -416,7 +416,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         if (page == WINDOW_CHEATS_PAGE_MISC)
         {
@@ -577,7 +577,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER)
         {
@@ -590,7 +590,7 @@ public:
         }
     }
 
-    OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, StringId fallback) override
+    OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
     {
         if (page == WINDOW_CHEATS_PAGE_RIDES && widgetIndex == WIDX_UNLOCK_OPERATING_LIMITS)
         {
@@ -687,7 +687,7 @@ private:
         }
     }
 
-    void OnMouseDownMoney(rct_widgetindex widgetIndex)
+    void OnMouseDownMoney(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -759,7 +759,7 @@ private:
         }
     }
 
-    void OnMouseUpMoney(rct_widgetindex widgetIndex)
+    void OnMouseUpMoney(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -781,7 +781,7 @@ private:
         }
     }
 
-    void OnMouseDownMisc(rct_widgetindex widgetIndex)
+    void OnMouseDownMisc(WidgetIndex widgetIndex)
     {
         auto* widget = &widgets[widgetIndex];
         switch (widgetIndex)
@@ -840,7 +840,7 @@ private:
         }
     }
 
-    void OnMouseUpMisc(rct_widgetindex widgetIndex)
+    void OnMouseUpMisc(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -899,7 +899,7 @@ private:
         }
     }
 
-    void OnDropdownMisc(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OnDropdownMisc(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
         {
@@ -927,7 +927,7 @@ private:
         }
     }
 
-    void OnMouseUpGuests(rct_widgetindex widgetIndex)
+    void OnMouseUpGuests(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -1009,7 +1009,7 @@ private:
         }
     }
 
-    void OnMouseUpRides(rct_widgetindex widgetIndex)
+    void OnMouseUpRides(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {

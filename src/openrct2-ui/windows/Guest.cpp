@@ -200,7 +200,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widx) override
+    void OnMouseUp(WidgetIndex widx) override
     {
         switch (widx)
         {
@@ -225,14 +225,14 @@ public:
                 break;
         }
     }
-    void OnMouseDown(rct_widgetindex widx) override
+    void OnMouseDown(WidgetIndex widx) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnMouseDownOverview(widx);
         }
     }
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
@@ -283,28 +283,28 @@ public:
                 break;
         }
     }
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnToolUpdateOverview(widgetIndex, screenCoords);
         }
     }
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnToolDownOverview(widgetIndex, screenCoords);
         }
     }
-    void OnToolAbort(rct_widgetindex widgetIndex) override
+    void OnToolAbort(WidgetIndex widgetIndex) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnToolAbortOverview(widgetIndex);
         }
     }
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
@@ -606,7 +606,7 @@ private:
         OnViewportRotate();
     }
 
-    void OnMouseUpOverview(rct_widgetindex widgetIndex)
+    void OnMouseUpOverview(WidgetIndex widgetIndex)
     {
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -657,7 +657,7 @@ private:
         }
     }
 
-    void OnMouseDownOverview(rct_widgetindex widgetIndex)
+    void OnMouseDownOverview(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -667,7 +667,7 @@ private:
         }
     }
 
-    void OnDropdownOverview(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OnDropdownOverview(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -896,7 +896,7 @@ private:
         }
     }
 
-    void OnTextInputOverview(rct_widgetindex widgetIndex, std::string_view text)
+    void OnTextInputOverview(WidgetIndex widgetIndex, std::string_view text)
     {
         if (widgetIndex != WIDX_RENAME)
             return;
@@ -908,7 +908,7 @@ private:
         GameActions::Execute(&gameAction);
     }
 
-    void OnToolUpdateOverview(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void OnToolUpdateOverview(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -952,7 +952,7 @@ private:
         gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
     }
 
-    void OnToolDownOverview(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void OnToolDownOverview(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -976,7 +976,7 @@ private:
         GameActions::Execute(&pickupAction);
     }
 
-    void OnToolAbortOverview(rct_widgetindex widgetIndex)
+    void OnToolAbortOverview(WidgetIndex widgetIndex)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;

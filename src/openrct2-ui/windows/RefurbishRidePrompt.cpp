@@ -56,7 +56,7 @@ public:
         WindowInitScrollWidgets(*this);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {

@@ -63,7 +63,7 @@ public:
         ResizeLanguage = LANGUAGE_UNDEFINED;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {

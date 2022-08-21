@@ -57,11 +57,11 @@ static rct_widget window_track_delete_prompt_widgets[] = {
 #pragma region Events
 
 static void WindowTrackManageClose(rct_window *w);
-static void WindowTrackManageMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowTrackManageTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowTrackManageMouseup(rct_window *w, WidgetIndex widgetIndex);
+static void WindowTrackManageTextinput(rct_window *w, WidgetIndex widgetIndex, char *text);
 static void WindowTrackManagePaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void WindowTrackDeletePromptMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowTrackDeletePromptMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowTrackDeletePromptPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x009940EC
@@ -129,7 +129,7 @@ static void WindowTrackManageClose(rct_window* w)
  *
  *  rct2: 0x006D3523
  */
-static void WindowTrackManageMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTrackManageMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -152,7 +152,7 @@ static void WindowTrackManageMouseup(rct_window* w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x006D3523
  */
-static void WindowTrackManageTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowTrackManageTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     if (widgetIndex != WIDX_RENAME || str_is_null_or_empty(text))
     {
@@ -217,7 +217,7 @@ static void WindowTrackDeletePromptOpen()
  *
  *  rct2: 0x006D3823
  */
-static void WindowTrackDeletePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTrackDeletePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {

@@ -102,7 +102,7 @@ public:
         _trackDesign = nullptr;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -141,7 +141,7 @@ public:
                 Close();
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         TrackDesignState tds{};
         int16_t mapZ;
@@ -206,7 +206,7 @@ public:
         TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), GetOrAllocateRide(PreviewRideId), trackLoc);
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         ClearProvisional();
         map_invalidate_map_selection_tiles();
@@ -269,7 +269,7 @@ public:
         windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
     }
 
-    void OnToolAbort(rct_widgetindex widgetIndex) override
+    void OnToolAbort(WidgetIndex widgetIndex) override
     {
         ClearProvisional();
     }

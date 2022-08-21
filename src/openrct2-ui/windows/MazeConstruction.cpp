@@ -135,7 +135,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -176,7 +176,7 @@ public:
         if (currentDisabledWidgets == disabledWidgets)
             return;
 
-        for (rct_widgetindex i = 0; i < 64; i++)
+        for (WidgetIndex i = 0; i < 64; i++)
         {
             if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
             {
@@ -186,7 +186,7 @@ public:
         disabled_widgets = disabledWidgets;
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -248,7 +248,7 @@ public:
         UpdateGhostTrackAndArrow();
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (widgetIndex)
         {
@@ -262,7 +262,7 @@ public:
         }
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (widgetIndex)
         {
@@ -298,7 +298,7 @@ public:
     }
 
 private:
-    void WindowMazeConstructionEntranceMouseup(rct_widgetindex widgetIndex)
+    void WindowMazeConstructionEntranceMouseup(WidgetIndex widgetIndex)
     {
         if (tool_set(*this, widgetIndex, Tool::Crosshair))
             return;

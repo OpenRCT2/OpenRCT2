@@ -255,7 +255,7 @@ public:
         }
     }
 
-    void OnMouseUp(const rct_widgetindex widgetIndex) override
+    void OnMouseUp(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -343,7 +343,7 @@ public:
         }
     }
 
-    void OnTextInput(const rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(const WidgetIndex widgetIndex, std::string_view text) override
     {
         if (widgetIndex != WIDX_FILTER_STRING || text.empty())
             return;

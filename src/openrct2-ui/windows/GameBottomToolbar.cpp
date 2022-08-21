@@ -69,12 +69,12 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
 
 uint8_t gToolbarDirtyFlags;
 
-static void WindowGameBottomToolbarMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback);
+static void WindowGameBottomToolbarMouseup(rct_window *w, WidgetIndex widgetIndex);
+static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback);
 static void WindowGameBottomToolbarInvalidate(rct_window *w);
 static void WindowGameBottomToolbarPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowGameBottomToolbarUpdate(rct_window* w);
-static void WindowGameBottomToolbarCursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
+static void WindowGameBottomToolbarCursor(rct_window *w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
 static void WindowGameBottomToolbarUnknown05(rct_window *w);
 
 static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo *dpi, rct_window *w);
@@ -133,7 +133,7 @@ rct_window* WindowGameBottomToolbarOpen()
  *
  *  rct2: 0x0066C588
  */
-static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowGameBottomToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     News::Item* newsItem;
 
@@ -188,7 +188,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widget
     }
 }
 
-static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback)
+static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback)
 {
     int32_t month, day;
     auto ft = Formatter();
@@ -702,7 +702,7 @@ static void WindowGameBottomToolbarUpdate(rct_window* w)
  *  rct2: 0x0066C644
  */
 static void WindowGameBottomToolbarCursor(
-    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
+    rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
     switch (widgetIndex)
     {

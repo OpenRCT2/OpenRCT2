@@ -26,7 +26,7 @@ static rct_widget window_title_exit_widgets[] = {
 };
 
 static void WindowTitleExitPaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowTitleExitMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowTitleExitMouseup(rct_window *w, WidgetIndex widgetIndex);
 
 static rct_window_event_list window_title_exit_events([](auto& events)
 {
@@ -56,7 +56,7 @@ rct_window* WindowTitleExitOpen()
  *
  *  rct2: 0x0066B83C
  */
-static void WindowTitleExitMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleExitMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     if (gIntroState != IntroState::None)
         return;

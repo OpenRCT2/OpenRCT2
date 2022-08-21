@@ -114,14 +114,14 @@ static rct_widget window_footpath_widgets[] = {
 };
 
 static void WindowFootpathClose(rct_window * w);
-static void WindowFootpathMouseup(rct_window * w, rct_widgetindex widgetIndex);
-static void WindowFootpathMousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
-static void WindowFootpathDropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowFootpathMouseup(rct_window * w, WidgetIndex widgetIndex);
+static void WindowFootpathMousedown(rct_window * w, WidgetIndex widgetIndex, rct_widget * widget);
+static void WindowFootpathDropdown(rct_window * w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowFootpathUpdate(rct_window * w);
-static void WindowFootpathToolupdate(rct_window * w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowFootpathTooldown(rct_window * w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowFootpathTooldrag(rct_window * w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowFootpathToolup(rct_window * w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowFootpathToolupdate(rct_window * w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowFootpathTooldown(rct_window * w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowFootpathTooldrag(rct_window * w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowFootpathToolup(rct_window * w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowFootpathInvalidate(rct_window * w);
 static void WindowFootpathPaint(rct_window * w, rct_drawpixelinfo * dpi);
 
@@ -240,7 +240,7 @@ static void WindowFootpathClose(rct_window* w)
  *
  *  rct2: 0x006A7E92
  */
-static void WindowFootpathMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowFootpathMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -294,7 +294,7 @@ static void WindowFootpathMouseup(rct_window* w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x006A7EC5
  */
-static void WindowFootpathMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowFootpathMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -335,7 +335,7 @@ static void WindowFootpathMousedown(rct_window* w, rct_widgetindex widgetIndex, 
  *
  *  rct2: 0x006A7F18
  */
-static void WindowFootpathDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowFootpathDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex < 0 || static_cast<size_t>(dropdownIndex) >= _dropdownEntries.size())
         return;
@@ -385,7 +385,7 @@ static void WindowFootpathDropdown(rct_window* w, rct_widgetindex widgetIndex, i
  *
  *  rct2: 0x006A8032
  */
-static void WindowFootpathToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowFootpathToolupdate(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
@@ -401,7 +401,7 @@ static void WindowFootpathToolupdate(rct_window* w, rct_widgetindex widgetIndex,
  *
  *  rct2: 0x006A8047
  */
-static void WindowFootpathTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowFootpathTooldown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
@@ -417,7 +417,7 @@ static void WindowFootpathTooldown(rct_window* w, rct_widgetindex widgetIndex, c
  *
  *  rct2: 0x006A8067
  */
-static void WindowFootpathTooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowFootpathTooldrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
@@ -429,7 +429,7 @@ static void WindowFootpathTooldrag(rct_window* w, rct_widgetindex widgetIndex, c
  *
  *  rct2: 0x006A8066
  */
-static void WindowFootpathToolup(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowFootpathToolup(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
@@ -571,8 +571,7 @@ static void WindowFootpathInvalidate(rct_window* w)
     }
 }
 
-static void WindowFootpathDrawDropdownButton(
-    rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex widgetIndex, ImageIndex image)
+static void WindowFootpathDrawDropdownButton(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex widgetIndex, ImageIndex image)
 {
     const auto& widget = w->widgets[widgetIndex];
     gfx_draw_sprite(dpi, ImageId(image), { w->windowPos.x + widget.left, w->windowPos.y + widget.top });

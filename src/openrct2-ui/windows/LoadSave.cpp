@@ -82,12 +82,12 @@ static rct_widget window_loadsave_widgets[] =
 #pragma region Events
 
 static void WindowLoadsaveClose(rct_window *w);
-static void WindowLoadsaveMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowLoadsaveMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowLoadsaveResize(rct_window *w);
 static void WindowLoadsaveScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void WindowLoadsaveScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowLoadsaveScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowLoadsaveTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowLoadsaveTextinput(rct_window *w, WidgetIndex widgetIndex, char *text);
 static void WindowLoadsaveComputeMaxDateWidth();
 static void WindowLoadsaveInvalidate(rct_window *w);
 static void WindowLoadsavePaint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -436,7 +436,7 @@ static u8string Browse(bool isSave)
     return outPath;
 }
 
-static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowLoadsaveMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     bool isSave = (_type & 0x01) == LOADSAVETYPE_SAVE;
     switch (widgetIndex)
@@ -568,7 +568,7 @@ static void WindowLoadsaveScrollmouseover(rct_window* w, int32_t scrollIndex, co
     w->Invalidate();
 }
 
-static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     bool overwrite;
 
@@ -1137,7 +1137,7 @@ static rct_widget window_overwrite_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowOverwritePromptMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 static rct_window_event_list window_overwrite_prompt_events([](auto& events) {
@@ -1169,7 +1169,7 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
     return w;
 }
 
-static void WindowOverwritePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     rct_window* loadsaveWindow;
 
