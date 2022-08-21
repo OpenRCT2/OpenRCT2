@@ -1245,12 +1245,12 @@ declare global {
          */
         readonly elements: TrackSegmentElement[];
 
-		/**
+        /**
          * Gets a length of the subpositions list for this track segment.
          */
         getSubpositionLength(subpositionType: number, direction: Direction): number;
 
-		/**
+        /**
          * Gets all of the subpositions for this track segment. These subpositions are used for the
          * pathing of vehicles when moving along the track.
          */
@@ -1281,9 +1281,10 @@ declare global {
      * A single subposition on a track piece. These subpositions are used for the pathing of vehicles
      * when moving along the track.
      */
-    interface TrackSubposition extends Readonly<CoordsXYZD> {
-        readonly angle: TrackSlope;
-        readonly banking: TrackBanking;
+    interface TrackSubposition extends Readonly<CoordsXYZ> {
+        readonly yaw: number;
+        readonly pitch: TrackSlope;
+        readonly roll: TrackBanking;
     }
 
     interface TrackIterator {
@@ -1489,7 +1490,7 @@ declare global {
 
         /**
          * The type of subposition coordinates that this vehicle is using to find its
-		 * position on the track.
+         * position on the track.
          */
         readonly subposition: number;
 

@@ -25,9 +25,9 @@ namespace OpenRCT2::Scripting
         dukSubposition.Set("x", value.x);
         dukSubposition.Set("y", value.y);
         dukSubposition.Set("z", value.z);
-        dukSubposition.Set("direction", value.direction);
-        dukSubposition.Set("angle", value.Pitch);
-        dukSubposition.Set("banking", value.bank_rotation);
+        dukSubposition.Set("yaw", value.direction);
+        dukSubposition.Set("pitch", value.Pitch);
+        dukSubposition.Set("roll", value.bank_rotation);
         return dukSubposition.Take();
     }
 
