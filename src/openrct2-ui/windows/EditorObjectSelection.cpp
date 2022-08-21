@@ -410,7 +410,7 @@ public:
                 }
                 Invalidate();
 
-                auto intent = Intent(WC_LOADSAVE);
+                auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
                 context_open_intent(&intent);
                 break;
@@ -576,7 +576,7 @@ public:
     {
         // Used for in-game object selection cheat to prevent crashing the game
         // when windows attempt to draw objects that don't exist any more
-        window_close_all_except_class(WC_EDITOR_OBJECT_SELECTION);
+        window_close_all_except_class(WindowClass::EditorObjectSelection);
 
         int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
         if (selected_object == -1)
@@ -1502,7 +1502,7 @@ private:
         rct_ride_entry* ride_entry = get_ride_entry(entry_index);
         auto rideType = ride_entry_get_first_non_null_ride_type(ride_entry);
 
-        auto intent = Intent(WC_TRACK_DESIGN_LIST);
+        auto intent = Intent(WindowClass::TrackDesignList);
         intent.putExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
         intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
         context_open_intent(&intent);
@@ -1516,7 +1516,7 @@ private:
 rct_window* WindowEditorObjectSelectionOpen()
 {
     return WindowFocusOrCreate<EditorObjectSelectionWindow>(
-        WC_EDITOR_OBJECT_SELECTION, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+        WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
 }
 
 static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b)

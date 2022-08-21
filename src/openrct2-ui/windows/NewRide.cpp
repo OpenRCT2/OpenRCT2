@@ -526,7 +526,7 @@ private:
         auto count = GetNumTrackDesigns(item);
         if (count > 0)
         {
-            auto intent = Intent(WC_TRACK_DESIGN_LIST);
+            auto intent = Intent(WindowClass::TrackDesignList);
             intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
             intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.EntryIndex);
             context_open_intent(&intent);
@@ -955,16 +955,16 @@ rct_window* WindowNewRideOpen()
 {
     rct_window* window;
 
-    window = window_bring_to_front_by_class(WC_CONSTRUCT_RIDE);
+    window = window_bring_to_front_by_class(WindowClass::ConstructRide);
     if (window)
     {
         return window;
     }
 
-    window_close_by_class(WC_TRACK_DESIGN_LIST);
-    window_close_by_class(WC_TRACK_DESIGN_PLACE);
+    window_close_by_class(WindowClass::TrackDesignList);
+    window_close_by_class(WindowClass::TrackDesignPlace);
 
-    window = WindowCreate<NewRideWindow>(WC_CONSTRUCT_RIDE, WindowWidth, WindowHeight, WF_10 | WF_AUTO_POSITION);
+    window = WindowCreate<NewRideWindow>(WindowClass::ConstructRide, WindowWidth, WindowHeight, WF_10 | WF_AUTO_POSITION);
     return window;
 }
 
@@ -981,7 +981,7 @@ rct_window* WindowNewRideOpenResearch()
  */
 void WindowNewRideFocus(RideSelection rideItem)
 {
-    auto w = static_cast<NewRideWindow*>(window_find_by_class(WC_CONSTRUCT_RIDE));
+    auto w = static_cast<NewRideWindow*>(window_find_by_class(WindowClass::ConstructRide));
     if (!w)
     {
         return;

@@ -161,10 +161,10 @@ rct_window* WindowResearchOpen()
 {
     rct_window* w;
 
-    w = window_bring_to_front_by_class(WC_RESEARCH);
+    w = window_bring_to_front_by_class(WindowClass::Research);
     if (w == nullptr)
     {
-        w = WindowCreateAutoPos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WC_RESEARCH, WF_10);
+        w = WindowCreateAutoPos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WindowClass::Research, WF_10);
         w->widgets = window_research_page_widgets[0];
         w->number = 0;
         w->page = 0;

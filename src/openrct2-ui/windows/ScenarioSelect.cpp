@@ -157,10 +157,10 @@ rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titl
     if (_titleEditor != titleEditor)
     {
         _titleEditor = titleEditor;
-        window_close_by_class(WC_SCENARIO_SELECT);
+        window_close_by_class(WindowClass::ScenarioSelect);
     }
 
-    auto window = window_bring_to_front_by_class(WC_SCENARIO_SELECT);
+    auto window = window_bring_to_front_by_class(WindowClass::ScenarioSelect);
     if (window != nullptr)
         return window;
 
@@ -187,7 +187,7 @@ rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
     windowWidth = ScenarioSelectGetWindowWidth();
 
     window = WindowCreateCentred(
-        windowWidth, windowHeight, &window_scenarioselect_events, WC_SCENARIO_SELECT,
+        windowWidth, windowHeight, &window_scenarioselect_events, WindowClass::ScenarioSelect,
         WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0));
     window->widgets = window_scenarioselect_widgets;
 

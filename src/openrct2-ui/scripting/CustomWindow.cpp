@@ -1119,7 +1119,7 @@ namespace OpenRCT2::Ui::Windows
         static rct_windownumber GetNewWindowNumber()
         {
             auto result = _nextWindowNumber++;
-            while (window_find_by_number(WC_CUSTOM, result) != nullptr)
+            while (window_find_by_number(WindowClass::Custom, result) != nullptr)
             {
                 result++;
             }
@@ -1136,11 +1136,12 @@ namespace OpenRCT2::Ui::Windows
         CustomWindow* window{};
         if (desc.X && desc.Y)
         {
-            window = WindowCreate<CustomWindow>(WC_CUSTOM, { *desc.X, *desc.Y }, desc.Width, desc.Height, windowFlags);
+            window = WindowCreate<CustomWindow>(
+                WindowClass::Custom, { *desc.X, *desc.Y }, desc.Width, desc.Height, windowFlags);
         }
         else
         {
-            window = WindowCreate<CustomWindow>(WC_CUSTOM, desc.Width, desc.Height, windowFlags);
+            window = WindowCreate<CustomWindow>(WindowClass::Custom, desc.Width, desc.Height, windowFlags);
         }
         if (window != nullptr)
         {
@@ -1335,7 +1336,7 @@ namespace OpenRCT2::Ui::Windows
     {
         for (const auto& w : g_window_list)
         {
-            if (w->classification == WC_CUSTOM)
+            if (w->classification == WindowClass::Custom)
             {
                 const auto& customInfo = GetInfo(w.get());
                 if (customInfo.Desc.Classification == classification)
@@ -1441,7 +1442,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<std::shared_ptr<rct_window>> customWindows;
         for (const auto& window : g_window_list)
         {
-            if (window->classification == WC_CUSTOM)
+            if (window->classification == WindowClass::Custom)
             {
                 auto customWindow = reinterpret_cast<CustomWindow*>(window.get());
                 auto customInfo = reinterpret_cast<CustomWindowInfo*>(customWindow->custom_info);

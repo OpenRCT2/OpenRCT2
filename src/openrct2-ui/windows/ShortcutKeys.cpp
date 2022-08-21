@@ -78,8 +78,9 @@ public:
         auto registeredShortcut = shortcutManager.GetShortcut(shortcutId);
         if (registeredShortcut != nullptr)
         {
-            window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-            auto w = WindowCreate<ChangeShortcutWindow>(WC_CHANGE_KEYBOARD_SHORTCUT, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
+            window_close_by_class(WindowClass::ChangeKeyboardShortcut);
+            auto w = WindowCreate<ChangeShortcutWindow>(
+                WindowClass::ChangeKeyboardShortcut, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
             if (w != nullptr)
             {
                 w->_shortcutId = shortcutId;
@@ -545,7 +546,7 @@ private:
 
 void ChangeShortcutWindow::NotifyShortcutKeysWindow()
 {
-    auto w = window_find_by_class(WC_KEYBOARD_SHORTCUT_LIST);
+    auto w = window_find_by_class(WindowClass::KeyboardShortcutList);
     if (w != nullptr)
     {
         static_cast<ShortcutKeysWindow*>(w)->RefreshBindings();
@@ -554,10 +555,10 @@ void ChangeShortcutWindow::NotifyShortcutKeysWindow()
 
 rct_window* WindowShortcutKeysOpen()
 {
-    auto w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
+    auto w = window_bring_to_front_by_class(WindowClass::KeyboardShortcutList);
     if (w == nullptr)
     {
-        w = WindowCreate<ShortcutKeysWindow>(WC_KEYBOARD_SHORTCUT_LIST, WW, WH, WF_RESIZABLE);
+        w = WindowCreate<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, WW, WH, WF_RESIZABLE);
     }
     return w;
 }

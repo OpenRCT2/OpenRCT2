@@ -126,7 +126,7 @@ public:
             case WIDX_SELECT_DIFFERENT_DESIGN:
                 Close();
 
-                auto intent = Intent(WC_TRACK_DESIGN_LIST);
+                auto intent = Intent(WindowClass::TrackDesignList);
                 intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
                 intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
                 context_open_intent(&intent);
@@ -137,7 +137,7 @@ public:
     void OnUpdate() override
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
-            if (gCurrentToolWidget.window_classification != WC_TRACK_DESIGN_PLACE)
+            if (gCurrentToolWidget.window_classification != WindowClass::TrackDesignPlace)
                 Close();
     }
 
@@ -233,22 +233,22 @@ public:
                     auto getRide = get_ride(rideId);
                     if (getRide != nullptr)
                     {
-                        window_close_by_class(WC_ERROR);
+                        window_close_by_class(WindowClass::Error);
                         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackLoc);
 
                         _currentRideIndex = rideId;
                         if (track_design_are_entrance_and_exit_placed())
                         {
-                            auto intent = Intent(WC_RIDE);
+                            auto intent = Intent(WindowClass::Ride);
                             intent.putExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                             context_open_intent(&intent);
-                            auto wnd = window_find_by_class(WC_TRACK_DESIGN_PLACE);
+                            auto wnd = window_find_by_class(WindowClass::TrackDesignPlace);
                             window_close(*wnd);
                         }
                         else
                         {
                             ride_initialise_construction_window(getRide);
-                            auto wnd = window_find_by_class(WC_RIDE_CONSTRUCTION);
+                            auto wnd = window_find_by_class(WindowClass::RideConstruction);
                             window_event_mouse_up_call(wnd, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                         }
                     }
@@ -622,7 +622,7 @@ rct_window* WindowTrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
 
     window_close_construction_windows();
 
-    auto* window = WindowFocusOrCreate<TrackDesignPlaceWindow>(WC_TRACK_DESIGN_PLACE, WW, WH, 0);
+    auto* window = WindowFocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
     if (window != nullptr)
     {
         window->Init(std::move(openTrackDesign));
@@ -632,7 +632,7 @@ rct_window* WindowTrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
 
 void TrackPlaceClearProvisionalTemporarily()
 {
-    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WC_TRACK_DESIGN_PLACE));
+    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WindowClass::TrackDesignPlace));
     if (trackPlaceWnd != nullptr)
     {
         trackPlaceWnd->ClearProvisionalTemporarily();
@@ -641,7 +641,7 @@ void TrackPlaceClearProvisionalTemporarily()
 
 void TrackPlaceRestoreProvisional()
 {
-    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WC_TRACK_DESIGN_PLACE));
+    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WindowClass::TrackDesignPlace));
     if (trackPlaceWnd != nullptr)
     {
         trackPlaceWnd->RestoreProvisional();

@@ -26,7 +26,7 @@ namespace OpenRCT2::Scripting
     class ScWindow
     {
     private:
-        rct_windowclass _class;
+        WindowClass _class;
         rct_windownumber _number;
 
     public:
@@ -35,7 +35,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        ScWindow(rct_windowclass c, rct_windownumber n)
+        ScWindow(WindowClass c, rct_windownumber n)
             : _class(c)
             , _number(n)
         {
@@ -253,7 +253,7 @@ namespace OpenRCT2::Scripting
         std::string title_get() const
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WC_CUSTOM)
+            if (w != nullptr && w->classification == WindowClass::Custom)
             {
                 return GetWindowTitle(w);
             }
@@ -262,7 +262,7 @@ namespace OpenRCT2::Scripting
         void title_set(std::string value)
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WC_CUSTOM)
+            if (w != nullptr && w->classification == WindowClass::Custom)
             {
                 UpdateWindowTitle(w, value);
             }
@@ -271,7 +271,7 @@ namespace OpenRCT2::Scripting
         int32_t tabIndex_get() const
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WC_CUSTOM)
+            if (w != nullptr && w->classification == WindowClass::Custom)
             {
                 return w->page;
             }

@@ -274,7 +274,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         return;
 
     // Set font
-    uint8_t textColour = NOT_TRANSLUCENT(ThemeGetColour(WC_CONSOLE, 1));
+    uint8_t textColour = NOT_TRANSLUCENT(ThemeGetColour(WindowClass::Console, 1));
     const int32_t lineHeight = InGameConsoleGetLineHeight();
     const int32_t maxLines = GetNumVisibleLines();
 
@@ -304,7 +304,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         FilterPaletteID::Palette51);
 
     // Paint background colour.
-    uint8_t backgroundColour = ThemeGetColour(WC_CONSOLE, 0);
+    uint8_t backgroundColour = ThemeGetColour(WindowClass::Console, 0);
     gfx_fill_rect_inset(dpi, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     gfx_fill_rect_inset(
         dpi, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,

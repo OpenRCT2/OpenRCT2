@@ -68,7 +68,7 @@ enum PLACE_OBJECT_MODIFIER
 
 struct widget_ref
 {
-    rct_windowclass window_classification;
+    WindowClass window_classification;
     rct_windownumber window_number;
     rct_widgetindex widget_index;
 };

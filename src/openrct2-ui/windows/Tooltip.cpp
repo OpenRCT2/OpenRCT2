@@ -43,7 +43,7 @@ void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 {
     gTooltipCursor = screenCoords;
     gTooltipTimeout = 0;
-    gTooltipWidget.window_classification = 255;
+    gTooltipWidget.window_classification = WindowClass::Null;
     input_set_state(InputState::Normal);
     input_set_flag(INPUT_FLAG_4, false);
 }
@@ -69,7 +69,7 @@ static int32_t FormatTextForTooltip(const OpenRCT2String& message)
 
 void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
 {
-    auto* w = window_find_by_class(WC_ERROR);
+    auto* w = window_find_by_class(WindowClass::Error);
     if (w != nullptr)
         return;
 
@@ -94,7 +94,8 @@ void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoord
         screenCoords.y -= height + 40;
     screenCoords.y = std::clamp(screenCoords.y, 22, max_y);
 
-    w = WindowCreate(screenCoords, width, height, &window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+    w = WindowCreate(
+        screenCoords, width, height, &window_tooltip_events, WindowClass::Tooltip, WF_TRANSPARENT | WF_STICK_TO_FRONT);
     w->widgets = window_tooltip_widgets;
 
     reset_tooltip_not_shown();
@@ -146,9 +147,9 @@ void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, co
  */
 void WindowTooltipClose()
 {
-    window_close_by_class(WC_TOOLTIP);
+    window_close_by_class(WindowClass::Tooltip);
     gTooltipTimeout = 0;
-    gTooltipWidget.window_classification = 255;
+    gTooltipWidget.window_classification = WindowClass::Null;
 }
 
 /**

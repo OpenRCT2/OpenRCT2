@@ -91,7 +91,7 @@ struct rct_window
     int16_t var_4AE{};
     EntityId viewport_target_sprite{ EntityId::GetNull() };
     ScreenCoordsXY savedViewPos{};
-    rct_windowclass classification{};
+    WindowClass classification{};
     colour_t colours[6]{};
     VisibilityCache visibility{};
     EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc

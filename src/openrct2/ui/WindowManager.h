@@ -28,14 +28,14 @@ namespace OpenRCT2::Ui
     {
         virtual ~IWindowManager() = default;
         virtual void Init() abstract;
-        virtual rct_window* OpenWindow(rct_windowclass wc) abstract;
+        virtual rct_window* OpenWindow(WindowClass wc) abstract;
         virtual rct_window* OpenView(uint8_t view) abstract;
         virtual rct_window* OpenDetails(uint8_t type, int32_t id) abstract;
         virtual rct_window* OpenIntent(Intent* intent) abstract;
         virtual void BroadcastIntent(const Intent& intent) abstract;
         virtual rct_window* ShowError(StringId title, StringId message, const Formatter& formatter) abstract;
         virtual rct_window* ShowError(std::string_view title, std::string_view message) abstract;
-        virtual void ForceClose(rct_windowclass windowClass) abstract;
+        virtual void ForceClose(WindowClass windowClass) abstract;
         virtual void UpdateMapTooltip() abstract;
         virtual void HandleInput() abstract;
         virtual void HandleKeyboard(bool isTitle) abstract;

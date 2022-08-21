@@ -269,7 +269,7 @@ public:
                 _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
                 break;
             case WIDX_MAP_GENERATOR:
-                context_open_window(WC_MAPGEN);
+                context_open_window(WindowClass::Mapgen);
                 break;
             default:
                 if (widgetIndex >= WIDX_PEOPLE_TAB && widgetIndex <= WIDX_RIDES_TAB)
@@ -819,7 +819,7 @@ public:
         if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
         {
             // scenario editor: build park entrance selected, show rotate button
-            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_MAP
+            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map
                 && gCurrentToolWidget.widget_index == WIDX_BUILD_PARK_ENTRANCE)
             {
                 widgets[WIDX_ROTATE_90].type = WindowWidgetType::FlatBtn;
@@ -829,7 +829,7 @@ public:
             widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
             // If any tool is active
-            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_MAP)
+            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map)
             {
                 // if not in set land rights mode: show the default scenario editor buttons
                 if (gCurrentToolWidget.widget_index != WIDX_SET_LAND_RIGHTS)
@@ -1449,7 +1449,7 @@ rct_window* WindowMapOpen()
 {
     try
     {
-        rct_window* w = WindowFocusOrCreate<MapWindow>(WC_MAP, 245, 259, WF_10);
+        rct_window* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
         w->selected_tab = 0;
         w->list_information_type = 0;
         return w;
@@ -1465,7 +1465,7 @@ void WindowMapReset()
     rct_window* w;
 
     // Check if window is even opened
-    w = window_bring_to_front_by_class(WC_MAP);
+    w = window_bring_to_front_by_class(WindowClass::Map);
     if (w == nullptr)
     {
         return;

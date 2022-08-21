@@ -136,7 +136,7 @@ private:
         TrackDesignFileRef* tdRef = &_trackDesigns[trackDesignIndex];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            auto intent = Intent(WC_MANAGE_TRACK_DESIGN);
+            auto intent = Intent(WindowClass::ManageTrackDesign);
             intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
             context_open_intent(&intent);
         }
@@ -148,7 +148,7 @@ private:
                 context_show_error(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
             }
 
-            auto intent = Intent(WC_TRACK_DESIGN_PLACE);
+            auto intent = Intent(WindowClass::TrackDesignPlace);
             intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
             context_open_intent(&intent);
         }
@@ -249,8 +249,8 @@ public:
         // try to load the track manager again, and an infinite loop will result.
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && gScreenAge != 0)
         {
-            window_close_by_number(WC_MANAGE_TRACK_DESIGN, number);
-            window_close_by_number(WC_TRACK_DELETE_PROMPT, number);
+            window_close_by_number(WindowClass::ManageTrackDesign, number);
+            window_close_by_number(WindowClass::TrackDeletePrompt, number);
             Editor::LoadTrackManager();
         }
     }
@@ -276,7 +276,7 @@ public:
                 Close();
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
                 {
-                    context_open_window(WC_CONSTRUCT_RIDE);
+                    context_open_window(WindowClass::ConstructRide);
                 }
                 break;
             case WIDX_FILTER_STRING:
@@ -757,7 +757,7 @@ rct_window* WindowTrackListOpen(const RideSelection item)
     {
         screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
     }
-    auto* w = WindowCreate<TrackListWindow>(WC_TRACK_DESIGN_LIST, WW, WH, 0);
+    auto* w = WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0);
     w->SetRideSelection(item);
     return w;
 }

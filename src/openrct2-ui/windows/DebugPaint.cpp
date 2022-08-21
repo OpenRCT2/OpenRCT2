@@ -146,7 +146,7 @@ public:
 rct_window* WindowDebugPaintOpen()
 {
     auto* window = WindowFocusOrCreate<DebugPaintWindow>(
-        WC_DEBUG_PAINT, { 16, context_get_height() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
+        WindowClass::DebugPaint, { 16, context_get_height() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
         WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
     return window;

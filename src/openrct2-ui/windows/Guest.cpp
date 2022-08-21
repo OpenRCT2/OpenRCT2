@@ -630,7 +630,7 @@ private:
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
+                    rct_window* wind = window_find_by_number(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
                         tool_set(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
@@ -1293,7 +1293,7 @@ private:
         if (index >= no_list_items)
             return;
 
-        auto intent = Intent(WC_RIDE);
+        auto intent = Intent(WindowClass::Ride);
         intent.putExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
         context_open_intent(&intent);
     }
@@ -1924,14 +1924,15 @@ rct_window* WindowGuestOpen(Peep* peep)
         return WindowStaffOpen(peep);
     }
 
-    auto* window = static_cast<GuestWindow*>(window_bring_to_front_by_number(WC_PEEP, peep->sprite_index.ToUnderlying()));
+    auto* window = static_cast<GuestWindow*>(
+        window_bring_to_front_by_number(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
     if (window == nullptr)
     {
         int32_t windowWidth = 192;
         if (gConfigGeneral.debugging_tools)
             windowWidth += TabWidth;
 
-        window = WindowCreate<GuestWindow>(WC_PEEP, windowWidth, 157, WF_RESIZABLE);
+        window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
         if (window == nullptr)
         {
             return nullptr;

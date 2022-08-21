@@ -266,7 +266,7 @@ private:
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
-        if (gCurrentToolWidget.window_classification != WC_PATROL_AREA)
+        if (gCurrentToolWidget.window_classification != WindowClass::PatrolArea)
             return false;
         return true;
     }
@@ -274,7 +274,7 @@ private:
     bool IsStaffWindowOpen()
     {
         // If staff window for this patrol area was closed, tool is no longer active
-        auto staffWindow = window_find_by_number(WC_PEEP, _staffId);
+        auto staffWindow = window_find_by_number(WindowClass::Peep, _staffId);
         return staffWindow != nullptr;
     }
 
@@ -287,7 +287,8 @@ private:
 
 rct_window* WindowPatrolAreaOpen(EntityId staffId)
 {
-    auto w = WindowFocusOrCreate<PatrolAreaWindow>(WC_PATROL_AREA, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    auto w = WindowFocusOrCreate<PatrolAreaWindow>(
+        WindowClass::PatrolArea, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
     if (w != nullptr)
     {
         w->SetStaffId(staffId);
@@ -297,6 +298,6 @@ rct_window* WindowPatrolAreaOpen(EntityId staffId)
 
 EntityId WindowPatrolAreaGetCurrentStaffId()
 {
-    auto current = reinterpret_cast<PatrolAreaWindow*>(window_find_by_class(WC_PATROL_AREA));
+    auto current = reinterpret_cast<PatrolAreaWindow*>(window_find_by_class(WindowClass::PatrolArea));
     return current != nullptr ? current->GetStaffId() : EntityId::GetNull();
 }

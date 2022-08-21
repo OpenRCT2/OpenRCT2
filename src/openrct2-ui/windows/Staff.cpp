@@ -320,7 +320,7 @@ private:
 
     void CommonPrepareDrawBefore()
     {
-        ColourSchemeUpdateByClass(this, static_cast<rct_windowclass>(WC_STAFF));
+        ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::Staff));
 
         if (window_staff_page_widgets[page] != widgets)
         {
@@ -378,7 +378,7 @@ private:
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
+                    rct_window* wind = window_find_by_number(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
                         tool_set(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
@@ -389,7 +389,7 @@ private:
             break;
             case WIDX_FIRE:
             {
-                auto intent = Intent(WC_FIRE_PROMPT);
+                auto intent = Intent(WindowClass::FirePrompt);
                 intent.putExtra(INTENT_EXTRA_PEEP, staff);
                 context_open_intent(&intent);
                 break;
@@ -467,7 +467,7 @@ private:
                         return;
                     }
 
-                    window_close_by_class(WC_PATROL_AREA);
+                    window_close_by_class(WindowClass::PatrolArea);
 
                     auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
                         staff->sprite_index, {}, StaffSetPatrolAreaMode::ClearAll);
@@ -478,7 +478,7 @@ private:
                     auto staffId = EntityId::FromUnderlying(number);
                     if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                     {
-                        window_close_by_class(WC_PATROL_AREA);
+                        window_close_by_class(WindowClass::PatrolArea);
                     }
                     else
                     {
@@ -1245,12 +1245,12 @@ private:
 
 rct_window* WindowStaffOpen(Peep* peep)
 {
-    auto w = static_cast<StaffWindow*>(window_bring_to_front_by_number(WC_PEEP, peep->sprite_index.ToUnderlying()));
+    auto w = static_cast<StaffWindow*>(window_bring_to_front_by_number(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
 
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<StaffWindow>(WC_PEEP, WW, WH, WF_10 | WF_RESIZABLE);
+    w = WindowCreate<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
 
     if (w == nullptr)
         return nullptr;

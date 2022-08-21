@@ -128,7 +128,7 @@ void marketing_update()
         }
     }
 
-    window_invalidate_by_class(WC_FINANCES);
+    window_invalidate_by_class(WindowClass::Finances);
 }
 
 void marketing_set_guest_campaign(Guest* peep, int32_t campaignType)

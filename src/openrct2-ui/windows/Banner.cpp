@@ -300,12 +300,12 @@ public:
  */
 rct_window* WindowBannerOpen(rct_windownumber number)
 {
-    auto w = static_cast<BannerWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
+    auto w = static_cast<BannerWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<BannerWindow>(WC_BANNER, WW, WH, 0);
+    w = WindowCreate<BannerWindow>(WindowClass::Banner, WW, WH, 0);
 
     if (w != nullptr)
         w->Initialise(number);

@@ -515,11 +515,11 @@ rct_window* WindowTileInspectorOpen()
     rct_window* window;
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WC_TILE_INSPECTOR);
+    window = window_bring_to_front_by_class(WindowClass::TileInspector);
     if (window != nullptr)
         return window;
 
-    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &TileInspectorWindowEvents, WC_TILE_INSPECTOR, WF_RESIZABLE);
+    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &TileInspectorWindowEvents, WindowClass::TileInspector, WF_RESIZABLE);
 
     WindowTileInspectorSetPage(window, TileInspectorPage::Default);
     window->min_width = MIN_WW;
@@ -1167,7 +1167,7 @@ static void WindowTileInspectorUpdate(rct_window* w)
         widget_invalidate(*w, WIDX_LIST);
     }
 
-    if (gCurrentToolWidget.window_classification != WC_TILE_INSPECTOR)
+    if (gCurrentToolWidget.window_classification != WindowClass::TileInspector)
         window_close(*w);
 }
 

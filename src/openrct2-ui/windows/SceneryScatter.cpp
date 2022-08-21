@@ -195,10 +195,10 @@ public:
 rct_window* WindowSceneryScatterOpen()
 {
     // Check if window is already open
-    auto* window = window_find_by_class(WC_SCENERY_SCATTER);
+    auto* window = window_find_by_class(WindowClass::SceneryScatter);
     if (window == nullptr)
     {
-        window = WindowCreate<SceneryScatterWindow>(WC_SCENERY_SCATTER, 86, 100);
+        window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100);
     }
 
     return window;

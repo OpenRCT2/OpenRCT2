@@ -63,7 +63,7 @@ GameActions::Result StaffSetOrdersAction::Execute() const
     }
     staff->StaffOrders = _ordersId;
 
-    window_invalidate_by_number(WC_PEEP, _spriteIndex);
+    window_invalidate_by_number(WindowClass::Peep, _spriteIndex);
     auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
     context_broadcast_intent(&intent);
 

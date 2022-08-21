@@ -225,5 +225,5 @@ public:
 
 rct_window* CustomCurrencyWindowOpen()
 {
-    return WindowFocusOrCreate<CustomCurrencyWindow>(WC_CUSTOM_CURRENCY_CONFIG, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, WW, WH, WF_CENTRE_SCREEN);
 }

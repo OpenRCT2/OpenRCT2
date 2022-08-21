@@ -249,6 +249,7 @@
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
+    <ClInclude Include="interface\WindowClasses.h" />
     <ClInclude Include="interface\Window_internal.h" />
     <ClInclude Include="interface\ZoomLevel.h" />
     <ClInclude Include="Intro.h" />

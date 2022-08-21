@@ -246,7 +246,7 @@ public:
             if (_landRightsCost != MONEY32_UNDEFINED)
             {
                 _landRightsCost = MONEY32_UNDEFINED;
-                window_invalidate_by_class(WC_CLEAR_SCENERY);
+                window_invalidate_by_class(WindowClass::ClearScenery);
             }
             return;
         }
@@ -393,7 +393,7 @@ private:
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
-        if (gCurrentToolWidget.window_classification != WC_LAND_RIGHTS)
+        if (gCurrentToolWidget.window_classification != WindowClass::LandRights)
             return false;
         return true;
     }
@@ -401,5 +401,6 @@ private:
 
 rct_window* WindowLandRightsOpen()
 {
-    return WindowFocusOrCreate<LandRightsWindow>(WC_LAND_RIGHTS, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    return WindowFocusOrCreate<LandRightsWindow>(
+        WindowClass::LandRights, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 }

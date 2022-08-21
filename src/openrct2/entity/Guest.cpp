@@ -1418,14 +1418,14 @@ void Guest::CheckCantFindRide()
         return;
 
     GuestHeadingToRideId = RideId::GetNull();
-    rct_window* w = window_find_by_number(WC_PEEP, sprite_index);
+    rct_window* w = window_find_by_number(WindowClass::Peep, sprite_index);
 
     if (w != nullptr)
     {
         window_event_invalidate_call(w);
     }
 
-    window_invalidate_by_number(WC_PEEP, sprite_index);
+    window_invalidate_by_number(WindowClass::Peep, sprite_index);
 }
 
 /**
@@ -2292,7 +2292,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
     peep_expend_type += static_cast<money16>(amount);
 
-    window_invalidate_by_number(WC_PEEP, sprite_index);
+    window_invalidate_by_number(WindowClass::Peep, sprite_index);
 
     finance_payment(-amount, expenditure);
 
@@ -3099,10 +3099,10 @@ static void peep_leave_park(Guest* peep)
 
     peep->InsertNewThought(PeepThoughtType::GoHome);
 
-    rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
+    rct_window* w = window_find_by_number(WindowClass::Peep, peep->sprite_index);
     if (w != nullptr)
         window_event_invalidate_call(w);
-    window_invalidate_by_number(WC_PEEP, peep->sprite_index);
+    window_invalidate_by_number(WindowClass::Peep, peep->sprite_index);
 }
 
 template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool considerOnlyCloseRides, T predicate)
@@ -3334,7 +3334,7 @@ void Guest::UpdateBuying()
             {
                 CashInPocket += 50.00_GBP;
             }
-            window_invalidate_by_number(WC_PEEP, sprite_index);
+            window_invalidate_by_number(WindowClass::Peep, sprite_index);
         }
         sprite_direction ^= 0x10;
 
@@ -3829,7 +3829,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     if (queueTime != station.QueueTime)
     {
         station.QueueTime = queueTime;
-        window_invalidate_by_number(WC_RIDE, CurrentRide.ToUnderlying());
+        window_invalidate_by_number(WindowClass::Ride, CurrentRide.ToUnderlying());
     }
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
@@ -5634,7 +5634,7 @@ void Guest::UpdateLeavingPark()
     context_broadcast_intent(&intent);
     Var37 = 1;
 
-    window_invalidate_by_class(WC_GUEST_LIST);
+    window_invalidate_by_class(WindowClass::GuestList);
     uint8_t pathingResult;
     PerformNextAction(pathingResult);
     if (!(pathingResult & PATHING_OUTSIDE_PARK))

@@ -260,7 +260,7 @@ public:
                 gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        window_close_by_class(WC_NEW_CAMPAIGN);
+                        window_close_by_class(WindowClass::NewCampaign);
                     }
                 });
                 GameActions::Execute(&gameAction);
@@ -373,7 +373,7 @@ public:
 
 rct_window* WindowNewCampaignOpen(int16_t campaignType)
 {
-    auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WC_NEW_CAMPAIGN));
+    auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         if (w->campaign.campaign_type == campaignType)
@@ -382,7 +382,7 @@ rct_window* WindowNewCampaignOpen(int16_t campaignType)
         window_close(*w);
     }
 
-    w = WindowCreate<NewCampaignWindow>(WC_NEW_CAMPAIGN, WW, WH, 0);
+    w = WindowCreate<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
     if (w != nullptr)
     {
         w->SetCampaign(campaignType);
@@ -392,7 +392,7 @@ rct_window* WindowNewCampaignOpen(int16_t campaignType)
 
 void WindowCampaignRefreshRides()
 {
-    auto w = static_cast<NewCampaignWindow*>(window_find_by_class(WC_NEW_CAMPAIGN));
+    auto w = static_cast<NewCampaignWindow*>(window_find_by_class(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         w->RefreshRides();

@@ -83,7 +83,7 @@ rct_window* WindowTitleMenuOpen()
 
     const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
     window = WindowCreate(
-        ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &window_title_menu_events, WC_TITLE_MENU,
+        ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &window_title_menu_events, WindowClass::TitleMenu,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
     window->widgets = window_title_menu_widgets;
@@ -130,43 +130,43 @@ static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_START_NEW_GAME:
-            windowToOpen = window_find_by_class(WC_SCENARIO_SELECT);
+            windowToOpen = window_find_by_class(WindowClass::ScenarioSelect);
             if (windowToOpen != nullptr)
             {
                 window_bring_to_front(*windowToOpen);
             }
             else
             {
-                window_close_by_class(WC_LOADSAVE);
-                window_close_by_class(WC_SERVER_LIST);
+                window_close_by_class(WindowClass::Loadsave);
+                window_close_by_class(WindowClass::ServerList);
                 WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback, false);
             }
             break;
         case WIDX_CONTINUE_SAVED_GAME:
-            windowToOpen = window_find_by_class(WC_LOADSAVE);
+            windowToOpen = window_find_by_class(WindowClass::Loadsave);
             if (windowToOpen != nullptr)
             {
                 window_bring_to_front(*windowToOpen);
             }
             else
             {
-                window_close_by_class(WC_SCENARIO_SELECT);
-                window_close_by_class(WC_SERVER_LIST);
+                window_close_by_class(WindowClass::ScenarioSelect);
+                window_close_by_class(WindowClass::ServerList);
                 auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
                 GameActions::Execute(&loadOrQuitAction);
             }
             break;
         case WIDX_MULTIPLAYER:
-            windowToOpen = window_find_by_class(WC_SERVER_LIST);
+            windowToOpen = window_find_by_class(WindowClass::ServerList);
             if (windowToOpen != nullptr)
             {
                 window_bring_to_front(*windowToOpen);
             }
             else
             {
-                window_close_by_class(WC_SCENARIO_SELECT);
-                window_close_by_class(WC_LOADSAVE);
-                context_open_window(WC_SERVER_LIST);
+                window_close_by_class(WindowClass::ScenarioSelect);
+                window_close_by_class(WindowClass::Loadsave);
+                context_open_window(WindowClass::ServerList);
             }
             break;
         case WIDX_NEW_VERSION:

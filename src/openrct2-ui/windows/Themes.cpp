@@ -162,92 +162,92 @@ static int32_t window_themes_tab_sprites[] = {
     SPR_TAB_FINANCES_MARKETING_0,
 };
 
-static rct_windowclass window_themes_tab_1_classes[] = {
-    WC_TOP_TOOLBAR,
-    WC_BOTTOM_TOOLBAR,
-    WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR,
-    WC_EDITOR_TRACK_BOTTOM_TOOLBAR,
-    WC_TITLE_MENU,
-    WC_TITLE_EXIT,
-    WC_TITLE_OPTIONS,
-    WC_SCENARIO_SELECT,
+static WindowClass window_themes_tab_1_classes[] = {
+    WindowClass::TopToolbar,
+    WindowClass::BottomToolbar,
+    WindowClass::EditorScenarioBottomToolbar,
+    WindowClass::EditorTrackBottomToolbar,
+    WindowClass::TitleMenu,
+    WindowClass::TitleExit,
+    WindowClass::TitleOptions,
+    WindowClass::ScenarioSelect,
 };
 
-static rct_windowclass window_themes_tab_2_classes[] = {
-    WC_PARK_INFORMATION,
-    WC_FINANCES,
-    WC_NEW_CAMPAIGN,
-    WC_RESEARCH,
-    WC_MAP,
-    WC_VIEWPORT,
-    WC_RECENT_NEWS,
+static WindowClass window_themes_tab_2_classes[] = {
+    WindowClass::ParkInformation,
+    WindowClass::Finances,
+    WindowClass::NewCampaign,
+    WindowClass::Research,
+    WindowClass::Map,
+    WindowClass::Viewport,
+    WindowClass::RecentNews,
 };
 
-static rct_windowclass window_themes_tab_3_classes[] = {
-    WC_LAND,
-    WC_WATER,
-    WC_CLEAR_SCENERY,
-    WC_LAND_RIGHTS,
-    WC_SCENERY,
-    WC_SCENERY_SCATTER,
-    WC_FOOTPATH,
-    WC_RIDE_CONSTRUCTION,
-    WC_TRACK_DESIGN_PLACE,
-    WC_CONSTRUCT_RIDE,
-    WC_TRACK_DESIGN_LIST,
-    WC_PATROL_AREA,
+static WindowClass window_themes_tab_3_classes[] = {
+    WindowClass::Land,
+    WindowClass::Water,
+    WindowClass::ClearScenery,
+    WindowClass::LandRights,
+    WindowClass::Scenery,
+    WindowClass::SceneryScatter,
+    WindowClass::Footpath,
+    WindowClass::RideConstruction,
+    WindowClass::TrackDesignPlace,
+    WindowClass::ConstructRide,
+    WindowClass::TrackDesignList,
+    WindowClass::PatrolArea,
 };
 
-static rct_windowclass window_themes_tab_4_classes[] = {
-    WC_RIDE,
-    WC_RIDE_LIST,
-    WC_PEEP,
-    WC_GUEST_LIST,
-    WC_STAFF,
-    WC_STAFF_LIST,
-    WC_BANNER,
+static WindowClass window_themes_tab_4_classes[] = {
+    WindowClass::Ride,
+    WindowClass::RideList,
+    WindowClass::Peep,
+    WindowClass::GuestList,
+    WindowClass::Staff,
+    WindowClass::StaffList,
+    WindowClass::Banner,
 };
 
-static rct_windowclass window_themes_tab_5_classes[] = {
-    WC_EDITOR_OBJECT_SELECTION,
-    WC_EDITOR_INVENTION_LIST,
-    WC_EDITOR_SCENARIO_OPTIONS,
-    WC_EDITOR_OBJECTIVE_OPTIONS,
-    WC_MAPGEN,
-    WC_MANAGE_TRACK_DESIGN,
-    WC_INSTALL_TRACK,
+static WindowClass window_themes_tab_5_classes[] = {
+    WindowClass::EditorObjectSelection,
+    WindowClass::EditorInventionList,
+    WindowClass::EditorScenarioOptions,
+    WindowClass::EditorObjectiveOptions,
+    WindowClass::Mapgen,
+    WindowClass::ManageTrackDesign,
+    WindowClass::InstallTrack,
 };
 
-static rct_windowclass window_themes_tab_6_classes[] = {
-    WC_CHEATS,
-    WC_TILE_INSPECTOR,
-    WC_VIEW_CLIPPING,
-    WC_TRANSPARENCY,
-    WC_THEMES,
-    WC_OPTIONS,
-    WC_KEYBOARD_SHORTCUT_LIST,
-    WC_CHANGE_KEYBOARD_SHORTCUT,
-    WC_LOADSAVE,
-    WC_ABOUT,
-    WC_CHANGELOG,
-    WC_SERVER_LIST,
-    WC_MULTIPLAYER,
-    WC_PLAYER,
-    WC_CHAT,
-    WC_CONSOLE,
+static WindowClass window_themes_tab_6_classes[] = {
+    WindowClass::Cheats,
+    WindowClass::TileInspector,
+    WindowClass::ViewClipping,
+    WindowClass::Transparency,
+    WindowClass::Themes,
+    WindowClass::Options,
+    WindowClass::KeyboardShortcutList,
+    WindowClass::ChangeKeyboardShortcut,
+    WindowClass::Loadsave,
+    WindowClass::About,
+    WindowClass::Changelog,
+    WindowClass::ServerList,
+    WindowClass::Multiplayer,
+    WindowClass::Player,
+    WindowClass::Chat,
+    WindowClass::Console,
 };
 
-static rct_windowclass window_themes_tab_7_classes[] = {
-    WC_SAVE_PROMPT,
-    WC_DEMOLISH_RIDE_PROMPT,
-    WC_FIRE_PROMPT,
-    WC_TRACK_DELETE_PROMPT,
-    WC_LOADSAVE_OVERWRITE_PROMPT,
-    WC_NETWORK_STATUS,
+static WindowClass window_themes_tab_7_classes[] = {
+    WindowClass::SavePrompt,
+    WindowClass::DemolishRidePrompt,
+    WindowClass::FirePrompt,
+    WindowClass::TrackDeletePrompt,
+    WindowClass::LoadsaveOverwritePrompt,
+    WindowClass::NetworkStatus,
 };
 // clang-format on
 
-static rct_windowclass* window_themes_tab_classes[] = {
+static WindowClass* window_themes_tab_classes[] = {
     nullptr,
     window_themes_tab_1_classes,
     window_themes_tab_2_classes,
@@ -271,9 +271,9 @@ static void WindowThemesInitVars()
     _selected_tab = WINDOW_THEMES_TAB_SETTINGS;
 }
 
-static rct_windowclass GetWindowClassTabIndex(int32_t index)
+static WindowClass GetWindowClassTabIndex(int32_t index)
 {
-    rct_windowclass* classes = window_themes_tab_classes[_selected_tab];
+    WindowClass* classes = window_themes_tab_classes[_selected_tab];
     return classes[index];
 }
 
@@ -319,11 +319,11 @@ rct_window* WindowThemesOpen()
     rct_window* window;
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WC_THEMES);
+    window = window_bring_to_front_by_class(WindowClass::Themes);
     if (window != nullptr)
         return window;
 
-    window = WindowCreateAutoPos(320, 107, &window_themes_events, WC_THEMES, WF_10 | WF_RESIZABLE);
+    window = WindowCreateAutoPos(320, 107, &window_themes_events, WindowClass::Themes, WF_10 | WF_RESIZABLE);
     window->widgets = window_themes_widgets;
 
     WindowThemesInitVars();
@@ -571,7 +571,7 @@ static void WindowThemesDropdown(rct_window* w, rct_widgetindex widgetIndex, int
         case WIDX_THEMES_LIST:
             if (dropdownIndex != -1)
             {
-                rct_windowclass wc = GetWindowClassTabIndex(_colour_index_1);
+                WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
                 uint8_t colour = ThemeGetColour(wc, _colour_index_2);
                 colour = (colour & COLOUR_FLAG_TRANSLUCENT) | dropdownIndex;
                 ThemeSetColour(wc, _colour_index_2, colour);
@@ -627,7 +627,7 @@ void WindowThemesScrollmousedown(rct_window* w, int32_t scrollIndex, const Scree
         _colour_index_1 = screenCoords.y / _row_height;
         _colour_index_2 = ((screenCoords.x - _button_offset_x) / 12);
 
-        rct_windowclass wc = GetWindowClassTabIndex(_colour_index_1);
+        WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
         int32_t numColours = ThemeDescGetNumColours(wc);
         if (_colour_index_2 < numColours)
         {
@@ -735,7 +735,7 @@ void WindowThemesInvalidate(rct_window* w)
 
     w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 
-    if (window_find_by_class(WC_DROPDOWN) == nullptr)
+    if (window_find_by_class(WindowClass::Dropdown) == nullptr)
     {
         _colour_index_1 = -1;
         _colour_index_2 = -1;
@@ -884,7 +884,7 @@ void WindowThemesScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scro
                 }
             }
 
-            rct_windowclass wc = GetWindowClassTabIndex(i);
+            WindowClass wc = GetWindowClassTabIndex(i);
             int32_t numColours = ThemeDescGetNumColours(wc);
             for (uint8_t j = 0; j < numColours; j++)
             {

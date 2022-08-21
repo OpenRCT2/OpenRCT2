@@ -199,13 +199,13 @@ rct_window* WindowFootpathOpen()
     }
 
     // Check if window is already open
-    rct_window* window = window_bring_to_front_by_class(WC_FOOTPATH);
+    rct_window* window = window_bring_to_front_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
         return window;
     }
 
-    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &window_footpath_events, WC_FOOTPATH, 0);
+    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &window_footpath_events, WindowClass::Footpath, 0);
     window->widgets = window_footpath_widgets;
 
     WindowInitScrollWidgets(*window);
@@ -232,7 +232,7 @@ static void WindowFootpathClose(rct_window* w)
     viewport_set_visibility(0);
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
     hide_gridlines();
 }
 
@@ -519,7 +519,7 @@ static void WindowFootpathUpdate(rct_window* w)
         {
             window_close(*w);
         }
-        else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
+        else if (gCurrentToolWidget.window_classification != WindowClass::Footpath)
         {
             window_close(*w);
         }
@@ -534,7 +534,7 @@ static void WindowFootpathUpdate(rct_window* w)
         {
             window_close(*w);
         }
-        else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
+        else if (gCurrentToolWidget.window_classification != WindowClass::Footpath)
         {
             window_close(*w);
         }
@@ -917,7 +917,7 @@ static void WindowFootpathSetProvisionalPathAtPoint(const ScreenCoordsXY& screen
         auto constructFlags = FootpathCreateConstructFlags(pathType);
         _window_footpath_cost = footpath_provisional_set(
             pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
-        window_invalidate_by_class(WC_FOOTPATH);
+        window_invalidate_by_class(WindowClass::Footpath);
     }
 }
 
@@ -1270,7 +1270,7 @@ static void WindowFootpathRemove()
  */
 static void WindowFootpathSetEnabledAndPressedWidgets()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr)
     {
         return;
@@ -1380,7 +1380,7 @@ static PathConstructFlags FootpathCreateConstructFlags(ObjectEntryIndex& type)
 
 void window_footpath_keyboard_shortcut_turn_left()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_DIRECTION_NW) || WidgetIsDisabled(*w, WIDX_DIRECTION_NE)
         || WidgetIsDisabled(*w, WIDX_DIRECTION_SW) || WidgetIsDisabled(*w, WIDX_DIRECTION_SE) || _footpathConstructionMode != 2)
     {
@@ -1393,7 +1393,7 @@ void window_footpath_keyboard_shortcut_turn_left()
 
 void window_footpath_keyboard_shortcut_turn_right()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_DIRECTION_NW) || WidgetIsDisabled(*w, WIDX_DIRECTION_NE)
         || WidgetIsDisabled(*w, WIDX_DIRECTION_SW) || WidgetIsDisabled(*w, WIDX_DIRECTION_SE) || _footpathConstructionMode != 2)
     {
@@ -1406,7 +1406,7 @@ void window_footpath_keyboard_shortcut_turn_right()
 
 void window_footpath_keyboard_shortcut_slope_down()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_SLOPEDOWN) || WidgetIsDisabled(*w, WIDX_LEVEL)
         || WidgetIsDisabled(*w, WIDX_SLOPEUP) || w->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
     {
@@ -1429,7 +1429,7 @@ void window_footpath_keyboard_shortcut_slope_down()
 
 void window_footpath_keyboard_shortcut_slope_up()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_SLOPEDOWN) || WidgetIsDisabled(*w, WIDX_LEVEL)
         || WidgetIsDisabled(*w, WIDX_SLOPEUP) || w->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
     {
@@ -1452,7 +1452,7 @@ void window_footpath_keyboard_shortcut_slope_up()
 
 void window_footpath_keyboard_shortcut_demolish_current()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_REMOVE) || w->widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
         || (!gCheatsBuildInPauseMode && game_is_paused()))
     {
@@ -1464,7 +1464,7 @@ void window_footpath_keyboard_shortcut_demolish_current()
 
 void window_footpath_keyboard_shortcut_build_current()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_CONSTRUCT) || w->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
     {
         return;

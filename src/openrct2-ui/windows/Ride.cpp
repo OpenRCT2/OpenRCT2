@@ -1158,7 +1158,7 @@ static rct_window* WindowRideOpen(Ride* ride)
 {
     rct_window* w;
 
-    w = WindowCreateAutoPos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
+    w = WindowCreateAutoPos(316, 207, window_ride_page_events[0], WindowClass::Ride, WF_10 | WF_RESIZABLE);
     w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->hold_down_widgets = window_ride_page_hold_down_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->rideId = ride->id;
@@ -1193,7 +1193,7 @@ rct_window* WindowRideMainOpen(Ride* ride)
         return nullptr;
     }
 
-    rct_window* w = window_bring_to_front_by_number(WC_RIDE, ride->id.ToUnderlying());
+    rct_window* w = window_bring_to_front_by_number(WindowClass::Ride, ride->id.ToUnderlying());
     if (w == nullptr)
     {
         w = WindowRideOpen(ride);
@@ -1234,7 +1234,7 @@ static rct_window* WindowRideOpenStation(Ride* ride, StationIndex stationIndex)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
         return WindowRideMainOpen(ride);
 
-    auto w = window_bring_to_front_by_number(WC_RIDE, ride->id.ToUnderlying());
+    auto w = window_bring_to_front_by_number(WindowClass::Ride, ride->id.ToUnderlying());
     if (w == nullptr)
     {
         w = WindowRideOpen(ride);
@@ -1339,7 +1339,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
         view++;
     }
 
-    rct_window* w = window_find_by_number(WC_RIDE, ride->id.ToUnderlying());
+    rct_window* w = window_find_by_number(WindowClass::Ride, ride->id.ToUnderlying());
     if (w != nullptr)
     {
         w->Invalidate();
@@ -1361,10 +1361,10 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
                     continue;
 
                 numPeepsLeft--;
-                rct_window* w2 = window_find_by_number(WC_PEEP, vehicle->peep[i]);
+                rct_window* w2 = window_find_by_number(WindowClass::Peep, vehicle->peep[i]);
                 if (w2 == nullptr)
                 {
-                    auto intent = Intent(WC_PEEP);
+                    auto intent = Intent(WindowClass::Peep);
                     intent.putExtra(INTENT_EXTRA_PEEP, peep);
                     context_open_intent(&intent);
                     openedPeepWindow = 1;
@@ -1374,8 +1374,8 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
             }
         }
 
-        w = openedPeepWindow ? window_find_by_number(WC_RIDE, ride->id.ToUnderlying())
-                             : window_bring_to_front_by_number(WC_RIDE, ride->id.ToUnderlying());
+        w = openedPeepWindow ? window_find_by_number(WindowClass::Ride, ride->id.ToUnderlying())
+                             : window_bring_to_front_by_number(WindowClass::Ride, ride->id.ToUnderlying());
     }
 
     if (w == nullptr)
@@ -1417,10 +1417,10 @@ static void WindowRideSetPage(rct_window* w, int32_t page)
 
     if (page == WINDOW_RIDE_PAGE_VEHICLE)
     {
-        auto constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        auto constructionWindow = window_find_by_class(WindowClass::RideConstruction);
         if (constructionWindow != nullptr && constructionWindow->number == w->number)
         {
-            window_close_by_class(WC_RIDE_CONSTRUCTION);
+            window_close_by_class(WindowClass::RideConstruction);
             // Closing the construction window sets the tab to the first page, which we don't want here,
             // as user just clicked the Vehicle page
             WindowRideSetPage(w, WINDOW_RIDE_PAGE_VEHICLE);
@@ -1647,7 +1647,7 @@ static void WindowRideMainMouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (ride != nullptr)
             {
                 ride_construct(ride);
-                if (window_find_by_number(WC_RIDE_CONSTRUCTION, ride->id.ToUnderlying()) != nullptr)
+                if (window_find_by_number(WindowClass::RideConstruction, ride->id.ToUnderlying()) != nullptr)
                 {
                     window_close(*w);
                 }
@@ -3756,7 +3756,7 @@ static void WindowRideLocateMechanic(rct_window* w)
         context_show_error(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE, {});
     else
     {
-        auto intent = Intent(WC_PEEP);
+        auto intent = Intent(WindowClass::Peep);
         intent.putExtra(INTENT_EXTRA_PEEP, mechanic);
         context_open_intent(&intent);
     }
@@ -3988,7 +3988,7 @@ static void WindowRideMaintenanceDropdown(rct_window* w, rct_widgetindex widgetI
                         break;
                 }
                 ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
-                window_invalidate_by_number(WC_RIDE, w->number);
+                window_invalidate_by_number(WindowClass::Ride, w->number);
                 break;
             }
             if (ride->lifecycle_flags
@@ -5379,7 +5379,7 @@ static void WindowRideMeasurementsDesignSave(rct_window* w)
     }
 
     auto trackName = ride->GetName();
-    auto intent = Intent(WC_LOADSAVE);
+    auto intent = Intent(WindowClass::Loadsave);
     intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
     intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, _trackDesign.get());
     intent.putExtra(INTENT_EXTRA_PATH, trackName);
@@ -6857,7 +6857,7 @@ static void WindowRideCustomerMouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         case WIDX_SHOW_GUESTS_THOUGHTS:
         {
-            auto intent = Intent(WC_GUEST_LIST);
+            auto intent = Intent(WindowClass::GuestList);
             intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingAboutRide));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
             context_open_intent(&intent);
@@ -6865,7 +6865,7 @@ static void WindowRideCustomerMouseup(rct_window* w, rct_widgetindex widgetIndex
         }
         case WIDX_SHOW_GUESTS_ON_RIDE:
         {
-            auto intent = Intent(WC_GUEST_LIST);
+            auto intent = Intent(WindowClass::GuestList);
             intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsOnRide));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
             context_open_intent(&intent);
@@ -6873,7 +6873,7 @@ static void WindowRideCustomerMouseup(rct_window* w, rct_widgetindex widgetIndex
         }
         case WIDX_SHOW_GUESTS_QUEUING:
         {
-            auto intent = Intent(WC_GUEST_LIST);
+            auto intent = Intent(WindowClass::GuestList);
             intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsInQueue));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
             context_open_intent(&intent);
