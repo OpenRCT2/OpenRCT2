@@ -44,7 +44,6 @@ enum class RideConstructionState : uint8_t;
 #define TOP_TOOLBAR_HEIGHT 27
 
 extern char gTextBoxInput[TEXT_INPUT_SIZE];
-extern int32_t gMaxTextBoxInputLength;
 extern int32_t gTextBoxFrameNo;
 extern bool gUsingWidgetTextBox;
 extern struct TextInputSession* gTextInput;

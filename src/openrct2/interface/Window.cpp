@@ -43,7 +43,6 @@ rct_window* gWindowAudioExclusive;
 
 widget_identifier gCurrentTextBox = { { WindowClass::Null, 0 }, 0 };
 char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
-int32_t gMaxTextBoxInputLength = 0;
 int32_t gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = false;
 TextInputSession* gTextInput;
@@ -1978,8 +1977,6 @@ void window_start_textbox(
     gCurrentTextBox.window.number = call_w.number;
     gCurrentTextBox.widget_index = call_widget;
     gTextBoxFrameNo = 0;
-
-    gMaxTextBoxInputLength = maxLength;
 
     window_close_by_class(WindowClass::Textinput);
 
