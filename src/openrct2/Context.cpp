@@ -715,20 +715,6 @@ namespace OpenRCT2
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->OpenIntent(&intent);
             }
-            catch (const UnsupportedRCTCFlagException& e)
-            {
-                Console::Error::WriteLine("Unable to open park: unsupported RCT classic feature");
-
-                // If loading the SV6 or SV4 failed return to the title screen if requested.
-                if (loadTitleScreenFirstOnFail)
-                {
-                    title_load();
-                }
-                auto windowManager = _uiContext->GetWindowManager();
-                auto ft = Formatter();
-                ft.Add<uint16_t>(e.Flag);
-                windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE, ft);
-            }
             catch (const UnsupportedRideTypeException&)
             {
                 Console::Error::WriteLine("Unable to open park: unsupported ride types");
