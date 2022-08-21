@@ -48,8 +48,6 @@ extern int32_t gTextBoxFrameNo;
 extern bool gUsingWidgetTextBox;
 extern struct TextInputSession* gTextInput;
 
-using wndproc = void(struct rct_window*, union rct_window_event*);
-
 using rct_windownumber = uint16_t;
 using WidgetIndex = int16_t;
 
