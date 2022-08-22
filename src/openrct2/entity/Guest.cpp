@@ -2617,7 +2617,13 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
 
     if (ridePrice > peep->CashInPocket)
     {
-        peep->InsertNewThought(PeepThoughtType::CantAffordRide, peep->CurrentRide);
+        // Prevent looping of same thought / animation since Destination Tolerance
+        // is only 0 exactly at entrance and will immediately change as guest
+        // tries to leave hereafter
+        if (peep->DestinationTolerance == 0)
+        {
+            peep->InsertNewThought(PeepThoughtType::CantAffordRide, peep->CurrentRide);
+        }
         peep_update_ride_at_entrance_try_leave(peep);
         return false;
     }
