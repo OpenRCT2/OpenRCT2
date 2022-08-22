@@ -3826,44 +3826,8 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :Ana blok
-
-[TTRFTL02]
-STR_NAME    :Çatı
-
-[TTRFTL03]
-STR_NAME    :Çatı
-
-[TTRFTL04]
-STR_NAME    :Çatı
-
-[TTRFTL07]
-STR_NAME    :Çatı
-
-[TTRFTL08]
-STR_NAME    :Çatı
-
-[TTPIRF02]
-STR_NAME    :Çatı
-
-[TTPIRF03]
-STR_NAME    :Çatı
-
-[TTPIRF04]
-STR_NAME    :Çatı
-
 [TTPIRF05]
 STR_NAME    :Çatı
-
-[TTPIRF07]
-STR_NAME    :Çatı
-
-[TTPIRF08]
-STR_NAME    :Çatı
-
-[MG-PRAR]
-STR_NAME    :Geçitli duvar
 
 [TTRFWD01]
 STR_NAME    :Çatı

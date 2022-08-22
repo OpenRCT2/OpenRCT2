@@ -4067,23 +4067,7 @@ STR_DTLS    :
 ###########
 # Scenery #
 ###########
-
-[TTPIRF02]
-STR_NAME    :지붕
-
-[TTPIRF03]
-STR_NAME    :지붕
-
-[TTPIRF04]
-STR_NAME    :지붕
-
 [TTPIRF05]
-STR_NAME    :지붕
-
-[TTPIRF07]
-STR_NAME    :지붕
-
-[TTPIRF08]
 STR_NAME    :지붕
 
 [TTRFWD01]

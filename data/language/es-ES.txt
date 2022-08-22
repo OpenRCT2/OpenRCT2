@@ -4070,22 +4070,7 @@ STR_DTLS    :
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :Techo
-
-[TTPIRF03]
-STR_NAME    :Techo
-
-[TTPIRF04]
-STR_NAME    :Techo
-
 [TTPIRF05]
-STR_NAME    :Techo
-
-[TTPIRF07]
-STR_NAME    :Techo
-
-[TTPIRF08]
 STR_NAME    :Techo
 
 [TTRFWD01]

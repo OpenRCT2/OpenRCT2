@@ -4378,22 +4378,7 @@ STR_DTLS    :Ajoutez davantage d’attractions et attirez plus de visiteurs avec
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :Toit
-
-[TTPIRF03]
-STR_NAME    :Toit
-
-[TTPIRF04]
-STR_NAME    :Toit
-
 [TTPIRF05]
-STR_NAME    :Toit
-
-[TTPIRF07]
-STR_NAME    :Toit
-
-[TTPIRF08]
 STR_NAME    :Toit
 
 [TTRFWD01]

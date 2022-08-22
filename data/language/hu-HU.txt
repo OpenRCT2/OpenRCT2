@@ -3976,22 +3976,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[TTPIRF02]
-STR_NAME    :Tető
-
-[TTPIRF03]
-STR_NAME    :Tető
-
-[TTPIRF04]
-STR_NAME    :Tető
-
 [TTPIRF05]
-STR_NAME    :Tető
-
-[TTPIRF07]
-STR_NAME    :Tető
-
-[TTPIRF08]
 STR_NAME    :Tető
 
 [TTRFWD01]

@@ -4074,23 +4074,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Sostre
-
-[TTPIRF03]
-STR_NAME    :Sostre
-
-[TTPIRF04]
-STR_NAME    :Sostre
-
 [TTPIRF05]
-STR_NAME    :Sostre
-
-[TTPIRF07]
-STR_NAME    :Sostre
-
-[TTPIRF08]
 STR_NAME    :Sostre
 
 [TTRFWD01]

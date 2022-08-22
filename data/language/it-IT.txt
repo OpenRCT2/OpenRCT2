@@ -1153,7 +1153,7 @@ STR_1770    :Numero di oscillazioni complete
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Può esserci soltanto una sezione di foto-in-corsa per attrazione
 STR_1774    :Può esserci soltanto una salita per il traino con cavo per attrazione
-STR_1777    :Musica attrazione
+STR_1777    :Musica attrazioni
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume da panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Costume da tigre
@@ -1950,7 +1950,7 @@ STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, anno {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, anno {COMMA16}
-STR_2738    :Musica schermata del titolo:
+STR_2738    :Musica schermata iniziale:
 STR_2739    :Nessuno
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
@@ -2696,7 +2696,7 @@ STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Mostra i messaggi recenti
 STR_5489    :Mostra solo i visitatori seguiti
-STR_5490    :Disabilità audio quando si perde il focus
+STR_5490    :Disabilita audio quando si cambia finestra
 STR_5491    :Lista Invenzioni
 STR_5492    :Opzioni Scenario
 STR_5493    :Mostra Messaggio
@@ -4056,23 +4056,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tetto
-
-[TTPIRF03]
-STR_NAME    :Tetto
-
-[TTPIRF04]
-STR_NAME    :Tetto
-
 [TTPIRF05]
-STR_NAME    :Tetto
-
-[TTPIRF07]
-STR_NAME    :Tetto
-
-[TTPIRF08]
 STR_NAME    :Tetto
 
 [TTRFWD01]

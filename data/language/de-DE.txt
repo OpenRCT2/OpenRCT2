@@ -4064,23 +4064,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Dach
-
-[TTPIRF03]
-STR_NAME    :Dach
-
-[TTPIRF04]
-STR_NAME    :Dach
-
 [TTPIRF05]
-STR_NAME    :Dach
-
-[TTPIRF07]
-STR_NAME    :Dach
-
-[TTPIRF08]
 STR_NAME    :Dach
 
 [TTRFWD01]

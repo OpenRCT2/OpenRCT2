@@ -4043,23 +4043,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tag
-
-[TTPIRF03]
-STR_NAME    :Tag
-
-[TTPIRF04]
-STR_NAME    :Tag
-
 [TTPIRF05]
-STR_NAME    :Tag
-
-[TTPIRF07]
-STR_NAME    :Tag
-
-[TTPIRF08]
 STR_NAME    :Tag
 
 [TTRFWD01]

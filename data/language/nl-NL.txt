@@ -4432,22 +4432,7 @@ STR_NAME    :Glazen dak
 STR_NAME    :Glazen dak
 
 ## TT Pirate roofs and eaves
-[TTPIRF02]
-STR_NAME    :Dak
-
-[TTPIRF03]
-STR_NAME    :Dak
-
-[TTPIRF04]
-STR_NAME    :Dak
-
 [TTPIRF05]
-STR_NAME    :Dak
-
-[TTPIRF07]
-STR_NAME    :Dak
-
-[TTPIRF08]
 STR_NAME    :Dak
 
 [TTPRF09]

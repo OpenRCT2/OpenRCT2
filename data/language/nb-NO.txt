@@ -25,7 +25,7 @@ STR_0020    :Stolheis
 STR_0021    :Korketrekker berg-og-dal-bane
 STR_0022    :Labyrint
 STR_0023    :Spiralsklietårn
-STR_0024    :Go kart
+STR_0024    :Gokart
 STR_0025    :Tømmerrenne
 STR_0026    :Elvestryk
 STR_0027    :Radiobiler
@@ -94,6 +94,10 @@ STR_0089    :Miniberg-og-dal-bane
 STR_0090    :Gruvebane
 STR_0091    :Ukjent attraksjon (59)
 STR_0092    :LIM-berg-og-dal-bane
+STR_0093    :Hybrid berg-og-dal-bane
+STR_0094    :Enkeltspor berg-og-dal-bane
+STR_0095    :Alpin berg-og-dal-bane
+
 STR_0512    :En kompakt berg-og-dal-bane med spiraltrekk og myke fall med vridninger
 STR_0513    :En loopende berg-og-dal-bane hvor passasjerene kjører stående
 STR_0514    :Tog som henger under berg-og-dal-banesporet svinger utover i svingene
@@ -116,10 +120,10 @@ STR_0530    :Vogner henger fra en stålkabel som går mellom begge endene av att
 STR_0531    :En kompakt berg-og-dal-bane i stål hvor togene går gjennom korketrekkere og looper
 STR_0532    :
 STR_0533    :
-STR_0534    :Bensindrevne go karts gjester kan kjøre selv
-STR_0535    :Tømmerformede båter flyter langs kanaler, og suser ned bratte fall for å sprute vann på passasjerene
+STR_0534    :Gjester konkurrerer mot hverandre i gokarter på en asfaltbane
+STR_0535    :Tømmerbåter ledes i vannkanaler og suser ned bratte fall for å dynke passasjerene 
 STR_0536    :Sirkulære båter flyter rolig langs en bred kanal, og må traversere brusende stryk og fossefall
-STR_0537    :
+STR_0537    :Gjester kjører elektriske radiobiler de kan bumpe i hverandre
 STR_0538    :
 STR_0539    :
 STR_0540    :
@@ -158,7 +162,7 @@ STR_0578    :Vogner kjører langs en bane lukket av ringer, hvor de blir ledet n
 STR_0579    :
 STR_0580    :En gigantisk stålberg-og-dal-bane med mulighet for myke fall og høyder på over 100 m
 STR_0581    :En ring med seter blir dratt til toppen av et høyt tårn mens den spinner rolig, for så å falle fritt ned til bakken hvor den blir stoppet av magnetiske bremser
-STR_0582    :
+STR_0582    :Gjester rir på luftputefartøy som de får styre selv
 STR_0583    :
 STR_0584    :Spesielle sykler kjører langs en stålskinne, drevet av pedalkraft
 STR_0585    :Passasjerer sitter i par, hengende under banen mens de looper og vrir gjennom skarpe inversjoner
@@ -173,6 +177,10 @@ STR_0598    :Inverterte berg-og-dal-banetog blir akselerert ut fra stasjonen for
 STR_0599    :En kompakt berg-og-dal-bane med indivuelle vogner og myke, vridde fall
 STR_0600    :Motoriserte minetog ruller langs et mykt og vridd spor
 STR_0602    :Berg-og-dal-banetog blir akselerert ut av stasjonen med lineære induksjonsmotorer og gjennom en rekke vridde inversjoner
+STR_0603    :En berg-og-dal-bane i tre, med solid bane av stål som tillater bratte fall og inversjoner
+STR_0604    :Gjester sitter i én kolonne på en smal monorail mens de suser gjennom skarpe inversjoner og svinger
+STR_0605    :Gjester kontrollerer selv farten på kjelker ned en vandrende stålbane
+
 STR_0767    :Gjest {INT32}
 STR_0768    :Vaktmester {INT32}
 STR_0769    :Reparatør {INT32}
@@ -747,7 +755,7 @@ STR_1363    :For høyt for støttestrukturer!
 STR_1364    :Støttestrukturer for bane kan ikke forlenges!
 STR_1365    :Tvist (venstre)
 STR_1366    :Tvist (høyre)
-STR_1367    :Halvloop
+STR_1367    :Liten halvloop
 STR_1368    :Halv korkskrue (venstre)
 STR_1369    :Halv korkskrue (høyre)
 STR_1370    :Barrel roll (venstre)
@@ -1572,7 +1580,7 @@ STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn’t returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
-STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
+STR_2219    :{RED}{COMMA16} personer har omkommet i en ulykke på {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
 STR_2221    :Park Rating: {COMMA16}
 STR_2222    :{BLACK}{STRINGID}
@@ -1955,14 +1963,14 @@ STR_2749    :My new scenario
 STR_2750    :Move all items to top
 STR_2751    :Move all items to bottom
 STR_2752    :Clear grass
-STR_2753    :Mowed grass
+STR_2753    :Klipp gress
 STR_2754    :Water plants
 STR_2755    :Fix vandalism
 STR_2756    :Remove litter
 STR_2763    :???
 STR_2765    :Large Tram
 STR_2766    :Win scenario
-STR_2767    :Forhindre værforandringer
+STR_2767    :Skru av værforandringer
 STR_2769    :Open Park
 STR_2770    :Close Park
 STR_2773    :Windowed
@@ -2232,7 +2240,7 @@ STR_3185    :Small Scenery
 STR_3186    :Large Scenery
 STR_3187    :Walls/Fences
 STR_3188    :Path Signs
-STR_3189    :Footpaths
+STR_3189    :Utdaterte gangstier
 STR_3190    :Path Extras
 STR_3191    :Scenery Groups
 STR_3192    :Park Entrance
@@ -2374,6 +2382,8 @@ STR_3331    :Path from park entrance to map edge either not complete or too comp
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
 STR_3334    :Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn’t have the additional object data
+STR_3333    :Eksporter egendefinerte objekter sammen med lagret spill
+STR_3334    :Velg hvorvidt data for egendefinerte objekter (objektdata som ikke følger med spillet) skal lagres sammen med lagret spill eller scenario slik at det kan lastes inn selv om en mangler de samme egendefinerte objektene
 STR_3335    :Spordesigner - Velg attraksjonstyper og vogner
 STR_3336    :Track Designs Manager - Select Ride Type
 STR_3338    :{BLACK}Custom-designed layout
@@ -2757,7 +2767,7 @@ STR_5554    :Enable mountain tool
 STR_5555    :Show vehicles from other track types
 STR_5556    :Kick player
 STR_5557    :Stay connected after desynchronisation (Multiplayer)
-STR_5558    :A restart is required for this setting to take effect
+STR_5558    :Denne innstillingen trer i kraft først etter du har startet OpenRCT2 på nytt
 STR_5559    :10 min. inspections
 STR_5560    :Sets the inspection time to ‘Every 10 minutes’ on all rides
 STR_5561    :Failed to load language
@@ -2888,8 +2898,8 @@ STR_5721    :Cloudy
 STR_5722    :Rain
 STR_5723    :Heavy Rain
 STR_5724    :Thunderstorm
-STR_5725    :{BLACK}Force weather:
-STR_5726    :Sets the current weather in park
+STR_5725    :{BLACK}Sett vær til:
+STR_5726    :Setter værtilstanden i parken
 # tooltip for tab in options window
 STR_5734    :Rendering
 STR_5735    :Network Status
@@ -2923,7 +2933,7 @@ STR_5762    :Chinese Yuan (CN¥)
 STR_5763    :All files
 STR_5764    :Invalid ride type
 STR_5765    :Cannot edit rides of invalid type
-STR_5766    :<available string id>
+STR_5766    :Ungarsk forint (Ft)
 STR_5767    :Income
 STR_5768    :Total customers
 STR_5769    :Total profit
@@ -3024,7 +3034,7 @@ STR_5867    :{WINDOW_COLOUR_2}Leverandørens navn: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Leverandørens epost: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Leverandørens nettside: {BLACK}{STRING}
 STR_5870    :Vis serverinformasjon
-STR_5871    :Planter eldes ikke
+STR_5871    :Skru av visning av planter
 STR_5872    :Hindre planter i å eldes slik at de ikke visner
 STR_5873    :Tillat trekk på alle deler av banen
 STR_5874    :Gjør slik at hver del av banen kan brukes som trekk
@@ -3170,18 +3180,18 @@ STR_6014    :Gjester betaler kun for attraksjoner, tjenester og kioskvarer.{NEWL
 STR_6015    :Helning
 STR_6016    :Endre rute
 STR_6017    :Vennligst ro ned
-STR_6018    :Attraksjonskonstruksjon - Sving venstre
-STR_6019    :Attraksjonskonstruksjon - Sving høyre
-STR_6020    :Attraksjonskonstruksjon - Rett spor
-STR_6021    :Attraksjonskonstruksjon - Bakke nedover
-STR_6022    :Attraksjonskonstruksjon - Bakke oppover
-STR_6023    :Attraksjonskonstruksjon - Skru av/på trekk
-STR_6024    :Attraksjonskonstruksjon - Helning venstre
-STR_6025    :Attraksjonskonstruksjon - Helning høyre
-STR_6026    :Attraksjonskonstruksjon - Flytt til forrige seksjon
-STR_6027    :Attraksjonskonstruksjon - Flytt til neste seksjon
-STR_6028    :Attraksjonskonstruksjon - Konstruer valgt seksjon
-STR_6029    :Attraksjonskonstruksjon - Fjern markert seksjon
+STR_6018    :Konstruksjon - Sving venstre
+STR_6019    :Konstruksjon - Sving høyre
+STR_6020    :Konstruksjon - Rett spor
+STR_6021    :Konstruksjon - Bakke nedover
+STR_6022    :Konstruksjon - Bakke oppover
+STR_6023    :Konstruksjon - Skru av/på trekk
+STR_6024    :Konstruksjon - Helning venstre
+STR_6025    :Konstruksjon - Helning høyre
+STR_6026    :Konstruksjon - Flytt til forrige seksjon
+STR_6027    :Konstruksjon - Flytt til neste seksjon
+STR_6028    :Konstruksjon - Konstruer valgt seksjon
+STR_6029    :Konstruksjon - Fjern markert seksjon
 STR_6030    :Pyntvelger. Klikk hvilken som helst pynt på kartet for å velge samme element for konstruksjon.
 STR_6031    :Serverbeskrivelse:
 STR_6032    :Server-velkomstbeskjed:
@@ -3189,7 +3199,7 @@ STR_6033    :Sti til RCT1 insallasjonsmappe:
 STR_6034    :{BLACK}{STRING}
 STR_6035    :Velg din RCT1-mappe
 STR_6036    :Visk ut
-STR_6037    :Vennligst velg en gyldig RCT1 mappe
+STR_6037    :Den valgte mappen inneholder ikke en gyldig installasjon av RCT1.
 STR_6038    :Hvis du har RCT1 installert kan du sette denne verdien for å hente inn blant annet scenarier og musikk
 STR_6039    :Rask attraksjonsrivning
 STR_6040    :Endre scenarioinnstillinger
@@ -3438,7 +3448,188 @@ STR_6327    :Gjennomsiktig bakgrunn for gigantiske skjermbilder
 STR_6328    :Gigantiske skjermbilder blir lagret med gjennomsiktig bakgrunn istedenfor vanlig svart.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Laster ned [{STRING}] fra {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Legg til ender
+STR_6332    :Fjern ender
+STR_6333    :Øk skjermskalering
+STR_6334    :Reduser skjermskalering
+STR_6336    :Ruteinspektør: Kopier element
+STR_6337    :Ruteinspektør: Lim inn element
+STR_6336    :Ruteinspektør: Slett element
+STR_6339    :Ruteinspektør: Flytt element opp
+STR_6340    :Ruteinspektør: Flytt element ned
+STR_6341    :Ruteinspektør: Øk X-koordinat
+STR_6342    :Ruteinspektør: Reduser X-koordinat
+STR_6343    :Ruteinspektør: Øk Y-koordinat
+STR_6344    :Ruteinspektør: Reduser Y-koordinat
+STR_6345    :Ruteinspektør: Øk elementhøyde
+STR_6346    :Ruteinspektør: Reduser elementhøyde
+STR_6347    :Gangstitillegg kan ikke plasseres på planoverganger
+STR_6348    :Fjern planovergang først!
+STR_6349    :Tilfeldig tittelsekvens
+STR_6350    :Dryssing
+STR_6351    :Drysseverktøy
+STR_6352    :Tetthet
+STR_6353    :{SMALLFONT}{BLACK}Lav tetthet
+STR_6354    :{SMALLFONT}{BLACK}Middels tetthet
+STR_6355    :{SMALLFONT}{BLACK}Høy tetthet
+STR_6356    :{SMALLFONT}{BLACK}Legger til ender dersom parken inneholder vann
+STR_6357    :{SMALLFONT}{BLACK}Fjerner alle ender fra parken
+STR_6358    :Side {UINT16}
+STR_6359    :{POP16}{POP16}Side {UINT16}
 STR_6360    :{BLACK}{COMMA32}
+STR_6361    :Skru på lyseffekter på attraksjoner (eksperimentelt)
+STR_6362    :Hvis aktivert vil det være lys på vognene til attraksjoner som går på bane.
+STR_6363    :Tekst kopiert til utklippstavlen
+STR_6364    :{RED}{COMMA16} person har omkommet i en ulykke på {STRINGID}
+STR_6365    :Dødsfall på attraksjoner
+STR_6366    :Vogner som står fast eller har mistet farten
+STR_6367    :Animasjonssteg:
+STR_6368    :Av kompatibilitetshensyn er det ikke anbefalt å kjøre OpenRCT2 under Wine. OpenRCT2 støtter macOS, Linux, FreeBSD og OpenBSD.
+STR_6369    :Tillat å bygge baneelementer i ugyldig høyde
+STR_6370    :Tillater bygging av baneelementer i alle høydeintervaller
+STR_6371    :Den angitte filstien inneholder en installasjon av RollerCoaster Tycoon 1, men filen “csg1i.dat” mangler. Denne filen må kopieres fra CD-en til Loopy Landscapes eller RCT Deluxe til “Data”-mappen i din installasjon av RollerCoaster Tycoon 1.
+STR_6372    :Den angitte filstien inneholder en installasjon av RollerCoaster Tycoon 1, men den installerte versjonen er ikke riktig. OpenRCT2 trenger en installasjon av Loopy Landscapes eller RCT Deluxe for å kunne bruke ressurser fra RollerCoaster Tycoon 1.
+STR_6373    :Skru av/på klareringssjekk
+STR_6374    :K
+STR_6375    :Ukjent attraksjon
+STR_6376    :{WINDOW_COLOUR_2}Kjøretøy:{NEWLINE}{BLACK}{STRINGID} for {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} for {STRINGID}
+STR_6378    :Mottar liste over objekter: {INT32} / {INT32}
+STR_6379    :Mottok ugyldig data
+STR_6380    :Oppdatering tilgjengelig!
+STR_6381    :Bli med i OpenRCT2 på Discord!
+STR_6382    :En nyere versjon av OpenRCT2 er tilgjengelig: {STRING}!
+STR_6383    :Gå til nedlastningssiden
+STR_6384    :Snø
+STR_6385    :Tung snø
+STR_6386    :Snøstorm
+STR_6387    :Kan ikke senke element her…
+STR_6388    :Kan ikke heve element her…
+STR_6389    :Ugyldig klarering
+STR_6390    :OpenRCT2 trenger filer fra RollerCoaster Tycoon 2 for å fungere. Vennligst velg mappen hvor du installerte RollerCoaster Tycoon 2.
+STR_6391    :Vennligst velg mappen hvor du har installert RCT2
+STR_6392    :Kunne ikke finne {STRING} på den angitte filstien
+STR_6393    :Velg oppdrag
+STR_6394    :Oppdrag
+STR_6395    :Vedlikehold
+STR_6396    :Skru av skjermsparer og skjermens strømsparingsmodus
+STR_6397    :Forhindre at PC-en starter skjermsparer eller setter skjermen i strømsparingsmodus
+STR_6398    :Filen inneholder attraksjonstyper som ikke er støttet enda. Vennligst oppdater til en nyere versjon av OpenRCT2.
+STR_6399    :OpenRCT2 trenger filer fra RollerCoaster Tycoon 2 for å fungere. Vennligst sett “game_path”-variabelen i “config.ini” til mappen hvor du installerte RollerCoaster Tycoon 2, deretter start OpenRCT2 på nytt.
+STR_6400    :Jeg har lastet ned installasjonsprogrammet til RollerCoaster Tycoon 2 fra GOG Galaxy, men har ikke installert spillet
+STR_6401    :Jeg har allerede installert RollerCoaster Tycoon 2
+STR_6402    :OpenRCT2 veiviser for datafiler
+STR_6403    :Velg den beskrivelsen som passer best for deg
+STR_6404    :Vennligst velg installasjonsprogrammet til RollerCoaster Tycoon 2 som du lastet ned fra GOG Galaxy
+STR_6405    :Velg installasjonsprogrammet til GOG Galaxy
+STR_6406    :GOG Galaxy RollerCoaster Tycoon 2 installasjonsprogram
+STR_6407    :Dette kan ta noen minutter.
+STR_6408    :Vennligst installer “innoextract” for å pakke ut installasjonsprogrammet til GOG Galaxy, deretter start OpenRCT2 på nytt.
+STR_6409    :Den valgte filen er ikke installasjonsprogrammet til RollerCoaster Tycoon 2 fra GOG Galaxy. Kanskje har du valgt feil fil eller programmet som laster ned spillet.
+STR_6410    :Zoom inn/ut
+STR_6411    :Vis knappene for å zoome inn og ut i verktøylinjen
+STR_6412    :NumPad Enter
+STR_6413    :Shift
+STR_6414    :Venstre shift
+STR_6415    :Høyre shift
+STR_6416    :Ctrl
+STR_6417    :Venstre ctrl
+STR_6418    :Høyre ctrl
+STR_6419    :Alt
+STR_6420    :Venstre alt
+STR_6421    :Høyre alt
+STR_6422    :Cmd
+STR_6423    :Venstre cmd
+STR_6424    :Høyre cmd
+STR_6425    :Joy venstre
+STR_6426    :Joy høyre
+STR_6427    :Joy opp
+STR_6428    :Joy ned
+STR_6429    :Joy {INT32}
+STR_6430    :Venstre museknapp
+STR_6431    :Høyre museknapp
+STR_6432    :Museknapp {INT32}
+STR_6433    :Slett
+STR_6434    :Slett alle tilordninger av for denne snarveien
+STR_6435    :{WINDOW_COLOUR_2}Hærverk hindret: {BLACK}{COMMA16}
+STR_6436    :Skru av/på usynlighet
+STR_6437    :Synlig
+STR_6438    :S
+STR_6439    :Ruteinspektør: Skru av/på usynlighet
+STR_6440    :Gjennomsiktig vann
+STR_6441    :Minst ett ikke-kø-gangstioverflate-objekt må være valgt.
+STR_6442    :Minst ett kø-gangstioverflate-objekt må være valgt.
+STR_6443    :Minst ett gjerde-objekt må være valgt.
+STR_6444    :Gangstioverflater
+STR_6445    :Gjerder
+STR_6446    :{WINDOW_COLOUR_2}Overflatenavn: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Gjerdenavn: {BLACK}{STRINGID}
+STR_6448    :Ukjent objekt-dataformat
+STR_6449    :{WINDOW_COLOUR_2}Spor:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Selger: {BLACK}{STRING}
+STR_6453    :Kopier versjonsinfo
+STR_6454    :Kan ikke gi banner nytt navn…
+STR_6455    :Kan ikke gi skilt nytt navn…
+STR_6456    :Gigantisk skjermbilde
+STR_6457    :Meld inn en feil på GitHub
+STR_6458    :Følg i hovedvisningen
+STR_6460    :R
+STR_6461    :Retning
+STR_6462    :Spenning
+STR_6463    :Spenning: {COMMA2DP32}
+STR_6464    :Intensitet
+STR_6465    :Intensitet: {COMMA2DP32}
+STR_6466    :Kvalme
+STR_6467    :Kvalme: {COMMA2DP32}
+STR_6468    :Foreløpig ikke kjent
+STR_6469    :Øk størrelse på patruljeringsområde
+STR_6470    :Senk størrelse på patruljeringsområde
+STR_6471    :Gjennomsiktig natur
+STR_6472    :Gjennomsiktige kjøretøy
+STR_6473    :Gjennomsiktige støttestrukturer
+STR_6474    :Usynlige gjester
+STR_6475    :Usynlige ansatte
+STR_6476    :Usynlig natur
+STR_6477    :Usynlig pynt
+STR_6478    :Usynlige gangstier
+STR_6479    :Usynlige attraksjoner
+STR_6480    :Usynlige kjøretøy
+STR_6481    :Gjennomsiktighetsinnstillinger
+STR_6482    :Gjennomsiktighetsinnstillinger
+STR_6483    :Åpne gjennomsiktighetsinnstillinger
+STR_6484    :Skru av/på gjennomsiktig natur
+STR_6485    :Skru av/på gjennomsiktige kjøretøy
+STR_6486    :Skru av/på usynlige gjester
+STR_6487    :Skru av/på usynlige ansatte
+STR_6488    :{RED}Gjestene klager på lange køer i parken.{NEWLINE}Prøv å gjøre køer kortere, eller øk kapasiteten til påvirkede attraksjoner.
+STR_6489    :Feil: Inkompatibel parkversjon
+STR_6490    :Advarsel delvis inkompatibel parkversjon
+STR_6491    :Denne parken ble lagret i en nyere versjon av OpenRCT2. Parken er lagret med v{INT32} og krever minst v{INT32} for å lastes inn.
+STR_6492    :Denne parken ble lagret i en eldre versjon av OpenRCT2 og kan ikke åpnes i denne versjonen av OpenRCT2. Parken er lagret med v{INT32}.
+STR_6493    :Denne parken ble lagret i en nyere versjon av OpenRCT2. Noe data kan mangle ved innlasting. Parken er lagret med v{INT32} og krever minst v{INT32} for å lastes inn.
+STR_6494    :Grupper etter attraksjonstype
+STR_6495    :Grupper attraksjoner etter type heller enn å vise hver vogn separat
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Klikk på en rute for å vise dens ruteelementer.{NEWLINE}Ctrl + klikk et ruteelement for å velge det direkte.
+STR_6498    :Tving kartet til å være kvadratisk
+STR_6499    :Vogntype ikke støttet av dette banedesign-dataformatet
+STR_6500    :Baneelementer ikke støttet av dette banedesign-dataformatet
+STR_6501    :Tilfeldig farge
+STR_6502    :Oppgi en verdi mellom {COMMA16} og {COMMA16}
+STR_6503    :Minst ett stasjonsobjekt må være valgt.
+STR_6504    :Mint ett terrengoverflate-objekt må være valgt.
+STR_6505    :Minst ett terrengkant-objekt må være valgt.
+STR_6506    :Stor halv korkskrue (venstre)
+STR_6507    :Stor halv korkskrue (høyre)
+STR_6508    :Middels halvloop (venstre)
+STR_6509    :Middels halvloop (høyre)
+STR_6510    :Vektløs rull (venstre)
+STR_6511    :Vektløs rull (høyre)
+STR_6512    :Stor vektløs rull (venstre)
+STR_6513    :Stor vektløs rull (høyre)
+STR_6514    :Ugyldig høyde!
 
 #############
 # Scenarios #
@@ -3882,3 +4073,10 @@ STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
 
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Panda World
+STR_PARK    :Panda World
+STR_DTLS    :Bygg flere attraksjoner og få inn flere gjester til denne panda-inspirerte parken

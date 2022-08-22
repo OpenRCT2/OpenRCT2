@@ -4066,23 +4066,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tegmento
-
-[TTPIRF03]
-STR_NAME    :Tegmento
-
-[TTPIRF04]
-STR_NAME    :Tegmento
-
 [TTPIRF05]
-STR_NAME    :Tegmento
-
-[TTPIRF07]
-STR_NAME    :Tegmento
-
-[TTPIRF08]
 STR_NAME    :Tegmento
 
 [TTRFWD01]

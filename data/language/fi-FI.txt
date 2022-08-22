@@ -4058,22 +4058,7 @@ STR_DTLS    :
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :Katto
-
-[TTPIRF03]
-STR_NAME    :Katto
-
-[TTPIRF04]
-STR_NAME    :Katto
-
 [TTPIRF05]
-STR_NAME    :Katto
-
-[TTPIRF07]
-STR_NAME    :Katto
-
-[TTPIRF08]
 STR_NAME    :Katto
 
 [TTRFWD01]
