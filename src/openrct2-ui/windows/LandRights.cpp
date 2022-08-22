@@ -66,6 +66,7 @@ public:
 
         gLandToolSize = 1;
 
+        show_gridlines();
         tool_set(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
         input_set_flag(INPUT_FLAG_6, true);
 
@@ -79,6 +80,7 @@ public:
 
     void OnClose() override
     {
+        hide_gridlines();
         if (gLandRemainingConstructionSales == 0)
         {
             hide_construction_rights();
