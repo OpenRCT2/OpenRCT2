@@ -1230,7 +1230,6 @@ void show_land_rights()
         {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP))
             {
-                show_gridlines();
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_LAND_OWNERSHIP;
                 mainWindow->Invalidate();
             }
@@ -1253,7 +1252,6 @@ void hide_land_rights()
         {
             if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)
             {
-                hide_gridlines();
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_LAND_OWNERSHIP;
                 mainWindow->Invalidate();
             }
@@ -1274,7 +1272,6 @@ void show_construction_rights()
         {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS))
             {
-                show_gridlines();
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
                 mainWindow->Invalidate();
             }
@@ -1297,7 +1294,6 @@ void hide_construction_rights()
         {
             if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)
             {
-                hide_gridlines();
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
                 mainWindow->Invalidate();
             }
