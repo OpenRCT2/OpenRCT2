@@ -197,10 +197,14 @@ TRACK_PAINT_FUNCTION get_track_paint_function_maze(int32_t trackType)
     return maze_paint_setup;
 }
 
-money64 MazeCalculateCost(money32 constructionCost, const Ride& ride)
+money64 MazeCalculateCost(money32 constructionCost, const Ride& ride, const CoordsXYZ& _loc)
 {
     const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
     money64 price = (ride.GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16;
 
-    return constructionCost + price;
+    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto heightDifference = (_loc.z - surfaceElement->GetBaseZ()) / COORDS_Z_PER_TINY_Z;
+    money64 supportCost = heightDifference * ride.GetRideTypeDescriptor().BuildCosts.SupportPrice;
+
+    return constructionCost + price + supportCost;
 }
