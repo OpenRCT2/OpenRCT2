@@ -157,7 +157,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widx) override
+    void OnMouseUp(WidgetIndex widx) override
     {
         switch (widx)
         {
@@ -337,7 +337,7 @@ public:
         }
     }
 
-    CursorID OnCursor(rct_widgetindex widx, const ScreenCoordsXY& screenCoords, CursorID fallback) override
+    CursorID OnCursor(WidgetIndex widx, const ScreenCoordsXY& screenCoords, CursorID fallback) override
     {
         bool isInvented = false;
 
@@ -483,7 +483,7 @@ public:
         if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
             && windowPos.y + height > screenCoords.y)
         {
-            rct_widgetindex widgetIndex = window_find_widget_from_point(*this, screenCoords);
+            WidgetIndex widgetIndex = window_find_widget_from_point(*this, screenCoords);
             auto& widget = widgets[widgetIndex];
             if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
             {
@@ -594,7 +594,7 @@ public:
         colours[1] = COLOUR_WHITE;
     }
 
-    CursorID OnCursor(const rct_widgetindex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
+    CursorID OnCursor(const WidgetIndex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
     {
         auto* inventionListWindow = static_cast<InventionListWindow*>(window_find_by_class(WindowClass::EditorInventionList));
         if (inventionListWindow != nullptr)

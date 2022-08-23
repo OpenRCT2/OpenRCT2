@@ -55,10 +55,10 @@ static rct_widget window_title_menu_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowTitleMenuMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowTitleMenuMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void WindowTitleMenuDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void WindowTitleMenuCursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
+static void WindowTitleMenuMouseup(rct_window *w, WidgetIndex widgetIndex);
+static void WindowTitleMenuMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowTitleMenuDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowTitleMenuCursor(rct_window *w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
 static void WindowTitleMenuInvalidate(rct_window *w);
 static void WindowTitleMenuPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -92,7 +92,7 @@ rct_window* WindowTitleMenuOpen()
     window->widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
 #endif
 
-    rct_widgetindex i = 0;
+    WidgetIndex i = 0;
     int32_t x = 0;
     for (rct_widget* widget = window->widgets; widget != &window->widgets[WIDX_NEW_VERSION]; widget++)
     {
@@ -123,7 +123,7 @@ static void WindowTitleMenuScenarioselectCallback(const utf8* path)
     game_notify_map_changed();
 }
 
-static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleMenuMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     rct_window* windowToOpen = nullptr;
 
@@ -175,7 +175,7 @@ static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
     }
 }
 
-static void WindowTitleMenuMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowTitleMenuMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex == WIDX_GAME_TOOLS)
     {
@@ -243,7 +243,7 @@ static void InvokeCustomToolboxMenuItem(size_t index)
 #endif
 }
 
-static void WindowTitleMenuDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowTitleMenuDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex == WIDX_GAME_TOOLS)
     {
@@ -277,7 +277,7 @@ static void WindowTitleMenuDropdown(rct_window* w, rct_widgetindex widgetIndex, 
 }
 
 static void WindowTitleMenuCursor(
-    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
+    rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
     gTooltipTimeout = 2000;
 }

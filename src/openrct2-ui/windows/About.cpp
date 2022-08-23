@@ -98,7 +98,7 @@ public:
         SetPage(WINDOW_ABOUT_PAGE_OPENRCT2);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {

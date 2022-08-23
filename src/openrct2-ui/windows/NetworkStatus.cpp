@@ -34,9 +34,9 @@ static rct_widget window_network_status_widgets[] = {
 static char window_network_status_text[1024];
 
 static void WindowNetworkStatusOnclose(rct_window *w);
-static void WindowNetworkStatusMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowNetworkStatusMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowNetworkStatusUpdate(rct_window *w);
-static void WindowNetworkStatusTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowNetworkStatusTextinput(rct_window *w, WidgetIndex widgetIndex, char *text);
 static void WindowNetworkStatusInvalidate(rct_window *w);
 static void WindowNetworkStatusPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -107,7 +107,7 @@ static void WindowNetworkStatusOnclose(rct_window* w)
     }
 }
 
-static void WindowNetworkStatusMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowNetworkStatusMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -122,7 +122,7 @@ static void WindowNetworkStatusUpdate(rct_window* w)
     widget_invalidate(*w, WIDX_BACKGROUND);
 }
 
-static void WindowNetworkStatusTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowNetworkStatusTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     _password[0] = '\0';
     switch (widgetIndex)

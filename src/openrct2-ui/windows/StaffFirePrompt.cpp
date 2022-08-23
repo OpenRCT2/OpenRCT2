@@ -39,7 +39,7 @@ static rct_widget window_staff_fire_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowStaffFireMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowStaffFireMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowStaffFirePaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
@@ -76,7 +76,7 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep)
  *
  *  rct2: 0x006C0B40
  */
-static void WindowStaffFireMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowStaffFireMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {

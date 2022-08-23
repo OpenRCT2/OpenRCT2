@@ -82,10 +82,10 @@ static rct_widget *window_player_page_widgets[] = {
 #pragma region Events
 
 static void WindowPlayerOverviewClose(rct_window *w);
-static void WindowPlayerOverviewMouseUp(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowPlayerOverviewMouseUp(rct_window *w, WidgetIndex widgetIndex);
 static void WindowPlayerOverviewResize(rct_window *w);
-static void WindowPlayerOverviewMouseDown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void WindowPlayerOverviewDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowPlayerOverviewMouseDown(rct_window *w, WidgetIndex widgetIndex, rct_widget *widget);
+static void WindowPlayerOverviewDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowPlayerOverviewUpdate(rct_window* w);
 static void WindowPlayerOverviewInvalidate(rct_window *w);
 static void WindowPlayerOverviewPaint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -103,7 +103,7 @@ static rct_window_event_list window_player_overview_events([](auto& events)
 });
 
 static void WindowPlayerStatisticsClose(rct_window *w);
-static void WindowPlayerStatisticsMouseUp(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowPlayerStatisticsMouseUp(rct_window *w, WidgetIndex widgetIndex);
 static void WindowPlayerStatisticsResize(rct_window *w);
 static void WindowPlayerStatisticsUpdate(rct_window* w);
 static void WindowPlayerStatisticsInvalidate(rct_window *w);
@@ -200,7 +200,7 @@ void WindowPlayerOverviewClose(rct_window* w)
 {
 }
 
-void WindowPlayerOverviewMouseUp(rct_window* w, rct_widgetindex widgetIndex)
+void WindowPlayerOverviewMouseUp(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -238,7 +238,7 @@ void WindowPlayerOverviewMouseUp(rct_window* w, rct_widgetindex widgetIndex)
     }
 }
 
-void WindowPlayerOverviewMouseDown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+void WindowPlayerOverviewMouseDown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -248,7 +248,7 @@ void WindowPlayerOverviewMouseDown(rct_window* w, rct_widgetindex widgetIndex, r
     }
 }
 
-void WindowPlayerOverviewDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+void WindowPlayerOverviewDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     const auto playerId = static_cast<uint8_t>(w->number);
     const auto playerIdx = network_get_player_index(playerId);
@@ -428,7 +428,7 @@ void WindowPlayerStatisticsClose(rct_window* w)
     }
 }
 
-void WindowPlayerStatisticsMouseUp(rct_window* w, rct_widgetindex widgetIndex)
+void WindowPlayerStatisticsMouseUp(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {

@@ -407,7 +407,7 @@ void window_ride_construction_update_active_elements()
 bool scenery_tool_is_active()
 {
     auto toolWindowClassification = gCurrentToolWidget.window_classification;
-    rct_widgetindex toolWidgetIndex = gCurrentToolWidget.widget_index;
+    WidgetIndex toolWidgetIndex = gCurrentToolWidget.widget_index;
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
         if (toolWindowClassification == WindowClass::TopToolbar && toolWidgetIndex == WC_TOP_TOOLBAR__WIDX_SCENERY)
             return true;

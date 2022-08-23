@@ -43,7 +43,6 @@ rct_window* gWindowAudioExclusive;
 
 widget_identifier gCurrentTextBox = { { WindowClass::Null, 0 }, 0 };
 char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
-int32_t gMaxTextBoxInputLength = 0;
 int32_t gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = false;
 TextInputSession* gTextInput;
@@ -430,13 +429,13 @@ rct_window* window_find_from_point(const ScreenCoordsXY& screenCoords)
  * returns widget_index (edx)
  * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
  */
-rct_widgetindex window_find_widget_from_point(rct_window& w, const ScreenCoordsXY& screenCoords)
+WidgetIndex window_find_widget_from_point(rct_window& w, const ScreenCoordsXY& screenCoords)
 {
     // Invalidate the window
     window_event_invalidate_call(&w);
 
     // Find the widget at point x, y
-    rct_widgetindex widget_index = -1;
+    WidgetIndex widget_index = -1;
     for (int32_t i = 0;; i++)
     {
         const auto& widget = w.widgets[i];
@@ -521,7 +520,7 @@ void window_invalidate_all()
  * Invalidates the specified widget of a window.
  *  rct2: 0x006EC402
  */
-void widget_invalidate(rct_window& w, rct_widgetindex widgetIndex)
+void widget_invalidate(rct_window& w, WidgetIndex widgetIndex)
 {
 #ifdef DEBUG
     for (int32_t i = 0; i <= widgetIndex; i++)
@@ -551,7 +550,7 @@ template<typename TPred> static void widget_invalidate_by_condition(TPred pred)
 /**
  * Invalidates the specified widget of all windows that match the specified window class.
  */
-void widget_invalidate_by_class(WindowClass cls, rct_widgetindex widgetIndex)
+void widget_invalidate_by_class(WindowClass cls, WidgetIndex widgetIndex)
 {
     window_visit_each([cls, widgetIndex](rct_window* w) {
         if (w->classification == cls)
@@ -565,7 +564,7 @@ void widget_invalidate_by_class(WindowClass cls, rct_widgetindex widgetIndex)
  * Invalidates the specified widget of all windows that match the specified window class and number.
  *  rct2: 0x006EC3AC
  */
-void widget_invalidate_by_number(WindowClass cls, rct_windownumber number, rct_widgetindex widgetIndex)
+void widget_invalidate_by_number(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex)
 {
     window_visit_each([cls, number, widgetIndex](rct_window* w) {
         if (w->classification == cls && w->number == number)
@@ -584,7 +583,7 @@ void widget_invalidate_by_number(WindowClass cls, rct_windownumber number, rct_w
 void window_update_scroll_widgets(rct_window& w)
 {
     int32_t scrollIndex, width, height, scrollPositionChanged;
-    rct_widgetindex widgetIndex;
+    WidgetIndex widgetIndex;
     rct_widget* widget;
 
     widgetIndex = 0;
@@ -631,7 +630,7 @@ void window_update_scroll_widgets(rct_window& w)
     }
 }
 
-int32_t window_get_scroll_data_index(const rct_window& w, rct_widgetindex widget_index)
+int32_t window_get_scroll_data_index(const rct_window& w, WidgetIndex widget_index)
 {
     int32_t i, result;
 
@@ -1348,7 +1347,7 @@ void window_set_resize(rct_window& w, int32_t minWidth, int32_t minHeight, int32
  * @param widgetIndex (dx)
  * @param w (esi)
  */
-bool tool_set(const rct_window& w, rct_widgetindex widgetIndex, Tool tool)
+bool tool_set(const rct_window& w, WidgetIndex widgetIndex, Tool tool)
 {
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
     {
@@ -1409,7 +1408,7 @@ void window_event_close_call(rct_window* w)
         w->event_handlers->close(w);
 }
 
-void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex)
+void window_event_mouse_up_call(rct_window* w, WidgetIndex widgetIndex)
 {
     if (w->event_handlers == nullptr)
         w->OnMouseUp(widgetIndex);
@@ -1425,7 +1424,7 @@ void window_event_resize_call(rct_window* w)
         w->event_handlers->resize(w);
 }
 
-void window_event_mouse_down_call(rct_window* w, rct_widgetindex widgetIndex)
+void window_event_mouse_down_call(rct_window* w, WidgetIndex widgetIndex)
 {
     if (w->event_handlers == nullptr)
         w->OnMouseDown(widgetIndex);
@@ -1433,7 +1432,7 @@ void window_event_mouse_down_call(rct_window* w, rct_widgetindex widgetIndex)
         w->event_handlers->mouse_down(w, widgetIndex, &w->widgets[widgetIndex]);
 }
 
-void window_event_dropdown_call(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+void window_event_dropdown_call(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (w->event_handlers == nullptr)
     {
@@ -1478,7 +1477,7 @@ void window_event_unknown_08_call(rct_window* w)
             w->event_handlers->unknown_08(w);
 }
 
-void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+void window_event_tool_update_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers == nullptr)
         w->OnToolUpdate(widgetIndex, screenCoords);
@@ -1486,7 +1485,7 @@ void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, c
         w->event_handlers->tool_update(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+void window_event_tool_down_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers == nullptr)
         w->OnToolDown(widgetIndex, screenCoords);
@@ -1494,7 +1493,7 @@ void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, con
         w->event_handlers->tool_down(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+void window_event_tool_drag_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers == nullptr)
         w->OnToolDrag(widgetIndex, screenCoords);
@@ -1502,7 +1501,7 @@ void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, con
         w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+void window_event_tool_up_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers == nullptr)
         w->OnToolUp(widgetIndex, screenCoords);
@@ -1510,7 +1509,7 @@ void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, const
         w->event_handlers->tool_up(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex)
+void window_event_tool_abort_call(rct_window* w, WidgetIndex widgetIndex)
 {
     if (w->event_handlers == nullptr)
         w->OnToolAbort(widgetIndex);
@@ -1565,7 +1564,7 @@ void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, cons
         w->event_handlers->scroll_mouseover(w, scrollIndex, screenCoords);
 }
 
-void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text)
+void window_event_textinput_call(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     if (w->event_handlers == nullptr)
     {
@@ -1596,7 +1595,7 @@ void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t sc
             w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
 }
 
-OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback)
+OpenRCT2String window_event_tooltip_call(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback)
 {
     if (w->event_handlers == nullptr)
     {
@@ -1611,7 +1610,7 @@ OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex wi
     return { fallback, {} };
 }
 
-CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+CursorID window_event_cursor_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     CursorID cursorId = CursorID::Arrow;
     if (w->event_handlers == nullptr)
@@ -1968,7 +1967,7 @@ void textinput_cancel()
 }
 
 void window_start_textbox(
-    rct_window& call_w, rct_widgetindex call_widget, StringId existing_text, char* existing_args, int32_t maxLength)
+    rct_window& call_w, WidgetIndex call_widget, StringId existing_text, char* existing_args, int32_t maxLength)
 {
     if (gUsingWidgetTextBox)
         window_cancel_textbox();
@@ -1978,8 +1977,6 @@ void window_start_textbox(
     gCurrentTextBox.window.number = call_w.number;
     gCurrentTextBox.widget_index = call_widget;
     gTextBoxFrameNo = 0;
-
-    gMaxTextBoxInputLength = maxLength;
 
     window_close_by_class(WindowClass::Textinput);
 
@@ -2187,7 +2184,7 @@ WindowClass window_get_classification(const rct_window& window)
  *
  *  rct2: 0x006EAF26
  */
-void WidgetScrollUpdateThumbs(rct_window& w, rct_widgetindex widget_index)
+void WidgetScrollUpdateThumbs(rct_window& w, WidgetIndex widget_index)
 {
     const auto& widget = w.widgets[widget_index];
     auto& scroll = w.scrolls[window_get_scroll_data_index(w, widget_index)];

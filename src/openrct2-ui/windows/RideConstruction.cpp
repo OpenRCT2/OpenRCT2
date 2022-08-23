@@ -853,7 +853,7 @@ public:
         if (currentDisabledWidgets == disabledWidgets)
             return;
 
-        for (rct_widgetindex i = 0; i < 64; i++)
+        for (WidgetIndex i = 0; i < 64; i++)
         {
             if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
             {
@@ -925,7 +925,7 @@ public:
         UpdateGhostTrackAndArrow();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         WindowRideConstructionUpdateEnabledTrackPieces();
         switch (widgetIndex)
@@ -970,7 +970,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         auto currentRide = get_ride(_currentRideIndex);
         if (currentRide == nullptr)
@@ -1374,7 +1374,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         if (widgetIndex != WIDX_SPECIAL_TRACK_DROPDOWN)
             return;
@@ -1401,7 +1401,7 @@ public:
         window_ride_construction_update_active_elements();
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (widgetIndex)
         {
@@ -1415,7 +1415,7 @@ public:
         }
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (widgetIndex)
         {
@@ -1964,7 +1964,7 @@ public:
                 return;
         }
 
-        rct_widgetindex widgetIndex;
+        WidgetIndex widgetIndex;
         switch (_currentTrackCurve)
         {
             case TRACK_CURVE_NONE:

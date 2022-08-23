@@ -143,7 +143,7 @@ public:
         CancelTools();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         if (widgetIndex <= WIDX_TAB_3)
             CommonMouseUp(widgetIndex);
@@ -160,7 +160,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (page)
         {
@@ -173,7 +173,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         switch (page)
         {
@@ -251,7 +251,7 @@ public:
         }
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (page)
         {
@@ -261,7 +261,7 @@ public:
         }
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (page)
         {
@@ -271,7 +271,7 @@ public:
         }
     }
 
-    void OnToolAbort(rct_widgetindex widgetIndex) override
+    void OnToolAbort(WidgetIndex widgetIndex) override
     {
         switch (page)
         {
@@ -291,7 +291,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         switch (page)
         {
@@ -303,7 +303,7 @@ public:
 
 private:
 #pragma region Common events
-    void CommonMouseUp(rct_widgetindex widgetIndex)
+    void CommonMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -358,7 +358,7 @@ private:
 #pragma endregion
 
 #pragma region Overview tab events
-    void OverviewMouseUp(rct_widgetindex widgetIndex)
+    void OverviewMouseUp(WidgetIndex widgetIndex)
     {
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -405,7 +405,7 @@ private:
         }
     }
 
-    void OverviewOnMouseDown(rct_widgetindex widgetIndex)
+    void OverviewOnMouseDown(WidgetIndex widgetIndex)
     {
         rct_widget* widget = &widgets[widgetIndex];
 
@@ -440,7 +440,7 @@ private:
         }
     }
 
-    void OverviewOnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OverviewOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -646,7 +646,7 @@ private:
         InvalidateWidget(WIDX_TAB_1);
     }
 
-    void OverviewToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void OverviewToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -688,7 +688,7 @@ private:
         gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
     }
 
-    void OverviewToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void OverviewToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -712,7 +712,7 @@ private:
         GameActions::Execute(&pickupAction);
     }
 
-    void OverviewToolAbort(rct_widgetindex widgetIndex)
+    void OverviewToolAbort(WidgetIndex widgetIndex)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -729,7 +729,7 @@ private:
         ViewportInit();
     }
 
-    void OverviewTextInput(rct_widgetindex widgetIndex, std::string_view text)
+    void OverviewTextInput(WidgetIndex widgetIndex, std::string_view text)
     {
         if (widgetIndex != WIDX_RENAME)
             return;
@@ -743,7 +743,7 @@ private:
 #pragma endregion
 
 #pragma region Options tab events
-    void OptionsMouseUp(rct_widgetindex widgetIndex)
+    void OptionsMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -756,7 +756,7 @@ private:
         }
     }
 
-    void OptionsOnMouseDown(rct_widgetindex widgetIndex)
+    void OptionsOnMouseDown(WidgetIndex widgetIndex)
     {
         if (widgetIndex != WIDX_COSTUME_BTN)
         {
@@ -799,7 +799,7 @@ private:
         }
     }
 
-    void OptionsOnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OptionsOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (widgetIndex != WIDX_COSTUME_BTN)
         {
@@ -1046,7 +1046,7 @@ private:
             return;
         }
 
-        for (rct_widgetindex widgetIndex = WIDX_TAB_1; widgets[widgetIndex].type != WIDGETS_END.type; widgetIndex++)
+        for (WidgetIndex widgetIndex = WIDX_TAB_1; widgets[widgetIndex].type != WIDGETS_END.type; widgetIndex++)
         {
             SetWidgetDisabled(widgetIndex, false);
         }
@@ -1212,7 +1212,7 @@ private:
 
     void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t baseImageId)
     {
-        rct_widgetindex widgetIndex = WIDX_TAB_1 + p;
+        WidgetIndex widgetIndex = WIDX_TAB_1 + p;
         rct_widget* widget = &widgets[widgetIndex];
 
         auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };

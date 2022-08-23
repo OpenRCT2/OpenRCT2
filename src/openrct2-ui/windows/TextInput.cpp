@@ -65,7 +65,7 @@ public:
         SetParentWindow(nullptr, 0);
     }
 
-    void SetParentWindow(rct_window* parentWindow, rct_widgetindex widgetIndex)
+    void SetParentWindow(rct_window* parentWindow, WidgetIndex widgetIndex)
     {
         // Save calling window details so that the information can be passed back to the correct window & widget
         if (parentWindow == nullptr)
@@ -147,7 +147,7 @@ public:
         Invalidate();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -371,7 +371,7 @@ private:
 };
 
 void WindowTextInputRawOpen(
-    rct_window* call_w, rct_widgetindex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     const_utf8string existing_text, int32_t maxLength)
 {
     window_close_by_class(WindowClass::Textinput);
@@ -401,7 +401,7 @@ void WindowTextInputOpen(
 }
 
 void WindowTextInputOpen(
-    rct_window* call_w, rct_widgetindex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     StringId existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     auto existingText = format_string(existing_text, &existing_args);

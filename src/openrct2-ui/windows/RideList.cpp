@@ -212,7 +212,7 @@ public:
      *
      *  rct2: 0x006B3511
      */
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -263,7 +263,7 @@ public:
      *
      *  rct2: 0x006B3532
      */
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
         {
@@ -318,7 +318,7 @@ public:
      *
      *  rct2: 0x006B3547
      */
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
         {

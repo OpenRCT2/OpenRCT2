@@ -117,7 +117,7 @@ public:
         // widget_invalidate(*this, WIDX_VIEWPORT);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {

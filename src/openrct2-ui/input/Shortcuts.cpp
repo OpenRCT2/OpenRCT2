@@ -491,7 +491,7 @@ static void ShortcutScaleDown()
 }
 
 // Tile inspector shortcuts
-static void TileInspectorMouseUp(rct_widgetindex widgetIndex)
+static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 {
     auto w = window_find_by_class(WindowClass::TileInspector);
     if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
@@ -500,7 +500,7 @@ static void TileInspectorMouseUp(rct_widgetindex widgetIndex)
     }
 }
 
-static void TileInspectorMouseDown(rct_widgetindex widgetIndex)
+static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 {
     auto w = window_find_by_class(WindowClass::TileInspector);
     if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)

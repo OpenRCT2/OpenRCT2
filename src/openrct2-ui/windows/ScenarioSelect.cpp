@@ -104,8 +104,8 @@ static constexpr const StringId ScenarioOriginStringIds[] = {
 static void WindowScenarioselectInitTabs(rct_window *w);
 
 static void WindowScenarioselectClose(rct_window *w);
-static void WindowScenarioselectMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowScenarioselectMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowScenarioselectMouseup(rct_window *w, WidgetIndex widgetIndex);
+static void WindowScenarioselectMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget* widget);
 static void WindowScenarioselectScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void WindowScenarioselectScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowScenarioselectScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
@@ -264,7 +264,7 @@ static void WindowScenarioselectClose(rct_window* w)
     _listItems.shrink_to_fit();
 }
 
-static void WindowScenarioselectMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowScenarioselectMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     if (widgetIndex == WIDX_CLOSE)
     {
@@ -272,7 +272,7 @@ static void WindowScenarioselectMouseup(rct_window* w, rct_widgetindex widgetInd
     }
 }
 
-static void WindowScenarioselectMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8)
     {

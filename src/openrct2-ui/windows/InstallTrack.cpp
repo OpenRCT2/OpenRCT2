@@ -58,10 +58,10 @@ static rct_widget window_install_track_widgets[] = {
 };
 
 static void WindowInstallTrackClose(rct_window *w);
-static void WindowInstallTrackMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowInstallTrackMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowInstallTrackInvalidate(rct_window *w);
 static void WindowInstallTrackPaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowInstallTrackTextInput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowInstallTrackTextInput(rct_window *w, WidgetIndex widgetIndex, char *text);
 
 static rct_window_event_list window_install_track_events([](auto& events)
 {
@@ -150,7 +150,7 @@ static void WindowInstallTrackClose(rct_window* w)
  *
  *  rct2: 0x006D407A
  */
-static void WindowInstallTrackMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowInstallTrackMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -412,7 +412,7 @@ static void WindowInstallTrackPaint(rct_window* w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006D40A7
  */
-static void WindowInstallTrackTextInput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowInstallTrackTextInput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     if (widgetIndex != WIDX_INSTALL || str_is_null_or_empty(text))
     {

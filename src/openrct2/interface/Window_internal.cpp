@@ -37,7 +37,7 @@ void rct_window::RemoveViewport()
     viewport = nullptr;
 }
 
-CursorID rct_window::OnCursor(rct_widgetindex, const ScreenCoordsXY&, CursorID)
+CursorID rct_window::OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
 {
     return CursorID::Arrow;
 }

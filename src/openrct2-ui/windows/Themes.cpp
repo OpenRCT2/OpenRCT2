@@ -36,15 +36,15 @@ enum
     WINDOW_THEMES_TAB_COUNT
 };
 
-static void WindowThemesMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowThemesMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowThemesResize(rct_window* w);
-static void WindowThemesMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void WindowThemesDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowThemesMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowThemesDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowThemesUpdate(rct_window* w);
 static void WindowThemesScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
 static void WindowThemesScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowThemesScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowThemesTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static void WindowThemesTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
 static void WindowThemesInvalidate(rct_window* w);
 static void WindowThemesPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowThemesScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
@@ -340,7 +340,7 @@ rct_window* WindowThemesOpen()
     return window;
 }
 
-static void WindowThemesMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowThemesMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     size_t activeAvailableThemeIndex;
     const utf8* activeThemeName;
@@ -472,7 +472,7 @@ static void WindowThemesResize(rct_window* w)
     }
 }
 
-static void WindowThemesMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowThemesMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     int16_t newSelectedTab;
     int32_t num_items;
@@ -564,7 +564,7 @@ static void WindowThemesMousedown(rct_window* w, rct_widgetindex widgetIndex, rc
     }
 }
 
-static void WindowThemesDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowThemesDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     switch (widgetIndex)
     {
@@ -689,7 +689,7 @@ void WindowThemesScrollmouseover(rct_window* w, int32_t scrollIndex, const Scree
 {
 }
 
-static void WindowThemesTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowThemesTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     if (text == nullptr || text[0] == 0)
         return;
@@ -731,7 +731,7 @@ void WindowThemesInvalidate(rct_window* w)
         & ~((1LL << WIDX_THEMES_SETTINGS_TAB) | (1LL << WIDX_THEMES_MAIN_UI_TAB) | (1LL << WIDX_THEMES_PARK_TAB)
             | (1LL << WIDX_THEMES_TOOLS_TAB) | (1LL << WIDX_THEMES_RIDE_PEEPS_TAB) | (1LL << WIDX_THEMES_EDITORS_TAB)
             | (1LL << WIDX_THEMES_MISC_TAB) | (1LL << WIDX_THEMES_PROMPTS_TAB) | (1LL << WIDX_THEMES_FEATURES_TAB));
-    rct_widgetindex widgetIndex = _selected_tab + WIDX_THEMES_SETTINGS_TAB;
+    WidgetIndex widgetIndex = _selected_tab + WIDX_THEMES_SETTINGS_TAB;
 
     w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 

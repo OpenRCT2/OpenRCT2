@@ -24,7 +24,7 @@ static rct_widget window_title_options_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowTitleOptionsMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowTitleOptionsMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowTitleOptionsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_title_options_events([](auto& events)
@@ -48,7 +48,7 @@ rct_window* WindowTitleOptionsOpen()
     return window;
 }
 
-static void WindowTitleOptionsMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleOptionsMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     if (gIntroState != IntroState::None)
         return;

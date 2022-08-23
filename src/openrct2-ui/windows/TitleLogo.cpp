@@ -27,7 +27,7 @@ static rct_widget window_title_logo_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowTitleMenuMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowTitleLogoPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
@@ -55,7 +55,7 @@ rct_window* WindowTitleLogoOpen()
     return window;
 }
 
-static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleMenuMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {

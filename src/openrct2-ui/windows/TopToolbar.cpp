@@ -278,14 +278,14 @@ static rct_widget window_top_toolbar_widgets[] = {
 };
 // clang-format on
 
-static void WindowTopToolbarMouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void WindowTopToolbarMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void WindowTopToolbarToolUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowTopToolbarToolDown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowTopToolbarToolDrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowTopToolbarToolUp(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoordsy);
-static void WindowTopToolbarToolAbort(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex);
+static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowTopToolbarToolUpdate(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTopToolbarToolDown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTopToolbarToolDrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTopToolbarToolUp(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoordsy);
+static void WindowTopToolbarToolAbort(rct_window* w, WidgetIndex widgetIndex);
 static void WindowTopToolbarInvalidate(rct_window* w);
 static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
@@ -318,9 +318,9 @@ static void TopToolbarInitNetworkMenu(rct_window* window, rct_widget* widget);
 static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex);
 
 static void ToggleFootpathWindow();
-static void ToggleLandWindow(rct_window* topToolbar, rct_widgetindex widgetIndex);
-static void ToggleClearSceneryWindow(rct_window* topToolbar, rct_widgetindex widgetIndex);
-static void ToggleWaterWindow(rct_window* topToolbar, rct_widgetindex widgetIndex);
+static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex);
+static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetIndex);
+static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex);
 
 static money64 SelectionLowerLand(uint8_t flags);
 static money64 SelectionRaiseLand(uint8_t flags);
@@ -351,7 +351,7 @@ rct_window* WindowTopToolbarOpen()
  *
  *  rct2: 0x0066C957
  */
-static void WindowTopToolbarMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     rct_window* mainWindow;
 
@@ -435,7 +435,7 @@ static void WindowTopToolbarMouseup(rct_window* w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x0066CA3B
  */
-static void WindowTopToolbarMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     int32_t numItems = 0;
 
@@ -545,7 +545,7 @@ static void WindowTopToolbarScenarioselectCallback(const utf8* path)
  *
  *  rct2: 0x0066C9EA
  */
-static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     switch (widgetIndex)
     {
@@ -1014,7 +1014,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006E3158
  */
-static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, rct_widgetindex widgetIndex)
+static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, WidgetIndex widgetIndex)
 {
     auto flags = EnumsToFlags(
         ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
@@ -1091,7 +1091,7 @@ static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, rct_widgetin
     }
 }
 
-static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widgetindex widgetIndex)
+static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetIndex widgetIndex)
 {
     auto flags = EnumsToFlags(
         ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
@@ -1711,7 +1711,7 @@ static void Sub6E1F34Banner(
  *
  *  rct2: 0x006E2CC6
  */
-static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct_window* w, WidgetIndex widgetIndex)
 {
     scenery_remove_ghost_tool_placement();
     if (gWindowSceneryPaintEnabled & 1)
@@ -2914,7 +2914,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
  *
  *  rct2: 0x0066CB25
  */
-static void WindowTopToolbarToolUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTopToolbarToolUpdate(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -2949,7 +2949,7 @@ static void WindowTopToolbarToolUpdate(rct_window* w, rct_widgetindex widgetInde
  *
  *  rct2: 0x0066CB73
  */
-static void WindowTopToolbarToolDown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTopToolbarToolDown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -3073,7 +3073,7 @@ static void WindowTopToolbarLandToolDrag(const ScreenCoordsXY& screenPos)
     rct_window* window = window_find_from_point(screenPos);
     if (window == nullptr)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(*window, screenPos);
+    WidgetIndex widget_index = window_find_widget_from_point(*window, screenPos);
     if (widget_index == -1)
         return;
     const auto& widget = window->widgets[widget_index];
@@ -3116,7 +3116,7 @@ static void WindowTopToolbarWaterToolDrag(const ScreenCoordsXY& screenPos)
     rct_window* window = window_find_from_point(screenPos);
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(*window, screenPos);
+    WidgetIndex widget_index = window_find_widget_from_point(*window, screenPos);
     if (widget_index == -1)
         return;
     const auto& widget = window->widgets[widget_index];
@@ -3164,7 +3164,7 @@ static void WindowTopToolbarWaterToolDrag(const ScreenCoordsXY& screenPos)
  *
  *  rct2: 0x0066CB4E
  */
-static void WindowTopToolbarToolDrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTopToolbarToolDrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -3229,7 +3229,7 @@ static void WindowTopToolbarToolDrag(rct_window* w, rct_widgetindex widgetIndex,
  *
  *  rct2: 0x0066CC5B
  */
-static void WindowTopToolbarToolUp(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTopToolbarToolUp(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     _landToolBlocked = false;
     switch (widgetIndex)
@@ -3265,7 +3265,7 @@ static void WindowTopToolbarToolUp(rct_window* w, rct_widgetindex widgetIndex, c
  *
  *  rct2: 0x0066CA58
  */
-static void WindowTopToolbarToolAbort(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTopToolbarToolAbort(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -3809,7 +3809,7 @@ static void ToggleFootpathWindow()
  *
  *  rct2: 0x0066CD54
  */
-static void ToggleLandWindow(rct_window* topToolbar, rct_widgetindex widgetIndex)
+static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
 {
     if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
         && gCurrentToolWidget.widget_index == WIDX_LAND)
@@ -3830,7 +3830,7 @@ static void ToggleLandWindow(rct_window* topToolbar, rct_widgetindex widgetIndex
  *
  *  rct2: 0x0066CD0C
  */
-static void ToggleClearSceneryWindow(rct_window* topToolbar, rct_widgetindex widgetIndex)
+static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
 {
     if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
          && gCurrentToolWidget.widget_index == WIDX_CLEAR_SCENERY))
@@ -3850,7 +3850,7 @@ static void ToggleClearSceneryWindow(rct_window* topToolbar, rct_widgetindex wid
  *
  *  rct2: 0x0066CD9C
  */
-static void ToggleWaterWindow(rct_window* topToolbar, rct_widgetindex widgetIndex)
+static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
 {
     if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
         && gCurrentToolWidget.widget_index == WIDX_WATER)
