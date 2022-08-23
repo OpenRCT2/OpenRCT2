@@ -211,10 +211,10 @@ namespace RCT2
         void ReadChunk6(SawyerChunkReader& chunkReader, uint32_t sizeWithoutEntities)
         {
             uint32_t entitiesSize = GetMaxEntities() * sizeof(Entity);
-            auto bufferSize = sizeWithoutEntities + entitiesSize;
-            uint8_t buffer[bufferSize];
-            chunkReader.ReadChunk(&buffer, bufferSize);
-            auto stream = OpenRCT2::MemoryStream(&buffer, bufferSize);
+            size_t bufferSize = sizeWithoutEntities + entitiesSize;
+            std::vector<uint8_t> buffer(bufferSize);
+            chunkReader.ReadChunk(buffer.data(), buffer.size());
+            auto stream = OpenRCT2::MemoryStream(buffer.data(), buffer.size());
 
             uint32_t preEntitiesSize = sizeof(_s6.next_free_tile_element_pointer_index);
             uint32_t postEntitiesSize = sizeWithoutEntities - preEntitiesSize;
