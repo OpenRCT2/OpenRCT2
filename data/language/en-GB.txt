@@ -340,7 +340,6 @@ STR_0950    :Load Game
 STR_0951    :Quit Game
 STR_0952    :Quit Game
 STR_0953    :Load Landscape
-STR_0954    :
 STR_0955    :Select seat rotation angle for this track section
 STR_0956    :-180°
 STR_0957    :-135°
@@ -388,10 +387,10 @@ STR_0998    :No more stations allowed on this ride
 STR_0999    :Requires a station platform
 STR_1000    :Track is not a complete circuit
 STR_1001    :Track unsuitable for type of train
-STR_1002    :Can’t open {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Can’t test {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Can’t close {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Can’t start construction on {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Can’t open {STRINGID}…
+STR_1003    :Can’t test {STRINGID}…
+STR_1004    :Can’t close {STRINGID}…
+STR_1005    :Can’t start construction on {STRINGID}…
 STR_1006    :Must be closed first
 STR_1007    :Unable to create enough vehicles
 STR_1008    :Open, close, or test ride/attraction
@@ -753,7 +752,7 @@ STR_1363    :Too high for supports!
 STR_1364    :Supports for track above can’t be extended any further!
 STR_1365    :In-line Twist (left)
 STR_1366    :In-line Twist (right)
-STR_1367    :Half Loop
+STR_1367    :Small Half Loop
 STR_1368    :Half Corkscrew (left)
 STR_1369    :Half Corkscrew (right)
 STR_1370    :Barrel Roll (left)
@@ -3432,7 +3431,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulating
 STR_6324    :Simulate
 STR_6325    :Simulate ride/attraction
-STR_6326    :Can’t simulate {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Can’t simulate {STRINGID}…
 STR_6327    :Transparent background for giant screenshots
 STR_6328    :With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
 STR_6329    :{STRING}{STRINGID}
@@ -3610,6 +3609,15 @@ STR_6502    :Enter value between {COMMA16} and {COMMA16}
 STR_6503    :At least one station object must be selected
 STR_6504    :At least one terrain surface must be selected
 STR_6505    :At least one terrain edge must be selected
+STR_6506    :Large Half Corkscrew (left)
+STR_6507    :Large Half Corkscrew (right)
+STR_6508    :Medium Half Loop (left)
+STR_6509    :Medium Half Loop (right)
+STR_6510    :Zero G Roll (left)
+STR_6511    :Zero G Roll (right)
+STR_6512    :Large Zero G Roll (left)
+STR_6513    :Large Zero G Roll (right)
+STR_6514    :Invalid height!
 
 #############
 # Scenarios #

@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Maze.h"
+
 #include "../../core/Numerics.hpp"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
@@ -15,8 +17,12 @@
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../Ride.h"
+#include "../RideData.h"
 #include "../Track.h"
+#include "../TrackData.h"
 #include "../TrackPaint.h"
+
+using namespace OpenRCT2::TrackMetaData;
 
 enum
 {
@@ -189,4 +195,16 @@ TRACK_PAINT_FUNCTION get_track_paint_function_maze(int32_t trackType)
     }
 
     return maze_paint_setup;
+}
+
+money64 MazeCalculateCost(money32 constructionCost, const Ride& ride, const CoordsXYZ& _loc)
+{
+    const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
+    money64 price = (ride.GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16;
+
+    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto heightDifference = (_loc.z - surfaceElement->GetBaseZ()) / COORDS_Z_PER_TINY_Z;
+    money64 supportCost = heightDifference * ride.GetRideTypeDescriptor().BuildCosts.SupportPrice;
+
+    return constructionCost + price + supportCost;
 }

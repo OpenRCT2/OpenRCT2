@@ -1227,13 +1227,12 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         {
             // Automatically research the ride so it's supported by the game.
             rct_ride_entry* rideEntry;
-            int32_t rideType;
 
             rideEntry = get_ride_entry(groupIndex);
 
             for (int32_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
             {
-                rideType = rideEntry->ride_type[j];
+                auto rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
                 {
                     ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
@@ -1307,7 +1306,7 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             {
                 // Only this window should be open for safety reasons
                 window_close_all();
-                context_open_window(WC_EDITOR_OBJECT_SELECTION);
+                context_open_window(WindowClass::EditorObjectSelection);
             }
         }
         else if (argv[0] == "inventions_list" && invalidArguments(&invalidTitle, !title))
@@ -1318,12 +1317,12 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             }
             else
             {
-                context_open_window(WC_EDITOR_INVENTION_LIST);
+                context_open_window(WindowClass::EditorInventionList);
             }
         }
         else if (argv[0] == "scenario_options" && invalidArguments(&invalidTitle, !title))
         {
-            context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
+            context_open_window(WindowClass::EditorScenarioOptions);
         }
         else if (argv[0] == "objective_options" && invalidArguments(&invalidTitle, !title))
         {
@@ -1333,16 +1332,16 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             }
             else
             {
-                context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
+                context_open_window(WindowClass::EditorObjectiveOptions);
             }
         }
         else if (argv[0] == "options")
         {
-            context_open_window(WC_OPTIONS);
+            context_open_window(WindowClass::Options);
         }
         else if (argv[0] == "themes")
         {
-            context_open_window(WC_THEMES);
+            context_open_window(WindowClass::Themes);
         }
         else if (invalidTitle)
         {
@@ -1463,7 +1462,7 @@ static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe
     }
 
     date_set(year, month, day);
-    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+    window_invalidate_by_class(WindowClass::BottomToolbar);
 
     return 1;
 }

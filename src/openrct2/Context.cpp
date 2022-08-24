@@ -317,7 +317,7 @@ namespace OpenRCT2
         void Quit() override
         {
             gSavePromptMode = PromptMode::Quit;
-            context_open_window(WC_SAVE_PROMPT);
+            context_open_window(WindowClass::SavePrompt);
         }
 
         bool Initialise() final override
@@ -541,6 +541,18 @@ namespace OpenRCT2
             const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override
         {
             log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
+
+            // Register the file for crash upload if it asserts while loading.
+            crash_register_additional_file("load_park", path);
+            // Deregister park file in case it was processed without hitting an assert.
+            struct foo
+            {
+                ~foo()
+                {
+                    crash_unregister_additional_file("load_park");
+                }
+            } f;
+
             try
             {
                 if (String::Equals(Path::GetExtension(path), ".sea", true))
@@ -695,7 +707,7 @@ namespace OpenRCT2
                 }
                 // The path needs to be duplicated as it's a const here
                 // which the window function doesn't like
-                auto intent = Intent(WC_OBJECT_LOAD_ERROR);
+                auto intent = Intent(WindowClass::ObjectLoadError);
                 intent.putExtra(INTENT_EXTRA_PATH, path);
                 intent.putExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
                 intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
@@ -1442,13 +1454,13 @@ void context_set_cursor_trap(bool value)
     GetContext()->GetUiContext()->SetCursorTrap(value);
 }
 
-rct_window* context_open_window(rct_windowclass wc)
+rct_window* context_open_window(WindowClass wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenWindow(wc);
 }
 
-rct_window* context_open_window_view(rct_windowclass wc)
+rct_window* context_open_window_view(uint8_t wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenView(wc);
@@ -1472,7 +1484,7 @@ void context_broadcast_intent(Intent* intent)
     windowManager->BroadcastIntent(*intent);
 }
 
-void context_force_close_window_by_class(rct_windowclass windowClass)
+void context_force_close_window_by_class(WindowClass windowClass)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->ForceClose(windowClass);

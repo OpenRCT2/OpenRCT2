@@ -25,7 +25,7 @@ enum class AwardType : uint16_t
     BestStaff,
     BestFood,
     WorstFood,
-    BestRestrooms,
+    BestToilets,
     MostDisappointing,
     BestWaterRides,
     BestCustomDesignedRides,

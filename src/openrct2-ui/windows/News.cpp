@@ -67,7 +67,7 @@ public:
         WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -75,7 +75,7 @@ public:
                 Close();
                 break;
             case WIDX_SETTINGS:
-                context_open_window(WC_NOTIFICATION_OPTIONS);
+                context_open_window(WindowClass::NotificationOptions);
                 break;
         }
     }
@@ -311,5 +311,5 @@ public:
 
 rct_window* WindowNewsOpen()
 {
-    return WindowFocusOrCreate<NewsWindow>(WC_RECENT_NEWS, WW, WH, 0);
+    return WindowFocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
 }

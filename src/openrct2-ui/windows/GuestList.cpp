@@ -274,7 +274,7 @@ public:
         gWindowMapFlashingFlags |= MapFlashingFlags::GuestListOpen;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -282,7 +282,7 @@ public:
                 Close();
                 break;
             case WIDX_MAP:
-                context_open_window(WC_MAP);
+                context_open_window(WindowClass::Map);
                 break;
             case WIDX_TRACKING:
                 _trackingOnly = !_trackingOnly;
@@ -309,7 +309,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -378,7 +378,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         switch (widgetIndex)
         {
@@ -393,7 +393,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (!text.empty())
         {
@@ -963,10 +963,10 @@ private:
 
 rct_window* WindowGuestListOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_GUEST_LIST);
+    auto* window = window_bring_to_front_by_class(WindowClass::GuestList);
     if (window == nullptr)
     {
-        window = WindowCreate<GuestListWindow>(WC_GUEST_LIST, 350, 330, WF_10 | WF_RESIZABLE);
+        window = WindowCreate<GuestListWindow>(WindowClass::GuestList, 350, 330, WF_10 | WF_RESIZABLE);
     }
     return window;
 }
@@ -986,7 +986,7 @@ rct_window* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t inde
 
 void WindowGuestListRefreshList()
 {
-    auto* w = window_find_by_class(WC_GUEST_LIST);
+    auto* w = window_find_by_class(WindowClass::GuestList);
     if (w != nullptr)
     {
         static_cast<GuestListWindow*>(w)->RefreshList();

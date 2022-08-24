@@ -371,7 +371,7 @@ namespace OpenRCT2::Audio
             Pause();
         }
 
-        window_invalidate_by_class(WC_OPTIONS);
+        window_invalidate_by_class(WindowClass::Options);
     }
 
     void Pause()

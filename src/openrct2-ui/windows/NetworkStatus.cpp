@@ -34,9 +34,9 @@ static rct_widget window_network_status_widgets[] = {
 static char window_network_status_text[1024];
 
 static void WindowNetworkStatusOnclose(rct_window *w);
-static void WindowNetworkStatusMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowNetworkStatusMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowNetworkStatusUpdate(rct_window *w);
-static void WindowNetworkStatusTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowNetworkStatusTextinput(rct_window *w, WidgetIndex widgetIndex, char *text);
 static void WindowNetworkStatusInvalidate(rct_window *w);
 static void WindowNetworkStatusPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -59,11 +59,11 @@ rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose)
     safe_strcpy(window_network_status_text, text, sizeof(window_network_status_text));
 
     // Check if window is already open
-    rct_window* window = window_bring_to_front_by_class_with_flags(WC_NETWORK_STATUS, 0);
+    rct_window* window = window_bring_to_front_by_class_with_flags(WindowClass::NetworkStatus, 0);
     if (window != nullptr)
         return window;
 
-    window = WindowCreateCentred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
+    window = WindowCreateCentred(420, 90, &window_network_status_events, WindowClass::NetworkStatus, WF_10 | WF_TRANSPARENT);
 
     window->widgets = window_network_status_widgets;
     WindowInitScrollWidgets(*window);
@@ -84,13 +84,13 @@ rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose)
 void WindowNetworkStatusClose()
 {
     _onClose = nullptr;
-    window_close_by_class(WC_NETWORK_STATUS);
+    window_close_by_class(WindowClass::NetworkStatus);
 }
 
 rct_window* WindowNetworkStatusOpenPassword()
 {
     rct_window* window;
-    window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
+    window = window_bring_to_front_by_class(WindowClass::NetworkStatus);
     if (window == nullptr)
         return nullptr;
 
@@ -107,7 +107,7 @@ static void WindowNetworkStatusOnclose(rct_window* w)
     }
 }
 
-static void WindowNetworkStatusMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowNetworkStatusMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -122,7 +122,7 @@ static void WindowNetworkStatusUpdate(rct_window* w)
     widget_invalidate(*w, WIDX_BACKGROUND);
 }
 
-static void WindowNetworkStatusTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowNetworkStatusTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     _password[0] = '\0';
     switch (widgetIndex)

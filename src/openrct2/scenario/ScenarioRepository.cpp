@@ -142,19 +142,19 @@ public:
     }
 
 protected:
-    std::tuple<bool, scenario_index_entry> Create(int32_t, const std::string& path) const override
+    std::optional<scenario_index_entry> Create(int32_t, const std::string& path) const override
     {
         scenario_index_entry entry;
         auto timestamp = File::GetLastModified(path);
         if (GetScenarioInfo(path, timestamp, &entry))
         {
-            return std::make_tuple(true, entry);
+            return entry;
         }
 
-        return std::make_tuple(true, scenario_index_entry());
+        return std::nullopt;
     }
 
-    void Serialise(DataSerialiser& ds, scenario_index_entry& item) const override
+    void Serialise(DataSerialiser& ds, const scenario_index_entry& item) const override
     {
         ds << item.path;
         ds << item.timestamp;

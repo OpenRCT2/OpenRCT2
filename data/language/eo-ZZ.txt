@@ -340,7 +340,6 @@ STR_0950    :Ŝargi Ludon
 STR_0951    :Forlasi Ludon
 STR_0952    :Forlasi Ludon
 STR_0953    :Ŝargi Pejzaĝo
-STR_0954    :
 STR_0955    :Elekti direkton de seĝoj ĉe ĉi tiu parto de trako
 STR_0956    :-180°
 STR_0957    :-135°
@@ -388,10 +387,10 @@ STR_0998    :Ne eblas konstrui pli da stacioj por ĉi tiu atrakcio
 STR_0999    :Ĝi bezonas staciplatformon
 STR_1000    :Trako ne estas kompleta cirkvito
 STR_1001    :Trako ne taŭgas kun tia trajno
-STR_1002    :Ne eblas malfermi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Ne eblas elprovi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Ne eblas fermi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Ne eblas ekkonstrui je {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Ne eblas malfermi je {STRINGID}…
+STR_1003    :Ne eblas elprovi je {STRINGID}…
+STR_1004    :Ne eblas fermi je {STRINGID}…
+STR_1005    :Ne eblas ekkonstrui je {STRINGID}…
 STR_1006    :Tio unue devas esti fermita
 STR_1007    :Ne eblas krei sufiĉe da ĉaroj
 STR_1008    :Malfermi, fermi, aŭ elprovi atrakcion
@@ -753,7 +752,7 @@ STR_1363    :Tro alta por apogiloj!
 STR_1364    :Apogiloj de trako supera ne eblas esti etenditaj plu!
 STR_1365    :Ĉirkaŭtraka Ruliĝo (maldesktre)
 STR_1366    :Ĉirkaŭtraka Ruliĝo (dekstre)
-STR_1367    :Duona Lopo
+STR_1367    :Malgranda Duona Lopo
 STR_1368    :Duona Korktirilo (maldekstre)
 STR_1369    :Duona Korktirilo (dekstre)
 STR_1370    :Barelforma Ruliĝo (maldekstre)
@@ -1954,8 +1953,6 @@ STR_2738    :Muziko de titola ekrano:
 STR_2739    :Neniu
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat ne troviĝis
-STR_2743    :Kopiu ‘data/css17.dat’ de via RCT1 instalaĵo al ‘data/css50.dat’ en via RCT2 instalaĵo, aŭ kontrolu, ke la dosierindiko al RCT1 en la langeto Altnivela pravas.
 STR_2749    :Mia nova scenaro
 # New strings used in the cheats window previously these were ???
 STR_2750    :Movi ĉiujn aferojn supren
@@ -2228,7 +2225,6 @@ STR_3174    :Alia objekto bezonas ĉi tiun objekton
 STR_3175    :Ĉi tiu objekto ĉiam estas bezonata
 STR_3176    :Ne eblas elekti ĉi tiun objekton
 STR_3177    :Ne eblas malelekti ĉi tiun objekton
-STR_3178    :Almenaŭ unu objekto de trotuaro elektendas
 STR_3179    :Almenaŭ unu objekto de atrakcio aŭ atrakcioveturilo elektendas
 STR_3180    :Nevalida elektaĵo de objektoj
 STR_3181    :Elektaro de Objektoj - {STRINGID}
@@ -2261,7 +2257,7 @@ STR_3208    :Administrilo de Trakdesegnaĵoj
 STR_3209    :Reiri al Pasinta Etapo:
 STR_3210    :Iri al Sekva Etapo:
 STR_3211    :Dimensioj de mapo:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Ne eblas malpliigi mapodimensiojn plu
 STR_3214    :Ne eblas pliigi mapodimensiojn plu
 STR_3215    :Tro proksime al mapbordo
@@ -2556,8 +2552,6 @@ STR_5250    :Eliri-Butono de Titolozono
 STR_5251    :Agordoj-Butono de Titolozono
 STR_5252    :Scenaro-Elektaro de Titolozono
 STR_5253    :Parkinformoj
-STR_5254    :Krei
-STR_5255    :Krei novan titolosekvencon de nulo
 STR_5256    :Krei novan temon por fari ŝanĝojn
 STR_5257    :Krei novan temon surbaze de la nuna
 STR_5258    :Forigi la nunan temon
@@ -2652,75 +2646,10 @@ STR_5373    :Nomo {STRINGID}
 STR_5374    :Dato {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Konservaĵoj
-STR_5378    :Skripto
-STR_5379    :Preterpasi al sekva haltokomando
-STR_5380    :Komenci ludi titolosekvencon
-STR_5381    :Halti ludi titolosekvencon
-STR_5382    :Rekomenci titolosekvencon
-STR_5383    :Krei novan titolosekvencon surbaze de la nuna
-STR_5384    :Forigi la nunan titolosekvencon
-STR_5385    :Renomi la nunan titolosekvencon
-STR_5386    :Enmeti novan komandon
-STR_5387    :Redakti la elektitan komandon
-STR_5388    :Forigi la elektitan komandon
-STR_5389    :Preterpasi al la elektita komando en la titolosekvenco
-STR_5390    :Movi la elektitan komandon malsupren
-STR_5391    :Movi la elektitan komandon supren
-STR_5392    :Aldoni konservaĵon al la titolosekvenco
-STR_5393    :Forigi la elektitan konservaĵon de la titolosekvenco
-STR_5394    :Renomi la elektitan konservaĵon
-STR_5395    :Ŝargi la elektitan konservaĵon en-lude
-STR_5396    :Reŝargi la titolosekvencon se ĝi ŝanĝas ekster de la ludo
-STR_5397    :Eblas esti uzita nur sur la titolekrano
-STR_5398    :Ne eblas redakti la titolosekvencon dum ĝi ludas
-STR_5399    :Premu la haltobutonon por redakti pli
-STR_5400    :Ne eblas ŝanĝi ĉi tiun titolosekvencon
-STR_5401    :Krei novan titolosekvencon por fari ŝanĝojn
-STR_5402    :Malsukcesis ŝargi titolosekvencon
-STR_5403    :Aŭ ne estas Ŝargi aŭ Atendi komandoj, aŭ konservaĵo estas nevalida
 STR_5404    :Nomo jam ekzistas
-STR_5405    :Entajpu nomon de la konservaĵo
-STR_5406    :Entajpu nomon de la titolosekvenco
-STR_5407    :Aldoni
-STR_5408    :Forigi
-STR_5409    :Enmeti
-STR_5410    :Redakti
-STR_5411    :Reŝargi
-STR_5412    :Preterpasi al
-STR_5413    :Ŝargi
-STR_5415    :Ŝargi{MOVE_X}{87}{STRING}
-STR_5416    :Ŝargi{MOVE_X}{87}Neniu konservaĵo elektita
-STR_5417    :Loko
-STR_5418    :Loko{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Turni
-STR_5420    :Turni{MOVE_X}{87}{COMMA16}
-STR_5421    :Zomi
-STR_5422    :Zomi{MOVE_X}{87}{COMMA16}
-STR_5423    :Atendi
-STR_5424    :Atendi{MOVE_X}{87}{UINT16}
-STR_5425    :Rekomenci
-STR_5426    :Fini
-STR_5427    :Koordinatoj:
-STR_5428    :Maldekstrumaj turnoj:
-STR_5429    :Zomonivelo:
-STR_5430    :Atendi tiom da milisekundoj:
-STR_5431    :Konservi por ŝargi:
-STR_5432    :Komando:
-STR_5433    :Titolosekvencoj
-STR_5434    :Komandoredaktilo
-STR_5435    :Renomi konservaĵon
-STR_5436    :Redakti Titolosekvencojn…
-STR_5437    :Neniu konservaĵo elektita
-STR_5438    :Ne eblas fari ŝanĝojn dum komandoredaktilo estas malfermita
-STR_5439    :Atendi-komando de almenaŭ 4 sekundoj estas bezonata kun Rekomenci-komando
 STR_5440    :Minimumigi plenekranan reĝimon dum defokusigoj
 STR_5441    :Identigas atrakciojn per siaj traktipoj{NEWLINE}do veturiloj fariĝas ŝanĝeblaj{NEWLINE}poste (RCT1-konduto)
 STR_5442    :Devigi pritakson de parko:
-STR_5443    :Rapideco{MOVE_X}{87}{STRINGID}
-STR_5444    :Rapideco:
-STR_5445    :Rapideco
-STR_5446    :Atingi
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Atrakcio / Veturilo {STRINGID}
 STR_5449    :Malpliigi rapidecon de ludo
@@ -2835,8 +2764,6 @@ STR_5560    :Agordas la inspekton al ‘Post ĉiuj 10 minutoj’ por ĉiu atrakc
 STR_5561    :Malsukcesis ŝargi lingvon
 STR_5562    :AVERTO!
 STR_5563    :Ĉi tiu funkcio estas nune nestabila. Estu singarda.
-STR_5564    :Enmeti Difektitan Elementon
-STR_5565    :Enmetas difektitan mapelementon sur supro de bloko. Ĉi tio kaŝos iun ajn elementon super la difektita elemento.
 STR_5566    :Pasvorto:
 STR_5567    :Anonci
 STR_5568    :Pasvorto Bezonata
@@ -3078,7 +3005,6 @@ STR_5844    :Resti konektita al plurludanta servilo{NEWLINE}eĉ se desinkronigo 
 STR_5845    :Aldonas butonon por{NEWLINE}sencimigiloj en la ilobreto.{NEWLINE}Ŝaltas klavarokomandon de programisto-konzolo
 STR_5846    :Agordi kiom ofte OpenRCT2 aŭtomate konserviĝas
 STR_5847    :Elekti parksinsekvon uzatan sur la titola ekrano.{NEWLINE}Titolosinsekvoj de RCT1/2 bezonas importitajn scenarojn por funkcii
-STR_5848    :Krei kaj administri proprajn titolosinsekvojn
 STR_5849    :Meti aŭtomate{NEWLINE}novdungitajn dungitojn
 STR_5851    :Agordas la defaŭltan inspekto-intervalon{NEWLINE}de novkonstruitaj atrakcioj
 STR_5853    :Baskuligi sonefektojn
@@ -3278,7 +3204,6 @@ STR_6047    :Glatigi blokojn
 STR_6048    :Eraro de altmapo
 STR_6049    :Eraro legante PNG
 STR_6050    :Eraro legante rastrumon
-STR_6051    :La larĝo kaj alto bezonas kongrui
 STR_6052    :La altmapo estas tro granda, kaj estos fortranĉita
 STR_6053    :La altmapo ne eblas esti normaligita
 STR_6054    :Nur 24-bitoj-rastrumoj estas subtenataj
@@ -3392,23 +3317,8 @@ STR_6170    :Optimumigoj de Interfacoj
 STR_6171    :Serĉi
 STR_6172    :Serĉi
 STR_6173    :Bonvolu entajpi la nomon por serĉi:
-STR_6174    :Ŝargi Konservaĵon
-STR_6175    :Ŝargi Scenaron
-STR_6176    :Scenaro por ŝargi:
-STR_6177    :Ŝargi{MOVE_X}{87}Neniu scenaro elektita
-STR_6178    :Ŝargi{MOVE_X}{87}{RED}Scenaro mankanta
-STR_6179    :Elekti
-STR_6180    :Neniu scenaro elektita
-STR_6181    :{RED}Mankanta scenaro
-STR_6182    :Sekvi{MOVE_X}{87}{STRING}
-STR_6183    :Sekvi{MOVE_X}{87}Neniu rastrumeto elektita
-STR_6184    :Sekvi Rastrumeton
-STR_6185    :Elekti Rastrumeton
-STR_6186    :Neniu rastrumeto elektita
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomaĵo
 STR_6189    :Anaso
-STR_6190    :Vi ne eblas elekti rastrumeton dum la ĉefa titolekrano estas aktiva.
 STR_6191    :Surfaco
 STR_6192    :Muro
 STR_6193    :{COMMA16} gasto
@@ -3521,7 +3431,7 @@ STR_6322    :{WINDOW_COLOUR_2}Identigilo de rastrumeto: {BLACK}{INT32}
 STR_6323    :Simulas
 STR_6324    :Simuli
 STR_6325    :Simuli atrakcion
-STR_6326    :Ne eblas simuli je {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Ne eblas simuli je {STRINGID}…
 STR_6327    :Transvidebla fono por gigantaj ekranokopioj
 STR_6328    :Kun ĉi tiu opcio ŝaltita, gigantaj ekranokopioj havos transvideblan fonon anstataŭ la defaŭlta nigra koloro.
 STR_6329    :{STRING}{STRINGID}
@@ -3530,7 +3440,6 @@ STR_6331    :Krei anasojn
 STR_6332    :Forigi anasojn
 STR_6333    :Pliigi skalfaktoron
 STR_6334    :Malpliigi skalfaktoron
-STR_6335    :Inspektilo de Bloko: Enmeti eron koruptitan
 STR_6336    :Inspektilo de Bloko: Kopii eron
 STR_6337    :Inspektilo de Bloko: Alglui eron
 STR_6338    :Inspektilo de Bloko: Forigi eron
@@ -3696,6 +3605,19 @@ STR_6498    :Ŝalti por konservi kvadratan formon de mapo.
 STR_6499    :Veturilo-tipo ne estas subtenata de trakdesegnaĵo-formo
 STR_6500    :Trakelementoj ne estas subtenataj de trakdesegnaĵo-formo
 STR_6501    :Hazarda koloro
+STR_6502    :Entajpu valoron inter {COMMA16} kaj {COMMA16}
+STR_6503    :Almenaŭ unu staciobjekto elektendas
+STR_6504    :Almenaŭ unu tereno-surfaco elektendas
+STR_6505    :Almenaŭ unu tereno-flanko elektendas
+STR_6506    :Granda Duona Korktirilo (maldekstre)
+STR_6507    :Granda Duona Korktirilo (dekstre)
+STR_6508    :Meza Duona Lopo (maldekstre)
+STR_6509    :Meza Duona Lopo (dekstre)
+STR_6510    :Sengravida Ruliĝo (maldekstre)
+STR_6511    :Sengravida Ruliĝo (dekstre)
+STR_6512    :Granda Sengravida Ruliĝo (maldekstre)
+STR_6513    :Granda Sengravida Ruliĝo (dekstre)
+STR_6514    :Nevalida alteco!
 
 #############
 # Scenarios #
@@ -4144,23 +4066,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tegmento
-
-[TTPIRF03]
-STR_NAME    :Tegmento
-
-[TTPIRF04]
-STR_NAME    :Tegmento
-
 [TTPIRF05]
-STR_NAME    :Tegmento
-
-[TTPIRF07]
-STR_NAME    :Tegmento
-
-[TTPIRF08]
 STR_NAME    :Tegmento
 
 [TTRFWD01]

@@ -13,7 +13,6 @@
 #include "../core/FileSystem.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
-#include "../ride/VehicleColour.h"
 #include "Limits.h"
 
 #include <tuple>
@@ -77,7 +76,7 @@ namespace RCT2
         uint16_t pad_002;                                             // 0x002
         uint8_t mode;                                                 // 0x004
         uint8_t colour_scheme_type;                                   // 0x005
-        rct_vehicle_colour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x006
+        RCT12VehicleColour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x006
         uint8_t pad_046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
         // 0 = closed, 1 = open, 2 = test
         uint8_t status; // 0x049
@@ -338,7 +337,7 @@ namespace RCT2
             uint8_t track_flags; // 0x06
         };
         uint8_t version_and_colour_scheme;                            // 0x07 0b0000_VVCC
-        rct_vehicle_colour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x08
+        RCT12VehicleColour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x08
         union
         {
             uint8_t pad_48;
@@ -434,7 +433,7 @@ namespace RCT2
         int32_t acceleration;       // 0x2C
         uint8_t ride;               // 0x30
         uint8_t vehicle_type;       // 0x31
-        rct_vehicle_colour colours; // 0x32
+        RCT12VehicleColour colours; // 0x32
         union
         {
             uint16_t track_progress; // 0x34
@@ -1033,10 +1032,10 @@ namespace RCT2
 #pragma pack(pop)
 
     ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
-    bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType);
+    bool RCT2TrackTypeIsBooster(ride_type_t rideType, uint16_t trackType);
     bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
     uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);
-    track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType, bool convertFlat);
+    track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType, bool convertFlat);
     RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType);
 
     /**

@@ -12,6 +12,7 @@
 #include "../Identifiers.h"
 
 #include <cstdint>
+#include <utility>
 
 struct CoordsXYZ;
 struct Ride;
@@ -40,4 +41,7 @@ namespace OpenRCT2::RideAudio
 
     void DefaultStartRideMusicChannel(const ViewportRideMusicInstance& instance);
     void CircusStartRideMusicChannel(const ViewportRideMusicInstance& instance);
+
+    std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Circus(const Ride& ride);
+    std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Default(const Ride& ride);
 } // namespace OpenRCT2::RideAudio

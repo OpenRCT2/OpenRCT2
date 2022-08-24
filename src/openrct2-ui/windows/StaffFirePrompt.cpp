@@ -39,7 +39,7 @@ static rct_widget window_staff_fire_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowStaffFireMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowStaffFireMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowStaffFirePaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
@@ -56,13 +56,13 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep)
     rct_window* w;
 
     // Check if the confirm window already exists.
-    w = window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index.ToUnderlying());
+    w = window_bring_to_front_by_number(WindowClass::FirePrompt, peep->sprite_index.ToUnderlying());
     if (w != nullptr)
     {
         return w;
     }
 
-    w = WindowCreateCentred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
+    w = WindowCreateCentred(WW, WH, &window_staff_fire_events, WindowClass::FirePrompt, WF_TRANSPARENT);
     w->widgets = window_staff_fire_widgets;
 
     WindowInitScrollWidgets(*w);
@@ -76,7 +76,7 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep)
  *
  *  rct2: 0x006C0B40
  */
-static void WindowStaffFireMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowStaffFireMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {

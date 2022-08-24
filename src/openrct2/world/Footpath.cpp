@@ -130,20 +130,6 @@ TileElement* map_get_footpath_element(const CoordsXYZ& coords)
     return nullptr;
 }
 
-money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags)
-{
-    auto action = FootpathRemoveAction(footpathLoc);
-    action.SetFlags(flags);
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        auto res = GameActions::Execute(&action);
-        return res.Cost;
-    }
-    auto res = GameActions::Query(&action);
-    return res.Cost;
-}
-
 /**
  *
  *  rct2: 0x006A76FF
@@ -216,10 +202,9 @@ void footpath_provisional_remove()
     {
         gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
 
-        footpath_remove(
-            gProvisionalFootpath.Position,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                | GAME_COMMAND_FLAG_GHOST);
+        auto action = FootpathRemoveAction(gProvisionalFootpath.Position);
+        action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+        GameActions::Execute(&action);
     }
 }
 

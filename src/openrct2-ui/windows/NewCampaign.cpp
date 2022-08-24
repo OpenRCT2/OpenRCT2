@@ -134,7 +134,7 @@ public:
             if (curRide.status == RideStatus::Open)
             {
                 if (!curRide.GetRideTypeDescriptor().HasFlag(
-                        RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS
+                        RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS
                         | RIDE_TYPE_FLAG_IS_TOILET))
                 {
                     RideList.push_back(curRide.id);
@@ -175,7 +175,7 @@ public:
         RefreshRides();
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         rct_widget* widget = &widgets[widgetIndex];
         rct_widget* dropdownWidget;
@@ -246,7 +246,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -260,7 +260,7 @@ public:
                 gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        window_close_by_class(WC_NEW_CAMPAIGN);
+                        window_close_by_class(WindowClass::NewCampaign);
                     }
                 });
                 GameActions::Execute(&gameAction);
@@ -269,7 +269,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
             return;
@@ -373,7 +373,7 @@ public:
 
 rct_window* WindowNewCampaignOpen(int16_t campaignType)
 {
-    auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WC_NEW_CAMPAIGN));
+    auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         if (w->campaign.campaign_type == campaignType)
@@ -382,7 +382,7 @@ rct_window* WindowNewCampaignOpen(int16_t campaignType)
         window_close(*w);
     }
 
-    w = WindowCreate<NewCampaignWindow>(WC_NEW_CAMPAIGN, WW, WH, 0);
+    w = WindowCreate<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
     if (w != nullptr)
     {
         w->SetCampaign(campaignType);
@@ -392,7 +392,7 @@ rct_window* WindowNewCampaignOpen(int16_t campaignType)
 
 void WindowCampaignRefreshRides()
 {
-    auto w = static_cast<NewCampaignWindow*>(window_find_by_class(WC_NEW_CAMPAIGN));
+    auto w = static_cast<NewCampaignWindow*>(window_find_by_class(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         w->RefreshRides();

@@ -189,7 +189,7 @@ void scenario_reset()
 static void scenario_end()
 {
     game_reset_speed();
-    window_close_by_class(WC_DROPDOWN);
+    window_close_by_class(WindowClass::Dropdown);
     window_close_all_except_flags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
     context_open_window_view(WV_PARK_OBJECTIVE);
 }

@@ -187,8 +187,6 @@ void lightfx_update_buffers(rct_drawpixelinfo* info)
     _pixelInfo = *info;
 }
 
-extern void viewport_paint_setup();
-
 void lightfx_prepare_light_list()
 {
     for (uint32_t light = 0; light < LightListCurrentCountFront; light++)

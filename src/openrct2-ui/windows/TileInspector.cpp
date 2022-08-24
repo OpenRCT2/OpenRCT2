@@ -447,15 +447,15 @@ static bool windowTileInspectorApplyToAll = false;
 static bool windowTileInspectorElementCopied = false;
 static TileElement tileInspectorCopiedElement;
 
-static void WindowTileInspectorMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowTileInspectorMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowTileInspectorResize(rct_window* w);
-static void WindowTileInspectorMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowTileInspectorMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
 static void WindowTileInspectorUpdate(rct_window* w);
-static void WindowTileInspectorDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void WindowTileInspectorToolUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTileInspectorDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowTileInspectorToolUpdate(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowTileInspectorUpdateSelectedTile(rct_window* w, const ScreenCoordsXY& screenCoords);
-static void WindowTileInspectorToolDown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowTileInspectorToolDrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTileInspectorToolDown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTileInspectorToolDrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowTileInspectorScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
 static void WindowTileInspectorScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowTileInspectorScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
@@ -515,11 +515,11 @@ rct_window* WindowTileInspectorOpen()
     rct_window* window;
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WC_TILE_INSPECTOR);
+    window = window_bring_to_front_by_class(WindowClass::TileInspector);
     if (window != nullptr)
         return window;
 
-    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &TileInspectorWindowEvents, WC_TILE_INSPECTOR, WF_RESIZABLE);
+    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &TileInspectorWindowEvents, WindowClass::TileInspector, WF_RESIZABLE);
 
     WindowTileInspectorSetPage(window, TileInspectorPage::Default);
     window->min_width = MIN_WW;
@@ -776,7 +776,7 @@ static void WindowTileInspectorClose(rct_window* w)
     OpenRCT2::TileInspector::SetSelectedElement(nullptr);
 }
 
-static void WindowTileInspectorMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTileInspectorMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -976,7 +976,7 @@ static void WindowTileInspectorResize(rct_window* w)
     }
 }
 
-static void WindowTileInspectorMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowTileInspectorMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -1167,11 +1167,11 @@ static void WindowTileInspectorUpdate(rct_window* w)
         widget_invalidate(*w, WIDX_LIST);
     }
 
-    if (gCurrentToolWidget.window_classification != WC_TILE_INSPECTOR)
+    if (gCurrentToolWidget.window_classification != WindowClass::TileInspector)
         window_close(*w);
 }
 
-static void WindowTileInspectorDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowTileInspectorDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
     {
@@ -1192,7 +1192,7 @@ static void WindowTileInspectorDropdown(rct_window* w, rct_widgetindex widgetInd
     }
 }
 
-static void WindowTileInspectorToolUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTileInspectorToolUpdate(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     map_invalidate_selection_rect();
 
@@ -1288,12 +1288,12 @@ static void WindowTileInspectorUpdateSelectedTile(rct_window* w, const ScreenCoo
     WindowTileInspectorLoadTile(w, clickedElement);
 }
 
-static void WindowTileInspectorToolDown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTileInspectorToolDown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     WindowTileInspectorUpdateSelectedTile(w, screenCoords);
 }
 
-static void WindowTileInspectorToolDrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTileInspectorToolDrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     WindowTileInspectorUpdateSelectedTile(w, screenCoords);
 }

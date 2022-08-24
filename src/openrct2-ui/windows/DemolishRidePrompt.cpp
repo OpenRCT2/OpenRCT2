@@ -11,6 +11,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -56,14 +57,14 @@ public:
         WindowInitScrollWidgets(*this);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
             case WIDX_DEMOLISH:
             {
-                auto* currentRide = get_ride(rideId);
-                ride_action_modify(currentRide, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+                auto gameAction = RideDemolishAction(rideId, RIDE_MODIFY_DEMOLISH);
+                GameActions::Execute(&gameAction);
                 break;
             }
             case WIDX_CANCEL:
@@ -96,16 +97,17 @@ rct_window* WindowRideDemolishPromptOpen(Ride* ride)
     rct_window* w;
     DemolishRidePromptWindow* newWindow;
 
-    w = window_find_by_class(WC_DEMOLISH_RIDE_PROMPT);
+    w = window_find_by_class(WindowClass::DemolishRidePrompt);
     if (w != nullptr)
     {
         auto windowPos = w->windowPos;
         window_close(*w);
-        newWindow = WindowCreate<DemolishRidePromptWindow>(WC_DEMOLISH_RIDE_PROMPT, windowPos, WW, WH, WF_TRANSPARENT);
+        newWindow = WindowCreate<DemolishRidePromptWindow>(WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
     }
     else
     {
-        newWindow = WindowCreate<DemolishRidePromptWindow>(WC_DEMOLISH_RIDE_PROMPT, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+        newWindow = WindowCreate<DemolishRidePromptWindow>(
+            WindowClass::DemolishRidePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
     }
 
     newWindow->SetRide(ride);

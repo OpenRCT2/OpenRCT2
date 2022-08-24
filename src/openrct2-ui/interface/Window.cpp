@@ -201,7 +201,7 @@ static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t heigh
 }
 
 rct_window* WindowCreate(
-    std::unique_ptr<rct_window>&& wp, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
+    std::unique_ptr<rct_window>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
 {
     if (flags & WF_AUTO_POSITION)
     {
@@ -288,7 +288,7 @@ rct_window* WindowCreate(
 }
 
 rct_window* WindowCreate(
-    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls,
     uint32_t flags)
 {
     auto w = std::make_unique<rct_window>();
@@ -297,14 +297,14 @@ rct_window* WindowCreate(
 }
 
 rct_window* WindowCreateAutoPos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags)
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls, uint32_t flags)
 {
     auto pos = GetAutoPositionForNewWindow(width, height);
     return WindowCreate(pos, width, height, event_handlers, cls, flags);
 }
 
 rct_window* WindowCreateCentred(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags)
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls, uint32_t flags)
 {
     auto pos = GetCentrePositionForNewWindow(width, height);
     return WindowCreate(pos, width, height, event_handlers, cls, flags);
@@ -325,7 +325,7 @@ static int32_t WindowGetScrollIndex(const rct_window& w, int32_t targetWidgetInd
         return -1;
 
     int32_t scrollIndex = 0;
-    rct_widgetindex widgetIndex = 0;
+    WidgetIndex widgetIndex = 0;
     for (rct_widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
     {
         if (widgetIndex == targetWidgetIndex)
@@ -360,7 +360,7 @@ static void WindowScrollWheelInput(rct_window& w, int32_t scrollIndex, int32_t w
 {
     auto& scroll = w.scrolls[scrollIndex];
     rct_widget* widget = WindowGetScrollWidget(w, scrollIndex);
-    rct_widgetindex widgetIndex = WindowGetWidgetIndex(w, widget);
+    WidgetIndex widgetIndex = WindowGetWidgetIndex(w, widget);
 
     if (scroll.flags & VSCROLLBAR_VISIBLE)
     {
@@ -423,7 +423,7 @@ static void WindowViewportWheelInput(rct_window& w, int32_t wheel)
         window_zoom_out(w, true);
 }
 
-static bool WindowOtherWheelInput(rct_window& w, rct_widgetindex widgetIndex, int32_t wheel)
+static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_t wheel)
 {
     // HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
     //       this selective approach will have to do.
@@ -467,7 +467,7 @@ static bool WindowOtherWheelInput(rct_window& w, rct_widgetindex widgetIndex, in
         widgetType = w.widgets[widgetIndex].type;
     }
 
-    rct_widgetindex buttonWidgetIndex;
+    WidgetIndex buttonWidgetIndex;
     WindowWidgetType expectedType;
     uint32_t expectedContent[2];
     switch (widgetType)
@@ -530,14 +530,14 @@ void WindowAllWheelInput()
         if (w != nullptr)
         {
             // Check if main window
-            if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT)
+            if (w->classification == WindowClass::MainWindow || w->classification == WindowClass::Viewport)
             {
                 WindowViewportWheelInput(*w, relative_wheel);
                 return;
             }
 
             // Check scroll view, cursor is over
-            rct_widgetindex widgetIndex = window_find_widget_from_point(*w, cursorState->position);
+            WidgetIndex widgetIndex = window_find_widget_from_point(*w, cursorState->position);
             if (widgetIndex != -1)
             {
                 const auto& widget = w->widgets[widgetIndex];
@@ -621,7 +621,7 @@ void WindowInitScrollWidgets(rct_window& w)
 void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
 {
     rct_widget* widget;
-    rct_widgetindex widgetIndex;
+    WidgetIndex widgetIndex;
 
     if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
         gfx_filter_rect(
@@ -665,7 +665,7 @@ void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
  */
 static void WindowInvalidatePressedImageButton(const rct_window& w)
 {
-    rct_widgetindex widgetIndex;
+    WidgetIndex widgetIndex;
     rct_widget* widget;
 
     widgetIndex = 0;
@@ -702,7 +702,7 @@ void Window::OnDraw(rct_drawpixelinfo& dpi)
     WindowDrawWidgets(*this, &dpi);
 }
 
-void Window::OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi)
+void Window::OnDrawWidget(WidgetIndex widgetIndex, rct_drawpixelinfo& dpi)
 {
     WidgetDraw(&dpi, *this, widgetIndex);
 }
@@ -712,32 +712,32 @@ void Window::InitScrollWidgets()
     WindowInitScrollWidgets(*this);
 }
 
-void Window::InvalidateWidget(rct_widgetindex widgetIndex)
+void Window::InvalidateWidget(WidgetIndex widgetIndex)
 {
     widget_invalidate(*this, widgetIndex);
 }
 
-bool Window::IsWidgetDisabled(rct_widgetindex widgetIndex) const
+bool Window::IsWidgetDisabled(WidgetIndex widgetIndex) const
 {
     return WidgetIsDisabled(*this, widgetIndex);
 }
 
-bool Window::IsWidgetPressed(rct_widgetindex widgetIndex) const
+bool Window::IsWidgetPressed(WidgetIndex widgetIndex) const
 {
     return WidgetIsPressed(*this, widgetIndex);
 }
 
-void Window::SetWidgetDisabled(rct_widgetindex widgetIndex, bool value)
+void Window::SetWidgetDisabled(WidgetIndex widgetIndex, bool value)
 {
     WidgetSetDisabled(*this, widgetIndex, value);
 }
 
-void Window::SetWidgetPressed(rct_widgetindex widgetIndex, bool value)
+void Window::SetWidgetPressed(WidgetIndex widgetIndex, bool value)
 {
     WidgetSetPressed(*this, widgetIndex, value);
 }
 
-void Window::SetCheckboxValue(rct_widgetindex widgetIndex, bool value)
+void Window::SetCheckboxValue(WidgetIndex widgetIndex, bool value)
 {
     SetWidgetPressed(widgetIndex, value);
 }
@@ -753,13 +753,13 @@ void Window::Close()
 }
 
 void Window::TextInputOpen(
-    rct_widgetindex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
+    WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
     uintptr_t existingArgs, int32_t maxLength)
 {
     WindowTextInputOpen(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
 }
 
-void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id)
+void window_align_tabs(rct_window* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
 {
     int32_t i, x = w->widgets[start_tab_id].left;
     int32_t tab_width = w->widgets[start_tab_id].width();

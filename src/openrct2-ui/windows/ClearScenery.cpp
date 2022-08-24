@@ -84,7 +84,7 @@ public:
             tool_cancel();
     }
 
-    void OnMouseUp(const rct_widgetindex widgetIndex) override
+    void OnMouseUp(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -114,7 +114,7 @@ public:
         }
     }
 
-    void OnMouseDown(const rct_widgetindex widgetIndex) override
+    void OnMouseDown(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -135,7 +135,7 @@ public:
         }
     }
 
-    void OnTextInput(const rct_widgetindex widgetIndex, const std::string_view text) override
+    void OnTextInput(const WidgetIndex widgetIndex, const std::string_view text) override
     {
         if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
@@ -199,12 +199,12 @@ public:
 
 rct_window* WindowClearSceneryOpen()
 {
-    auto* w = static_cast<CleanSceneryWindow*>(window_bring_to_front_by_class(WC_CLEAR_SCENERY));
+    auto* w = static_cast<CleanSceneryWindow*>(window_bring_to_front_by_class(WindowClass::ClearScenery));
 
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<CleanSceneryWindow>(WC_CLEAR_SCENERY, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    w = WindowCreate<CleanSceneryWindow>(WindowClass::ClearScenery, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 
     if (w != nullptr)
         return w;
