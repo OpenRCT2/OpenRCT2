@@ -193,9 +193,6 @@ struct rct_window
     virtual void OnMoved(const ScreenCoordsXY&)
     {
     }
-    virtual void OnShortcutPressed(const std::string_view shortcutId)
-    {
-    }
     virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
 };
 

@@ -507,38 +507,6 @@ public:
         }
     }
 
-    void OnShortcutPressed(const std::string_view shortcutId) override
-    {
-        if (shortcutId == ShortcutId::WindowRideConstructionBuild)
-        {
-            KeyboardShortcutBuildCurrent();
-        }
-        else if (shortcutId == ShortcutId::WindowRideConstructionDemolish)
-        {
-            KeyboardShortcutDemolishCurrent();
-        }
-        else if (shortcutId == ShortcutId::WindowRideConstructionTurnLeft)
-        {
-            KeyboardShortcutTurnLeft();
-        }
-        else if (shortcutId == ShortcutId::WindowRideConstructionTurnRight)
-        {
-            KeyboardShortcutTurnRight();
-        }
-        else if (shortcutId == ShortcutId::WindowRideConstructionSlopeDown)
-        {
-            KeyboardShortcutShortcutSlopeDown();
-        }
-        else if (shortcutId == ShortcutId::WindowRideConstructionSlopeUp)
-        {
-            KeyboardShortcutSlopeUp();
-        }
-        else if (shortcutId == ShortcutId::WindowRideConstructionDefault)
-        {
-            KeyboardShortcutSlopeLevel();
-        }
-    }
-
 #pragma endregion
 
 private:
@@ -1322,7 +1290,7 @@ private:
     }
 
 #pragma region Keyboard Shortcuts Events
-
+public:
     void KeyboardShortcutTurnLeft()
     {
         if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE) || IsWidgetDisabled(WIDX_DIRECTION_SW)
@@ -1444,4 +1412,82 @@ rct_window* WindowFootpathOpen()
 void WindowFootpathResetSelectedPath()
 {
     gFootpathSelection = {};
+}
+
+void window_footpath_keyboard_shortcut_turn_left()
+{
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    if (w != nullptr)
+    {
+        auto* footpathWindow = static_cast<FootpathWindow*>(w);
+        if (footpathWindow != nullptr)
+        {
+            footpathWindow->KeyboardShortcutTurnLeft();
+        }
+    }
+}
+
+void window_footpath_keyboard_shortcut_turn_right()
+{
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    if (w != nullptr)
+    {
+        auto* footpathWindow = static_cast<FootpathWindow*>(w);
+        if (footpathWindow != nullptr)
+        {
+            footpathWindow->KeyboardShortcutTurnRight();
+        }
+    }
+}
+
+void window_footpath_keyboard_shortcut_slope_down()
+{
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    if (w != nullptr)
+    {
+        auto* footpathWindow = static_cast<FootpathWindow*>(w);
+        if (footpathWindow != nullptr)
+        {
+            footpathWindow->KeyboardShortcutShortcutSlopeDown();
+        }
+    }
+}
+
+void window_footpath_keyboard_shortcut_slope_up()
+{
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    if (w != nullptr)
+    {
+        auto* footpathWindow = static_cast<FootpathWindow*>(w);
+        if (footpathWindow != nullptr)
+        {
+            footpathWindow->KeyboardShortcutSlopeUp();
+        }
+    }
+}
+
+void window_footpath_keyboard_shortcut_demolish_current()
+{
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    if (w != nullptr)
+    {
+        auto* footpathWindow = static_cast<FootpathWindow*>(w);
+        if (footpathWindow != nullptr)
+        {
+            footpathWindow->KeyboardShortcutDemolishCurrent();
+        }
+    }
+}
+
+void window_footpath_keyboard_shortcut_build_current()
+{
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    if (w != nullptr)
+    {
+        auto* footpathWindow = static_cast<FootpathWindow*>(w);
+        if (footpathWindow != nullptr)
+        {
+            footpathWindow->KeyboardShortcutBuildCurrent();
+        }
+    }
 }
