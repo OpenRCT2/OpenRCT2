@@ -373,8 +373,8 @@ private:
 };
 static_assert(sizeof(Vehicle) <= 512);
 
-void UpdateRotatingDefault(Vehicle* vehicle);
-void UpdateRotatingEnterprise(Vehicle* vehicle);
+void UpdateRotatingDefault(Vehicle& vehicle);
+void UpdateRotatingEnterprise(Vehicle& vehicle);
 
 struct train_ref
 {

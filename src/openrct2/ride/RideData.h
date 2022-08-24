@@ -167,7 +167,7 @@ using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const tra
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 
-using UpdateRotatingFunction = void (*)(Vehicle* vehicle);
+using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t
 {
     Default,
