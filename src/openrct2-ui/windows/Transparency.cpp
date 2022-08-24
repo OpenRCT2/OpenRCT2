@@ -100,7 +100,7 @@ public:
             windowPos.x = ((w->width / 2) - (width / 2));
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -139,7 +139,7 @@ public:
         SetWidgetPressed(WIDX_INVISIBLE_VEHICLES, (wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES));
         SetWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS));
 
-        for (rct_widgetindex i = WIDX_INVISIBLE_VEGETATION; i <= WIDX_INVISIBLE_SUPPORTS; i++)
+        for (WidgetIndex i = WIDX_INVISIBLE_VEGETATION; i <= WIDX_INVISIBLE_SUPPORTS; i++)
         {
             widgets[i].image = IsWidgetPressed(i) ? SPR_G2_BUTTON_HIDE_FULL : SPR_G2_BUTTON_HIDE_PARTIAL;
         }
@@ -167,7 +167,7 @@ private:
         return wflags;
     }
 
-    void ToggleViewportFlag(rct_widgetindex widgetIndex)
+    void ToggleViewportFlag(WidgetIndex widgetIndex)
     {
         uint32_t wflags = 0;
         rct_window* w = window_get_main();
@@ -246,9 +246,9 @@ private:
 
 rct_window* WindowTransparencyOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_TRANSPARENCY);
+    auto* window = window_bring_to_front_by_class(WindowClass::Transparency);
     if (window == nullptr)
-        window = WindowCreate<TransparencyWindow>(WC_TRANSPARENCY, ScreenCoordsXY(32, 32), WW, WH);
+        window = WindowCreate<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), WW, WH);
 
     return window;
 }

@@ -339,7 +339,6 @@ STR_0950    :Ladda spel
 STR_0951    :Avsluta spel
 STR_0952    :Avsluta spel
 STR_0953    :Ladda landskap
-STR_0954    :
 STR_0955    :Välj säteslutningen för den här sektionen
 STR_0956    :-180°
 STR_0957    :-135°
@@ -387,10 +386,10 @@ STR_0998    :Inga fler stationer är tillåtna för den här åkturen
 STR_0999    :En stationsplattform krävs
 STR_1000    :Banan är inte ihopkopplad
 STR_1001    :Banan är ej lämplig för vagntypen
-STR_1002    :Kan inte öppna {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Kan inte testa {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Kan inte stänga {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Kan inte påbörja byggnadsarbetet på {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Kan inte öppna {STRINGID}…
+STR_1003    :Kan inte testa {STRINGID}…
+STR_1004    :Kan inte stänga {STRINGID}…
+STR_1005    :Kan inte påbörja byggnadsarbetet på {STRINGID}…
 STR_1006    :Måste vara stängd först
 STR_1007    :Kan inte skapa tillräckligt med vagnar
 STR_1008    :Öppna, stäng eller testa åktur eller attraktion
@@ -1953,8 +1952,6 @@ STR_2738    :Startskärmens musik:
 STR_2739    :Ingen
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat hittades inte
-STR_2743    :Kopiera ’data/css17.dat’ från din RCT1-installation till ’data/css50.dat’ i din RCT2-installation eller kolla så att sökvägen till RCT1 under fliken ’Avancerat’ är korrekt.
 STR_2749    :Mitt nya scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Flytta alla föremål till toppen
@@ -2261,7 +2258,7 @@ STR_3208    :Bandesignhanterare
 STR_3209    :Tillbaka till tidigare steg:
 STR_3210    :Vidare till nästa steg:
 STR_3211    :Kartstorlek:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan inte minska kartstorleken mer
 STR_3214    :Kan inte utöka kartstorleken mer
 STR_3215    :För nära kanten av kartan
@@ -2558,8 +2555,6 @@ STR_5250    :Titelradens avsluta-knapp
 STR_5251    :Titelradens inställningsknapp
 STR_5252    :Scenarioväljaren
 STR_5253    :Parkinformation
-STR_5254    :Skapa
-STR_5255    :Skapa ny titelsekvens från början
 STR_5256    :Skapa ett nytt tema att göra ändringar på
 STR_5257    :Skapa ett nytt tema baserat på denna
 STR_5258    :Ta bort det använda temat
@@ -2654,75 +2649,10 @@ STR_5373    :Namn {STRINGID}
 STR_5374    :Datum {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Sparfiler
-STR_5378    :Skript
-STR_5379    :Skippa till nästa vänta-kommando
-STR_5380    :Börja spela titelsekvensen
-STR_5381    :Sluta spela titelsekvensen
-STR_5382    :Börja om titelsekvensen
-STR_5383    :Skapa en ny titelsekvens baserad på den nuvarande
-STR_5384    :Ta bort nuvarande titelsekvens
-STR_5385    :Byt namn på nuvarande titelsekvens
-STR_5386    :Skriv in nytt kommando
-STR_5387    :Redigera det valda kommandot
-STR_5388    :Ta bort det valda kommandot
-STR_5389    :Hoppa till det valda kommandot i titelsekvensen
-STR_5390    :Flytta det valda kommandot nedåt
-STR_5391    :Flytta det valda kommandot uppåt
-STR_5392    :Lägg till en sparfil till titelsekvensen
-STR_5393    :Ta bort den valda sparfilen från titelsekvensen
-STR_5394    :Byt namn på den valda sparfilen
-STR_5395    :Ladda den valda sparfilen i spelet
-STR_5396    :Ladda om titelsekvensen om ändringar har gjorts utanför spelet
-STR_5397    :Kan endast användas i titelsekvensen
-STR_5398    :Kan inte redigera titelsekvensen medan den körs
-STR_5399    :Klicka på stoppknappen innan du försöker ändra något
-STR_5400    :Kan inte byta denna titelsekvens
-STR_5401    :Skapa en ny titelsekvens att göra ändringar på
-STR_5402    :Misslyckades att ladda titelsekvens
-STR_5403    :Det kanske inte finns något Ladda- eller Vänta-kommando eller kanske sparfilen inte är giltig
 STR_5404    :Namnet finns redan
-STR_5405    :Skriv in ett namn för sparfilen
-STR_5406    :Skriv in ett namn för titelsekvensen
-STR_5407    :Lägg till
-STR_5408    :Ta bort
-STR_5409    :Lägg till
-STR_5410    :Redigera
-STR_5411    :Börja om
-STR_5412    :Hoppa till
-STR_5413    :Ladda
-STR_5415    :Ladda{MOVE_X}{87}{STRING}
-STR_5416    :Ladda{MOVE_X}{87}Ingen sparfil vald
-STR_5417    :Plats
-STR_5418    :Plats{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Rotera
-STR_5420    :Rotera{MOVE_X}{87}{COMMA16}
-STR_5421    :Zooma
-STR_5422    :Zooma{MOVE_X}{87}{COMMA16}
-STR_5423    :Vänta
-STR_5424    :Vänta{MOVE_X}{87}{UINT16}
-STR_5425    :Börja om
-STR_5426    :Slut
-STR_5427    :Koordinater:
-STR_5428    :Moturs rotation:
-STR_5429    :Zoomnivå:
-STR_5430    :Millisekunder att vänta:
-STR_5431    :Sparfil att ladda:
-STR_5432    :Kommando:
-STR_5433    :Titelsekvens
-STR_5434    :Kommandoredigerare
-STR_5435    :Byt namn på sparat spel
-STR_5436    :Redigera titelsekvens…
-STR_5437    :Ingen sparfil vald
-STR_5438    :Kan inte göra ändringar medan kommandoredigeraren är öppen
-STR_5439    :Ett vänta-kommando med åtminstone fyra sekunder krävs för ett ’börja om’-kommando
 STR_5440    :Minimera fullskärm vid tappad fokus
 STR_5441    :Identifiera åkturer via spårtyp,{NEWLINE}så att vagnar kan bli ändrade{NEWLINE}efteråt (som i RCT1)
 STR_5442    :Tvinga parkbetyg:
-STR_5443    :Hastighet{MOVE_X}{87}{STRINGID}
-STR_5444    :Hastighet:
-STR_5445    :Hastighet
-STR_5446    :Få
 STR_5447    :Typ {STRINGID}
 STR_5448    :Åktur eller fordon {STRINGID}
 STR_5449    :Minska spelhastigheten
@@ -3078,7 +3008,6 @@ STR_5844    :Behåll anslutningen på servrar i flerspelarläget{NEWLINE}även o
 STR_5845    :Lägger till en knapp för{NEWLINE}’verktyg för felsökning’ i verktygsraden.{NEWLINE}Aktiverar snabbknapp för utvecklarkonsolen
 STR_5846    :Välj hur ofta OpenRCT2 ska spara automatiskt
 STR_5847    :Välj vilket parkintro spelet ska använda på huvudmenyn. Titelsekvenser från RCT1 och RCT2 kräver importerade filer för att fungera korrekt
-STR_5848    :Skapa och hantera egna titelsekvenser
 STR_5849    :Placera automatiskt ut ny personal när de anställs
 STR_5851    :Sätter standarden på inspektionsmellanrummen{NEWLINE}på nybyggda attraktioner
 STR_5853    :Slå av eller på ljudeffekter
@@ -3278,7 +3207,6 @@ STR_6047    :Utjämna rutor
 STR_6048    :Fel med höjdkarta 
 STR_6049    :Fel vid inläsning av PNG
 STR_6050    :Fel vid inläsning av bitmapsbild
-STR_6051    :Höjden och bredden måste vara lika
 STR_6052    :Höjdkartan är för stor och kommer skäras av
 STR_6053    :Höjdkartan kan inte normaliseras
 STR_6054    :Endast 24-bitars bitmapsbilder stöds
@@ -3392,23 +3320,8 @@ STR_6170    :Anpassa gränssnittet
 STR_6171    :Sök
 STR_6172    :Sök
 STR_6173    :Vänligen skriv in ett namn att söka:
-STR_6174    :Ladda sparfil
-STR_6175    :Ladda scenario
-STR_6176    :Scenario att ladda:
-STR_6177    :Ladda{MOVE_X}{87}Inget scenario valt
-STR_6178    :Ladda{MOVE_X}{87}{RED}Saknar scenario
-STR_6179    :Välj
-STR_6180    :Inget scenario valt
-STR_6181    :{RED}Saknar scenario
-STR_6182    :Följ{MOVE_X}{87}{STRING}
-STR_6183    :Följ{MOVE_X}{87}Inget objekt valt
-STR_6184    :Följ objekt
-STR_6185    :Välj objekt
-STR_6186    :Inget objekt valt
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Spya
 STR_6189    :Anka
-STR_6190    :Du kan inte välja ett objekt medan titelsekvensen spelas.
 STR_6191    :Mark
 STR_6192    :Vägg
 STR_6193    :{COMMA16} besökare
@@ -3521,7 +3434,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
 STR_6323    :Simulerar
 STR_6324    :Simulera
 STR_6325    :Simulera åktur eller attraktion
-STR_6326    :Kan inte simulera {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Kan inte simulera {STRINGID}…
 STR_6327    :Genomskinlig bakgrund för stora skärmdumpar
 STR_6328    :Med det här alternativet aktiverat kommer stora skärmdumpar ha genomskinlig bakgrund istället för den vanliga svarta.
 STR_6329    :{STRING}{STRINGID}
@@ -4104,23 +4017,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tak
-
-[TTPIRF03]
-STR_NAME    :Tak
-
-[TTPIRF04]
-STR_NAME    :Tak
-
 [TTPIRF05]
-STR_NAME    :Tak
-
-[TTPIRF07]
-STR_NAME    :Tak
-
-[TTPIRF08]
 STR_NAME    :Tak
 
 [TTRFWD01]

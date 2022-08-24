@@ -50,5 +50,13 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "enterprise"),
+    SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
+    SET_FIELD(Classification, RideClassification::Ride),
+    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
+    SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_Default),
+    SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationEnterprise),
 };
 // clang-format on

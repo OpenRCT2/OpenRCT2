@@ -55,5 +55,11 @@ constexpr const RideTypeDescriptor RiverRapidsRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_RIVER_RAPIDS_TRACK, SPR_RIDE_DESIGN_PREVIEW_RIVER_RAPIDS_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "river_rapids"),
+    SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
+    SET_FIELD(Classification, RideClassification::Ride),
+    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
 };
 // clang-format on

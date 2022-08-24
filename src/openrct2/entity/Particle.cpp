@@ -12,6 +12,7 @@
 #include "../core/DataSerialiser.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
+#include "../ride/VehicleColour.h"
 #include "../scenario/Scenario.h"
 #include "EntityRegistry.h"
 
@@ -50,13 +51,13 @@ template<> bool EntityBase::Is<CrashSplashParticle>() const
  *
  *  rct2: 0x006735A1
  */
-void VehicleCrashParticle::Create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos)
+void VehicleCrashParticle::Create(VehicleColour& colours, const CoordsXYZ& vehiclePos)
 {
     VehicleCrashParticle* sprite = CreateEntity<VehicleCrashParticle>();
     if (sprite != nullptr)
     {
-        sprite->colour[0] = colours.body_colour;
-        sprite->colour[1] = colours.trim_colour;
+        sprite->colour[0] = colours.Body;
+        sprite->colour[1] = colours.Trim;
         sprite->sprite_width = 8;
         sprite->sprite_height_negative = 8;
         sprite->sprite_height_positive = 8;

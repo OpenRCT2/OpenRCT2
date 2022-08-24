@@ -15,6 +15,8 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/RideDemolishAction.h>
+#include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
@@ -123,7 +125,7 @@ static constexpr const StringId ride_info_type_string_mapping[DROPDOWN_LIST_COUN
 static constexpr const StringId ride_list_statusbar_count_strings[PAGE_COUNT] = {
     STR_NUMBER_RIDES,
     STR_NUMBER_SHOPS_AND_STALLS,
-    STR_NUMBER_RESTROOMS_AND_INFORMATION_KIOSKS,
+    STR_NUMBER_TOILETS_AND_INFORMATION_KIOSKS,
 };
 
 static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
@@ -150,7 +152,7 @@ static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = 
 static constexpr const StringId page_names[] = {
     STR_RIDES,
     STR_SHOPS_AND_STALLS,
-    STR_RESTROOMS_AND_INFORMATION_KIOSKS,
+    STR_TOILETS_AND_INFORMATION_KIOSKS,
 };
 
 class RideListWindow final : public Window
@@ -210,7 +212,7 @@ public:
      *
      *  rct2: 0x006B3511
      */
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -261,7 +263,7 @@ public:
      *
      *  rct2: 0x006B3532
      */
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
         {
@@ -316,7 +318,7 @@ public:
      *
      *  rct2: 0x006B3547
      */
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
         {
@@ -400,15 +402,15 @@ public:
 
         // Open ride window
         const auto rideIndex = _rideList[index];
-        auto* ridePtr = get_ride(rideIndex);
         if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
         {
-            ride_action_modify(ridePtr, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+            auto gameAction = RideDemolishAction(rideIndex, RIDE_MODIFY_DEMOLISH);
+            GameActions::Execute(&gameAction);
             RefreshList();
         }
         else
         {
-            auto intent = Intent(WC_RIDE);
+            auto intent = Intent(WindowClass::Ride);
             intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
             context_open_intent(&intent);
         }
@@ -935,7 +937,8 @@ private:
         {
             if (rideRef.status != RideStatus::Closed && rideRef.GetClassification() == static_cast<RideClassification>(page))
             {
-                ride_set_status(&rideRef, RideStatus::Closed);
+                auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::Closed);
+                GameActions::Execute(&gameAction);
             }
         }
     }
@@ -947,7 +950,8 @@ private:
         {
             if (rideRef.status != RideStatus::Open && rideRef.GetClassification() == static_cast<RideClassification>(page))
             {
-                ride_set_status(&rideRef, RideStatus::Open);
+                auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::Open);
+                GameActions::Execute(&gameAction);
             }
         }
     }
@@ -960,10 +964,10 @@ private:
 rct_window* WindowRideListOpen()
 {
     // Check if window is already open
-    auto* window = window_bring_to_front_by_class(WC_RIDE_LIST);
+    auto* window = window_bring_to_front_by_class(WindowClass::RideList);
     if (window == nullptr)
     {
-        window = WindowCreate<RideListWindow>(WC_RIDE_LIST, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
+        window = WindowCreate<RideListWindow>(WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
     }
     return window;
 }

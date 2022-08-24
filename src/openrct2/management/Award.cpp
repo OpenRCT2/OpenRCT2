@@ -37,7 +37,7 @@ static constexpr const uint8_t AwardPositiveMap[] = {
     POSITIVE, // AwardType::BestStaff
     POSITIVE, // AwardType::BestFood
     NEGATIVE, // AwardType::WorstFood
-    POSITIVE, // AwardType::BestRestrooms
+    POSITIVE, // AwardType::BestToilets
     NEGATIVE, // AwardType::MostDisappointing
     POSITIVE, // AwardType::BestWaterRides
     POSITIVE, // AwardType::BestCustomDesignedRides
@@ -57,7 +57,7 @@ static constexpr const StringId AwardNewsStrings[] = {
     STR_NEWS_ITEM_BEST_STAFF,
     STR_NEWS_ITEM_BEST_FOOD,
     STR_NEWS_ITEM_WORST_FOOD,
-    STR_NEWS_ITEM_BEST_RESTROOMS,
+    STR_NEWS_ITEM_BEST_TOILETS,
     STR_NEWS_ITEM_MOST_DISAPPOINTING,
     STR_NEWS_ITEM_BEST_WATER_RIDES,
     STR_NEWS_ITEM_BEST_CUSTOM_DESIGNED_RIDES,
@@ -370,25 +370,26 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
     return (hungryPeeps > 15);
 }
 
-/** At least 4 restrooms, 1 restroom per 128 guests and no more than 16 guests who think they need the restroom. */
-static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwardTypes)
+/** At least 4 toilets, 1 toilet per 128 guests and no more than 16 guests who think they need the toilet. */
+static bool award_is_deserved_best_toilets([[maybe_unused]] int32_t activeAwardTypes)
 {
-    // Count open restrooms
+    // Count open toilets
     const auto& rideManager = GetRideManager();
-    auto numRestrooms = static_cast<size_t>(std::count_if(rideManager.begin(), rideManager.end(), [](const Ride& ride) {
-        return ride.type == RIDE_TYPE_TOILETS && ride.status == RideStatus::Open;
+    auto numToilets = static_cast<size_t>(std::count_if(rideManager.begin(), rideManager.end(), [](const Ride& ride) {
+        const auto& rtd = ride.GetRideTypeDescriptor();
+        return rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) && ride.status == RideStatus::Open;
     }));
 
-    // At least 4 open restrooms
-    if (numRestrooms < 4)
+    // At least 4 open toilets
+    if (numToilets < 4)
         return false;
 
-    // At least one open restroom for every 128 guests
-    if (numRestrooms < gNumGuestsInPark / 128U)
+    // At least one open toilet for every 128 guests
+    if (numToilets < gNumGuestsInPark / 128U)
         return false;
 
-    // Count number of guests who are thinking they need the restroom
-    auto guestsWhoNeedRestroom = 0;
+    // Count number of guests who are thinking they need the toilet
+    auto guestsWhoNeedToilet = 0;
     for (auto peep : EntityList<Guest>())
     {
         if (peep->OutsideOfPark)
@@ -396,9 +397,9 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
 
         const auto& thought = std::get<0>(peep->Thoughts);
         if (thought.freshness <= 5 && thought.type == PeepThoughtType::Toilet)
-            guestsWhoNeedRestroom++;
+            guestsWhoNeedToilet++;
     }
-    return (guestsWhoNeedRestroom <= 16);
+    return (guestsWhoNeedToilet <= 16);
 }
 
 /** More than half of the rides have satisfaction <= 6 and park rating <= 650. */
@@ -576,7 +577,7 @@ static constexpr const award_deserved_check _awardChecks[] = {
     award_is_deserved_best_staff,
     award_is_deserved_best_food,
     award_is_deserved_worst_food,
-    award_is_deserved_best_restrooms,
+    award_is_deserved_best_toilets,
     award_is_deserved_most_disappointing,
     award_is_deserved_best_water_rides,
     award_is_deserved_best_custom_designed_rides,
@@ -634,7 +635,7 @@ void award_update_all()
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});
                 }
-                window_invalidate_by_class(WC_PARK_INFORMATION);
+                window_invalidate_by_class(WindowClass::ParkInformation);
             }
         }
     }
@@ -651,6 +652,6 @@ void award_update_all()
     if (res != std::end(_currentAwards))
     {
         _currentAwards.erase(res, std::end(_currentAwards));
-        window_invalidate_by_class(WC_PARK_INFORMATION);
+        window_invalidate_by_class(WindowClass::ParkInformation);
     }
 }

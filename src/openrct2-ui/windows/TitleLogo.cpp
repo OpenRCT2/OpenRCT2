@@ -27,7 +27,7 @@ static rct_widget window_title_logo_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowTitleMenuMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowTitleLogoPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
@@ -45,7 +45,7 @@ static rct_window_event_list window_title_logo_events([](auto& events)
 rct_window* WindowTitleLogoOpen()
 {
     rct_window* window = WindowCreate(
-        ScreenCoordsXY(0, 0), WW, WH, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
+        ScreenCoordsXY(0, 0), WW, WH, &window_title_logo_events, WindowClass::TitleLogo, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_logo_widgets;
     WindowInitScrollWidgets(*window);
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);
@@ -55,7 +55,7 @@ rct_window* WindowTitleLogoOpen()
     return window;
 }
 
-static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleMenuMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {

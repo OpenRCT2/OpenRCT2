@@ -185,7 +185,7 @@ public:
         max_height = 560;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -269,7 +269,7 @@ public:
                 _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
                 break;
             case WIDX_MAP_GENERATOR:
-                context_open_window(WC_MAPGEN);
+                context_open_window(WindowClass::Mapgen);
                 break;
             default:
                 if (widgetIndex >= WIDX_PEOPLE_TAB && widgetIndex <= WIDX_RIDES_TAB)
@@ -284,7 +284,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -352,7 +352,7 @@ public:
         }
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (widgetIndex)
         {
@@ -368,7 +368,7 @@ public:
         }
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (widgetIndex)
         {
@@ -381,7 +381,7 @@ public:
         }
     }
 
-    void OnToolDrag(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (widgetIndex)
         {
@@ -397,7 +397,7 @@ public:
         }
     }
 
-    void OnToolAbort(rct_widgetindex widgetIndex) override
+    void OnToolAbort(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -513,7 +513,16 @@ public:
         }
 
         park_entrance_remove_ghost();
-        park_entrance_place_ghost(parkEntrancePosition);
+
+        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
+        gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
+
+        auto result = GameActions::Execute(&gameAction);
+        if (result.Error == GameActions::Status::Ok)
+        {
+            gParkEntranceGhostPosition = parkEntrancePosition;
+            gParkEntranceGhostExists = true;
+        }
     }
 
     void PlaceParkEntranceToolDown(const ScreenCoordsXY& screenCoords)
@@ -581,7 +590,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (text.empty())
             return;
@@ -810,7 +819,7 @@ public:
         if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
         {
             // scenario editor: build park entrance selected, show rotate button
-            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_MAP
+            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map
                 && gCurrentToolWidget.widget_index == WIDX_BUILD_PARK_ENTRANCE)
             {
                 widgets[WIDX_ROTATE_90].type = WindowWidgetType::FlatBtn;
@@ -820,7 +829,7 @@ public:
             widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
             // If any tool is active
-            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_MAP)
+            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map)
             {
                 // if not in set land rights mode: show the default scenario editor buttons
                 if (gCurrentToolWidget.widget_index != WIDX_SET_LAND_RIGHTS)
@@ -1321,7 +1330,7 @@ private:
         TextInputOpen(WIDX_LAND_TOOL, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 
-    void InputMapSize(rct_widgetindex callingWidget)
+    void InputMapSize(WidgetIndex callingWidget)
     {
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK))
             _resizeDirection = ResizeDirection::Both;
@@ -1440,7 +1449,7 @@ rct_window* WindowMapOpen()
 {
     try
     {
-        rct_window* w = WindowFocusOrCreate<MapWindow>(WC_MAP, 245, 259, WF_10);
+        rct_window* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
         w->selected_tab = 0;
         w->list_information_type = 0;
         return w;
@@ -1456,7 +1465,7 @@ void WindowMapReset()
     rct_window* w;
 
     // Check if window is even opened
-    w = window_bring_to_front_by_class(WC_MAP);
+    w = window_bring_to_front_by_class(WindowClass::Map);
     if (w == nullptr)
     {
         return;

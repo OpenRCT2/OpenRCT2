@@ -141,7 +141,7 @@ public:
         return true;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
@@ -185,7 +185,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         rct_widget* widget = &widgets[widgetIndex];
         switch (widgetIndex)
@@ -199,7 +199,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         switch (widgetIndex)
         {
@@ -228,7 +228,7 @@ public:
         Invalidate();
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (widgetIndex == WIDX_SIGN_TEXT && !text.empty())
         {
@@ -318,12 +318,12 @@ public:
  */
 rct_window* WindowSignOpen(rct_windownumber number)
 {
-    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
+    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<SignWindow>(WC_BANNER, WW, WH, 0);
+    w = WindowCreate<SignWindow>(WindowClass::Banner, WW, WH, 0);
 
     if (w == nullptr)
         return nullptr;
@@ -341,12 +341,12 @@ rct_window* WindowSignOpen(rct_windownumber number)
  */
 rct_window* WindowSignSmallOpen(rct_windownumber number)
 {
-    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
+    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<SignWindow>(WC_BANNER, WW, WH, 0);
+    w = WindowCreate<SignWindow>(WindowClass::Banner, WW, WH, 0);
 
     if (w == nullptr)
         return nullptr;

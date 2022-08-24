@@ -338,7 +338,6 @@ STR_0950    :Carica una partita
 STR_0951    :Esci dal gioco
 STR_0952    :Esci dal gioco
 STR_0953    :Carica un paesaggio
-STR_0954    :
 STR_0955    :Seleziona l’angolo di rotazione dei sedili in questa sezione del tracciato
 STR_0956    :-180°
 STR_0957    :-135°
@@ -386,10 +385,10 @@ STR_0998    :Non è possibile collocare altre stazioni per questa attrazione
 STR_0999    :È necessaria una piattaforma stazione
 STR_1000    :Il tracciato non costituisce un circuito completo
 STR_1001    :Il tracciato non è adatto al tipo di treno
-STR_1002    :Impossibile aprire {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Impossibile provare {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Impossibile chiudere {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Impossibile iniziare la costruzione su {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Impossibile aprire {STRINGID}…
+STR_1003    :Impossibile provare {STRINGID}…
+STR_1004    :Impossibile chiudere {STRINGID}…
+STR_1005    :Impossibile iniziare la costruzione su {STRINGID}…
 STR_1006    :Prima dev’essere chiusa/o
 STR_1007    :Impossibile creare abbastanza veicoli
 STR_1008    :Apri, chiudi o prova un’attrazione
@@ -742,7 +741,7 @@ STR_1353    :{WINDOW_COLOUR_2}Max. forza G laterale: {OUTLINE}{RED}{COMMA2DP32}G
 STR_1354    :{WINDOW_COLOUR_2}Picco più alto: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Discese: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversioni: {BLACK}{COMMA16}
-STR_1357    :{WINDOW_COLOUR_2}Buchi: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}Buche: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Assenza di peso in totale: {BLACK}{COMMA2DP32}secondi
 STR_1359    :{WINDOW_COLOUR_2}Tempo d’attesa: {BLACK}{COMMA16} minuti.
 STR_1360    :{WINDOW_COLOUR_2}Tempo d’attesa: {BLACK}{COMMA16} minuti.
@@ -1154,7 +1153,7 @@ STR_1770    :Numero di oscillazioni complete
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Può esserci soltanto una sezione di foto-in-corsa per attrazione
 STR_1774    :Può esserci soltanto una salita per il traino con cavo per attrazione
-STR_1777    :Musica attrazione
+STR_1777    :Musica attrazioni
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume da panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Costume da tigre
@@ -1686,7 +1685,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distanze e velocità:
 STR_2330    :{WINDOW_COLOUR_2}Temperatura:
 STR_2331    :{WINDOW_COLOUR_2}Indicazioni altezza:
 STR_2332    :Unità
-STR_2333    :Impostazioni audio
+STR_2333    :Effetti sonori
 STR_2334    :Sterline (£)
 STR_2335    :Dollari ($)
 STR_2336    :Franchi (F)
@@ -1951,12 +1950,10 @@ STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, anno {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, anno {COMMA16}
-STR_2738    :Musica schermata del titolo:
+STR_2738    :Musica schermata iniziale:
 STR_2739    :Nessuno
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat not found
-STR_2743    :Copiare “data/css17.dat” dalla cartella di installazione di RCT1 come “data/css50.dat” nella cartella di RCT2, oppure impostare il percorso di installazione di RCT1 nella scheda “Avanzate”.
 STR_2749    :Nuovo scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Sposta tutti gli elementi sopra
@@ -2260,7 +2257,7 @@ STR_3208    :Gestione tracciati salvati
 STR_3209    :Indietro al passo precedente:
 STR_3210    :Avanti al passo successivo:
 STR_3211    :Dimens. mappa:
-STR_3212    :{COMMA16} × {COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Impossibile rimpicciolire ulteriormente la mappa
 STR_3214    :Impossibile ingrandire ulteriormente la mappa
 STR_3215    :Troppo vicino al bordo della mappa
@@ -2699,7 +2696,7 @@ STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Mostra i messaggi recenti
 STR_5489    :Mostra solo i visitatori seguiti
-STR_5490    :Disabilità audio quando si perde il focus
+STR_5490    :Disabilita audio quando si cambia finestra
 STR_5491    :Lista Invenzioni
 STR_5492    :Opzioni Scenario
 STR_5493    :Mostra Messaggio
@@ -3212,7 +3209,6 @@ STR_6047    :Ammorbidisci celle
 STR_6048    :Errore nella heightmap
 STR_6049    :Errore nella lettura del PNG
 STR_6050    :Errore nella lettura della bitmap
-STR_6051    :Larghezza e altezza devono corrispondere
 STR_6052    :La heightmap è troppo grande e sarà tagliata
 STR_6053    :La heightmap non può essere normalizzata
 STR_6054    :Sono supportate solo le bitmap a 24 bit
@@ -3440,7 +3436,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulazione
 STR_6324    :Simula
 STR_6325    :Simula attrazione
-STR_6326    :Non è stato possibile simulare {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Non è stato possibile simulare {STRINGID}…
 STR_6327    :Cattura schermate giganti con sfondo trasparente
 STR_6328    :Con questa opzione attivata, le schermate giganti (screenshot) saranno catturate con uno sfondo trasparente invece di quello nero
 STR_6329    :{STRING}{STRINGID}
@@ -4060,23 +4056,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tetto
-
-[TTPIRF03]
-STR_NAME    :Tetto
-
-[TTPIRF04]
-STR_NAME    :Tetto
-
 [TTPIRF05]
-STR_NAME    :Tetto
-
-[TTPIRF07]
-STR_NAME    :Tetto
-
-[TTPIRF08]
 STR_NAME    :Tetto
 
 [TTRFWD01]

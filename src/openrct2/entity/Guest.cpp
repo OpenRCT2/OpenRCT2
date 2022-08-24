@@ -437,8 +437,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
 static void peep_update_hunger(Guest* peep);
 static void peep_decide_whether_to_leave_park(Guest* peep);
 static void peep_leave_park(Guest* peep);
-static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
-static void PeepHeadForNearestRideWithFlags(Guest* peep, int64_t rideTypeFlags);
+static void PeepHeadForNearestRideWithFlags(Guest* peep, bool considerOnlyCloseRides, int64_t rideTypeFlags);
 bool loc_690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
 template<> bool EntityBase::Is<Guest>() const
@@ -1088,16 +1087,16 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     switch (chosen_thought)
                     {
                         case PeepThoughtType::Hungry:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_SELLS_FOOD);
+                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_SELLS_FOOD);
                             break;
                         case PeepThoughtType::Thirsty:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_SELLS_DRINKS);
+                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_SELLS_DRINKS);
                             break;
                         case PeepThoughtType::Toilet:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_IS_TOILET);
+                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_IS_TOILET);
                             break;
                         case PeepThoughtType::RunningOut:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_IS_CASH_MACHINE);
+                            PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_IS_CASH_MACHINE);
                             break;
                         default:
                             break;
@@ -1117,7 +1116,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 if (Nausea >= 200)
                 {
                     thought_type = PeepThoughtType::VerySick;
-                    peep_head_for_nearest_ride_type(this, RIDE_TYPE_FIRST_AID);
+                    PeepHeadForNearestRideWithFlags(this, true, RIDE_TYPE_FLAG_IS_FIRST_AID);
                 }
                 InsertNewThought(thought_type);
             }
@@ -1419,14 +1418,14 @@ void Guest::CheckCantFindRide()
         return;
 
     GuestHeadingToRideId = RideId::GetNull();
-    rct_window* w = window_find_by_number(WC_PEEP, sprite_index);
+    rct_window* w = window_find_by_number(WindowClass::Peep, sprite_index);
 
     if (w != nullptr)
     {
         window_event_invalidate_call(w);
     }
 
-    window_invalidate_by_number(WC_PEEP, sprite_index);
+    window_invalidate_by_number(WindowClass::Peep, sprite_index);
 }
 
 /**
@@ -1938,7 +1937,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
             }
         }
 
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         {
             return ShouldGoToShop(ride, peepAtRide);
         }
@@ -2206,7 +2205,8 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
         return false;
     }
 
-    if (ride->type == RIDE_TYPE_TOILETS)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
     {
         if (Toilet < 70)
         {
@@ -2232,7 +2232,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
         }
     }
 
-    if (ride->type == RIDE_TYPE_FIRST_AID)
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID))
     {
         if (Nausea < 128)
         {
@@ -2292,7 +2292,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
     peep_expend_type += static_cast<money16>(amount);
 
-    window_invalidate_by_number(WC_PEEP, sprite_index);
+    window_invalidate_by_number(WindowClass::Peep, sprite_index);
 
     finance_payment(-amount, expenditure);
 
@@ -2617,7 +2617,13 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
 
     if (ridePrice > peep->CashInPocket)
     {
-        peep->InsertNewThought(PeepThoughtType::CantAffordRide, peep->CurrentRide);
+        // Prevent looping of same thought / animation since Destination Tolerance
+        // is only 0 exactly at entrance and will immediately change as guest
+        // tries to leave hereafter
+        if (peep->DestinationTolerance == 0)
+        {
+            peep->InsertNewThought(PeepThoughtType::CantAffordRide, peep->CurrentRide);
+        }
         peep_update_ride_at_entrance_try_leave(peep);
         return false;
     }
@@ -3099,10 +3105,10 @@ static void peep_leave_park(Guest* peep)
 
     peep->InsertNewThought(PeepThoughtType::GoHome);
 
-    rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
+    rct_window* w = window_find_by_number(WindowClass::Peep, peep->sprite_index);
     if (w != nullptr)
         window_event_invalidate_call(w);
-    window_invalidate_by_number(WC_PEEP, peep->sprite_index);
+    window_invalidate_by_number(WindowClass::Peep, peep->sprite_index);
 }
 
 template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool considerOnlyCloseRides, T predicate)
@@ -3211,21 +3217,15 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 }
 
-static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
-{
-    auto considerOnlyCloseRides = rideType == RIDE_TYPE_FIRST_AID;
-    return peep_head_for_nearest_ride(
-        peep, considerOnlyCloseRides, [rideType](const Ride& ride) { return ride.type == rideType; });
-}
-
-static void PeepHeadForNearestRideWithFlags(Guest* peep, int64_t rideTypeFlags)
+static void PeepHeadForNearestRideWithFlags(Guest* peep, bool considerOnlyCloseRides, int64_t rideTypeFlags)
 {
     if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_TOILET) && peep->HasFoodOrDrink())
     {
         return;
     }
-    peep_head_for_nearest_ride(
-        peep, false, [rideTypeFlags](const Ride& ride) { return ride.GetRideTypeDescriptor().HasFlag(rideTypeFlags); });
+    peep_head_for_nearest_ride(peep, considerOnlyCloseRides, [rideTypeFlags](const Ride& ride) {
+        return ride.GetRideTypeDescriptor().HasFlag(rideTypeFlags);
+    });
 }
 
 /**
@@ -3235,11 +3235,11 @@ static void PeepHeadForNearestRideWithFlags(Guest* peep, int64_t rideTypeFlags)
  * such as "I'm hungry" after visiting a food shop.
  * Works for Thirst/Hungry/Low Money/Toilet
  */
-void Guest::StopPurchaseThought(uint8_t ride_type)
+void Guest::StopPurchaseThought(ride_type_t rideType)
 {
     auto thoughtType = PeepThoughtType::Hungry;
 
-    const auto& rtd = GetRideTypeDescriptor(ride_type);
+    const auto& rtd = GetRideTypeDescriptor(rideType);
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
     {
         thoughtType = PeepThoughtType::Thirsty;
@@ -3340,7 +3340,7 @@ void Guest::UpdateBuying()
             {
                 CashInPocket += 50.00_GBP;
             }
-            window_invalidate_by_number(WC_PEEP, sprite_index);
+            window_invalidate_by_number(WindowClass::Peep, sprite_index);
         }
         sprite_direction ^= 0x10;
 
@@ -3601,8 +3601,6 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
     Guard::Assert(!station.Entrance.IsNull());
     uint8_t direction_entrance = station.Entrance.direction;
 
-    CoordsXY waypoint = ride.GetStation(CurrentRideStation).Start.ToTileCentre();
-
     TileElement* tile_element = ride_get_station_start_track_element(&ride, CurrentRideStation);
 
     uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
@@ -3618,11 +3616,8 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
 
     Var37 = (direction_entrance | GetWaypointedSeatLocation(ride, vehicle_type, direction_track) * 4) * 4;
 
-    if (ride.type == RIDE_TYPE_ENTERPRISE)
-    {
-        waypoint.x = vehicle->x;
-        waypoint.y = vehicle->y;
-    }
+    const auto& rtd = ride.GetRideTypeDescriptor();
+    CoordsXY waypoint = rtd.GetGuestWaypointLocation(*vehicle, ride, CurrentRideStation);
 
     const auto waypointIndex = Var37 / 4;
     Guard::Assert(vehicle_type->peep_loading_waypoints.size() >= static_cast<size_t>(waypointIndex));
@@ -3840,7 +3835,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     if (queueTime != station.QueueTime)
     {
         station.QueueTime = queueTime;
-        window_invalidate_by_number(WC_RIDE, CurrentRide.ToUnderlying());
+        window_invalidate_by_number(WindowClass::Ride, CurrentRide.ToUnderlying());
     }
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
@@ -4243,9 +4238,6 @@ void Guest::UpdateRideLeaveVehicle()
     auto exitLocation = station.Exit.ToCoordsXYZD();
     Guard::Assert(!exitLocation.IsNull());
 
-    auto waypointLoc = CoordsXYZ{ station.Start.ToTileCentre(),
-                                  exitLocation.z + ride->GetRideTypeDescriptor().Heights.PlatformHeight };
-
     TileElement* trackElement = ride_get_station_start_track_element(ride, CurrentRideStation);
 
     Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
@@ -4256,19 +4248,17 @@ void Guest::UpdateRideLeaveVehicle()
         return;
     }
 
+    CoordsXYZ waypointLoc;
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    waypointLoc = { rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation),
+                    exitLocation.z + ride->GetRideTypeDescriptor().Heights.PlatformHeight };
+
     rideEntry = vehicle->GetRideEntry();
     carEntry = &rideEntry->Cars[vehicle->vehicle_type];
     if (carEntry == nullptr)
         return;
 
     Var37 = ((exitLocation.direction | GetWaypointedSeatLocation(*ride, carEntry, station_direction) * 4) * 4) | 1;
-
-    if (ride->type == RIDE_TYPE_ENTERPRISE)
-    {
-        waypointLoc.x = vehicle->x;
-        waypointLoc.y = vehicle->y;
-    }
-
     Guard::Assert(carEntry->peep_loading_waypoints.size() >= static_cast<size_t>(Var37 / 4));
     CoordsXYZ exitWaypointLoc = waypointLoc;
 
@@ -4377,6 +4367,17 @@ void Guest::UpdateRideInExit()
     RideSubState = PeepRideSubState::LeaveExit;
 }
 #pragma warning(default : 6011)
+
+CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation)
+{
+    return ride.GetStation(CurrentRideStation).Start.ToTileCentre();
+}
+
+CoordsXY GetGuestWaypointLocationEnterprise(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation)
+{
+    return { vehicle.x, vehicle.y };
+}
+
 /**
  *
  *  rct2: 0x006926AD
@@ -4434,13 +4435,8 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         return;
     }
 
-    CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start.ToTileCentre();
-
-    if (ride->type == RIDE_TYPE_ENTERPRISE)
-    {
-        targetLoc.x = vehicle->x;
-        targetLoc.y = vehicle->y;
-    }
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
 
     rct_ride_entry* ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
@@ -4505,13 +4501,9 @@ void Guest::UpdateRideApproachExitWaypoints()
         {
             return;
         }
-        CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start.ToTileCentre();
 
-        if (ride->type == RIDE_TYPE_ENTERPRISE)
-        {
-            targetLoc.x = vehicle->x;
-            targetLoc.y = vehicle->y;
-        }
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
 
         rct_ride_entry* rideEntry = vehicle->GetRideEntry();
         CarEntry* carEntry = &rideEntry->Cars[vehicle->vehicle_type];
@@ -5003,7 +4995,9 @@ void Guest::UpdateRideShopInteract()
 
     const int16_t tileCentreX = NextLoc.x + 16;
     const int16_t tileCentreY = NextLoc.y + 16;
-    if (ride->type == RIDE_TYPE_FIRST_AID)
+
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID))
     {
         if (Nausea <= 35)
         {
@@ -5646,7 +5640,7 @@ void Guest::UpdateLeavingPark()
     context_broadcast_intent(&intent);
     Var37 = 1;
 
-    window_invalidate_by_class(WC_GUEST_LIST);
+    window_invalidate_by_class(WindowClass::GuestList);
     uint8_t pathingResult;
     PerformNextAction(pathingResult);
     if (!(pathingResult & PATHING_OUTSIDE_PARK))

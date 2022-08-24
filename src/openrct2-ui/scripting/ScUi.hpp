@@ -133,7 +133,7 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScViewport> mainViewport_get() const
         {
-            return std::make_shared<ScViewport>(WC_MAIN_WINDOW);
+            return std::make_shared<ScViewport>(WindowClass::MainWindow);
         }
 
         std::shared_ptr<ScTileSelection> tileSelection_get() const
@@ -176,7 +176,7 @@ namespace OpenRCT2::Scripting
         void closeWindows(std::string classification, DukValue id)
         {
             auto cls = GetClassification(classification);
-            if (cls != WC_NULL)
+            if (cls != WindowClass::Null)
             {
                 if (id.type() == DukValue::Type::NUMBER)
                 {
@@ -383,9 +383,9 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        rct_windowclass GetClassification(const std::string& key) const
+        WindowClass GetClassification(const std::string& key) const
         {
-            return WC_NULL;
+            return WindowClass::Null;
         }
 
         DukValue GetScenarioFile(std::string_view path)

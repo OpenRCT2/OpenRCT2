@@ -133,7 +133,7 @@ void research_finish_item(ResearchItem* researchItem);
 void research_insert(ResearchItem&& item, bool researched);
 void ResearchRemove(const ResearchItem& researchItem);
 
-bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
+bool research_insert_ride_entry(ride_type_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
 bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
 

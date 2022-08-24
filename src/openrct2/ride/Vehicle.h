@@ -109,7 +109,7 @@ struct Vehicle : EntityBase
     int32_t acceleration;
     RideId ride;
     uint8_t vehicle_type;
-    rct_vehicle_colour colours;
+    VehicleColour colours;
     union
     {
         uint16_t track_progress;
@@ -204,7 +204,6 @@ struct Vehicle : EntityBase
     MiniGolfAnimation mini_golf_current_animation;
     uint8_t mini_golf_flags;
     ObjectEntryIndex ride_subtype;
-    uint8_t colours_extended;
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
     CoordsXY BoatLocation;
@@ -521,6 +520,10 @@ enum
 Vehicle* try_get_vehicle(EntityId spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
+
+void RideUpdateMeasurementsSpecialElements_Default(Ride* ride, const track_type_t trackType);
+void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride* ride, const track_type_t trackType);
+void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride* ride, const track_type_t trackType);
 
 extern Vehicle* gCurrentVehicle;
 extern StationIndex _vehicleStationIndex;

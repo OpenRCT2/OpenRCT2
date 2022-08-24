@@ -80,7 +80,7 @@ public:
         OnClose();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         // mouseup appears to be used for buttons, checkboxes
         switch (widgetIndex)
@@ -138,7 +138,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         rct_window* mainWindow;
 
@@ -191,7 +191,7 @@ public:
         widget_invalidate(*this, WIDX_CLIP_HEIGHT_SLIDER);
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (_dragging)
         {
@@ -210,7 +210,7 @@ public:
         }
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         int32_t direction;
         auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
@@ -221,7 +221,7 @@ public:
         }
     }
 
-    void OnToolDrag(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (!_dragging)
         {
@@ -243,7 +243,7 @@ public:
         }
     }
 
-    void OnToolUp(rct_widgetindex, const ScreenCoordsXY&) override
+    void OnToolUp(WidgetIndex, const ScreenCoordsXY&) override
     {
         gClipSelectionA = gMapSelectPositionA;
         gClipSelectionB = gMapSelectPositionB;
@@ -390,7 +390,7 @@ private:
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
-        if (gCurrentToolWidget.window_classification != WC_VIEW_CLIPPING)
+        if (gCurrentToolWidget.window_classification != WindowClass::ViewClipping)
             return false;
         return _toolActive;
     }
@@ -398,10 +398,10 @@ private:
 
 rct_window* WindowViewClippingOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_VIEW_CLIPPING);
+    auto* window = window_bring_to_front_by_class(WindowClass::ViewClipping);
     if (window == nullptr)
     {
-        window = WindowCreate<ViewClippingWindow>(WC_VIEW_CLIPPING, ScreenCoordsXY(32, 32), WW, WH);
+        window = WindowCreate<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), WW, WH);
     }
     return window;
 }

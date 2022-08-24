@@ -52,5 +52,16 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "mini_golf"),
+    SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
+    SET_FIELD(Classification, RideClassification::Ride),
+    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
+    SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_Default),
+    SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationDefault),
+    SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
+    SET_FIELD(RideUpdate, nullptr),
+    SET_FIELD(UpdateMeasurementsSpecialElements, RideUpdateMeasurementsSpecialElements_MiniGolf),
 };
 // clang-format on

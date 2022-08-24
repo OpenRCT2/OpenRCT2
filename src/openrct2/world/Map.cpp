@@ -1338,14 +1338,14 @@ void map_remove_provisional_elements()
         footpath_provisional_remove();
         gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
     }
-    if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
+    if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
     {
         ride_remove_provisional_track_piece();
         ride_entrance_exit_remove_ghost();
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.
-    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WC_TRACK_DESIGN_PLACE) != nullptr)
+    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WindowClass::TrackDesignPlace) != nullptr)
     {
         auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL);
         context_broadcast_intent(&intent);
@@ -1363,14 +1363,14 @@ void map_restore_provisional_elements()
             gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
             gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
     }
-    if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
+    if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
     {
         ride_restore_provisional_track_piece();
         ride_entrance_exit_place_provisional_ghost();
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.
-    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WC_TRACK_DESIGN_PLACE) != nullptr)
+    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WindowClass::TrackDesignPlace) != nullptr)
     {
         auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL);
         context_broadcast_intent(&intent);
