@@ -1188,7 +1188,7 @@ namespace OpenRCT2::Ui::Windows
 
     void UpdateWindowTab(CustomWindow* w, size_t tabIndex)
     {
-         w->ChangeTab(tabIndex);
+        w->ChangeTab(tabIndex);
     }
 
     void UpdateWidgetText(rct_window* w, rct_widgetindex widgetIndex, std::string_view value)
