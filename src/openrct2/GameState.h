@@ -47,6 +47,7 @@ namespace OpenRCT2
         GameActions,
         NetworkFlush,
         Scripts,
+        Fireworks
     };
 
     // ~6.5s at 40Hz

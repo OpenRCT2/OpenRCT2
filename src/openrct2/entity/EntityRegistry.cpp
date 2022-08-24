@@ -408,7 +408,7 @@ void UpdateAllMiscEntities()
 
     MiscUpdateAllTypes<
         SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud, CrashSplashParticle, ExplosionFlare, JumpingFountain,
-        Balloon, Duck, OpenRCT2::Fireworks::Firework>();
+        Balloon, Duck, Firework>();
 }
 
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order

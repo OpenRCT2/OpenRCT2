@@ -290,8 +290,8 @@ private:
     {
         // add a firework to the sequence in the park
         auto gameState = GetContext()->GetGameState();
-        auto fireworksMgr = gameState->GetFireworksManager();
-        auto sequence = fireworksMgr.GetSequence();
+        auto& fireworksMgr = gameState->GetFireworksManager();
+        auto& sequence = fireworksMgr.GetSequence();
         auto spawner = sequence.AddSpawner({ _x, _y });
 
         //for now, hardcode the object id
@@ -315,8 +315,8 @@ private:
 
         //stop the sequence
         auto gameState = GetContext()->GetGameState();
-        auto fireworksMgr = gameState->GetFireworksManager();
-        auto sequence = fireworksMgr.GetSequence();
+        auto& fireworksMgr = gameState->GetFireworksManager();
+        auto& sequence = fireworksMgr.GetSequence();
         sequence.Stop();
     }
 
@@ -336,8 +336,8 @@ private:
 
         //start the sequence
         auto gameState = GetContext()->GetGameState();
-        auto fireworksMgr = gameState->GetFireworksManager();
-        auto sequence = fireworksMgr.GetSequence();
+        auto& fireworksMgr = gameState->GetFireworksManager();
+        auto& sequence = fireworksMgr.GetSequence();
         sequence.Start();
     }
 

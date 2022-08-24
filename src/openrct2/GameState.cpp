@@ -345,6 +345,9 @@ void GameState::UpdateLogic(LogicTimings* timings)
     }
     report_time(LogicTimePart::Park);
 
+    _fireworksMgr.Update();
+    report_time(LogicTimePart::Fireworks);
+
     research_update();
     report_time(LogicTimePart::Research);
     ride_ratings_update_all();

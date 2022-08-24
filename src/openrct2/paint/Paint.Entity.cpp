@@ -158,7 +158,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
                 spr->As<Litter>()->Paint(session, image_direction);
                 break;
             case EntityType::Firework:
-                spr->As<OpenRCT2::Fireworks::Firework>()->Paint(session, image_direction);
+                spr->As<Firework>()->Paint(session, image_direction);
                 break;
             default:
                 assert(false);

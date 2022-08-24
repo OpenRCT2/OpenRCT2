@@ -9,32 +9,76 @@
 
 #pragma once
 
+#include "Firework.h"
+
+#include "../Context.h"
+#include "../entity/EntityRegistry.h"
+#include "../object/Object.h"
+#include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
 #include "FireworksSequence.h"
 
 #include <algorithm>
-#include "Firework.h"
-
-using namespace OpenRCT2::Fireworks;
-
-OpenRCT2::Fireworks::Firework::Firework()
+Firework::Firework()
+    : _currentFrame(0)
+    , _imageTable(nullptr)
+    , _numFrames(0)
+    , _color1(COLOUR_NULL)
+    , _color2(COLOUR_NULL)
+    , _color3(COLOUR_NULL)
+    , _useRemap1(false)
+    , _useRemap2(false)
+    , _useRemap3(false)
+    , _frameWidth(0)
+    , _frameHeight(0)
 {
 }
 
-OpenRCT2::Fireworks::Firework::~Firework()
+Firework::~Firework()
 {
 }
 
-void OpenRCT2::Fireworks::Firework::Create(
-    const TileCoordsXY& tile, const uint32_t height, const std::string& objectId, const colour_t color1, const colour_t color2,
+Firework* Firework::Create(
+    const TileCoordsXY& tile, const int32_t height, const std::string& objectId, const colour_t color1, const colour_t color2,
     const colour_t color3)
 {
+
+    auto* firework = CreateEntity<Firework>();
+
+    // set the position
+    auto pos = CoordsXYZ{ tile.ToCoordsXY(), height };
+    firework->x = pos.x;
+    firework->y = pos.y;
+    firework->z = pos.z;
+
+    firework->_currentFrame = 0;
+    firework->_color1 = color1;
+    firework->_color2 = color2;
+    firework->_color3 = color3;
+
+    // get the base image
+    auto context = OpenRCT2::GetContext();
+    auto& objectManager = context->GetObjectManager();
+
+    auto object = objectManager.LoadObject(objectId);
+
+    if (object)
+    {
+        auto& imageTable = static_cast<const Object*>(object)->GetImageTable();
+        firework->_numFrames = imageTable.GetCount();
+        firework->_imageTable = imageTable.GetImages();
+    }
+    return firework;
 }
 
-void OpenRCT2::Fireworks::Firework::Update()
+void Firework::Update()
 {
+    _currentFrame++;
+    if (_currentFrame > _numFrames)
+        EntityRemove(this);
 }
 
-void OpenRCT2::Fireworks::Firework::Paint(paint_session& session, int32_t imageDirection)
+void Firework::Paint(paint_session& session, int32_t imageDirection)
 {
 }
 

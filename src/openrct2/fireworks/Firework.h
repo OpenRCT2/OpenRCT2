@@ -9,45 +9,42 @@
 
 #pragma once
 
+#include "../drawing/Drawing.h"
+#include "../entity/EntityBase.h"
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
-#include "../entity/EntityBase.h"
 
 struct paint_session;
-namespace OpenRCT2
+
+class Firework : public EntityBase
 {
-    namespace Fireworks
-    {
-        class Firework : EntityBase
-        {
-        private:
-        public:
-            static constexpr auto cEntityType = EntityType::Firework;
+private:
+public:
+    static constexpr auto cEntityType = EntityType::Firework;
 
-            Firework();
-            virtual ~Firework();
+    Firework();
+    virtual ~Firework();
 
-            static void Create(
-                const TileCoordsXY& tile, const uint32_t height, const std::string& objectId, const colour_t color1,
-                const colour_t color2, const colour_t color3);
-            void Update();
-            void Paint(paint_session& session, int32_t imageDirection);
-        private:
-            uint32_t _currentFrame;
+    static Firework* Create(
+        const TileCoordsXY& tile, const int32_t height, const std::string& objectId, const colour_t color1,
+        const colour_t color2, const colour_t color3);
+    void Update();
+    void Paint(paint_session& session, int32_t imageDirection);
 
-            uint32_t _numFrames;
+private:
+    uint32_t _currentFrame;
 
-            colour_t _color1;
-            colour_t _color2;
-            colour_t _color3;
+    const rct_g1_element* _imageTable;
+    uint32_t _numFrames;
 
-            bool _useRemap1;
-            bool _useRemap2;
-            bool _useRemap3;
+    colour_t _color1;
+    colour_t _color2;
+    colour_t _color3;
 
-            uint32_t _frameWidth;
-            uint32_t _frameHeight;
-        };
-    } // namespace Fireworks
+    bool _useRemap1;
+    bool _useRemap2;
+    bool _useRemap3;
 
-} // namespace OpenRCT2
+    uint32_t _frameWidth;
+    uint32_t _frameHeight;
+};

@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 
+class Firework;
 namespace OpenRCT2
 {
     namespace Fireworks
@@ -26,6 +27,7 @@ namespace OpenRCT2
         {
         public:
             FireworksManager();
+            FireworksManager(const FireworksManager& obj) = delete;
             virtual ~FireworksManager();
 
             virtual void OnEvent(const Event& e) override;
@@ -37,6 +39,7 @@ namespace OpenRCT2
             FireworksSequence& GetSequence();
         private:
             FireworksSequence _sequence;
+            std::vector<Firework*> _fireworks;
         };
     } // namespace Fireworks
 

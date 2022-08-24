@@ -61,6 +61,7 @@ namespace OpenRCT2
         {
         public:
             FireworksSequence();
+            FireworksSequence(const FireworksSequence& sequence) = delete;
             virtual ~FireworksSequence();
 
             std::string Name;
@@ -72,6 +73,7 @@ namespace OpenRCT2
 
             Spawner AddSpawner(const TileCoordsXY& location);
             bool RemoveSpawner(const TileCoordsXY& location);
+            const Spawner* GetSpawner(const uint32_t id) const;
 
             Event AddEvent(
                 const std::string& objectId, const Spawner& spawner, const uint32_t height, const uint32_t time,

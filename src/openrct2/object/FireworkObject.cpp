@@ -50,7 +50,7 @@ void FireworkObject::Unload()
     _firework.Image = 0;
 }
 
-const Firework& FireworkObject::GetFirework() const
+const FireworkObject::Firework& FireworkObject::GetFirework() const
 {
     return _firework;
 }

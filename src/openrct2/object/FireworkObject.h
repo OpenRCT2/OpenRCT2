@@ -12,26 +12,26 @@
 #include "../core/IStream.hpp"
 #include "Object.h"
 
-struct Firework
-{
-    uint32_t Image;
-    StringId Name;
-    bool UseRemap1;
-    bool UseRemap2;
-    bool UseRemap3;
-
-    uint8_t Width;
-    uint8_t Height;
-    std::string SoundId;
-};
-
-
 class FireworkObject final : public Object
 {
+public:
+    struct Firework
+    {
+        uint32_t Image;
+        StringId Name;
+        bool UseRemap1;
+        bool UseRemap2;
+        bool UseRemap3;
+
+        uint8_t Width;
+        uint8_t Height;
+        std::string SoundId;
+    };
 private:
     Firework _firework;
 
 public:
+
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;

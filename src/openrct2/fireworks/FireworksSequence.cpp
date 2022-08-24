@@ -43,6 +43,9 @@ void FireworksSequence::Start()
 
 void FireworksSequence::Update(const uint32_t updateSteps)
 {
+    if (!_playing)
+        return;
+
     // check if there is a handler
     if (_handler == nullptr)
         return;
@@ -128,6 +131,14 @@ bool FireworksSequence::RemoveSpawner(const TileCoordsXY& location)
         return true;
     }
     return false;
+}
+
+const Spawner* OpenRCT2::Fireworks::FireworksSequence::GetSpawner(const uint32_t id) const
+{
+    auto spawner = std::find_if(_spawners.begin(), _spawners.end(), [id](const auto& s) { return s.Id == id; });
+    if (spawner != _spawners.end())
+        return &(* spawner);
+    return nullptr;
 }
 
 Event FireworksSequence::AddEvent(
