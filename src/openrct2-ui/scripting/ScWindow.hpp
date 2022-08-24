@@ -277,7 +277,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void tabIndex_set(size_t tab) const
+        void tabIndex_set(int32_t tab)
         {
             auto w = GetWindow();
             if (w != nullptr && w->classification == WC_CUSTOM)
