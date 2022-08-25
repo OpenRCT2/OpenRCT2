@@ -725,14 +725,6 @@ static void ShortcutConstructionDemolishCurrent()
     }
 }
 
-static void ShortcutConstructionUseDefault()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_use_track_default();
-}
-
 static void ShortcutToggleTransparentWater()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
