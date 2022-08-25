@@ -877,8 +877,8 @@ private:
             disabled_widgets &= ~(1ULL << WIDX_RESOLUTION_LABEL);
         }
 
-        // Disable Steam Overlay checkbox when using software rendering.
-        if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
+        // Disable Steam Overlay checkbox when using software or OpenGL rendering.
+        if (gConfigGeneral.drawing_engine == DrawingEngine::Software || gConfigGeneral.drawing_engine == DrawingEngine::OpenGL)
         {
             disabled_widgets |= (1ULL << WIDX_STEAM_OVERLAY_PAUSE);
         }
