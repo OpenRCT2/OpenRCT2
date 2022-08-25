@@ -1188,9 +1188,13 @@ namespace OpenRCT2::Ui::Windows
 
     void UpdateWindowTab(rct_window* w, int32_t tabIndex)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::Custom && w->custom_info != nullptr)
         {
-            static_cast<CustomWindow*>(w)->ChangeTab(tabIndex);
+            auto& customInfo = GetInfo(w);
+            if (tabIndex >= WIDX_TAB_0 && tabIndex < static_cast<WidgetIndex>(WIDX_TAB_0 + customInfo.Desc.Tabs.size()))
+            {
+                static_cast<CustomWindow*>(w)->ChangeTab(tabIndex);
+            }
         }
     }
 
