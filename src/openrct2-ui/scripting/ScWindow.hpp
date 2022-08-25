@@ -280,9 +280,9 @@ namespace OpenRCT2::Scripting
         void tabIndex_set(int32_t tab)
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WC_CUSTOM)
+            if (w != nullptr && w->classification == WindowClass::Custom)
             {
-                UpdateWindowTab(static_cast<CustomWindow*>(w), tab);
+                UpdateWindowTab(w, tab);
             }
         }
 
