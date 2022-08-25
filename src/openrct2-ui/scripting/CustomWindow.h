@@ -23,7 +23,7 @@ namespace OpenRCT2::Ui::Windows
 
     std::string GetWindowTitle(rct_window* w);
     void UpdateWindowTitle(rct_window* w, std::string_view value);
-    void UpdateWindowTab(rct_window* w, int32_t tabIndex); 
+    void UpdateWindowTab(rct_window* w, int32_t tabIndex);
     void UpdateWidgetText(rct_window* w, WidgetIndex widget, std::string_view string_view);
     void UpdateWidgetItems(rct_window* w, WidgetIndex widgetIndex, const std::vector<std::string>& items);
     void UpdateWidgetColour(rct_window* w, WidgetIndex widgetIndex, colour_t colour);
