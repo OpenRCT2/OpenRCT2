@@ -1190,7 +1190,7 @@ namespace OpenRCT2::Ui::Windows
     {
         w->ChangeTab(tabIndex);
     }
-  
+
     void UpdateWidgetText(rct_window* w, WidgetIndex widgetIndex, std::string_view value)
     {
         if (w->custom_info != nullptr)
