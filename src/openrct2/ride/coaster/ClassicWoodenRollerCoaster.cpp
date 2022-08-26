@@ -227,31 +227,6 @@ enum
     SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_3_SEQ_4 = SPR_CSG_BEGIN + 65446,
 };
 
-static void classic_wooden_rc_track_brakes(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    static constexpr const sprite_bb_2 imageIds[4][1] = {
-        {
-            { SPR_CLASSIC_WOODEN_RC_BRAKE_0, 0, { 0, 2, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
-        },
-        {
-            { SPR_CLASSIC_WOODEN_RC_BRAKE_1, 0, { 2, 1, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
-        },
-        {
-            { SPR_CLASSIC_WOODEN_RC_BRAKE_0, 0, { 0, 2, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
-        },
-        {
-            { SPR_CLASSIC_WOODEN_RC_BRAKE_1, 0, { 2, 1, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
-        }
-    };
-    wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence], height);
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
-}
-
 static void classic_wooden_rc_track_flat_to_left_bank(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1898,8 +1873,6 @@ TRACK_PAINT_FUNCTION get_track_paint_function_classic_wooden_rc(int32_t trackTyp
 
     switch (trackType)
     {
-        case TrackElemType::Brakes:
-            return classic_wooden_rc_track_brakes;
         case TrackElemType::FlatToLeftBank:
             return classic_wooden_rc_track_flat_to_left_bank;
         case TrackElemType::FlatToRightBank:
