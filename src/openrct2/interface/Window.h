@@ -230,13 +230,11 @@ struct rct_window_event_list
     void (*unknown_05)(struct rct_window*){};
     void (*update)(struct rct_window*){};
     void (*periodic_update)(struct rct_window*){};
-    void (*unknown_08)(struct rct_window*){};
     void (*tool_update)(struct rct_window*, WidgetIndex, const ScreenCoordsXY&){};
     void (*tool_down)(struct rct_window*, WidgetIndex, const ScreenCoordsXY&){};
     void (*tool_drag)(struct rct_window*, WidgetIndex, const ScreenCoordsXY&){};
     void (*tool_up)(struct rct_window*, WidgetIndex, const ScreenCoordsXY&){};
     void (*tool_abort)(struct rct_window*, WidgetIndex){};
-    void (*unknown_0E)(struct rct_window*){};
     void (*get_scroll_size)(struct rct_window*, int32_t, int32_t*, int32_t*){};
     void (*scroll_mousedown)(struct rct_window*, int32_t, const ScreenCoordsXY&){};
     void (*scroll_mousedrag)(struct rct_window*, int32_t, const ScreenCoordsXY&){};
@@ -677,13 +675,11 @@ void window_event_dropdown_call(rct_window* w, WidgetIndex widgetIndex, int32_t 
 void window_event_unknown_05_call(rct_window* w);
 void window_event_update_call(rct_window* w);
 void window_event_periodic_update_call(rct_window* w);
-void window_event_unknown_08_call(rct_window* w);
 void window_event_tool_update_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_event_tool_down_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_event_tool_drag_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_event_tool_up_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_event_tool_abort_call(rct_window* w, WidgetIndex widgetIndex);
-void window_event_unknown_0E_call(rct_window* w);
 void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
 void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);

@@ -1470,13 +1470,6 @@ void window_event_periodic_update_call(rct_window* w)
         w->event_handlers->periodic_update(w);
 }
 
-void window_event_unknown_08_call(rct_window* w)
-{
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->unknown_08 != nullptr)
-            w->event_handlers->unknown_08(w);
-}
-
 void window_event_tool_update_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers == nullptr)
@@ -1515,13 +1508,6 @@ void window_event_tool_abort_call(rct_window* w, WidgetIndex widgetIndex)
         w->OnToolAbort(widgetIndex);
     else if (w->event_handlers->tool_abort != nullptr)
         w->event_handlers->tool_abort(w, widgetIndex);
-}
-
-void window_event_unknown_0E_call(rct_window* w)
-{
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->unknown_0E != nullptr)
-            w->event_handlers->unknown_0E(w);
 }
 
 void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
