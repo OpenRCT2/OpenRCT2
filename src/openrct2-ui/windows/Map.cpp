@@ -161,6 +161,8 @@ public:
         CentreMapOnViewPoint();
         FootpathSelectDefault();
 
+        _mapWidthAndHeightLinked = gMapSize.x == gMapSize.y;
+
         // Reset land rights tool size
         _landRightsToolSize = 1;
     }
