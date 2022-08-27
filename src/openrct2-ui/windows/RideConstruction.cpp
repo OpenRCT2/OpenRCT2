@@ -29,6 +29,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/object/ObjectManager.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
@@ -2711,6 +2712,33 @@ private:
     }
 };
 
+static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType)
+{
+    RideTrackGroup disabledPieces{};
+    const auto& rtd = GetRideTypeDescriptor(rideType);
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        // Set all pieces as “disabled”. When looping over the ride entries,
+        // pieces will be re-enabled as soon as a single entry supports it.
+        disabledPieces.flip();
+
+        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& rideEntries = objManager.GetAllRideEntries(rideType);
+        for (auto rideEntryIndex : rideEntries)
+        {
+            const auto* currentRideEntry = get_ride_entry(rideEntryIndex);
+            if (currentRideEntry == nullptr)
+                continue;
+
+            // Any pieces that this ride entry supports must be taken out of the array.
+            auto supportedPieces = ride_entry_get_supported_track_pieces(currentRideEntry);
+            disabledPieces &= supportedPieces.flip();
+        }
+    }
+
+    UpdateDisabledRidePieces(disabledPieces);
+}
+
 /**
  *
  *  rct2: 0x006CB481
@@ -2725,6 +2753,8 @@ rct_window* WindowRideConstructionOpen()
     {
         return nullptr;
     }
+
+    WindowRideConstructionUpdateDisabledPieces(currentRide->type);
 
     const auto& rtd = currentRide->GetRideTypeDescriptor();
     switch (rtd.ConstructionWindowContext)
