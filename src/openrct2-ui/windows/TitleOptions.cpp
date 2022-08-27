@@ -27,7 +27,7 @@ static rct_widget window_title_options_widgets[] = {
 static void WindowTitleOptionsMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowTitleOptionsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_title_options_events([](auto& events)
+static WindowEventList window_title_options_events([](auto& events)
 {
     events.mouse_up = &WindowTitleOptionsMouseup;
     events.paint = &WindowTitleOptionsPaint;

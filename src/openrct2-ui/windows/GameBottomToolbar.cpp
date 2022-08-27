@@ -87,7 +87,7 @@ static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo *dpi, rct_w
  *
  *  rct2: 0x0097BFDC
  */
-static rct_window_event_list window_game_bottom_toolbar_events([](auto& events)
+static WindowEventList window_game_bottom_toolbar_events([](auto& events)
 {
     events.mouse_up = &WindowGameBottomToolbarMouseup;
     events.unknown_05 = &WindowGameBottomToolbarUnknown05;

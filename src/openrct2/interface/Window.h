@@ -220,7 +220,7 @@ struct Focus
     }
 };
 
-struct rct_window_event_list
+struct WindowEventList
 {
     void (*close)(struct rct_window*){};
     void (*mouse_up)(struct rct_window*, WidgetIndex){};
@@ -249,8 +249,8 @@ struct rct_window_event_list
     void (*paint)(struct rct_window*, rct_drawpixelinfo*){};
     void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int32_t){};
 
-    typedef void (*fnEventInitializer)(rct_window_event_list&);
-    rct_window_event_list(fnEventInitializer fn)
+    typedef void (*fnEventInitializer)(WindowEventList&);
+    WindowEventList(fnEventInitializer fn)
     {
         fn(*this);
     }
@@ -593,12 +593,11 @@ T* WindowFocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t 
 }
 
 rct_window* WindowCreate(
-    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls,
-    uint32_t flags);
+    const ScreenCoordsXY& pos, int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags);
 rct_window* WindowCreateAutoPos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls, uint32_t flags);
+    int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags);
 rct_window* WindowCreateCentred(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls, uint32_t flags);
+    int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags);
 
 void window_close(rct_window& window);
 void window_close_by_class(WindowClass cls);

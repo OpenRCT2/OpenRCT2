@@ -141,7 +141,7 @@ static void WindowEditorObjectiveOptionsRidesPaint(rct_window *w, rct_drawpixeli
 static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 // 0x009A9DF4
-static rct_window_event_list window_objective_options_main_events([](auto& events)
+static WindowEventList window_objective_options_main_events([](auto& events)
 {
     events.mouse_up = &WindowEditorObjectiveOptionsMainMouseup;
     events.resize = &WindowEditorObjectiveOptionsMainResize;
@@ -154,7 +154,7 @@ static rct_window_event_list window_objective_options_main_events([](auto& event
 });
 
 // 0x009A9F58
-static rct_window_event_list window_objective_options_rides_events([](auto& events)
+static WindowEventList window_objective_options_rides_events([](auto& events)
 {
     events.mouse_up = &WindowEditorObjectiveOptionsRidesMouseup;
     events.resize = &WindowEditorObjectiveOptionsRidesResize;
@@ -167,7 +167,7 @@ static rct_window_event_list window_objective_options_rides_events([](auto& even
     events.scroll_paint = &WindowEditorObjectiveOptionsRidesScrollpaint;
 });
 
-static rct_window_event_list *window_editor_objective_options_page_events[] = {
+static WindowEventList *window_editor_objective_options_page_events[] = {
     &window_objective_options_main_events,
     &window_objective_options_rides_events,
 };

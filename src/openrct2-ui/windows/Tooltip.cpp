@@ -29,7 +29,7 @@ static rct_widget window_tooltip_widgets[] = {
 static void WindowTooltipUpdate(rct_window *w);
 static void WindowTooltipPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_tooltip_events([](auto& events)
+static WindowEventList window_tooltip_events([](auto& events)
 {
     events.update = &WindowTooltipUpdate;
     events.paint = &WindowTooltipPaint;

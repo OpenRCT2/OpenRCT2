@@ -31,7 +31,7 @@ static void WindowTitleMenuMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowTitleLogoPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
-static rct_window_event_list window_title_logo_events([](auto& events)
+static WindowEventList window_title_logo_events([](auto& events)
 {
     events.mouse_up = &WindowTitleMenuMouseup;
     events.paint = &WindowTitleLogoPaint;

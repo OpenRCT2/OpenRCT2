@@ -62,7 +62,7 @@ static void WindowTitleMenuCursor(rct_window *w, WidgetIndex widgetIndex, const 
 static void WindowTitleMenuInvalidate(rct_window *w);
 static void WindowTitleMenuPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_title_menu_events([](auto& events)
+static WindowEventList window_title_menu_events([](auto& events)
 {
     events.mouse_up = &WindowTitleMenuMouseup;
     events.mouse_down = &WindowTitleMenuMousedown;

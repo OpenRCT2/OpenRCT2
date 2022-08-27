@@ -72,7 +72,7 @@ static void WindowSavePromptMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowSavePromptPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowSavePromptCallback(int32_t result, const utf8 * path);
 
-static rct_window_event_list window_save_prompt_events([](auto& events)
+static WindowEventList window_save_prompt_events([](auto& events)
 {
     events.close = &WindowSavePromptClose;
     events.mouse_up = &WindowSavePromptMouseup;

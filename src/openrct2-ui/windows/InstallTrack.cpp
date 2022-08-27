@@ -63,7 +63,7 @@ static void WindowInstallTrackInvalidate(rct_window *w);
 static void WindowInstallTrackPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowInstallTrackTextInput(rct_window *w, WidgetIndex widgetIndex, char *text);
 
-static rct_window_event_list window_install_track_events([](auto& events)
+static WindowEventList window_install_track_events([](auto& events)
 {
     events.close = &WindowInstallTrackClose;
     events.mouse_up = &WindowInstallTrackMouseup;

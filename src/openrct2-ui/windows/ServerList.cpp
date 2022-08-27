@@ -87,7 +87,7 @@ static void WindowServerListInvalidate(rct_window* w);
 static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_server_list_events([](auto& events) {
+static WindowEventList window_server_list_events([](auto& events) {
     events.close = &WindowServerListClose;
     events.mouse_up = &WindowServerListMouseup;
     events.resize = &WindowServerListResize;

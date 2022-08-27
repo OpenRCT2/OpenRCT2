@@ -28,7 +28,7 @@ static rct_widget window_title_exit_widgets[] = {
 static void WindowTitleExitPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowTitleExitMouseup(rct_window *w, WidgetIndex widgetIndex);
 
-static rct_window_event_list window_title_exit_events([](auto& events)
+static WindowEventList window_title_exit_events([](auto& events)
 {
     events.mouse_up = &WindowTitleExitMouseup;
     events.paint = &WindowTitleExitPaint;

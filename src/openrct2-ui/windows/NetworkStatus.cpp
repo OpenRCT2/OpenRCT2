@@ -40,7 +40,7 @@ static void WindowNetworkStatusTextinput(rct_window *w, WidgetIndex widgetIndex,
 static void WindowNetworkStatusInvalidate(rct_window *w);
 static void WindowNetworkStatusPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_network_status_events([](auto& events)
+static WindowEventList window_network_status_events([](auto& events)
 {
     events.close = &WindowNetworkStatusOnclose;
     events.mouse_up = &WindowNetworkStatusMouseup;
