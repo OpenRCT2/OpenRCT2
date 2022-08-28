@@ -42,6 +42,7 @@
 - Fix: [#17776] “Other Parks” tab uses separate lists for SC4/SC6 and .park scenarios.
 - Fix: [#17784] Colour preset RNG is biased (original bug).
 - Fix: [#17834] Finance window becomes blank after 4096 years.
+- Fix: [#17905] The chain button in the map window is enabled for rectangular maps when (re)opened.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
