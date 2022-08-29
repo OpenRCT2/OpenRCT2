@@ -3620,6 +3620,9 @@ STR_6511    :Zero G Roll (right)
 STR_6512    :Large Zero G Roll (left)
 STR_6513    :Large Zero G Roll (right)
 STR_6514    :Invalid height!
+STR_6515    :Fallback images will be used
+STR_6516    :Object uses RollerCoaster Tycoon 1 sprites. Fallback images will be used.
+STR_6517    :Park has objects that use RollerCoaster Tycoon 1 sprites. Fallback images will be used.
 
 #############
 # Scenarios #

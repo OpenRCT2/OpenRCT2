@@ -1256,7 +1256,15 @@ private:
     void DrawDebugData(rct_drawpixelinfo* dpi)
     {
         ObjectListItem* listItem = &_listItems[selected_list_item];
-        auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (LIST_ROW_HEIGHT * 5) };
+        auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (LIST_ROW_HEIGHT * 6) };
+
+        // Draw fallback image warning
+        if (_loadedObject && _loadedObject->UsesFallbackImages())
+        {
+            DrawTextBasic(dpi, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_SATURATED_RED, TextAlignment::RIGHT });
+        }
+        screenPos.y += LIST_ROW_HEIGHT;
+
         // Draw ride type.
         if (GetSelectedObjectType() == ObjectType::Ride)
         {
