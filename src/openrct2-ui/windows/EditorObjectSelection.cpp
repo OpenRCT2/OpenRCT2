@@ -1566,6 +1566,7 @@ void EditorLoadSelectedObjects()
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
+    bool showFallbackWarning = false;
     for (int32_t i = 0; i < numItems; i++)
     {
         if (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
@@ -1596,6 +1597,10 @@ void EditorLoadSelectedObjects()
                     {
                         research_insert_scenery_group_entry(entryIndex, true);
                     }
+                    if (loadedObject->UsesFallbackImages())
+                    {
+                        showFallbackWarning = true;
+                    }
                 }
             }
         }
@@ -1605,4 +1610,6 @@ void EditorLoadSelectedObjects()
         // Reloads the default cyan water palette if no palette was selected.
         load_palette();
     }
+    if (showFallbackWarning)
+        context_show_error(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
 }
