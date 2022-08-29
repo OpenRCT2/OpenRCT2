@@ -5497,14 +5497,8 @@ void Guest::UpdateQueuing()
             DestinationTolerance = 0;
             SetState(PeepState::QueuingFront);
             RideSubState = PeepRideSubState::AtEntrance;
-            return;
         }
 
-        // Give up queueing for the ride
-        sprite_direction ^= (1 << 4);
-        Invalidate();
-        RemoveFromQueue();
-        SetState(PeepState::One);
         return;
     }
 
