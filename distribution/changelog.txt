@@ -14,7 +14,7 @@
 - Improved: [#16840] Add support for rectangular heightmaps.
 - Improved: [#17575] You can now search for Authors in Object Selection.
 - Improved: [#17868] [Plugin] You can now change active tab of a custom window programmatically.
-- Improved: [#17928] Added error message when using RCT1 objects without RCT1 linked.
+- Improved: [#17928] Added warning when using RCT1 objects without RCT1 linked.
 - Change: [#9104] Calculate maze support costs.
 - Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
