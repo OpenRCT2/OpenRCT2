@@ -645,7 +645,7 @@ private:
                 viewport_create(
                     this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                     viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
-                flags |= (1 << 2);
+                flags |= WF_NO_SCROLLING;
                 Invalidate();
             }
         }

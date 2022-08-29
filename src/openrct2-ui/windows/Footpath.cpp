@@ -125,7 +125,7 @@ static void WindowFootpathToolup(rct_window * w, WidgetIndex widgetIndex, const 
 static void WindowFootpathInvalidate(rct_window * w);
 static void WindowFootpathPaint(rct_window * w, rct_drawpixelinfo * dpi);
 
-static rct_window_event_list window_footpath_events([](auto& events)
+static WindowEventList window_footpath_events([](auto& events)
 {
     events.close = &WindowFootpathClose;
     events.mouse_up = &WindowFootpathMouseup;

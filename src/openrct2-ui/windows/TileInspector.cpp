@@ -465,7 +465,7 @@ static void WindowTileInspectorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 static void WindowTileInspectorSetPage(rct_window* w, const TileInspectorPage page);
 static void WindowTileInspectorClose(rct_window* w);
 
-static rct_window_event_list TileInspectorWindowEvents([](auto& events) {
+static WindowEventList TileInspectorWindowEvents([](auto& events) {
     events.mouse_up = &WindowTileInspectorMouseup;
     events.resize = &WindowTileInspectorResize;
     events.mouse_down = &WindowTileInspectorMousedown;

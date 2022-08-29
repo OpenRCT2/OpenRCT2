@@ -155,7 +155,7 @@ static void WindowMultiplayerOptionsUpdate(rct_window *w);
 static void WindowMultiplayerOptionsInvalidate(rct_window *w);
 static void WindowMultiplayerOptionsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_multiplayer_information_events([](auto& events)
+static WindowEventList window_multiplayer_information_events([](auto& events)
 {
     events.mouse_up = &WindowMultiplayerInformationMouseup;
     events.resize = &WindowMultiplayerInformationResize;
@@ -164,7 +164,7 @@ static rct_window_event_list window_multiplayer_information_events([](auto& even
     events.paint = &WindowMultiplayerInformationPaint;
 });
 
-static rct_window_event_list window_multiplayer_players_events([](auto& events)
+static WindowEventList window_multiplayer_players_events([](auto& events)
 {
     events.mouse_up = &WindowMultiplayerPlayersMouseup;
     events.resize = &WindowMultiplayerPlayersResize;
@@ -177,7 +177,7 @@ static rct_window_event_list window_multiplayer_players_events([](auto& events)
     events.scroll_paint = &WindowMultiplayerPlayersScrollpaint;
 });
 
-static rct_window_event_list window_multiplayer_groups_events([](auto& events)
+static WindowEventList window_multiplayer_groups_events([](auto& events)
 {
     events.mouse_up = &WindowMultiplayerGroupsMouseup;
     events.resize = &WindowMultiplayerGroupsResize;
@@ -193,7 +193,7 @@ static rct_window_event_list window_multiplayer_groups_events([](auto& events)
     events.scroll_paint = &WindowMultiplayerGroupsScrollpaint;
 });
 
-static rct_window_event_list window_multiplayer_options_events([](auto& events)
+static WindowEventList window_multiplayer_options_events([](auto& events)
 {
     events.mouse_up = &WindowMultiplayerOptionsMouseup;
     events.resize = &WindowMultiplayerOptionsResize;
@@ -202,7 +202,7 @@ static rct_window_event_list window_multiplayer_options_events([](auto& events)
     events.paint = &WindowMultiplayerOptionsPaint;
 });
 
-static rct_window_event_list *window_multiplayer_page_events[] = {
+static WindowEventList *window_multiplayer_page_events[] = {
     &window_multiplayer_information_events,
     &window_multiplayer_players_events,
     &window_multiplayer_groups_events,

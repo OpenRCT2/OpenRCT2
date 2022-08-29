@@ -226,7 +226,7 @@ static void WindowMapgenHeightmapMousedown(rct_window* w, WidgetIndex widgetInde
 static void WindowMapgenHeightmapInvalidate(rct_window* w);
 static void WindowMapgenHeightmapPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list BaseEvents([](auto& events) {
+static WindowEventList BaseEvents([](auto& events) {
     events.close = &WindowMapgenSharedClose;
     events.mouse_up = &WindowMapgenBaseMouseup;
     events.mouse_down = &WindowMapgenBaseMousedown;
@@ -237,7 +237,7 @@ static rct_window_event_list BaseEvents([](auto& events) {
     events.paint = &WindowMapgenBasePaint;
 });
 
-static rct_window_event_list RandomEvents([](auto& events) {
+static WindowEventList RandomEvents([](auto& events) {
     events.close = &WindowMapgenSharedClose;
     events.mouse_up = &WindowMapgenRandomMouseup;
     events.mouse_down = &WindowMapgenRandomMousedown;
@@ -246,7 +246,7 @@ static rct_window_event_list RandomEvents([](auto& events) {
     events.paint = &WindowMapgenRandomPaint;
 });
 
-static rct_window_event_list SimplexEvents([](auto& events) {
+static WindowEventList SimplexEvents([](auto& events) {
     events.close = &WindowMapgenSharedClose;
     events.mouse_up = &WindowMapgenSimplexMouseup;
     events.mouse_down = &WindowMapgenSimplexMousedown;
@@ -257,7 +257,7 @@ static rct_window_event_list SimplexEvents([](auto& events) {
     events.paint = &WindowMapgenSimplexPaint;
 });
 
-static rct_window_event_list HeightmapEvents([](auto& events) {
+static WindowEventList HeightmapEvents([](auto& events) {
     events.close = &WindowMapgenSharedClose;
     events.mouse_up = &WindowMapgenHeightmapMouseup;
     events.mouse_down = &WindowMapgenHeightmapMousedown;
@@ -265,7 +265,7 @@ static rct_window_event_list HeightmapEvents([](auto& events) {
     events.paint = &WindowMapgenHeightmapPaint;
 });
 
-static rct_window_event_list* PageEvents[] = {
+static WindowEventList* PageEvents[] = {
     &BaseEvents,
     &RandomEvents,
     &SimplexEvents,

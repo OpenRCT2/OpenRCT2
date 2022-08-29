@@ -31,7 +31,7 @@ struct rct_object_entry;
  */
 struct rct_window
 {
-    rct_window_event_list* event_handlers{};
+    WindowEventList* event_handlers{};
     rct_viewport* viewport{};
     uint64_t disabled_widgets{};
     uint64_t pressed_widgets{};

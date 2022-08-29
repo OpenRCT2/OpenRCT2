@@ -129,8 +129,6 @@ void GameHandleInput()
         ProcessMouseOver(screenCoords);
         ProcessMouseTool(screenCoords);
     }
-
-    window_visit_each([](rct_window* w) { window_event_unknown_08_call(w); });
 }
 
 /**

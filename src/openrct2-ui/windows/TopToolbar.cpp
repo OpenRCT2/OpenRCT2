@@ -289,7 +289,7 @@ static void WindowTopToolbarToolAbort(rct_window* w, WidgetIndex widgetIndex);
 static void WindowTopToolbarInvalidate(rct_window* w);
 static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_top_toolbar_events([](auto& events) {
+static WindowEventList window_top_toolbar_events([](auto& events) {
     events.mouse_up = &WindowTopToolbarMouseup;
     events.mouse_down = &WindowTopToolbarMousedown;
     events.dropdown = &WindowTopToolbarDropdown;

@@ -90,7 +90,7 @@ static void WindowPlayerOverviewUpdate(rct_window* w);
 static void WindowPlayerOverviewInvalidate(rct_window *w);
 static void WindowPlayerOverviewPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_player_overview_events([](auto& events)
+static WindowEventList window_player_overview_events([](auto& events)
 {
     events.close = &WindowPlayerOverviewClose;
     events.mouse_up = &WindowPlayerOverviewMouseUp;
@@ -109,7 +109,7 @@ static void WindowPlayerStatisticsUpdate(rct_window* w);
 static void WindowPlayerStatisticsInvalidate(rct_window *w);
 static void WindowPlayerStatisticsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_player_statistics_events([](auto& events)
+static WindowEventList window_player_statistics_events([](auto& events)
 {
     events.close = &WindowPlayerStatisticsClose;
     events.mouse_up = &WindowPlayerStatisticsMouseUp;
@@ -119,7 +119,7 @@ static rct_window_event_list window_player_statistics_events([](auto& events)
     events.paint = &WindowPlayerStatisticsPaint;
 });
 
-static rct_window_event_list *window_player_page_events[] = {
+static WindowEventList *window_player_page_events[] = {
     &window_player_overview_events,
     &window_player_statistics_events,
 };

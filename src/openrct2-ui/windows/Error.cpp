@@ -31,7 +31,7 @@ static rct_widget window_error_widgets[] = {
 static void WindowErrorUnknown5(rct_window *w);
 static void WindowErrorPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_error_events([](auto& events)
+static WindowEventList window_error_events([](auto& events)
 {
     events.unknown_05 = &WindowErrorUnknown5;
     events.paint = &WindowErrorPaint;

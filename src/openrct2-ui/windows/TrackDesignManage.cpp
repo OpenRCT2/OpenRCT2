@@ -65,7 +65,7 @@ static void WindowTrackDeletePromptMouseup(rct_window *w, WidgetIndex widgetInde
 static void WindowTrackDeletePromptPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x009940EC
-static rct_window_event_list window_track_manage_events([](auto& events)
+static WindowEventList window_track_manage_events([](auto& events)
 {
     events.close = &WindowTrackManageClose;
     events.mouse_up = &WindowTrackManageMouseup;
@@ -74,7 +74,7 @@ static rct_window_event_list window_track_manage_events([](auto& events)
 });
 
 // 0x0099415C
-static rct_window_event_list window_track_delete_prompt_events([](auto& events)
+static WindowEventList window_track_delete_prompt_events([](auto& events)
 {
     events.mouse_up = &WindowTrackDeletePromptMouseup;
     events.paint = &WindowTrackDeletePromptPaint;

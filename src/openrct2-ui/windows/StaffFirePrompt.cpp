@@ -43,7 +43,7 @@ static void WindowStaffFireMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowStaffFirePaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
-static rct_window_event_list window_staff_fire_events([](auto& events)
+static WindowEventList window_staff_fire_events([](auto& events)
 {
     events.mouse_up = &WindowStaffFireMouseup;
     events.paint = &WindowStaffFirePaint;

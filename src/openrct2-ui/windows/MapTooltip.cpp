@@ -26,7 +26,7 @@ static rct_widget window_map_tooltip_widgets[] = {
 static void WindowMapTooltipUpdate(rct_window *w);
 static void WindowMapTooltipPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_map_tooltip_events([](auto& events)
+static WindowEventList window_map_tooltip_events([](auto& events)
 {
     events.update = &WindowMapTooltipUpdate;
     events.paint = &WindowMapTooltipPaint;

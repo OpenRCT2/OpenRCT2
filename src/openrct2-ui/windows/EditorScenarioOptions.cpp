@@ -202,7 +202,7 @@ static void WindowEditorScenarioOptionsParkInvalidate(rct_window *w);
 static void WindowEditorScenarioOptionsParkPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x0097EB60
-static rct_window_event_list window_scenario_options_financial_events([](auto& events)
+static WindowEventList window_scenario_options_financial_events([](auto& events)
 {
     events.mouse_up = &WindowEditorScenarioOptionsFinancialMouseup;
     events.resize = &WindowEditorScenarioOptionsFinancialResize;
@@ -213,7 +213,7 @@ static rct_window_event_list window_scenario_options_financial_events([](auto& e
 });
 
 // 0x0097EBD0
-static rct_window_event_list window_scenario_options_guests_events([](auto& events)
+static WindowEventList window_scenario_options_guests_events([](auto& events)
 {
     events.mouse_up = &WindowEditorScenarioOptionsGuestsMouseup;
     events.resize = &WindowEditorScenarioOptionsGuestsResize;
@@ -224,7 +224,7 @@ static rct_window_event_list window_scenario_options_guests_events([](auto& even
 });
 
 // 0x0097EC40
-static rct_window_event_list window_scenario_options_park_events([](auto& events)
+static WindowEventList window_scenario_options_park_events([](auto& events)
 {
     events.mouse_up = &WindowEditorScenarioOptionsParkMouseup;
     events.resize = &WindowEditorScenarioOptionsParkResize;
@@ -235,7 +235,7 @@ static rct_window_event_list window_scenario_options_park_events([](auto& events
     events.paint = &WindowEditorScenarioOptionsParkPaint;
 });
 
-static rct_window_event_list *window_editor_scenario_options_page_events[] = {
+static WindowEventList *window_editor_scenario_options_page_events[] = {
     &window_scenario_options_financial_events,
     &window_scenario_options_guests_events,
     &window_scenario_options_park_events,

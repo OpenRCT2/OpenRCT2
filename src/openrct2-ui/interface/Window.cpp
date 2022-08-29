@@ -288,23 +288,20 @@ rct_window* WindowCreate(
 }
 
 rct_window* WindowCreate(
-    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls,
-    uint32_t flags)
+    const ScreenCoordsXY& pos, int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
 {
     auto w = std::make_unique<rct_window>();
     w->event_handlers = event_handlers;
     return WindowCreate(std::move(w), cls, pos, width, height, flags);
 }
 
-rct_window* WindowCreateAutoPos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls, uint32_t flags)
+rct_window* WindowCreateAutoPos(int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
 {
     auto pos = GetAutoPositionForNewWindow(width, height);
     return WindowCreate(pos, width, height, event_handlers, cls, flags);
 }
 
-rct_window* WindowCreateCentred(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, WindowClass cls, uint32_t flags)
+rct_window* WindowCreateCentred(int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
 {
     auto pos = GetCentrePositionForNewWindow(width, height);
     return WindowCreate(pos, width, height, event_handlers, cls, flags);

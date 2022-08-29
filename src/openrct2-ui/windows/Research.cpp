@@ -113,7 +113,7 @@ static void WindowResearchFundingInvalidate(rct_window *w);
 static void WindowResearchFundingPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //
-static rct_window_event_list window_research_development_events([](auto& events)
+static WindowEventList window_research_development_events([](auto& events)
 {
     events.mouse_up = &WindowResearchDevelopmentMouseup;
     events.update = &WindowResearchDevelopmentUpdate;
@@ -122,7 +122,7 @@ static rct_window_event_list window_research_development_events([](auto& events)
 });
 
 // 0x009890E8
-static rct_window_event_list window_research_funding_events([](auto& events)
+static WindowEventList window_research_funding_events([](auto& events)
 {
     events.mouse_up = &WindowResearchFundingMouseup;
     events.mouse_down = &WindowResearchFundingMousedown;
@@ -132,7 +132,7 @@ static rct_window_event_list window_research_funding_events([](auto& events)
     events.paint = &WindowResearchFundingPaint;
 });
 
-static rct_window_event_list *window_research_page_events[] = {
+static WindowEventList *window_research_page_events[] = {
     &window_research_development_events,
     &window_research_funding_events,
 };

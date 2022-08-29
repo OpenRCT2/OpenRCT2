@@ -532,7 +532,7 @@ static void WindowRideCustomerPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowRideSetPage(rct_window* w, int32_t page);
 
 // 0x0098DFD4
-static rct_window_event_list window_ride_main_events([](auto& events) {
+static WindowEventList window_ride_main_events([](auto& events) {
     events.mouse_up = &WindowRideMainMouseup;
     events.resize = &WindowRideMainResize;
     events.mouse_down = &WindowRideMainMousedown;
@@ -545,7 +545,7 @@ static rct_window_event_list window_ride_main_events([](auto& events) {
 });
 
 // 0x0098E204
-static rct_window_event_list window_ride_vehicle_events([](auto& events) {
+static WindowEventList window_ride_vehicle_events([](auto& events) {
     events.mouse_up = &WindowRideVehicleMouseup;
     events.resize = &WindowRideVehicleResize;
     events.mouse_down = &WindowRideVehicleMousedown;
@@ -558,7 +558,7 @@ static rct_window_event_list window_ride_vehicle_events([](auto& events) {
 });
 
 // 0x0098E0B4
-static rct_window_event_list window_ride_operating_events([](auto& events) {
+static WindowEventList window_ride_operating_events([](auto& events) {
     events.mouse_up = &WindowRideOperatingMouseup;
     events.resize = &WindowRideOperatingResize;
     events.mouse_down = &WindowRideOperatingMousedown;
@@ -570,7 +570,7 @@ static rct_window_event_list window_ride_operating_events([](auto& events) {
 });
 
 // 0x0098E124
-static rct_window_event_list window_ride_maintenance_events([](auto& events) {
+static WindowEventList window_ride_maintenance_events([](auto& events) {
     events.mouse_up = &WindowRideMaintenanceMouseup;
     events.resize = &WindowRideMaintenanceResize;
     events.mouse_down = &WindowRideMaintenanceMousedown;
@@ -581,7 +581,7 @@ static rct_window_event_list window_ride_maintenance_events([](auto& events) {
 });
 
 // 0x0098E044
-static rct_window_event_list window_ride_colour_events([](auto& events) {
+static WindowEventList window_ride_colour_events([](auto& events) {
     events.close = &WindowRideColourClose;
     events.mouse_up = &WindowRideColourMouseup;
     events.resize = &WindowRideColourResize;
@@ -596,7 +596,7 @@ static rct_window_event_list window_ride_colour_events([](auto& events) {
 });
 
 // 0x0098E194
-static rct_window_event_list window_ride_music_events([](auto& events) {
+static WindowEventList window_ride_music_events([](auto& events) {
     events.mouse_up = &WindowRideMusicMouseup;
     events.resize = &WindowRideMusicResize;
     events.mouse_down = &WindowRideMusicMousedown;
@@ -607,7 +607,7 @@ static rct_window_event_list window_ride_music_events([](auto& events) {
 });
 
 // 0x0098DE14
-static rct_window_event_list window_ride_measurements_events([](auto& events) {
+static WindowEventList window_ride_measurements_events([](auto& events) {
     events.close = &WindowRideMeasurementsClose;
     events.mouse_up = &WindowRideMeasurementsMouseup;
     events.resize = &WindowRideMeasurementsResize;
@@ -622,7 +622,7 @@ static rct_window_event_list window_ride_measurements_events([](auto& events) {
 });
 
 // 0x0098DF64
-static rct_window_event_list window_ride_graphs_events([](auto& events) {
+static WindowEventList window_ride_graphs_events([](auto& events) {
     events.mouse_up = &WindowRideGraphsMouseup;
     events.resize = &WindowRideGraphsResize;
     events.mouse_down = &WindowRideGraphsMousedown;
@@ -636,7 +636,7 @@ static rct_window_event_list window_ride_graphs_events([](auto& events) {
 });
 
 // 0x0098DEF4
-static rct_window_event_list window_ride_income_events([](auto& events) {
+static WindowEventList window_ride_income_events([](auto& events) {
     events.mouse_up = &WindowRideIncomeMouseup;
     events.resize = &WindowRideIncomeResize;
     events.mouse_down = &WindowRideIncomeMousedown;
@@ -647,7 +647,7 @@ static rct_window_event_list window_ride_income_events([](auto& events) {
 });
 
 // 0x0098DE84
-static rct_window_event_list window_ride_customer_events([](auto& events) {
+static WindowEventList window_ride_customer_events([](auto& events) {
     events.mouse_up = &WindowRideCustomerMouseup;
     events.resize = &WindowRideCustomerResize;
     events.update = &WindowRideCustomerUpdate;
@@ -656,7 +656,7 @@ static rct_window_event_list window_ride_customer_events([](auto& events) {
 });
 
 // clang-format off
-static rct_window_event_list *window_ride_page_events[] = {
+static WindowEventList *window_ride_page_events[] = {
     &window_ride_main_events,
     &window_ride_vehicle_events,
     &window_ride_operating_events,

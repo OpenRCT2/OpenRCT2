@@ -93,7 +93,7 @@ static void WindowLoadsaveInvalidate(rct_window *w);
 static void WindowLoadsavePaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowLoadsaveScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_loadsave_events([](auto& events)
+static WindowEventList window_loadsave_events([](auto& events)
 {
     events.close = &WindowLoadsaveClose;
     events.mouse_up = &WindowLoadsaveMouseup;
@@ -1140,7 +1140,7 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_overwrite_prompt_events([](auto& events) {
+static WindowEventList window_overwrite_prompt_events([](auto& events) {
     events.mouse_up = &WindowOverwritePromptMouseup;
     events.paint = &WindowOverwritePromptPaint;
 });

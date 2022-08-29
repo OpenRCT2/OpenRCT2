@@ -118,7 +118,7 @@ static bool ScenarioSelectUseSmallFont()
     return ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT;
 }
 
-static rct_window_event_list window_scenarioselect_events([](auto& events)
+static WindowEventList window_scenarioselect_events([](auto& events)
 {
     events.close = &WindowScenarioselectClose;
     events.mouse_up = &WindowScenarioselectMouseup;
