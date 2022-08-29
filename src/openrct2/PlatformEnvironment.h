@@ -83,6 +83,7 @@ namespace OpenRCT2
         virtual u8string GetFilePath(PATHID pathid) const abstract;
         virtual u8string FindFile(DIRBASE base, DIRID did, u8string_view fileName) const abstract;
         virtual void SetBasePath(DIRBASE base, u8string_view path) abstract;
+        virtual bool IsUsingClassic() const abstract;
     };
 
     [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DIRBASE_VALUES basePaths);

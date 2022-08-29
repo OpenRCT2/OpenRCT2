@@ -111,6 +111,11 @@ public:
         }
     }
 
+    bool IsUsingClassic() const override
+    {
+        return _usingRctClassic;
+    }
+
 private:
     static const char* DirectoryNamesRCT2[];
     static const u8string DirectoryNamesOpenRCT2[];
