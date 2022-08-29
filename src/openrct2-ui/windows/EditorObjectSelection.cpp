@@ -1261,7 +1261,7 @@ private:
         // Draw fallback image warning
         if (_loadedObject && _loadedObject->UsesFallbackImages())
         {
-            DrawTextBasic(dpi, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_SATURATED_RED, TextAlignment::RIGHT });
+            DrawTextBasic(dpi, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
         }
         screenPos.y += LIST_ROW_HEIGHT;
 
