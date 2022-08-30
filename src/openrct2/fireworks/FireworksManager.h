@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-class Firework;
+struct Firework;
 namespace OpenRCT2
 {
     namespace Fireworks

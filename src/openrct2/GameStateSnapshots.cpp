@@ -20,6 +20,7 @@
 #include "entity/MoneyEffect.h"
 #include "entity/Particle.h"
 #include "entity/Staff.h"
+#include "fireworks/Firework.h"
 #include "ride/Vehicle.h"
 
 static constexpr size_t MaximumGameStateSnapshots = 32;
@@ -95,7 +96,7 @@ struct GameStateSnapshot_t
 
         // Encodes and checks the size of each of the entity so that we
         // can fail gracefully when fields added/removed
-        if (!EntitiesSizeCheck<Vehicle, Guest, Staff, Litter, MoneyEffect, Balloon, Duck, JumpingFountain, SteamParticle>(ds))
+        if (!EntitiesSizeCheck<Vehicle, Guest, Staff, Litter, MoneyEffect, Balloon, Duck, JumpingFountain, SteamParticle, Firework>(ds))
         {
             log_error("Entity index corrupted!");
             return;
@@ -150,6 +151,9 @@ struct GameStateSnapshot_t
                     break;
                 case EntityType::SteamParticle:
                     reinterpret_cast<SteamParticle&>(sprite).Serialise(ds);
+                    break;
+                case EntityType::Firework:
+                    reinterpret_cast<Firework&>(sprite).Serialise(ds);
                     break;
                 case EntityType::Null:
                     break;

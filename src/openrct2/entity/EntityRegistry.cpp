@@ -547,6 +547,11 @@ uint16_t RemoveFloatingEntities()
         EntityRemove(money);
         removed++;
     }
+    for (auto* firework : EntityList<Firework>())
+    {
+        EntityRemove(firework);
+        removed++;
+    }
     return removed;
 }
 

@@ -19,31 +19,14 @@
 #include "FireworksSequence.h"
 
 #include <algorithm>
-Firework::Firework()
-    : _currentFrame(0)
-    , _imageTable(nullptr)
-    , _numFrames(0)
-    , _color1(COLOUR_NULL)
-    , _color2(COLOUR_NULL)
-    , _color3(COLOUR_NULL)
-    , _useRemap1(false)
-    , _useRemap2(false)
-    , _useRemap3(false)
-    , _frameWidth(0)
-    , _frameHeight(0)
-{
-}
-
-Firework::~Firework()
-{
-}
 
 Firework* Firework::Create(
     const TileCoordsXY& tile, const int32_t height, const std::string& objectId, const colour_t color1, const colour_t color2,
     const colour_t color3)
 {
-
     auto* firework = CreateEntity<Firework>();
+    if (firework == nullptr)
+        return nullptr;
 
     // set the position
     auto pos = CoordsXYZ{ tile.ToCoordsXY(), height };

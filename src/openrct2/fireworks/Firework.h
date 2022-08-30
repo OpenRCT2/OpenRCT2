@@ -16,15 +16,11 @@
 
 struct paint_session;
 
-class Firework : public EntityBase
+struct Firework : EntityBase
 {
 private:
 public:
     static constexpr auto cEntityType = EntityType::Firework;
-
-    Firework();
-    virtual ~Firework();
-
     static Firework* Create(
         const TileCoordsXY& tile, const int32_t height, const std::string& objectId, const colour_t color1,
         const colour_t color2, const colour_t color3);

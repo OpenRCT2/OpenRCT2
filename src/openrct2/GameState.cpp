@@ -317,6 +317,9 @@ void GameState::UpdateLogic(LogicTimings* timings)
     _date = Date(static_cast<uint32_t>(gDateMonthsElapsed), gDateMonthTicks);
     report_time(LogicTimePart::Date);
 
+    _fireworksMgr.Update();
+    report_time(LogicTimePart::Fireworks);
+
     scenario_update();
     report_time(LogicTimePart::Scenario);
     climate_update();
@@ -344,9 +347,6 @@ void GameState::UpdateLogic(LogicTimings* timings)
         _park->Update(_date);
     }
     report_time(LogicTimePart::Park);
-
-    _fireworksMgr.Update();
-    report_time(LogicTimePart::Fireworks);
 
     research_update();
     report_time(LogicTimePart::Research);

@@ -34,7 +34,8 @@ void OpenRCT2::Fireworks::FireworksManager::OnEvent(const Event& e)
     if (spawner != nullptr)
     {
         auto firework = Firework::Create(spawner->Location, e.Height, e.ObjectId, e.Palette1, e.Palette2, e.Palette3);
-        _fireworks.push_back(firework);
+        if(firework != nullptr)
+            _fireworks.push_back(firework);
     }
 }
 
