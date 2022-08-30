@@ -59,6 +59,7 @@
 #include "Viewport.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdarg>
 #include <cstdlib>
@@ -1265,13 +1266,29 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
     return 0;
 }
 
+constexpr std::array _objectTypeNames = {
+    "Rides",
+    "Small Scenery",
+    "Large Scenery",
+    "Walls",
+    "Banners",
+    "Paths",
+    "Path Additions",
+    "Scenery groups",
+    "Park entrances",
+    "Water",
+    "ScenarioText",
+    "Terrain Surface",
+    "Terrain Edges",
+    "Stations",
+    "Music",
+    "Footpath Surface",
+    "Footpath Railings",
+    "Audio",
+};
+static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
 static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    const utf8* object_type_names[] = {
-        "Rides", "Small scenery",  "Large scenery",  "Walls",          "Banners",
-        "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water",
-    };
-
     for (auto objectType : ObjectTypes)
     {
         int32_t entryGroupIndex = 0;
@@ -1283,7 +1300,7 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
             }
         }
         console.WriteFormatLine(
-            "%s: %d/%d", object_type_names[EnumValue(objectType)], entryGroupIndex,
+            "%s: %d/%d", _objectTypeNames[EnumValue(objectType)], entryGroupIndex,
             object_entry_group_counts[EnumValue(objectType)]);
     }
 
