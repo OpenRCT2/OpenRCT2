@@ -4844,8 +4844,8 @@ void UpdateRotatingEnterprise(Vehicle& vehicle)
         vehicle.var_C0 = 0;
         return;
     }
-    vehicle.sub_state = 1;
-    vehicle.UpdateRotating();
+
+    UpdateRotatingDefault(vehicle);
 }
 
 /**
