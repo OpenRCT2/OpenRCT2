@@ -1294,7 +1294,7 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
         int32_t entryGroupIndex = 0;
         for (; entryGroupIndex < object_entry_group_counts[EnumValue(objectType)]; entryGroupIndex++)
         {
-            if (object_entry_get_chunk(objectType, entryGroupIndex) == nullptr)
+            if (object_entry_get_object(objectType, entryGroupIndex) == nullptr)
             {
                 break;
             }
