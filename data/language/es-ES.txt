@@ -97,6 +97,7 @@ STR_0092    :Montaña Rusa Impulso MLI
 STR_0093    :Montaña Rusa Híbrida 
 STR_0094    :Montaña Rusa de un solo carril
 STR_0095    :Montaña Rusa Alpina
+STR_0096    :Montaña Rusa de madera clásica
 STR_0512    :Una montaña rusa pequeña de acero con una subida en espiral y vagones con asientos en línea.
 STR_0513    :Una montaña rusa en el que los pasajeros permanecen de pie.
 STR_0514    :Los vagones suspendidos bajo los raíles se balancean hacia los lados en las curvas.
@@ -146,7 +147,7 @@ STR_0560    :
 STR_0561    :
 STR_0562    :Vagones autopropulsados viajan a lo largo de una pista multinivel pasando por paisajes fantasmagóricos y efectos especiales.
 STR_0563    :Los pasajeros permanecen de pie en unos vagones con sujeciones especiales atravesando caídas y múltiples inversiones.
-STR_0564    :Esta montaña rusa, construida en madera, es rápida, rústica, ruidosa y ofrece una experiencia ‘fuera de control’ con muchos ‘vuelos’.
+STR_0564    :Esta montaña rusa, construida en madera, es rápida, bruta, ruidosa y ofrece una experiencia ‘fuera de control’ con muchas ‘caídas’.
 STR_0565    :Una montaña rusa de madera con suaves caídas y giros, donde los vagones se mantienen en la vía mediante ruedas laterales de fricción y la gravedad.
 STR_0566    :Los vagones individuales giran en un tramo de vía en estrecho zig-zag con curvas y caídas bruscas.
 STR_0567    :Los pasajeros, sentados en sillas suspendidas a ambos lados de la vía son colgados cabeza abajo mientras sufren bruscas zambullidas y varias inversiones.
@@ -179,6 +180,7 @@ STR_0602    :Los vagones se aceleran por los motores lineales de inducción.
 STR_0603    :Una montaña rusa estilo de madera con vías de acero, lo que le permite caídas empinadas e inversiones.
 STR_0604    :Los pasajeros viajan en fila india en una pista de monorraíl estrecha, mientras corren a través de inversiones estrechas y cambios de dirección.
 STR_0605    :Los pasajeros bajan por una serpenteante vía de acero, frenando para controlar su velocidad.
+STR_0606    :Una montaña rusa de madera de estilo antiguo con un recorrido rápido y bruto, con muchas caídas, algunas fuerzas G laterales, y diseñada para ofrecer una experiencia ‘fuera de control’.
 STR_0767    :Visitante {INT32}
 STR_0768    :Manitas {INT32}
 STR_0769    :Mecánico {INT32}
