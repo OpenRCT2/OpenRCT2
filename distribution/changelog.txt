@@ -44,6 +44,7 @@
 - Fix: [#17788] Guests could leave queue if another guest rejoins it from the entrance building.
 - Fix: [#17834] Finance window becomes blank after 4096 years.
 - Fix: [#17905] The chain button in the map window is enabled for rectangular maps when (re)opened.
+- Fix: [#17931] The in-game command ‘count_objects’ crashes the game.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
