@@ -1287,6 +1287,7 @@ constexpr std::array _objectTypeNames = {
     "Audio",
 };
 static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
+
 static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     for (auto objectType : ObjectTypes)
