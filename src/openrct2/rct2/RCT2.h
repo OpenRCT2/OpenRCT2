@@ -834,7 +834,7 @@ namespace RCT2
 
         // SC6[6]
         uint32_t next_free_tile_element_pointer_index;
-        Entity sprites[Limits::MaxEntitiesFlag15];
+        Entity sprites[Limits::MaxEntitiesRCTCExtended];
         uint16_t sprite_lists_head[static_cast<uint8_t>(EntityListId::Count)];
         uint16_t sprite_lists_count[static_cast<uint8_t>(EntityListId::Count)];
         StringId park_name;

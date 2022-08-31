@@ -1613,7 +1613,7 @@ namespace RCT2
 
         uint16_t GetMaxEntities()
         {
-            return (_s6.header.classic_flag == 0xf) ? Limits::MaxEntitiesFlag15 : Limits::MaxEntities;
+            return (_s6.header.classic_flag == 0xf) ? Limits::MaxEntitiesRCTCExtended : Limits::MaxEntities;
         }
 
         template<typename OpenRCT2_T> void ImportEntity(const RCT12SpriteBase& src);
