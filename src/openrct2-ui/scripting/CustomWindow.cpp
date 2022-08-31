@@ -756,6 +756,23 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void ChangeTab(size_t tabIndex)
+        {
+            const auto& info = GetInfo(this);
+
+            page = static_cast<int16_t>(tabIndex);
+            frame_no = 0;
+            RefreshWidgets();
+
+            Invalidate();
+            window_event_resize_call(this);
+            window_event_invalidate_call(this);
+            WindowInitScrollWidgets(*this);
+            Invalidate();
+
+            InvokeEventHandler(info.Owner, info.Desc.OnTabChange);
+        }
+
     private:
         std::optional<WidgetIndex> GetViewportWidgetIndex()
         {
@@ -815,23 +832,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 RemoveViewport();
             }
-        }
-
-        void ChangeTab(size_t tabIndex)
-        {
-            const auto& info = GetInfo(this);
-
-            page = static_cast<int16_t>(tabIndex);
-            frame_no = 0;
-            RefreshWidgets();
-
-            Invalidate();
-            window_event_resize_call(this);
-            window_event_invalidate_call(this);
-            WindowInitScrollWidgets(*this);
-            Invalidate();
-
-            InvokeEventHandler(info.Owner, info.Desc.OnTabChange);
         }
 
         void SetPressedTab()
@@ -1183,6 +1183,18 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& customInfo = GetInfo(w);
             customInfo.Desc.Title = value;
+        }
+    }
+
+    void UpdateWindowTab(rct_window* w, int32_t tabIndex)
+    {
+        if (w->classification == WindowClass::Custom && w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            if (tabIndex >= WIDX_TAB_0 && tabIndex < static_cast<WidgetIndex>(WIDX_TAB_0 + customInfo.Desc.Tabs.size()))
+            {
+                static_cast<CustomWindow*>(w)->ChangeTab(tabIndex);
+            }
         }
     }
 
