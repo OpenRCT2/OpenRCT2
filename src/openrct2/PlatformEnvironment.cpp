@@ -106,8 +106,7 @@ public:
 
         if (base == DIRBASE::RCT2)
         {
-            // Check whether the RCT2 base is RCT2 or RCT Classic
-            _usingRctClassic = Platform::IsRCT2ClassicPath(path);
+            _usingRctClassic = Platform::IsRCTClassicPath(path);
         }
     }
 

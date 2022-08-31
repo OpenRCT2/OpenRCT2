@@ -87,7 +87,8 @@ namespace Platform
     bool ProcessIsElevated();
     float GetDefaultScale();
 
-    bool IsRCT2ClassicPath(std::string_view path);
+    bool IsRCT2Path(std::string_view path);
+    bool IsRCTClassicPath(std::string_view path);
     bool OriginalGameDataExists(std::string_view path);
 
     std::string GetUsername();

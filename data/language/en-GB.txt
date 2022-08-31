@@ -3497,7 +3497,7 @@ STR_6387    :Can’t lower element here…
 STR_6388    :Can’t raise element here…
 STR_6389    :Invalid clearance
 STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic in order to work. Please select the directory where you installed RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic.
-STR_6391    :Please select your RCT2 directory
+STR_6391    :Please select your RCT2 or RCTC directory
 STR_6392    :Could not find {STRING} at this path.
 STR_6393    :Objective Selection
 STR_6394    :Objective

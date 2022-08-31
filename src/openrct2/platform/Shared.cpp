@@ -94,7 +94,13 @@ namespace Platform
         return outTime;
     }
 
-    bool IsRCT2ClassicPath(std::string_view path)
+    bool IsRCT2Path(std::string_view path)
+    {
+        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
+        return File::Exists(combinedPath);
+    }
+
+    bool IsRCTClassicPath(std::string_view path)
     {
         auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Assets", u8"g1.dat"));
         return File::Exists(combinedPath);
@@ -102,13 +108,7 @@ namespace Platform
 
     bool OriginalGameDataExists(std::string_view path)
     {
-        // Check if path is RCT2
-        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
-        if (File::Exists(combinedPath))
-            return true;
-
-        // Check if path is RCT Classic
-        return IsRCT2ClassicPath(path);
+        return IsRCT2Path(path) || IsRCTClassicPath(path);
     }
 
     std::string SanitiseFilename(std::string_view originalName)
