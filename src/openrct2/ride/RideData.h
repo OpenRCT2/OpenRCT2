@@ -167,6 +167,7 @@ using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const tra
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 
+using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t
 {
     Default,
@@ -220,6 +221,8 @@ struct RideTypeDescriptor
 
     // json name lookup
     std::string_view Name;
+
+    UpdateRotatingFunction UpdateRotating = UpdateRotatingDefault;
 
     LightFXAddLightsMagicVehicleFunction LightFXAddLightsMagicVehicle = nullptr;
     StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
@@ -436,6 +439,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "invalid"),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),

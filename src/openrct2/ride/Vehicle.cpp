@@ -4830,6 +4830,24 @@ void Vehicle::UpdateSimulatorOperating()
     var_C0 = 0;
 }
 
+void UpdateRotatingDefault(Vehicle& vehicle)
+{
+    vehicle.sub_state = 1;
+    vehicle.UpdateRotating();
+}
+
+void UpdateRotatingEnterprise(Vehicle& vehicle)
+{
+    if (vehicle.sub_state == 2)
+    {
+        vehicle.SetState(Vehicle::Status::Arriving);
+        vehicle.var_C0 = 0;
+        return;
+    }
+
+    UpdateRotatingDefault(vehicle);
+}
+
 /**
  *
  *  rct2: 0x006D92FF
@@ -4910,15 +4928,8 @@ void Vehicle::UpdateRotating()
         }
     }
 
-    if (curRide->type == RIDE_TYPE_ENTERPRISE && sub_state == 2)
-    {
-        SetState(Vehicle::Status::Arriving);
-        var_C0 = 0;
-        return;
-    }
-
-    sub_state = 1;
-    UpdateRotating();
+    const auto& rtd = GetRideTypeDescriptor(curRide->type);
+    rtd.UpdateRotating(*this);
 }
 
 /**

@@ -272,6 +272,9 @@ struct Vehicle : EntityBase
     void Serialise(DataSerialiser& stream);
     void Paint(paint_session& session, int32_t imageDirection) const;
 
+    friend void UpdateRotatingDefault(Vehicle& vehicle);
+    friend void UpdateRotatingEnterprise(Vehicle& vehicle);
+
 private:
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;
@@ -372,6 +375,9 @@ private:
     int32_t CalculateRiderBraking() const;
 };
 static_assert(sizeof(Vehicle) <= 512);
+
+void UpdateRotatingDefault(Vehicle& vehicle);
+void UpdateRotatingEnterprise(Vehicle& vehicle);
 
 struct train_ref
 {
