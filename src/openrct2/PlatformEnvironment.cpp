@@ -22,6 +22,7 @@ class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
     u8string _basePath[DIRBASE_COUNT];
+    bool _usingRctClassic{};
 
 public:
     explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
@@ -45,8 +46,10 @@ public:
         {
             default:
             case DIRBASE::RCT1:
-            case DIRBASE::RCT2:
                 directoryName = DirectoryNamesRCT2[static_cast<size_t>(did)];
+                break;
+            case DIRBASE::RCT2:
+                directoryName = _usingRctClassic ? "Assets" : DirectoryNamesRCT2[static_cast<size_t>(did)];
                 break;
             case DIRBASE::OPENRCT2:
             case DIRBASE::USER:
@@ -69,6 +72,19 @@ public:
     u8string FindFile(DIRBASE base, DIRID did, u8string_view fileName) const override
     {
         auto dataPath = GetDirectoryPath(base, did);
+
+        std::string alternativeFilename;
+        if (_usingRctClassic && base == DIRBASE::RCT2 && did == DIRID::DATA)
+        {
+            // Special case, handle RCT Classic css ogg files
+            if (String::StartsWith(fileName, "css", true) && String::EndsWith(fileName, ".dat", true))
+            {
+                alternativeFilename = fileName.substr(0, fileName.size() - 3);
+                alternativeFilename.append("ogg");
+                fileName = alternativeFilename;
+            }
+        }
+
         auto path = Path::ResolveCasing(Path::Combine(dataPath, fileName));
         if (base == DIRBASE::RCT1 && did == DIRID::DATA && !File::Exists(path))
         {
@@ -80,12 +96,23 @@ public:
                 path = alternativePath;
             }
         }
+
         return path;
     }
 
     void SetBasePath(DIRBASE base, u8string_view path) override
     {
         _basePath[static_cast<size_t>(base)] = path;
+
+        if (base == DIRBASE::RCT2)
+        {
+            _usingRctClassic = Platform::IsRCTClassicPath(path);
+        }
+    }
+
+    bool IsUsingClassic() const override
+    {
+        return _usingRctClassic;
     }
 
 private:

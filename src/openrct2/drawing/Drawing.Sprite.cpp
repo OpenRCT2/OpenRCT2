@@ -199,7 +199,7 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
     log_verbose("gfx_load_g1(...)");
     try
     {
-        auto path = Path::Combine(env.GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), u8"g1.dat");
+        auto path = env.FindFile(DIRBASE::RCT2, DIRID::DATA, u8"g1.dat");
         auto fs = FileStream(path, FILE_MODE_OPEN);
         _g1.header = fs.ReadValue<rct_g1_header>();
 
