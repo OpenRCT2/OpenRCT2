@@ -43,6 +43,7 @@
 - Fix: [#17784] Colour preset RNG is biased (original bug).
 - Fix: [#17788] Guests could leave queue if another guest rejoins it from the entrance building.
 - Fix: [#17834] Finance window becomes blank after 4096 years.
+- Fix: [#17816] Option to pause game when Steam Overlay is active is not greyed out when using the OpenGL renderer.
 - Fix: [#17905] The chain button in the map window is enabled for rectangular maps when (re)opened.
 - Fix: [#17931] The in-game command ‘count_objects’ crashes the game.
 
