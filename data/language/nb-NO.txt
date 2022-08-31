@@ -97,6 +97,7 @@ STR_0092    :LIM-berg-og-dal-bane
 STR_0093    :Hybrid berg-og-dal-bane
 STR_0094    :Enkeltspor berg-og-dal-bane
 STR_0095    :Alpin berg-og-dal-bane
+STR_0096    :Klassisk tre-berg-og-dal-bane
 
 STR_0512    :En kompakt berg-og-dal-bane med spiraltrekk og myke fall med vridninger
 STR_0513    :En loopende berg-og-dal-bane hvor passasjerene kjører stående
@@ -180,6 +181,7 @@ STR_0602    :Berg-og-dal-banetog blir akselerert ut av stasjonen med lineære in
 STR_0603    :En berg-og-dal-bane i tre, med solid bane av stål som tillater bratte fall og inversjoner
 STR_0604    :Gjester sitter i én kolonne på en smal monorail mens de suser gjennom skarpe inversjoner og svinger
 STR_0605    :Gjester kontrollerer selv farten på kjelker ned en vandrende stålbane
+STR_0606    :En tre-berg-og-dal-bane i eldre stil designet for å føles “ute av kontroll”; den er rask og røff, med mye vektløshet og harde svinger 
 
 STR_0767    :Gjest {INT32}
 STR_0768    :Vaktmester {INT32}
