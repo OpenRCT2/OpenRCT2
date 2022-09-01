@@ -3620,7 +3620,7 @@ STR_6511    :Zero G Roll (right)
 STR_6512    :Large Zero G Roll (left)
 STR_6513    :Large Zero G Roll (right)
 STR_6514    :Invalid height!
-STR_6515    :{BLACK}RCT1 not linked; fallback sprites will be used.
+STR_6515    :{BLACK}RCT1 not linked - fallback images will be used.
 STR_6516    :One or more objects added require RCT1 linked for proper display. Fallback images will be used.
 STR_6517    :One or more objects in this park require RCT1 linked for proper display. Fallback images will be used.
 
