@@ -313,10 +313,10 @@ STR_0925    :Elica verso l’alto
 STR_0926    :Impossibile rimuoverlo…
 STR_0927    :Impossibile costruirlo qui…
 STR_0928    :Catena da traino, per spostare le carrozze lungo le salite
-STR_0929    :Curva a “S” (sinistra)
-STR_0930    :Curva a “S” (destra)
-STR_0931    :Giro verticale (sx)
-STR_0932    :Giro verticale (dx)
+STR_0929    :Curva a “S” (Sx)
+STR_0930    :Curva a “S” (Dx)
+STR_0931    :Giro verticale (Sx)
+STR_0932    :Giro verticale (Dx)
 STR_0933    :Prima occorre modificare l’altezza del terreno
 STR_0934    :L’entrata dell’attrazione è d’intralcio
 STR_0935    :L’uscita dell’attrazione è d’intralcio
@@ -749,24 +749,24 @@ STR_1361    :Impossibile cambiare la velocità…
 STR_1362    :Impossibile cambiare la velocità di lancio…
 STR_1363    :Troppo in alto per i supporti!
 STR_1364    :I supporti del tracciato non possono essere ulteriormente estesi!
-STR_1365    :Curva in-linea (sx)
-STR_1366    :Curva in-linea (dx)
+STR_1365    :Curva in-linea (Sx)
+STR_1366    :Curva in-linea (Dx)
 STR_1367    :Mezzo giro della morte
-STR_1368    :Mezzo avvitamento (sx)
-STR_1369    :Mezzo avvitamento (dx)
-STR_1370    :Avvitamento (sx)
-STR_1371    :Avvitamento (dx)
+STR_1368    :Mezzo avvitamento (Sx)
+STR_1369    :Mezzo avvitamento (Dx)
+STR_1370    :Avvitamento (Sx)
+STR_1371    :Avvitamento (Dx)
 STR_1372    :Sal.  x traino a lancio
-STR_1373    :1/2 giro morte gr. (sx)
-STR_1374    :1/2 giro morte gr. (dx)
+STR_1373    :1/2 giro morte gr. (Sx)
+STR_1374    :1/2 giro morte gr. (Dx)
 STR_1375    :Trasferimento in alto
 STR_1376    :Trasferimento in basso
-STR_1377    :Avvitamento ond. (sx)
-STR_1378    :Avvitamento ond. (dx)
-STR_1379    :Invertitore (sinistra)
-STR_1380    :Invertitore (destra)
-STR_1381    :Salita trainata curva (sx)
-STR_1382    :Salita trainata curva (sx)
+STR_1377    :Avvitamento ond. (Sx)
+STR_1378    :Avvitamento ond. (Dx)
+STR_1379    :Invertitore (Sx)
+STR_1380    :Invertitore (Dx)
+STR_1381    :Salita trainata curva (Sx)
+STR_1382    :Salita trainata curva (Dx)
 STR_1383    :1/4 di giro della morte
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :Altre configurazioni del tracciato
@@ -1061,10 +1061,10 @@ STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Fissa un limite di velocità per i freni
 STR_1677    :{WINDOW_COLOUR_2}Popolarità: {BLACK}Ignota
 STR_1678    :{WINDOW_COLOUR_2}Popolarità: {BLACK}{COMMA16}%
-STR_1679    :Elica in su (sinistra)
-STR_1680    :Elica in su (destra)
-STR_1681    :Elica in giù (sinistra)
-STR_1682    :Elica in giù (destra)
+STR_1679    :Elica in su (Sx)
+STR_1680    :Elica in su (Dx)
+STR_1681    :Elica in giù (Sx)
+STR_1682    :Elica in giù (Dx)
 STR_1683    :Dimens. alla base 2 x 2
 STR_1684    :Dimens. alla base 4 x 4
 STR_1685    :Dimens. alla base 2 x 4
@@ -3523,24 +3523,24 @@ STR_6410    :Zoom avanti/indietro
 STR_6411    :Mostra bottoni per zoomare avanti e indietro nella barra degli strumenti
 STR_6412    :Invio BlocNum
 STR_6413    :Maiusc
-STR_6414    :Maiusc sx
-STR_6415    :Maiusc dx
+STR_6414    :Maiusc Sx
+STR_6415    :Maiusc Dx
 STR_6416    :Ctrl
-STR_6417    :Ctrl sx
-STR_6418    :Ctrl dx
+STR_6417    :Ctrl Sx
+STR_6418    :Ctrl Dx
 STR_6419    :Alt
-STR_6420    :Alt sx
-STR_6421    :Alt dx
+STR_6420    :Alt Sx
+STR_6421    :Alt Dx
 STR_6422    :Cmd
-STR_6423    :Cmd sx
-STR_6424    :Cmd dx
+STR_6423    :Cmd Sx
+STR_6424    :Cmd Dx
 STR_6425    :Sinistra joy
 STR_6426    :Destra joy
 STR_6427    :Su joy
 STR_6428    :Giù joy
 STR_6429    :Joy {INT32}
-STR_6430    :Clic sx
-STR_6431    :Clic dx
+STR_6430    :Clic Sx
+STR_6431    :Clic Dx
 STR_6432    :Mouse {INT32}
 STR_6433    :Rimuovi
 STR_6434    :Rimuovi tutte le associazioni per questa scorciatoia.
@@ -3607,7 +3607,22 @@ STR_6495    :Raggruppa le attrazioni in base al loro tipo anziché mostrare ogni
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Fai clic su una cella per mostrare i suoi elementi.{NEWLINE}Fai Ctrl + clic su una cella per selezionarla direttamente.
 STR_6498    :Attivare per mantenere la mappa di forma quadrata.
-
+STR_6499    :Veicolo non supportato dal formato del tracciato
+STR_6500    :Tipo di rotaia non supportato dal formato del tracciato
+STR_6501    :Colore Casuale
+STR_6502    :Inserire valore compreso tra {COMMA16} e {COMMA16}
+STR_6503    :Dev’essere selezionato almeno un oggetto-stazione
+STR_6504    :Dev’essere selezionato almeno un tipo di suprefice del terreno
+STR_6505    :Dev’essere selezionato almeno un tipo di bordo del terreno
+STR_6506    :Mezzo Avvitamento Grande (Sx)
+STR_6507    :Mezzo Avvitamento Grande (Dx)
+STR_6508    :Mezzo Giro Medio (Sx)
+STR_6509    :Mezzo Giro Medio (Dx)
+STR_6510    :Zero G Roll (Sx)
+STR_6511    :Zero G Roll (Dx)
+STR_6512    :Zero G Roll Grande (Sx)
+STR_6513    :Zero G Roll Grande (Dx)
+STR_6514    :Altezza non valida!
 
 #############
 # Scenarios #
