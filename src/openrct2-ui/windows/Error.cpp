@@ -31,7 +31,7 @@ static rct_widget window_error_widgets[] = {
 static void WindowErrorUnknown5(rct_window *w);
 static void WindowErrorPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_error_events([](auto& events)
+static WindowEventList window_error_events([](auto& events)
 {
     events.unknown_05 = &WindowErrorUnknown5;
     events.paint = &WindowErrorPaint;
@@ -60,7 +60,7 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
     int32_t numLines, width, height, maxY;
     rct_window* w;
 
-    window_close_by_class(WC_ERROR);
+    window_close_by_class(WindowClass::Error);
     auto& buffer = _window_error_text;
     buffer.assign("{BLACK}");
     buffer.append(title);
@@ -109,7 +109,8 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
     }
 
     w = WindowCreate(
-        windowPosition, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
+        windowPosition, width, height, &window_error_events, WindowClass::Error,
+        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     w->widgets = window_error_widgets;
     w->error.var_480 = 0;
     if (!gDisableErrorWindowSound)

@@ -99,6 +99,7 @@ STR_0092    :Moteur à induction linéaire
 STR_0093    :Montagnes russes hybrides
 STR_0094    :Montagnes russes à rail unique
 STR_0095    :Montagnes russes alpines
+STR_0096    :Montagnes russes en bois classiques
 STR_0512    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0513    :Grand huit que les passagers parcourent debout
 STR_0514    :Des voitures suspendues sous la voie se balancent dans les virages des montagnes russes
@@ -181,6 +182,7 @@ STR_0602    :Train de montagnes russes propulsé hors de la station par des mote
 STR_0603    :Train de montagnes russes en bois avec des rails en acier, permettant des grandes chutes et des inversions.
 STR_0604    :Les passagers parcourent une voie à rail unique dans des voitures mono-places, à travers des inversions et des virages serrés
 STR_0605    :Les passagers dévalent une voie en acier sinueuse, freinant pour contrôler leur vitesse
+STR_0606    :Une montagne russe en bois au style ancien, rapide et turbulente, avec de nombreux moments en suspension, quelques forces latérales et conçues pour paraître hors de contrôle
 STR_0767    :Visiteur {INT32}
 STR_0768    :Agent d’entretien {INT32}
 STR_0769    :Mécanicien {INT32}
@@ -3626,6 +3628,7 @@ STR_6510    :Zero-G roll (gauche)
 STR_6511    :Zero-G roll (droite)
 STR_6512    :Grand zero-G roll (gauche)
 STR_6513    :Grand zero-G roll (droite)
+STR_6514    :Hauteur invalide !
 
 #############
 # Scenarios #
@@ -4377,22 +4380,7 @@ STR_DTLS    :Ajoutez davantage d’attractions et attirez plus de visiteurs avec
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :Toit
-
-[TTPIRF03]
-STR_NAME    :Toit
-
-[TTPIRF04]
-STR_NAME    :Toit
-
 [TTPIRF05]
-STR_NAME    :Toit
-
-[TTPIRF07]
-STR_NAME    :Toit
-
-[TTPIRF08]
 STR_NAME    :Toit
 
 [TTRFWD01]

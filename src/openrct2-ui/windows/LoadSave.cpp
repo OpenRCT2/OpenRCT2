@@ -82,18 +82,18 @@ static rct_widget window_loadsave_widgets[] =
 #pragma region Events
 
 static void WindowLoadsaveClose(rct_window *w);
-static void WindowLoadsaveMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowLoadsaveMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowLoadsaveResize(rct_window *w);
 static void WindowLoadsaveScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void WindowLoadsaveScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowLoadsaveScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowLoadsaveTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowLoadsaveTextinput(rct_window *w, WidgetIndex widgetIndex, char *text);
 static void WindowLoadsaveComputeMaxDateWidth();
 static void WindowLoadsaveInvalidate(rct_window *w);
 static void WindowLoadsavePaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowLoadsaveScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_loadsave_events([](auto& events)
+static WindowEventList window_loadsave_events([](auto& events)
 {
     events.close = &WindowLoadsaveClose;
     events.mouse_up = &WindowLoadsaveMouseup;
@@ -274,10 +274,10 @@ rct_window* WindowLoadsaveOpen(
 
     const u8string path = WindowLoadsaveGetDir(type);
 
-    rct_window* w = window_bring_to_front_by_class(WC_LOADSAVE);
+    rct_window* w = window_bring_to_front_by_class(WindowClass::Loadsave);
     if (w == nullptr)
     {
-        w = WindowCreateCentred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
+        w = WindowCreateCentred(WW, WH, &window_loadsave_events, WindowClass::Loadsave, WF_STICK_TO_FRONT | WF_RESIZABLE);
         w->widgets = window_loadsave_widgets;
 
         w->min_width = WW;
@@ -334,7 +334,7 @@ rct_window* WindowLoadsaveOpen(
 static void WindowLoadsaveClose(rct_window* w)
 {
     _listItems.clear();
-    window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
+    window_close_by_class(WindowClass::LoadsaveOverwritePrompt);
 }
 
 static void WindowLoadsaveResize(rct_window* w)
@@ -436,7 +436,7 @@ static u8string Browse(bool isSave)
     return outPath;
 }
 
-static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowLoadsaveMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     bool isSave = (_type & 0x01) == LOADSAVETYPE_SAVE;
     switch (widgetIndex)
@@ -568,7 +568,7 @@ static void WindowLoadsaveScrollmouseover(rct_window* w, int32_t scrollIndex, co
     w->Invalidate();
 }
 
-static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     bool overwrite;
 
@@ -990,7 +990,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
             SetAndSaveConfigPath(gConfigGeneral.last_save_game_directory, pathBuffer);
             WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
-            window_close_by_class(WC_LOADSAVE);
+            window_close_by_class(WindowClass::Loadsave);
             gfx_invalidate_screen();
             break;
 
@@ -1002,7 +1002,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
                 gCurrentLoadedPath = pathBuffer;
                 gFirstTimeSaving = false;
 
-                window_close_by_class(WC_LOADSAVE);
+                window_close_by_class(WindowClass::Loadsave);
                 gfx_invalidate_screen();
 
                 WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
@@ -1036,7 +1036,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2))
             {
                 gCurrentLoadedPath = pathBuffer;
-                window_close_by_class(WC_LOADSAVE);
+                window_close_by_class(WindowClass::Loadsave);
                 gfx_invalidate_screen();
                 WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
@@ -1059,7 +1059,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 
             if (success)
             {
-                window_close_by_class(WC_LOADSAVE);
+                window_close_by_class(WindowClass::Loadsave);
                 WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 title_load();
             }
@@ -1075,10 +1075,10 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK):
         {
             SetAndSaveConfigPath(gConfigGeneral.last_save_track_directory, pathBuffer);
-            auto intent = Intent(WC_INSTALL_TRACK);
+            auto intent = Intent(WindowClass::InstallTrack);
             intent.putExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
             context_open_intent(&intent);
-            window_close_by_class(WC_LOADSAVE);
+            window_close_by_class(WindowClass::Loadsave);
             WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             break;
         }
@@ -1096,7 +1096,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 
             if (success)
             {
-                window_close_by_class(WC_LOADSAVE);
+                window_close_by_class(WindowClass::Loadsave);
                 WindowRideMeasurementsDesignCancel();
                 WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, path);
             }
@@ -1109,7 +1109,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
         }
 
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP):
-            window_close_by_class(WC_LOADSAVE);
+            window_close_by_class(WindowClass::Loadsave);
             WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             break;
     }
@@ -1137,10 +1137,10 @@ static rct_widget window_overwrite_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowOverwritePromptMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_overwrite_prompt_events([](auto& events) {
+static WindowEventList window_overwrite_prompt_events([](auto& events) {
     events.mouse_up = &WindowOverwritePromptMouseup;
     events.paint = &WindowOverwritePromptPaint;
 });
@@ -1152,10 +1152,10 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
 {
     rct_window* w;
 
-    window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
+    window_close_by_class(WindowClass::LoadsaveOverwritePrompt);
 
     w = WindowCreateCentred(
-        OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
+        OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WindowClass::LoadsaveOverwritePrompt, WF_STICK_TO_FRONT);
     w->widgets = window_overwrite_prompt_widgets;
 
     WindowInitScrollWidgets(*w);
@@ -1169,19 +1169,19 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
     return w;
 }
 
-static void WindowOverwritePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     rct_window* loadsaveWindow;
 
     switch (widgetIndex)
     {
         case WIDX_OVERWRITE_OVERWRITE:
-            loadsaveWindow = window_find_by_class(WC_LOADSAVE);
+            loadsaveWindow = window_find_by_class(WindowClass::Loadsave);
             if (loadsaveWindow != nullptr)
                 WindowLoadsaveSelect(loadsaveWindow, _window_overwrite_prompt_path);
             // As the window_loadsave_select function can change the order of the
             // windows we can't use window_close(w).
-            window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
+            window_close_by_class(WindowClass::LoadsaveOverwritePrompt);
             break;
 
         case WIDX_OVERWRITE_CANCEL:

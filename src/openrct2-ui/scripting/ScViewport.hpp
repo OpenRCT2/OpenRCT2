@@ -26,11 +26,11 @@ namespace OpenRCT2::Scripting
     class ScViewport
     {
     private:
-        rct_windowclass _class{};
+        WindowClass _class{};
         rct_windownumber _number{};
 
     public:
-        ScViewport(rct_windowclass c, rct_windownumber n = 0)
+        ScViewport(WindowClass c, rct_windownumber n = 0)
             : _class(c)
             , _number(n)
         {
@@ -244,7 +244,7 @@ namespace OpenRCT2::Scripting
     private:
         rct_window* GetWindow() const
         {
-            if (_class == WC_MAIN_WINDOW)
+            if (_class == WindowClass::MainWindow)
                 return window_get_main();
 
             return window_find_by_number(_class, _number);

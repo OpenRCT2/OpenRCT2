@@ -15911,5 +15911,15 @@
     },
     {
         "path": "empty.png"
+    },
+    {
+        "path": "track/wooden/classic_wooden_preview_track.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "track/wooden/classic_wooden_preview_supports.png",
+        "x_offset": 2,
+        "y_offset": 1
     }
 ]

@@ -97,6 +97,7 @@ STR_0092    :LIM Launched Roller Coaster
 STR_0093    :Hybrid Coaster
 STR_0094    :Single Rail Roller Coaster
 STR_0095    :Alpine Coaster
+STR_0096    :Classic Wooden Roller Coaster
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
@@ -179,6 +180,7 @@ STR_0602    :Roller coaster trains are accelerated out of the station by linear 
 STR_0603    :A wooden style roller coaster with a steel track, allowing for steep drops and inversions
 STR_0604    :Riders ride single file on a narrow monorail track, as they race through tight inversions and direction changes
 STR_0605    :Riders toboggan down a meandering steel track, braking to control their speed
+STR_0606    :An older-style wooden roller coaster with a fast and rough ride, with plenty of air-time, some lateral G’s, and designed to feel ‘out-of-control’
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
@@ -3494,8 +3496,8 @@ STR_6386    :Blizzard
 STR_6387    :Can’t lower element here…
 STR_6388    :Can’t raise element here…
 STR_6389    :Invalid clearance
-STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.
-STR_6391    :Please select your RCT2 directory
+STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic in order to work. Please select the directory where you installed RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic.
+STR_6391    :Please select your RCT2 or RCTC directory
 STR_6392    :Could not find {STRING} at this path.
 STR_6393    :Objective Selection
 STR_6394    :Objective
@@ -3503,9 +3505,9 @@ STR_6395    :Maintenance
 STR_6396    :Disable screensaver and monitor power saving
 STR_6397    :If checked, screensaver and other monitor power saving features will be inhibited while OpenRCT2 is running.
 STR_6398    :File contains unsupported ride types. Please update to a newer version of OpenRCT2.
-STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please set the “game_path” variable in config.ini to the directory where you installed RollerCoaster Tycoon 2, then restart OpenRCT2.
+STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic in order to work. Please set the “game_path” variable in config.ini to the directory where you installed RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic, then restart OpenRCT2.
 STR_6400    :I have the GOG offline installer for RollerCoaster Tycoon 2 downloaded, but it is not installed
-STR_6401    :I have RollerCoaster Tycoon 2 installed already
+STR_6401    :I have RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic installed already
 STR_6402    :OpenRCT2 Data Setup
 STR_6403    :Select which applies best to you
 STR_6404    :Please select the GOG RollerCoaster Tycoon 2 installer.

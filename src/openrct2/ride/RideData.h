@@ -157,6 +157,7 @@ struct UpkeepCostsDescriptor
 };
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
+using UpdateRideApproachVehicleWaypointsFunction = void (*)(Guest&, const CoordsXY&, int16_t&);
 using RideMusicUpdateFunction = void (*)(Ride*);
 using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
 using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
@@ -167,6 +168,7 @@ using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const tra
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 
+using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t
 {
     Default,
@@ -221,6 +223,8 @@ struct RideTypeDescriptor
     // json name lookup
     std::string_view Name;
 
+    UpdateRotatingFunction UpdateRotating = UpdateRotatingDefault;
+
     LightFXAddLightsMagicVehicleFunction LightFXAddLightsMagicVehicle = nullptr;
     StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
 
@@ -240,6 +244,8 @@ struct RideTypeDescriptor
     RideUpdateMeasurementsSpecialElementsFunc UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default;
 
     MusicTrackOffsetLengthFunc MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default;
+
+    UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsDefault;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
@@ -436,6 +442,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "invalid"),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),

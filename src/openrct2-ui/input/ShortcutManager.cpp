@@ -173,7 +173,7 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
                 shortcut->Current.push_back(std::move(shortcutInput.value()));
             }
             _pendingShortcutChange.clear();
-            window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+            window_close_by_class(WindowClass::ChangeKeyboardShortcut);
             SaveUserBindings();
         }
     }

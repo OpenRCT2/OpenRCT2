@@ -114,18 +114,18 @@ static rct_widget window_footpath_widgets[] = {
 };
 
 static void WindowFootpathClose(rct_window * w);
-static void WindowFootpathMouseup(rct_window * w, rct_widgetindex widgetIndex);
-static void WindowFootpathMousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
-static void WindowFootpathDropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowFootpathMouseup(rct_window * w, WidgetIndex widgetIndex);
+static void WindowFootpathMousedown(rct_window * w, WidgetIndex widgetIndex, rct_widget * widget);
+static void WindowFootpathDropdown(rct_window * w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowFootpathUpdate(rct_window * w);
-static void WindowFootpathToolupdate(rct_window * w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowFootpathTooldown(rct_window * w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowFootpathTooldrag(rct_window * w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowFootpathToolup(rct_window * w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowFootpathToolupdate(rct_window * w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowFootpathTooldown(rct_window * w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowFootpathTooldrag(rct_window * w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowFootpathToolup(rct_window * w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowFootpathInvalidate(rct_window * w);
 static void WindowFootpathPaint(rct_window * w, rct_drawpixelinfo * dpi);
 
-static rct_window_event_list window_footpath_events([](auto& events)
+static WindowEventList window_footpath_events([](auto& events)
 {
     events.close = &WindowFootpathClose;
     events.mouse_up = &WindowFootpathMouseup;
@@ -199,13 +199,13 @@ rct_window* WindowFootpathOpen()
     }
 
     // Check if window is already open
-    rct_window* window = window_bring_to_front_by_class(WC_FOOTPATH);
+    rct_window* window = window_bring_to_front_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
         return window;
     }
 
-    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &window_footpath_events, WC_FOOTPATH, 0);
+    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &window_footpath_events, WindowClass::Footpath, 0);
     window->widgets = window_footpath_widgets;
 
     WindowInitScrollWidgets(*window);
@@ -232,7 +232,7 @@ static void WindowFootpathClose(rct_window* w)
     viewport_set_visibility(0);
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
     hide_gridlines();
 }
 
@@ -240,7 +240,7 @@ static void WindowFootpathClose(rct_window* w)
  *
  *  rct2: 0x006A7E92
  */
-static void WindowFootpathMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowFootpathMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -294,7 +294,7 @@ static void WindowFootpathMouseup(rct_window* w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x006A7EC5
  */
-static void WindowFootpathMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowFootpathMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -335,7 +335,7 @@ static void WindowFootpathMousedown(rct_window* w, rct_widgetindex widgetIndex, 
  *
  *  rct2: 0x006A7F18
  */
-static void WindowFootpathDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowFootpathDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex < 0 || static_cast<size_t>(dropdownIndex) >= _dropdownEntries.size())
         return;
@@ -385,7 +385,7 @@ static void WindowFootpathDropdown(rct_window* w, rct_widgetindex widgetIndex, i
  *
  *  rct2: 0x006A8032
  */
-static void WindowFootpathToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowFootpathToolupdate(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
@@ -401,7 +401,7 @@ static void WindowFootpathToolupdate(rct_window* w, rct_widgetindex widgetIndex,
  *
  *  rct2: 0x006A8047
  */
-static void WindowFootpathTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowFootpathTooldown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
@@ -417,7 +417,7 @@ static void WindowFootpathTooldown(rct_window* w, rct_widgetindex widgetIndex, c
  *
  *  rct2: 0x006A8067
  */
-static void WindowFootpathTooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowFootpathTooldrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
@@ -429,7 +429,7 @@ static void WindowFootpathTooldrag(rct_window* w, rct_widgetindex widgetIndex, c
  *
  *  rct2: 0x006A8066
  */
-static void WindowFootpathToolup(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowFootpathToolup(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
@@ -519,7 +519,7 @@ static void WindowFootpathUpdate(rct_window* w)
         {
             window_close(*w);
         }
-        else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
+        else if (gCurrentToolWidget.window_classification != WindowClass::Footpath)
         {
             window_close(*w);
         }
@@ -534,7 +534,7 @@ static void WindowFootpathUpdate(rct_window* w)
         {
             window_close(*w);
         }
-        else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
+        else if (gCurrentToolWidget.window_classification != WindowClass::Footpath)
         {
             window_close(*w);
         }
@@ -571,8 +571,7 @@ static void WindowFootpathInvalidate(rct_window* w)
     }
 }
 
-static void WindowFootpathDrawDropdownButton(
-    rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex widgetIndex, ImageIndex image)
+static void WindowFootpathDrawDropdownButton(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex widgetIndex, ImageIndex image)
 {
     const auto& widget = w->widgets[widgetIndex];
     gfx_draw_sprite(dpi, ImageId(image), { w->windowPos.x + widget.left, w->windowPos.y + widget.top });
@@ -917,7 +916,7 @@ static void WindowFootpathSetProvisionalPathAtPoint(const ScreenCoordsXY& screen
         auto constructFlags = FootpathCreateConstructFlags(pathType);
         _window_footpath_cost = footpath_provisional_set(
             pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
-        window_invalidate_by_class(WC_FOOTPATH);
+        window_invalidate_by_class(WindowClass::Footpath);
     }
 }
 
@@ -1270,7 +1269,7 @@ static void WindowFootpathRemove()
  */
 static void WindowFootpathSetEnabledAndPressedWidgets()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr)
     {
         return;
@@ -1380,7 +1379,7 @@ static PathConstructFlags FootpathCreateConstructFlags(ObjectEntryIndex& type)
 
 void window_footpath_keyboard_shortcut_turn_left()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_DIRECTION_NW) || WidgetIsDisabled(*w, WIDX_DIRECTION_NE)
         || WidgetIsDisabled(*w, WIDX_DIRECTION_SW) || WidgetIsDisabled(*w, WIDX_DIRECTION_SE) || _footpathConstructionMode != 2)
     {
@@ -1393,7 +1392,7 @@ void window_footpath_keyboard_shortcut_turn_left()
 
 void window_footpath_keyboard_shortcut_turn_right()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_DIRECTION_NW) || WidgetIsDisabled(*w, WIDX_DIRECTION_NE)
         || WidgetIsDisabled(*w, WIDX_DIRECTION_SW) || WidgetIsDisabled(*w, WIDX_DIRECTION_SE) || _footpathConstructionMode != 2)
     {
@@ -1406,7 +1405,7 @@ void window_footpath_keyboard_shortcut_turn_right()
 
 void window_footpath_keyboard_shortcut_slope_down()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_SLOPEDOWN) || WidgetIsDisabled(*w, WIDX_LEVEL)
         || WidgetIsDisabled(*w, WIDX_SLOPEUP) || w->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
     {
@@ -1429,7 +1428,7 @@ void window_footpath_keyboard_shortcut_slope_down()
 
 void window_footpath_keyboard_shortcut_slope_up()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_SLOPEDOWN) || WidgetIsDisabled(*w, WIDX_LEVEL)
         || WidgetIsDisabled(*w, WIDX_SLOPEUP) || w->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
     {
@@ -1452,7 +1451,7 @@ void window_footpath_keyboard_shortcut_slope_up()
 
 void window_footpath_keyboard_shortcut_demolish_current()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_REMOVE) || w->widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
         || (!gCheatsBuildInPauseMode && game_is_paused()))
     {
@@ -1464,7 +1463,7 @@ void window_footpath_keyboard_shortcut_demolish_current()
 
 void window_footpath_keyboard_shortcut_build_current()
 {
-    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    rct_window* w = window_find_by_class(WindowClass::Footpath);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_CONSTRUCT) || w->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
     {
         return;

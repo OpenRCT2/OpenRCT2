@@ -11,6 +11,7 @@
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
+#include "../ride/gentle/Maze.h"
 #include "../world/ConstructionClearance.h"
 
 using namespace OpenRCT2::TrackMetaData;
@@ -119,9 +120,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
         return res;
     }
 
-    const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-    money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
-    res.Cost = canBuild.Cost + price;
+    res.Cost = MazeCalculateCost(canBuild.Cost, *ride, _loc);
 
     return res;
 }
@@ -161,9 +160,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
         return canBuild;
     }
 
-    const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-    money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
-    res.Cost = canBuild.Cost + price;
+    res.Cost = MazeCalculateCost(canBuild.Cost, *ride, _loc);
 
     auto startLoc = _loc.ToTileStart();
 

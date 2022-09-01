@@ -48,6 +48,7 @@ constexpr const RideTypeDescriptor DrinkStallRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Drink),
     SET_FIELD(Name, "drink_stall"),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),

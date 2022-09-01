@@ -4067,22 +4067,7 @@ STR_DTLS    :
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :屋顶
-
-[TTPIRF03]
-STR_NAME    :屋顶
-
-[TTPIRF04]
-STR_NAME    :屋顶
-
 [TTPIRF05]
-STR_NAME    :屋顶
-
-[TTPIRF07]
-STR_NAME    :屋顶
-
-[TTPIRF08]
 STR_NAME    :屋顶
 
 [TTRFWD01]

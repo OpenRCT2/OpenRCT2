@@ -26,7 +26,7 @@ namespace OpenRCT2::Scripting
     class ScWindow
     {
     private:
-        rct_windowclass _class;
+        WindowClass _class;
         rct_windownumber _number;
 
     public:
@@ -35,7 +35,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        ScWindow(rct_windowclass c, rct_windownumber n)
+        ScWindow(WindowClass c, rct_windownumber n)
             : _class(c)
             , _number(n)
         {
@@ -205,7 +205,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                rct_widgetindex widgetIndex = 0;
+                WidgetIndex widgetIndex = 0;
                 for (auto widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
                 {
                     result.push_back(ScWidget::ToDukValue(ctx, w, widgetIndex));
@@ -253,7 +253,7 @@ namespace OpenRCT2::Scripting
         std::string title_get() const
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WC_CUSTOM)
+            if (w != nullptr && w->classification == WindowClass::Custom)
             {
                 return GetWindowTitle(w);
             }
@@ -262,7 +262,7 @@ namespace OpenRCT2::Scripting
         void title_set(std::string value)
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WC_CUSTOM)
+            if (w != nullptr && w->classification == WindowClass::Custom)
             {
                 UpdateWindowTitle(w, value);
             }
@@ -271,11 +271,19 @@ namespace OpenRCT2::Scripting
         int32_t tabIndex_get() const
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WC_CUSTOM)
+            if (w != nullptr && w->classification == WindowClass::Custom)
             {
                 return w->page;
             }
             return 0;
+        }
+        void tabIndex_set(int32_t tab)
+        {
+            auto w = GetWindow();
+            if (w != nullptr && w->classification == WindowClass::Custom)
+            {
+                UpdateWindowTab(w, tab);
+            }
         }
 
         void close()
@@ -328,7 +336,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWindow::widgets_get, nullptr, "widgets");
             dukglue_register_property(ctx, &ScWindow::colours_get, &ScWindow::colours_set, "colours");
             dukglue_register_property(ctx, &ScWindow::title_get, &ScWindow::title_set, "title");
-            dukglue_register_property(ctx, &ScWindow::tabIndex_get, nullptr, "tabIndex");
+            dukglue_register_property(ctx, &ScWindow::tabIndex_get, &ScWindow::tabIndex_set, "tabIndex");
 
             dukglue_register_method(ctx, &ScWindow::close, "close");
             dukglue_register_method(ctx, &ScWindow::findWidget, "findWidget");

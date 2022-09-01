@@ -26,7 +26,7 @@ static rct_widget window_map_tooltip_widgets[] = {
 static void WindowMapTooltipUpdate(rct_window *w);
 static void WindowMapTooltipPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_map_tooltip_events([](auto& events)
+static WindowEventList window_map_tooltip_events([](auto& events)
 {
     events.update = &WindowMapTooltipUpdate;
     events.paint = &WindowMapTooltipPaint;
@@ -61,7 +61,7 @@ void WindowMapTooltipUpdateVisibility()
     if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // The map tooltip is drawn by the bottom toolbar
-        window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+        window_invalidate_by_class(WindowClass::BottomToolbar);
         return;
     }
 
@@ -84,9 +84,9 @@ void WindowMapTooltipUpdateVisibility()
     if (_cursorHoldDuration < 25 || stringId == STR_NONE
         || InputTestPlaceObjectModifier(
             static_cast<PLACE_OBJECT_MODIFIER>(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
-        || window_find_by_class(WC_ERROR) != nullptr)
+        || window_find_by_class(WindowClass::Error) != nullptr)
     {
-        window_close_by_class(WC_MAP_TOOLTIP);
+        window_close_by_class(WindowClass::MapTooltip);
     }
     else
     {
@@ -107,11 +107,11 @@ static void WindowMapTooltipOpen()
     const CursorState* state = context_get_cursor_state();
     ScreenCoordsXY pos = { state->position.x - (width / 2), state->position.y + 15 };
 
-    w = window_find_by_class(WC_MAP_TOOLTIP);
+    w = window_find_by_class(WindowClass::MapTooltip);
     if (w == nullptr)
     {
         w = WindowCreate(
-            pos, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP,
+            pos, width, height, &window_map_tooltip_events, WindowClass::MapTooltip,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
         w->widgets = window_map_tooltip_widgets;
     }

@@ -330,7 +330,7 @@ public:
             widget_invalidate(*this, WIDX_FILTER_TEXT_BOX);
         }
 
-        for (rct_widgetindex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
+        for (WidgetIndex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
         {
             if (!IsWidgetPressed(i))
                 continue;
@@ -348,7 +348,7 @@ public:
      *
      * rct2: 0x006AAFAB
      */
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -410,7 +410,7 @@ public:
                 }
                 Invalidate();
 
-                auto intent = Intent(WC_LOADSAVE);
+                auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
                 context_open_intent(&intent);
                 break;
@@ -464,7 +464,7 @@ public:
         window_set_resize(*this, WW, WH, 1200, 1000);
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         int32_t numSelectionItems = 0;
 
@@ -524,7 +524,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (dropdownIndex == -1)
             return;
@@ -576,7 +576,7 @@ public:
     {
         // Used for in-game object selection cheat to prevent crashing the game
         // when windows attempt to draw objects that don't exist any more
-        window_close_all_except_class(WC_EDITOR_OBJECT_SELECTION);
+        window_close_all_except_class(WindowClass::EditorObjectSelection);
 
         int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
         if (selected_object == -1)
@@ -780,7 +780,7 @@ public:
      *
      * rct2: 0x006AB058
      */
-    OpenRCT2String OnTooltip(const rct_widgetindex widgetIndex, const StringId fallback) override
+    OpenRCT2String OnTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
     {
         if (widgetIndex >= WIDX_TAB_1 && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
         {
@@ -791,7 +791,7 @@ public:
         return { fallback, {} };
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (widgetIndex != WIDX_FILTER_TEXT_BOX || text.empty())
             return;
@@ -1502,7 +1502,7 @@ private:
         rct_ride_entry* ride_entry = get_ride_entry(entry_index);
         auto rideType = ride_entry_get_first_non_null_ride_type(ride_entry);
 
-        auto intent = Intent(WC_TRACK_DESIGN_LIST);
+        auto intent = Intent(WindowClass::TrackDesignList);
         intent.putExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
         intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
         context_open_intent(&intent);
@@ -1516,7 +1516,7 @@ private:
 rct_window* WindowEditorObjectSelectionOpen()
 {
     return WindowFocusOrCreate<EditorObjectSelectionWindow>(
-        WC_EDITOR_OBJECT_SELECTION, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+        WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
 }
 
 static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b)

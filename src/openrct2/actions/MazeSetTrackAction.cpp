@@ -18,6 +18,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ride/gentle/Maze.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
@@ -138,9 +139,7 @@ GameActions::Result MazeSetTrackAction::Query() const
             return res;
         }
 
-        const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-        money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
-        res.Cost = price;
+        res.Cost = MazeCalculateCost(constructResult.Cost, *ride, _loc);
 
         return res;
     }
@@ -174,9 +173,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
     auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
     if (tileElement == nullptr)
     {
-        const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-        money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
-        res.Cost = price;
+        res.Cost = MazeCalculateCost(0, *ride, _loc);
 
         auto startLoc = _loc.ToTileStart();
 

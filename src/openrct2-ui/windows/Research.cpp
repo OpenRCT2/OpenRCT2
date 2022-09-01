@@ -100,20 +100,20 @@ static rct_widget *window_research_page_widgets[] = {
 
 #pragma region Events
 
-static void WindowResearchDevelopmentMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowResearchDevelopmentMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowResearchDevelopmentUpdate(rct_window *w);
 static void WindowResearchDevelopmentInvalidate(rct_window *w);
 static void WindowResearchDevelopmentPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void WindowResearchFundingMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowResearchFundingMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void WindowResearchFundingDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowResearchFundingMouseup(rct_window *w, WidgetIndex widgetIndex);
+static void WindowResearchFundingMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowResearchFundingDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowResearchFundingUpdate(rct_window *w);
 static void WindowResearchFundingInvalidate(rct_window *w);
 static void WindowResearchFundingPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //
-static rct_window_event_list window_research_development_events([](auto& events)
+static WindowEventList window_research_development_events([](auto& events)
 {
     events.mouse_up = &WindowResearchDevelopmentMouseup;
     events.update = &WindowResearchDevelopmentUpdate;
@@ -122,7 +122,7 @@ static rct_window_event_list window_research_development_events([](auto& events)
 });
 
 // 0x009890E8
-static rct_window_event_list window_research_funding_events([](auto& events)
+static WindowEventList window_research_funding_events([](auto& events)
 {
     events.mouse_up = &WindowResearchFundingMouseup;
     events.mouse_down = &WindowResearchFundingMousedown;
@@ -132,7 +132,7 @@ static rct_window_event_list window_research_funding_events([](auto& events)
     events.paint = &WindowResearchFundingPaint;
 });
 
-static rct_window_event_list *window_research_page_events[] = {
+static WindowEventList *window_research_page_events[] = {
     &window_research_development_events,
     &window_research_funding_events,
 };
@@ -161,10 +161,10 @@ rct_window* WindowResearchOpen()
 {
     rct_window* w;
 
-    w = window_bring_to_front_by_class(WC_RESEARCH);
+    w = window_bring_to_front_by_class(WindowClass::Research);
     if (w == nullptr)
     {
-        w = WindowCreateAutoPos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WC_RESEARCH, WF_10);
+        w = WindowCreateAutoPos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WindowClass::Research, WF_10);
         w->widgets = window_research_page_widgets[0];
         w->number = 0;
         w->page = 0;
@@ -195,7 +195,7 @@ rct_window* WindowResearchOpen()
  *
  *  rct2: 0x006B6B38
  */
-static void WindowResearchDevelopmentMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowResearchDevelopmentMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -261,7 +261,7 @@ static void WindowResearchDevelopmentPaint(rct_window* w, rct_drawpixelinfo* dpi
     WindowResearchDevelopmentPagePaint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
 }
 
-void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex)
+void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex baseWidgetIndex)
 {
     baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
 
@@ -391,7 +391,7 @@ void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, r
  *
  *  rct2: 0x0069DB3F
  */
-static void WindowResearchFundingMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowResearchFundingMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -423,7 +423,7 @@ static void WindowResearchFundingMouseup(rct_window* w, rct_widgetindex widgetIn
  *
  *  rct2: 0x0069DB66
  */
-static void WindowResearchFundingMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowResearchFundingMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     rct_widget* dropdownWidget;
     int32_t i;
@@ -450,7 +450,7 @@ static void WindowResearchFundingMousedown(rct_window* w, rct_widgetindex widget
  *
  *  rct2: 0x0069DB6D
  */
-static void WindowResearchFundingDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowResearchFundingDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
         return;
@@ -539,7 +539,7 @@ static void WindowResearchFundingPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowResearchFundingPagePaint(w, dpi, WIDX_RESEARCH_FUNDING);
 }
 
-void WindowResearchFundingPagePaint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex)
+void WindowResearchFundingPagePaint(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex baseWidgetIndex)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return;
@@ -598,7 +598,7 @@ static void WindowResearchSetPressedTab(rct_window* w)
 
 static void WindowResearchDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
 {
-    rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
+    WidgetIndex widgetIndex = WIDX_TAB_1 + page;
 
     if (!WidgetIsDisabled(*w, widgetIndex))
     {

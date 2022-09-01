@@ -78,7 +78,7 @@ namespace OpenRCT2::TileInspector
     static rct_window* GetTileInspectorWithPos(const CoordsXY& loc)
     {
         // Return the tile inspector window for everyone who has the tile selected
-        auto* window = window_find_by_class(WC_TILE_INSPECTOR);
+        auto* window = window_find_by_class(WindowClass::TileInspector);
         if (window != nullptr && loc == windowTileInspectorTile.ToCoordsXY())
         {
             return window;
@@ -313,7 +313,7 @@ namespace OpenRCT2::TileInspector
         map_invalidate_tile_full(loc);
         if (loc == windowTileInspectorTile.ToCoordsXY())
         {
-            window_invalidate_by_class(WC_TILE_INSPECTOR);
+            window_invalidate_by_class(WindowClass::TileInspector);
         }
 
         return GameActions::Result();

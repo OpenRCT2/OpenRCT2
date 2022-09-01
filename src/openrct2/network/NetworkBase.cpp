@@ -42,7 +42,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "6"
+#define NETWORK_STREAM_VERSION "11"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -560,7 +560,7 @@ void NetworkBase::UpdateClient()
                         char str_resolving[256];
                         format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
 
-                        auto intent = Intent(WC_NETWORK_STATUS);
+                        auto intent = Intent(WindowClass::NetworkStatus);
                         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_resolving });
                         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                         context_open_intent(&intent);
@@ -575,7 +575,7 @@ void NetworkBase::UpdateClient()
                         char str_connecting[256];
                         format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
 
-                        auto intent = Intent(WC_NETWORK_STATUS);
+                        auto intent = Intent(WindowClass::NetworkStatus);
                         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_connecting });
                         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                         context_open_intent(&intent);
@@ -592,7 +592,7 @@ void NetworkBase::UpdateClient()
                     char str_authenticating[256];
                     format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
 
-                    auto intent = Intent(WC_NETWORK_STATUS);
+                    auto intent = Intent(WindowClass::NetworkStatus);
                     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
                     intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                     context_open_intent(&intent);
@@ -607,7 +607,7 @@ void NetworkBase::UpdateClient()
                     }
 
                     Close();
-                    context_force_close_window_by_class(WC_NETWORK_STATUS);
+                    context_force_close_window_by_class(WindowClass::NetworkStatus);
                     context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
                     break;
                 }
@@ -621,7 +621,7 @@ void NetworkBase::UpdateClient()
                 // Do not show disconnect message window when password window closed/canceled
                 if (_serverConnection->AuthStatus == NetworkAuth::RequirePassword)
                 {
-                    context_force_close_window_by_class(WC_NETWORK_STATUS);
+                    context_force_close_window_by_class(WindowClass::NetworkStatus);
                 }
                 else
                 {
@@ -637,11 +637,11 @@ void NetworkBase::UpdateClient()
                         format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, nullptr);
                     }
 
-                    auto intent = Intent(WC_NETWORK_STATUS);
+                    auto intent = Intent(WindowClass::NetworkStatus);
                     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
                     context_open_intent(&intent);
                 }
-                window_close_by_class(WC_MULTIPLAYER);
+                window_close_by_class(WindowClass::Multiplayer);
                 Close();
             }
             else
@@ -777,7 +777,7 @@ bool NetworkBase::CheckDesynchronizaton()
         char str_desync[256];
         format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
 
-        auto intent = Intent(WC_NETWORK_STATUS);
+        auto intent = Intent(WindowClass::NetworkStatus);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
         context_open_intent(&intent);
 
@@ -2306,7 +2306,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         };
         format_string(objectListMsg, 256, STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST, &args);
 
-        auto intent = Intent(WC_NETWORK_STATUS);
+        auto intent = Intent(WindowClass::NetworkStatus);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ objectListMsg });
         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
         context_open_intent(&intent);
@@ -2444,7 +2444,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
                 char str_desync[1024];
                 format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, ft.Data());
 
-                auto intent = Intent(WC_NETWORK_STATUS);
+                auto intent = Intent(WindowClass::NetworkStatus);
                 intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
                 context_open_intent(&intent);
             }
@@ -2652,7 +2652,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
     };
     format_string(str_downloading_map, 256, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
 
-    auto intent = Intent(WC_NETWORK_STATUS);
+    auto intent = Intent(WindowClass::NetworkStatus);
     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_downloading_map });
     intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
     context_open_intent(&intent);
@@ -2663,7 +2663,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         // Allow queue processing of game actions again.
         GameActions::ResumeQueue();
 
-        context_force_close_window_by_class(WC_NETWORK_STATUS);
+        context_force_close_window_by_class(WindowClass::NetworkStatus);
         game_unload_scripts();
         game_notify_map_change();
 
@@ -3007,7 +3007,7 @@ void NetworkBase::Server_Handle_PING(NetworkConnection& connection, [[maybe_unus
     if (connection.Player != nullptr)
     {
         connection.Player->Ping = ping;
-        window_invalidate_by_number(WC_PLAYER, connection.Player->Id);
+        window_invalidate_by_number(WindowClass::Player, connection.Player->Id);
     }
 }
 
@@ -3026,7 +3026,7 @@ void NetworkBase::Client_Handle_PINGLIST([[maybe_unused]] NetworkConnection& con
             player->Ping = ping;
         }
     }
-    window_invalidate_by_class(WC_PLAYER);
+    window_invalidate_by_class(WindowClass::Player);
 }
 
 void NetworkBase::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet)
@@ -3460,7 +3460,7 @@ GameActions::Result network_set_player_group(
             userManager.Save();
         }
 
-        window_invalidate_by_number(WC_PLAYER, playerId);
+        window_invalidate_by_number(WindowClass::Player, playerId);
 
         // Log set player group event
         NetworkPlayer* game_command_player = network.GetPlayerByID(actionPlayerId);

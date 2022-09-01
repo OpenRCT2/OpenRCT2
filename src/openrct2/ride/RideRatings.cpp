@@ -285,7 +285,7 @@ static void ride_ratings_update_state_3(RideRatingUpdateState& state)
     ride_ratings_calculate(state, ride);
     ride_ratings_calculate_value(ride);
 
-    window_invalidate_by_number(WC_RIDE, state.CurrentRide.ToUnderlying());
+    window_invalidate_by_number(WindowClass::Ride, state.CurrentRide.ToUnderlying());
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
@@ -739,32 +739,36 @@ static void ride_ratings_calculate(RideRatingUpdateState& state, Ride* ride)
 #endif
 
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(HOOK_TYPE::RIDE_RATINGS_CALCULATE))
+    // Only call the 'ride.ratings.calculate' API hook if testing of the ride is complete
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto originalExcitement = ride->excitement;
-        auto originalIntensity = ride->intensity;
-        auto originalNausea = ride->nausea;
+        auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(HOOK_TYPE::RIDE_RATINGS_CALCULATE))
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto originalExcitement = ride->excitement;
+            auto originalIntensity = ride->intensity;
+            auto originalNausea = ride->nausea;
 
-        // Create event args object
-        auto obj = DukObject(ctx);
-        obj.Set("rideId", ride->id.ToUnderlying());
-        obj.Set("excitement", originalExcitement);
-        obj.Set("intensity", originalIntensity);
-        obj.Set("nausea", originalNausea);
+            // Create event args object
+            auto obj = DukObject(ctx);
+            obj.Set("rideId", ride->id.ToUnderlying());
+            obj.Set("excitement", originalExcitement);
+            obj.Set("intensity", originalIntensity);
+            obj.Set("nausea", originalNausea);
 
-        // Call the subscriptions
-        auto e = obj.Take();
-        hookEngine.Call(HOOK_TYPE::RIDE_RATINGS_CALCULATE, e, true);
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(HOOK_TYPE::RIDE_RATINGS_CALCULATE, e, true);
 
-        auto scriptExcitement = AsOrDefault(e["excitement"], static_cast<int32_t>(originalExcitement));
-        auto scriptIntensity = AsOrDefault(e["intensity"], static_cast<int32_t>(originalIntensity));
-        auto scriptNausea = AsOrDefault(e["nausea"], static_cast<int32_t>(originalNausea));
+            auto scriptExcitement = AsOrDefault(e["excitement"], static_cast<int32_t>(originalExcitement));
+            auto scriptIntensity = AsOrDefault(e["intensity"], static_cast<int32_t>(originalIntensity));
+            auto scriptNausea = AsOrDefault(e["nausea"], static_cast<int32_t>(originalNausea));
 
-        ride->excitement = std::clamp<int32_t>(scriptExcitement, 0, INT16_MAX);
-        ride->intensity = std::clamp<int32_t>(scriptIntensity, 0, INT16_MAX);
-        ride->nausea = std::clamp<int32_t>(scriptNausea, 0, INT16_MAX);
+            ride->excitement = std::clamp<int32_t>(scriptExcitement, 0, INT16_MAX);
+            ride->intensity = std::clamp<int32_t>(scriptIntensity, 0, INT16_MAX);
+            ride->nausea = std::clamp<int32_t>(scriptNausea, 0, INT16_MAX);
+        }
     }
 #endif
 }

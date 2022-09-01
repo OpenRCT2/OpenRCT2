@@ -400,7 +400,9 @@ private:
     void UpdateRideLeaveVehicle();
     void UpdateRideApproachExit();
     void UpdateRideInExit();
+
     void UpdateRideApproachVehicleWaypoints();
+
     void UpdateRideApproachExitWaypoints();
     void UpdateRideApproachSpiralSlide();
     void UpdateRideOnSpiralSlide();
@@ -424,6 +426,9 @@ private:
     bool FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array);
     void GoToRideEntrance(Ride* ride);
 };
+
+void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
+void UpdateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
 
 static_assert(sizeof(Guest) <= 512);
 

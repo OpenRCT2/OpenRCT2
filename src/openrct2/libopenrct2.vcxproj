@@ -249,6 +249,7 @@
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
+    <ClInclude Include="interface\WindowClasses.h" />
     <ClInclude Include="interface\Window_internal.h" />
     <ClInclude Include="interface\ZoomLevel.h" />
     <ClInclude Include="Intro.h" />
@@ -354,6 +355,7 @@
     <ClInclude Include="ride\coaster\meta\AlpineCoaster.h" />
     <ClInclude Include="ride\coaster\meta\BobsleighCoaster.h" />
     <ClInclude Include="ride\coaster\meta\ClassicMiniRollerCoaster.h" />
+    <ClInclude Include="ride\coaster\meta\ClassicWoodenRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\CompactInvertedCoaster.h" />
     <ClInclude Include="ride\coaster\meta\CorkscrewRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\FlyingRollerCoaster.h" />
@@ -390,6 +392,8 @@
     <ClInclude Include="ride\coaster\meta\WaterCoaster.h" />
     <ClInclude Include="ride\coaster\meta\WoodenRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\WoodenWildMouse.h" />
+    <ClInclude Include="ride\coaster\WoodenRollerCoaster.h" />
+    <ClInclude Include="ride\gentle\Maze.h" />
     <ClInclude Include="ride\gentle\meta\CarRide.h" />
     <ClInclude Include="ride\gentle\meta\Circus.h" />
     <ClInclude Include="ride\gentle\meta\CrookedHouse.h" />
@@ -841,6 +845,7 @@
     <ClCompile Include="ride\coaster\AirPoweredVerticalCoaster.cpp" />
     <ClCompile Include="ride\coaster\AlpineCoaster.cpp" />
     <ClCompile Include="ride\coaster\BobsleighCoaster.cpp" />
+    <ClCompile Include="ride\coaster\ClassicWoodenRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\CompactInvertedCoaster.cpp" />
     <ClCompile Include="ride\coaster\CorkscrewRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\FlyingRollerCoaster.cpp" />

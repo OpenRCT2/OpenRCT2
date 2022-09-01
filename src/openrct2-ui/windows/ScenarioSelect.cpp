@@ -104,8 +104,8 @@ static constexpr const StringId ScenarioOriginStringIds[] = {
 static void WindowScenarioselectInitTabs(rct_window *w);
 
 static void WindowScenarioselectClose(rct_window *w);
-static void WindowScenarioselectMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowScenarioselectMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowScenarioselectMouseup(rct_window *w, WidgetIndex widgetIndex);
+static void WindowScenarioselectMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget* widget);
 static void WindowScenarioselectScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void WindowScenarioselectScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowScenarioselectScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
@@ -118,7 +118,7 @@ static bool ScenarioSelectUseSmallFont()
     return ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT;
 }
 
-static rct_window_event_list window_scenarioselect_events([](auto& events)
+static WindowEventList window_scenarioselect_events([](auto& events)
 {
     events.close = &WindowScenarioselectClose;
     events.mouse_up = &WindowScenarioselectMouseup;
@@ -157,10 +157,10 @@ rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titl
     if (_titleEditor != titleEditor)
     {
         _titleEditor = titleEditor;
-        window_close_by_class(WC_SCENARIO_SELECT);
+        window_close_by_class(WindowClass::ScenarioSelect);
     }
 
-    auto window = window_bring_to_front_by_class(WC_SCENARIO_SELECT);
+    auto window = window_bring_to_front_by_class(WindowClass::ScenarioSelect);
     if (window != nullptr)
         return window;
 
@@ -187,7 +187,7 @@ rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
     windowWidth = ScenarioSelectGetWindowWidth();
 
     window = WindowCreateCentred(
-        windowWidth, windowHeight, &window_scenarioselect_events, WC_SCENARIO_SELECT,
+        windowWidth, windowHeight, &window_scenarioselect_events, WindowClass::ScenarioSelect,
         WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0));
     window->widgets = window_scenarioselect_widgets;
 
@@ -264,7 +264,7 @@ static void WindowScenarioselectClose(rct_window* w)
     _listItems.shrink_to_fit();
 }
 
-static void WindowScenarioselectMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowScenarioselectMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     if (widgetIndex == WIDX_CLOSE)
     {
@@ -272,7 +272,7 @@ static void WindowScenarioselectMouseup(rct_window* w, rct_widgetindex widgetInd
     }
 }
 
-static void WindowScenarioselectMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8)
     {

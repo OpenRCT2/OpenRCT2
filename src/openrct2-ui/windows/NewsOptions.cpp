@@ -99,7 +99,7 @@ public:
         colours[2] = COLOUR_LIGHT_BLUE;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -227,7 +227,7 @@ private:
 
     void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
     {
-        rct_widgetindex widgetIndex = WIDX_FIRST_TAB + p;
+        WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
 
         if (!WidgetIsDisabled(*this, widgetIndex))
         {
@@ -273,5 +273,5 @@ private:
 
 rct_window* WindowNewsOptionsOpen()
 {
-    return WindowFocusOrCreate<NewsOptionsWindow>(WC_NOTIFICATION_OPTIONS, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
 }

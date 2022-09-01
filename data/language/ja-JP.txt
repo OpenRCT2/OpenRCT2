@@ -3128,13 +3128,13 @@ STR_5977    :Right side up
 STR_5978    :Left side up
 STR_5979    :Wall type: {BLACK}{COMMA16}
 STR_5980    :Banner text: {BLACK}{STRINGID}
-STR_5981    :Not a banner
+STR_5981    :バナーではありません
 STR_5982    :Large scenery type: {BLACK}{COMMA16}
 STR_5983    :Large scenery piece ID: {BLACK}{COMMA16}
 STR_5984    :Blocked paths:
 STR_5985    :新しいフォルダ
 STR_5986    :新しいフォルダの名を入力して下さい。
-STR_5987    :Unable to create folder
+STR_5987    :フォルダを作成できません
 STR_5988    :No remaining land rights for sale
 STR_5989    :No remaining construction rights for sale
 STR_5990    :No remaining land rights or construction rights for sale
@@ -3462,6 +3462,7 @@ STR_6360    :{BLACK}{COMMA32}
 STR_6361    :乗り物のライトの効果を表示にする（試験的）
 STR_6362    :有効になっている場合、追跡された乗り物の車両は夜間にライトアップされます。
 STR_6363    :テキストをクリップボードにコピーしました。
+STR_6440    :透明な水
 
 #############
 # Scenarios #
@@ -3911,44 +3912,8 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :ベースブロック
-
-[TTRFTL02]
-STR_NAME    :屋根
-
-[TTRFTL03]
-STR_NAME    :屋根
-
-[TTRFTL04]
-STR_NAME    :屋根
-
-[TTRFTL07]
-STR_NAME    :屋根
-
-[TTRFTL08]
-STR_NAME    :屋根
-
-[TTPIRF02]
-STR_NAME    :屋根
-
-[TTPIRF03]
-STR_NAME    :屋根
-
-[TTPIRF04]
-STR_NAME    :屋根
-
 [TTPIRF05]
 STR_NAME    :屋根
-
-[TTPIRF07]
-STR_NAME    :屋根
-
-[TTPIRF08]
-STR_NAME    :屋根
-
-[MG-PRAR]
-STR_NAME    :通路のある壁
 
 [TTRFWD01]
 STR_NAME    :屋根

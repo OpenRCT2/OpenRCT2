@@ -65,12 +65,12 @@ public:
         SetParentWindow(nullptr, 0);
     }
 
-    void SetParentWindow(rct_window* parentWindow, rct_widgetindex widgetIndex)
+    void SetParentWindow(rct_window* parentWindow, WidgetIndex widgetIndex)
     {
         // Save calling window details so that the information can be passed back to the correct window & widget
         if (parentWindow == nullptr)
         {
-            _parentWidget.window.classification = WC_NULL;
+            _parentWidget.window.classification = WindowClass::Null;
             _parentWidget.window.number = 0;
             _parentWidget.widget_index = 0;
 
@@ -147,7 +147,7 @@ public:
         Invalidate();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -360,7 +360,7 @@ private:
 
     bool HasParentWindow() const
     {
-        return _parentWidget.window.classification != WC_NULL;
+        return _parentWidget.window.classification != WindowClass::Null;
     }
 
     rct_window* GetParentWindow() const
@@ -371,13 +371,13 @@ private:
 };
 
 void WindowTextInputRawOpen(
-    rct_window* call_w, rct_widgetindex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     const_utf8string existing_text, int32_t maxLength)
 {
-    window_close_by_class(WC_TEXTINPUT);
+    window_close_by_class(WindowClass::Textinput);
 
     auto height = TextInputWindow::CalculateWindowHeight(existing_text);
-    auto w = WindowCreate<TextInputWindow>(WC_TEXTINPUT, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+    auto w = WindowCreate<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
     if (w != nullptr)
     {
         w->SetParentWindow(call_w, call_widget);
@@ -391,7 +391,7 @@ void WindowTextInputOpen(
     std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
 {
     auto height = TextInputWindow::CalculateWindowHeight(initialValue);
-    auto w = WindowCreate<TextInputWindow>(WC_TEXTINPUT, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+    auto w = WindowCreate<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
     if (w != nullptr)
     {
         w->SetTitle(title, description);
@@ -401,7 +401,7 @@ void WindowTextInputOpen(
 }
 
 void WindowTextInputOpen(
-    rct_window* call_w, rct_widgetindex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     StringId existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     auto existingText = format_string(existing_text, &existing_args);
@@ -416,7 +416,7 @@ void WindowTextInputKey(rct_window* w, char keychar)
     // If the return button is pressed stop text input
     if (keychar == '\r')
     {
-        if (w->classification == WC_TEXTINPUT)
+        if (w->classification == WindowClass::Textinput)
         {
             auto textInputWindow = static_cast<TextInputWindow*>(w);
             textInputWindow->OnReturnPressed();

@@ -804,7 +804,7 @@ bool Vehicle::SoundCanPlay() const
     auto left = g_music_tracking_viewport->viewPos.x;
     auto bottom = g_music_tracking_viewport->viewPos.y;
 
-    if (window_get_classification(*gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    if (window_get_classification(*gWindowAudioExclusive) == WindowClass::MainWindow)
     {
         left -= quarter_w;
         bottom -= quarter_h;
@@ -816,7 +816,7 @@ bool Vehicle::SoundCanPlay() const
     auto right = g_music_tracking_viewport->view_width + left;
     auto top = g_music_tracking_viewport->view_height + bottom;
 
-    if (window_get_classification(*gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    if (window_get_classification(*gWindowAudioExclusive) == WindowClass::MainWindow)
     {
         right += quarter_w + quarter_w;
         top += quarter_h + quarter_h;
@@ -1462,7 +1462,7 @@ void Vehicle::UpdateMeasurements()
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
         curRide->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
-        window_invalidate_by_number(WC_RIDE, ride.ToUnderlying());
+        window_invalidate_by_number(WindowClass::Ride, ride.ToUnderlying());
         return;
     }
 
@@ -2956,7 +2956,7 @@ static void test_finish(Ride& ride)
 
     totalTime = std::max(totalTime, 1u);
     ride.average_speed = ride.average_speed / totalTime;
-    window_invalidate_by_number(WC_RIDE, ride.id.ToUnderlying());
+    window_invalidate_by_number(WindowClass::Ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::UpdateTestFinish()
@@ -3006,7 +3006,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     }
     ride.total_air_time = 0;
     ride.current_test_station = curStation;
-    window_invalidate_by_number(WC_RIDE, ride.id.ToUnderlying());
+    window_invalidate_by_number(WindowClass::Ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::TestReset()
@@ -4830,6 +4830,24 @@ void Vehicle::UpdateSimulatorOperating()
     var_C0 = 0;
 }
 
+void UpdateRotatingDefault(Vehicle& vehicle)
+{
+    vehicle.sub_state = 1;
+    vehicle.UpdateRotating();
+}
+
+void UpdateRotatingEnterprise(Vehicle& vehicle)
+{
+    if (vehicle.sub_state == 2)
+    {
+        vehicle.SetState(Vehicle::Status::Arriving);
+        vehicle.var_C0 = 0;
+        return;
+    }
+
+    UpdateRotatingDefault(vehicle);
+}
+
 /**
  *
  *  rct2: 0x006D92FF
@@ -4910,15 +4928,8 @@ void Vehicle::UpdateRotating()
         }
     }
 
-    if (curRide->type == RIDE_TYPE_ENTERPRISE && sub_state == 2)
-    {
-        SetState(Vehicle::Status::Arriving);
-        var_C0 = 0;
-        return;
-    }
-
-    sub_state = 1;
-    UpdateRotating();
+    const auto& rtd = GetRideTypeDescriptor(curRide->type);
+    rtd.UpdateRotating(*this);
 }
 
 /**

@@ -353,7 +353,7 @@ void ride_update_favourited_stat()
         }
     }
 
-    window_invalidate_by_class(WC_RIDE_LIST);
+    window_invalidate_by_class(WindowClass::RideList);
 }
 
 /**
@@ -557,7 +557,16 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     if (trackBlock == nullptr)
         return false;
 
-    trackBlock += inputElement->GetSequenceIndex();
+    // The sequence index may be higher than the amount of sequences actually present.
+    // We don’t know the amount of sequences present in the block upfront, but there is an end marker consisting of all 255s.
+    const auto sequenceIndex = inputElement->GetSequenceIndex();
+    for (auto i = 0; i < sequenceIndex; i++)
+    {
+        trackBlock++;
+
+        if (trackBlock == nullptr || trackBlock->index == 255)
+            return false;
+    }
 
     const auto& trackCoordinate = ted.Coordinates;
 
@@ -742,7 +751,7 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
         return 0;
     }
 
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == ride->id)
     {
         ride_construction_invalidate_current_track();
@@ -2672,7 +2681,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
         return { false };
 
     RideId rideIndex = input.element->AsTrack()->GetRideIndex();
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         ride_construction_invalidate_current_track();
 
@@ -2732,7 +2741,7 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
     if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
         return true;
 
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         ride_construction_invalidate_current_track();
@@ -2791,7 +2800,7 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
     if (ride->type == RIDE_TYPE_MAZE)
         return true;
 
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         ride_construction_invalidate_current_track();
@@ -2832,7 +2841,7 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
  */
 static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0
         && _currentRideIndex == input->element->AsTrack()->GetRideIndex())
     {
@@ -2894,7 +2903,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     if (ride == nullptr)
         return false;
 
-    auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    auto w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         ride_construction_invalidate_current_track();
@@ -3826,7 +3835,7 @@ void Ride::ConstructMissingEntranceOrExit() const
             return;
         }
 
-        w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        w = window_find_by_class(WindowClass::RideConstruction);
         if (w != nullptr)
             window_event_mouse_up_call(w, entranceOrExit);
     }
@@ -3888,7 +3897,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
 
     if (newStatus != RideStatus::Simulating)
     {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, id.ToUnderlying());
+        window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
     }
 
     auto stationIndexCheck = ride_mode_check_station_present(this);
@@ -4018,10 +4027,10 @@ ResultWithMessage Ride::Open(bool isApplying)
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
-    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification
+    if (WindowClass::RideConstruction == gCurrentToolWidget.window_classification
         && id.ToUnderlying() == gCurrentToolWidget.window_number && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
     {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, id.ToUnderlying());
+        window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
     }
 
     auto stationIndexCheck = ride_mode_check_station_present(this);
@@ -4729,7 +4738,7 @@ void invalidate_test_results(Ride* ride)
             }
         }
     }
-    window_invalidate_by_number(WC_RIDE, ride->id.ToUnderlying());
+    window_invalidate_by_number(WindowClass::Ride, ride->id.ToUnderlying());
 }
 
 /**
@@ -5059,7 +5068,7 @@ static int32_t ride_get_track_length(Ride* ride)
 
     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
 
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
     {
         ride_construction_invalidate_current_track();
@@ -5243,7 +5252,7 @@ void Ride::UpdateMaxVehicles()
     {
         num_cars_per_train = numCarsPerTrain;
         num_vehicles = numVehicles;
-        window_invalidate_by_number(WC_RIDE, id.ToUnderlying());
+        window_invalidate_by_number(WindowClass::Ride, id.ToUnderlying());
     }
 }
 
