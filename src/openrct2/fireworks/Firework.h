@@ -15,7 +15,7 @@
 #include "../world/Location.hpp"
 
 struct paint_session;
-
+class ImageTable;
 struct Firework : EntityBase
 {
 private:
@@ -27,10 +27,14 @@ public:
     void Update();
     void Paint(paint_session& session, int32_t imageDirection);
 
+    bool IsAlive() const
+    {
+        return _currentFrame < _numFrames;
+    }
 private:
     uint32_t _currentFrame;
 
-    const rct_g1_element* _imageTable;
+    uint32_t _baseImage;
     uint32_t _numFrames;
 
     colour_t _color1;

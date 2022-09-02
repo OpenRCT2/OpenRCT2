@@ -13,9 +13,12 @@
 
 #include "../Context.h"
 #include "../entity/EntityRegistry.h"
+#include "../object/FireworkObject.h"
 #include "../object/Object.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "FireworksSequence.h"
 
 #include <algorithm>
@@ -47,9 +50,16 @@ Firework* Firework::Create(
 
     if (object)
     {
-        auto& imageTable = static_cast<const Object*>(object)->GetImageTable();
-        firework->_numFrames = imageTable.GetCount();
-        firework->_imageTable = imageTable.GetImages();
+        auto fireworkObject = reinterpret_cast<FireworkObject*>(object);
+        if (fireworkObject)
+        {
+            firework->_numFrames = fireworkObject->GetNumImages();
+            firework->_baseImage = fireworkObject->GetFirework().Image;
+            firework->sprite_height_negative = 20;
+            firework->sprite_height_positive = 20;
+            firework->sprite_width = 20;
+        }
+        
     }
     return firework;
 }
@@ -63,6 +73,14 @@ void Firework::Update()
 
 void Firework::Paint(paint_session& session, int32_t imageDirection)
 {
+    PROFILED_FUNCTION();
+
+    rct_drawpixelinfo& dpi = session.DPI;
+    if (dpi.zoom_level > ZoomLevel{ 1 })
+        return;
+
+    auto imageId = ImageId(_baseImage + _currentFrame);
+    PaintAddImageAsParent(session, imageId, { x, y, z }, { 1, 1, 0 });
 }
 
 template<> bool EntityBase::Is<Firework>() const

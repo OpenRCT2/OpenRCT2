@@ -34,15 +34,18 @@ void OpenRCT2::Fireworks::FireworksManager::OnEvent(const Event& e)
     if (spawner != nullptr)
     {
         auto firework = Firework::Create(spawner->Location, e.Height, e.ObjectId, e.Palette1, e.Palette2, e.Palette3);
-        if(firework != nullptr)
+        if (firework != nullptr)
             _fireworks.push_back(firework);
     }
 }
 
 void OpenRCT2::Fireworks::FireworksManager::OnUpdate()
 {
-    //for (auto firework : _fireworks)
-        //firework->Update();
+    //check for fireworks to remove from the list
+    auto range = std::remove_if(_fireworks.begin(), _fireworks.end(), [](auto firework) { return !firework->IsAlive(); });
+
+    if (range != _fireworks.end())
+        _fireworks.erase(range);
 }
 
 void OpenRCT2::Fireworks::FireworksManager::OnMusicLaunch(const std::string& musicId)
@@ -51,10 +54,12 @@ void OpenRCT2::Fireworks::FireworksManager::OnMusicLaunch(const std::string& mus
 
 void OpenRCT2::Fireworks::FireworksManager::OnReset()
 {
-    for (auto firework:_fireworks)
+    for (auto firework : _fireworks)
     {
-        EntityRemove(firework);
+        if (firework->IsAlive())
+            EntityRemove(firework);
     }
+    _fireworks.clear();
 }
 
 void OpenRCT2::Fireworks::FireworksManager::Update()
