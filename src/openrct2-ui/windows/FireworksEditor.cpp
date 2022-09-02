@@ -85,7 +85,7 @@ public:
         WindowInitScrollWidgets(*this);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -172,20 +172,20 @@ public:
     {
     }
 
-    virtual OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, StringId fallback) override
+    virtual OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
     {
         return { fallback, {} };
     }
 
-    virtual void OnMouseDown(rct_widgetindex widgetIndex) override
+    virtual void OnMouseDown(WidgetIndex widgetIndex) override
     {
     }
 
-    virtual void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    virtual void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
     }
 
-    virtual void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    virtual void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
     }
 
@@ -210,23 +210,23 @@ public:
     {
     }
 
-    virtual void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    virtual void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
     }
 
-    virtual void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    virtual void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
     }
 
-    virtual void OnToolDrag(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    virtual void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
     }
 
-    virtual void OnToolUp(rct_widgetindex, const ScreenCoordsXY&) override
+    virtual void OnToolUp(WidgetIndex, const ScreenCoordsXY&) override
     {
     }
 
-    virtual void OnToolAbort(rct_widgetindex widgetIndex) override
+    virtual void OnToolAbort(WidgetIndex widgetIndex) override
     {
     }
 
@@ -354,5 +354,5 @@ private:
  */
 rct_window* WindowFireworksEditorOpen()
 {
-    return WindowFocusOrCreate<FireworksEditorWindow>(WC_FIREWORKS, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<FireworksEditorWindow>(WindowClass::Fireworks, WW, WH, WF_CENTRE_SCREEN);
 }

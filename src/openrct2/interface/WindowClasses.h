@@ -94,6 +94,7 @@ enum class WindowClass : uint8_t
     Chat = 223,
     Console = 224,
     Custom = 225,
+    Fireworks = 226,
 
     Null = 255,
 };

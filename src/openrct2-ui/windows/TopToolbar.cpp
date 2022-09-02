@@ -395,7 +395,7 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
             ToggleFootpathWindow();
             break;
         case WIDX_FIREWORKS:
-            context_open_window(WC_FIREWORKS);
+            context_open_window(WindowClass::Fireworks);
             break;
         case WIDX_CONSTRUCT_RIDE:
             context_open_window(WindowClass::ConstructRide);

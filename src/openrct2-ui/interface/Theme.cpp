@@ -181,7 +181,7 @@ static constexpr const WindowThemeDesc WindowThemeDescriptors[] =
     { WindowClass::ServerList,                  "WC_SERVER_LIST",                    STR_SERVER_LIST,                                  COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
     { WindowClass::Chat,                        "WC_CHAT",                           STR_CHAT,                                         COLOURS_1(TRANSLUCENT(COLOUR_GREY)                                                                                             ) },
     { WindowClass::Console,                     "WC_CONSOLE",                        STR_CONSOLE,                                      COLOURS_2(TRANSLUCENT(COLOUR_LIGHT_BLUE),  COLOUR_WHITE                                                                        ) },
-    { THEME_WC(WC_FIREWORKS),                      STR_FIREWORKS_EDITOR,                             COLOURS_3(COLOUR_MOSS_GREEN,             COLOUR_MOSS_GREEN,             COLOUR_MOSS_GREEN                                ) },
+    { WindowClass::Fireworks,                   "WC_FIREWORKS",                      STR_FIREWORKS_EDITOR,                             COLOURS_3(COLOUR_MOSS_GREEN,             COLOUR_MOSS_GREEN,             COLOUR_MOSS_GREEN                                ) },
 };
 
 #pragma endregion

@@ -136,7 +136,7 @@ public:
                 return WindowWaterOpen();
             case WindowClass::Transparency:
                 return WindowTransparencyOpen();
-            case WC_FIREWORKS:
+            case WindowClass::Fireworks:
                 return WindowFireworksEditorOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
