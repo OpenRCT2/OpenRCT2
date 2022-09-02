@@ -96,6 +96,8 @@ STR_0091    :Attrazione sconosciuta (59)
 STR_0092    :Ottovolante a lancio MIL
 STR_0093    :Ottovolante ibrido
 STR_0094    :Ottovolante a binario singolo
+STR_0095    :Ottovolante Alpino
+STR_0096    :Ottovolante di legno classico
 STR_0512    :Un ottovolante compatto con una salita a spirale e cadute fluide e tortuose.
 STR_0513    :Un ottovolante con giro della morte dove i passeggeri si trovano in una posizione eretta
 STR_0514    :I treni, sospesi sotto l’ottovolante, durante le curve oscillano lateralmente
@@ -177,6 +179,8 @@ STR_0600    :I treni della miniera motorizzati scorrono lungo un percorso fluido
 STR_0602    :I treni dell’ottovolante sono spinti fuori dalla stazione tramite motori a induzione lineare per correre lungo avvitamenti e inversioni
 STR_0603    :Un ottovolante in legno con i binari in acciaio, in grado di avere ripide discese e inversioni.
 STR_0604    :I visitatori viaggiano lungo un sottile tracciato da monorotaia, attraverso strette inversioni e cambi di direzione.
+STR_0605    :I visitatori scendono lungo una rotaia piena di curve, frenando per controllare la velocità del loro vagone
+STR_0606    :Un ottovolante di legno vecchio stile con un percorso veloce e turbolento, con molto air-time, G laterali, progettata per farti sentire 'fuori controllo'
 STR_0767    :Visitatore {INT32}
 STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
@@ -751,7 +755,7 @@ STR_1363    :Troppo in alto per i supporti!
 STR_1364    :I supporti del tracciato non possono essere ulteriormente estesi!
 STR_1365    :Curva in-linea (Sx)
 STR_1366    :Curva in-linea (Dx)
-STR_1367    :Mezzo giro della morte
+STR_1367    :Mezzo giro morte Piccolo
 STR_1368    :Mezzo avvitamento (Sx)
 STR_1369    :Mezzo avvitamento (Dx)
 STR_1370    :Avvitamento (Sx)
@@ -3592,10 +3596,10 @@ STR_6480    :Veicoli invisibili
 STR_6481    :Opzioni trasparenza
 STR_6482    :Opzioni trasparenza
 STR_6483    :Apri le opzioni trasparenza
-STR_6484    :Mostra/nascondi vegetazione trasparente
-STR_6485    :Mostra/nascondi veicoli trasparenti
-STR_6486    :Mostra/nascondi visitatori trasparenti
-STR_6487    :Mostra/nascondi personale trasparente
+STR_6484    :Mostra/nascondi vegetazione 
+STR_6485    :Mostra/nascondi veicoli 
+STR_6486    :Mostra/nascondi visitatori 
+STR_6487    :Mostra/nascondi personale 
 STR_6488    :{RED}I visitatori si lamentano per la lunghezza delle code nel tuo parco.{NEWLINE}Prendi in considerazione di accorciare quelle problematiche o di aumentare il flusso di visitatori delle attrazioni.
 STR_6489    :Errore: versione parco non compatibile
 STR_6490    :Avviso: versione parco semi-compatibile
