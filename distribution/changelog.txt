@@ -51,6 +51,7 @@
 - Fix: [#17897] Guest can get stuck on tiles with construction rights outside the park.
 - Fix: [#17905] The chain button in the map window is enabled for rectangular maps when (re)opened.
 - Fix: [#17931] The in-game command ‘count_objects’ crashes the game.
+- Fix: [#17865] With difficult guest generation, tested but unopened rides still contribute to the guest cap.
 - Fix: [#17866] [Plugin] Wrong Soft Guest Cap at start of new game
 
 0.4.1 (2022-07-04)

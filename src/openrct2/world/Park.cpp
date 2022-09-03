@@ -570,6 +570,8 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
         suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
         for (auto& ride : GetRideManager())
         {
+            if (ride.status != RideStatus::Open)
+                continue;
             if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
                 continue;
             if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
