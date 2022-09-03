@@ -1,6 +1,7 @@
 0.4.2 (in development)
 ------------------------------------------------------------------------
 - Feature: [#6326] Ability to load .SV6 files from RCT Classic that have more than 9601 guests.
+- Feature: [#6570, #10860, #17929] Fully support RollerCoaster Tycoon Classic as a RCT2 base install path.
 - Feature: [#13634] Add ability to sell merchandise in random colours.
 - Feature: [#16164] Add new track elements for Flying Coaster and Lay-Down Coaster and add paint code for more elements.
 - Feature: [#16283] Added parkinfo command line tool to list objects in a save file.
@@ -9,17 +10,20 @@
 - Feature: [#17638] Added Zero G rolls, medium loops and large corkscrews to the Hybrid and Single-Rail coasters.
 - Feature: [#17877] Add three real-life flying roller coaster colour schemes.
 - Feature: [#17900] Add “Classic Wooden Coaster” with shallow banked turns.
-- Feature: [#6570, #10860, #17929] Fully support RollerCoaster Tycoon Classic as a RCT2 base install path.
 - Feature: [objects#198] Add additional pirate roofs.
+- Feature: [objects#205] Add additional glass roofs.
+- Feature: [objects#209] Add the Steel Roller Coaster train and 2-across Inverted Train from RollerCoaster Tycoon 1.
 - Improved: [#15358] Park and scenario names can now contain up to 128 characters.
 - Improved: [#16840] Add support for rectangular heightmaps.
 - Improved: [#17575] You can now search for Authors in Object Selection.
 - Improved: [#17806] Added warning when using RCT1 objects without RCT1 linked.
 - Improved: [#17868] [Plugin] You can now change active tab of a custom window programmatically.
+- Improved: [#17924] Improved performance when loading JSON object images from a .DAT file.
 - Change: [#9104] Calculate maze support costs.
 - Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
 - Change: [#17655] Lower default price for the Crooked House.
+- Change: [#17762] Use vertical tabs in the New Game dialog.
 - Fix: [#7466] Coaster track not drawn at tunnel exit.
 - Fix: [#14337] Guest blocking ride entrance after ride price changed to be unaffordable.
 - Fix: [#15328] Wooden Roller Coaster incorrectly draws a railing on the first station piece (original bug).
@@ -54,13 +58,14 @@
 - Fix: [#17931] The in-game command ‘count_objects’ crashes the game.
 - Fix: [#17865] With difficult guest generation, tested but unopened rides still contribute to the guest cap.
 - Fix: [#17866] [Plugin] Wrong Soft Guest Cap at start of new game
+- Fix: [#17959] Areas marked for dirty drawing are too large.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
-- Feature: [#16825] Add Alpine Coaster track type.
-- Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
 - Feature: [#12237, #17217] Add FLAC and OGG/vorbis as supported audio formats for ride music objects.
 - Feature: [#12328, #17418] Add vehicles for the Hybrid Coaster, Single-Rail Roller Coaster and Classic Mini Roller Coaster.
+- Feature: [#16825] Add Alpine Coaster track type.
+- Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
 - Improved: [#7983] The red colour in the ride stat screen and the ride graphs now corresponds better to negative effects on a ride’s stats.
 - Improved: [#13966] Music Style dropdown is now sorted by name.
 - Improved: [#16978] Tree placement is more natural during map generation.
