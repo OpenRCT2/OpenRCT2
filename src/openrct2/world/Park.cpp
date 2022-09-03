@@ -549,8 +549,8 @@ money16 Park::CalculateTotalRideValueForMoney() const
 uint32_t Park::CalculateSuggestedMaxGuests() const
 {
     uint32_t suggestedMaxGuests = 0;
+    uint32_t difficultGenerationBonus = 0;
 
-    // TODO combine the two ride loops
     for (auto& ride : GetRideManager())
     {
         if (ride.status != RideStatus::Open)
@@ -562,18 +562,10 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
 
         // Add guest score for ride type
         suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue;
-    }
 
-    // If difficult guest generation, extra guests are available for good rides
-    if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
-    {
-        suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
-        for (auto& ride : GetRideManager())
+        // If difficult guest generation, extra guests are available for good rides
+        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
         {
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-                continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-                continue;
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
                 continue;
             if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
@@ -586,8 +578,14 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
                 continue;
 
             // Bonus guests for good ride
-            suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue * 2;
+            difficultGenerationBonus += ride.GetRideTypeDescriptor().BonusValue * 2;
         }
+    }
+
+    if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+    {
+        suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
+        suggestedMaxGuests += difficultGenerationBonus;
     }
 
     suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 65535);
