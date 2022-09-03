@@ -694,7 +694,7 @@ namespace OpenRCT2
                     ft.Add<uint32_t>(result.TargetVersion);
                     windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
                 }
-                else if (GetObjectUsesFallbackImages())
+                else if (HasObjectsThatUseFallbackImages())
                 {
                     Console::Error::WriteLine("Park has objects which require RCT1 linked. Fallback images will be used.");
                     auto windowManager = _uiContext->GetWindowManager();
@@ -784,7 +784,7 @@ namespace OpenRCT2
         }
 
     private:
-        bool GetObjectUsesFallbackImages()
+        bool HasObjectsThatUseFallbackImages()
         {
             for (auto objectType : ObjectTypes)
             {
