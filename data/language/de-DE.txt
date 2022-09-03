@@ -97,6 +97,7 @@ STR_0092    :LIM-Achterbahn
 STR_0093    :Hybridachterbahn
 STR_0094    :Einschienenachterbahn
 STR_0095    :Alpenachterbahn
+STR_0096    :Klassische Holzachterbahn
 STR_0512    :Eine kompakte Stahlachterbahn mit einem Spirallifthügel und Wagen mit Sitzen in einer Reihe
 STR_0513    :Eine Looping-Achterbahn, bei der sich die Fahrgäste in einer stehenden Position befinden
 STR_0514    :Die unterhalb der Schiene aufgehängten Züge schwingen in Kurven seitlich aus.
@@ -179,6 +180,7 @@ STR_0602    :Achterbahnzüge werden aus der Station mit Hilfe von linearen Induk
 STR_0603    :Eine Achterbahn im Holzstil mit einer Stahlschiene, die steile Abfahrten und Inversionen ermöglicht.
 STR_0604    :Die Fahrgäste fahren in einer Einzelreihe auf einer engen Einschienenstrecke, wobei sie durch enge Inversionen und Richtungswechsel rasen.
 STR_0605    :Die Fahrgäste rodeln eine sich schlängelnde Stahlbahn hinunter und bremsen, um ihre Geschwindigkeit zu regulieren.
+STR_0606    :Eine Holzachterbahn nach älterer Art. Sie ist schnell, rauh, laut und gibt einem das Gefühl, außer Kontrolle zu sein, wobei man gelegentlich seitlichen Gs ausgesetzt und häufig „in der Luft“ ist
 STR_0767    :Besucher {INT32}
 STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
@@ -3614,6 +3616,7 @@ STR_6510    :Null-G-Rolle (links)
 STR_6511    :Null-G-Rolle (rechts)
 STR_6512    :Große Null-G-Rolle (l.)
 STR_6513    :Große Null-G-Rolle (r.)
+STR_6514    :Ungültige Höhe!
 
 
 
