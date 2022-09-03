@@ -535,6 +535,12 @@
         "y_offset": 2
     },
     {
+        "path": "sideways-tab.png"
+    },
+    {
+        "path": "sideways-tab-active.png"
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
