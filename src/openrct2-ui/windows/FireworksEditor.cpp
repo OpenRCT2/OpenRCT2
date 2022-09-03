@@ -75,7 +75,6 @@ public:
         , _y(0)
         , _height(0)
         , _delay(0)
-        , _testing(false)
     {
     }
 
@@ -301,11 +300,6 @@ private:
 
     void onStopButtonUp()
     {
-        if (!_testing)
-            return;
-
-        _testing = false;
-
         //update the button light images
         auto widget = GetWidgetByIndex(*this, WIDX_BUTTON_STOP);
         widget->image = SPR_G2_RCT1_CLOSE_BUTTON_0;
@@ -322,11 +316,6 @@ private:
 
     void onTestButtonUp()
     {
-        if (_testing)
-            return;
-
-        _testing = true;
-
         // update the button light images
         auto widget = GetWidgetByIndex(*this, WIDX_BUTTON_STOP);
         widget->image = SPR_G2_RCT1_CLOSE_BUTTON_1;
@@ -345,7 +334,6 @@ private:
     int32_t _y;
     uint32_t _height;
     uint32_t _delay;
-    bool _testing;
 };
 
 /**

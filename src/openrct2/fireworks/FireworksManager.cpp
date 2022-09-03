@@ -42,10 +42,7 @@ void OpenRCT2::Fireworks::FireworksManager::OnEvent(const Event& e)
 void OpenRCT2::Fireworks::FireworksManager::OnUpdate()
 {
     //check for fireworks to remove from the list
-    auto range = std::remove_if(_fireworks.begin(), _fireworks.end(), [](auto firework) { return !firework->IsAlive(); });
-
-    if (range != _fireworks.end())
-        _fireworks.erase(range);
+    _fireworks.erase(std::remove_if(_fireworks.begin(), _fireworks.end(), [](auto firework) { return !firework->IsAlive(); }), _fireworks.end());
 }
 
 void OpenRCT2::Fireworks::FireworksManager::OnMusicLaunch(const std::string& musicId)

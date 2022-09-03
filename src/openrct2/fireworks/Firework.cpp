@@ -19,6 +19,7 @@
 #include "../object/ObjectRepository.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
+#include "../Game.h"
 #include "FireworksSequence.h"
 
 #include <algorithm>
@@ -32,10 +33,8 @@ Firework* Firework::Create(
         return nullptr;
 
     // set the position
-    auto pos = CoordsXYZ{ tile.ToCoordsXY(), height };
-    firework->x = pos.x;
-    firework->y = pos.y;
-    firework->z = pos.z;
+    auto pos = CoordsXYZ{ tile.ToCoordsXY(), height * LAND_HEIGHT_STEP };
+    firework->MoveTo(pos);
 
     firework->_currentFrame = 0;
     firework->_color1 = color1;
@@ -55,32 +54,40 @@ Firework* Firework::Create(
         {
             firework->_numFrames = fireworkObject->GetNumImages();
             firework->_baseImage = fireworkObject->GetFirework().Image;
-            firework->sprite_height_negative = 20;
-            firework->sprite_height_positive = 20;
-            firework->sprite_width = 20;
+            firework->sprite_height_negative = 16;
+            firework->sprite_height_positive = 16;
+            firework->sprite_width = 64;
         }
         
     }
+    reset_all_sprite_quadrant_placements();
     return firework;
 }
 
 void Firework::Update()
 {
-    _currentFrame++;
-    if (_currentFrame > _numFrames)
-        EntityRemove(this);
+    Invalidate();
+
+    auto targetFrame = _currentFrame + 1;
+    if (targetFrame >= _numFrames)
+    {
+        //EntityRemove(this);
+        //targetFrame = _currentFrame;
+        targetFrame = 0;
+    }
+    _currentFrame = targetFrame;
 }
 
 void Firework::Paint(paint_session& session, int32_t imageDirection)
 {
     PROFILED_FUNCTION();
 
-    rct_drawpixelinfo& dpi = session.DPI;
-    if (dpi.zoom_level > ZoomLevel{ 1 })
-        return;
+    //rct_drawpixelinfo& dpi = session.DPI;
+    /*if (dpi.zoom_level > ZoomLevel{ 1 })
+        return;*/
 
     auto imageId = ImageId(_baseImage + _currentFrame);
-    PaintAddImageAsParent(session, imageId, { x, y, z }, { 1, 1, 0 });
+    PaintAddImageAsParent(session, imageId, { -16, -16, z }, { 32, 32, 32 }, {0, 0, z});
 }
 
 template<> bool EntityBase::Is<Firework>() const
