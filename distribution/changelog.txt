@@ -13,6 +13,7 @@
 - Improved: [#15358] Park and scenario names can now contain up to 128 characters.
 - Improved: [#16840] Add support for rectangular heightmaps.
 - Improved: [#17575] You can now search for Authors in Object Selection.
+- Improved: [#17806] Added warning when using RCT1 objects without RCT1 linked.
 - Improved: [#17868] [Plugin] You can now change active tab of a custom window programmatically.
 - Change: [#9104] Calculate maze support costs.
 - Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.

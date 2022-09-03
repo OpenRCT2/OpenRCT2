@@ -694,6 +694,13 @@ namespace OpenRCT2
                     ft.Add<uint32_t>(result.TargetVersion);
                     windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
                 }
+                else if (HasObjectsThatUseFallbackImages())
+                {
+                    Console::Error::WriteLine("Park has objects which require RCT1 linked. Fallback images will be used.");
+                    auto windowManager = _uiContext->GetWindowManager();
+                    windowManager->ShowError(STR_PARK_USES_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter());
+                }
+
                 return true;
             }
             catch (const ObjectLoadException& e)
@@ -777,6 +784,24 @@ namespace OpenRCT2
         }
 
     private:
+        bool HasObjectsThatUseFallbackImages()
+        {
+            for (auto objectType : ObjectTypes)
+            {
+                auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+                for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
+                {
+                    auto obj = _objectManager->GetLoadedObject(objectType, i);
+                    if (obj != nullptr)
+                    {
+                        if (obj->UsesFallbackImages())
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         std::string GetOrPromptRCT2Path()
         {
             auto result = std::string();
