@@ -20,6 +20,7 @@
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../Game.h"
+#include "../drawing/Drawing.h"
 #include "FireworksSequence.h"
 
 #include <algorithm>
@@ -31,10 +32,6 @@ Firework* Firework::Create(
     auto* firework = CreateEntity<Firework>();
     if (firework == nullptr)
         return nullptr;
-
-    // set the position
-    auto pos = CoordsXYZ{ tile.ToCoordsXY(), height * LAND_HEIGHT_STEP };
-    firework->MoveTo(pos);
 
     firework->_currentFrame = 0;
     firework->_color1 = color1;
@@ -54,13 +51,16 @@ Firework* Firework::Create(
         {
             firework->_numFrames = fireworkObject->GetNumImages();
             firework->_baseImage = fireworkObject->GetFirework().Image;
-            firework->sprite_height_negative = 16;
-            firework->sprite_height_positive = 16;
-            firework->sprite_width = 64;
+            firework->sprite_height_negative = 128;
+            firework->sprite_height_positive = 128;
+            firework->sprite_width = 96;
         }
         
     }
-    reset_all_sprite_quadrant_placements();
+
+    // set the position
+    auto pos = CoordsXYZ{ tile.ToCoordsXY(), height * LAND_HEIGHT_STEP };
+    firework->MoveTo(pos);
     return firework;
 }
 
@@ -86,8 +86,16 @@ void Firework::Paint(paint_session& session, int32_t imageDirection)
     /*if (dpi.zoom_level > ZoomLevel{ 1 })
         return;*/
 
-    auto imageId = ImageId(_baseImage + _currentFrame);
-    PaintAddImageAsParent(session, imageId, { -16, -16, z }, { 32, 32, 32 }, {0, 0, z});
+    session.InteractionType = ViewportInteractionItem::None;
+    auto imageId = ImageId(_baseImage + _currentFrame * 4 + imageDirection);
+
+    //clipping hack
+    if (imageDirection == 0 || imageDirection == 16)
+        PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 255, 255, 64 });
+    else if (imageDirection == 24)
+        PaintAddImageAsParent(session, imageId, { -16, 0, z }, { 255, 255, 64 });
+    else
+        PaintAddImageAsParent(session, imageId, { 0, -16, z }, { 255, 255, 64 });
 }
 
 template<> bool EntityBase::Is<Firework>() const
