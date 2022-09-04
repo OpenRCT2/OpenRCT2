@@ -1940,7 +1940,7 @@ void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenR
         topLeft = { viewport->zoom.ApplyInversedTo(topLeft.x), viewport->zoom.ApplyInversedTo(topLeft.y) };
         topLeft += viewport->pos;
 
-        bottomRight = { std::max(bottomRight.x, viewportRight), std::max(bottomRight.y, viewportBottom) };
+        bottomRight = { std::min(bottomRight.x, viewportRight), std::min(bottomRight.y, viewportBottom) };
         bottomRight -= viewport->viewPos;
         bottomRight = { viewport->zoom.ApplyInversedTo(bottomRight.x), viewport->zoom.ApplyInversedTo(bottomRight.y) };
         bottomRight += viewport->pos;
