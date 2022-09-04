@@ -18,6 +18,7 @@ namespace RCT2::Limits
     constexpr const uint8_t MaxTrainsPerRide = 32;
     constexpr const uint8_t DowntimeHistorySize = 8;
     constexpr const uint16_t MaxEntities = 10000;
+    constexpr const uint16_t MaxEntitiesRCTCExtended = 15000; // Used in files marked with “classic flag” 0xF
     constexpr const uint32_t MaxTileElements = 0x30000;
     constexpr const uint16_t MaxAnimatedObjects = 2000;
     constexpr const uint8_t MaxResearchedRideTypeQuads = 8;  // With 32 bits per uint32_t, this means there is room for

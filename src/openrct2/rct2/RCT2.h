@@ -834,7 +834,7 @@ namespace RCT2
 
         // SC6[6]
         uint32_t next_free_tile_element_pointer_index;
-        Entity sprites[Limits::MaxEntities];
+        Entity sprites[Limits::MaxEntitiesRCTCExtended];
         uint16_t sprite_lists_head[static_cast<uint8_t>(EntityListId::Count)];
         uint16_t sprite_lists_count[static_cast<uint8_t>(EntityListId::Count)];
         StringId park_name;
@@ -1019,7 +1019,7 @@ namespace RCT2
         uint16_t wide_path_tile_loop_y;
         uint8_t pad_13CE778[434];
     };
-    assert_struct_size(S6Data, 0x46b44a);
+    assert_struct_size(S6Data, 0x5a3c4a);
 
     struct StexEntry
     {

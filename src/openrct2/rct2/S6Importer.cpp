@@ -18,6 +18,7 @@
 #include "../core/Console.hpp"
 #include "../core/FileStream.h"
 #include "../core/IStream.hpp"
+#include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
@@ -166,11 +167,6 @@ namespace RCT2
                 }
             }
 
-            if (_s6.header.classic_flag == 0xf)
-            {
-                throw UnsupportedRCTCFlagException(_s6.header.classic_flag);
-            }
-
             // Read packed objects
             // TODO try to contain this more and not store objects until later
             for (uint16_t i = 0; i < _s6.header.num_packed_objects; i++)
@@ -190,7 +186,7 @@ namespace RCT2
             {
                 chunkReader.ReadChunk(&_s6.elapsed_months, 16);
                 chunkReader.ReadChunk(&_s6.tile_elements, sizeof(_s6.tile_elements));
-                chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 2560076);
+                ReadChunk6(chunkReader, 76);
                 chunkReader.ReadChunk(&_s6.guests_in_park, 4);
                 chunkReader.ReadChunk(&_s6.last_guests_in_park, 8);
                 chunkReader.ReadChunk(&_s6.park_rating, 2);
@@ -203,13 +199,29 @@ namespace RCT2
             {
                 chunkReader.ReadChunk(&_s6.elapsed_months, 16);
                 chunkReader.ReadChunk(&_s6.tile_elements, sizeof(_s6.tile_elements));
-                chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 3048816);
+                ReadChunk6(chunkReader, 488816);
             }
 
             _isScenario = isScenario;
             _s6Path = path;
 
             return ParkLoadResult(GetRequiredObjects());
+        }
+
+        void ReadChunk6(SawyerChunkReader& chunkReader, uint32_t sizeWithoutEntities)
+        {
+            uint32_t entitiesSize = GetMaxEntities() * sizeof(Entity);
+            size_t bufferSize = sizeWithoutEntities + entitiesSize;
+            std::vector<uint8_t> buffer(bufferSize);
+            chunkReader.ReadChunk(buffer.data(), buffer.size());
+            auto stream = OpenRCT2::MemoryStream(buffer.data(), buffer.size());
+
+            uint32_t preEntitiesSize = sizeof(_s6.next_free_tile_element_pointer_index);
+            uint32_t postEntitiesSize = sizeWithoutEntities - preEntitiesSize;
+
+            stream.Read(&_s6.next_free_tile_element_pointer_index, preEntitiesSize);
+            stream.Read(&_s6.sprites, entitiesSize);
+            stream.Read(&_s6.sprite_lists_head, postEntitiesSize);
         }
 
         bool GetDetails(scenario_index_entry* dst) override
@@ -1168,8 +1180,9 @@ namespace RCT2
         {
             // The number of riders might have overflown or underflown. Re-calculate the value.
             uint16_t numRiders = 0;
-            for (const auto& sprite : _s6.sprites)
+            for (int32_t i = 0; i < GetMaxEntities(); i++)
             {
+                const auto& sprite = _s6.sprites[i];
                 if (sprite.unknown.sprite_identifier == RCT12SpriteIdentifier::Peep)
                 {
                     if (sprite.peep.current_ride == static_cast<RCT12RideId>(rideIndex.ToUnderlying())
@@ -1592,10 +1605,15 @@ namespace RCT2
 
         void ImportEntities()
         {
-            for (int32_t i = 0; i < Limits::MaxEntities; i++)
+            for (int32_t i = 0; i < GetMaxEntities(); i++)
             {
                 ImportEntity(_s6.sprites[i].unknown);
             }
+        }
+
+        uint16_t GetMaxEntities()
+        {
+            return (_s6.header.classic_flag == 0xf) ? Limits::MaxEntitiesRCTCExtended : Limits::MaxEntities;
         }
 
         template<typename OpenRCT2_T> void ImportEntity(const RCT12SpriteBase& src);

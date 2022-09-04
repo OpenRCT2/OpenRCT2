@@ -1,5 +1,6 @@
 0.4.2 (in development)
 ------------------------------------------------------------------------
+- Feature: [#6326] Ability to load .SV6 files from RCT Classic that have more than 9601 guests.
 - Feature: [#13634] Add ability to sell merchandise in random colours.
 - Feature: [#16164] Add new track elements for Flying Coaster and Lay-Down Coaster and add paint code for more elements.
 - Feature: [#16283] Added parkinfo command line tool to list objects in a save file.
