@@ -97,6 +97,7 @@ STR_0092    :Muntanya russa d’impuls LIM
 STR_0093    :Muntanya russa híbrida
 STR_0094    :Muntanya russa d’un sol rail
 STR_0095    :Muntanya russa alpina
+STR_0096    :Muntanya russa clàssica de fusta
 STR_0512    :Muntanya russa compacta amb una pujada en espiral i caigudes sinuoses suaus.
 STR_0513    :Muntanya russa amb inversions en la qual els passatgers es mantenen drets.
 STR_0514    :Els cotxes que pengen per sota dels rails es balancegen cap a fora en les corbes.
@@ -179,6 +180,7 @@ STR_0602    :Els vagons d’aquesta muntanya russa s’acceleren fora de l’and
 STR_0603    :Una muntanya russa de fusta amb una via d’acer, el que permet unes caigudes empinades i inversions.
 STR_0604    :Els passatgers van en fila per una via monorail estreta i passen a gran velocitat per tirabuixons i inversions.
 STR_0605    :Els passatgers baixen per una via d’acer sinuosa, frenant per controlar la velocitat.
+STR_0606    :Una muntanya russa d'estil antic i de fusta, on els cotxes es mouen de pressa amb gran part al descobert, algunes accelerades laterals i dissenyada perquè els passatgers es sentin com si l'atracció estigués fora de control.
 STR_0767    :Visitant {INT32}
 STR_0768    :Encarregat de neteja {INT32}
 STR_0769    :Mecànic {INT32}
