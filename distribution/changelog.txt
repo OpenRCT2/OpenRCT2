@@ -54,6 +54,7 @@
 - Fix: [#17834] Finance window becomes blank after 4096 years.
 - Fix: [#17816] Option to pause game when Steam Overlay is active is not greyed out when using the OpenGL renderer.
 - Fix: [#17897] Guest can get stuck on tiles with construction rights outside the park.
+- Fix: [#17904] Trees are removed at no cost to make way for ride entrance/exits.
 - Fix: [#17905] The chain button in the map window is enabled for rectangular maps when (re)opened.
 - Fix: [#17931] The in-game command ‘count_objects’ crashes the game.
 - Fix: [#17865] With difficult guest generation, tested but unopened rides still contribute to the guest cap.
