@@ -60,6 +60,7 @@
 - Fix: [#17865] With difficult guest generation, tested but unopened rides still contribute to the guest cap.
 - Fix: [#17866] [Plugin] Wrong Soft Guest Cap at start of new game
 - Fix: [#17959] Areas marked for dirty drawing are too large.
+- Fix: [#17966] Reversed steel trains do not properly import from S4.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
