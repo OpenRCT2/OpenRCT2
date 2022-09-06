@@ -68,6 +68,7 @@
 - Fix: [#17959] Areas marked for dirty drawing are too large.
 - Fix: [#17963] Some marketing campaigns can’t be started after Finances window tab has been on Research.
 - Fix: [#17966] Reversed steel trains do not properly import from S4.
+- Fix: [#17973] Bins and lamps overlay parts of the land.
 - Fix: [#18008] Steeplechase S-bends has multiple gaps visible in the tracks.
 - Fix: [#18009] Visual glitch with litter at edge of sloped path.
 - Fix: [#18025] Fix land ownership in Six Holland, Six Flags Magic Mountain, North America - Grand Canyon and Asia - Great Wall of China Tourism Enhancement scenarios. 
