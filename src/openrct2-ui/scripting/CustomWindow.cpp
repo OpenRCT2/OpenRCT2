@@ -1191,7 +1191,7 @@ namespace OpenRCT2::Ui::Windows
         if (w->classification == WindowClass::Custom && w->custom_info != nullptr)
         {
             auto& customInfo = GetInfo(w);
-            if (tabIndex >= WIDX_TAB_0 && tabIndex < static_cast<WidgetIndex>(WIDX_TAB_0 + customInfo.Desc.Tabs.size()))
+            if (tabIndex >= 0 && tabIndex < static_cast<int32_t>(customInfo.Desc.Tabs.size()))
             {
                 static_cast<CustomWindow*>(w)->ChangeTab(tabIndex);
             }
