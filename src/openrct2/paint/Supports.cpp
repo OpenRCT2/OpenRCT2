@@ -592,7 +592,7 @@ bool wooden_a_supports_paint_setup(
         {
             auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][special]);
 
-            BoundBoxXYZ bBox = byte_97B23C[special].bounding_box;
+            const BoundBoxXYZ& bBox = byte_97B23C[special].bounding_box;
 
             if (byte_97B23C[special].var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
             {

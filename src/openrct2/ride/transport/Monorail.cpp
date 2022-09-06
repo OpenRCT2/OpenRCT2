@@ -718,8 +718,8 @@ static void paint_monorail_track_s_bend_left(
     };
 
     uint32_t imageId = monorail_track_pieces_s_bend_left[direction & 1][trackSequence] | session.TrackColours[SCHEME_TRACK];
-    CoordsXY offset = boxList[trackSequence].offset;
-    CoordsXY bounds = boxList[trackSequence].length;
+    const CoordsXY& offset = boxList[trackSequence].offset;
+    const CoordsXY& bounds = boxList[trackSequence].length;
     if (direction == 0 || direction == 2)
     {
         PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 3 });
@@ -812,8 +812,8 @@ static void paint_monorail_track_s_bend_right(
     };
 
     uint32_t imageId = monorail_track_pieces_s_bend_right[direction & 1][trackSequence] | session.TrackColours[SCHEME_TRACK];
-    CoordsXY offset = boxList[trackSequence].offset;
-    CoordsXY bounds = boxList[trackSequence].length;
+    const CoordsXY& offset = boxList[trackSequence].offset;
+    const CoordsXY& bounds = boxList[trackSequence].length;
     if (direction == 0 || direction == 2)
     {
         PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 3 });
@@ -950,8 +950,8 @@ static void paint_monorail_track_left_eighth_to_diag(
     if (index >= 0)
     {
         uint32_t imageId = ghost_train_track_pieces_left_eight_to_diag[direction][index] | session.TrackColours[SCHEME_TRACK];
-        const CoordsXY offset = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].offset;
-        const CoordsXY bounds = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].length;
+        const CoordsXY& offset = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].offset;
+        const CoordsXY& bounds = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].length;
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
     }
 
