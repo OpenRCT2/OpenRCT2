@@ -18,6 +18,7 @@
 - Improved: [#17575] You can now search for Authors in Object Selection.
 - Improved: [#17806] Added warning when using RCT1 objects without RCT1 linked.
 - Improved: [#17868] [Plugin] You can now change active tab of a custom window programmatically.
+- Improved: [#17909] Track elements that are not supported by any train are now hidden by default.
 - Improved: [#17924] Improved performance when loading JSON object images from a .DAT file.
 - Change: [#9104] Calculate maze support costs.
 - Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.

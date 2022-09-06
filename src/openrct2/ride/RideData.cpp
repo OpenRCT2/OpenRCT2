@@ -384,6 +384,7 @@ bool RideTypeDescriptor::SupportsRideMode(RideMode rideMode) const
 }
 
 static RideTrackGroup _enabledRidePieces = {};
+static RideTrackGroup _disabledRidePieces = {};
 
 bool IsTrackEnabled(int32_t trackFlagIndex)
 {
@@ -393,4 +394,14 @@ bool IsTrackEnabled(int32_t trackFlagIndex)
 void UpdateEnabledRidePieces(ride_type_t rideType)
 {
     GetRideTypeDescriptor(rideType).GetAvailableTrackPieces(_enabledRidePieces);
+
+    if (!gCheatsEnableAllDrawableTrackPieces)
+    {
+        _enabledRidePieces &= ~_disabledRidePieces;
+    }
+}
+
+void UpdateDisabledRidePieces(const RideTrackGroup& res)
+{
+    _disabledRidePieces = res;
 }

@@ -467,3 +467,4 @@ constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 
 bool IsTrackEnabled(int32_t trackFlagIndex);
 void UpdateEnabledRidePieces(ride_type_t rideType);
+void UpdateDisabledRidePieces(const RideTrackGroup& res);
