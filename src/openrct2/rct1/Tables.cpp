@@ -446,11 +446,11 @@ namespace RCT1
             2, // MINIATURE_RAILWAY_CARRIAGE
             0,
             0,
+            0, // WOODEN_RC_TRAIN_BACKWARDS
             0,
             0,
-            0,
-            0,
-            0,
+            0, // STEEL_RC_REVERSED_FRONT
+            1, // STEEL_RC_REVERSED_CARRIAGE
             0,
             0,
             0,
