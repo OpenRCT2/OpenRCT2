@@ -26,17 +26,12 @@
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
+#include "../Boundbox.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
-struct boundbox
-{
-    CoordsXY offset;
-    CoordsXY length;
-};
-
 // clang-format off
-static constexpr const boundbox LargeSceneryBoundBoxes[] = {
+static constexpr const BoundBoxXY LargeSceneryBoundBoxes[] = {
     { { 3, 3 }, { 26, 26 } },
     { { 17, 17 }, { 12, 12 } },
     { { 17, 3 }, { 12, 12 } },
@@ -397,8 +392,8 @@ void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t heigh
         flags = Numerics::rol16(flags, direction);
         bbIndex = (flags & 0xF) | (flags >> 12);
     }
-    const CoordsXYZ bbOffset = { LargeSceneryBoundBoxes[bbIndex].offset, height };
-    const CoordsXYZ bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
+    const CoordsXYZ& bbOffset = { LargeSceneryBoundBoxes[bbIndex].offset, height };
+    const CoordsXYZ& bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
 
     auto imageIndex = sceneryEntry->image + 4 + (sequenceNum << 2) + direction;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, bbLength, bbOffset);

@@ -31,6 +31,7 @@
 #include "../../sprites.h"
 #include "../../world/Surface.h"
 #include "../../world/TileInspector.h"
+#include "../Boundbox.h"
 #include "Paint.TileElement.h"
 
 #include <algorithm>
@@ -228,8 +229,7 @@ struct tile_surface_boundary_data
     int32_t bit_2;
     uint32_t image[5];
     CoordsXY offset;
-    CoordsXY box_offset;
-    CoordsXY box_size;
+    BoundBoxXY Boundbox;
 };
 
 static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] = {
@@ -247,8 +247,7 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] = {
             SPR_TERRAIN_BOUNDARY_FENCES_5,
         },
         { 1, 31 },
-        { 1, 31 },
-        { 30, 1 },
+        { { 1, 31 }, { 30, 1 } },
     },
     {
         // Bottom left
@@ -264,8 +263,7 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] = {
             SPR_TERRAIN_BOUNDARY_FENCES_6,
         },
         { 31, 0 },
-        { 31, 1 },
-        { 1, 30 },
+        { { 31, 1 }, { 1, 30 } },
     },
     {
         // Top left
@@ -281,8 +279,7 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] = {
             SPR_TERRAIN_BOUNDARY_FENCES_5,
         },
         { 1, 0 },
-        { 1, 1 },
-        { 30, 1 },
+        { { 1, 1 }, { 30, 1 } },
     },
     {
         // Top right
@@ -298,8 +295,7 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] = {
             SPR_TERRAIN_BOUNDARY_FENCES_6,
         },
         { 1, 1 },
-        { 1, 1 },
-        { 1, 30 },
+        { { 1, 1 }, { 1, 30 } },
     },
 };
 
@@ -1412,8 +1408,8 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
             }
 
             PaintAddImageAsParent(
-                session, image_id, { fenceData.offset, local_height }, { fenceData.box_size, 9 },
-                { fenceData.box_offset, local_height + 1 });
+                session, image_id, { fenceData.offset, local_height }, { fenceData.Boundbox.length, 9 },
+                { fenceData.Boundbox.offset, local_height + 1 });
         }
     }
 
