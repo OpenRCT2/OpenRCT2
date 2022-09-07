@@ -464,6 +464,11 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
 
 #pragma region Players page
 
+static bool IsServerPlayerInvisible()
+{
+    return network_is_server_player_invisible() && !gConfigGeneral.debugging_tools;
+}
+
 static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
@@ -487,7 +492,7 @@ static void WindowMultiplayerPlayersResize(rct_window* w)
 {
     window_set_resize(*w, 420, 124, 500, 450);
 
-    w->no_list_items = network_get_num_players();
+    w->no_list_items = (IsServerPlayerInvisible() ? network_get_num_visible_players() : network_get_num_players());
     w->list_item_positions[0] = 0;
 
     w->widgets[WIDX_HEADER_PING].right = w->width - 5;
@@ -534,7 +539,8 @@ static void WindowMultiplayerPlayersScrollmousedown(rct_window* w, int32_t scrol
     w->selected_list_item = index;
     w->Invalidate();
 
-    WindowPlayerOpen(network_get_player_id(index));
+    int32_t player = (IsServerPlayerInvisible() ? index + 1 : index);
+    WindowPlayerOpen(network_get_player_id(player));
 }
 
 static void WindowMultiplayerPlayersScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
@@ -577,7 +583,11 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
 {
     ScreenCoordsXY screenCoords;
     screenCoords.y = 0;
-    for (int32_t i = 0; i < network_get_num_players(); i++)
+
+    const int32_t firstPlayerInList = (IsServerPlayerInvisible() ? 1 : 0);
+    int32_t listPosition = 0;
+
+    for (int32_t player = firstPlayerInList; player < network_get_num_players(); player++)
     {
         if (screenCoords.y > dpi->y + dpi->height)
         {
@@ -592,17 +602,17 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
 
             // Draw player name
             colour_t colour = COLOUR_BLACK;
-            if (i == w->selected_list_item)
+            if (listPosition == w->selected_list_item)
             {
                 gfx_filter_rect(
                     dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
                     FilterPaletteID::PaletteDarken1);
-                _buffer += network_get_player_name(i);
+                _buffer += network_get_player_name(player);
                 colour = w->colours[2];
             }
             else
             {
-                if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISSERVER)
+                if (network_get_player_flags(player) & NETWORK_PLAYER_FLAG_ISSERVER)
                 {
                     _buffer += "{BABYBLUE}";
                 }
@@ -610,7 +620,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 {
                     _buffer += "{BLACK}";
                 }
-                _buffer += network_get_player_name(i);
+                _buffer += network_get_player_name(player);
             }
             screenCoords.x = 0;
             gfx_clip_string(_buffer.data(), 230, FontSpriteBase::MEDIUM);
@@ -618,7 +628,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
 
             // Draw group name
             _buffer.resize(0);
-            int32_t group = network_get_group_index(network_get_player_group(i));
+            int32_t group = network_get_group_index(network_get_player_group(player));
             if (group != -1)
             {
                 _buffer += "{BLACK}";
@@ -629,7 +639,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
             }
 
             // Draw last action
-            int32_t action = network_get_player_last_action(i, 2000);
+            int32_t action = network_get_player_last_action(player, 2000);
             auto ft = Formatter();
             if (action != -999)
             {
@@ -643,7 +653,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
 
             // Draw ping
             _buffer.resize(0);
-            int32_t ping = network_get_player_ping(i);
+            int32_t ping = network_get_player_ping(player);
             if (ping <= 100)
             {
                 _buffer += "{GREEN}";
@@ -665,6 +675,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
             gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+        listPosition++;
     }
 }
 

@@ -42,6 +42,8 @@ public: // Common
     auto GetGroupIteratorByID(uint8_t id) const;
     NetworkPlayer* GetPlayerByID(uint8_t id) const;
     NetworkGroup* GetGroupByID(uint8_t id) const;
+    int32_t GetTotalNumPlayers() const noexcept;
+    int32_t GetNumVisiblePlayers() const noexcept;
     void SetPassword(u8string_view password);
     uint8_t GetDefaultGroup() const noexcept;
     std::string BeginLog(const std::string& directory, const std::string& midName, const std::string& filenameFormat);
@@ -177,6 +179,7 @@ public: // Public common
     std::string ServerProviderWebsite;
     std::vector<std::unique_ptr<NetworkPlayer>> player_list;
     std::vector<std::unique_ptr<NetworkGroup>> group_list;
+    bool IsServerPlayerInvisible = false;
 
 private: // Common Data
     using CommandHandler = void (NetworkBase::*)(NetworkConnection& connection, NetworkPacket& packet);
@@ -189,7 +192,6 @@ private: // Common Data
     uint8_t default_group = 0;
     bool _closeLock = false;
     bool _requireClose = false;
-    bool wsa_initialized = false;
 
 private: // Server Data
     std::unordered_map<NetworkCommand, CommandHandler> server_command_handlers;

@@ -42,7 +42,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "13"
+#define NETWORK_STREAM_VERSION "14"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -111,7 +111,6 @@ static u8string network_get_public_key_path(u8string_view playerName, u8string_v
 NetworkBase::NetworkBase(OpenRCT2::IContext& context)
     : OpenRCT2::System(context)
 {
-    wsa_initialized = false;
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
     last_ping_sent_time = 0;
@@ -377,6 +376,8 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
     ServerProviderName = gConfigNetwork.provider_name;
     ServerProviderEmail = gConfigNetwork.provider_email;
     ServerProviderWebsite = gConfigNetwork.provider_website;
+
+    IsServerPlayerInvisible = gOpenRCT2Headless;
 
     CheatsReset();
     LoadGroups();
@@ -690,6 +691,18 @@ NetworkGroup* NetworkBase::GetGroupByID(uint8_t id) const
         return it->get();
     }
     return nullptr;
+}
+
+int32_t NetworkBase::GetTotalNumPlayers() const noexcept
+{
+    return static_cast<int32_t>(player_list.size());
+}
+
+int32_t NetworkBase::GetNumVisiblePlayers() const noexcept
+{
+    if (IsServerPlayerInvisible)
+        return static_cast<int32_t>(player_list.size() - 1);
+    return static_cast<int32_t>(player_list.size());
 }
 
 const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
@@ -1569,7 +1582,7 @@ json_t NetworkBase::GetServerInfoAsJson() const
 {
     json_t jsonObj = {
         { "name", gConfigNetwork.server_name },         { "requiresPassword", _password.size() > 0 },
-        { "version", network_get_version() },           { "players", player_list.size() },
+        { "version", network_get_version() },           { "players", GetNumVisiblePlayers() },
         { "maxPlayers", gConfigNetwork.maxplayers },    { "description", gConfigNetwork.server_description },
         { "greeting", gConfigNetwork.server_greeting }, { "dedicated", gOpenRCT2Headless },
     };
@@ -1593,6 +1606,7 @@ void NetworkBase::Server_Send_GAMEINFO(NetworkConnection& connection)
 
     packet.WriteString(jsonObj.dump());
     packet << _serverState.gamestateSnapshotsEnabled;
+    packet << IsServerPlayerInvisible;
 
 #    endif
     connection.QueuePacket(std::move(packet));
@@ -2598,7 +2612,7 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             }
         }
 
-        if (static_cast<size_t>(gConfigNetwork.maxplayers) <= player_list.size())
+        if (GetNumVisiblePlayers() >= gConfigNetwork.maxplayers)
         {
             connection.AuthStatus = NetworkAuth::Full;
             log_info("Connection %s: Server is full.", hostName);
@@ -3107,6 +3121,7 @@ void NetworkBase::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& con
 {
     auto jsonString = packet.ReadString();
     packet >> _serverState.gamestateSnapshotsEnabled;
+    packet >> IsServerPlayerInvisible;
 
     json_t jsonData = Json::FromString(jsonString);
 
@@ -3210,7 +3225,12 @@ uint8_t network_get_current_player_id()
 
 int32_t network_get_num_players()
 {
-    return static_cast<int32_t>(OpenRCT2::GetContext()->GetNetwork().player_list.size());
+    return OpenRCT2::GetContext()->GetNetwork().GetTotalNumPlayers();
+}
+
+int32_t network_get_num_visible_players()
+{
+    return OpenRCT2::GetContext()->GetNetwork().GetNumVisiblePlayers();
 }
 
 const char* network_get_player_name(uint32_t index)
@@ -3742,6 +3762,11 @@ int32_t network_get_pickup_peep_old_x(uint8_t playerid)
     return -1;
 }
 
+bool network_is_server_player_invisible()
+{
+    return OpenRCT2::GetContext()->GetNetwork().IsServerPlayerInvisible;
+}
+
 int32_t network_get_current_player_group_index()
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
@@ -3976,6 +4001,10 @@ int32_t network_get_num_players()
 {
     return 1;
 }
+int32_t network_get_num_visible_players()
+{
+    return 1;
+}
 const char* network_get_player_name(uint32_t index)
 {
     return "local (OpenRCT2 compiled without MP)";
@@ -4126,6 +4155,10 @@ uint8_t network_get_current_player_id()
 int32_t network_get_current_player_group_index()
 {
     return 0;
+}
+bool network_is_server_player_invisible()
+{
+    return false;
 }
 void network_append_chat_log(std::string_view)
 {
