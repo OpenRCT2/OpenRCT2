@@ -9,6 +9,7 @@
 
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../ride/Vehicle.h"
@@ -17,13 +18,7 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
-struct rct_crooked_house_bound_box
-{
-    CoordsXY offset;
-    CoordsXY length;
-};
-
-static constexpr const rct_crooked_house_bound_box crooked_house_data[] = {
+static constexpr const BoundBoxXY CrookedHouseData[] = {
     {
         { 6, 0 },
         { 42, 24 },
@@ -75,7 +70,7 @@ static void PaintCrookedHouseStructure(
         }
     }
 
-    const auto& boundBox = crooked_house_data[segment];
+    const auto& boundBox = CrookedHouseData[segment];
     auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsParent(

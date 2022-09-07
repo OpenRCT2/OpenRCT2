@@ -315,6 +315,7 @@
     <ClInclude Include="object\WallObject.h" />
     <ClInclude Include="object\WaterObject.h" />
     <ClInclude Include="OpenRCT2.h" />
+    <ClInclude Include="paint\Boundbox.h" />
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
     <ClInclude Include="paint\Painter.h" />
