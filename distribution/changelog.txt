@@ -8,6 +8,7 @@
 - Feature: [#16662] Show a warning message when g2.dat is mismatched.
 - Feature: [#17107] Ride operating settings can be set via text input.
 - Feature: [#17638] Added Zero G rolls, medium loops and large corkscrews to the Hybrid and Single-Rail coasters.
+- Feature: [#17821] [Plugin] Add API for track subpositions and vehicle subposition.
 - Feature: [#17877] Add three real-life flying roller coaster colour schemes.
 - Feature: [#17900] Add “Classic Wooden Coaster” with shallow banked turns.
 - Feature: [objects#198] Add additional pirate roofs.
