@@ -10,6 +10,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"
@@ -35,10 +36,10 @@ static constexpr const uint32_t SwingingShipBaseSpriteOffset[] = {
 
 /** rct2: 0x008A83C0 */
 static constexpr const BoundBoxXY SwingingShipData[] = {
-    { 1, 8, 31, 16 },
-    { 8, 1, 16, 31 },
-    { 1, 8, 31, 16 },
-    { 8, 1, 16, 31 },
+    { { 1, 8 }, { 31, 16 } },
+    { { 8, 1 }, { 16, 31 } },
+    { { 1, 8 }, { 31, 16 } },
+    { { 8, 1 }, { 16, 31 } },
 };
 
 enum

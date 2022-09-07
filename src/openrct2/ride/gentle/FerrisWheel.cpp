@@ -10,6 +10,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"

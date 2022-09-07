@@ -10,6 +10,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"
@@ -36,10 +37,10 @@ static constexpr const uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] 
 
 /** rct2: 0x01428020 */
 static constexpr const BoundBoxXY SwingingInverterShipBounds[] = {
-    { 0, 8, 32, 16 },
-    { 8, 0, 16, 32 },
-    { 0, 8, 32, 16 },
-    { 8, 0, 16, 32 },
+    { { 0, 8 }, { 32, 16 } },
+    { { 8, 0 }, { 16, 32 } },
+    { { 0, 8 }, { 32, 16 } },
+    { { 8, 0 }, { 16, 32 } },
 };
 
 enum

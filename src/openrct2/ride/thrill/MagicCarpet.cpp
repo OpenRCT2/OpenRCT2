@@ -10,6 +10,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"
@@ -46,10 +47,10 @@ static constexpr const int8_t MagicCarpetOscillationXY[] = {
 };
 
 static constexpr const BoundBoxXY MagicCarpetBounds[] = {
-    { 0, 8, 32, 16 },
-    { 8, 0, 16, 32 },
-    { 0, 8, 32, 16 },
-    { 8, 0, 16, 32 },
+    { { 0, 8 }, { 32, 16 } },
+    { { 8, 0 }, { 16, 32 } },
+    { { 0, 8 }, { 32, 16 } },
+    { { 8, 0 }, { 16, 32 } },
 };
 
 static ImageIndex GetMagicCarpetFrameImage(Plane plane, Direction direction)
