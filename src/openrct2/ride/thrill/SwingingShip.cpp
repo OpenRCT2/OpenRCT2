@@ -102,7 +102,7 @@ static void PaintSwingingShipStructure(
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
     CoordsXYZ bbLength(bounds.length.x, bounds.length.y, 80);
     CoordsXYZ bbOffset(bounds.offset.x, bounds.offset.y, height + 7);
-    
+
     auto baseImageId = rideEntry->Cars[0].base_image_id + SwingingShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
