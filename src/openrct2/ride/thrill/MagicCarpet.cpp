@@ -98,7 +98,7 @@ static Vehicle* GetFirstVehicle(const Ride& ride)
 
 static void PaintMagicCarpetRiders(
     paint_session& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, Direction direction,
-    const CoordsXYZ& offset, const CoordsXYZ& bbOffset, const CoordsXYZ& bbSize)
+    const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 1 })
         return;
@@ -109,40 +109,37 @@ static void PaintMagicCarpetRiders(
         auto imageIndex = baseImageIndex + (peepIndex * 2);
         auto imageId = ImageId(
             imageIndex, vehicle.peep_tshirt_colours[peepIndex + 0], vehicle.peep_tshirt_colours[peepIndex + 1]);
-        PaintAddImageAsChild(session, imageId, offset, bbSize, bbOffset);
+        PaintAddImageAsChild(session, imageId, offset, bb);
     }
 }
 
 static void PaintMagicCarpetFrame(
-    paint_session& session, Plane plane, Direction direction, const CoordsXYZ& offset, const CoordsXYZ& bbOffset,
-    const CoordsXYZ& bbSize)
+    paint_session& session, Plane plane, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetFrameImage(plane, direction);
     auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (plane == Plane::Back)
     {
-        PaintAddImageAsParent(session, imageId, offset, bbSize, bbOffset);
+        PaintAddImageAsParent(session, imageId, offset, bb);
     }
     else
     {
-        PaintAddImageAsChild(session, imageId, offset, bbSize, bbOffset);
+        PaintAddImageAsChild(session, imageId, offset, bb);
     }
 }
 
 static void PaintMagicCarpetPendulum(
-    paint_session& session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const CoordsXYZ& bbOffset,
-    const CoordsXYZ& bbSize)
+    paint_session& session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetPendulumImage(plane, direction, swing);
     auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
     auto imageId = imageTemplate.WithIndex(imageIndex);
-    PaintAddImageAsChild(session, imageId, offset, bbSize, bbOffset);
+    PaintAddImageAsChild(session, imageId, offset, bb);
 }
 
 static void PaintMagicCarpetVehicle(
-    paint_session& session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const CoordsXYZ& bbOffset,
-    const CoordsXYZ& bbSize)
+    paint_session& session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const BoundBoxXYZ& bb)
 {
     const auto* rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -174,12 +171,12 @@ static void PaintMagicCarpetVehicle(
         imageTemplate = ImageId::FromUInt32(imageFlags);
     }
     auto vehicleImageIndex = rideEntry->Cars[0].base_image_id + direction;
-    PaintAddImageAsChild(session, imageTemplate.WithIndex(vehicleImageIndex), offset, bbSize, bbOffset);
+    PaintAddImageAsChild(session, imageTemplate.WithIndex(vehicleImageIndex), offset, bb);
 
     auto* vehicle = GetFirstVehicle(ride);
     if (vehicle != nullptr)
     {
-        PaintMagicCarpetRiders(session, *rideEntry, *vehicle, direction, offset, bbOffset, bbSize);
+        PaintMagicCarpetRiders(session, *rideEntry, *vehicle, direction, offset, bb);
     }
 }
 
@@ -195,23 +192,18 @@ static void PaintMagicCarpetStructure(
         session.CurrentlyDrawnEntity = vehicle;
     }
 
-    BoundBoxXY bb = MagicCarpetBounds[direction];
-    CoordsXYZ offset, bbOffset, bbSize;
-    offset.x = (direction & 1) ? 0 : axisOffset;
-    offset.y = (direction & 1) ? axisOffset : 0;
-    offset.z = height + 7;
-    bbOffset.x = bb.offset.x;
-    bbOffset.y = bb.offset.y;
-    bbOffset.z = height + 7;
-    bbSize.x = bb.length.x;
-    bbSize.y = bb.length.y;
-    bbSize.z = 127;
+    CoordsXYZ offset = {
+        (direction & 1) ? 0 : axisOffset,
+        (direction & 1) ? axisOffset : 0,
+        height + 7,
+    };
+    BoundBoxXYZ bb = { { MagicCarpetBounds[direction].offset, height + 7 }, { MagicCarpetBounds[direction].length, 127 } };
 
-    PaintMagicCarpetFrame(session, Plane::Back, direction, offset, bbOffset, bbSize);
-    PaintMagicCarpetPendulum(session, Plane::Back, swing, direction, offset, bbOffset, bbSize);
-    PaintMagicCarpetVehicle(session, ride, direction, swing, offset, bbOffset, bbSize);
-    PaintMagicCarpetPendulum(session, Plane::Front, swing, direction, offset, bbOffset, bbSize);
-    PaintMagicCarpetFrame(session, Plane::Front, direction, offset, bbOffset, bbSize);
+    PaintMagicCarpetFrame(session, Plane::Back, direction, offset, bb);
+    PaintMagicCarpetPendulum(session, Plane::Back, swing, direction, offset, bb);
+    PaintMagicCarpetVehicle(session, ride, direction, swing, offset, bb);
+    PaintMagicCarpetPendulum(session, Plane::Front, swing, direction, offset, bb);
+    PaintMagicCarpetFrame(session, Plane::Front, direction, offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;

@@ -53,7 +53,7 @@ static void PaintHauntedHouseStructure(
         imageIndex = baseImageIndex + 3 + ((direction & 3) * 18) + frameNum;
         PaintAddImageAsChild(
             session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height },
-            { boundBox.length.x, boundBox.length.y, 127 }, { boundBox.offset.x, boundBox.offset.y, height });
+            { { boundBox.offset, height }, { boundBox.length, 127 } });
     }
 
     session.CurrentlyDrawnEntity = nullptr;

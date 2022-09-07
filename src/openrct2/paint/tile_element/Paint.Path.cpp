@@ -1123,7 +1123,7 @@ void path_paint_box_support(
         {
             PaintAddImageAsChild(
                 session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height },
-                { boundBoxSize.x, boundBoxSize.y, 0 }, { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
+                { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
         }
     }
 
@@ -1262,7 +1262,7 @@ void path_paint_pole_support(
         {
             PaintAddImageAsChild(
                 session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height },
-                { boundBoxSize.x, boundBoxSize.y, 0 }, { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
+                { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
         }
     }
 

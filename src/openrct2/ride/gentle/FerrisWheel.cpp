@@ -43,7 +43,7 @@ static constexpr BoundBoxXY FerrisWheelData[] = {
 
 static void PaintFerrisWheelRiders(
     paint_session& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
-    const CoordsXYZ bbLength, const CoordsXYZ bbOffset)
+    const BoundBoxXYZ& bb)
 {
     for (int32_t i = 0; i < 32; i += 2)
     {
@@ -54,7 +54,7 @@ static void PaintFerrisWheelRiders(
         auto frameNum = (vehicle.Pitch + i * 4) % 128;
         auto imageIndex = rideEntry.Cars[0].base_image_id + 32 + direction * 128 + frameNum;
         auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[i], vehicle.peep_tshirt_colours[i + 1]);
-        PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
+        PaintAddImageAsChild(session, imageId, offset, bb);
     }
 }
 
@@ -72,10 +72,9 @@ static void PaintFerrisWheelStructure(
         session.CurrentlyDrawnEntity = vehicle;
     }
 
-    const auto& boundBox = FerrisWheelData[direction];
+    auto boundBox = FerrisWheelData[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
-    CoordsXYZ bbLength(boundBox.length.x, boundBox.length.y, 127);
-    CoordsXYZ bbOffset(boundBox.offset.x, boundBox.offset.y, height + 7);
+    BoundBoxXYZ bb = { { boundBox.offset, height + 7 }, { boundBox.length, 127 } };
 
     auto supportsImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
     auto wheelImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
@@ -90,13 +89,13 @@ static void PaintFerrisWheelStructure(
     auto wheelImageId = wheelImageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction * 8 + imageOffset);
     auto rightSupportImageId = leftSupportImageId.WithIndexOffset(1);
 
-    PaintAddImageAsParent(session, leftSupportImageId, offset, bbLength, bbOffset);
-    PaintAddImageAsChild(session, wheelImageId, offset, bbLength, bbOffset);
+    PaintAddImageAsParent(session, leftSupportImageId, offset, bb);
+    PaintAddImageAsChild(session, wheelImageId, offset, bb);
     if (vehicle != nullptr)
     {
-        PaintFerrisWheelRiders(session, *rideEntry, *vehicle, direction, offset, bbLength, bbOffset);
+        PaintFerrisWheelRiders(session, *rideEntry, *vehicle, direction, offset, bb);
     }
-    PaintAddImageAsChild(session, rightSupportImageId, offset, bbLength, bbOffset);
+    PaintAddImageAsChild(session, rightSupportImageId, offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;

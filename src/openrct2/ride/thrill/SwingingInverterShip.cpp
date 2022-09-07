@@ -67,8 +67,7 @@ static void PaintSwingingInverterShipStructure(
 
     const auto& boundBox = SwingingInverterShipBounds[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height);
-    CoordsXYZ bbLength(boundBox.length.x, boundBox.length.y, 127);
-    CoordsXYZ bbOffset(boundBox.offset.x, boundBox.offset.y, height);
+    BoundBoxXYZ bb = { { boundBox.offset, height }, { boundBox.length, 127 } };
 
     Vehicle* vehicle = nullptr;
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
@@ -112,13 +111,13 @@ static void PaintSwingingInverterShipStructure(
 
     if (direction & 2)
     {
-        PaintAddImageAsParent(session, vehicleImageId, offset, bbLength, bbOffset);
-        PaintAddImageAsChild(session, frameImageId, offset, bbLength, bbOffset);
+        PaintAddImageAsParent(session, vehicleImageId, offset, bb);
+        PaintAddImageAsChild(session, frameImageId, offset, bb);
     }
     else
     {
-        PaintAddImageAsParent(session, frameImageId, offset, bbLength, bbOffset);
-        PaintAddImageAsChild(session, vehicleImageId, offset, bbLength, bbOffset);
+        PaintAddImageAsParent(session, frameImageId, offset, bb);
+        PaintAddImageAsChild(session, vehicleImageId, offset, bb);
     }
 
     session.CurrentlyDrawnEntity = nullptr;

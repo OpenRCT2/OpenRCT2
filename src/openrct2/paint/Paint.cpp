@@ -20,6 +20,7 @@
 #include "../profiling/Profiling.h"
 #include "../util/Math.hpp"
 #include "../world/SmallScenery.h"
+#include "Boundbox.h"
 #include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
 
@@ -148,8 +149,7 @@ static constexpr CoordsXYZ RotateBoundBoxSize(const CoordsXYZ& bbSize, const uin
  * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
  */
 static paint_struct* CreateNormalPaintStruct(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset)
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     auto* const g1 = gfx_get_g1_element(image_id);
     if (g1 == nullptr)
@@ -168,8 +168,8 @@ static paint_struct* CreateNormalPaintStruct(
         return nullptr;
     }
 
-    const auto rotBoundBoxOffset = CoordsXYZ{ boundBoxOffset.Rotate(swappedRotation), boundBoxOffset.z };
-    const auto rotBoundBoxSize = RotateBoundBoxSize(boundBoxSize, session.CurrentRotation);
+    const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.Rotate(swappedRotation), boundBox.offset.z };
+    const auto rotBoundBoxSize = RotateBoundBoxSize(boundBox.length, session.CurrentRotation);
 
     auto* ps = session.AllocateNormalPaintEntry();
     if (ps == nullptr)
@@ -690,20 +690,20 @@ void PaintSessionFree([[maybe_unused]] paint_session* session)
 paint_struct* PaintAddImageAsParent(
     paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
-    return PaintAddImageAsParent(session, ImageId::FromUInt32(image_id), offset, boundBoxSize, offset);
+    return PaintAddImageAsParent(session, ImageId::FromUInt32(image_id), offset, { offset, boundBoxSize });
 }
 
 paint_struct* PaintAddImageAsParent(
     paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset)
 {
-    return PaintAddImageAsParent(session, ImageId::FromUInt32(image_id), offset, boundBoxSize, boundBoxOffset);
+    return PaintAddImageAsParent(session, ImageId::FromUInt32(image_id), offset, { boundBoxOffset, boundBoxSize });
 }
 
 paint_struct* PaintAddImageAsParent(
     paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
-    return PaintAddImageAsParent(session, imageId, offset, boundBoxSize, offset);
+    return PaintAddImageAsParent(session, imageId, offset, { offset, boundBoxSize });
 }
 
 /**
@@ -723,13 +723,12 @@ paint_struct* PaintAddImageAsParent(
  */
 // Track Pieces, Shops.
 paint_struct* PaintAddImageAsParent(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset)
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     session.LastPS = nullptr;
     session.LastAttachedPS = nullptr;
 
-    auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
+    auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBox);
     if (ps == nullptr)
     {
         return nullptr;
@@ -738,6 +737,13 @@ paint_struct* PaintAddImageAsParent(
     PaintSessionAddPSToQuadrant(session, ps);
 
     return ps;
+}
+
+paint_struct* PaintAddImageAsParent(
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    const CoordsXYZ& boundBoxOffset)
+{
+    return PaintAddImageAsParent(session, image_id, offset, { boundBoxOffset, boundBoxSize });
 }
 
 /**
@@ -758,19 +764,18 @@ paint_struct* PaintAddImageAsParent(
  * Creates a paint struct but does not allocate to a paint quadrant. Result cannot be ignored!
  */
 [[nodiscard]] paint_struct* PaintAddImageAsOrphan(
-    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset)
+    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     session.LastPS = nullptr;
     session.LastAttachedPS = nullptr;
-    return CreateNormalPaintStruct(session, imageId, offset, boundBoxSize, boundBoxOffset);
+    return CreateNormalPaintStruct(session, imageId, offset, boundBox);
 }
 
 paint_struct* PaintAddImageAsChild(
     paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset)
 {
-    return PaintAddImageAsChild(session, ImageId::FromUInt32(image_id), offset, boundBoxLength, boundBoxOffset);
+    return PaintAddImageAsChild(session, ImageId::FromUInt32(image_id), offset, { boundBoxOffset, boundBoxLength });
 }
 
 /**
@@ -791,16 +796,15 @@ paint_struct* PaintAddImageAsChild(
  * If there is no parent paint struct then image is added as a parent
  */
 paint_struct* PaintAddImageAsChild(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
-    const CoordsXYZ& boundBoxOffset)
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     paint_struct* parentPS = session.LastPS;
     if (parentPS == nullptr)
     {
-        return PaintAddImageAsParent(session, image_id, offset, boundBoxLength, boundBoxOffset);
+        return PaintAddImageAsParent(session, image_id, offset, boundBox);
     }
 
-    auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxLength, boundBoxOffset);
+    auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBox);
     if (ps == nullptr)
     {
         return nullptr;

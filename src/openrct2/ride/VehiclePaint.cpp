@@ -962,8 +962,8 @@ static void PaintVehicleRiders(
             }
 
             PaintAddImageAsChild(
-                session, imageId, { 0, 0, z }, { bb.length_x, bb.length_y, bb.length_z },
-                { bb.offset_x, bb.offset_y, bb.offset_z + z });
+                session, imageId, { 0, 0, z },
+                { { bb.offset_x, bb.offset_y, bb.offset_z + z }, { bb.length_x, bb.length_y, bb.length_z } });
             baseImageId += carEntry->NumCarImages;
         }
     }

@@ -10,6 +10,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
@@ -35,7 +36,7 @@ static int8_t TopSpinSeatPositionOffset[] = {
 
 static void PaintTopSpinRiders(
     paint_session& session, const Vehicle& vehicle, ImageIndex seatImageIndex, const CoordsXYZ& seatCoords,
-    const CoordsXYZ& bbLength, const CoordsXYZ& bbOffset)
+    const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level >= ZoomLevel{ 2 })
         return;
@@ -48,7 +49,7 @@ static void PaintTopSpinRiders(
             auto imageIndex = seatImageIndex + ((i + 1) * 76);
             auto imageId = ImageId(
                 imageIndex, vehicle.peep_tshirt_colours[peepIndex], vehicle.peep_tshirt_colours[peepIndex + 1]);
-            PaintAddImageAsChild(session, imageId, seatCoords, bbLength, bbOffset);
+            PaintAddImageAsChild(session, imageId, seatCoords, bb);
         }
         else
         {
@@ -59,7 +60,7 @@ static void PaintTopSpinRiders(
 
 static void PaintTopSpinSeat(
     paint_session& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle* vehicle, Direction direction,
-    uint32_t armRotation, uint32_t seatRotation, const CoordsXYZ& offset, const CoordsXYZ& bbLength, const CoordsXYZ& bbOffset)
+    uint32_t armRotation, uint32_t seatRotation, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (armRotation >= std::size(TopSpinSeatHeightOffset))
         return;
@@ -107,10 +108,10 @@ static void PaintTopSpinSeat(
         imageTemplate = ImageId::FromUInt32(imageFlags);
     }
 
-    PaintAddImageAsChild(session, imageTemplate.WithIndex(seatImageIndex), seatCoords, bbLength, bbOffset);
+    PaintAddImageAsChild(session, imageTemplate.WithIndex(seatImageIndex), seatCoords, bb);
     if (vehicle != nullptr)
     {
-        PaintTopSpinRiders(session, *vehicle, seatImageIndex, seatCoords, bbLength, bbOffset);
+        PaintTopSpinRiders(session, *vehicle, seatImageIndex, seatCoords, bb);
     }
 }
 
@@ -146,8 +147,7 @@ static void PaintTopSpinVehicle(
     }
 
     CoordsXYZ offset = { al, cl, height };
-    CoordsXYZ bbLength = { 24, 24, 90 };
-    CoordsXYZ bbOffset = { al + 16, cl + 16, height };
+    BoundBoxXYZ bb = { { al + 16, cl + 16, height }, { 24, 24, 90 } };
 
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto supportImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].supports);
@@ -160,22 +160,22 @@ static void PaintTopSpinVehicle(
 
     // Left back bottom support
     auto imageIndex = carEntry.base_image_id + 572 + ((direction & 1) << 1);
-    PaintAddImageAsParent(session, supportImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
+    PaintAddImageAsParent(session, supportImageTemplate.WithIndex(imageIndex), offset, bb);
 
     // Left hand arm
     imageIndex = carEntry.base_image_id + 380 + armImageOffset + ((direction & 1) * 48);
-    PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
+    PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bb);
 
     // Seat
-    PaintTopSpinSeat(session, ride, *rideEntry, vehicle, direction, armRotation, seatRotation, offset, bbLength, bbOffset);
+    PaintTopSpinSeat(session, ride, *rideEntry, vehicle, direction, armRotation, seatRotation, offset, bb);
 
     // Right hand arm
     imageIndex = carEntry.base_image_id + 476 + armImageOffset + ((direction & 1) * 48);
-    PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
+    PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bb);
 
     // Right back bottom support
     imageIndex = carEntry.base_image_id + 573 + ((direction & 1) << 1);
-    PaintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
+    PaintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
