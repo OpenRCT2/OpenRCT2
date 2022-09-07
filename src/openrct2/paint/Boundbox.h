@@ -15,26 +15,26 @@
 
 struct BoundBoxXY
 {
-    CoordsXY length{};
     CoordsXY offset{};
+    CoordsXY length{};
 
     constexpr BoundBoxXY() = default;
-    constexpr BoundBoxXY(CoordsXY _length, CoordsXY _offset)
-        : length(_length)
-        , offset(_offset)
+    constexpr BoundBoxXY(CoordsXY _offset, CoordsXY _length)
+        : offset(_offset)
+        , length(_length)
     {
     }
 };
 
 struct BoundBoxXYZ
 {
-    CoordsXYZ length{};
     CoordsXYZ offset{};
+    CoordsXYZ length{};
 
     constexpr BoundBoxXYZ() = default;
-    constexpr BoundBoxXYZ(CoordsXYZ _length, CoordsXYZ _offset)
-        : length(_length)
-        , offset(_offset)
+    constexpr BoundBoxXYZ(CoordsXYZ _offset, CoordsXYZ _length)
+        : offset(_offset)
+        , length(_length)
     {
     }
 };
