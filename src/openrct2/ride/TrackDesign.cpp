@@ -1257,8 +1257,11 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     return GameActions::Result();
                 }
 
-                footpath_queue_chain_reset();
-                footpath_remove_edges_at(mapCoord, reinterpret_cast<TileElement*>(pathElement));
+                if (tds.PlaceOperation == PTD_OPERATION_PLACE)
+                {
+                    footpath_queue_chain_reset();
+                    footpath_remove_edges_at(mapCoord, reinterpret_cast<TileElement*>(pathElement));
+                }
 
                 flags = GAME_COMMAND_FLAG_APPLY;
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
@@ -1274,8 +1277,13 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 {
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
-                footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
-                footpath_update_queue_chains();
+
+                if (tds.PlaceOperation == PTD_OPERATION_PLACE)
+                {
+                    footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
+                    footpath_update_queue_chains();
+                }
+
                 return GameActions::Result();
             }
             break;
