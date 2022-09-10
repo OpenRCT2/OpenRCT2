@@ -75,7 +75,7 @@ public:
 public:
     std::optional<TrackRepositoryItem> Create(int32_t, std::string_view path) const override
     {
-        auto td6 = TrackDesignImport(path.data());
+        auto td6 = TrackDesignImport(path);
         if (td6 != nullptr)
         {
             TrackRepositoryItem item;

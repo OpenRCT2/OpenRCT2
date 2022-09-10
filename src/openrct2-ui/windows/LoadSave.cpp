@@ -1076,7 +1076,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
         {
             SetAndSaveConfigPath(gConfigGeneral.last_save_track_directory, pathBuffer);
             auto intent = Intent(WindowClass::InstallTrack);
-            intent.putExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
+            intent.putExtra(INTENT_EXTRA_PATH, std::string_view{ pathBuffer });
             context_open_intent(&intent);
             window_close_by_class(WindowClass::Loadsave);
             WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);

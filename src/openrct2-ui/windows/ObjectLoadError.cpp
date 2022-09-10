@@ -134,7 +134,7 @@ private:
                 }
 
                 auto intent = Intent(WindowClass::NetworkStatus);
-                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string_view{ str_downloading_objects });
                 intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
                 context_open_intent(&intent);
             }

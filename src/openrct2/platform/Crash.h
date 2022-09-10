@@ -9,11 +9,11 @@
 
 #pragma once
 
-#include <string>
+#include "../core/String.hpp"
 
 using CExceptionHandler = void*;
 
 extern bool gOpenRCT2SilentBreakpad;
 CExceptionHandler crash_init();
-void crash_register_additional_file(const std::string& key, const std::string& path);
+void crash_register_additional_file(const std::string& key, u8string_view path);
 void crash_unregister_additional_file(const std::string& key);

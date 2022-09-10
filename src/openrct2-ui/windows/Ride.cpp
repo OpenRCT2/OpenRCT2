@@ -5344,7 +5344,7 @@ void WindowRideMeasurementsDesignCancel()
     }
 }
 
-static void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* path)
+static void TrackDesignCallback(int32_t result, [[maybe_unused]] u8string_view path)
 {
     if (result == MODAL_RESULT_OK)
     {

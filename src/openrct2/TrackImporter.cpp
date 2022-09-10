@@ -16,7 +16,7 @@
 
 namespace TrackImporter
 {
-    std::unique_ptr<ITrackImporter> Create(const std::string& hintPath)
+    std::unique_ptr<ITrackImporter> Create(u8string_view hintPath)
     {
         std::unique_ptr<ITrackImporter> trackImporter;
         std::string extension = Path::GetExtension(hintPath);
@@ -31,7 +31,7 @@ namespace TrackImporter
         return trackImporter;
     }
 
-    bool ExtensionIsRCT1(const std::string& extension)
+    bool ExtensionIsRCT1(std::string_view extension)
     {
         return String::Equals(extension, ".td4", true);
     }

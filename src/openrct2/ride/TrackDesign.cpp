@@ -617,7 +617,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(name);
 }
 
-std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path)
+std::unique_ptr<TrackDesign> TrackDesignImport(u8string_view path)
 {
     try
     {

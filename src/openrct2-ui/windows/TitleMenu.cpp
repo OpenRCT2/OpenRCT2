@@ -115,7 +115,7 @@ rct_window* WindowTitleMenuOpen()
     return window;
 }
 
-static void WindowTitleMenuScenarioselectCallback(const utf8* path)
+static void WindowTitleMenuScenarioselectCallback(u8string_view path)
 {
     game_notify_map_change();
     OpenRCT2::GetContext()->LoadParkFromFile(path, false, true);

@@ -532,7 +532,7 @@ static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, rc
     }
 }
 
-static void WindowTopToolbarScenarioselectCallback(const utf8* path)
+static void WindowTopToolbarScenarioselectCallback(u8string_view path)
 {
     window_close_by_class(WindowClass::EditorObjectSelection);
     game_notify_map_change();

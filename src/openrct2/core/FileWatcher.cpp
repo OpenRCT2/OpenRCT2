@@ -58,14 +58,14 @@ void FileWatcher::FileDescriptor::Close()
     }
 }
 
-FileWatcher::WatchDescriptor::WatchDescriptor(int fd, std::string_view path)
+FileWatcher::WatchDescriptor::WatchDescriptor(int fd, const std::string& path)
     : Fd(fd)
-    , Wd(inotify_add_watch(fd, path.data(), IN_CLOSE_WRITE))
+    , Wd(inotify_add_watch(fd, path.c_str(), IN_CLOSE_WRITE))
     , Path(path)
 {
     if (Wd >= 0)
     {
-        log_verbose("FileWatcher: inotify watch added for %s", path.data());
+        log_verbose("FileWatcher: inotify watch added for %s", path.c_str());
     }
     else
     {

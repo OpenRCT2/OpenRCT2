@@ -21,6 +21,7 @@
 #include "../core/File.h"
 #include "../core/Imaging.h"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
@@ -399,7 +400,7 @@ template<typename FN> static inline double MeasureFunctionTime(const FN& fn)
     return std::chrono::duration<double>(endTime - startTime).count();
 }
 
-static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<IContext>& context, uint32_t iterationCount)
+static void benchgfx_render_screenshots(u8string_view inputPath, std::unique_ptr<IContext>& context, uint32_t iterationCount)
 {
     if (!context->LoadParkFromFile(inputPath))
     {

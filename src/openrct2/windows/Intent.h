@@ -94,7 +94,7 @@ public:
     Intent* putExtra(uint32_t key, uint32_t value);
     Intent* putExtra(uint32_t key, void* value);
     Intent* putExtra(uint32_t key, int32_t value);
-    Intent* putExtra(uint32_t key, std::string value);
+    Intent* putExtra(uint32_t key, std::string_view value);
     Intent* putExtra(uint32_t key, close_callback value);
 
     template<typename T, T TNull, typename TTag> Intent* putExtra(uint32_t key, const TIdentifier<T, TNull, TTag>& value)

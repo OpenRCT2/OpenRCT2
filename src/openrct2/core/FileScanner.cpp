@@ -176,7 +176,7 @@ private:
     {
         for (const auto& pattern : _patterns)
         {
-            if (MatchWildcard(fileName.data(), pattern.c_str()))
+            if (MatchWildcard(std::string(fileName).c_str(), pattern.c_str()))
             {
                 return true;
             }
@@ -224,7 +224,7 @@ public:
     void GetDirectoryChildren(std::vector<DirectoryChild>& children, std::string_view path) override
     {
         auto pattern = std::string(path) + "\\*";
-        auto wPattern = String::ToWideChar(pattern.c_str());
+        auto wPattern = String::ToWideChar(pattern);
 
         WIN32_FIND_DATAW findData;
         HANDLE hFile = FindFirstFileW(wPattern.c_str(), &findData);

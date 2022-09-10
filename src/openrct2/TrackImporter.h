@@ -11,6 +11,7 @@
 
 #include "common.h"
 #include "core/IStream.hpp"
+#include "core/String.hpp"
 #include "ride/TrackDesign.h"
 
 #include <memory>
@@ -25,7 +26,7 @@ struct ITrackImporter
 public:
     virtual ~ITrackImporter() = default;
 
-    virtual bool Load(const utf8* path) abstract;
+    virtual bool Load(u8string_view path) abstract;
     virtual bool LoadFromStream(OpenRCT2::IStream* stream) abstract;
 
     [[nodiscard]] virtual std::unique_ptr<TrackDesign> Import() abstract;
@@ -33,9 +34,9 @@ public:
 
 namespace TrackImporter
 {
-    [[nodiscard]] std::unique_ptr<ITrackImporter> Create(const std::string& hintPath);
+    [[nodiscard]] std::unique_ptr<ITrackImporter> Create(u8string_view hintPath);
     [[nodiscard]] std::unique_ptr<ITrackImporter> CreateTD4();
     [[nodiscard]] std::unique_ptr<ITrackImporter> CreateTD6();
 
-    bool ExtensionIsRCT1(const std::string& extension);
+    bool ExtensionIsRCT1(std::string_view extension);
 } // namespace TrackImporter

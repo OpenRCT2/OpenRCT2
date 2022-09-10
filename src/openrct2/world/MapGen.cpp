@@ -677,7 +677,7 @@ static TileCoordsXY MapgenHeightmapCoordToTileCoordsXY(uint32_t x, uint32_t y)
     return TileCoordsXY(static_cast<int32_t>(y + 1), static_cast<int32_t>(x + 1));
 }
 
-bool mapgen_load_heightmap(const utf8* path)
+bool mapgen_load_heightmap(u8string_view path)
 {
     auto format = Imaging::GetImageFormatFromPath(path);
     if (format == IMAGE_FORMAT::PNG)

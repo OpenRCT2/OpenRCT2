@@ -322,10 +322,10 @@ private:
         }
     }
 
-    static uint32_t GetPathChecksum(std::string_view path)
+    static uint32_t GetPathChecksum(const std::string& path)
     {
         uint32_t hash = 0xD8430DED;
-        for (const utf8* ch = path.data(); *ch != '\0'; ch++)
+        for (const utf8* ch = path.c_str(); *ch != '\0'; ch++)
         {
             hash += (*ch);
             hash += (hash << 10);

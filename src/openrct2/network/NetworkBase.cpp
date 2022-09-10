@@ -561,7 +561,7 @@ void NetworkBase::UpdateClient()
                         format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
 
                         auto intent = Intent(WindowClass::NetworkStatus);
-                        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_resolving });
+                        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string_view{ str_resolving });
                         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                         context_open_intent(&intent);
                     }
@@ -576,7 +576,7 @@ void NetworkBase::UpdateClient()
                         format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
 
                         auto intent = Intent(WindowClass::NetworkStatus);
-                        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_connecting });
+                        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string_view{ str_connecting });
                         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                         context_open_intent(&intent);
 
@@ -593,7 +593,7 @@ void NetworkBase::UpdateClient()
                     format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
 
                     auto intent = Intent(WindowClass::NetworkStatus);
-                    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
+                    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string_view{ str_authenticating });
                     intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                     context_open_intent(&intent);
                     break;
@@ -638,7 +638,7 @@ void NetworkBase::UpdateClient()
                     }
 
                     auto intent = Intent(WindowClass::NetworkStatus);
-                    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
+                    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string_view{ str_disconnected });
                     context_open_intent(&intent);
                 }
                 window_close_by_class(WindowClass::Multiplayer);
@@ -778,7 +778,7 @@ bool NetworkBase::CheckDesynchronizaton()
         format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
 
         auto intent = Intent(WindowClass::NetworkStatus);
-        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
+        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string_view{ str_desync });
         context_open_intent(&intent);
 
         if (!gConfigNetwork.stay_connected)
@@ -2307,7 +2307,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         format_string(objectListMsg, 256, STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST, &args);
 
         auto intent = Intent(WindowClass::NetworkStatus);
-        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ objectListMsg });
+        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string_view{ objectListMsg });
         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
         context_open_intent(&intent);
 
@@ -2445,7 +2445,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
                 format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, ft.Data());
 
                 auto intent = Intent(WindowClass::NetworkStatus);
-                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string_view{ str_desync });
                 context_open_intent(&intent);
             }
         }
@@ -2653,7 +2653,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
     format_string(str_downloading_map, 256, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
 
     auto intent = Intent(WindowClass::NetworkStatus);
-    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_downloading_map });
+    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string_view{ str_downloading_map });
     intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
     context_open_intent(&intent);
 

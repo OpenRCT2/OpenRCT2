@@ -19,6 +19,7 @@
 #    include "../core/Console.hpp"
 #    include "../core/File.h"
 #    include "../core/Imaging.h"
+#    include "../core/String.hpp"
 #    include "../drawing/Drawing.h"
 #    include "../interface/Viewport.h"
 #    include "../localisation/Localisation.h"
@@ -68,7 +69,7 @@ static void fixup_pointers(std::vector<RecordedPaintSession>& s)
     }
 }
 
-static std::vector<RecordedPaintSession> extract_paint_session(std::string_view parkFileName)
+static std::vector<RecordedPaintSession> extract_paint_session(u8string_view parkFileName)
 {
     Platform::CoreInit();
     gOpenRCT2Headless = true;
@@ -78,7 +79,7 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
     if (context->Initialise())
     {
         drawing_engine_init();
-        if (!context->LoadParkFromFile(std::string(parkFileName)))
+        if (!context->LoadParkFromFile(parkFileName))
         {
             log_error("Failed to load park!");
             return {};

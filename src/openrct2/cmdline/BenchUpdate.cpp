@@ -15,6 +15,7 @@
 #    include "../GameState.h"
 #    include "../OpenRCT2.h"
 #    include "../core/File.h"
+#    include "../core/String.hpp"
 #    include "../platform/Platform.h"
 
 #    include <benchmark/benchmark.h>
@@ -25,7 +26,7 @@
 
 using namespace OpenRCT2;
 
-static void BM_update(benchmark::State& state, const std::string& filename)
+static void BM_update(benchmark::State& state, u8string_view filename)
 {
     std::unique_ptr<IContext> context(CreateContext());
     if (context->Initialise())

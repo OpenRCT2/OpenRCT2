@@ -148,11 +148,9 @@ namespace OpenRCT2
         virtual bool Initialise() abstract;
         virtual void InitialiseDrawingEngine() abstract;
         virtual void DisposeDrawingEngine() abstract;
-        virtual bool LoadParkFromFile(
-            const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
+        virtual bool LoadParkFromFile(u8string_view path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
         virtual bool LoadParkFromStream(
-            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false,
-            bool asScenario = false) abstract;
+            IStream* stream, u8string_view path, bool loadTitleScreenFirstOnFail = false, bool asScenario = false) abstract;
         virtual void WriteLine(const std::string& s) abstract;
         virtual void WriteErrorLine(const std::string& s) abstract;
         virtual void Finish() abstract;
@@ -219,7 +217,7 @@ void context_update_map_tooltip();
 void context_handle_input();
 void context_input_handle_keyboard(bool isTitle);
 void context_quit();
-bool context_load_park_from_file(const utf8* path);
+bool context_load_park_from_file(u8string_view path);
 bool context_load_park_from_stream(void* stream);
 bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize);
 u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc);

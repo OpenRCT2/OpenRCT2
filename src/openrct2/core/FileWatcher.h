@@ -44,7 +44,7 @@ private:
         int const Wd;
         std::string const Path;
 
-        WatchDescriptor(int fd, std::string_view path);
+        WatchDescriptor(int fd, const std::string& path);
         ~WatchDescriptor();
     };
 

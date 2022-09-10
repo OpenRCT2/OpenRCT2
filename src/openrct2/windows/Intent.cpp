@@ -61,10 +61,10 @@ Intent* Intent::putExtra(uint32_t key, int32_t value)
     return this;
 }
 
-Intent* Intent::putExtra(uint32_t key, std::string value)
+Intent* Intent::putExtra(uint32_t key, std::string_view value)
 {
     IntentData data = {};
-    data.stringVal = std::move(value);
+    data.stringVal = value;
     data.type = IntentData::DataType::String;
 
     _Data.insert(std::make_pair(key, data));

@@ -11,6 +11,7 @@
 
 #include "../actions/GameActionResult.h"
 #include "../common.h"
+#include "../core/String.hpp"
 #include "../object/Object.h"
 #include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
@@ -220,7 +221,7 @@ extern bool _trackDesignPlaceStateSceneryUnavailable;
 extern bool gTrackDesignSaveMode;
 extern RideId gTrackDesignSaveRideIndex;
 
-[[nodiscard]] std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path);
+[[nodiscard]] std::unique_ptr<TrackDesign> TrackDesignImport(u8string_view path);
 
 void TrackDesignMirror(TrackDesign* td6);
 

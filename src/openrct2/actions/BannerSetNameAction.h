@@ -11,6 +11,8 @@
 
 #include "GameAction.h"
 
+#include <string>
+
 class BannerSetNameAction final : public GameActionBase<GameCommand::SetBannerName>
 {
 private:
@@ -19,7 +21,7 @@ private:
 
 public:
     BannerSetNameAction() = default;
-    BannerSetNameAction(BannerIndex bannerIndex, const std::string& name);
+    BannerSetNameAction(BannerIndex bannerIndex, std::string_view name);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

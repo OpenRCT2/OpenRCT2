@@ -16,8 +16,8 @@
 #include <openrct2/windows/tile_inspector.h>
 #include <string_view>
 
-using loadsave_callback = void (*)(int32_t result, const utf8* path);
-using scenarioselect_callback = void (*)(const utf8* path);
+using loadsave_callback = void (*)(int32_t result, u8string_view path);
+using scenarioselect_callback = void (*)(u8string_view path);
 struct Peep;
 struct TileElement;
 struct Vehicle;

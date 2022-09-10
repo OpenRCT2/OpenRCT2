@@ -1169,7 +1169,7 @@ static void WindowMapgenHeightmapGenerateMap()
     gfx_invalidate_screen();
 }
 
-static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, const utf8* path)
+static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, u8string_view path)
 {
     if (result == MODAL_RESULT_OK)
     {

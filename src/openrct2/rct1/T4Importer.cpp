@@ -38,7 +38,7 @@ namespace RCT1
         {
         }
 
-        bool Load(const utf8* path) override
+        bool Load(u8string_view path) override
         {
             const auto extension = Path::GetExtension(path);
             if (String::Equals(extension, ".td4", true))

@@ -279,7 +279,7 @@ private:
     char _description[MAX_SERVER_DESCRIPTION_LENGTH];
     char _greeting[CHAT_INPUT_SIZE];
     char _password[33];
-    static void ScenarioSelectCallback(const utf8* path)
+    static void ScenarioSelectCallback(u8string_view path)
     {
         game_notify_map_change();
         if (GetContext()->LoadParkFromFile(path, false, true))
@@ -288,7 +288,7 @@ private:
         }
     }
 
-    static void LoadSaveCallback(int32_t result, const utf8* path)
+    static void LoadSaveCallback(int32_t result, u8string_view path)
     {
         if (result == MODAL_RESULT_OK)
         {

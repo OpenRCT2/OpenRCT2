@@ -340,10 +340,10 @@ CExceptionHandler crash_init()
 #endif // USE_BREAKPAD
 }
 
-void crash_register_additional_file(const std::string& key, const std::string& path)
+void crash_register_additional_file(const std::string& key, u8string_view path)
 {
 #ifdef USE_BREAKPAD
-    _uploadFiles[String::ToWideChar(key.c_str())] = String::ToWideChar(path.c_str());
+    _uploadFiles[String::ToWideChar(key.c_str())] = String::ToWideChar(path);
 #endif // USE_BREAKPAD
 }
 

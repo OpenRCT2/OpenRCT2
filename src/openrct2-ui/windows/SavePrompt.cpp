@@ -15,6 +15,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/scenario/Scenario.h>
@@ -70,7 +71,7 @@ static constexpr const StringId window_save_prompt_labels[][2] = {
 static void WindowSavePromptClose(rct_window *w);
 static void WindowSavePromptMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowSavePromptPaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowSavePromptCallback(int32_t result, const utf8 * path);
+static void WindowSavePromptCallback(int32_t result, u8string_view path);
 
 static WindowEventList window_save_prompt_events([](auto& events)
 {
@@ -242,7 +243,7 @@ static void WindowSavePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(*w, dpi);
 }
 
-static void WindowSavePromptCallback(int32_t result, const utf8* path)
+static void WindowSavePromptCallback(int32_t result, u8string_view path)
 {
     if (result == MODAL_RESULT_OK)
     {

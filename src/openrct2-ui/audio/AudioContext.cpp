@@ -60,14 +60,9 @@ namespace OpenRCT2::Audio
             return devices;
         }
 
-        void SetOutputDevice(const std::string& deviceName) override
+        void SetOutputDevice(std::string_view deviceName) override
         {
-            const char* szDeviceName = nullptr;
-            if (!deviceName.empty())
-            {
-                szDeviceName = deviceName.c_str();
-            }
-            _audioMixer->Init(szDeviceName);
+            _audioMixer->Init(deviceName.empty() ? nullptr : std::string(deviceName).c_str());
         }
 
         IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) override

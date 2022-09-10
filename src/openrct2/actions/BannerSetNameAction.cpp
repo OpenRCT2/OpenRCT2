@@ -19,7 +19,7 @@
 #include "../world/Banner.h"
 #include "GameAction.h"
 
-BannerSetNameAction::BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
+BannerSetNameAction::BannerSetNameAction(BannerIndex bannerIndex, std::string_view name)
     : _bannerIndex(bannerIndex)
     , _name(name)
 {

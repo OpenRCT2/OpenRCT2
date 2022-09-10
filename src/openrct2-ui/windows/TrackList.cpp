@@ -187,9 +187,9 @@ private:
         FilterList();
     }
 
-    bool LoadDesignPreview(const u8string& path)
+    bool LoadDesignPreview(u8string_view path)
     {
-        _loadedTrackDesign = TrackDesignImport(path.c_str());
+        _loadedTrackDesign = TrackDesignImport(path);
         if (_loadedTrackDesign != nullptr)
         {
             TrackDesignDrawPreview(_loadedTrackDesign.get(), _trackDesignPreviewPixels.data());

@@ -22,7 +22,7 @@ namespace OpenRCT2::Audio
         {
             return std::vector<std::string>();
         }
-        void SetOutputDevice(const std::string& /*deviceName*/) override
+        void SetOutputDevice(const std::string_view /*deviceName*/) override
         {
         }
 

@@ -243,7 +243,7 @@ public:
     {
         if (widgetIndex == WIDX_BANNER_TEXT)
         {
-            auto bannerSetNameAction = BannerSetNameAction(GetBannerIndex(), std::string(text));
+            auto bannerSetNameAction = BannerSetNameAction(GetBannerIndex(), text);
             GameActions::Execute(&bannerSetNameAction);
         }
     }

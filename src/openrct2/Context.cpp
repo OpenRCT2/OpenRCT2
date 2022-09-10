@@ -537,14 +537,13 @@ namespace OpenRCT2
             _drawingEngine = nullptr;
         }
 
-        bool LoadParkFromFile(
-            const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override
+        bool LoadParkFromFile(u8string_view path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override
         {
-            log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
+            log_verbose("Context::LoadParkFromFile(%s)", std::string(path).c_str());
 
             // Register the file for crash upload if it asserts while loading.
             crash_register_additional_file("load_park", path);
-            // Deregister park file in case it was processed without hitting an assert.
+            // Unregister park file in case it was processed without hitting an assert.
             struct foo
             {
                 ~foo()
@@ -587,7 +586,7 @@ namespace OpenRCT2
         }
 
         bool LoadParkFromStream(
-            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false,
+            IStream* stream, u8string_view path, bool loadTitleScreenFirstOnFail = false,
             bool asScenario = false) final override
         {
             try
@@ -619,7 +618,7 @@ namespace OpenRCT2
                     parkImporter = ParkImporter::CreateS6(*_objectRepository);
                 }
 
-                auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+                auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path);
 
                 // From this point onwards the currently loaded park will be corrupted if loading fails
                 // so reload the title screen if that happens.
@@ -1331,7 +1330,7 @@ void context_init()
     GetContext()->GetUiContext()->GetWindowManager()->Init();
 }
 
-bool context_load_park_from_file(const utf8* path)
+bool context_load_park_from_file(u8string_view path)
 {
     return GetContext()->LoadParkFromFile(path);
 }

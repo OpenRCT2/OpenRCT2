@@ -716,7 +716,7 @@ void game_autosave()
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 
-static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8* path)
+static void game_load_or_quit_no_save_prompt_callback(int32_t result, u8string_view path)
 {
     if (result == MODAL_RESULT_OK)
     {

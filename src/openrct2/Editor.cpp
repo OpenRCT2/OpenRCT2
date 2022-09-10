@@ -58,7 +58,7 @@ namespace Editor
 {
     static std::array<std::vector<uint8_t>, EnumValue(ObjectType::Count)> _editorSelectedObjectFlags;
 
-    static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
+    static void ConvertSaveToScenarioCallback(int32_t result, u8string_view path);
     static void SetAllLandOwned();
     static bool LoadLandscapeFromSV4(const char* path);
     static bool LoadLandscapeFromSC4(const char* path);
@@ -132,7 +132,7 @@ namespace Editor
         context_open_intent(&intent);
     }
 
-    static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path)
+    static void ConvertSaveToScenarioCallback(int32_t result, u8string_view path)
     {
         if (result != MODAL_RESULT_OK)
         {
