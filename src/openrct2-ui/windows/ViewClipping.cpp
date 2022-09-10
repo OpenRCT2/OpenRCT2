@@ -69,7 +69,7 @@ class ViewClippingWindow final : public Window
 private:
     CoordsXY _selectionStart;
     CoordsXY _previousClipSelectionA = { 0, 0 };
-    CoordsXY _previousClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
+    CoordsXY _previousClipSelectionB = { gMapSize.x * 32, gMapSize.y * 32 };
     bool _toolActive{ false };
     bool _dragging{ false };
     bool _firstStart = true;
@@ -123,7 +123,7 @@ public:
                 _previousClipSelectionA = gClipSelectionA;
                 _previousClipSelectionB = gClipSelectionB;
                 gClipSelectionA = { 0, 0 };
-                gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
+                gClipSelectionB = { gMapSize.x * 32, gMapSize.y * 32 };
                 gfx_invalidate_screen();
                 break;
             case WIDX_CLIP_CLEAR:
@@ -133,7 +133,7 @@ public:
                     tool_cancel();
                 }
                 gClipSelectionA = { 0, 0 };
-                gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
+                gClipSelectionB = { gMapSize.x * 32, gMapSize.y * 32 };
                 gfx_invalidate_screen();
                 break;
         }
@@ -348,7 +348,7 @@ public:
         {
             _firstStart = false;
             gClipSelectionA = { 0, 0 };
-            gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
+            gClipSelectionB = { gMapSize.x * 32, gMapSize.y * 32 };
         }
 
         this->widgets = window_view_clipping_widgets;
