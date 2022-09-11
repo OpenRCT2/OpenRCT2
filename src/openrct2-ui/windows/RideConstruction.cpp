@@ -2729,6 +2729,13 @@ static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType
             if (currentRideEntry == nullptr)
                 continue;
 
+            // Non-default vehicle visuals do not use this system, so we have to assume it supports all the track pieces.
+            if (currentRideEntry->Cars[0].PaintStyle != VEHICLE_VISUAL_DEFAULT || rideType == RIDE_TYPE_CHAIRLIFT)
+            {
+                disabledPieces.reset();
+                break;
+            }
+
             // Any pieces that this ride entry supports must be taken out of the array.
             auto supportedPieces = ride_entry_get_supported_track_pieces(currentRideEntry);
             disabledPieces &= supportedPieces.flip();
