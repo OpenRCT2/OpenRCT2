@@ -513,7 +513,7 @@ static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, WidgetI
             w->Invalidate();
             break;
         case WIDX_INTEREST_RATE_INCREASE:
-            if (gBankLoanInterestRate < 400)
+            if (gBankLoanInterestRate < 80)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
                     ScenarioSetSetting::AnnualInterestRate, gBankLoanInterestRate + 1);
@@ -528,7 +528,7 @@ static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, WidgetI
         case WIDX_INTEREST_RATE_DECREASE:
             if (gBankLoanInterestRate > 0)
             {
-                auto interest = std::min(400, gBankLoanInterestRate - 1);
+                auto interest = std::min(80, gBankLoanInterestRate - 1);
                 auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::AnnualInterestRate, interest);
                 GameActions::Execute(&scenarioSetSetting);
             }
