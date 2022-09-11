@@ -123,7 +123,7 @@ public:
                 _previousClipSelectionA = gClipSelectionA;
                 _previousClipSelectionB = gClipSelectionB;
                 gClipSelectionA = { 0, 0 };
-                gClipSelectionB = { gMapSize.x * 32, gMapSize.y * 32 };
+                gClipSelectionB = gMapSize.ToCoordsXY();
                 gfx_invalidate_screen();
                 break;
             case WIDX_CLIP_CLEAR:
@@ -133,7 +133,7 @@ public:
                     tool_cancel();
                 }
                 gClipSelectionA = { 0, 0 };
-                gClipSelectionB = { gMapSize.x * 32, gMapSize.y * 32 };
+                gClipSelectionB = gMapSize.ToCoordsXY();
                 gfx_invalidate_screen();
                 break;
         }
@@ -348,7 +348,7 @@ public:
         {
             _firstStart = false;
             gClipSelectionA = { 0, 0 };
-            gClipSelectionB = { gMapSize.x * 32, gMapSize.y * 32 };
+            gClipSelectionB = gMapSize.ToCoordsXY();
         }
 
         this->widgets = window_view_clipping_widgets;
