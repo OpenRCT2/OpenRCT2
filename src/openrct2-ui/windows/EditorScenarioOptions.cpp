@@ -326,10 +326,6 @@ private:
         widgets[WIDX_CLOSE].right = width - 3;
     }
 
-    /**
-     *
-     *  rct2: 0x006712E8
-     */
     void DrawTabImages(rct_drawpixelinfo& dpi)
     {
         rct_widget* widget;
@@ -357,10 +353,6 @@ private:
         gfx_draw_sprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
     }
 
-    /**
-     *
-     *  rct2: 0x00668496
-     */
     void SetPage(int32_t newPage)
     {
         if (page == newPage)
@@ -380,10 +372,6 @@ private:
 
 #pragma region Financial
 
-    /**
-     *
-     *  rct2: 0x0067049D
-     */
     void FinancialMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
@@ -415,10 +403,6 @@ private:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x0067077A
-     */
     void FinancialResize()
     {
         window_set_resize(*this, 280, 149, 280, 149);
@@ -441,10 +425,6 @@ private:
         Dropdown::SetChecked(static_cast<uint8_t>(gClimate), true);
     }
 
-    /**
-     *
-     *  rct2: 0x006704C8
-     */
     void FinancialMouseDown(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
@@ -562,10 +542,6 @@ private:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x00670760
-     */
     void FinancialUpdate()
     {
         frame_no++;
@@ -573,10 +549,6 @@ private:
         widget_invalidate(*this, WIDX_TAB_1);
     }
 
-    /**
-     *
-     *  rct2: 0x006701CF
-     */
     void FinancialPrepareDraw()
     {
         rct_widget* newWidgets = window_editor_scenario_options_widgets[page];
@@ -620,10 +592,6 @@ private:
         AnchorBorderWidgets();
     }
 
-    /**
-     *
-     *  rct2: 0x00670338
-     */
     void FinancialDraw(rct_drawpixelinfo& dpi)
     {
         ScreenCoordsXY screenCoords{};
@@ -685,10 +653,6 @@ private:
 
 #pragma region Guests
 
-    /**
-     *
-     *  rct2: 0x00670A62
-     */
     void GuestsMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
@@ -720,19 +684,11 @@ private:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x00670C59
-     */
     void GuestsResize()
     {
         window_set_resize(*this, 380, 149, 380, 149);
     }
 
-    /**
-     *
-     *  rct2: 0x00670A89
-     */
     void GuestsMouseDown(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
@@ -844,10 +800,6 @@ private:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x00670C3F
-     */
     void GuestsUpdate()
     {
         frame_no++;
@@ -855,10 +807,6 @@ private:
         widget_invalidate(*this, WIDX_TAB_2);
     }
 
-    /**
-     *
-     *  rct2: 0x006707DB
-     */
     void GuestsPrepareDraw()
     {
         rct_widget* newWidgets = window_editor_scenario_options_widgets[page];
@@ -892,10 +840,6 @@ private:
         AnchorBorderWidgets();
     }
 
-    /**
-     *
-     *  rct2: 0x006708C4
-     */
     void GuestsDraw(rct_drawpixelinfo& dpi)
     {
         ScreenCoordsXY screenCoords{};
@@ -955,10 +899,6 @@ private:
 
 #pragma region Park
 
-    /**
-     *
-     *  rct2: 0x00670FD8
-     */
     void ParkMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
@@ -1015,19 +955,11 @@ private:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x00671287
-     */
     void ParkResize()
     {
         window_set_resize(*this, 400, 200, 400, 200);
     }
 
-    /**
-     *
-     *  rct2: 0x00671019
-     */
     void ParkMouseDown(WidgetIndex widgetIndex)
     {
         rct_widget* dropdownWidget;
@@ -1141,10 +1073,6 @@ private:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x00671060
-     */
     void ParkDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
@@ -1171,10 +1099,6 @@ private:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x0067126D
-     */
     void ParkUpdate()
     {
         frame_no++;
@@ -1182,10 +1106,6 @@ private:
         widget_invalidate(*this, WIDX_TAB_3);
     }
 
-    /**
-     *
-     *  rct2: 0x00670CBA
-     */
     void ParkPrepareDraw()
     {
         rct_widget* newWidgets = window_editor_scenario_options_widgets[page];
@@ -1239,10 +1159,6 @@ private:
         AnchorBorderWidgets();
     }
 
-    /**
-     *
-     *  rct2: 0x00670E5B
-     */
     void ParkDraw(rct_drawpixelinfo& dpi)
     {
         ScreenCoordsXY screenCoords{};
@@ -1326,10 +1242,6 @@ private:
 #pragma endregion
 };
 
-/**
- *
- *  rct2: 0x00670138
- */
 rct_window* WindowEditorScenarioOptionsOpen()
 {
     return WindowFocusOrCreate<EditorScenarioOptionsWindow>(WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
