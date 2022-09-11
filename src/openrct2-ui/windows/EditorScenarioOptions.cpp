@@ -311,8 +311,8 @@ private:
     {
         int32_t i;
         for (i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
-            pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-        pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
+            SetWidgetPressed(WIDX_TAB_1 + i, false);
+        SetWidgetPressed(WIDX_TAB_1 + page, true);
     }
 
     void AnchorBorderWidgets()
@@ -590,13 +590,13 @@ private:
 
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
         {
-            pressed_widgets |= (1ULL << WIDX_NO_MONEY);
+            SetWidgetPressed(WIDX_NO_MONEY, true);
             for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
                 widgets[i].type = WindowWidgetType::Empty;
         }
         else
         {
-            pressed_widgets &= ~(1ULL << WIDX_NO_MONEY);
+            SetWidgetPressed(WIDX_NO_MONEY, false);
             widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
             widgets[WIDX_INITIAL_CASH_INCREASE].type = WindowWidgetType::Button;
             widgets[WIDX_INITIAL_CASH_DECREASE].type = WindowWidgetType::Button;
@@ -612,10 +612,7 @@ private:
             widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
         }
 
-        if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
-            pressed_widgets |= (1ULL << WIDX_FORBID_MARKETING);
-        else
-            pressed_widgets &= ~(1ULL << WIDX_FORBID_MARKETING);
+        SetWidgetPressed(WIDX_FORBID_MARKETING, gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
 
         widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                  : WindowWidgetType::CloseBox;
@@ -886,17 +883,8 @@ private:
             widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WindowWidgetType::Button;
         }
 
-        // Guests prefer less intense rides checkbox
-        if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
-            pressed_widgets |= (1ULL << WIDX_GUEST_PREFER_LESS_INTENSE_RIDES);
-        else
-            pressed_widgets &= ~(1ULL << WIDX_GUEST_PREFER_LESS_INTENSE_RIDES);
-
-        // Guests prefer more intense rides checkbox
-        if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
-            pressed_widgets |= (1ULL << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES);
-        else
-            pressed_widgets &= ~(1ULL << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES);
+        SetWidgetPressed(WIDX_GUEST_PREFER_LESS_INTENSE_RIDES, gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES);
+        SetWidgetPressed(WIDX_GUEST_PREFER_MORE_INTENSE_RIDES, gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES);
 
         widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                  : WindowWidgetType::CloseBox;
@@ -1200,8 +1188,6 @@ private:
      */
     void ParkPrepareDraw()
     {
-        uint64_t pressedWidgets;
-
         rct_widget* newWidgets = window_editor_scenario_options_widgets[page];
         if (widgets != newWidgets)
         {
@@ -1241,26 +1227,11 @@ private:
             }
         }
 
-        // Set checkboxes
-        pressedWidgets = pressed_widgets;
-        pressedWidgets &= ~(1ULL << WIDX_FORBID_TREE_REMOVAL);
-        pressedWidgets &= ~(1ULL << WIDX_FORBID_LANDSCAPE_CHANGES);
-        pressedWidgets &= ~(1ULL << WIDX_FORBID_HIGH_CONSTRUCTION);
-        pressedWidgets &= ~(1ULL << WIDX_HARD_PARK_RATING);
-        pressedWidgets &= ~(1ULL << WIDX_HARD_GUEST_GENERATION);
-
-        if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
-            pressedWidgets |= (1ULL << WIDX_FORBID_TREE_REMOVAL);
-        if (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
-            pressedWidgets |= (1ULL << WIDX_FORBID_LANDSCAPE_CHANGES);
-        if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
-            pressedWidgets |= (1ULL << WIDX_FORBID_HIGH_CONSTRUCTION);
-        if (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
-            pressedWidgets |= (1ULL << WIDX_HARD_PARK_RATING);
-        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
-            pressedWidgets |= (1ULL << WIDX_HARD_GUEST_GENERATION);
-
-        pressed_widgets = pressedWidgets;
+        SetWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL);
+        SetWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
+        SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
+        SetWidgetPressed(WIDX_HARD_PARK_RATING, gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING);
+        SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
 
         widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                  : WindowWidgetType::CloseBox;
