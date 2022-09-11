@@ -69,7 +69,7 @@ class ViewClippingWindow final : public Window
 private:
     CoordsXY _selectionStart;
     CoordsXY _previousClipSelectionA = { 0, 0 };
-    CoordsXY _previousClipSelectionB = { gMapSize.x * 32, gMapSize.y * 32 };
+    CoordsXY _previousClipSelectionB = gMapSize.ToCoordsXY();
     bool _toolActive{ false };
     bool _dragging{ false };
     bool _firstStart = true;
