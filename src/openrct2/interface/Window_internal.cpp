@@ -7,7 +7,7 @@
 
 void rct_window::SetLocation(const CoordsXYZ& coords)
 {
-    window_scroll_to_location(this, coords);
+    window_scroll_to_location(*this, coords);
     flags &= ~WF_SCROLLING_TO_LOCATION;
 }
 
@@ -20,7 +20,7 @@ void rct_window::ScrollToViewport()
 
     auto mainWindow = window_get_main();
     if (mainWindow != nullptr)
-        window_scroll_to_location(mainWindow, newCoords);
+        window_scroll_to_location(*mainWindow, newCoords);
 }
 
 void rct_window::Invalidate()
@@ -37,7 +37,7 @@ void rct_window::RemoveViewport()
     viewport = nullptr;
 }
 
-CursorID rct_window::OnCursor(rct_widgetindex, const ScreenCoordsXY&, CursorID)
+CursorID rct_window::OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
 {
     return CursorID::Arrow;
 }

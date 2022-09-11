@@ -89,7 +89,7 @@ public:
         safe_strcpy(_description, gConfigNetwork.server_description.c_str(), sizeof(_description));
         safe_strcpy(_greeting, gConfigNetwork.server_greeting.c_str(), sizeof(_greeting));
     }
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -97,19 +97,19 @@ public:
                 Close();
                 break;
             case WIDX_PORT_INPUT:
-                window_start_textbox(this, widgetIndex, STR_STRING, _port, 6);
+                window_start_textbox(*this, widgetIndex, STR_STRING, _port, 6);
                 break;
             case WIDX_NAME_INPUT:
-                window_start_textbox(this, widgetIndex, STR_STRING, _name, 64);
+                window_start_textbox(*this, widgetIndex, STR_STRING, _name, 64);
                 break;
             case WIDX_DESCRIPTION_INPUT:
-                window_start_textbox(this, widgetIndex, STR_STRING, _description, MAX_SERVER_DESCRIPTION_LENGTH);
+                window_start_textbox(*this, widgetIndex, STR_STRING, _description, MAX_SERVER_DESCRIPTION_LENGTH);
                 break;
             case WIDX_GREETING_INPUT:
-                window_start_textbox(this, widgetIndex, STR_STRING, _greeting, CHAT_INPUT_SIZE);
+                window_start_textbox(*this, widgetIndex, STR_STRING, _greeting, CHAT_INPUT_SIZE);
                 break;
             case WIDX_PASSWORD_INPUT:
-                window_start_textbox(this, widgetIndex, STR_STRING, _password, 32);
+                window_start_textbox(*this, widgetIndex, STR_STRING, _password, 32);
                 break;
             case WIDX_MAXPLAYERS_INCREASE:
                 if (gConfigNetwork.maxplayers < 255)
@@ -138,7 +138,7 @@ public:
                 break;
             case WIDX_LOAD_SERVER:
                 network_set_password(_password);
-                auto intent = Intent(WC_LOADSAVE);
+                auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
                 intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(LoadSaveCallback));
                 context_open_intent(&intent);
@@ -147,9 +147,9 @@ public:
     }
     void OnPrepareDraw() override
     {
-        ColourSchemeUpdateByClass(this, WC_SERVER_LIST);
+        ColourSchemeUpdateByClass(this, WindowClass::ServerList);
 
-        WidgetSetCheckboxValue(this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
+        WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
         auto ft = Formatter::Common();
         ft.Increment(18);
         ft.Add<uint16_t>(gConfigNetwork.maxplayers);
@@ -159,13 +159,13 @@ public:
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
             window_update_textbox_caret();
-            widget_invalidate(this, WIDX_NAME_INPUT);
-            widget_invalidate(this, WIDX_DESCRIPTION_INPUT);
-            widget_invalidate(this, WIDX_GREETING_INPUT);
-            widget_invalidate(this, WIDX_PASSWORD_INPUT);
+            widget_invalidate(*this, WIDX_NAME_INPUT);
+            widget_invalidate(*this, WIDX_DESCRIPTION_INPUT);
+            widget_invalidate(*this, WIDX_GREETING_INPUT);
+            widget_invalidate(*this, WIDX_PASSWORD_INPUT);
         }
     }
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (text.empty())
             return;
@@ -187,7 +187,7 @@ public:
                 gConfigNetwork.default_port = atoi(_port);
                 config_save_default();
 
-                widget_invalidate(this, WIDX_NAME_INPUT);
+                widget_invalidate(*this, WIDX_NAME_INPUT);
                 break;
             case WIDX_NAME_INPUT:
                 if (strcmp(_name, temp.c_str()) == 0)
@@ -205,7 +205,7 @@ public:
                     config_save_default();
                 }
 
-                widget_invalidate(this, WIDX_NAME_INPUT);
+                widget_invalidate(*this, WIDX_NAME_INPUT);
                 break;
             case WIDX_DESCRIPTION_INPUT:
                 if (strcmp(_description, temp.c_str()) == 0)
@@ -223,7 +223,7 @@ public:
                     config_save_default();
                 }
 
-                widget_invalidate(this, WIDX_DESCRIPTION_INPUT);
+                widget_invalidate(*this, WIDX_DESCRIPTION_INPUT);
                 break;
             case WIDX_GREETING_INPUT:
                 if (strcmp(_greeting, temp.c_str()) == 0)
@@ -241,7 +241,7 @@ public:
                     config_save_default();
                 }
 
-                widget_invalidate(this, WIDX_GREETING_INPUT);
+                widget_invalidate(*this, WIDX_GREETING_INPUT);
                 break;
             case WIDX_PASSWORD_INPUT:
                 if (strcmp(_password, temp.c_str()) == 0)
@@ -253,7 +253,7 @@ public:
                     safe_strcpy(_password, temp.c_str(), sizeof(_password));
                 }
 
-                widget_invalidate(this, WIDX_PASSWORD_INPUT);
+                widget_invalidate(*this, WIDX_PASSWORD_INPUT);
                 break;
         }
     }
@@ -301,7 +301,7 @@ private:
 
 rct_window* WindowServerStartOpen()
 {
-    return WindowFocusOrCreate<ServerStartWindow>(WC_SERVER_START, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, WW, WH, WF_CENTRE_SCREEN);
 }
 
 #endif

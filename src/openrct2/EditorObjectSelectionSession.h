@@ -15,6 +15,8 @@
 
 #include <vector>
 
+struct ResultWithMessage;
+
 enum EDITOR_INPUT_FLAGS
 {
     INPUT_FLAG_EDITOR_OBJECT_SELECT = (1 << 0), // Set when you want to select an object, not set when you want to deselect it.
@@ -23,7 +25,7 @@ enum EDITOR_INPUT_FLAGS
     INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED = (1 << 3)
 };
 
-extern bool _gSceneryGroupPartialSelectError;
+extern std::optional<StringId> _gSceneryGroupPartialSelectError;
 extern std::vector<uint8_t> _objectSelectionFlags;
 extern int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 
@@ -34,8 +36,10 @@ void unload_unselected_objects();
 void sub_6AB211();
 void reset_selected_object_count_and_size();
 void finish_object_selection();
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item);
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& entry);
+ResultWithMessage window_editor_object_selection_select_object(
+    uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item);
+ResultWithMessage window_editor_object_selection_select_object(
+    uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& entry);
 
 /**
  * Removes all unused objects from the object selection.

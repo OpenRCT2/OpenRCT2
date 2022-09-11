@@ -224,7 +224,7 @@ void vehicle_visual_river_rapids(
     baseImage_id += carEntry->base_image_id;
 
     const vehicle_boundbox* bb = &_riverRapidsBoundbox[j];
-    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.Body, vehicle->colours.Trim);
     if (vehicle->IsGhost())
     {
         image_id &= 0x7FFFF;

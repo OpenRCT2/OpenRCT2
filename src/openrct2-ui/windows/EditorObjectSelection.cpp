@@ -115,13 +115,13 @@ static char _filter_string[MAX_PATH];
 #define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
 #define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_SELECTION;
+static constexpr const StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
 static constexpr const int32_t WH = 400;
 static constexpr const int32_t WW = 755;
 
 struct ObjectPageDesc
 {
-    rct_string_id Caption;
+    StringId Caption;
     uint32_t Image;
     bool IsAdvanced;
 };
@@ -240,7 +240,7 @@ static constexpr const int32_t window_editor_object_selection_animation_divisor[
     2, // Stall
 };
 
-static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item);
+static StringId GetRideTypeStringId(const ObjectRepositoryItem* item);
 static bool VisibleListSortRideType(const ObjectListItem& a, const ObjectListItem& b);
 static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b);
 void EditorLoadSelectedObjects();
@@ -272,7 +272,7 @@ public:
         _filter_flags = gConfigInterface.object_selection_filter_flags;
         std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         selected_tab = 0;
         selected_list_item = -1;
@@ -327,10 +327,10 @@ public:
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
             window_update_textbox_caret();
-            widget_invalidate(this, WIDX_FILTER_TEXT_BOX);
+            widget_invalidate(*this, WIDX_FILTER_TEXT_BOX);
         }
 
-        for (rct_widgetindex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
+        for (WidgetIndex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
         {
             if (!IsWidgetPressed(i))
                 continue;
@@ -339,7 +339,7 @@ public:
             if (frame_no >= window_editor_object_selection_animation_loops[i - WIDX_FILTER_RIDE_TAB_TRANSPORT])
                 frame_no = 0;
 
-            widget_invalidate(this, i);
+            widget_invalidate(*this, i);
             break;
         }
     }
@@ -348,12 +348,12 @@ public:
      *
      * rct2: 0x006AAFAB
      */
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 if (gScreenFlags & SCREEN_FLAGS_EDITOR)
                 {
                     finish_object_selection();
@@ -410,13 +410,13 @@ public:
                 }
                 Invalidate();
 
-                auto intent = Intent(WC_LOADSAVE);
+                auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
                 context_open_intent(&intent);
                 break;
             }
             case WIDX_FILTER_TEXT_BOX:
-                window_start_textbox(this, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
+                window_start_textbox(*this, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
                 break;
             case WIDX_FILTER_CLEAR_BUTTON:
                 std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
@@ -461,10 +461,10 @@ public:
 
     void OnResize() override
     {
-        window_set_resize(this, WW, WH, 1200, 1000);
+        window_set_resize(*this, WW, WH, 1200, 1000);
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         int32_t numSelectionItems = 0;
 
@@ -524,7 +524,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (dropdownIndex == -1)
             return;
@@ -576,7 +576,7 @@ public:
     {
         // Used for in-game object selection cheat to prevent crashing the game
         // when windows attempt to draw objects that don't exist any more
-        window_close_all_except_class(WC_EDITOR_OBJECT_SELECTION);
+        window_close_all_except_class(WindowClass::EditorObjectSelection);
 
         int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
         if (selected_object == -1)
@@ -594,12 +594,14 @@ public:
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            if (!window_editor_object_selection_select_object(0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem))
+            const auto objectSelectResult = window_editor_object_selection_select_object(
+                0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem);
+            if (!objectSelectResult.Successful)
                 return;
 
             // Close any other open windows such as options/colour schemes to prevent a crash.
             window_close_all();
-            // window_close(w);
+            // window_close(*w);
 
             // This function calls window_track_list_open
             ManageTracks();
@@ -611,13 +613,14 @@ public:
         if (!(object_selection_flags & ObjectSelectionFlags::Selected))
             inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
-        _gSceneryGroupPartialSelectError = false;
-        if (!window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem))
+        _gSceneryGroupPartialSelectError = std::nullopt;
+        const auto objectSelectResult = window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem);
+        if (!objectSelectResult.Successful)
         {
-            rct_string_id error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
-                                                                                       : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+            StringId error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
+                                                                                  : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
-            context_show_error(error_title, gGameCommandErrorText, {});
+            context_show_error(error_title, objectSelectResult.Message, {});
             return;
         }
 
@@ -628,9 +631,10 @@ public:
             Invalidate();
         }
 
-        if (_gSceneryGroupPartialSelectError)
+        if (_gSceneryGroupPartialSelectError.has_value())
         {
-            if (gGameCommandErrorText == STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED)
+            const auto errorMessage = _gSceneryGroupPartialSelectError.value();
+            if (errorMessage == STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED)
             {
                 context_show_error(
                     STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, {});
@@ -638,7 +642,7 @@ public:
             else
             {
                 context_show_error(
-                    gGameCommandErrorText, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, Formatter::Common());
+                    errorMessage, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, Formatter::Common());
             }
         }
     }
@@ -747,7 +751,7 @@ public:
                 {
                     width_limit /= 2;
                     // Draw ride type
-                    rct_string_id rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
+                    StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
                     safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
                     auto ft = Formatter();
                     ft.Add<const char*>(gCommonStringFormatBuffer);
@@ -776,18 +780,18 @@ public:
      *
      * rct2: 0x006AB058
      */
-    OpenRCT2String OnTooltip(const rct_widgetindex widgetIndex, const rct_string_id fallback) override
+    OpenRCT2String OnTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
     {
         if (widgetIndex >= WIDX_TAB_1 && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
+            ft.Add<StringId>(ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
             return { fallback, ft };
         }
         return { fallback, {} };
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (widgetIndex != WIDX_FILTER_TEXT_BOX || text.empty())
             return;
@@ -839,7 +843,7 @@ public:
 
         // Set window title and buttons
         auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(ObjectSelectionPages[selected_tab].Caption);
+        ft.Add<StringId>(ObjectSelectionPages[selected_tab].Caption);
         auto& titleWidget = widgets[WIDX_TITLE];
         auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
@@ -1030,10 +1034,9 @@ public:
         if (listSortTypeWidget.type != WindowWidgetType::Empty)
         {
             auto ft = Formatter();
-            auto stringId = _listSortType == RIDE_SORT_TYPE
-                ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                : STR_NONE;
-            ft.Add<rct_string_id>(stringId);
+            auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
+                                                            : STR_NONE;
+            ft.Add<StringId>(stringId);
             auto screenPos = windowPos + ScreenCoordsXY{ listSortTypeWidget.left + 1, listSortTypeWidget.top + 1 };
             DrawTextEllipsised(&dpi, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
         }
@@ -1041,10 +1044,9 @@ public:
         if (listSortRideWidget.type != WindowWidgetType::Empty)
         {
             auto ft = Formatter();
-            auto stringId = _listSortType == RIDE_SORT_RIDE
-                ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                : STR_NONE;
-            ft.Add<rct_string_id>(stringId);
+            auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
+                                                            : STR_NONE;
+            ft.Add<StringId>(stringId);
             auto screenPos = windowPos + ScreenCoordsXY{ listSortRideWidget.left + 1, listSortRideWidget.top + 1 };
             DrawTextEllipsised(&dpi, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
         }
@@ -1071,7 +1073,7 @@ public:
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.midX() + 1, previewWidget.bottom + 3 };
             _width = this->width - widgets[WIDX_LIST].right - 6;
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
             DrawTextEllipsised(&dpi, screenPos, _width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
         }
@@ -1135,7 +1137,7 @@ private:
             uint8_t selectionFlags = _objectSelectionFlags[i];
             const ObjectRepositoryItem* item = &items[i];
             if (item->Type == GetSelectedObjectType() && !(selectionFlags & ObjectSelectionFlags::Flag6) && FilterSource(item)
-                && FilterString(item) && FilterChunks(item) && FilterSelected(selectionFlags))
+                && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags))
             {
                 auto filter = std::make_unique<rct_object_filters>();
                 filter->ride.category[0] = 0;
@@ -1197,7 +1199,7 @@ private:
         if (!description.empty())
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(description.c_str());
 
             screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
@@ -1254,7 +1256,15 @@ private:
     void DrawDebugData(rct_drawpixelinfo* dpi)
     {
         ObjectListItem* listItem = &_listItems[selected_list_item];
-        auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (LIST_ROW_HEIGHT * 5) };
+        auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (LIST_ROW_HEIGHT * 6) };
+
+        // Draw fallback image warning
+        if (_loadedObject && _loadedObject->UsesFallbackImages())
+        {
+            DrawTextBasic(dpi, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+        }
+        screenPos.y += LIST_ROW_HEIGHT;
+
         // Draw ride type.
         if (GetSelectedObjectType() == ObjectType::Ride)
         {
@@ -1273,7 +1283,7 @@ private:
         {
             auto path = Path::GetFileName(listItem->repositoryItem->Path);
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const utf8*>(path.c_str());
             DrawTextBasic(
                 dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
@@ -1293,7 +1303,7 @@ private:
                 }
                 authorsString.append(listItem->repositoryItem->Authors[i]);
             }
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(authorsString.c_str());
             DrawTextEllipsised(
                 dpi, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
@@ -1319,12 +1329,32 @@ private:
         return false;
     }
 
-    static bool IsFilterInAuthor(const std::vector<std::string>& authors, const std::string& filterUpper)
+    static bool IsFilterInName(const ObjectRepositoryItem& item, std::string_view filter)
     {
-        for (auto& author : authors)
+        return String::Contains(item.Name, filter, true);
+    }
+
+    static bool IsFilterInRideType(const ObjectRepositoryItem& item, std::string_view filter)
+    {
+        if (item.Type == ObjectType::Ride)
         {
-            bool inAuthor = String::ToUpper(author).find(filterUpper) != std::string::npos;
-            if (inAuthor)
+            auto rideTypeName = language_get_string(GetRideTypeStringId(&item));
+            if (String::Contains(rideTypeName, filter, true))
+                return true;
+        }
+        return false;
+    }
+
+    static bool IsFilterInFilename(const ObjectRepositoryItem& item, std::string_view filter)
+    {
+        return String::Contains(item.Path, filter, true);
+    }
+
+    static bool IsFilterInAuthor(const ObjectRepositoryItem& item, std::string_view filter)
+    {
+        for (auto& author : item.Authors)
+        {
+            if (String::Contains(author, filter, true))
             {
                 return true;
             }
@@ -1332,32 +1362,15 @@ private:
         return false;
     }
 
-    bool FilterString(const ObjectRepositoryItem* item)
+    bool FilterString(const ObjectRepositoryItem& item)
     {
         // Nothing to search for
-        if (_filter_string[0] == '\0')
+        std::string_view filter = _filter_string;
+        if (filter.empty())
             return true;
 
-        // Object doesn't have a name
-        if (item->Name.empty())
-            return false;
-
-        // Get ride type
-        const char* rideTypeName = language_get_string(GetRideTypeStringId(item));
-
-        // Get object name (ride/vehicle for rides) and type name (rides only) in uppercase
-        const auto nameUpper = String::ToUpper(item->Name);
-        const auto typeUpper = String::ToUpper(rideTypeName);
-        const auto pathUpper = String::ToUpper(item->Path);
-        const auto filterUpper = String::ToUpper(_filter_string);
-
-        // Check if the searched string exists in the name, ride type, filename, or authors field
-        bool inName = nameUpper.find(filterUpper) != std::string::npos;
-        bool inRideType = (item->Type == ObjectType::Ride) && typeUpper.find(filterUpper) != std::string::npos;
-        bool inPath = pathUpper.find(filterUpper) != std::string::npos;
-        bool inAuthor = IsFilterInAuthor(item->Authors, filterUpper);
-
-        return inName || inRideType || inPath || inAuthor;
+        return IsFilterInName(item, filter) || IsFilterInRideType(item, filter) || IsFilterInFilename(item, filter)
+            || IsFilterInAuthor(item, filter);
     }
 
     bool SourcesMatch(ObjectSourceGame source)
@@ -1399,7 +1412,7 @@ private:
     {
         if (item->Type == ObjectType::Ride)
         {
-            uint8_t rideType = 0;
+            ride_type_t rideType = 0;
             for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
             {
                 if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
@@ -1425,7 +1438,7 @@ private:
             for (size_t i = 0; i < numObjects; i++)
             {
                 const ObjectRepositoryItem* item = &items[i];
-                if (FilterSource(item) && FilterString(item) && FilterChunks(item) && FilterSelected(selectionFlags[i]))
+                if (FilterSource(item) && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags[i]))
                 {
                     _filter_object_counts[EnumValue(item->Type)]++;
                 }
@@ -1495,10 +1508,10 @@ private:
             ;
 
         rct_ride_entry* ride_entry = get_ride_entry(entry_index);
-        uint8_t ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);
+        auto rideType = ride_entry_get_first_non_null_ride_type(ride_entry);
 
-        auto intent = Intent(WC_TRACK_DESIGN_LIST);
-        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, ride_type);
+        auto intent = Intent(WindowClass::TrackDesignList);
+        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
         intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
         context_open_intent(&intent);
     }
@@ -1511,7 +1524,7 @@ private:
 rct_window* WindowEditorObjectSelectionOpen()
 {
     return WindowFocusOrCreate<EditorObjectSelectionWindow>(
-        WC_EDITOR_OBJECT_SELECTION, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+        WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
 }
 
 static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b)
@@ -1529,12 +1542,12 @@ static bool VisibleListSortRideType(const ObjectListItem& a, const ObjectListIte
     return result != 0 ? result < 0 : VisibleListSortRideName(a, b);
 }
 
-static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item)
+static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
 {
-    rct_string_id result = STR_NONE;
+    StringId result = STR_NONE;
     for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
-        uint8_t rideType = item->RideInfo.RideType[i];
+        auto rideType = item->RideInfo.RideType[i];
         if (rideType != RIDE_TYPE_NULL)
         {
             result = GetRideTypeDescriptor(rideType).Naming.Name;
@@ -1553,6 +1566,7 @@ void EditorLoadSelectedObjects()
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
+    bool showFallbackWarning = false;
     for (int32_t i = 0; i < numItems; i++)
     {
         if (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
@@ -1575,13 +1589,17 @@ void EditorLoadSelectedObjects()
                     if (objectType == ObjectType::Ride)
                     {
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
-                        uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                         research_insert_ride_entry(rideType, entryIndex, category, true);
                     }
                     else if (objectType == ObjectType::SceneryGroup)
                     {
                         research_insert_scenery_group_entry(entryIndex, true);
+                    }
+                    if (loadedObject->UsesFallbackImages())
+                    {
+                        showFallbackWarning = true;
                     }
                 }
             }
@@ -1592,4 +1610,6 @@ void EditorLoadSelectedObjects()
         // Reloads the default cyan water palette if no palette was selected.
         load_palette();
     }
+    if (showFallbackWarning)
+        context_show_error(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
 }

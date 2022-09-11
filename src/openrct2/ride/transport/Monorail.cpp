@@ -10,6 +10,7 @@
 #include "../../common.h"
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Map.h"
@@ -271,57 +272,32 @@ static constexpr const uint32_t ghost_train_track_pieces_right_eight_to_diag[4][
     },
 };
 
-static constexpr const CoordsXY ghost_train_track_pieces_right_eight_to_diag_bounds[4][4] = {
+static constexpr const BoundBoxXY GhostTrainTrackPiecesRightEightToDiagBoxes[4][4] = {
     {
-        { 32, 20 },
-        { 32, 16 },
-        { 16, 16 },
-        { 16, 16 },
+        { { 0, 6 }, { 32, 20 } },
+        { { 0, 16 }, { 32, 16 } },
+        { { 0, 0 }, { 16, 16 } },
+        { { 16, 0 }, { 16, 16 } },
     },
     {
-        { 20, 32 },
-        { 16, 32 },
-        { 16, 16 },
-        { 16, 16 },
+        { { 6, 0 }, { 20, 32 } },
+        { { 16, 0 }, { 16, 32 } },
+        { { 0, 16 }, { 16, 16 } },
+        { { 0, 0 }, { 16, 16 } },
     },
     {
-        { 32, 20 },
-        { 34, 16 },
-        { 28, 28 },
-        { 16, 18 },
-    },
-    {
-        { 20, 32 },
-        { 16, 32 },
-        { 16, 16 },
-        { 16, 16 },
-    },
-};
 
-static constexpr const CoordsXY ghost_train_track_pieces_right_eight_to_diag_offset[4][4] = {
-    {
-        { 0, 6 },
-        { 0, 16 },
-        { 0, 0 },
-        { 16, 0 },
+        { { 0, 6 }, { 32, 20 } },
+        { { 0, 0 }, { 34, 16 } },
+        { { 4, 4 }, { 28, 28 } },
+        { { 0, 16 }, { 16, 18 } },
     },
     {
-        { 6, 0 },
-        { 16, 0 },
-        { 0, 16 },
-        { 0, 0 },
-    },
-    {
-        { 0, 6 },
-        { 0, 0 },
-        { 4, 4 },
-        { 0, 16 },
-    },
-    {
-        { 6, 0 },
-        { 0, 0 },
-        { 16, 0 },
-        { 16, 16 },
+
+        { { 6, 0 }, { 20, 32 } },
+        { { 0, 0 }, { 16, 32 } },
+        { { 16, 0 }, { 16, 16 } },
+        { { 16, 16 }, { 16, 16 } },
     },
 };
 
@@ -352,57 +328,30 @@ static constexpr const uint32_t ghost_train_track_pieces_left_eight_to_diag[4][4
     },
 };
 
-static constexpr const CoordsXY ghost_train_track_pieces_left_eight_to_diag_bounds[4][4] = {
+static constexpr const BoundBoxXY GhostTrainTrackPiecesLeftEightToDiagBoxes[4][4] = {
     {
-        { 32, 20 },
-        { 32, 16 },
-        { 16, 16 },
-        { 16, 16 },
+        { { 0, 6 }, { 32, 20 } },
+        { { 0, 0 }, { 32, 16 } },
+        { { 0, 16 }, { 16, 16 } },
+        { { 16, 16 }, { 16, 16 } },
     },
     {
-        { 20, 32 },
-        { 16, 34 },
-        { 16, 16 },
-        { 18, 16 },
+        { { 6, 0 }, { 20, 32 } },
+        { { 0, 0 }, { 16, 34 } },
+        { { 16, 16 }, { 16, 16 } },
+        { { 16, 0 }, { 18, 16 } },
     },
     {
-        { 32, 20 },
-        { 32, 16 },
-        { 16, 16 },
-        { 16, 16 },
+        { { 0, 6 }, { 32, 20 } },
+        { { 0, 16 }, { 32, 16 } },
+        { { 16, 0 }, { 16, 16 } },
+        { { 0, 0 }, { 16, 16 } },
     },
     {
-        { 20, 32 },
-        { 16, 32 },
-        { 16, 16 },
-        { 16, 16 },
-    },
-};
-
-static constexpr const CoordsXY ghost_train_track_pieces_left_eight_to_diag_offset[4][4] = {
-    {
-        { 0, 6 },
-        { 0, 0 },
-        { 0, 16 },
-        { 16, 16 },
-    },
-    {
-        { 6, 0 },
-        { 0, 0 },
-        { 16, 16 },
-        { 16, 0 },
-    },
-    {
-        { 0, 6 },
-        { 0, 16 },
-        { 16, 0 },
-        { 0, 0 },
-    },
-    {
-        { 6, 0 },
-        { 16, 0 },
-        { 0, 0 },
-        { 0, 16 },
+        { { 6, 0 }, { 20, 32 } },
+        { { 16, 0 }, { 16, 32 } },
+        { { 0, 0 }, { 16, 16 } },
+        { { 0, 16 }, { 16, 16 } },
     },
 };
 
@@ -761,23 +710,16 @@ static void paint_monorail_track_s_bend_left(
         trackSequence = 3 - trackSequence;
     }
 
-    static constexpr CoordsXY offsetList[] = {
-        { 0, 6 },
-        { 0, 0 },
-        { 0, 6 },
-        { 0, 6 },
-    };
-
-    static constexpr CoordsXY boundsList[] = {
-        { 32, 20 },
-        { 32, 26 },
-        { 32, 26 },
-        { 32, 20 },
+    static constexpr BoundBoxXY boxList[] = {
+        { { 0, 6 }, { 32, 20 } },
+        { { 0, 0 }, { 32, 26 } },
+        { { 0, 6 }, { 32, 26 } },
+        { { 0, 6 }, { 32, 20 } },
     };
 
     uint32_t imageId = monorail_track_pieces_s_bend_left[direction & 1][trackSequence] | session.TrackColours[SCHEME_TRACK];
-    CoordsXY offset = offsetList[trackSequence];
-    CoordsXY bounds = boundsList[trackSequence];
+    const CoordsXY& offset = boxList[trackSequence].offset;
+    const CoordsXY& bounds = boxList[trackSequence].length;
     if (direction == 0 || direction == 2)
     {
         PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 3 });
@@ -865,23 +807,13 @@ static void paint_monorail_track_s_bend_right(
         trackSequence = 3 - trackSequence;
     }
 
-    static constexpr CoordsXY offsetList[] = {
-        { 0, 6 },
-        { 0, 6 },
-        { 0, 0 },
-        { 0, 6 },
-    };
-
-    static constexpr CoordsXY boundsList[] = {
-        { 32, 20 },
-        { 32, 26 },
-        { 32, 26 },
-        { 32, 20 },
+    static constexpr BoundBoxXY boxList[] = {
+        { { 0, 6 }, { 32, 20 } }, { { 0, 6 }, { 32, 26 } }, { { 0, 0 }, { 32, 26 } }, { { 0, 6 }, { 32, 20 } }
     };
 
     uint32_t imageId = monorail_track_pieces_s_bend_right[direction & 1][trackSequence] | session.TrackColours[SCHEME_TRACK];
-    CoordsXY offset = offsetList[trackSequence];
-    CoordsXY bounds = boundsList[trackSequence];
+    const CoordsXY& offset = boxList[trackSequence].offset;
+    const CoordsXY& bounds = boxList[trackSequence].length;
     if (direction == 0 || direction == 2)
     {
         PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 3 });
@@ -1018,8 +950,8 @@ static void paint_monorail_track_left_eighth_to_diag(
     if (index >= 0)
     {
         uint32_t imageId = ghost_train_track_pieces_left_eight_to_diag[direction][index] | session.TrackColours[SCHEME_TRACK];
-        const CoordsXY offset = ghost_train_track_pieces_left_eight_to_diag_offset[direction][index];
-        const CoordsXY bounds = ghost_train_track_pieces_left_eight_to_diag_bounds[direction][index];
+        const CoordsXY& offset = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].offset;
+        const CoordsXY& bounds = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].length;
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
     }
 
@@ -1086,8 +1018,8 @@ static void paint_monorail_track_right_eighth_to_diag(
     if (index >= 0)
     {
         uint32_t imageId = ghost_train_track_pieces_right_eight_to_diag[direction][index] | session.TrackColours[SCHEME_TRACK];
-        const CoordsXY offset = ghost_train_track_pieces_right_eight_to_diag_offset[direction][index];
-        const CoordsXY bounds = ghost_train_track_pieces_right_eight_to_diag_bounds[direction][index];
+        const CoordsXY offset = GhostTrainTrackPiecesRightEightToDiagBoxes[direction][index].offset;
+        const CoordsXY bounds = GhostTrainTrackPiecesRightEightToDiagBoxes[direction][index].length;
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
     }
 

@@ -18,7 +18,7 @@ STR_0016    :Observatietoren
 STR_0017    :Stalen achtbaan
 STR_0018    :Waterglijbaan
 STR_0019    :Mijntreinachtbaan
-STR_0020    :Kabelbaan
+STR_0020    :Stoeltjeslift
 STR_0021    :Stalen schroefachtbaan
 STR_0022    :Doolhof
 STR_0023    :Spiraalglijbaan
@@ -94,6 +94,7 @@ STR_0092    :LIM-lanceringsachtbaan
 STR_0093    :Hybride achtbaan
 STR_0094    :Achtbaan met enkele rail
 STR_0095    :Rodelachtbaan
+STR_0096    :Klassieke houten achtbaan
 STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
 STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
@@ -176,6 +177,7 @@ STR_0602    :Achtbaantreinen worden door lineaire inductiemotoren het station ui
 STR_0603    :Een achtbaan met houten ondersteuningen en stalen rails, waardoor steile afdalingen en omkeringen mogelijk worden.
 STR_0604    :Passagiers zitten achter elkaar op een smalle baan met één rail, waar ze met hoge snelheid door krappe bochten en over de kop gaan.
 STR_0605    :Passagiers rodelen over een kronkelende stalen baan, waarbij ze zelf kunnen beslissen hoe snel ze gaan.
+STR_0606    :Een ouder type houten achtbaan met een snelle en ruwe loop, veel airtime, enige zijwaartse G-krachten en het gevoel van controleverlies.
 STR_0767    :Bezoeker {INT32}
 STR_0768    :Klusjesman {INT32}
 STR_0769    :Monteur {INT32}
@@ -280,7 +282,7 @@ STR_0892    :Screenshot opgeslagen als ‘{STRINGID}’
 STR_0893    :Screenshot maken mislukt!
 STR_0894    :‘Landscape data area’ zit vol!
 STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
-STR_0896    :{POP16}{POP16}Constructie {STRINGID}
+STR_0896    :Constructie {POP16}{POP16}{STRINGID}
 STR_0897    :Richting
 STR_0898    :Bocht naar links
 STR_0899    :Bocht naar rechts
@@ -338,7 +340,6 @@ STR_0950    :Spel laden
 STR_0951    :Spel afsluiten
 STR_0952    :Spel afsluiten
 STR_0953    :Landschap laden
-STR_0954    :
 STR_0955    :Selecteer de draaiing van de stoelen voor dit gedeelte
 STR_0956    :-180°
 STR_0957    :-135°
@@ -386,10 +387,10 @@ STR_0998    :Voor deze attractie zijn meer stations niet mogelijk
 STR_0999    :Vereist een station
 STR_1000    :Baan vormt geen volledig circuit
 STR_1001    :Baan is ongeschikt voor dit type trein
-STR_1002    :Kan {POP16}{POP16}{POP16}{STRINGID} niet openen…
-STR_1003    :Kan {POP16}{POP16}{POP16}{STRINGID} niet testen…
-STR_1004    :Kan {POP16}{POP16}{POP16}{STRINGID} niet sluiten…
-STR_1005    :Kan de verbouwing van {POP16}{POP16}{POP16}{STRINGID} niet starten…
+STR_1002    :Kan {STRINGID} niet openen…
+STR_1003    :Kan {STRINGID} niet testen…
+STR_1004    :Kan {STRINGID} niet sluiten…
+STR_1005    :Kan de verbouwing van {STRINGID} niet starten…
 STR_1006    :Moet eerst worden gesloten
 STR_1007    :Kan niet voldoende voertuigen aanmaken
 STR_1008    :Attractie openen, sluiten of testen
@@ -751,7 +752,7 @@ STR_1363    :Te hoog voor ondersteuningen!
 STR_1364    :Ondersteuningen voor de baan kunnen niet verder verlengd worden!
 STR_1365    :Inlinetwist (links)
 STR_1366    :Inlinetwist (rechts)
-STR_1367    :Halve looping
+STR_1367    :Kleine halve looping
 STR_1368    :Halve schroef (links)
 STR_1369    :Halve schroef (rechts)
 STR_1370    :Barrel roll (links)
@@ -1955,8 +1956,6 @@ STR_2738    :Titelschermmuziek:
 STR_2739    :Geen
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat niet gevonden
-STR_2743    :Kopieer ‘data/css17.dat’ van je RCT1-installatie naar ‘data/css50.dat’ in je RCT2-installatie, of stel een pad in naar je RCT1-bestanden onder het tabblad ‘Geavanceerd’.
 STR_2749    :Mijn nieuwe scenario
 STR_2750    :Alles naar boven verplaatsen
 STR_2751    :Alles naar beneden verplaatsen
@@ -2227,7 +2226,6 @@ STR_3174    :een ander object is afhankelijk van dit object.
 STR_3175    :dit object is altijd benodigd.
 STR_3176    :Kan object niet selecteren:
 STR_3177    :Kan object niet deselecteren:
-STR_3178    :er moet minstens één voetpad worden geselecteerd.
 STR_3179    :er moet minstens één attractie worden geselecteerd.
 STR_3180    :Ongeldige selectie van objecten:
 STR_3181    :Objectselectie - {STRINGID}
@@ -2260,7 +2258,7 @@ STR_3208    :Baanontwerpbeheer
 STR_3209    :Terug naar de vorige stap:
 STR_3210    :Verder naar de volgende stap:
 STR_3211    :Kaartgrootte:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan de kaart niet verder verkleinen
 STR_3214    :Kan de kaart niet verder vergroten
 STR_3215    :Te dicht bij de rand van de kaart
@@ -2557,8 +2555,6 @@ STR_5250    :Afsluitknop titelscherm
 STR_5251    :Optiesknop titelscherm
 STR_5252    :Scenarioselectie titelscherm
 STR_5253    :Parkinformatie
-STR_5254    :Aanmaken
-STR_5255    :Begint een nieuwe, lege titelpresentatie
 STR_5256    :Maak een nieuw thema aan om wijzigingen aan te brengen.
 STR_5257    :Een nieuw thema aanmaken dat is gebaseerd op het huidige
 STR_5258    :Het huidige thema verwijderen
@@ -2653,75 +2649,10 @@ STR_5373    :Naam {STRINGID}
 STR_5374    :Datum {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Opgeslagen spellen
-STR_5378    :Script
-STR_5379    :Ga naar volgend Wacht-commando
-STR_5380    :Start het afspelen van de titelpresentatie
-STR_5381    :Stopt het afspelen van de titelpresentatie
-STR_5382    :Titelpresentatie herstarten
-STR_5383    :Een nieuwe titelpresentatie aanmaken die is gebaseerd op de huidige
-STR_5384    :Huidige titelpresentatie verwijderen
-STR_5385    :Huidige titelpresentatie hernoemen
-STR_5386    :Nieuw commando invoegen
-STR_5387    :Geselecteerd commando bewerken
-STR_5388    :Geselecteerd commando verwijderen
-STR_5389    :Naar geselecteerd commando titelpresentatie springen
-STR_5390    :Geselecteerd commando naar beneden verplaatsen
-STR_5391    :Geselecteerd commando naar boven verplaatsen
-STR_5392    :Opgeslagen spel aan titelpresentatie toevoegen
-STR_5393    :Geselecteerd opgeslagen spel uit titelpresentatie verwijderen
-STR_5394    :Opgeslagen spel hernoemen
-STR_5395    :Opgeslagen spel laden
-STR_5396    :Titelpresentatie herladen als ze buiten het spel om is aangepast
-STR_5397    :Kan enkel in het titelscherm worden gebruikt
-STR_5398    :Kan de titelpresentatie niet aanpassen wanneer deze wordt afgespeeld
-STR_5399    :Klik op Stop om verder te gaan met aanpassen
-STR_5400    :Kan deze titelpresentatie niet aanpassen
-STR_5401    :Een nieuwe titelpresentatie aanmaken om wijzigingen aan te brengen
-STR_5402    :Kan titelpresentatie niet laden
-STR_5403    :Er is mogelijk geen Laad- or Wacht-commando of één van de opgeslagen spellen is mogelijk beschadigd
 STR_5404    :Naam bestaat al
-STR_5405    :Voer een naam in voor het opgeslagen spel
-STR_5406    :Voer een naam in voor de titelpresentatie
-STR_5407    :Toevoegen
-STR_5408    :Verwijderen
-STR_5409    :Invoegen
-STR_5410    :Bewerken
-STR_5411    :Herladen
-STR_5412    :Spring naar
-STR_5413    :Laad
-STR_5415    :Laad{MOVE_X}{87}{STRING}
-STR_5416    :Laad{MOVE_X}{87}Geen opgeslagen spel geselecteerd
-STR_5417    :Locatie
-STR_5418    :Locatie{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Draai
-STR_5420    :Draai{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoom
-STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
-STR_5423    :Wacht
-STR_5424    :Wacht{MOVE_X}{87}{UINT16}
-STR_5425    :Herstarten
-STR_5426    :Einde
-STR_5427    :Coördinaten:
-STR_5428    :Aant. draaiingen tegen de klok:
-STR_5429    :Zoomniveau:
-STR_5430    :Te wachten milliseconden:
-STR_5431    :Te laden opgeslagen spel:
-STR_5432    :Commando:
-STR_5433    :Titelpresentaties
-STR_5434    :Commandobewerker
-STR_5435    :Opgeslagen spel hernoemen
-STR_5436    :Titelpresentaties bewerken…
-STR_5437    :Geen opgeslagen spel geselecteerd
-STR_5438    :Kan geen wijzigingen aanbrengen wanneer de commandobewerker open is
-STR_5439    :Een Herstart-commando moet worden voorafgegaan door een Wacht-commando van minstens vier seconden.
 STR_5440    :Volledig scherm minimaliseren bij focusverlies
 STR_5441    :Sorteert attracties per baantype,{NEWLINE}zodat achteraf wisselen van treintypes mogelijk{NEWLINE}wordt, zoals in RCT1.
 STR_5442    :Parkwaardering forc.:
-STR_5443    :Snelheid{MOVE_X}{87}{STRINGID}
-STR_5444    :Snelheid:
-STR_5445    :Snelheid
-STR_5446    :Ophalen
 STR_5447    :Type {STRINGID}
 STR_5448    :Attractie/voertuig {STRINGID}
 STR_5449    :Spelsnelheid verlagen
@@ -2836,8 +2767,6 @@ STR_5560    :Stelt het inspectieinterval van alle attracties in op ‘Elke 10 mi
 STR_5561    :Kon taal niet laden
 STR_5562    :WAARSCHUWING:
 STR_5563    :Deze functie is momenteel niet helemaal stabiel, wees voorzichtig.
-STR_5564    :Ongeldig element invoegen
-STR_5565    :Plaatst een ongeldig element boven de andere elementen van dit vakje. Alle elementen die boven dit ongeldige element worden geplaatst worden onzichtbaar.
 STR_5566    :Wachtwoord:
 STR_5567    :Bekendmaken
 STR_5568    :Wachtwoord vereist
@@ -3077,7 +3006,6 @@ STR_5844    :Blijf altijd verbonden met een multiplayerserver,{NEWLINE}zelfs als
 STR_5845    :Toont knoppen om het spel te debuggen en geeft toegang tot de console.
 STR_5846    :Stelt in hoe vaak OpenRCT2 automatisch een back-up maakt van je park.
 STR_5847    :Stelt in welke titelpresentatie er wordt gebruikt. {NEWLINE}Titelpresentaties uit RCT1 en RCT2 vereisen dat je de gebruikte scenario’s hebt geïmporteerd.
-STR_5848    :Eigen titelpresentaties maken en beheren.
 STR_5849    :Nieuwe werknemers automatisch plaatsen.
 STR_5851    :Stelt het standaardinspectie-interval voor nieuwe attracties in.
 STR_5853    :Geluidseffecten in-/uitschakelen.
@@ -3277,7 +3205,6 @@ STR_6047    :Landschap verzachten
 STR_6048    :Fout bij het verwerken van hoogtekaart
 STR_6049    :Kon PNG niet inlezen
 STR_6050    :Kon bitmap niet inlezen
-STR_6051    :De breedte en hoogte moeten overeenkomen
 STR_6052    :De hoogtekaart is te groot en zal worden bijgesneden
 STR_6053    :De hoogtekaart kan niet worden genormaliseerd
 STR_6054    :Alleen 24-bit bitmaps worden ondersteund
@@ -3391,23 +3318,8 @@ STR_6170    :Overig
 STR_6171    :Zoeken
 STR_6172    :Zoeken
 STR_6173    :Geef een naam op om te zoeken:
-STR_6174    :Opgeslagen park laden
-STR_6175    :Scenario laden
-STR_6176    :Te laden scenario:
-STR_6177    :Load{MOVE_X}{87}Geen scenario geselecteerd
-STR_6178    :Load{MOVE_X}{87}{RED}Ontbrekend scenario
-STR_6179    :Selecteren
-STR_6180    :Geen scenario geselecteerd
-STR_6181    :{RED}Ontbrekend scenario
-STR_6182    :Volg{MOVE_X}{87}{STRING}
-STR_6183    :Volg{MOVE_X}{87}Geen sprite geselecteerd
-STR_6184    :Sprite volgen
-STR_6185    :Sprite selecteren
-STR_6186    :Geen sprite geselecteerd
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Braaksel
 STR_6189    :Eend
-STR_6190    :Je kunt geen sprite selecteren als het spel nog op het titelscherm staat. Laad eerst het opgeslagen spel waarvan je een sprite wilt selecteren.
 STR_6191    :Land
 STR_6192    :Muur
 STR_6193    :{COMMA16} bezoeker
@@ -3520,7 +3432,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
 STR_6323    :Simulatie
 STR_6324    :Simuleren
 STR_6325    :Testrit simuleren
-STR_6326    :Kan {POP16}{POP16}{POP16}{STRINGID} niet in simulatiemodus zetten…
+STR_6326    :Kan {STRINGID} niet in simulatiemodus zetten…
 STR_6327    :Reuzenscreenshots hebben transparante achtergrond
 STR_6328    :Als deze optie is ingeschakeld, worden reuzenscreenshots met een transparante achtergrond genomen, in plaats van de zwarte standaardachtergrond.
 STR_6329    :{STRING}{STRINGID}
@@ -3529,7 +3441,6 @@ STR_6331    :Eenden aanmaken
 STR_6332    :Eenden verw.
 STR_6333    :Vergrotingsfactor verhogen
 STR_6334    :Vergrotingsfactor verlagen
-STR_6335    :Vakinspecteur: Ongeldig element invoegen
 STR_6336    :Vakinspecteur: Element kopiëren
 STR_6337    :Vakinspecteur: Element plakken
 STR_6338    :Vakinspecteur: Element verwijderen
@@ -3694,6 +3605,20 @@ STR_6497    :Klik op een vakje om de elementen erop te tonen.{NEWLINE}Om direct 
 STR_6498    :Schakel dit in om de kaart vierkant te houden.
 STR_6499    :Voertuigtype niet ondersteund door bestandsindeling voor baanontwerpen.
 STR_6500    :Baanelementen niet ondersteund door bestandsindeling voor baanontwerpen.
+STR_6501    :Willekeurig
+STR_6502    :Voer een waarde in tussen {COMMA16} en {COMMA16}
+STR_6503    :Er moet minstens één stationstype geselecteerd zijn.
+STR_6504    :Er moet minstens één terreinoppervlak geselecteerd zijn.
+STR_6505    :Er moet minstens één terreinzijkant geselecteerd zijn.
+STR_6506    :Grote halve schroef (links)
+STR_6507    :Grote halve schroef (rechts)
+STR_6508    :Middelgrote halve looping (links)
+STR_6509    :Middelgrote halve looping (rechts)
+STR_6510    :0 g-rol (links)
+STR_6511    :0 g-rol (rechts)
+STR_6512    :Grote 0 g-rol (links)
+STR_6513    :Grote 0 g-rol (rechts)
+STR_6514    :Ongeldige hoogte!
 
 #############
 # Scenarios #
@@ -4509,22 +4434,7 @@ STR_NAME    :Glazen dak
 STR_NAME    :Glazen dak
 
 ## TT Pirate roofs and eaves
-[TTPIRF02]
-STR_NAME    :Dak
-
-[TTPIRF03]
-STR_NAME    :Dak
-
-[TTPIRF04]
-STR_NAME    :Dak
-
 [TTPIRF05]
-STR_NAME    :Dak
-
-[TTPIRF07]
-STR_NAME    :Dak
-
-[TTPIRF08]
 STR_NAME    :Dak
 
 [TTPRF09]

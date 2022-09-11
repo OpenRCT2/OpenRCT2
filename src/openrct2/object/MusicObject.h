@@ -48,7 +48,7 @@ private:
     MusicNiceFactor _niceFactor;
 
 public:
-    rct_string_id NameStringId{};
+    StringId NameStringId{};
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
@@ -57,7 +57,7 @@ public:
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 
     std::optional<uint8_t> GetOriginalStyleId() const;
-    bool SupportsRideType(uint8_t rideType);
+    bool SupportsRideType(ride_type_t rideType);
     size_t GetTrackCount() const;
     const MusicObjectTrack* GetTrack(size_t trackIndex) const;
     constexpr MusicNiceFactor GetNiceFactor() const

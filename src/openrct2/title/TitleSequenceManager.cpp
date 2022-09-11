@@ -32,7 +32,7 @@ namespace TitleSequenceManager
     {
         const utf8* ConfigId;
         const utf8* Filename;
-        rct_string_id StringId;
+        ::StringId StringId;
     };
 
     static constexpr PredefinedSequence PredefinedSequences[] = {
@@ -235,7 +235,7 @@ namespace TitleSequenceManager
 
         if (item.PredefinedIndex != PREDEFINED_INDEX_CUSTOM)
         {
-            rct_string_id stringId = PredefinedSequences[item.PredefinedIndex].StringId;
+            StringId stringId = PredefinedSequences[item.PredefinedIndex].StringId;
             item.Name = language_get_string(stringId);
         }
         else if (IsNameReserved(item.Name))

@@ -63,7 +63,13 @@ void LightfxAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsX
 void lightfx_add_3d_light_magic_from_drawing_tile(
     const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, LightType lightType);
 
-void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle);
+void LightfxAddLightsMagicVehicle(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_ObservationTower(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_MineTrainCoaster(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_ChairLift(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_BoatHire(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_Monorail(const Vehicle* vehicle);
+void LightFxAddLightsMagicVehicle_MiniatureRailway(const Vehicle* vehicle);
 
 void LightFxAddKioskLights(const CoordsXY& mapPosition, const int32_t height, const uint8_t zOffset);
 void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, const int32_t height, const uint8_t zOffset);

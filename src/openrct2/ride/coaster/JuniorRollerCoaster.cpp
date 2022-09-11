@@ -1865,7 +1865,7 @@ void junior_rc_paint_track_flat(
 
 void junior_rc_paint_station(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TrackElement& trackElement, uint8_t rideType)
+    const TrackElement& trackElement, bool drawBlockBrake)
 {
     uint32_t imageId;
 
@@ -1878,7 +1878,7 @@ void junior_rc_paint_station(
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
 
         // height += 2 (height)
-        if (trackElement.GetTrackType() == TrackElemType::EndStation && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+        if (trackElement.GetTrackType() == TrackElemType::EndStation && drawBlockBrake)
         {
             imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session.TrackColours[SCHEME_TRACK];
         }
@@ -1900,7 +1900,7 @@ void junior_rc_paint_station(
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
 
         // height += 2 (height)
-        if (trackElement.GetTrackType() == TrackElemType::EndStation && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+        if (trackElement.GetTrackType() == TrackElemType::EndStation && drawBlockBrake)
         {
             imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session.TrackColours[SCHEME_TRACK];
         }
@@ -5803,7 +5803,7 @@ static void paint_junior_rc_station_track(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_station(session, ride, trackSequence, direction, height, trackElement, RIDE_TYPE_JUNIOR_ROLLER_COASTER);
+    junior_rc_paint_station(session, ride, trackSequence, direction, height, trackElement, true);
 }
 
 /* rct2: 0x0051881E */

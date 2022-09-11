@@ -55,7 +55,7 @@ public:
         widgets = window_debug_paint_widgets;
 
         InitScrollWidgets();
-        window_push_others_below(this);
+        window_push_others_below(*this);
 
         colours[0] = TRANSLUCENT(COLOUR_BLACK);
         colours[1] = COLOUR_GREY;
@@ -63,7 +63,7 @@ public:
         ResizeLanguage = LANGUAGE_UNDEFINED;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -130,11 +130,11 @@ public:
             Invalidate();
         }
 
-        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
-        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
-        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
-        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
-        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
+        WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
+        WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
+        WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
+        WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
+        WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -146,7 +146,7 @@ public:
 rct_window* WindowDebugPaintOpen()
 {
     auto* window = WindowFocusOrCreate<DebugPaintWindow>(
-        WC_DEBUG_PAINT, { 16, context_get_height() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
+        WindowClass::DebugPaint, { 16, context_get_height() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
         WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
     return window;

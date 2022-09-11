@@ -35,7 +35,7 @@ enum class FormatToken
     UInt16,
     Currency2dp,
     Currency,
-    StringId,
+    StringById,
     String,
     MonthYear,
     Month,

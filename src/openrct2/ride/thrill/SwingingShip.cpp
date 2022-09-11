@@ -10,6 +10,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"
@@ -25,15 +26,6 @@ static constexpr const uint8_t track_map_1x5[][5] = {
     { 0, 4, 3, 2, 1 },
     { 0, 1, 2, 3, 4 },
 };
-
-struct swinging_ship_bound_box
-{
-    int16_t length_x;
-    int16_t length_y;
-    int16_t offset_x;
-    int16_t offset_y;
-};
-
 /** rct2: 0x008A83B0 */
 static constexpr const uint32_t SwingingShipBaseSpriteOffset[] = {
     0,
@@ -43,11 +35,11 @@ static constexpr const uint32_t SwingingShipBaseSpriteOffset[] = {
 };
 
 /** rct2: 0x008A83C0 */
-static constexpr const swinging_ship_bound_box SwingingShipData[] = {
-    { 31, 16, 1, 8 },
-    { 16, 31, 8, 1 },
-    { 31, 16, 1, 8 },
-    { 16, 31, 8, 1 },
+static constexpr const BoundBoxXY SwingingShipData[] = {
+    { { 1, 8 }, { 31, 16 } },
+    { { 8, 1 }, { 16, 31 } },
+    { { 1, 8 }, { 31, 16 } },
+    { { 8, 1 }, { 16, 31 } },
 };
 
 enum
@@ -108,8 +100,8 @@ static void PaintSwingingShipStructure(
 
     const auto& bounds = SwingingShipData[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
-    CoordsXYZ bbLength(bounds.length_x, bounds.length_y, 80);
-    CoordsXYZ bbOffset(bounds.offset_x, bounds.offset_y, height + 7);
+    CoordsXYZ bbLength(bounds.length.x, bounds.length.y, 80);
+    CoordsXYZ bbOffset(bounds.offset.x, bounds.offset.y, height + 7);
 
     auto baseImageId = rideEntry->Cars[0].base_image_id + SwingingShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)

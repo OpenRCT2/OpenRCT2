@@ -1,36 +1,79 @@
 0.4.2 (in development)
 ------------------------------------------------------------------------
+- Feature: [#6326] Ability to load .SV6 files from RCT Classic that have more than 9601 guests.
+- Feature: [#6570, #10860, #17929] Fully support RollerCoaster Tycoon Classic as a RCT2 base install path.
 - Feature: [#13634] Add ability to sell merchandise in random colours.
-- Feature: [#16283] Added parkinfo command line tool to list objects in a save file. 
+- Feature: [#16164] Add new track elements for Flying Coaster and Lay-Down Coaster and add paint code for more elements.
+- Feature: [#16283] Added parkinfo command line tool to list objects in a save file.
 - Feature: [#16662] Show a warning message when g2.dat is mismatched.
 - Feature: [#17107] Ride operating settings can be set via text input.
+- Feature: [#17638] Added Zero G rolls, medium loops and large corkscrews to the Hybrid and Single-Rail coasters.
+- Feature: [#17821] [Plugin] Add API for track subpositions and vehicle subposition.
+- Feature: [#17877] Add three real-life flying roller coaster colour schemes.
+- Feature: [#17900] Add “Classic Wooden Coaster” with shallow banked turns.
+- Feature: [objects#198] Add additional pirate roofs.
+- Feature: [objects#205] Add additional glass roofs.
+- Feature: [objects#209] Add the Steel Roller Coaster train and 2-across Inverted Train from RollerCoaster Tycoon 1.
 - Improved: [#15358] Park and scenario names can now contain up to 128 characters.
 - Improved: [#16840] Add support for rectangular heightmaps.
 - Improved: [#17575] You can now search for Authors in Object Selection.
+- Improved: [#17806] Added warning when using RCT1 objects without RCT1 linked.
+- Improved: [#17868] [Plugin] You can now change active tab of a custom window programmatically.
+- Improved: [#17909] Track elements that are not supported by any train are now hidden by default.
+- Improved: [#17924] Improved performance when loading JSON object images from a .DAT file.
+- Change: [#9104] Calculate maze support costs.
 - Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
+- Change: [#17655] Lower default price for the Crooked House.
+- Change: [#17762] Use vertical tabs in the New Game dialog.
+- Fix: [#5141] Headless server is counted as a player.
 - Fix: [#7466] Coaster track not drawn at tunnel exit.
+- Fix: [#14337] Guest blocking ride entrance after ride price changed to be unaffordable.
+- Fix: [#15328] Wooden Roller Coaster incorrectly draws a railing on the first station piece (original bug).
 - Fix: [#16392] Scenery on sloped surface is placed at wrong height.
 - Fix: [#16476] The game sometimes crashes when demolishing a maze.
 - Fix: [#17312] (Flying) Inline Twist appearing under the surface when placed on ground level.
 - Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17339] Distorted visuals when changing scaling factor between integer numbers in OpenGL rendering mode.
+- Fix: [#17394] Six-seater Hyper-Twister Trains focuses ride window camera on Car 2 rather than Car 1 (original bug).
 - Fix: [#17430] Possible crash when toggling tile element visibility in multiplayer.
 - Fix: [#17444] “Manta Ray” boats slowed down too much in “Ayers Rock” scenario (original bug).
 - Fix: [#17503] Parks with staff with an ID of 0 have all staff windows focus on that staff.
 - Fix: [#17508] Grid doesn’t disable after setting patrol area.
+- Fix: [#17532] Object Selection window allows unselecting all station types.
 - Fix: [#17533] Missing audio when specifying ‘--rct2-data-path’.
+- Fix: [#17535] Multiplayer desync when placing rides with scenery.
 - Fix: [#17541] Station style not correctly saved to TD6.
 - Fix: [#17542] Stalls will autorotate towards paths outside the park.
+- Fix: [#17544, #17754] Visual glitches in Invention List window.
 - Fix: [#17553] Crash when moving invention list items to empty list.
+- Fix: [#17571] All researched tracked rides show up as new vehicles in .park scenarios.
+- Fix: [#17600] Notifications are not properly cleared when loading a park.
 - Fix: [#17605] Crash when opening parks which have had objects removed externally.
+- Fix: [#17639, 17735] When building upside down, the special elements list contains many items twice (original bug).
+- Fix: [#17703] (undefined string) when building on invalid height.
+- Fix: [#17776] “Other Parks” tab uses separate lists for SC4/SC6 and .park scenarios.
+- Fix: [#17784] Colour preset RNG is biased (original bug).
+- Fix: [#17788] Guests could leave queue if another guest rejoins it from the entrance building.
+- Fix: [#17834] Finance window becomes blank after 4096 years.
+- Fix: [#17816] Option to pause game when Steam Overlay is active is not greyed out when using the OpenGL renderer.
+- Fix: [#17897] Guest can get stuck on tiles with construction rights outside the park.
+- Fix: [#17904] Trees are removed at no cost to make way for ride entrance/exits.
+- Fix: [#17905] The chain button in the map window is enabled for rectangular maps when (re)opened.
+- Fix: [#17931] The in-game command ‘count_objects’ crashes the game.
+- Fix: [#17865] With difficult guest generation, tested but unopened rides still contribute to the guest cap.
+- Fix: [#17866] [Plugin] Wrong Soft Guest Cap at start of new game
+- Fix: [#17959] Areas marked for dirty drawing are too large.
+- Fix: [#17966] Reversed steel trains do not properly import from S4.
+- Fix: [#18008] Steeplechase S-bends has multiple gaps visible in the tracks.
+- Fix: [#18009] Visual glitch with litter at edge of sloped path.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
+- Feature: [#12237, #17217] Add FLAC and OGG/vorbis as supported audio formats for ride music objects.
+- Feature: [#12328, #17418] Add vehicles for the Hybrid Coaster, Single-Rail Roller Coaster and Classic Mini Roller Coaster.
 - Feature: [#16825] Add Alpine Coaster track type.
 - Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
-- Feature: [#17217] Add FLAC and OGG/vorbis as supported audio formats for ride music objects.
-- Feature: [#12328, #17418] Add vehicles for the Hybrid Coaster, Single-Rail Roller Coaster and Classic Mini Roller Coaster.
 - Improved: [#7983] The red colour in the ride stat screen and the ride graphs now corresponds better to negative effects on a ride’s stats.
 - Improved: [#13966] Music Style dropdown is now sorted by name.
 - Improved: [#16978] Tree placement is more natural during map generation.
@@ -129,6 +172,7 @@
 - Change: [#16710] Changed default view of Guest List to ‘Thoughts’ and selected tab will default to ‘Summarised’ (when opened from the menu).
 - Change: [#16859] Guests with umbrellas no longer always avoid going into a Maze.
 - Change: [#16912] Tired or nauseated guests will no longer jump in a Maze.
+- Fix: [#3588] 1920’s Racing Cars get stuck on turns.
 - Fix: [#6767] Black screen after Alt-Tabbing back into the game.
 - Fix: [#11752] Track pieces with fractional cost are too cheap to build.
 - Fix: [#12556] Allow game to run without audio devices.

@@ -260,7 +260,7 @@ public:
         return objects;
     }
 
-    static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)
+    static StringId GetObjectSourceGameString(const ObjectSourceGame sourceGame)
     {
         switch (sourceGame)
         {
@@ -283,7 +283,7 @@ public:
         }
     }
 
-    const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) override
+    const std::vector<ObjectEntryIndex>& GetAllRideEntries(ride_type_t rideType) override
     {
         if (rideType >= RIDE_TYPE_COUNT)
         {
@@ -490,7 +490,7 @@ private:
 
         // HACK Scenery window will lose its tabs after changing the scenery group indexing
         //      for now just close it, but it will be better to later tell it to invalidate the tabs
-        window_close_by_class(WC_SCENERY);
+        window_close_by_class(WindowClass::Scenery);
     }
 
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
@@ -771,7 +771,7 @@ void object_manager_unload_all_objects()
     objectManager.UnloadAllTransient();
 }
 
-rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame)
+StringId object_manager_get_source_game_string(const ObjectSourceGame sourceGame)
 {
     return ObjectManager::GetObjectSourceGameString(sourceGame);
 }

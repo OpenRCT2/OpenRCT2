@@ -59,7 +59,7 @@ public:
 
     const utf8* GetLastDisconnectReason() const noexcept;
     void SetLastDisconnectReason(std::string_view src);
-    void SetLastDisconnectReason(const rct_string_id string_id, void* args = nullptr);
+    void SetLastDisconnectReason(const StringId string_id, void* args = nullptr);
 
 private:
     std::deque<NetworkPacket> _outboundPackets;

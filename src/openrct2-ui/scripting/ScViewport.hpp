@@ -26,11 +26,11 @@ namespace OpenRCT2::Scripting
     class ScViewport
     {
     private:
-        rct_windowclass _class{};
+        WindowClass _class{};
         rct_windownumber _number{};
 
     public:
-        ScViewport(rct_windowclass c, rct_windownumber n = 0)
+        ScViewport(WindowClass c, rct_windownumber n = 0)
             : _class(c)
             , _number(n)
         {
@@ -122,7 +122,7 @@ namespace OpenRCT2::Scripting
                 {
                     while (get_current_rotation() != value)
                     {
-                        window_rotate_camera(w, 1);
+                        window_rotate_camera(*w, 1);
                     }
                 }
             }
@@ -143,7 +143,7 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 auto i8Value = static_cast<int8_t>(value);
-                window_zoom_set(w, ZoomLevel{ i8Value }, false);
+                window_zoom_set(*w, ZoomLevel{ i8Value }, false);
             }
         }
 
@@ -220,7 +220,7 @@ namespace OpenRCT2::Scripting
                 auto coords = GetCoordsFromObject(position);
                 if (coords)
                 {
-                    window_scroll_to_location(w, *coords);
+                    window_scroll_to_location(*w, *coords);
                 }
             }
         }
@@ -244,7 +244,7 @@ namespace OpenRCT2::Scripting
     private:
         rct_window* GetWindow() const
         {
-            if (_class == WC_MAIN_WINDOW)
+            if (_class == WindowClass::MainWindow)
                 return window_get_main();
 
             return window_find_by_number(_class, _number);

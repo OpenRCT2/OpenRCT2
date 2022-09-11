@@ -16,22 +16,22 @@ struct Window : rct_window
 {
     virtual bool IsLegacy() override;
     virtual void OnDraw(rct_drawpixelinfo& dpi) override;
-    virtual void OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi) override;
+    virtual void OnDrawWidget(WidgetIndex widgetIndex, rct_drawpixelinfo& dpi) override;
 
     void InitScrollWidgets();
-    void InvalidateWidget(rct_widgetindex widgetIndex);
-    bool IsWidgetDisabled(rct_widgetindex widgetIndex) const;
-    bool IsWidgetPressed(rct_widgetindex widgetIndex) const;
-    void SetWidgetDisabled(rct_widgetindex widgetIndex, bool value);
-    void SetWidgetPressed(rct_widgetindex widgetIndex, bool value);
-    void SetCheckboxValue(rct_widgetindex widgetIndex, bool value);
+    void InvalidateWidget(WidgetIndex widgetIndex);
+    bool IsWidgetDisabled(WidgetIndex widgetIndex) const;
+    bool IsWidgetPressed(WidgetIndex widgetIndex) const;
+    void SetWidgetDisabled(WidgetIndex widgetIndex, bool value);
+    void SetWidgetPressed(WidgetIndex widgetIndex, bool value);
+    void SetCheckboxValue(WidgetIndex widgetIndex, bool value);
     void DrawWidgets(rct_drawpixelinfo& dpi);
     void Close();
     void TextInputOpen(
-        rct_widgetindex callWidget, rct_string_id title, rct_string_id description, const Formatter& descriptionArgs,
-        rct_string_id existingText, uintptr_t existingArgs, int32_t maxLength);
+        WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
+        uintptr_t existingArgs, int32_t maxLength);
 };
 
 void WindowAllWheelInput();
 void ApplyScreenSaverLockSetting();
-void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id);
+void window_align_tabs(rct_window* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id);

@@ -42,6 +42,8 @@ static const uint8_t SpriteGroupMultiplier[EnumValue(SpriteGroupType::Count)] = 
     1, 2, 2, 2, 2, 2, 2, 10, 1, 2, 2, 2, 2, 2, 2, 2, 6, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 20, 3, 1,
 };
 
+static constexpr uint8_t RiverRapidsNumSpinningSprites = 8;
+
 static constexpr SpritePrecision PrecisionFromNumFrames(uint8_t numRotationFrames)
 {
     if (numRotationFrames == 0)
@@ -229,16 +231,33 @@ void RideObject::Load()
             uint32_t imageIndex = baseImageId;
             carEntry->base_image_id = baseImageId;
 
-            for (uint8_t spriteGroup = 0; spriteGroup < EnumValue(SpriteGroupType::Count); spriteGroup++)
+            switch (carEntry->PaintStyle)
             {
-                if (carEntry->SpriteGroups[spriteGroup].Enabled())
-                {
-                    carEntry->SpriteGroups[spriteGroup].imageId = imageIndex;
-                    const auto spriteCount = carEntry->base_num_frames
-                        * carEntry->NumRotationSprites(static_cast<SpriteGroupType>(spriteGroup))
-                        * SpriteGroupMultiplier[spriteGroup];
-                    imageIndex += spriteCount;
-                }
+                case VEHICLE_VISUAL_RIVER_RAPIDS:
+                case VEHICLE_VISUAL_VIRGINIA_REEL:
+                    // Paint code for these rides do not use sprite groups but #17909 requires them. Dummy sprite groups are
+                    // added.
+                    carEntry->SpriteGroups[EnumValue(SpriteGroupType::SlopeFlat)] = { baseImageId, SpritePrecision::Sprites1 };
+                    carEntry->SpriteGroups[EnumValue(SpriteGroupType::Slopes12)] = {
+                        baseImageId + RiverRapidsNumSpinningSprites, SpritePrecision::Sprites4
+                    };
+                    carEntry->SpriteGroups[EnumValue(SpriteGroupType::Slopes25)] = {
+                        baseImageId + RiverRapidsNumSpinningSprites + RiverRapidsNumSpinningSprites * NumOrthogonalDirections,
+                        SpritePrecision::Sprites4
+                    };
+                    break;
+                default:
+                    for (uint8_t spriteGroup = 0; spriteGroup < EnumValue(SpriteGroupType::Count); spriteGroup++)
+                    {
+                        if (carEntry->SpriteGroups[spriteGroup].Enabled())
+                        {
+                            carEntry->SpriteGroups[spriteGroup].imageId = imageIndex;
+                            const auto spriteCount = carEntry->base_num_frames
+                                * carEntry->NumRotationSprites(static_cast<SpriteGroupType>(spriteGroup))
+                                * SpriteGroupMultiplier[spriteGroup];
+                            imageIndex += spriteCount;
+                        }
+                    }
             }
 
             carEntry->NumCarImages = imageIndex - currentCarImagesOffset;
@@ -861,24 +880,12 @@ std::vector<VehicleColour> RideObject::ReadJsonColourConfiguration(json_t& jColo
     return config;
 }
 
-bool RideObject::IsRideTypeShopOrFacility(uint8_t rideType)
+bool RideObject::IsRideTypeShopOrFacility(ride_type_t rideType)
 {
-    switch (rideType)
-    {
-        case RIDE_TYPE_TOILETS:
-        case RIDE_TYPE_SHOP:
-        case RIDE_TYPE_DRINK_STALL:
-        case RIDE_TYPE_FOOD_STALL:
-        case RIDE_TYPE_INFORMATION_KIOSK:
-        case RIDE_TYPE_CASH_MACHINE:
-        case RIDE_TYPE_FIRST_AID:
-            return true;
-        default:
-            return false;
-    }
+    return GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY);
 }
 
-uint8_t RideObject::ParseRideType(const std::string& s)
+ride_type_t RideObject::ParseRideType(const std::string& s)
 {
     auto result = std::find_if(
         std::begin(RideTypeDescriptors), std::end(RideTypeDescriptors), [s](const auto& rtd) { return rtd.Name == s; });

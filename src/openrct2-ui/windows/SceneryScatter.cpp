@@ -59,8 +59,8 @@ public:
     {
         widgets = window_scenery_scatter_widgets;
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        WindowInitScrollWidgets(*this);
+        window_push_others_below(*this);
 
         gWindowSceneryScatterEnabled = true;
         gWindowSceneryScatterSize = 16;
@@ -72,7 +72,7 @@ public:
         gWindowSceneryScatterEnabled = false;
     }
 
-    void InputSize(const rct_widgetindex widgetIndex)
+    void InputSize(const WidgetIndex widgetIndex)
     {
         uint8_t maxLength = 0;
         Formatter ft;
@@ -88,12 +88,12 @@ public:
         WindowTextInputOpen(this, widgetIndex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxLength);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 break;
 
             case WIDX_PREVIEW:
@@ -114,7 +114,7 @@ public:
         }
     }
 
-    void OnMouseDown(const rct_widgetindex widgetIndex) override
+    void OnMouseDown(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -132,7 +132,7 @@ public:
         }
     }
 
-    void OnTextInput(const rct_widgetindex widgetIndex, const std::string_view text) override
+    void OnTextInput(const WidgetIndex widgetIndex, const std::string_view text) override
     {
         if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
@@ -178,7 +178,7 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         // Draw area as a number for tool sizes bigger than 7
         if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
@@ -195,10 +195,10 @@ public:
 rct_window* WindowSceneryScatterOpen()
 {
     // Check if window is already open
-    auto* window = window_find_by_class(WC_SCENERY_SCATTER);
+    auto* window = window_find_by_class(WindowClass::SceneryScatter);
     if (window == nullptr)
     {
-        window = WindowCreate<SceneryScatterWindow>(WC_SCENERY_SCATTER, 86, 100);
+        window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100);
     }
 
     return window;

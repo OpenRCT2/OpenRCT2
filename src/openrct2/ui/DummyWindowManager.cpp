@@ -15,7 +15,7 @@ namespace OpenRCT2::Ui
     class DummyWindowManager final : public IWindowManager
     {
         void Init() override{};
-        rct_window* OpenWindow(rct_windowclass /*wc*/) override
+        rct_window* OpenWindow(WindowClass /*wc*/) override
         {
             return nullptr;
         }
@@ -27,7 +27,7 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        rct_window* ShowError(rct_string_id /*title*/, rct_string_id /*message*/, const Formatter& /*formatter*/) override
+        rct_window* ShowError(StringId /*title*/, StringId /*message*/, const Formatter& /*formatter*/) override
         {
             return nullptr;
         }
@@ -42,7 +42,7 @@ namespace OpenRCT2::Ui
         void BroadcastIntent(const Intent& /*intent*/) override
         {
         }
-        void ForceClose(rct_windowclass /*windowClass*/) override
+        void ForceClose(WindowClass /*windowClass*/) override
         {
         }
         void UpdateMapTooltip() override

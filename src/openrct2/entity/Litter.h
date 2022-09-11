@@ -40,7 +40,7 @@ struct Litter : EntityBase
     static void Create(const CoordsXYZD& litterPos, Type type);
     static void RemoveAt(const CoordsXYZ& litterPos);
     void Serialise(DataSerialiser& stream);
-    rct_string_id GetName() const;
+    StringId GetName() const;
     uint32_t GetAge() const;
     void Paint(paint_session& session, int32_t imageDirection) const;
 };

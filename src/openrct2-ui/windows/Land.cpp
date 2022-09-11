@@ -21,7 +21,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_LAND;
+static constexpr const StringId WINDOW_TITLE = STR_LAND;
 static constexpr const int32_t WH = 160;
 static constexpr const int32_t WW = 98;
 
@@ -71,8 +71,8 @@ public:
     {
         widgets = window_land_widgets;
         hold_down_widgets = (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        WindowInitScrollWidgets(*this);
+        window_push_others_below(*this);
 
         gLandToolSize = 1;
         gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
@@ -92,7 +92,7 @@ public:
             tool_cancel();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -115,7 +115,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         rct_widget* widget = &widgets[widgetIndex];
         switch (widgetIndex)
@@ -146,7 +146,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         int32_t type;
 
@@ -189,7 +189,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (widgetIndex != WIDX_PREVIEW)
             return;
@@ -253,8 +253,8 @@ public:
             screenCoords = { windowPos.x + previewWidget->left, windowPos.y + previewWidget->top };
             auto sprite = ImageId(gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD);
             gfx_draw_sprite(&dpi, sprite, screenCoords);
-            WidgetDraw(&dpi, this, WIDX_DECREMENT);
-            WidgetDraw(&dpi, this, WIDX_INCREMENT);
+            WidgetDraw(&dpi, *this, WIDX_DECREMENT);
+            WidgetDraw(&dpi, *this, WIDX_INCREMENT);
         }
 
         screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->bottom + 5 };
@@ -331,7 +331,7 @@ private:
         DrawDropdownButton(dpi, WIDX_WALL, edgeImage);
     }
 
-    void DrawDropdownButton(rct_drawpixelinfo& dpi, rct_widgetindex widgetIndex, ImageId image)
+    void DrawDropdownButton(rct_drawpixelinfo& dpi, WidgetIndex widgetIndex, ImageId image)
     {
         const auto& widget = widgets[widgetIndex];
         gfx_draw_sprite(&dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });
@@ -340,5 +340,5 @@ private:
 
 rct_window* WindowLandOpen()
 {
-    return WindowFocusOrCreate<LandWindow>(WC_LAND, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    return WindowFocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 }

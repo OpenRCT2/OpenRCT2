@@ -13,7 +13,6 @@
 #include "../core/FileSystem.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
-#include "../ride/VehicleColour.h"
 #include "Limits.h"
 
 #include <tuple>
@@ -25,7 +24,7 @@ enum class EditorStep : uint8_t;
 
 namespace RCT2
 {
-    constexpr const rct_string_id RCT2_RIDE_STRING_START = 2;
+    constexpr const StringId RCT2_RIDE_STRING_START = 2;
 
     // clang-format off
     constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
@@ -77,18 +76,18 @@ namespace RCT2
         uint16_t pad_002;                                             // 0x002
         uint8_t mode;                                                 // 0x004
         uint8_t colour_scheme_type;                                   // 0x005
-        rct_vehicle_colour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x006
+        RCT12VehicleColour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x006
         uint8_t pad_046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
         // 0 = closed, 1 = open, 2 = test
-        uint8_t status;     // 0x049
-        rct_string_id name; // 0x04A
+        uint8_t status; // 0x049
+        StringId name;  // 0x04A
         union
         {
             uint32_t name_arguments; // 0x04C
             struct
             {
-                rct_string_id name_arguments_type_name; // 0x04C
-                uint16_t name_arguments_number;         // 0x04E
+                StringId name_arguments_type_name; // 0x04C
+                uint16_t name_arguments_number;    // 0x04E
             };
         };
         RCT12xy8 overall_view;                               // 0x050
@@ -338,7 +337,7 @@ namespace RCT2
             uint8_t track_flags; // 0x06
         };
         uint8_t version_and_colour_scheme;                            // 0x07 0b0000_VVCC
-        rct_vehicle_colour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x08
+        RCT12VehicleColour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x08
         union
         {
             uint8_t pad_48;
@@ -434,7 +433,7 @@ namespace RCT2
         int32_t acceleration;       // 0x2C
         uint8_t ride;               // 0x30
         uint8_t vehicle_type;       // 0x31
-        rct_vehicle_colour colours; // 0x32
+        RCT12VehicleColour colours; // 0x32
         union
         {
             uint16_t track_progress; // 0x34
@@ -552,16 +551,16 @@ namespace RCT2
     struct Peep : RCT12SpriteBase
     {
         uint8_t pad_1F[0x22 - 0x1F];
-        rct_string_id name_string_idx; // 0x22
-        uint16_t next_x;               // 0x24
-        uint16_t next_y;               // 0x26
-        uint8_t next_z;                // 0x28
-        uint8_t next_flags;            // 0x29
-        uint8_t outside_of_park;       // 0x2A
-        uint8_t state;                 // 0x2B
-        uint8_t sub_state;             // 0x2C
-        uint8_t sprite_type;           // 0x2D
-        uint8_t peep_type;             // 0x2E
+        StringId name_string_idx; // 0x22
+        uint16_t next_x;          // 0x24
+        uint16_t next_y;          // 0x26
+        uint8_t next_z;           // 0x28
+        uint8_t next_flags;       // 0x29
+        uint8_t outside_of_park;  // 0x2A
+        uint8_t state;            // 0x2B
+        uint8_t sub_state;        // 0x2C
+        uint8_t sprite_type;      // 0x2D
+        uint8_t peep_type;        // 0x2E
         union
         {
             uint8_t staff_type;  // 0x2F
@@ -835,10 +834,10 @@ namespace RCT2
 
         // SC6[6]
         uint32_t next_free_tile_element_pointer_index;
-        Entity sprites[Limits::MaxEntities];
+        Entity sprites[Limits::MaxEntitiesRCTCExtended];
         uint16_t sprite_lists_head[static_cast<uint8_t>(EntityListId::Count)];
         uint16_t sprite_lists_count[static_cast<uint8_t>(EntityListId::Count)];
-        rct_string_id park_name;
+        StringId park_name;
         uint8_t pad_013573D6[2];
         uint32_t park_name_args;
         money32 initial_cash;
@@ -1020,23 +1019,23 @@ namespace RCT2
         uint16_t wide_path_tile_loop_y;
         uint8_t pad_13CE778[434];
     };
-    assert_struct_size(S6Data, 0x46b44a);
+    assert_struct_size(S6Data, 0x5a3c4a);
 
     struct StexEntry
     {
-        rct_string_id scenario_name; // 0x00
-        rct_string_id park_name;     // 0x02
-        rct_string_id details;       // 0x04
+        StringId scenario_name; // 0x00
+        StringId park_name;     // 0x02
+        StringId details;       // 0x04
         uint8_t var_06;
     };
     assert_struct_size(StexEntry, 7);
 #pragma pack(pop)
 
     ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
-    bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType);
+    bool RCT2TrackTypeIsBooster(ride_type_t rideType, uint16_t trackType);
     bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
     uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);
-    track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType, bool convertFlat);
+    track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType, bool convertFlat);
     RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType);
 
     /**

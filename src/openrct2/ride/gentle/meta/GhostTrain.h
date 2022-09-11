@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../drawing/LightFX.h"
 #include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
@@ -58,5 +59,13 @@ constexpr const RideTypeDescriptor GhostTrainRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_GHOST_TRAIN_TRACK, SPR_RIDE_DESIGN_PREVIEW_GHOST_TRAIN_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "ghost_train"),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
+    SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_MineTrainCoaster),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
+    SET_FIELD(Classification, RideClassification::Ride),
+    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
+    SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_GhostTrain),
 };
 // clang-format on

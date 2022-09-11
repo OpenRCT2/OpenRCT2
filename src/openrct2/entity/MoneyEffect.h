@@ -30,7 +30,7 @@ struct MoneyEffect : EntityBase
     static void CreateAt(money64 value, const CoordsXYZ& effectPos, bool vertical);
     static void Create(money64 value, const CoordsXYZ& loc);
     void Update();
-    std::pair<rct_string_id, money64> GetStringId() const;
+    std::pair<StringId, money64> GetStringId() const;
     void Serialise(DataSerialiser& stream);
     void Paint(paint_session& session, int32_t imageDirection) const;
 };

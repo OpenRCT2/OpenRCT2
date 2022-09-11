@@ -49,6 +49,7 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scripting/ScriptEngine.h"
+#include "../ui/UiContext.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Map.h"
@@ -926,6 +927,10 @@ namespace OpenRCT2
                     {
                         gNewsItems[offset + i] = archived[i];
                     }
+
+                    // Still need to set the correct type to properly terminate the queue
+                    if (archived.size() < News::MaxItemsArchive)
+                        gNewsItems[offset + archived.size()].Type = News::ItemType::Null;
                 }
                 else
                 {
@@ -1838,8 +1843,8 @@ namespace OpenRCT2
         cs.ReadWrite(entity.acceleration);
         cs.ReadWrite(entity.ride);
         cs.ReadWrite(entity.vehicle_type);
-        cs.ReadWrite(entity.colours.body_colour);
-        cs.ReadWrite(entity.colours.trim_colour);
+        cs.ReadWrite(entity.colours.Body);
+        cs.ReadWrite(entity.colours.Trim);
         cs.ReadWrite(entity.track_progress);
         cs.ReadWrite(entity.BoatLocation);
         cs.ReadWrite(entity.TrackTypeAndDirection);
@@ -1901,7 +1906,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.mini_golf_current_animation);
         cs.ReadWrite(entity.mini_golf_flags);
         cs.ReadWrite(entity.ride_subtype);
-        cs.ReadWrite(entity.colours_extended);
+        cs.ReadWrite(entity.colours.Tertiary);
         cs.ReadWrite(entity.seat_rotation);
         cs.ReadWrite(entity.target_seat_rotation);
         cs.ReadWrite(entity.IsCrashedVehicle);
@@ -2312,6 +2317,31 @@ int32_t scenario_save(u8string_view path, int32_t flags)
     catch (const std::exception& e)
     {
         log_error(e.what());
+
+        Formatter ft;
+        ft.Add<const char*>(e.what());
+        context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
+        gfx_invalidate_screen();
+
+        auto ctx = OpenRCT2::GetContext();
+        auto uictx = ctx->GetUiContext();
+
+        std::string title = "Error while saving";
+        std::string message
+            = "There was an error while saving scenario.\nhttps://github.com/OpenRCT2/OpenRCT2/issues/17664\nWe would like to "
+              "collect more information about this issue, if this did not happen due to missing permissions, lack of space, "
+              "etc. please consider submitting a bug report. To collect information we would like to trigger an assert.";
+
+        std::string report_bug_button = "Report bug, trigger an assert, potentially terminating the game";
+        std::string skip_button = "Skip reporting, let me continue";
+
+        std::vector<std::string> buttons{ std::move(report_bug_button), std::move(skip_button) };
+        int choice = uictx->ShowMessageBox(title, message, buttons);
+
+        if (choice == 0)
+        {
+            Guard::Assert(false, "Error while saving: %s", e.what());
+        }
     }
 
     gfx_invalidate_screen();
@@ -2372,6 +2402,7 @@ public:
     void Import() override
     {
         _parkFile->Import();
+        research_determine_first_of_type();
         game_fix_save_vars();
     }
 

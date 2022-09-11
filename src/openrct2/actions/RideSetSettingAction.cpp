@@ -236,7 +236,7 @@ GameActions::Result RideSetSettingAction::Execute() const
         auto location = ride->overall_view.ToTileCentre();
         res.Position = { location, tile_element_height(location) };
     }
-    window_invalidate_by_number(WC_RIDE, _rideIndex.ToUnderlying());
+    window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
     return res;
 }
 
@@ -273,7 +273,7 @@ bool RideSetSettingAction::ride_is_valid_operation_option(Ride* ride) const
     return _value >= minValue && _value <= maxValue;
 }
 
-rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
+StringId RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
 {
     switch (ride->mode)
     {

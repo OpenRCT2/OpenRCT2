@@ -61,7 +61,7 @@ namespace GameActions
     class Result final
     {
     public:
-        using StringVariant = std::variant<std::string, rct_string_id>;
+        using StringVariant = std::variant<std::string, StringId>;
 
         GameActions::Status Error = GameActions::Status::Ok;
         StringVariant ErrorTitle = STR_NONE;
@@ -81,7 +81,7 @@ namespace GameActions
 #endif
 
         Result() = default;
-        Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args = nullptr);
+        Result(GameActions::Status error, StringId title, StringId message, uint8_t* args = nullptr);
 
         std::string GetErrorTitle() const;
         std::string GetErrorMessage() const;

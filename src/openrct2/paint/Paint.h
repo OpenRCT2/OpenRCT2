@@ -64,7 +64,7 @@ struct paint_struct
 
 struct paint_string_struct
 {
-    rct_string_id string_id;
+    StringId string_id;
     paint_string_struct* next;
     int32_t x;
     int32_t y;
@@ -327,7 +327,7 @@ bool PaintAttachToPreviousAttach(paint_session& session, ImageId imageId, int32_
 bool PaintAttachToPreviousPS(paint_session& session, ImageId image_id, int32_t x, int32_t y);
 bool PaintAttachToPreviousPS(paint_session& session, uint32_t image_id, int32_t x, int32_t y);
 void PaintFloatingMoneyEffect(
-    paint_session& session, money64 amount, rct_string_id string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
+    paint_session& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);
 
 paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);

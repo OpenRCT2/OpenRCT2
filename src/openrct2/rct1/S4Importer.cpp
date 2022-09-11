@@ -243,7 +243,7 @@ namespace RCT1
 
             String::Set(dst->internal_name, sizeof(dst->internal_name), desc.title);
 
-            rct_string_id localisedStringIds[3];
+            StringId localisedStringIds[3];
             if (language_get_localised_scenario_strings(desc.title, localisedStringIds))
             {
                 if (localisedStringIds[0] != STR_NONE)
@@ -1221,41 +1221,41 @@ namespace RCT1
             // RCT1 had no third colour
             if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
             {
-                dst->colours.body_colour = RCT1::GetColour(src->colours.body_colour);
+                dst->colours.Body = RCT1::GetColour(src->colours.body_colour);
             }
             else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
             {
-                dst->colours.body_colour = RCT1::GetColour(src->colours.trim_colour);
+                dst->colours.Body = RCT1::GetColour(src->colours.trim_colour);
             }
             else
             {
-                dst->colours.body_colour = colourSchemeCopyDescriptor.colour1;
+                dst->colours.Body = colourSchemeCopyDescriptor.colour1;
             }
 
             if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
             {
-                dst->colours.trim_colour = RCT1::GetColour(src->colours.body_colour);
+                dst->colours.Trim = RCT1::GetColour(src->colours.body_colour);
             }
             else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
             {
-                dst->colours.trim_colour = RCT1::GetColour(src->colours.trim_colour);
+                dst->colours.Trim = RCT1::GetColour(src->colours.trim_colour);
             }
             else
             {
-                dst->colours.trim_colour = colourSchemeCopyDescriptor.colour2;
+                dst->colours.Trim = colourSchemeCopyDescriptor.colour2;
             }
 
             if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
             {
-                dst->colours_extended = RCT1::GetColour(src->colours.body_colour);
+                dst->colours.Tertiary = RCT1::GetColour(src->colours.body_colour);
             }
             else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
             {
-                dst->colours_extended = RCT1::GetColour(src->colours.trim_colour);
+                dst->colours.Tertiary = RCT1::GetColour(src->colours.trim_colour);
             }
             else
             {
-                dst->colours_extended = colourSchemeCopyDescriptor.colour3;
+                dst->colours.Tertiary = colourSchemeCopyDescriptor.colour3;
             }
         }
 
@@ -2101,7 +2101,7 @@ namespace RCT1
         void ImportParkName()
         {
             std::string parkName = std::string(_s4.scenario_name);
-            if (is_user_string_id(static_cast<rct_string_id>(_s4.park_name_string_index)))
+            if (is_user_string_id(static_cast<StringId>(_s4.park_name_string_index)))
             {
                 std::string userString = GetUserString(_s4.park_name_string_index);
                 if (!userString.empty())
@@ -2299,7 +2299,7 @@ namespace RCT1
                 source_desc sourceDesc;
                 if (ScenarioSources::TryGetById(scNumber, &sourceDesc))
                 {
-                    rct_string_id localisedStringIds[3];
+                    StringId localisedStringIds[3];
                     if (language_get_localised_scenario_strings(sourceDesc.title, localisedStringIds))
                     {
                         if (localisedStringIds[0] != STR_NONE)
@@ -2465,7 +2465,7 @@ namespace RCT1
             return _s4.research_items;
         }
 
-        std::string GetUserString(rct_string_id stringId)
+        std::string GetUserString(StringId stringId)
         {
             const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
             auto originalStringView = std::string_view(

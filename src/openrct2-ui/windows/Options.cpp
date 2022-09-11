@@ -212,7 +212,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_PATH_TO_RCT1_CLEAR,
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OPTIONS_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
 static constexpr const int32_t WW = 310;
 static constexpr const int32_t WH = 332;
 
@@ -422,7 +422,7 @@ public:
         InitScrollWidgets();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         if (widgetIndex < WIDX_PAGE_START)
             CommonMouseUp(widgetIndex);
@@ -455,7 +455,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (page)
         {
@@ -485,7 +485,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (dropdownIndex == -1)
             return;
@@ -607,7 +607,7 @@ public:
         }
     }
 
-    OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback) override
+    OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
     {
         if (page == WINDOW_OPTIONS_PAGE_ADVANCED)
             return AdvancedTooltip(widgetIndex, fallback);
@@ -617,12 +617,12 @@ public:
 
 private:
 #pragma region Common events
-    void CommonMouseUp(rct_widgetindex widgetIndex)
+    void CommonMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 break;
             case WIDX_TAB_DISPLAY:
             case WIDX_TAB_RENDERING:
@@ -676,7 +676,7 @@ private:
 #pragma endregion
 
 #pragma region Display tab events
-    void DisplayMouseUp(rct_widgetindex widgetIndex)
+    void DisplayMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -722,7 +722,7 @@ private:
         }
     }
 
-    void DisplayMouseDown(rct_widgetindex widgetIndex)
+    void DisplayMouseDown(WidgetIndex widgetIndex)
     {
         rct_widget* widget = &widgets[widgetIndex - 1];
 
@@ -806,7 +806,7 @@ private:
         }
     }
 
-    void DisplayDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void DisplayDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -877,8 +877,8 @@ private:
             disabled_widgets &= ~(1ULL << WIDX_RESOLUTION_LABEL);
         }
 
-        // Disable Steam Overlay checkbox when using software rendering.
-        if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
+        // Disable Steam Overlay checkbox when using software or OpenGL rendering.
+        if (gConfigGeneral.drawing_engine == DrawingEngine::Software || gConfigGeneral.drawing_engine == DrawingEngine::OpenGL)
         {
             disabled_widgets |= (1ULL << WIDX_STEAM_OVERLAY_PAUSE);
         }
@@ -921,7 +921,7 @@ private:
 #pragma endregion
 
 #pragma region Rendering tab events
-    void RenderingMouseUp(rct_widgetindex widgetIndex)
+    void RenderingMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -991,7 +991,7 @@ private:
         }
     }
 
-    void RenderingMouseDown(rct_widgetindex widgetIndex)
+    void RenderingMouseDown(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -1011,7 +1011,7 @@ private:
         }
     }
 
-    void RenderingDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void RenderingDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -1031,7 +1031,7 @@ private:
         SetCheckboxValue(WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
         SetCheckboxValue(WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
-        static constexpr rct_string_id _virtualFloorStyleStrings[] = {
+        static constexpr StringId _virtualFloorStyleStrings[] = {
             STR_VIRTUAL_FLOOR_STYLE_DISABLED,
             STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
             STR_VIRTUAL_FLOOR_STYLE_GLASSY,
@@ -1063,7 +1063,7 @@ private:
         }
 
         WidgetSetCheckboxValue(
-            this, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
+            *this, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
             gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
         SetCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
         if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
@@ -1080,7 +1080,7 @@ private:
 #pragma endregion
 
 #pragma region Culture tab events
-    void CultureMouseDown(rct_widgetindex widgetIndex)
+    void CultureMouseDown(WidgetIndex widgetIndex)
     {
         rct_widget* widget = &widgets[widgetIndex - 1];
 
@@ -1170,7 +1170,7 @@ private:
         }
     }
 
-    void CultureDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void CultureDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -1189,7 +1189,7 @@ private:
                 if (dropdownIndex == EnumValue(CurrencyType::Custom) + 1)
                 { // Add 1 because the separator occupies a position
                     gConfigGeneral.currency_format = static_cast<CurrencyType>(dropdownIndex - 1);
-                    context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
+                    context_open_window(WindowClass::CustomCurrencyConfig);
                 }
                 else
                 {
@@ -1259,7 +1259,7 @@ private:
 
         // Distance: metric / imperial / si
         {
-            rct_string_id stringId = STR_NONE;
+            StringId stringId = STR_NONE;
             switch (gConfigGeneral.measurement_format)
             {
                 case MeasurementFormat::Imperial:
@@ -1289,7 +1289,7 @@ private:
 #pragma endregion
 
 #pragma region Audio tab events
-    void AudioMouseUp(rct_widgetindex widgetIndex)
+    void AudioMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -1305,7 +1305,7 @@ private:
                     OpenRCT2::Audio::Pause();
                 else
                     OpenRCT2::Audio::Resume();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 config_save_default();
                 Invalidate();
                 break;
@@ -1328,7 +1328,7 @@ private:
         }
     }
 
-    void AudioMouseDown(rct_widgetindex widgetIndex)
+    void AudioMouseDown(WidgetIndex widgetIndex)
     {
         rct_widget* widget = &widgets[widgetIndex - 1];
 
@@ -1381,7 +1381,7 @@ private:
         }
     }
 
-    void AudioDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void AudioDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -1466,7 +1466,7 @@ private:
         return { 500, 0 };
     }
 
-    rct_string_id GetTitleMusicName()
+    StringId GetTitleMusicName()
     {
         auto index = EnumValue(gConfigSound.title_music);
         if (index < 0 || static_cast<size_t>(index) >= std::size(TitleMusicNames))
@@ -1479,7 +1479,7 @@ private:
     void AudioPrepareDraw()
     {
         // Sound device
-        rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
+        StringId audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
         const char* audioDeviceName = nullptr;
         const int32_t currentDeviceIndex = OpenRCT2::Audio::GetCurrentDeviceIndex();
         if (currentDeviceIndex == -1 || OpenRCT2::Audio::GetDeviceCount() == 0)
@@ -1511,8 +1511,8 @@ private:
         SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
         SetCheckboxValue(WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
         SetCheckboxValue(WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
-        WidgetSetEnabled(this, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-        WidgetSetEnabled(this, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
+        WidgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+        WidgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
 
         // Initialize only on first frame, otherwise the scrollbars won't be able to be modified
         if (frame_no == 0)
@@ -1526,12 +1526,12 @@ private:
 #pragma endregion
 
 #pragma region Controls tab events
-    void ControlsMouseUp(rct_widgetindex widgetIndex)
+    void ControlsMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_HOTKEY_DROPDOWN:
-                context_open_window(WC_KEYBOARD_SHORTCUT_LIST);
+                context_open_window(WindowClass::KeyboardShortcutList);
                 break;
             case WIDX_SCREEN_EDGE_SCROLLING:
                 gConfigGeneral.edge_scrolling ^= 1;
@@ -1553,43 +1553,43 @@ private:
                 gConfigInterface.toolbar_show_finances ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_RESEARCH:
                 gConfigInterface.toolbar_show_research ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_CHEATS:
                 gConfigInterface.toolbar_show_cheats ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_NEWS:
                 gConfigInterface.toolbar_show_news ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_MUTE:
                 gConfigInterface.toolbar_show_mute ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_CHAT:
                 gConfigInterface.toolbar_show_chat ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_ZOOM:
                 gConfigInterface.toolbar_show_zoom ^= 1;
                 config_save_default();
                 Invalidate();
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_INVERT_DRAG:
                 gConfigGeneral.invert_viewport_drag ^= 1;
@@ -1597,13 +1597,13 @@ private:
                 Invalidate();
                 break;
             case WIDX_THEMES_BUTTON:
-                context_open_window(WC_THEMES);
+                context_open_window(WindowClass::Themes);
                 Invalidate();
                 break;
         }
     }
 
-    void ControlsMouseDown(rct_widgetindex widgetIndex)
+    void ControlsMouseDown(WidgetIndex widgetIndex)
     {
         rct_widget* widget = &widgets[widgetIndex - 1];
 
@@ -1628,7 +1628,7 @@ private:
         }
     }
 
-    void ControlsDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void ControlsDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -1665,7 +1665,7 @@ private:
 #pragma endregion
 
 #pragma region Misc tab events
-    void MiscMouseUp(rct_widgetindex widgetIndex)
+    void MiscMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -1683,7 +1683,7 @@ private:
             case WIDX_SCENARIO_UNLOCKING:
                 gConfigGeneral.scenario_unlocking_enabled ^= 1;
                 config_save_default();
-                window_close_by_class(WC_SCENARIO_SELECT);
+                window_close_by_class(WindowClass::ScenarioSelect);
                 break;
             case WIDX_AUTO_OPEN_SHOPS:
                 gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
@@ -1706,7 +1706,7 @@ private:
         }
     }
 
-    void MiscMouseDown(rct_widgetindex widgetIndex)
+    void MiscMouseDown(WidgetIndex widgetIndex)
     {
         rct_widget* widget = &widgets[widgetIndex - 1];
 
@@ -1766,7 +1766,7 @@ private:
         }
     }
 
-    void MiscDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void MiscDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -1803,7 +1803,7 @@ private:
                     gConfigInterface.scenarioselect_last_tab = 0;
                     config_save_default();
                     Invalidate();
-                    window_close_by_class(WC_SCENARIO_SELECT);
+                    window_close_by_class(WindowClass::ScenarioSelect);
                 }
                 break;
         }
@@ -1814,12 +1814,12 @@ private:
         auto ft = Formatter::Common();
         if (gConfigInterface.random_title_sequence)
         {
-            ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RANDOM);
+            ft.Add<StringId>(STR_TITLE_SEQUENCE_RANDOM);
         }
         else
         {
             auto name = title_sequence_manager_get_name(title_get_config_sequence());
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<utf8*>(name);
         }
 
@@ -1867,7 +1867,7 @@ private:
 #pragma endregion
 
 #pragma region Advanced tab events
-    void AdvancedMouseUp(rct_widgetindex widgetIndex)
+    void AdvancedMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -1943,7 +1943,7 @@ private:
         }
     }
 
-    void AdvancedMouseDown(rct_widgetindex widgetIndex)
+    void AdvancedMouseDown(WidgetIndex widgetIndex)
     {
         rct_widget* widget = &widgets[widgetIndex - 1];
 
@@ -1978,7 +1978,7 @@ private:
         }
     }
 
-    void AdvancedDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void AdvancedDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -1997,7 +1997,7 @@ private:
     {
         SetCheckboxValue(WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
         WidgetSetCheckboxValue(
-            this, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
+            *this, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
         SetCheckboxValue(WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
         SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
         SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
@@ -2027,7 +2027,7 @@ private:
         DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
     }
 
-    OpenRCT2String AdvancedTooltip(rct_widgetindex widgetIndex, rct_string_id fallback)
+    OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
     {
         if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
         {
@@ -2088,12 +2088,12 @@ private:
 
     void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
     {
-        rct_widgetindex widgetIndex = WIDX_FIRST_TAB + p;
+        WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
         rct_widget* widget = &widgets[widgetIndex];
 
         auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
-        if (!WidgetIsDisabled(this, widgetIndex))
+        if (!WidgetIsDisabled(*this, widgetIndex))
         {
             if (page == p)
             {
@@ -2129,7 +2129,7 @@ private:
         return static_cast<float>(scroll.h_left) / (scroll.h_right - w) * 100;
     }
 
-    void InitializeScrollPosition(rct_widgetindex widgetIndex, int32_t scrollId, uint8_t volume)
+    void InitializeScrollPosition(WidgetIndex widgetIndex, int32_t scrollId, uint8_t volume)
     {
         const auto& widget = widgets[widgetIndex];
         auto& scroll = scrolls[scrollId];
@@ -2137,7 +2137,7 @@ private:
         int32_t widgetSize = scroll.h_right - (widget.width() - 1);
         scroll.h_left = ceil(volume / 100.0f * widgetSize);
 
-        WidgetScrollUpdateThumbs(this, widgetIndex);
+        WidgetScrollUpdateThumbs(*this, widgetIndex);
     }
 
     static bool IsRCT1TitleMusicAvailable()
@@ -2147,19 +2147,19 @@ private:
         return !rct1path.empty();
     }
 
-    static constexpr rct_string_id AutosaveNames[] = {
+    static constexpr StringId AutosaveNames[] = {
         STR_SAVE_EVERY_MINUTE,    STR_SAVE_EVERY_5MINUTES, STR_SAVE_EVERY_15MINUTES,
         STR_SAVE_EVERY_30MINUTES, STR_SAVE_EVERY_HOUR,     STR_SAVE_NEVER,
     };
 
-    static constexpr rct_string_id TitleMusicNames[] = {
+    static constexpr StringId TitleMusicNames[] = {
         STR_OPTIONS_MUSIC_VALUE_NONE,
         STR_ROLLERCOASTER_TYCOON_1_DROPDOWN,
         STR_ROLLERCOASTER_TYCOON_2_DROPDOWN,
         STR_OPTIONS_MUSIC_VALUE_RANDOM,
     };
 
-    static constexpr rct_string_id FullscreenModeNames[] = {
+    static constexpr StringId FullscreenModeNames[] = {
         STR_OPTIONS_DISPLAY_WINDOWED,
         STR_OPTIONS_DISPLAY_FULLSCREEN,
         STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
@@ -2192,5 +2192,5 @@ private:
  */
 rct_window* WindowOptionsOpen()
 {
-    return WindowFocusOrCreate<OptionsWindow>(WC_OPTIONS, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
 }

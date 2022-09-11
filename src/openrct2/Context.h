@@ -11,6 +11,7 @@
 
 #include "common.h"
 #include "core/String.hpp"
+#include "interface/WindowClasses.h"
 #include "world/Location.hpp"
 
 #include <memory>
@@ -31,7 +32,6 @@ struct IGameStateSnapshots;
 
 class Intent;
 struct rct_window;
-using rct_windowclass = uint8_t;
 struct NewVersionInfo;
 
 struct TTFFontDescriptor;
@@ -208,13 +208,13 @@ int32_t context_get_width();
 int32_t context_get_height();
 bool context_has_focus();
 void context_set_cursor_trap(bool value);
-rct_window* context_open_window(rct_windowclass wc);
+rct_window* context_open_window(WindowClass wc);
 rct_window* context_open_detail_window(uint8_t type, int32_t id);
 rct_window* context_open_window_view(uint8_t view);
-rct_window* context_show_error(rct_string_id title, rct_string_id message, const class Formatter& args);
+rct_window* context_show_error(StringId title, StringId message, const class Formatter& args);
 rct_window* context_open_intent(Intent* intent);
 void context_broadcast_intent(Intent* intent);
-void context_force_close_window_by_class(rct_windowclass wc);
+void context_force_close_window_by_class(WindowClass wc);
 void context_update_map_tooltip();
 void context_handle_input();
 void context_input_handle_keyboard(bool isTitle);

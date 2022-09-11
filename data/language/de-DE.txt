@@ -97,6 +97,7 @@ STR_0092    :LIM-Achterbahn
 STR_0093    :Hybridachterbahn
 STR_0094    :Einschienenachterbahn
 STR_0095    :Alpenachterbahn
+STR_0096    :Klassische Holzachterbahn
 STR_0512    :Eine kompakte Stahlachterbahn mit einem Spirallifthügel und Wagen mit Sitzen in einer Reihe
 STR_0513    :Eine Looping-Achterbahn, bei der sich die Fahrgäste in einer stehenden Position befinden
 STR_0514    :Die unterhalb der Schiene aufgehängten Züge schwingen in Kurven seitlich aus.
@@ -179,6 +180,7 @@ STR_0602    :Achterbahnzüge werden aus der Station mit Hilfe von linearen Induk
 STR_0603    :Eine Achterbahn im Holzstil mit einer Stahlschiene, die steile Abfahrten und Inversionen ermöglicht.
 STR_0604    :Die Fahrgäste fahren in einer Einzelreihe auf einer engen Einschienenstrecke, wobei sie durch enge Inversionen und Richtungswechsel rasen.
 STR_0605    :Die Fahrgäste rodeln eine sich schlängelnde Stahlbahn hinunter und bremsen, um ihre Geschwindigkeit zu regulieren.
+STR_0606    :Eine Holzachterbahn nach älterer Art. Sie ist schnell, rauh, laut und gibt einem das Gefühl, außer Kontrolle zu sein, wobei man gelegentlich seitlichen Gs ausgesetzt und häufig „in der Luft“ ist
 STR_0767    :Besucher {INT32}
 STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
@@ -340,7 +342,6 @@ STR_0950    :Spiel laden
 STR_0951    :Spiel beenden
 STR_0952    :Spiel beenden
 STR_0953    :Landschaft laden
-STR_0954    :
 STR_0955    :Wählen Sie den Sitzrotationswinkel für diesen Streckenabschnitt
 STR_0956    :-180°
 STR_0957    :-135°
@@ -388,10 +389,10 @@ STR_0998    :Keine weiteren Stationen mehr bei dieser Bahn zulässig
 STR_0999    :Erfordert eine Stationsplattform
 STR_1000    :Strecke ist nicht in sich geschlossen
 STR_1001    :Strecke ist für diese Zugart ungeeignet
-STR_1002    :Kann {POP16}{POP16}{POP16}{STRINGID} nicht öffnen…
-STR_1003    :Kann {POP16}{POP16}{POP16}{STRINGID} nicht testen…
-STR_1004    :Kann {POP16}{POP16}{POP16}{STRINGID} nicht schließen…
-STR_1005    :Kann {POP16}{POP16}{POP16}{STRINGID} nicht bauen…
+STR_1002    :Kann {STRINGID} nicht öffnen…
+STR_1003    :Kann {STRINGID} nicht testen…
+STR_1004    :Kann {STRINGID} nicht schließen…
+STR_1005    :Kann {STRINGID} nicht bauen…
 STR_1006    :Muss zuerst geschlossen werden
 STR_1007    :Es können nicht genügend Fahrzeuge erstellt werden
 STR_1008    :Attraktion öffnen, schließen oder testen
@@ -753,7 +754,7 @@ STR_1363    :Zu hoch für Stützen!
 STR_1364    :Die Stützen für die darüber liegende Strecke können nicht weiter verlängert werden!
 STR_1365    :Inline-Twist (links)
 STR_1366    :Inline-Twist (rechts)
-STR_1367    :Halbe Schleife
+STR_1367    :Kleine halbe Schleife
 STR_1368    :Halbe Schraube (links)
 STR_1369    :Halbe Schraube (rechts)
 STR_1370    :Fassrolle (links)
@@ -763,8 +764,8 @@ STR_1373    :Große Halbschleife (l.)
 STR_1374    :Große Halbschleife (r.)
 STR_1375    :Oberer Transfer
 STR_1376    :Unterer Transfer
-STR_1377    :Heartline-Roll (links)
-STR_1378    :Heartline-Roll (rechts)
+STR_1377    :Heartline-Rolle (links)
+STR_1378    :Heartline-Rolle (rechts)
 STR_1379    :Umdreher (links)
 STR_1380    :Umdreher (rechts)
 STR_1381    :Gebogener Lifthügel (l.)
@@ -1956,8 +1957,6 @@ STR_2738    :Musik im Hauptmenü:
 STR_2739    :Keine
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat nicht gefunden
-STR_2743    :Kopieren Sie „data/css17.dat“ aus Ihrem RCT1-Verzeichnis nach „data/css50.dat“ in Ihrem RCT2-Verzeichnis oder versichern Sie sich, dass der Pfad zur RCT1-Installation im Tab „Erweitert“ korrekt angegeben ist.
 STR_2749    :Mein neues Szenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Alle Objekte nach oben bewegen
@@ -2230,7 +2229,6 @@ STR_3174    :Dieses Objekt wird von einem anderen Objekt benötigt
 STR_3175    :Dieses Objekt wird immer benötigt
 STR_3176    :Dieses Objekt kann nicht ausgewählt werden
 STR_3177    :Die Auswahl dieses Objekts kann nicht aufgehoben werden
-STR_3178    :Es muss mindestens ein Fußwegobjekt ausgewählt werden
 STR_3179    :Es muss mindestens eine Attraktion ausgewählt werden
 STR_3180    :Ungültige Auswahl an Objekten
 STR_3181    :Objektauswahl - {STRINGID}
@@ -2263,7 +2261,7 @@ STR_3208    :Streckenentwurf-Manager
 STR_3209    :Zurück zum vorherigen Schritt:
 STR_3210    :Weiter zum nächsten Schritt:
 STR_3211    :Kartengröße:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kartengröße kann nicht mehr verkleinert werden
 STR_3214    :Kartengröße kann nicht mehr vergrößert werden
 STR_3215    :Zu nahe am Rand der Karte
@@ -2557,8 +2555,6 @@ STR_5250    :Hauptmenü-Beenden-Schaltfläche
 STR_5251    :Hauptmenü-Optionen-Schaltfläche
 STR_5252    :Hauptmenü-Szenarioauswahl
 STR_5253    :Parkinformationen
-STR_5254    :Erstellen
-STR_5255    :Eine neue Titelsequenz von{NEWLINE}Grund auf neu erstellen
 STR_5256    :Neues Thema zum bearbeiten erstellen
 STR_5257    :Neues Thema durch duplizieren des{NEWLINE}aktuellen Themas erstellen
 STR_5258    :Aktuelles Thema löschen
@@ -2653,75 +2649,10 @@ STR_5373    :Name {STRINGID}
 STR_5374    :Datum {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Gespeicherte Spiele
-STR_5378    :Skript
-STR_5379    :Zum nächsten „Warten“-Befehl springen
-STR_5380    :Titelsequenz abspielen
-STR_5381    :Titelsequenz stoppen
-STR_5382    :Titelsequenz neu starten
-STR_5383    :Neue Titelsequenz durch duplizieren der aktuellen Titelsequenz erstellen
-STR_5384    :Aktuelle Titelsequenz löschen
-STR_5385    :Aktuelle Titelsequenz umbenennen
-STR_5386    :Neuen Befehl einfügen
-STR_5387    :Ausgewählten Befehl bearbeiten
-STR_5388    :Ausgewählten Befehl löschen
-STR_5389    :Zum ausgewählten Befehl in{NEWLINE}der Titelsequenz springen
-STR_5390    :Ausgewählten Befehl nach oben verschieben
-STR_5391    :Ausgewählten Befehl nach unten verschieben
-STR_5392    :Einen Spielstand zur Titelsequenz hinzufügen
-STR_5393    :Ausgewählten Spielstand von{NEWLINE}Titelsequenz entfernen
-STR_5394    :Ausgewählten Spielstand umbenennen
-STR_5395    :Ausgewählten Spielstand laden
-STR_5396    :Titelsequenz neu laden, falls sie außerhalb des Spiels geändert wurde
-STR_5397    :Kann nur im Titelbildschirm verwendet werden
-STR_5398    :Titelsequenz kann, während sie läuft, nicht geändert werden
-STR_5399    :Titelsequenz stoppen, um das Bearbeiten fortzusetzen
-STR_5400    :Diese Titelsequenz kann{NEWLINE}nicht geändert werden
-STR_5401    :Erstellen Sie eine neue Titelsequenz, um sie zu bearbeiten
-STR_5402    :Titelsequenz konnte nicht geladen werden
-STR_5403    :Möglicherweise kein „Laden“-Befehl, „Warten“-Befehl oder ein ungültiger Spielstand vorhanden
 STR_5404    :Dieser Name existiert bereits
-STR_5405    :Namen für Spielstand eingeben:
-STR_5406    :Namen für Titelsequenz eingeben:
-STR_5407    :Hinzufügen
-STR_5408    :Entfernen
-STR_5409    :Einfügen
-STR_5410    :Bearbeiten
-STR_5411    :Neu laden
-STR_5412    :Springen zu
-STR_5413    :Laden
-STR_5415    :Laden{MOVE_X}{87}{STRING}
-STR_5416    :Laden{MOVE_X}{87}Kein Spielstand ausgewählt
-STR_5417    :Position
-STR_5418    :Position{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Drehen
-STR_5420    :Drehen{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoom
-STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
-STR_5423    :Warten
-STR_5424    :Warten{MOVE_X}{87}{UINT16}
-STR_5425    :Neustart
-STR_5426    :Ende
-STR_5427    :Koordinaten:
-STR_5428    :Drehungen gegen Uhrzeigersinn:
-STR_5429    :Zoomstufe:
-STR_5430    :Zu wartende Millisekunden:
-STR_5431    :Zu ladender Spielstand:
-STR_5432    :Befehl:
-STR_5433    :Titelsequenzen
-STR_5434    :Befehlseditor
-STR_5435    :Spielstand umbenennen
-STR_5436    :Titelsequenzen bearbeiten…
-STR_5437    :Kein Spielstand ausgewählt
-STR_5438    :Es können keine Änderungen vorgenommen werden, solange der Befehlseditor geöffnet ist
-STR_5439    :Zusammen mit einem „Neustart“-Befehl muss ein mindestens 4 Sekunden langer „Warten“-Befehl verwendet werden
 STR_5440    :Vollbild minimieren, wenn Spiel nicht im Vordergrund
 STR_5441    :Identifiziert Bahnen durch Streckentyp, sodass wie in RCT1 Fahrzeuge anschließend geändert werden können
 STR_5442    :Parkbewertung:
-STR_5443    :Geschwind.{MOVE_X}{87}{STRINGID}
-STR_5444    :Geschwindigkeit:
-STR_5445    :Geschwindigkeit
-STR_5446    :Erhalten
 STR_5447    :Typ {STRINGID}
 STR_5448    :Bahn / Fahrzeug {STRINGID}
 STR_5449    :Spielgeschwindigkeit verringern
@@ -2836,8 +2767,6 @@ STR_5560    :Setzt die Inspektionszeit aller Bahnen{NEWLINE}auf „Alle 10 Minut
 STR_5561    :Sprache konnte nicht geladen werden
 STR_5562    :WARNUNG!
 STR_5563    :Diese Funktion ist derzeit instabil und mit erhöhter Vorsicht zu verwenden.
-STR_5564    :Fehlerhaftes Element einf.
-STR_5565    :Fügt ein fehlerhaftes Kartenelement auf{NEWLINE}der Kachel ein, dadurch werden alle Elemente darüber versteckt.
 STR_5566    :Passwort:
 STR_5567    :Veröffentlichen
 STR_5568    :Passwort benötigt
@@ -3075,7 +3004,6 @@ STR_5844    :Mit einem Mehrspielerserver verbunden bleiben, selbst dann, wenn ei
 STR_5845    :Zeigt für die Debugging-Tools in{NEWLINE}der Symbolleiste eine gesonderte Schaltfläche an.{NEWLINE}Aktiviert das Tastenkürzel für die Entwicklerkonsole
 STR_5846    :Auswählen, wie oft OpenRCT2{NEWLINE}automatisch speichert
 STR_5847    :Die auf dem Titelbildschirm angezeigte Parksequenz auswählen. Titelsequenzen von RCT1/2 benötigen importierte Szenarien, um zu funktionieren
-STR_5848    :Benutzerdefinierte Titelsequenzen{NEWLINE}erstellen und verwalten
 STR_5849    :Personal wird nach dem Einstellen automatisch platziert
 STR_5851    :Stellt die für neu gebaute Attraktionen standardmäßige Inspektionszeit ein
 STR_5853    :Soundeffekte aktivieren/deaktivieren
@@ -3275,7 +3203,6 @@ STR_6047    :Kacheln glätten
 STR_6048    :Fehler beim Verarbeiten der Höhenkarte
 STR_6049    :Fehler beim Lesen der PNG-Datei
 STR_6050    :Fehler beim Lesen der Bitmap-Datei
-STR_6051    :Die Höhe und Breite müssen übereinstimmen
 STR_6052    :Die Höhenkarte ist zu groß und wird zugeschnitten
 STR_6053    :Die Höhenkarte kann nicht normalisiert werden
 STR_6054    :Es werden nur Bitmaps mit einer Farbtiefe von 24-Bit unterstützt
@@ -3389,23 +3316,8 @@ STR_6170    :Verbesserungen
 STR_6171    :Suchen
 STR_6172    :Suchen
 STR_6173    :Bitte den zu suchenden Namen eingeben:
-STR_6174    :Spielstand laden
-STR_6175    :Szenario laden
-STR_6176    :Szenario laden:
-STR_6177    :Laden{MOVE_X}{87}Kein Szenario ausgewählt
-STR_6178    :Laden{MOVE_X}{87}{RED}Szenario fehlt
-STR_6179    :Auswählen
-STR_6180    :Kein Szenario ausgewählt
-STR_6181    :{RED}Szenario fehlt
-STR_6182    :Folgen{MOVE_X}{87}{STRING}
-STR_6183    :Folgen{MOVE_X}{87}Kein Objekt ausgewählt
-STR_6184    :Objekt folgen 
-STR_6185    :Objekt auswählen
-STR_6186    :Kein Objekt ausgewählt
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Erbrochenes
 STR_6189    :Ente
-STR_6190    :Sie können kein Objekt auswählen, solange Sie sich im Hauptmenü befinden
 STR_6191    :Oberfläche
 STR_6192    :Wand
 STR_6193    :{COMMA16} Besucher
@@ -3518,7 +3430,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite-ID: {BLACK}{INT32}
 STR_6323    :Simulierend
 STR_6324    :Simulieren
 STR_6325    :Fahrgeschäft/Attraktion simulieren
-STR_6326    :{POP16}{POP16}{POP16}{STRINGID} kann nicht simuliert werden …
+STR_6326    :{STRINGID} kann nicht simuliert werden …
 STR_6327    :Transparenter Hintergrund für riesige Screenshots
 STR_6328    :Mit dieser Option werden riesige Screenshots einen transparenten Hintergrund statt der standardmäßig verwendeten schwarzen Farbe verwenden.
 STR_6329    :{STRING}{STRINGID}
@@ -3527,7 +3439,6 @@ STR_6331    :Enten erzeugen
 STR_6332    :Enten entfernen
 STR_6333    :Skalierungsfaktor erhöhen
 STR_6334    :Skalierungsfaktor verringern
-STR_6335    :Kachelinspektor: Kaputtes Element einfügen
 STR_6336    :Kachelinspektor: Element kopieren
 STR_6337    :Kachelinspektor: Element einfügen
 STR_6338    :Kachelinspektor: Element löschen
@@ -3692,6 +3603,21 @@ STR_6497    :Klicken Sie auf eine Kachel, um ihre Kachelelemente anzuzeigen.{NEW
 STR_6498    :Aktivieren, um quadratische Kartenform beizubehalten.
 STR_6499    :Fahrzeugtyp nicht vom Streckendesignformat unterstüzt
 STR_6500    :Streckenelemente nicht vom Streckendesignformat unterstüzt
+STR_6501    :Zufällige Farbe
+STR_6502    :Wert zwischen {COMMA16} und {COMMA16} eingeben
+STR_6503    :Es muss mindestens ein Stationsobjekt ausgewählt werden
+STR_6504    :Es muss mindestens eine Geländeoberfläche ausgewählt werden
+STR_6505    :Es muss mindestens eine Geländekante ausgewählt werden
+STR_6506    :Große Halbschraube (l.)
+STR_6507    :Große Halbschraube (r.)
+STR_6508    :Mitt. Halbschleife (l.)
+STR_6509    :Mitt. Halbschleife (r.)
+STR_6510    :Null-G-Rolle (links)
+STR_6511    :Null-G-Rolle (rechts)
+STR_6512    :Große Null-G-Rolle (l.)
+STR_6513    :Große Null-G-Rolle (r.)
+STR_6514    :Ungültige Höhe!
+
 
 
 #############
@@ -4141,23 +4067,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Dach
-
-[TTPIRF03]
-STR_NAME    :Dach
-
-[TTPIRF04]
-STR_NAME    :Dach
-
 [TTPIRF05]
-STR_NAME    :Dach
-
-[TTPIRF07]
-STR_NAME    :Dach
-
-[TTPIRF08]
 STR_NAME    :Dach
 
 [TTRFWD01]

@@ -41,9 +41,8 @@
 std::list<std::shared_ptr<rct_window>> g_window_list;
 rct_window* gWindowAudioExclusive;
 
-widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
+widget_identifier gCurrentTextBox = { { WindowClass::Null, 0 }, 0 };
 char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
-int32_t gMaxTextBoxInputLength = 0;
 int32_t gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = false;
 TextInputSession* gTextInput;
@@ -83,8 +82,8 @@ namespace WindowCloseFlags
     static constexpr uint32_t CloseSingle = (1 << 1);
 } // namespace WindowCloseFlags
 
-static void window_draw_core(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void window_draw_core(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void window_draw_single(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 std::list<std::shared_ptr<rct_window>>::iterator window_get_iterator(const rct_window* w)
 {
@@ -115,7 +114,7 @@ void window_dispatch_update_all()
 void window_update_all_viewports()
 {
     window_visit_each([&](rct_window* w) {
-        if (w->viewport != nullptr && window_is_visible(w))
+        if (w->viewport != nullptr && window_is_visible(*w))
         {
             viewport_update_position(w);
         }
@@ -155,7 +154,7 @@ void window_update_all()
     windowManager->UpdateMouseWheel();
 }
 
-static void window_close_surplus(int32_t cap, int8_t avoid_classification)
+static void window_close_surplus(int32_t cap, WindowClass avoid_classification)
 {
     // find the amount of windows that are currently open
     auto count = static_cast<int32_t>(g_window_list.size());
@@ -173,12 +172,12 @@ static void window_close_surplus(int32_t cap, int8_t avoid_classification)
                 break;
             }
         }
-        // skip window if window matches specified rct_windowclass (as user may be modifying via options)
-        if (avoid_classification != -1 && foundW != nullptr && foundW->classification == avoid_classification)
+        // skip window if window matches specified WindowClass (as user may be modifying via options)
+        if (avoid_classification != WindowClass::Null && foundW != nullptr && foundW->classification == avoid_classification)
         {
             continue;
         }
-        window_close(foundW);
+        window_close(*foundW);
     }
 }
 
@@ -195,7 +194,7 @@ void window_set_window_limit(int32_t value)
     // windows if one sets a limit lower than the number of windows open
     if (val < prev)
     {
-        window_close_surplus(val, WC_OPTIONS);
+        window_close_surplus(val, WindowClass::Options);
     }
 }
 
@@ -205,9 +204,9 @@ void window_set_window_limit(int32_t value)
  *
  * @param window The window to close (esi).
  */
-void window_close(rct_window* w)
+void window_close(rct_window& w)
 {
-    auto itWindow = window_get_iterator(w);
+    auto itWindow = window_get_iterator(&w);
     if (itWindow == g_window_list.end())
         return;
 
@@ -223,7 +222,7 @@ void window_close(rct_window* w)
     window->Invalidate();
 
     // The window list may have been modified in the close event
-    itWindow = window_get_iterator(w);
+    itWindow = window_get_iterator(&w);
     if (itWindow != g_window_list.end())
         g_window_list.erase(itWindow);
 }
@@ -245,7 +244,7 @@ template<typename TPred> static void window_close_by_condition(TPred pred, uint3
             // we need to break this current iteration and restart.
             size_t previousCount = g_window_list.size();
 
-            window_close(window.get());
+            window_close(*window.get());
 
             if ((flags & WindowCloseFlags::CloseSingle) != 0)
             {
@@ -284,7 +283,7 @@ template<typename TPred> static void window_close_by_condition(TPred pred, uint3
  *  rct2: 0x006ECCF4
  * @param cls (cl) with bit 15 set
  */
-void window_close_by_class(rct_windowclass cls)
+void window_close_by_class(WindowClass cls)
 {
     window_close_by_condition([&](rct_window* w) -> bool { return w->classification == cls; });
 }
@@ -295,13 +294,13 @@ void window_close_by_class(rct_windowclass cls)
  * @param cls (cl) without bit 15 set
  * @param number (dx)
  */
-void window_close_by_number(rct_windowclass cls, rct_windownumber number)
+void window_close_by_number(WindowClass cls, rct_windownumber number)
 {
     window_close_by_condition([cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
 }
 
 // TODO: Refactor this to use variant once the new window class is done.
-void window_close_by_number(rct_windowclass cls, EntityId number)
+void window_close_by_number(WindowClass cls, EntityId number)
 {
     window_close_by_number(cls, static_cast<rct_windownumber>(number.ToUnderlying()));
 }
@@ -312,7 +311,7 @@ void window_close_by_number(rct_windowclass cls, EntityId number)
  * @param cls (cl) with bit 15 set
  * @returns the window or NULL if no window was found.
  */
-rct_window* window_find_by_class(rct_windowclass cls)
+rct_window* window_find_by_class(WindowClass cls)
 {
     for (auto& w : g_window_list)
     {
@@ -331,7 +330,7 @@ rct_window* window_find_by_class(rct_windowclass cls)
  * @param number (dx)
  * @returns the window or NULL if no window was found.
  */
-rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number)
+rct_window* window_find_by_number(WindowClass cls, rct_windownumber number)
 {
     for (auto& w : g_window_list)
     {
@@ -344,7 +343,7 @@ rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number)
 }
 
 // TODO: Use variant for this once the window framework is done.
-rct_window* window_find_by_number(rct_windowclass cls, EntityId id)
+rct_window* window_find_by_number(WindowClass cls, EntityId id)
 {
     return window_find_by_number(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
 }
@@ -356,7 +355,7 @@ rct_window* window_find_by_number(rct_windowclass cls, EntityId id)
  */
 void window_close_top()
 {
-    window_close_by_class(WC_DROPDOWN);
+    window_close_by_class(WindowClass::Dropdown);
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
@@ -375,13 +374,13 @@ void window_close_top()
  */
 void window_close_all()
 {
-    window_close_by_class(WC_DROPDOWN);
+    window_close_by_class(WindowClass::Dropdown);
     window_close_by_condition([](rct_window* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
 }
 
-void window_close_all_except_class(rct_windowclass cls)
+void window_close_all_except_class(WindowClass cls)
 {
-    window_close_by_class(WC_DROPDOWN);
+    window_close_by_class(WindowClass::Dropdown);
 
     window_close_by_condition([cls](rct_window* w) -> bool {
         return w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT));
@@ -411,7 +410,7 @@ rct_window* window_find_from_point(const ScreenCoordsXY& screenCoords)
 
         if (w->flags & WF_NO_BACKGROUND)
         {
-            auto widgetIndex = window_find_widget_from_point(w.get(), screenCoords);
+            auto widgetIndex = window_find_widget_from_point(*w.get(), screenCoords);
             if (widgetIndex == -1)
                 continue;
         }
@@ -430,16 +429,16 @@ rct_window* window_find_from_point(const ScreenCoordsXY& screenCoords)
  * returns widget_index (edx)
  * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
  */
-rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsXY& screenCoords)
+WidgetIndex window_find_widget_from_point(rct_window& w, const ScreenCoordsXY& screenCoords)
 {
     // Invalidate the window
-    window_event_invalidate_call(w);
+    window_event_invalidate_call(&w);
 
     // Find the widget at point x, y
-    rct_widgetindex widget_index = -1;
+    WidgetIndex widget_index = -1;
     for (int32_t i = 0;; i++)
     {
-        const auto& widget = w->widgets[i];
+        const auto& widget = w.widgets[i];
         if (widget.type == WindowWidgetType::Last)
         {
             break;
@@ -447,8 +446,8 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
 
         if (widget.type != WindowWidgetType::Empty && widget.IsVisible())
         {
-            if (screenCoords.x >= w->windowPos.x + widget.left && screenCoords.x <= w->windowPos.x + widget.right
-                && screenCoords.y >= w->windowPos.y + widget.top && screenCoords.y <= w->windowPos.y + widget.bottom)
+            if (screenCoords.x >= w.windowPos.x + widget.left && screenCoords.x <= w.windowPos.x + widget.right
+                && screenCoords.y >= w.windowPos.y + widget.top && screenCoords.y <= w.windowPos.y + widget.bottom)
             {
                 widget_index = i;
             }
@@ -458,7 +457,7 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
     // Return next widget if a dropdown
     if (widget_index != -1)
     {
-        const auto& widget = w->widgets[widget_index];
+        const auto& widget = w.widgets[widget_index];
         if (widget.type == WindowWidgetType::DropdownMenu)
             widget_index++;
     }
@@ -488,7 +487,7 @@ template<typename TPred> static void window_invalidate_by_condition(TPred pred)
  *  rct2: 0x006EC3AC
  * @param cls (al) with bit 14 set
  */
-void window_invalidate_by_class(rct_windowclass cls)
+void window_invalidate_by_class(WindowClass cls)
 {
     window_invalidate_by_condition([cls](rct_window* w) -> bool { return w->classification == cls; });
 }
@@ -497,14 +496,14 @@ void window_invalidate_by_class(rct_windowclass cls)
  * Invalidates all windows with the specified window class and number.
  *  rct2: 0x006EC3AC
  */
-void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
+void window_invalidate_by_number(WindowClass cls, rct_windownumber number)
 {
     window_invalidate_by_condition(
         [cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
 }
 
 // TODO: Use variant for this once the window framework is done.
-void window_invalidate_by_number(rct_windowclass cls, EntityId id)
+void window_invalidate_by_number(WindowClass cls, EntityId id)
 {
     window_invalidate_by_number(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
 }
@@ -521,22 +520,21 @@ void window_invalidate_all()
  * Invalidates the specified widget of a window.
  *  rct2: 0x006EC402
  */
-void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
+void widget_invalidate(rct_window& w, WidgetIndex widgetIndex)
 {
-    assert(w != nullptr);
 #ifdef DEBUG
     for (int32_t i = 0; i <= widgetIndex; i++)
     {
-        assert(w->widgets[i].type != WindowWidgetType::Last);
+        assert(w.widgets[i].type != WindowWidgetType::Last);
     }
 #endif
 
-    const auto& widget = w->widgets[widgetIndex];
+    const auto& widget = w.widgets[widgetIndex];
     if (widget.left == -2)
         return;
 
-    gfx_set_dirty_blocks({ { w->windowPos + ScreenCoordsXY{ widget.left, widget.top } },
-                           { w->windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
+    gfx_set_dirty_blocks({ { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
+                           { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
 }
 
 template<typename TPred> static void widget_invalidate_by_condition(TPred pred)
@@ -552,12 +550,12 @@ template<typename TPred> static void widget_invalidate_by_condition(TPred pred)
 /**
  * Invalidates the specified widget of all windows that match the specified window class.
  */
-void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex)
+void widget_invalidate_by_class(WindowClass cls, WidgetIndex widgetIndex)
 {
     window_visit_each([cls, widgetIndex](rct_window* w) {
         if (w->classification == cls)
         {
-            widget_invalidate(w, widgetIndex);
+            widget_invalidate(*w, widgetIndex);
         }
     });
 }
@@ -566,12 +564,12 @@ void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex
  * Invalidates the specified widget of all windows that match the specified window class and number.
  *  rct2: 0x006EC3AC
  */
-void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex)
+void widget_invalidate_by_number(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex)
 {
     window_visit_each([cls, number, widgetIndex](rct_window* w) {
         if (w->classification == cls && w->number == number)
         {
-            widget_invalidate(w, widgetIndex);
+            widget_invalidate(*w, widgetIndex);
         }
     });
 }
@@ -582,24 +580,23 @@ void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, r
  *
  * @param w The window (esi).
  */
-void window_update_scroll_widgets(rct_window* w)
+void window_update_scroll_widgets(rct_window& w)
 {
     int32_t scrollIndex, width, height, scrollPositionChanged;
-    rct_widgetindex widgetIndex;
+    WidgetIndex widgetIndex;
     rct_widget* widget;
 
     widgetIndex = 0;
     scrollIndex = 0;
-    assert(w != nullptr);
-    for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
+    for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
     {
         if (widget->type != WindowWidgetType::Scroll)
             continue;
 
-        auto& scroll = w->scrolls[scrollIndex];
+        auto& scroll = w.scrolls[scrollIndex];
         width = 0;
         height = 0;
-        window_get_scroll_size(w, scrollIndex, &width, &height);
+        window_get_scroll_size(&w, scrollIndex, &width, &height);
         if (height == 0)
         {
             scroll.v_top = 0;
@@ -627,21 +624,20 @@ void window_update_scroll_widgets(rct_window* w)
         if (scrollPositionChanged)
         {
             WidgetScrollUpdateThumbs(w, widgetIndex);
-            w->Invalidate();
+            w.Invalidate();
         }
         scrollIndex++;
     }
 }
 
-int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index)
+int32_t window_get_scroll_data_index(const rct_window& w, WidgetIndex widget_index)
 {
     int32_t i, result;
 
     result = 0;
-    assert(w != nullptr);
     for (i = 0; i < widget_index; i++)
     {
-        const auto& widget = w->widgets[i];
+        const auto& widget = w.widgets[i];
         if (widget.type == WindowWidgetType::Scroll)
             result++;
     }
@@ -652,11 +648,11 @@ int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index
  *
  *  rct2: 0x006ECDA4
  */
-rct_window* window_bring_to_front(rct_window* w)
+rct_window* window_bring_to_front(rct_window& w)
 {
-    if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+    if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
     {
-        auto itSourcePos = window_get_iterator(w);
+        auto itSourcePos = window_get_iterator(&w);
         if (itSourcePos != g_window_list.end())
         {
             // Insert in front of the first non-stick-to-front window
@@ -672,37 +668,35 @@ rct_window* window_bring_to_front(rct_window* w)
             }
 
             g_window_list.splice(itDestPos, g_window_list, itSourcePos);
-            w->Invalidate();
+            w.Invalidate();
 
-            if (w->windowPos.x + w->width < 20)
+            if (w.windowPos.x + w.width < 20)
             {
-                int32_t i = 20 - w->windowPos.x;
-                w->windowPos.x += i;
-                if (w->viewport != nullptr)
-                    w->viewport->pos.x += i;
-                w->Invalidate();
+                int32_t i = 20 - w.windowPos.x;
+                w.windowPos.x += i;
+                if (w.viewport != nullptr)
+                    w.viewport->pos.x += i;
+                w.Invalidate();
             }
         }
     }
-    return w;
+    return &w;
 }
 
-rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags)
+rct_window* window_bring_to_front_by_class_with_flags(WindowClass cls, uint16_t flags)
 {
-    rct_window* w;
-
-    w = window_find_by_class(cls);
+    rct_window* w = window_find_by_class(cls);
     if (w != nullptr)
     {
         w->flags |= flags;
         w->Invalidate();
-        w = window_bring_to_front(w);
+        w = window_bring_to_front(*w);
     }
 
     return w;
 }
 
-rct_window* window_bring_to_front_by_class(rct_windowclass cls)
+rct_window* window_bring_to_front_by_class(WindowClass cls)
 {
     return window_bring_to_front_by_class_with_flags(cls, WF_WHITE_BORDER_MASK);
 }
@@ -713,7 +707,7 @@ rct_window* window_bring_to_front_by_class(rct_windowclass cls)
  * cls (cl)
  * number (dx)
  */
-rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number)
+rct_window* window_bring_to_front_by_number(WindowClass cls, rct_windownumber number)
 {
     rct_window* w;
 
@@ -722,7 +716,7 @@ rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
     {
         w->flags |= WF_WHITE_BORDER_MASK;
         w->Invalidate();
-        w = window_bring_to_front(w);
+        w = window_bring_to_front(*w);
     }
 
     return w;
@@ -732,26 +726,26 @@ rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
  *
  *  rct2: 0x006EE65A
  */
-void window_push_others_right(rct_window* window)
+void window_push_others_right(rct_window& window)
 {
-    window_visit_each([window](rct_window* w) {
-        if (w == window)
+    window_visit_each([&window](rct_window* w) {
+        if (w == &window)
             return;
         if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
             return;
-        if (w->windowPos.x >= window->windowPos.x + window->width)
+        if (w->windowPos.x >= window.windowPos.x + window.width)
             return;
-        if (w->windowPos.x + w->width <= window->windowPos.x)
+        if (w->windowPos.x + w->width <= window.windowPos.x)
             return;
-        if (w->windowPos.y >= window->windowPos.y + window->height)
+        if (w->windowPos.y >= window.windowPos.y + window.height)
             return;
-        if (w->windowPos.y + w->height <= window->windowPos.y)
+        if (w->windowPos.y + w->height <= window.windowPos.y)
             return;
 
         w->Invalidate();
-        if (window->windowPos.x + window->width + 13 >= context_get_width())
+        if (window.windowPos.x + window.width + 13 >= context_get_width())
             return;
-        auto push_amount = window->windowPos.x + window->width - w->windowPos.x + 3;
+        auto push_amount = window.windowPos.x + window.width - w->windowPos.x + 3;
         w->windowPos.x += push_amount;
         w->Invalidate();
         if (w->viewport != nullptr)
@@ -763,29 +757,29 @@ void window_push_others_right(rct_window* window)
  *
  *  rct2: 0x006EE6EA
  */
-void window_push_others_below(rct_window* w1)
+void window_push_others_below(rct_window& w1)
 {
     // Enumerate through all other windows
-    window_visit_each([w1](rct_window* w2) {
-        if (w1 == w2)
+    window_visit_each([&w1](rct_window* w2) {
+        if (&w1 == w2)
             return;
         // ?
         if (w2->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
             return;
         // Check if w2 intersects with w1
-        if (w2->windowPos.x > (w1->windowPos.x + w1->width) || w2->windowPos.x + w2->width < w1->windowPos.x)
+        if (w2->windowPos.x > (w1.windowPos.x + w1.width) || w2->windowPos.x + w2->width < w1.windowPos.x)
             return;
-        if (w2->windowPos.y > (w1->windowPos.y + w1->height) || w2->windowPos.y + w2->height < w1->windowPos.y)
+        if (w2->windowPos.y > (w1.windowPos.y + w1.height) || w2->windowPos.y + w2->height < w1.windowPos.y)
             return;
 
         // Check if there is room to push it down
-        if (w1->windowPos.y + w1->height + 80 >= context_get_height())
+        if (w1.windowPos.y + w1.height + 80 >= context_get_height())
             return;
 
         // Invalidate the window's current area
         w2->Invalidate();
 
-        int32_t push_amount = w1->windowPos.y + w1->height - w2->windowPos.y + 3;
+        int32_t push_amount = w1.windowPos.y + w1.height - w2->windowPos.y + 3;
         w2->windowPos.y += push_amount;
 
         // Invalidate the window's new area
@@ -805,7 +799,7 @@ rct_window* window_get_main()
 {
     for (auto& w : g_window_list)
     {
-        if (w->classification == WC_MAIN_WINDOW)
+        if (w->classification == WindowClass::MainWindow)
         {
             return w.get();
         }
@@ -821,27 +815,26 @@ rct_window* window_get_main()
  * @param y (ecx)
  * @param z (edx)
  */
-void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
+void window_scroll_to_location(rct_window& w, const CoordsXYZ& coords)
 {
-    assert(w != nullptr);
     window_unfollow_sprite(w);
-    if (w->viewport != nullptr)
+    if (w.viewport != nullptr)
     {
         int16_t height = tile_element_height(coords);
         if (coords.z < height - 16)
         {
-            if (!(w->viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+            if (!(w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
             {
-                w->viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                w->Invalidate();
+                w.viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                w.Invalidate();
             }
         }
         else
         {
-            if (w->viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+            if (w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
             {
-                w->viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                w->Invalidate();
+                w.viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                w.Invalidate();
             }
         }
 
@@ -853,10 +846,10 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
             bool found = false;
             while (!found)
             {
-                auto x2 = w->viewport->pos.x + static_cast<int32_t>(w->viewport->width * window_scroll_locations[i][0]);
-                auto y2 = w->viewport->pos.y + static_cast<int32_t>(w->viewport->height * window_scroll_locations[i][1]);
+                auto x2 = w.viewport->pos.x + static_cast<int32_t>(w.viewport->width * window_scroll_locations[i][0]);
+                auto y2 = w.viewport->pos.y + static_cast<int32_t>(w.viewport->height * window_scroll_locations[i][1]);
 
-                auto it = window_get_iterator(w);
+                auto it = window_get_iterator(&w);
                 for (; it != g_window_list.end(); it++)
                 {
                     auto w2 = (*it).get();
@@ -885,14 +878,14 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
             }
         }
         // rct2: 0x006E7C76
-        if (w->viewport_target_sprite.IsNull())
+        if (w.viewport_target_sprite.IsNull())
         {
-            if (!(w->flags & WF_NO_SCROLLING))
+            if (!(w.flags & WF_NO_SCROLLING))
             {
-                w->savedViewPos = screenCoords
-                    - ScreenCoordsXY{ static_cast<int32_t>(w->viewport->view_width * window_scroll_locations[i][0]),
-                                      static_cast<int32_t>(w->viewport->view_height * window_scroll_locations[i][1]) };
-                w->flags |= WF_SCROLLING_TO_LOCATION;
+                w.savedViewPos = screenCoords
+                    - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->view_width * window_scroll_locations[i][0]),
+                                      static_cast<int32_t>(w.viewport->view_height * window_scroll_locations[i][1]) };
+                w.flags |= WF_SCROLLING_TO_LOCATION;
             }
         }
     }
@@ -914,9 +907,9 @@ static void call_event_viewport_rotate_on_all_windows()
  *      1: clockwise
  *      -1: anti-clockwise
  */
-void window_rotate_camera(rct_window* w, int32_t direction)
+void window_rotate_camera(rct_window& w, int32_t direction)
 {
-    rct_viewport* viewport = w->viewport;
+    rct_viewport* viewport = w.viewport;
     if (viewport == nullptr)
         return;
 
@@ -948,24 +941,24 @@ void window_rotate_camera(rct_window* w, int32_t direction)
 
     if (centreLoc.has_value())
     {
-        w->savedViewPos = centreLoc.value();
+        w.savedViewPos = centreLoc.value();
         viewport->viewPos = *centreLoc;
     }
 
-    w->Invalidate();
+    w.Invalidate();
 
     call_event_viewport_rotate_on_all_windows();
     reset_all_sprite_quadrant_placements();
 }
 
 void window_viewport_get_map_coords_by_cursor(
-    rct_window* w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
+    const rct_window& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
 {
     // Get mouse position to offset against.
     auto mouseCoords = context_get_cursor_position_scaled();
 
     // Compute map coordinate by mouse position.
-    auto viewportPos = w->viewport->ScreenToViewportCoord(mouseCoords);
+    auto viewportPos = w.viewport->ScreenToViewportCoord(mouseCoords);
     auto coordsXYZ = viewport_adjust_for_map_height(viewportPos);
     auto mapCoords = viewport_coord_to_map_coord(viewportPos, coordsXYZ.z);
     *map_x = mapCoords.x;
@@ -974,7 +967,7 @@ void window_viewport_get_map_coords_by_cursor(
     // Get viewport coordinates centring around the tile.
     int32_t z = tile_element_height(mapCoords);
 
-    auto centreLoc = centre_2d_coordinates({ mapCoords.x, mapCoords.y, z }, w->viewport);
+    auto centreLoc = centre_2d_coordinates({ mapCoords.x, mapCoords.y, z }, w.viewport);
     if (!centreLoc)
     {
         log_error("Invalid location.");
@@ -982,19 +975,19 @@ void window_viewport_get_map_coords_by_cursor(
     }
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
-    int32_t rebased_x = w->viewport->zoom.ApplyTo(w->width / 2 - mouseCoords.x);
-    int32_t rebased_y = w->viewport->zoom.ApplyTo(w->height / 2 - mouseCoords.y);
+    int32_t rebased_x = w.viewport->zoom.ApplyTo(w.width / 2 - mouseCoords.x);
+    int32_t rebased_y = w.viewport->zoom.ApplyTo(w.height / 2 - mouseCoords.y);
 
     // Compute cursor offset relative to tile.
-    *offset_x = w->viewport->zoom.ApplyTo(w->savedViewPos.x - (centreLoc->x + rebased_x));
-    *offset_y = w->viewport->zoom.ApplyTo(w->savedViewPos.y - (centreLoc->y + rebased_y));
+    *offset_x = w.viewport->zoom.ApplyTo(w.savedViewPos.x - (centreLoc->x + rebased_x));
+    *offset_y = w.viewport->zoom.ApplyTo(w.savedViewPos.y - (centreLoc->y + rebased_y));
 }
 
-void window_viewport_centre_tile_around_cursor(rct_window* w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
+void window_viewport_centre_tile_around_cursor(rct_window& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
 {
     // Get viewport coordinates centring around the tile.
     int32_t z = tile_element_height({ map_x, map_y });
-    auto centreLoc = centre_2d_coordinates({ map_x, map_y, z }, w->viewport);
+    auto centreLoc = centre_2d_coordinates({ map_x, map_y, z }, w.viewport);
 
     if (!centreLoc.has_value())
     {
@@ -1006,12 +999,12 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int32_t map_x, int
     auto mouseCoords = context_get_cursor_position_scaled();
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
-    int32_t rebased_x = w->viewport->zoom.ApplyTo((w->width >> 1) - mouseCoords.x);
-    int32_t rebased_y = w->viewport->zoom.ApplyTo((w->height >> 1) - mouseCoords.y);
+    int32_t rebased_x = w.viewport->zoom.ApplyTo((w.width >> 1) - mouseCoords.x);
+    int32_t rebased_y = w.viewport->zoom.ApplyTo((w.height >> 1) - mouseCoords.y);
 
     // Apply offset to the viewport.
-    w->savedViewPos = { centreLoc->x + rebased_x + w->viewport->zoom.ApplyInversedTo(offset_x),
-                        centreLoc->y + rebased_y + w->viewport->zoom.ApplyInversedTo(offset_y) };
+    w.savedViewPos = { centreLoc->x + rebased_x + w.viewport->zoom.ApplyInversedTo(offset_x),
+                       centreLoc->y + rebased_y + w.viewport->zoom.ApplyInversedTo(offset_y) };
 }
 
 /**
@@ -1022,14 +1015,14 @@ void window_check_all_valid_zoom()
     window_visit_each([](rct_window* w) {
         if (w->viewport != nullptr && w->viewport->zoom < ZoomLevel::min())
         {
-            window_zoom_set(w, ZoomLevel::min(), false);
+            window_zoom_set(*w, ZoomLevel::min(), false);
         }
     });
 }
 
-void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
+void window_zoom_set(rct_window& w, ZoomLevel zoomLevel, bool atCursor)
 {
-    rct_viewport* v = w->viewport;
+    rct_viewport* v = w.viewport;
     if (v == nullptr)
         return;
 
@@ -1051,8 +1044,8 @@ void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
     while (v->zoom > zoomLevel)
     {
         v->zoom--;
-        w->savedViewPos.x += v->view_width / 4;
-        w->savedViewPos.y += v->view_height / 4;
+        w.savedViewPos.x += v->view_width / 4;
+        w.savedViewPos.y += v->view_height / 4;
         v->view_width /= 2;
         v->view_height /= 2;
     }
@@ -1061,8 +1054,8 @@ void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
     while (v->zoom < zoomLevel)
     {
         v->zoom++;
-        w->savedViewPos.x -= v->view_width / 2;
-        w->savedViewPos.y -= v->view_height / 2;
+        w.savedViewPos.x -= v->view_width / 2;
+        w.savedViewPos.y -= v->view_height / 2;
         v->view_width *= 2;
         v->view_height *= 2;
     }
@@ -1076,25 +1069,25 @@ void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
     // HACK: Prevents the redraw from failing when there is
     // a window on top of the viewport.
     window_bring_to_front(w);
-    w->Invalidate();
+    w.Invalidate();
 }
 
 /**
  *
  *  rct2: 0x006887A6
  */
-void window_zoom_in(rct_window* w, bool atCursor)
+void window_zoom_in(rct_window& w, bool atCursor)
 {
-    window_zoom_set(w, w->viewport->zoom - 1, atCursor);
+    window_zoom_set(w, w.viewport->zoom - 1, atCursor);
 }
 
 /**
  *
  *  rct2: 0x006887E0
  */
-void window_zoom_out(rct_window* w, bool atCursor)
+void window_zoom_out(rct_window& w, bool atCursor)
 {
-    window_zoom_set(w, w->viewport->zoom + 1, atCursor);
+    window_zoom_set(w, w.viewport->zoom + 1, atCursor);
 }
 
 void main_window_zoom(bool zoomIn, bool atCursor)
@@ -1113,22 +1106,22 @@ void main_window_zoom(bool zoomIn, bool atCursor)
         return;
 
     if (zoomIn)
-        window_zoom_in(mainWindow, atCursor);
+        window_zoom_in(*mainWindow, atCursor);
     else
-        window_zoom_out(mainWindow, atCursor);
+        window_zoom_out(*mainWindow, atCursor);
 }
 
 /**
  * Splits a drawing of a window into regions that can be seen and are not hidden
  * by other opaque overlapping windows.
  */
-void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void window_draw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (!window_is_visible(w))
         return;
 
     // Divide the draws up for only the visible regions of the window recursively
-    auto itPos = window_get_iterator(w);
+    auto itPos = window_get_iterator(&w);
     for (auto it = std::next(itPos); it != g_window_list.end(); it++)
     {
         // Check if this window overlaps w
@@ -1177,30 +1170,30 @@ void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t to
 /**
  * Draws the given window and any other overlapping transparent windows.
  */
-static void window_draw_core(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void window_draw_core(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Clamp region
-    left = std::max<int32_t>(left, w->windowPos.x);
-    top = std::max<int32_t>(top, w->windowPos.y);
-    right = std::min<int32_t>(right, w->windowPos.x + w->width);
-    bottom = std::min<int32_t>(bottom, w->windowPos.y + w->height);
+    left = std::max<int32_t>(left, w.windowPos.x);
+    top = std::max<int32_t>(top, w.windowPos.y);
+    right = std::min<int32_t>(right, w.windowPos.x + w.width);
+    bottom = std::min<int32_t>(bottom, w.windowPos.y + w.height);
     if (left >= right)
         return;
     if (top >= bottom)
         return;
 
     // Draw the window and any other overlapping transparent windows
-    for (auto it = window_get_iterator(w); it != g_window_list.end(); it++)
+    for (auto it = window_get_iterator(&w); it != g_window_list.end(); it++)
     {
-        auto v = (*it).get();
-        if ((w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(v))
+        auto* v = (*it).get();
+        if ((&w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(*v))
         {
-            window_draw_single(dpi, v, left, top, right, bottom);
+            window_draw_single(dpi, *v, left, top, right, bottom);
         }
     }
 }
 
-static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void window_draw_single(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Copy dpi so we can crop it
     rct_drawpixelinfo copy = *dpi;
@@ -1250,15 +1243,15 @@ static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t le
 
     // Invalidate modifies the window colours so first get the correct
     // colour before setting the global variables for the string painting
-    window_event_invalidate_call(w);
+    window_event_invalidate_call(&w);
 
     // Text colouring
-    gCurrentWindowColours[0] = NOT_TRANSLUCENT(w->colours[0]);
-    gCurrentWindowColours[1] = NOT_TRANSLUCENT(w->colours[1]);
-    gCurrentWindowColours[2] = NOT_TRANSLUCENT(w->colours[2]);
-    gCurrentWindowColours[3] = NOT_TRANSLUCENT(w->colours[3]);
+    gCurrentWindowColours[0] = NOT_TRANSLUCENT(w.colours[0]);
+    gCurrentWindowColours[1] = NOT_TRANSLUCENT(w.colours[1]);
+    gCurrentWindowColours[2] = NOT_TRANSLUCENT(w.colours[2]);
+    gCurrentWindowColours[3] = NOT_TRANSLUCENT(w.colours[3]);
 
-    window_event_paint_call(w, dpi);
+    window_event_paint_call(&w, dpi);
 }
 
 /**
@@ -1268,81 +1261,81 @@ static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t le
  * @param dpi (edi)
  * @param w (esi)
  */
-void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w)
+void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window& w)
 {
-    viewport_render(dpi, w->viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
+    viewport_render(dpi, w.viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
 }
 
-void window_set_position(rct_window* w, const ScreenCoordsXY& screenCoords)
+void window_set_position(rct_window& w, const ScreenCoordsXY& screenCoords)
 {
-    window_move_position(w, screenCoords - w->windowPos);
+    window_move_position(w, screenCoords - w.windowPos);
 }
 
-void window_move_position(rct_window* w, const ScreenCoordsXY& deltaCoords)
+void window_move_position(rct_window& w, const ScreenCoordsXY& deltaCoords)
 {
     if (deltaCoords.x == 0 && deltaCoords.y == 0)
         return;
 
     // Invalidate old region
-    w->Invalidate();
+    w.Invalidate();
 
     // Translate window and viewport
-    w->windowPos += deltaCoords;
-    if (w->viewport != nullptr)
+    w.windowPos += deltaCoords;
+    if (w.viewport != nullptr)
     {
-        w->viewport->pos += deltaCoords;
+        w.viewport->pos += deltaCoords;
     }
 
     // Invalidate new region
-    w->Invalidate();
+    w.Invalidate();
 }
 
-void window_resize(rct_window* w, int32_t dw, int32_t dh)
+void window_resize(rct_window& w, int32_t dw, int32_t dh)
 {
     if (dw == 0 && dh == 0)
         return;
 
     // Invalidate old region
-    w->Invalidate();
+    w.Invalidate();
 
     // Clamp new size to minimum and maximum
-    w->width = std::clamp<int32_t>(w->width + dw, w->min_width, w->max_width);
-    w->height = std::clamp<int32_t>(w->height + dh, w->min_height, w->max_height);
+    w.width = std::clamp<int32_t>(w.width + dw, w.min_width, w.max_width);
+    w.height = std::clamp<int32_t>(w.height + dh, w.min_height, w.max_height);
 
-    window_event_resize_call(w);
-    window_event_invalidate_call(w);
+    window_event_resize_call(&w);
+    window_event_invalidate_call(&w);
 
     // Update scroll widgets
     for (int32_t i = 0; i < 3; i++)
     {
-        auto& scroll = w->scrolls[i];
+        auto& scroll = w.scrolls[i];
         scroll.h_right = WINDOW_SCROLL_UNDEFINED;
         scroll.v_bottom = WINDOW_SCROLL_UNDEFINED;
     }
     window_update_scroll_widgets(w);
 
     // Invalidate new region
-    w->Invalidate();
+    w.Invalidate();
 }
 
-void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight)
+void window_set_resize(rct_window& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight)
 {
-    w->min_width = minWidth;
-    w->min_height = minHeight;
-    w->max_width = maxWidth;
-    w->max_height = maxHeight;
+    w.min_width = minWidth;
+    w.min_height = minHeight;
+    w.max_width = maxWidth;
+    w.max_height = maxHeight;
 
     // Clamp width and height to minimum and maximum
-    int32_t width = std::clamp<int32_t>(w->width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
-    int32_t height = std::clamp<int32_t>(w->height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
+    int32_t width = std::clamp<int32_t>(w.width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
+    int32_t height = std::clamp<int32_t>(w.height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
 
     // Resize window if size has changed
-    if (w->width != width || w->height != height)
+    if (w.width != width || w.height != height)
     {
-        w->Invalidate();
-        w->width = width;
-        w->height = height;
-        w->Invalidate();
+        w.Invalidate();
+        w.width = width;
+        w.height = height;
+        w.Invalidate();
     }
 }
 
@@ -1354,7 +1347,7 @@ void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32
  * @param widgetIndex (dx)
  * @param w (esi)
  */
-bool tool_set(const rct_window& w, rct_widgetindex widgetIndex, Tool tool)
+bool tool_set(const rct_window& w, WidgetIndex widgetIndex, Tool tool)
 {
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
     {
@@ -1415,7 +1408,7 @@ void window_event_close_call(rct_window* w)
         w->event_handlers->close(w);
 }
 
-void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex)
+void window_event_mouse_up_call(rct_window* w, WidgetIndex widgetIndex)
 {
     if (w->event_handlers == nullptr)
         w->OnMouseUp(widgetIndex);
@@ -1431,7 +1424,7 @@ void window_event_resize_call(rct_window* w)
         w->event_handlers->resize(w);
 }
 
-void window_event_mouse_down_call(rct_window* w, rct_widgetindex widgetIndex)
+void window_event_mouse_down_call(rct_window* w, WidgetIndex widgetIndex)
 {
     if (w->event_handlers == nullptr)
         w->OnMouseDown(widgetIndex);
@@ -1439,7 +1432,7 @@ void window_event_mouse_down_call(rct_window* w, rct_widgetindex widgetIndex)
         w->event_handlers->mouse_down(w, widgetIndex, &w->widgets[widgetIndex]);
 }
 
-void window_event_dropdown_call(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+void window_event_dropdown_call(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (w->event_handlers == nullptr)
     {
@@ -1477,14 +1470,7 @@ void window_event_periodic_update_call(rct_window* w)
         w->event_handlers->periodic_update(w);
 }
 
-void window_event_unknown_08_call(rct_window* w)
-{
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->unknown_08 != nullptr)
-            w->event_handlers->unknown_08(w);
-}
-
-void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+void window_event_tool_update_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers == nullptr)
         w->OnToolUpdate(widgetIndex, screenCoords);
@@ -1492,7 +1478,7 @@ void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, c
         w->event_handlers->tool_update(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+void window_event_tool_down_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers == nullptr)
         w->OnToolDown(widgetIndex, screenCoords);
@@ -1500,7 +1486,7 @@ void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, con
         w->event_handlers->tool_down(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+void window_event_tool_drag_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers == nullptr)
         w->OnToolDrag(widgetIndex, screenCoords);
@@ -1508,7 +1494,7 @@ void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, con
         w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+void window_event_tool_up_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (w->event_handlers == nullptr)
         w->OnToolUp(widgetIndex, screenCoords);
@@ -1516,19 +1502,12 @@ void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, const
         w->event_handlers->tool_up(w, widgetIndex, screenCoords);
 }
 
-void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex)
+void window_event_tool_abort_call(rct_window* w, WidgetIndex widgetIndex)
 {
     if (w->event_handlers == nullptr)
         w->OnToolAbort(widgetIndex);
     else if (w->event_handlers->tool_abort != nullptr)
         w->event_handlers->tool_abort(w, widgetIndex);
-}
-
-void window_event_unknown_0E_call(rct_window* w)
-{
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->unknown_0E != nullptr)
-            w->event_handlers->unknown_0E(w);
 }
 
 void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
@@ -1571,7 +1550,7 @@ void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, cons
         w->event_handlers->scroll_mouseover(w, scrollIndex, screenCoords);
 }
 
-void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text)
+void window_event_textinput_call(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     if (w->event_handlers == nullptr)
     {
@@ -1602,7 +1581,7 @@ void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t sc
             w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
 }
 
-OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
+OpenRCT2String window_event_tooltip_call(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback)
 {
     if (w->event_handlers == nullptr)
     {
@@ -1617,7 +1596,7 @@ OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex wi
     return { fallback, {} };
 }
 
-CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+CursorID window_event_cursor_call(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     CursorID cursorId = CursorID::Arrow;
     if (w->event_handlers == nullptr)
@@ -1713,21 +1692,21 @@ void window_resize_gui(int32_t width, int32_t height)
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
-    rct_window* titleWind = window_find_by_class(WC_TITLE_MENU);
+    rct_window* titleWind = window_find_by_class(WindowClass::TitleMenu);
     if (titleWind != nullptr)
     {
         titleWind->windowPos.x = (width - titleWind->width) / 2;
         titleWind->windowPos.y = height - 182;
     }
 
-    rct_window* exitWind = window_find_by_class(WC_TITLE_EXIT);
+    rct_window* exitWind = window_find_by_class(WindowClass::TitleExit);
     if (exitWind != nullptr)
     {
         exitWind->windowPos.x = width - 40;
         exitWind->windowPos.y = height - 64;
     }
 
-    rct_window* optionsWind = window_find_by_class(WC_TITLE_OPTIONS);
+    rct_window* optionsWind = window_find_by_class(WindowClass::TitleOptions);
     if (optionsWind != nullptr)
     {
         optionsWind->windowPos.x = width - 80;
@@ -1758,13 +1737,13 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
         }
     }
 
-    rct_window* topWind = window_find_by_class(WC_TOP_TOOLBAR);
+    rct_window* topWind = window_find_by_class(WindowClass::TopToolbar);
     if (topWind != nullptr)
     {
         topWind->width = std::max(640, width);
     }
 
-    rct_window* bottomWind = window_find_by_class(WC_BOTTOM_TOOLBAR);
+    rct_window* bottomWind = window_find_by_class(WindowClass::BottomToolbar);
     if (bottomWind != nullptr)
     {
         bottomWind->windowPos.y = height - 32;
@@ -1778,10 +1757,10 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
  */
 void window_close_construction_windows()
 {
-    window_close_by_class(WC_RIDE_CONSTRUCTION);
-    window_close_by_class(WC_FOOTPATH);
-    window_close_by_class(WC_TRACK_DESIGN_LIST);
-    window_close_by_class(WC_TRACK_DESIGN_PLACE);
+    window_close_by_class(WindowClass::RideConstruction);
+    window_close_by_class(WindowClass::Footpath);
+    window_close_by_class(WindowClass::TrackDesignList);
+    window_close_by_class(WindowClass::TrackDesignPlace);
 }
 
 /**
@@ -1813,21 +1792,21 @@ void window_update_viewport_ride_music()
     }
 }
 
-static void window_snap_left(rct_window* w, int32_t proximity)
+static void window_snap_left(rct_window& w, int32_t proximity)
 {
     const auto* mainWindow = window_get_main();
-    auto wBottom = w->windowPos.y + w->height;
-    auto wLeftProximity = w->windowPos.x - (proximity * 2);
-    auto wRightProximity = w->windowPos.x + (proximity * 2);
+    auto wBottom = w.windowPos.y + w.height;
+    auto wLeftProximity = w.windowPos.x - (proximity * 2);
+    auto wRightProximity = w.windowPos.x + (proximity * 2);
     auto rightMost = INT32_MIN;
 
     window_visit_each([&](rct_window* w2) {
-        if (w2 == w || w2 == mainWindow)
+        if (w2 == &w || w2 == mainWindow)
             return;
 
         auto right = w2->windowPos.x + w2->width;
 
-        if (wBottom < w2->windowPos.y || w->windowPos.y > w2->windowPos.y + w2->height)
+        if (wBottom < w2->windowPos.y || w.windowPos.y > w2->windowPos.y + w2->height)
             return;
 
         if (right < wLeftProximity || right > wRightProximity)
@@ -1840,24 +1819,24 @@ static void window_snap_left(rct_window* w, int32_t proximity)
         rightMost = std::max(rightMost, 0);
 
     if (rightMost != INT32_MIN)
-        w->windowPos.x = rightMost;
+        w.windowPos.x = rightMost;
 }
 
-static void window_snap_top(rct_window* w, int32_t proximity)
+static void window_snap_top(rct_window& w, int32_t proximity)
 {
     const auto* mainWindow = window_get_main();
-    auto wRight = w->windowPos.x + w->width;
-    auto wTopProximity = w->windowPos.y - (proximity * 2);
-    auto wBottomProximity = w->windowPos.y + (proximity * 2);
+    auto wRight = w.windowPos.x + w.width;
+    auto wTopProximity = w.windowPos.y - (proximity * 2);
+    auto wBottomProximity = w.windowPos.y + (proximity * 2);
     auto bottomMost = INT32_MIN;
 
     window_visit_each([&](rct_window* w2) {
-        if (w2 == w || w2 == mainWindow)
+        if (w2 == &w || w2 == mainWindow)
             return;
 
         auto bottom = w2->windowPos.y + w2->height;
 
-        if (wRight < w2->windowPos.x || w->windowPos.x > w2->windowPos.x + w2->width)
+        if (wRight < w2->windowPos.x || w.windowPos.x > w2->windowPos.x + w2->width)
             return;
 
         if (bottom < wTopProximity || bottom > wBottomProximity)
@@ -1870,23 +1849,23 @@ static void window_snap_top(rct_window* w, int32_t proximity)
         bottomMost = std::max(bottomMost, 0);
 
     if (bottomMost != INT32_MIN)
-        w->windowPos.y = bottomMost;
+        w.windowPos.y = bottomMost;
 }
 
-static void window_snap_right(rct_window* w, int32_t proximity)
+static void window_snap_right(rct_window& w, int32_t proximity)
 {
     const auto* mainWindow = window_get_main();
-    auto wRight = w->windowPos.x + w->width;
-    auto wBottom = w->windowPos.y + w->height;
+    auto wRight = w.windowPos.x + w.width;
+    auto wBottom = w.windowPos.y + w.height;
     auto wLeftProximity = wRight - (proximity * 2);
     auto wRightProximity = wRight + (proximity * 2);
     auto leftMost = INT32_MAX;
 
     window_visit_each([&](rct_window* w2) {
-        if (w2 == w || w2 == mainWindow)
+        if (w2 == &w || w2 == mainWindow)
             return;
 
-        if (wBottom < w2->windowPos.y || w->windowPos.y > w2->windowPos.y + w2->height)
+        if (wBottom < w2->windowPos.y || w.windowPos.y > w2->windowPos.y + w2->height)
             return;
 
         if (w2->windowPos.x < wLeftProximity || w2->windowPos.x > wRightProximity)
@@ -1900,23 +1879,23 @@ static void window_snap_right(rct_window* w, int32_t proximity)
         leftMost = std::min(leftMost, screenWidth);
 
     if (leftMost != INT32_MAX)
-        w->windowPos.x = leftMost - w->width;
+        w.windowPos.x = leftMost - w.width;
 }
 
-static void window_snap_bottom(rct_window* w, int32_t proximity)
+static void window_snap_bottom(rct_window& w, int32_t proximity)
 {
     const auto* mainWindow = window_get_main();
-    auto wRight = w->windowPos.x + w->width;
-    auto wBottom = w->windowPos.y + w->height;
+    auto wRight = w.windowPos.x + w.width;
+    auto wBottom = w.windowPos.y + w.height;
     auto wTopProximity = wBottom - (proximity * 2);
     auto wBottomProximity = wBottom + (proximity * 2);
     auto topMost = INT32_MAX;
 
     window_visit_each([&](rct_window* w2) {
-        if (w2 == w || w2 == mainWindow)
+        if (w2 == &w || w2 == mainWindow)
             return;
 
-        if (wRight < w2->windowPos.x || w->windowPos.x > w2->windowPos.x + w2->width)
+        if (wRight < w2->windowPos.x || w.windowPos.x > w2->windowPos.x + w2->width)
             return;
 
         if (w2->windowPos.y < wTopProximity || w2->windowPos.y > wBottomProximity)
@@ -1930,38 +1909,38 @@ static void window_snap_bottom(rct_window* w, int32_t proximity)
         topMost = std::min(topMost, screenHeight);
 
     if (topMost != INT32_MAX)
-        w->windowPos.y = topMost - w->height;
+        w.windowPos.y = topMost - w.height;
 }
 
-void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
+void window_move_and_snap(rct_window& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
 {
-    auto originalPos = w->windowPos;
+    auto originalPos = w.windowPos;
     int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
 
     newWindowCoords.y = std::clamp(newWindowCoords.y, minY, context_get_height() - 34);
 
     if (snapProximity > 0)
     {
-        w->windowPos = newWindowCoords;
+        w.windowPos = newWindowCoords;
 
         window_snap_right(w, snapProximity);
         window_snap_bottom(w, snapProximity);
         window_snap_left(w, snapProximity);
         window_snap_top(w, snapProximity);
 
-        if (w->windowPos == originalPos)
+        if (w.windowPos == originalPos)
             return;
 
-        newWindowCoords = w->windowPos;
-        w->windowPos = originalPos;
+        newWindowCoords = w.windowPos;
+        w.windowPos = originalPos;
     }
 
     window_set_position(w, newWindowCoords);
 }
 
-int32_t window_can_resize(rct_window* w)
+int32_t window_can_resize(const rct_window& w)
 {
-    return (w->flags & WF_RESIZABLE) && (w->min_width != w->max_width || w->min_height != w->max_height);
+    return (w.flags & WF_RESIZABLE) && (w.min_width != w.max_width || w.min_height != w.max_height);
 }
 
 /**
@@ -1970,24 +1949,22 @@ int32_t window_can_resize(rct_window* w)
  */
 void textinput_cancel()
 {
-    window_close_by_class(WC_TEXTINPUT);
+    window_close_by_class(WindowClass::Textinput);
 }
 
 void window_start_textbox(
-    rct_window* call_w, rct_widgetindex call_widget, rct_string_id existing_text, char* existing_args, int32_t maxLength)
+    rct_window& call_w, WidgetIndex call_widget, StringId existing_text, char* existing_args, int32_t maxLength)
 {
     if (gUsingWidgetTextBox)
         window_cancel_textbox();
 
     gUsingWidgetTextBox = true;
-    gCurrentTextBox.window.classification = call_w->classification;
-    gCurrentTextBox.window.number = call_w->number;
+    gCurrentTextBox.window.classification = call_w.classification;
+    gCurrentTextBox.window.number = call_w.number;
     gCurrentTextBox.widget_index = call_widget;
     gTextBoxFrameNo = 0;
 
-    gMaxTextBoxInputLength = maxLength;
-
-    window_close_by_class(WC_TEXTINPUT);
+    window_close_by_class(WindowClass::Textinput);
 
     // Clear the text input buffer
     std::fill_n(gTextBoxInput, maxLength, 0x00);
@@ -2013,13 +1990,13 @@ void window_cancel_textbox()
         {
             window_event_textinput_call(w, gCurrentTextBox.widget_index, nullptr);
         }
-        gCurrentTextBox.window.classification = WC_NULL;
+        gCurrentTextBox.window.classification = WindowClass::Null;
         gCurrentTextBox.window.number = 0;
         context_stop_text_input();
         gUsingWidgetTextBox = false;
         if (w != nullptr)
         {
-            widget_invalidate(w, gCurrentTextBox.widget_index);
+            widget_invalidate(*w, gCurrentTextBox.widget_index);
         }
         gCurrentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
     }
@@ -2038,50 +2015,48 @@ void window_update_textbox()
     {
         gTextBoxFrameNo = 0;
         rct_window* w = window_find_by_number(gCurrentTextBox.window.classification, gCurrentTextBox.window.number);
-        widget_invalidate(w, gCurrentTextBox.widget_index);
+        widget_invalidate(*w, gCurrentTextBox.widget_index);
         window_event_textinput_call(w, gCurrentTextBox.widget_index, gTextBoxInput);
     }
 }
 
-bool window_is_visible(rct_window* w)
+bool window_is_visible(rct_window& w)
 {
     // w->visibility is used to prevent repeat calculations within an iteration by caching the result
-    if (w == nullptr)
-        return false;
 
-    if (w->visibility == VisibilityCache::Visible)
+    if (w.visibility == VisibilityCache::Visible)
         return true;
-    if (w->visibility == VisibilityCache::Covered)
+    if (w.visibility == VisibilityCache::Covered)
         return false;
 
     // only consider viewports, consider the main window always visible
-    if (w->viewport == nullptr || w->classification == WC_MAIN_WINDOW)
+    if (w.viewport == nullptr || w.classification == WindowClass::MainWindow)
     {
         // default to previous behaviour
-        w->visibility = VisibilityCache::Visible;
+        w.visibility = VisibilityCache::Visible;
         return true;
     }
 
     // start from the window above the current
-    auto itPos = window_get_iterator(w);
+    auto itPos = window_get_iterator(&w);
     for (auto it = std::next(itPos); it != g_window_list.end(); it++)
     {
         auto& w_other = *(*it);
 
         // if covered by a higher window, no rendering needed
-        if (w_other.windowPos.x <= w->windowPos.x && w_other.windowPos.y <= w->windowPos.y
-            && w_other.windowPos.x + w_other.width >= w->windowPos.x + w->width
-            && w_other.windowPos.y + w_other.height >= w->windowPos.y + w->height)
+        if (w_other.windowPos.x <= w.windowPos.x && w_other.windowPos.y <= w.windowPos.y
+            && w_other.windowPos.x + w_other.width >= w.windowPos.x + w.width
+            && w_other.windowPos.y + w_other.height >= w.windowPos.y + w.height)
         {
-            w->visibility = VisibilityCache::Covered;
-            w->viewport->visibility = VisibilityCache::Covered;
+            w.visibility = VisibilityCache::Covered;
+            w.viewport->visibility = VisibilityCache::Covered;
             return false;
         }
     }
 
     // default to previous behaviour
-    w->visibility = VisibilityCache::Visible;
-    w->viewport->visibility = VisibilityCache::Visible;
+    w.visibility = VisibilityCache::Visible;
+    w.viewport->visibility = VisibilityCache::Visible;
     return true;
 }
 
@@ -2103,7 +2078,7 @@ void window_draw_all(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t 
             return;
         if (left >= w->windowPos.x + w->width || top >= w->windowPos.y + w->height)
             return;
-        window_draw(&windowDPI, w, left, top, right, bottom);
+        window_draw(&windowDPI, *w, left, top, right, bottom);
     });
 }
 
@@ -2145,18 +2120,18 @@ void window_init_all()
     window_close_all_except_flags(0);
 }
 
-void window_follow_sprite(rct_window* w, EntityId spriteIndex)
+void window_follow_sprite(rct_window& w, EntityId spriteIndex)
 {
     if (spriteIndex.ToUnderlying() < MAX_ENTITIES || spriteIndex.IsNull())
     {
-        w->viewport_smart_follow_sprite = spriteIndex;
+        w.viewport_smart_follow_sprite = spriteIndex;
     }
 }
 
-void window_unfollow_sprite(rct_window* w)
+void window_unfollow_sprite(rct_window& w)
 {
-    w->viewport_smart_follow_sprite = EntityId::GetNull();
-    w->viewport_target_sprite = EntityId::GetNull();
+    w.viewport_smart_follow_sprite = EntityId::GetNull();
+    w.viewport_target_sprite = EntityId::GetNull();
 }
 
 rct_viewport* window_get_viewport(rct_window* w)
@@ -2186,19 +2161,19 @@ rct_window* window_get_listening()
     return nullptr;
 }
 
-rct_windowclass window_get_classification(rct_window* window)
+WindowClass window_get_classification(const rct_window& window)
 {
-    return window->classification;
+    return window.classification;
 }
 
 /**
  *
  *  rct2: 0x006EAF26
  */
-void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index)
+void WidgetScrollUpdateThumbs(rct_window& w, WidgetIndex widget_index)
 {
-    const auto& widget = w->widgets[widget_index];
-    auto& scroll = w->scrolls[window_get_scroll_data_index(w, widget_index)];
+    const auto& widget = w.widgets[widget_index];
+    auto& scroll = w.scrolls[window_get_scroll_data_index(w, widget_index)];
 
     if (scroll.flags & HSCROLLBAR_VISIBLE)
     {

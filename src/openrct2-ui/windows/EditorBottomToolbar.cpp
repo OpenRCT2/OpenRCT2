@@ -49,7 +49,7 @@ class EditorBottomToolbarWindow final : public Window
 private:
     using FuncPtr = void (EditorBottomToolbarWindow::*)() const;
 
-    static constexpr const rct_string_id _editorStepNames[] = {
+    static constexpr const StringId _editorStepNames[] = {
         STR_EDITOR_STEP_OBJECT_SELECTION,       STR_EDITOR_STEP_LANDSCAPE_EDITOR,      STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP,
         STR_EDITOR_STEP_OPTIONS_SELECTION,      STR_EDITOR_STEP_OBJECTIVE_SELECTION,   STR_EDITOR_STEP_SAVE_SCENARIO,
         STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,
@@ -68,7 +68,8 @@ public:
     {
         ColourSchemeUpdateByClass(
             this,
-            (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
+            (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowClass::EditorScenarioBottomToolbar
+                                                          : WindowClass::EditorTrackBottomToolbar);
 
         uint16_t screenWidth = context_get_width();
         widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
@@ -128,7 +129,7 @@ public:
         DrawStepText(dpi);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
         {
@@ -158,14 +159,14 @@ private:
         set_all_scenery_items_invented();
         scenery_set_default_placement_configuration();
         gEditorStep = EditorStep::LandscapeEditor;
-        context_open_window(WC_MAP);
+        context_open_window(WindowClass::Map);
         gfx_invalidate_screen();
     }
 
     void JumpBackToInventionListSetUp() const
     {
         window_close_all();
-        context_open_window(WC_EDITOR_INVENTION_LIST);
+        context_open_window(WindowClass::EditorInventionList);
         gEditorStep = EditorStep::InventionsListSetUp;
         gfx_invalidate_screen();
     }
@@ -173,7 +174,7 @@ private:
     void JumpBackToOptionsSelection() const
     {
         window_close_all();
-        context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
+        context_open_window(WindowClass::EditorScenarioOptions);
         gEditorStep = EditorStep::OptionsSelection;
         gfx_invalidate_screen();
     }
@@ -185,12 +186,12 @@ private:
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::None)
         {
-            window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+            window_close_by_class(WindowClass::EditorObjectSelection);
             return true;
         }
 
         context_show_error(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
-        w = window_find_by_class(WC_EDITOR_OBJECT_SELECTION);
+        w = window_find_by_class(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {
             // Click tab with missing object
@@ -207,11 +208,11 @@ private:
         finish_object_selection();
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         {
-            context_open_window(WC_CONSTRUCT_RIDE);
+            context_open_window(WindowClass::ConstructRide);
         }
         else
         {
-            context_open_window(WC_MAP);
+            context_open_window(WindowClass::Map);
         }
     }
 
@@ -221,7 +222,7 @@ private:
         if (checksPassed)
         {
             window_close_all();
-            context_open_window(WC_EDITOR_INVENTION_LIST);
+            context_open_window(WindowClass::EditorInventionList);
             gEditorStep = EditorStep::InventionsListSetUp;
         }
         else
@@ -235,7 +236,7 @@ private:
     void JumpForwardToOptionsSelection() const
     {
         window_close_all();
-        context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
+        context_open_window(WindowClass::EditorScenarioOptions);
         gEditorStep = EditorStep::OptionsSelection;
         gfx_invalidate_screen();
     }
@@ -243,22 +244,23 @@ private:
     void JumpForwardToObjectiveSelection() const
     {
         window_close_all();
-        context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
+        context_open_window(WindowClass::EditorObjectiveOptions);
         gEditorStep = EditorStep::ObjectiveSelection;
         gfx_invalidate_screen();
     }
 
     void JumpForwardToSaveScenario() const
     {
-        if (!scenario_prepare_for_save())
+        const auto savePrepareResult = scenario_prepare_for_save();
+        if (!savePrepareResult.Successful)
         {
-            context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, gGameCommandErrorText, {});
+            context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});
             gfx_invalidate_screen();
             return;
         }
 
         window_close_all();
-        auto intent = Intent(WC_LOADSAVE);
+        auto intent = Intent(WindowClass::Loadsave);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
         intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
         context_open_intent(&intent);
@@ -297,7 +299,8 @@ private:
             windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
         colour_t textColour = NOT_TRANSLUCENT(colours[1]);
-        if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON)
+        if (gHoverWidget.window_classification == WindowClass::BottomToolbar
+            && gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON)
         {
             textColour = COLOUR_WHITE;
         }
@@ -305,7 +308,7 @@ private:
         int16_t textX = (widgets[WIDX_PREVIOUS_IMAGE].left + 30 + widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + windowPos.x;
         int16_t textY = widgets[WIDX_PREVIOUS_IMAGE].top + 6 + windowPos.y;
 
-        rct_string_id stringId = _editorStepNames[EnumValue(gEditorStep) - 1];
+        StringId stringId = _editorStepNames[EnumValue(gEditorStep) - 1];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
@@ -334,7 +337,8 @@ private:
 
         colour_t textColour = NOT_TRANSLUCENT(colours[1]);
 
-        if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON)
+        if (gHoverWidget.window_classification == WindowClass::BottomToolbar
+            && gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON)
         {
             textColour = COLOUR_WHITE;
         }
@@ -342,7 +346,7 @@ private:
         int16_t textX = (widgets[WIDX_NEXT_IMAGE].left + widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + windowPos.x;
         int16_t textY = widgets[WIDX_NEXT_IMAGE].top + 6 + windowPos.y;
 
-        rct_string_id stringId = _editorStepNames[EnumValue(gEditorStep) + 1];
+        StringId stringId = _editorStepNames[EnumValue(gEditorStep) + 1];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
@@ -389,7 +393,7 @@ private:
 rct_window* WindowEditorBottomToolbarOpen()
 {
     auto* window = WindowCreate<EditorBottomToolbarWindow>(
-        WC_BOTTOM_TOOLBAR, ScreenCoordsXY(0, context_get_height() - 32), context_get_width(), 32,
+        WindowClass::BottomToolbar, ScreenCoordsXY(0, context_get_height() - 32), context_get_width(), 32,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
     return window;

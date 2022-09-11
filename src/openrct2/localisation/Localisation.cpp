@@ -45,7 +45,7 @@ bool gDebugStringFormatting = false;
 #endif
 
 // clang-format off
-const rct_string_id SpeedNames[] = {
+const StringId SpeedNames[] = {
     STR_SPEED_NORMAL,
     STR_SPEED_QUICK,
     STR_SPEED_FAST,
@@ -53,7 +53,7 @@ const rct_string_id SpeedNames[] = {
     STR_SPEED_HYPER,
 };
 
-const rct_string_id ObjectiveNames[] = {
+const StringId ObjectiveNames[] = {
     STR_OBJECTIVE_NONE,
     STR_OBJECTIVE_GUESTS_BY,
     STR_OBJECTIVE_PARK_VALUE_BY,
@@ -68,14 +68,14 @@ const rct_string_id ObjectiveNames[] = {
     STR_OBJECTIVE_MONTHLY_FOOD_INCOME,
 };
 
-const rct_string_id ResearchFundingLevelNames[] = {
+const StringId ResearchFundingLevelNames[] = {
     STR_RESEARCH_FUNDING_NONE,
     STR_RESEARCH_FUNDING_MINIMUM,
     STR_RESEARCH_FUNDING_NORMAL,
     STR_RESEARCH_FUNDING_MAXIMUM,
 };
 
-const rct_string_id MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3] = {
+const StringId MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3] = {
     { STR_MARKETING_VOUCHERS_FOR_FREE_ENTRY_TO_THE_PARK,            STR_VOUCHERS_FOR_FREE_ENTRY_TO,         STR_MARKETING_FINISHED_FREE_ENTRY },        // ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,
     { STR_MARKETING_VOUCHERS_FOR_FREE_RIDES_ON_A_PARTICULAR_RIDE,   STR_VOUCHERS_FOR_FREE_RIDE_ON,          STR_MARKETING_FINISHED_FREE_RIDES },        // ADVERTISING_CAMPAIGN_RIDE_FREE,
     { STR_MARKETING_VOUCHERS_FOR_HALF_PRICE_ENTRY_TO_THE_PARK,      STR_VOUCHERS_FOR_HALF_PRICE_ENTRY_TO,   STR_MARKETING_FINISHED_HALF_PRICE_ENTRY },  // ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE,
@@ -84,7 +84,7 @@ const rct_string_id MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3] = {
     { STR_MARKETING_ADVERTISING_CAMPAIGN_FOR_A_PARTICULAR_RIDE,     STR_ADVERTISING_CAMPAIGN_FOR_2,         STR_MARKETING_FINISHED_RIDE_ADS },          // ADVERTISING_CAMPAIGN_RIDE,
 };
 
-const rct_string_id RideInspectionIntervalNames[] = {
+const StringId RideInspectionIntervalNames[] = {
     STR_EVERY_10_MINUTES,
     STR_EVERY_20_MINUTES,
     STR_EVERY_30_MINUTES,
@@ -94,7 +94,7 @@ const rct_string_id RideInspectionIntervalNames[] = {
     STR_NEVER,
 };
 
-const rct_string_id PeepThoughts[] = {
+const StringId PeepThoughts[] = {
     STR_PEEP_THOUGHT_TYPE_CANT_AFFORD_0,
     STR_PEEP_THOUGHT_TYPE_SPENT_MONEY,
     STR_PEEP_THOUGHT_TYPE_SICK,
@@ -271,7 +271,7 @@ const rct_string_id PeepThoughts[] = {
     STR_PEEP_THOUGHT_TYPE_HERE_WE_ARE,
 };
 
-const rct_string_id DateDayNames[] = {
+const StringId DateDayNames[] = {
     STR_DATE_DAY_1,
     STR_DATE_DAY_2,
     STR_DATE_DAY_3,
@@ -305,7 +305,7 @@ const rct_string_id DateDayNames[] = {
     STR_DATE_DAY_31,
 };
 
-const rct_string_id DateGameMonthNames[MONTH_COUNT] = {
+const StringId DateGameMonthNames[MONTH_COUNT] = {
     STR_MONTH_MARCH,
     STR_MONTH_APRIL,
     STR_MONTH_MAY,
@@ -316,7 +316,7 @@ const rct_string_id DateGameMonthNames[MONTH_COUNT] = {
     STR_MONTH_OCTOBER,
 };
 
-const rct_string_id DateGameShortMonthNames[MONTH_COUNT] = {
+const StringId DateGameShortMonthNames[MONTH_COUNT] = {
     STR_MONTH_SHORT_MAR,
     STR_MONTH_SHORT_APR,
     STR_MONTH_SHORT_MAY,
@@ -328,7 +328,7 @@ const rct_string_id DateGameShortMonthNames[MONTH_COUNT] = {
 };
 // clang-format on
 
-std::string format_string(rct_string_id format, const void* args)
+std::string format_string(StringId format, const void* args)
 {
     std::string buffer(256, 0);
     size_t len{};
@@ -361,7 +361,7 @@ std::string format_string(rct_string_id format, const void* args)
  * format (ax)
  * args (ecx)
  */
-void format_string_to_upper(utf8* dest, size_t size, rct_string_id format, const void* args)
+void format_string_to_upper(utf8* dest, size_t size, StringId format, const void* args)
 {
 #ifdef DEBUG
     if (gDebugStringFormatting)
@@ -407,7 +407,7 @@ void format_readable_size(char* buf, size_t bufSize, uint64_t sizeBytes)
     char sizeType[128] = {};
     format_string(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
 
-    sprintf(buf, "%.03f %s", size, sizeType);
+    snprintf(buf, bufSize, "%.03f %s", size, sizeType);
 }
 
 void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytes)

@@ -23,20 +23,21 @@ namespace OpenRCT2::Ui::Windows
 
     std::string GetWindowTitle(rct_window* w);
     void UpdateWindowTitle(rct_window* w, std::string_view value);
-    void UpdateWidgetText(rct_window* w, rct_widgetindex widget, std::string_view string_view);
-    void UpdateWidgetItems(rct_window* w, rct_widgetindex widgetIndex, const std::vector<std::string>& items);
-    void UpdateWidgetColour(rct_window* w, rct_widgetindex widgetIndex, colour_t colour);
-    void UpdateWidgetSelectedIndex(rct_window* w, rct_widgetindex widgetIndex, int32_t selectedIndex);
-    std::vector<std::string> GetWidgetItems(rct_window* w, rct_widgetindex widgetIndex);
-    colour_t GetWidgetColour(rct_window* w, rct_widgetindex widgetIndex);
-    int32_t GetWidgetSelectedIndex(rct_window* w, rct_widgetindex widgetIndex);
+    void UpdateWindowTab(rct_window* w, int32_t tabIndex);
+    void UpdateWidgetText(rct_window* w, WidgetIndex widget, std::string_view string_view);
+    void UpdateWidgetItems(rct_window* w, WidgetIndex widgetIndex, const std::vector<std::string>& items);
+    void UpdateWidgetColour(rct_window* w, WidgetIndex widgetIndex, colour_t colour);
+    void UpdateWidgetSelectedIndex(rct_window* w, WidgetIndex widgetIndex, int32_t selectedIndex);
+    std::vector<std::string> GetWidgetItems(rct_window* w, WidgetIndex widgetIndex);
+    colour_t GetWidgetColour(rct_window* w, WidgetIndex widgetIndex);
+    int32_t GetWidgetSelectedIndex(rct_window* w, WidgetIndex widgetIndex);
     rct_window* FindCustomWindowByClassification(std::string_view classification);
-    std::optional<rct_widgetindex> FindWidgetIndexByName(rct_window* w, std::string_view name);
-    std::string GetWidgetName(rct_window* w, rct_widgetindex widgetIndex);
-    void SetWidgetName(rct_window* w, rct_widgetindex widgetIndex, std::string_view name);
-    CustomListView* GetCustomListView(rct_window* w, rct_widgetindex widgetIndex);
-    int32_t GetWidgetMaxLength(rct_window* w, rct_widgetindex widgetIndex);
-    void SetWidgetMaxLength(rct_window* w, rct_widgetindex widgetIndex, int32_t value);
+    std::optional<WidgetIndex> FindWidgetIndexByName(rct_window* w, std::string_view name);
+    std::string GetWidgetName(rct_window* w, WidgetIndex widgetIndex);
+    void SetWidgetName(rct_window* w, WidgetIndex widgetIndex, std::string_view name);
+    CustomListView* GetCustomListView(rct_window* w, WidgetIndex widgetIndex);
+    int32_t GetWidgetMaxLength(rct_window* w, WidgetIndex widgetIndex);
+    void SetWidgetMaxLength(rct_window* w, WidgetIndex widgetIndex, int32_t value);
     void CloseWindowsOwnedByPlugin(std::shared_ptr<Plugin> plugin);
 } // namespace OpenRCT2::Ui::Windows
 

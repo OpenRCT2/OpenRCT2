@@ -24,10 +24,10 @@ static rct_widget window_title_options_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowTitleOptionsMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowTitleOptionsMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowTitleOptionsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_title_options_events([](auto& events)
+static WindowEventList window_title_options_events([](auto& events)
 {
     events.mouse_up = &WindowTitleOptionsMouseup;
     events.paint = &WindowTitleOptionsPaint;
@@ -40,15 +40,15 @@ static rct_window_event_list window_title_options_events([](auto& events)
 rct_window* WindowTitleOptionsOpen()
 {
     rct_window* window = WindowCreate(
-        ScreenCoordsXY(context_get_width() - 80, 0), 80, 15, &window_title_options_events, WC_TITLE_OPTIONS,
+        ScreenCoordsXY(context_get_width() - 80, 0), 80, 15, &window_title_options_events, WindowClass::TitleOptions,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_options_widgets;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     return window;
 }
 
-static void WindowTitleOptionsMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleOptionsMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     if (gIntroState != IntroState::None)
         return;
@@ -56,12 +56,12 @@ static void WindowTitleOptionsMouseup(rct_window* w, rct_widgetindex widgetIndex
     switch (widgetIndex)
     {
         case WIDX_OPTIONS:
-            context_open_window(WC_OPTIONS);
+            context_open_window(WindowClass::Options);
             break;
     }
 }
 
 static void WindowTitleOptionsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 }

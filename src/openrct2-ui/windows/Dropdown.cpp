@@ -179,7 +179,7 @@ public:
                     gfx_filter_rect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                 }
 
-                rct_string_id item = gDropdownItems[i].Format;
+                StringId item = gDropdownItems[i].Format;
                 if (item == Dropdown::FormatLandPicker || item == Dropdown::FormatColourPicker)
                 {
                     // Image item
@@ -384,7 +384,7 @@ void WindowDropdownShowTextCustomWidth(
     WindowDropdownClose();
 
     // Create the window (width/height position are set later)
-    auto* w = WindowCreate<DropdownWindow>(WC_DROPDOWN, width, custom_height, WF_STICK_TO_FRONT);
+    auto* w = WindowCreate<DropdownWindow>(WindowClass::Dropdown, width, custom_height, WF_STICK_TO_FRONT);
     if (w != nullptr)
     {
         w->SetTextItems(screenPos, extray, colour, custom_height, flags, num_items, width);
@@ -417,7 +417,7 @@ void WindowDropdownShowImage(
     WindowDropdownClose();
 
     // Create the window (width/height position are set later)
-    auto* w = WindowCreate<DropdownWindow>(WC_DROPDOWN, itemWidth, itemHeight, WF_STICK_TO_FRONT);
+    auto* w = WindowCreate<DropdownWindow>(WindowClass::Dropdown, itemWidth, itemHeight, WF_STICK_TO_FRONT);
     if (w != nullptr)
     {
         w->SetImageItems({ x, y }, extray, colour, numItems, itemWidth, itemHeight, numColumns);
@@ -426,7 +426,7 @@ void WindowDropdownShowImage(
 
 void WindowDropdownClose()
 {
-    window_close_by_class(WC_DROPDOWN);
+    window_close_by_class(WindowClass::Dropdown);
 }
 
 /**
@@ -435,7 +435,7 @@ void WindowDropdownClose()
  */
 int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
 {
-    if (w->classification == WC_DROPDOWN)
+    if (w->classification == WindowClass::Dropdown)
     {
         auto* ddWnd = static_cast<DropdownWindow*>(w);
         return ddWnd->GetIndexFromPoint(loc);

@@ -83,17 +83,6 @@ public:
     }
 };
 
-class UnsupportedRCTCFlagException : public std::exception
-{
-public:
-    uint8_t const Flag;
-
-    explicit UnsupportedRCTCFlagException(uint8_t flag)
-        : Flag(flag)
-    {
-    }
-};
-
 class UnsupportedRideTypeException : public std::exception
 {
 public:

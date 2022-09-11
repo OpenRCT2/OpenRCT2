@@ -11,7 +11,6 @@
 
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
-#include "../ride/VehicleColour.h"
 #include "Limits.h"
 
 namespace RCT1
@@ -287,8 +286,8 @@ namespace RCT1
 
     struct UnkEntity : RCT12SpriteBase
     {
-        uint8_t pad_1F[3];             // 0x1f
-        rct_string_id name_string_idx; // 0x22
+        uint8_t pad_1F[3];        // 0x1f
+        StringId name_string_idx; // 0x22
         uint16_t var_24;
         uint16_t frame; // 0x26
         uint8_t var_28[3];
@@ -307,7 +306,7 @@ namespace RCT1
         int32_t acceleration;       // 0x2C
         uint8_t ride;               // 0x30
         uint8_t CarType;            // 0x31
-        rct_vehicle_colour colours; // 0x32
+        RCT12VehicleColour colours; // 0x32
         union
         {
             uint16_t track_progress; // 0x34
@@ -439,16 +438,16 @@ namespace RCT1
     struct Peep : RCT12SpriteBase
     {
         uint8_t pad_1F[3];
-        rct_string_id name_string_idx; // 0x22
-        uint16_t next_x;               // 0x24
-        uint16_t next_y;               // 0x26
-        uint8_t next_z;                // 0x28
-        uint8_t next_flags;            // 0x29
-        uint8_t outside_of_park;       // 0x2A
-        uint8_t state;                 // 0x2B
-        uint8_t sub_state;             // 0x2C
-        PeepSpriteType sprite_type;    // 0x2D
-        uint8_t type;                  // 0x2E
+        StringId name_string_idx;   // 0x22
+        uint16_t next_x;            // 0x24
+        uint16_t next_y;            // 0x26
+        uint8_t next_z;             // 0x28
+        uint8_t next_flags;         // 0x29
+        uint8_t outside_of_park;    // 0x2A
+        uint8_t state;              // 0x2B
+        uint8_t sub_state;          // 0x2C
+        PeepSpriteType sprite_type; // 0x2D
+        uint8_t type;               // 0x2E
         union
         {
             uint8_t staff_type;  // 0x2F
@@ -797,7 +796,7 @@ namespace RCT1
         uint32_t flags;                                               // 0x02
         uint8_t mode;                                                 // 0x06
         uint8_t version_and_colour_scheme;                            // 0x07 0b0000_VVCC
-        rct_vehicle_colour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x08
+        RCT12VehicleColour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x08
         uint8_t track_spine_colour_v0;                                // 0x20
         uint8_t track_rail_colour_v0;                                 // 0x21
         uint8_t track_support_colour_v0;                              // 0x22
@@ -1196,6 +1195,9 @@ namespace RCT1
         MINIATURE_RAILWAY_TENDER = 15,
         MINIATURE_RAILWAY_LOCOMOTIVE = 16,
         MINIATURE_RAILWAY_CARRIAGE = 17,
+        WOODEN_RC_TRAIN_BACKWARDS = 20,
+        STEEL_RC_REVERSED_FRONT = 23,
+        STEEL_RC_REVERSED_CARRIAGE = 24,
         MINE_TRAIN_FRONT = 35,
         MINE_TRAIN_CARRIAGE = 36,
         CORKSCREW_RC_FRONT = 38,
@@ -1275,7 +1277,7 @@ namespace RCT1
         RCT1_PATH_SUPPORT_TYPE_BAMBOO,
     };
 
-    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType);
+    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType);
 } // namespace RCT1
 
 void load_from_sv4(const char* path);

@@ -34,7 +34,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
 
 static constexpr const int32_t WW = 190;
 static constexpr const int32_t WH = 180;
@@ -143,7 +143,7 @@ public:
         CancelTools();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         if (widgetIndex <= WIDX_TAB_3)
             CommonMouseUp(widgetIndex);
@@ -160,7 +160,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (page)
         {
@@ -173,7 +173,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         switch (page)
         {
@@ -251,7 +251,7 @@ public:
         }
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (page)
         {
@@ -261,7 +261,7 @@ public:
         }
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (page)
         {
@@ -271,7 +271,7 @@ public:
         }
     }
 
-    void OnToolAbort(rct_widgetindex widgetIndex) override
+    void OnToolAbort(WidgetIndex widgetIndex) override
     {
         switch (page)
         {
@@ -291,7 +291,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         switch (page)
         {
@@ -303,7 +303,7 @@ public:
 
 private:
 #pragma region Common events
-    void CommonMouseUp(rct_widgetindex widgetIndex)
+    void CommonMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -320,7 +320,7 @@ private:
 
     void CommonPrepareDrawBefore()
     {
-        ColourSchemeUpdateByClass(this, static_cast<rct_windowclass>(WC_STAFF));
+        ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::Staff));
 
         if (window_staff_page_widgets[page] != widgets)
         {
@@ -358,7 +358,7 @@ private:
 #pragma endregion
 
 #pragma region Overview tab events
-    void OverviewMouseUp(rct_widgetindex widgetIndex)
+    void OverviewMouseUp(WidgetIndex widgetIndex)
     {
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -378,7 +378,7 @@ private:
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
+                    rct_window* wind = window_find_by_number(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
                         tool_set(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
@@ -389,7 +389,7 @@ private:
             break;
             case WIDX_FIRE:
             {
-                auto intent = Intent(WC_FIRE_PROMPT);
+                auto intent = Intent(WindowClass::FirePrompt);
                 intent.putExtra(INTENT_EXTRA_PEEP, staff);
                 context_open_intent(&intent);
                 break;
@@ -405,7 +405,7 @@ private:
         }
     }
 
-    void OverviewOnMouseDown(rct_widgetindex widgetIndex)
+    void OverviewOnMouseDown(WidgetIndex widgetIndex)
     {
         rct_widget* widget = &widgets[widgetIndex];
 
@@ -440,7 +440,7 @@ private:
         }
     }
 
-    void OverviewOnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OverviewOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -467,7 +467,7 @@ private:
                         return;
                     }
 
-                    window_close_by_class(WC_PATROL_AREA);
+                    window_close_by_class(WindowClass::PatrolArea);
 
                     auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
                         staff->sprite_index, {}, StaffSetPatrolAreaMode::ClearAll);
@@ -478,7 +478,7 @@ private:
                     auto staffId = EntityId::FromUnderlying(number);
                     if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                     {
-                        window_close_by_class(WC_PATROL_AREA);
+                        window_close_by_class(WindowClass::PatrolArea);
                     }
                     else
                     {
@@ -528,7 +528,7 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(dpi, this);
+            window_draw_viewport(dpi, *this);
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
@@ -646,7 +646,7 @@ private:
         InvalidateWidget(WIDX_TAB_1);
     }
 
-    void OverviewToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void OverviewToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -688,7 +688,7 @@ private:
         gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
     }
 
-    void OverviewToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void OverviewToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -712,7 +712,7 @@ private:
         GameActions::Execute(&pickupAction);
     }
 
-    void OverviewToolAbort(rct_widgetindex widgetIndex)
+    void OverviewToolAbort(WidgetIndex widgetIndex)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -729,7 +729,7 @@ private:
         ViewportInit();
     }
 
-    void OverviewTextInput(rct_widgetindex widgetIndex, std::string_view text)
+    void OverviewTextInput(WidgetIndex widgetIndex, std::string_view text)
     {
         if (widgetIndex != WIDX_RENAME)
             return;
@@ -743,7 +743,7 @@ private:
 #pragma endregion
 
 #pragma region Options tab events
-    void OptionsMouseUp(rct_widgetindex widgetIndex)
+    void OptionsMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -756,7 +756,7 @@ private:
         }
     }
 
-    void OptionsOnMouseDown(rct_widgetindex widgetIndex)
+    void OptionsOnMouseDown(WidgetIndex widgetIndex)
     {
         if (widgetIndex != WIDX_COSTUME_BTN)
         {
@@ -799,7 +799,7 @@ private:
         }
     }
 
-    void OptionsOnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OptionsOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (widgetIndex != WIDX_COSTUME_BTN)
         {
@@ -1046,7 +1046,7 @@ private:
             return;
         }
 
-        for (rct_widgetindex widgetIndex = WIDX_TAB_1; widgets[widgetIndex].type != WIDGETS_END.type; widgetIndex++)
+        for (WidgetIndex widgetIndex = WIDX_TAB_1; widgets[widgetIndex].type != WIDGETS_END.type; widgetIndex++)
         {
             SetWidgetDisabled(widgetIndex, false);
         }
@@ -1200,7 +1200,7 @@ private:
     void FollowPeep()
     {
         rct_window* main = window_get_main();
-        window_follow_sprite(main, EntityId::FromUnderlying(number));
+        window_follow_sprite(*main, EntityId::FromUnderlying(number));
     }
 
     void DrawTabImages(rct_drawpixelinfo* dpi)
@@ -1212,7 +1212,7 @@ private:
 
     void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t baseImageId)
     {
-        rct_widgetindex widgetIndex = WIDX_TAB_1 + p;
+        WidgetIndex widgetIndex = WIDX_TAB_1 + p;
         rct_widget* widget = &widgets[widgetIndex];
 
         auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
@@ -1245,12 +1245,12 @@ private:
 
 rct_window* WindowStaffOpen(Peep* peep)
 {
-    auto w = static_cast<StaffWindow*>(window_bring_to_front_by_number(WC_PEEP, peep->sprite_index.ToUnderlying()));
+    auto w = static_cast<StaffWindow*>(window_bring_to_front_by_number(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
 
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<StaffWindow>(WC_PEEP, WW, WH, WF_10 | WF_RESIZABLE);
+    w = WindowCreate<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
 
     if (w == nullptr)
         return nullptr;

@@ -94,10 +94,21 @@ namespace Platform
         return outTime;
     }
 
+    bool IsRCT2Path(std::string_view path)
+    {
+        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
+        return File::Exists(combinedPath);
+    }
+
+    bool IsRCTClassicPath(std::string_view path)
+    {
+        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Assets", u8"g1.dat"));
+        return File::Exists(combinedPath);
+    }
+
     bool OriginalGameDataExists(std::string_view path)
     {
-        std::string combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
-        return File::Exists(combinedPath);
+        return IsRCT2Path(path) || IsRCTClassicPath(path);
     }
 
     std::string SanitiseFilename(std::string_view originalName)

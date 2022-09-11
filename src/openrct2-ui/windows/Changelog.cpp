@@ -38,7 +38,7 @@ enum {
 
 static constexpr const int32_t WW = 500;
 static constexpr const int32_t WH = 400;
-static constexpr const rct_string_id WINDOW_TITLE = STR_CHANGELOG_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_CHANGELOG_TITLE;
 constexpr int32_t MIN_WW = 300;
 constexpr int32_t MIN_WH = 250;
 
@@ -111,7 +111,7 @@ public:
     {
         widgets = _windowChangelogWidgets;
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         min_width = MIN_WW;
         min_height = MIN_WH;
         max_width = MIN_WW;
@@ -160,7 +160,7 @@ public:
         widgets[WIDX_OPEN_URL].top = height - 19;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -309,7 +309,7 @@ private:
 
 rct_window* WindowChangelogOpen(int personality)
 {
-    auto* window = window_bring_to_front_by_class(WC_CHANGELOG);
+    auto* window = window_bring_to_front_by_class(WindowClass::Changelog);
     if (window == nullptr)
     {
         // Create a new centred window
@@ -319,7 +319,7 @@ rct_window* WindowChangelogOpen(int personality)
         int32_t height = (screenHeight * 4) / 5;
 
         auto pos = ChangelogWindow::GetCentrePositionForNewWindow(width, height);
-        auto* newWindow = WindowCreate<ChangelogWindow>(WC_CHANGELOG, pos, width, height, WF_RESIZABLE);
+        auto* newWindow = WindowCreate<ChangelogWindow>(WindowClass::Changelog, pos, width, height, WF_RESIZABLE);
         newWindow->SetPersonality(personality);
         return newWindow;
     }

@@ -21,6 +21,8 @@
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 
+struct ResultWithMessage;
+
 using random_engine_t = Random::Rct2::Engine;
 
 enum
@@ -89,7 +91,7 @@ struct Objective
     union
     {
         uint16_t NumGuests;
-        rct_string_id RideId;
+        StringId RideId;
         uint16_t MinimumLength; // For the "Build 10 coasters of minimum length" objective.
     };
     union
@@ -146,7 +148,7 @@ enum
 
 static constexpr money64 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x8000000000000001;
 
-extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
+extern const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 extern random_engine_t gScenarioRand;
 
@@ -179,7 +181,7 @@ void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result
 random_engine_t::result_type scenario_rand();
 uint32_t scenario_rand_max(uint32_t max);
 
-bool scenario_prepare_for_save();
+ResultWithMessage scenario_prepare_for_save();
 int32_t scenario_save(u8string_view path, int32_t flags);
 void scenario_failure();
 void scenario_success();

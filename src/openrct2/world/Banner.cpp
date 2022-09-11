@@ -48,7 +48,7 @@ void Banner::FormatTextTo(Formatter& ft, bool addColour) const
     {
         auto formatToken = FormatTokenFromTextColour(text_colour);
         auto tokenText = FormatTokenToString(formatToken, true);
-        ft.Add<rct_string_id>(STR_STRING_STRINGID);
+        ft.Add<StringId>(STR_STRING_STRINGID);
         ft.Add<const char*>(tokenText.data());
     }
 
@@ -59,7 +59,7 @@ void Banner::FormatTextTo(Formatter& ft) const
 {
     if (flags & BANNER_FLAG_NO_ENTRY)
     {
-        ft.Add<rct_string_id>(STR_NO_ENTRY);
+        ft.Add<StringId>(STR_NO_ENTRY);
     }
     else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
@@ -70,16 +70,16 @@ void Banner::FormatTextTo(Formatter& ft) const
         }
         else
         {
-            ft.Add<rct_string_id>(STR_DEFAULT_SIGN);
+            ft.Add<StringId>(STR_DEFAULT_SIGN);
         }
     }
     else if (text.empty())
     {
-        ft.Add<rct_string_id>(STR_DEFAULT_SIGN);
+        ft.Add<StringId>(STR_DEFAULT_SIGN);
     }
     else
     {
-        ft.Add<rct_string_id>(STR_STRING).Add<const char*>(text.c_str());
+        ft.Add<StringId>(STR_STRING).Add<const char*>(text.c_str());
     }
 }
 
@@ -100,7 +100,7 @@ static RideId banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 
         RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto ride = get_ride(rideIndex);
-        if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
             continue;
 
         if ((tileElement->GetClearanceZ()) + (4 * COORDS_Z_STEP) <= bannerCoords.z)
@@ -220,7 +220,7 @@ RideId banner_get_closest_ride_index(const CoordsXYZ& mapPos)
     auto resultDistance = std::numeric_limits<int32_t>::max();
     for (auto& ride : GetRideManager())
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
             continue;
 
         auto rideCoords = ride.overall_view;

@@ -110,7 +110,7 @@ private:
 
             if (_downloadStatusInfo == DownloadStatusInfo())
             {
-                context_force_close_window_by_class(WC_NETWORK_STATUS);
+                context_force_close_window_by_class(WindowClass::NetworkStatus);
             }
             else
             {
@@ -133,7 +133,7 @@ private:
                         str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, ft.Data());
                 }
 
-                auto intent = Intent(WC_NETWORK_STATUS);
+                auto intent = Intent(WindowClass::NetworkStatus);
                 intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
                 intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
                 context_open_intent(&intent);
@@ -264,7 +264,7 @@ enum WindowObjectLoadErrorWidgetIdx {
     WIDX_DOWNLOAD_ALL
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
 static constexpr const int32_t WW = 450;
 static constexpr const int32_t WH = 400;
 static constexpr const int32_t WW_LESS_PADDING = WW - 5;
@@ -288,12 +288,12 @@ static rct_widget window_object_load_error_widgets[] = {
 // clang-format on
 
 /**
- *  Returns an rct_string_id that represents an rct_object_entry's type.
+ *  Returns an StringId that represents an rct_object_entry's type.
  *
  *  Could possibly be moved out of the window file if other
  *  uses exist and a suitable location is found.
  */
-static constexpr rct_string_id GetStringFromObjectType(const ObjectType type)
+static constexpr StringId GetStringFromObjectType(const ObjectType type)
 {
     switch (type)
     {
@@ -384,7 +384,7 @@ private:
         {
             selected_list_item = index;
         }
-        widget_invalidate(this, WIDX_SCROLL);
+        widget_invalidate(*this, WIDX_SCROLL);
     }
 
 public:
@@ -392,7 +392,7 @@ public:
     {
         widgets = window_object_load_error_widgets;
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         colours[0] = COLOUR_LIGHT_BLUE;
         colours[1] = COLOUR_LIGHT_BLUE;
         colours[2] = COLOUR_LIGHT_BLUE;
@@ -404,12 +404,12 @@ public:
         _invalidEntries.shrink_to_fit();
     }
 
-    void OnMouseUp(const rct_widgetindex widgetIndex) override
+    void OnMouseUp(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 return;
             case WIDX_COPY_CURRENT:
                 if (selected_list_item > -1 && selected_list_item < no_list_items)
@@ -434,10 +434,10 @@ public:
         frame_no++;
 
         // Check if the mouse is hovering over the list
-        if (!WidgetIsHighlighted(this, WIDX_SCROLL))
+        if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
         {
             _highlightedIndex = -1;
-            widget_invalidate(this, WIDX_SCROLL);
+            widget_invalidate(*this, WIDX_SCROLL);
         }
 
 #ifndef DISABLE_HTTP
@@ -480,21 +480,21 @@ public:
         else
             _highlightedIndex = selectedItem;
 
-        widget_invalidate(this, WIDX_SCROLL);
+        widget_invalidate(*this, WIDX_SCROLL);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         // Draw explanatory message
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
+        ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
         DrawTextWrapped(&dpi, windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
 
         // Draw file name
         ft = Formatter();
-        ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_FILE);
+        ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_FILE);
         ft.Add<utf8*>(_filePath.c_str());
         DrawTextEllipsised(&dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
     }
@@ -564,10 +564,10 @@ public:
 rct_window* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
     // Check if window is already open
-    auto* window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
+    auto* window = window_bring_to_front_by_class(WindowClass::ObjectLoadError);
     if (window == nullptr)
     {
-        window = WindowCreate<ObjectLoadErrorWindow>(WC_OBJECT_LOAD_ERROR, WW, WH, 0);
+        window = WindowCreate<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
     }
 
     static_cast<ObjectLoadErrorWindow*>(window)->Initialise(path, numMissingObjects, missingObjects);

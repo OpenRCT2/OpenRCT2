@@ -290,7 +290,7 @@ private:
 
     json_t GetHeartbeatJson()
     {
-        uint32_t numPlayers = network_get_num_players();
+        uint32_t numPlayers = network_get_num_visible_players();
 
         json_t root = {
             { "token", _token },

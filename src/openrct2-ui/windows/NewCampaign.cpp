@@ -23,7 +23,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const StringId WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 109;
 static constexpr const int32_t WW = 350;
 
@@ -134,7 +134,7 @@ public:
             if (curRide.status == RideStatus::Open)
             {
                 if (!curRide.GetRideTypeDescriptor().HasFlag(
-                        RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS
+                        RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS
                         | RIDE_TYPE_FLAG_IS_TOILET))
                 {
                     RideList.push_back(curRide.id);
@@ -156,7 +156,7 @@ public:
     {
         widgets = window_new_campaign_widgets;
         hold_down_widgets = (1ULL << WIDX_WEEKS_INCREASE_BUTTON) | (1ULL << WIDX_WEEKS_DECREASE_BUTTON);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void SetCampaign(int16_t campaignType)
@@ -175,7 +175,7 @@ public:
         RefreshRides();
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         rct_widget* widget = &widgets[widgetIndex];
         rct_widget* dropdownWidget;
@@ -246,7 +246,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -260,7 +260,7 @@ public:
                 gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        window_close_by_class(WC_NEW_CAMPAIGN);
+                        window_close_by_class(WindowClass::NewCampaign);
                     }
                 });
                 GameActions::Execute(&gameAction);
@@ -269,7 +269,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
             return;
@@ -337,9 +337,9 @@ public:
         widgets[WIDX_WEEKS_SPINNER].text = STR_NONE;
 
         // Enable / disable start button based on ride dropdown
-        WidgetSetDisabled(this, WIDX_START_BUTTON, false);
+        WidgetSetDisabled(*this, WIDX_START_BUTTON, false);
         if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && campaign.RideId == RideId::GetNull())
-            WidgetSetDisabled(this, WIDX_START_BUTTON, true);
+            WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -373,16 +373,16 @@ public:
 
 rct_window* WindowNewCampaignOpen(int16_t campaignType)
 {
-    auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WC_NEW_CAMPAIGN));
+    auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         if (w->campaign.campaign_type == campaignType)
             return w;
 
-        window_close(w);
+        window_close(*w);
     }
 
-    w = WindowCreate<NewCampaignWindow>(WC_NEW_CAMPAIGN, WW, WH, 0);
+    w = WindowCreate<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
     if (w != nullptr)
     {
         w->SetCampaign(campaignType);
@@ -392,7 +392,7 @@ rct_window* WindowNewCampaignOpen(int16_t campaignType)
 
 void WindowCampaignRefreshRides()
 {
-    auto w = static_cast<NewCampaignWindow*>(window_find_by_class(WC_NEW_CAMPAIGN));
+    auto w = static_cast<NewCampaignWindow*>(window_find_by_class(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         w->RefreshRides();

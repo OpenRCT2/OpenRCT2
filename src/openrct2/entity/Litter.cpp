@@ -113,7 +113,7 @@ void Litter::RemoveAt(const CoordsXYZ& litterPos)
     }
 }
 
-static const rct_string_id litterNames[12] = {
+static const StringId litterNames[12] = {
     STR_LITTER_VOMIT,
     STR_LITTER_VOMIT,
     STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
@@ -128,7 +128,7 @@ static const rct_string_id litterNames[12] = {
     STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,
 };
 
-rct_string_id Litter::GetName() const
+StringId Litter::GetName() const
 {
     if (EnumValue(SubType) >= std::size(litterNames))
         return STR_NONE;
@@ -188,5 +188,5 @@ void Litter::Paint(paint_session& session, int32_t imageDirection) const
 
     // In the following call to PaintAddImageAsParent, we add 4 (instead of 2) to the
     // bound_box_offset_z to make sure litter is drawn on top of railways
-    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 4, 4, -1 }, { -4, -4, z + 4 });
+    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 5, 5, -1 }, { -4, -4, z + 4 });
 }

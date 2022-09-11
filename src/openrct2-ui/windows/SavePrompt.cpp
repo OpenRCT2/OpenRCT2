@@ -60,7 +60,7 @@ static rct_widget window_quit_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-static constexpr const rct_string_id window_save_prompt_labels[][2] = {
+static constexpr const StringId window_save_prompt_labels[][2] = {
     { STR_LOAD_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_LOADING },
     { STR_QUIT_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_QUITTING },
     { STR_QUIT_GAME_2_PROMPT_TITLE, STR_SAVE_BEFORE_QUITTING_2 },
@@ -68,11 +68,11 @@ static constexpr const rct_string_id window_save_prompt_labels[][2] = {
 
 
 static void WindowSavePromptClose(rct_window *w);
-static void WindowSavePromptMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowSavePromptMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowSavePromptPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowSavePromptCallback(int32_t result, const utf8 * path);
 
-static rct_window_event_list window_save_prompt_events([](auto& events)
+static WindowEventList window_save_prompt_events([](auto& events)
 {
     events.close = &WindowSavePromptClose;
     events.mouse_up = &WindowSavePromptMouseup;
@@ -87,7 +87,7 @@ static rct_window_event_list window_save_prompt_events([](auto& events)
 rct_window* WindowSavePromptOpen()
 {
     int32_t width, height;
-    rct_string_id stringId;
+    StringId stringId;
     rct_window* window;
     PromptMode prompt_mode;
     rct_widget* widgets;
@@ -119,10 +119,10 @@ rct_window* WindowSavePromptOpen()
     }
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WC_SAVE_PROMPT);
+    window = window_bring_to_front_by_class(WindowClass::SavePrompt);
     if (window != nullptr)
     {
-        window_close(window);
+        window_close(*window);
     }
 
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
@@ -143,10 +143,11 @@ rct_window* WindowSavePromptOpen()
         log_warning("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
     }
-    window = WindowCreateCentred(width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+    window = WindowCreateCentred(
+        width, height, &window_save_prompt_events, WindowClass::SavePrompt, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 
     window->widgets = widgets;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     // Pause the game if not network play.
     if (network_get_mode() == NETWORK_MODE_NONE)
@@ -155,7 +156,7 @@ rct_window* WindowSavePromptOpen()
         OpenRCT2::Audio::StopAll();
     }
 
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
 
     stringId = window_save_prompt_labels[EnumValue(prompt_mode)][0];
     if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -181,14 +182,14 @@ static void WindowSavePromptClose(rct_window* w)
         OpenRCT2::Audio::Resume();
     }
 
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
 }
 
 /**
  *
  *  rct2: 0x0066DDF2
  */
-static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowSavePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
     {
@@ -199,7 +200,7 @@ static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
                 break;
             case WQIDX_CLOSE:
             case WQIDX_CANCEL:
-                window_close(w);
+                window_close(*w);
                 break;
         }
         return;
@@ -213,7 +214,7 @@ static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
 
             if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
             {
-                intent = std::make_unique<Intent>(WC_LOADSAVE);
+                intent = std::make_unique<Intent>(WindowClass::Loadsave);
                 intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
                 intent->putExtra(INTENT_EXTRA_PATH, gScenarioName);
             }
@@ -221,7 +222,7 @@ static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
             {
                 intent = create_save_game_as_intent();
             }
-            window_close(w);
+            window_close(*w);
             intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
             context_open_intent(intent.get());
             break;
@@ -231,14 +232,14 @@ static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
             return;
         case WIDX_CLOSE:
         case WIDX_CANCEL:
-            window_close(w);
+            window_close(*w);
             return;
     }
 }
 
 static void WindowSavePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 }
 
 static void WindowSavePromptCallback(int32_t result, const utf8* path)

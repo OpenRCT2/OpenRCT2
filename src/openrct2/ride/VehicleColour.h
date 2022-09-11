@@ -11,12 +11,6 @@
 
 #include "../common.h"
 
-struct rct_vehicle_colour
-{
-    uint8_t body_colour;
-    uint8_t trim_colour;
-};
-
 struct VehicleColour
 {
     uint8_t Body;

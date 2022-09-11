@@ -334,7 +334,6 @@ STR_0950    :Oyunu yükle
 STR_0951    :Oyunu kapat
 STR_0952    :Oyunu kapat
 STR_0953    :Arazi yükle
-STR_0954    :
 STR_0955    :Bu kesim için koltuk eğim dereceseni seçiniz
 STR_0956    :-180°
 STR_0957    :-135°
@@ -382,10 +381,10 @@ STR_0998    :Daha fazla istasyon inşa edilemez
 STR_0999    :Istasyon inşa etmeniz şart
 STR_1000    :Alet tam devre olmalıdır
 STR_1001    :Bu ray bu alet için uyumlu değil
-STR_1002    :{POP16}{POP16}{POP16}{STRINGID} açılamıyor…
-STR_1003    :{POP16}{POP16}{POP16}{STRINGID} test edilemiyor…
-STR_1004    :{POP16}{POP16}{POP16}{STRINGID} kapatılamıyor…
-STR_1005    :{POP16}{POP16}{POP16}{STRINGID} inşa edilemiyor…
+STR_1002    :{STRINGID} açılamıyor…
+STR_1003    :{STRINGID} test edilemiyor…
+STR_1004    :{STRINGID} kapatılamıyor…
+STR_1005    :{STRINGID} inşa edilemiyor…
 STR_1006    :Ilk önce kapatılması lazım
 STR_1007    :Yeterince vagon oluşturulamıyor
 STR_1008    :Aleti aç, kapat veya dene
@@ -1948,8 +1947,6 @@ STR_2738    :Ana ekran müziği:
 STR_2739    :Yok
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat bulunamadı
-STR_2743    :RCT1 klasöründen ‘data/css17.dat’ kopyalayıp RCT2 ‘data/css50.dat’ dosyası olarak kaydediniz veya diğer ayarlar sekmesinde RCT1 dosyasının doğru ayarlandığına dair kontrol ediniz
 STR_2749    :Yeni senaryom
 # New strings used in the cheats window previously these were ???
 STR_2750    :Tümü yukarı aktar
@@ -2222,7 +2219,6 @@ STR_3174    :Başka bir alet/dükkan/cisim için gerekli
 STR_3175    :Bu standard olarak gerekli
 STR_3176    :Bu seçilemiyor
 STR_3177    :Bu kaldırılamıyor
-STR_3178    :En az bir yol seçilmeli
 STR_3179    :En az bir alet veya dükkan/stand seçilmeli
 STR_3180    :Olumsuz seçenekler
 STR_3181    :Şu an seçilen - {STRINGID}
@@ -2255,7 +2251,7 @@ STR_3208    :Alet Meneceri
 STR_3209    :Bir önceki adım:
 STR_3210    :Bir sonraki adım:
 STR_3211    :Harita büyüklüğü:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Arazi daha fazla alçaltılamıyor
 STR_3214    :Arazi daha fazla yükseltilemiyor
 STR_3215    :Arazi sınırına çok fazla yakın
@@ -2550,8 +2546,6 @@ STR_5250    :Ana ekran oyundan çıkış
 STR_5251    :Ana ekran seçenekler buttonu
 STR_5252    :Senaryo listesi
 STR_5253    :Park bilgisi
-STR_5254    :Yeni
-STR_5255    :Sıfırdan yeni bir başlık dizisi oluşturunuz
 STR_5256    :Değiştirmek için kopyalayınız
 STR_5257    :Yeni tema oluşturmak için burayı tıklayınız
 STR_5258    :Seçilmiş temayı siliniz
@@ -2646,75 +2640,10 @@ STR_5373    :Dosya ismi {STRINGID}
 STR_5374    :Tarih {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Kayıtlı oyunlar
-STR_5378    :Başlık dizisi senaryosu
-STR_5379    :Bir sonraki bekleme komutuna geçiniz
-STR_5380    :Başlık dizisini başlatınız
-STR_5381    :Başlık dizisini durdurunuz
-STR_5382    :Başlık dizisini yeniden başlatınız
-STR_5383    :Yeni başlık dizisi üretiniz
-STR_5384    :Şu an seçili olan başlık dizisini siliniz
-STR_5385    :Şu an seçili olan başlık dizisinin ismini değiştiriniz
-STR_5386    :Yeni bir komut ekleyeiniz
-STR_5387    :Seçilen komutu düzenleyiniz
-STR_5388    :Seçilen komutu siliniz
-STR_5389    :Seçili komuta atlayınız
-STR_5390    :Seçilen komutu aşağı aktarınız
-STR_5391    :Seçilen komutu yukarı aktarınız
-STR_5392    :Kayıtlı oyunu başlık dizisine ekleyiniz
-STR_5393    :Seçili oyun kayıdını listeden siliniz
-STR_5394    :Seçili oyun kayıdının ismini değiştiriniz
-STR_5395    :Şeçili oyun kayıdını şimdi yükleyiniz
-STR_5396    :Oyun dışında başlık dizisini ile alakı değişiklikler yapıldıysa başlık dizisini yeniden yükleyiniz
-STR_5397    :Sadece başlık dizisinde kullanılabilir
-STR_5398    :Başlık dizisini değiştirmeden önce durdurmalısınız
-STR_5399    :Değiştirmek için ilk önce durdurunuz
-STR_5400    :Bu başlık dizisi değiştirilemiyor
-STR_5401    :Eski başlık dizisini kopyalarak yeni başlık dizisi oluşturunuz
-STR_5402    :Başlık dizisi yüklenemedi
-STR_5403    :Ya ‘Yükle’ komutu bulunamadı, ya ‘Bekle’ komutu bulunamadı yada kayıdlı oyun geçerli değil
 STR_5404    :Bu isim kullanılmakda
-STR_5405    :Bu kayıt için yeni bir isim giriniz
-STR_5406    :Bu başlık dizisi için yeni isim giriniz
-STR_5407    :Ekle
-STR_5408    :Sil
-STR_5409    :Yeni Komut
-STR_5410    :Düzenle
-STR_5411    :Yeniden yükle
-STR_5412    :Atla
-STR_5413    :Yükle
-STR_5415    :Yükle{MOVE_X}{87}{STRING}
-STR_5416    :Yükle{MOVE_X}{87}Kayıt seçilmedi
-STR_5417    :Bir yer
-STR_5418    :Bir yer{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Çevir
-STR_5420    :Çevir{MOVE_X}{87}{COMMA16}
-STR_5421    :Yakınlaştır
-STR_5422    :Yakınlaştır{MOVE_X}{87}{COMMA16}
-STR_5423    :Bekle
-STR_5424    :Bekle{MOVE_X}{87}{UINT16}
-STR_5425    :Yeniden başlat
-STR_5426    :Bitir
-STR_5427    :Koordinatlar:
-STR_5428    :Saat yönünün tersine çevirme sayısı:
-STR_5429    :Yakınlık seviyesi:
-STR_5430    :Beklenecek milisaniye:
-STR_5431    :Yüklenecek oyun:
-STR_5432    :Komut:
-STR_5433    :Başlık dizileri
-STR_5434    :Komut listesi
-STR_5435    :Yeni isim
-STR_5436    :Başlık dizileri…
-STR_5437    :Kayıdlı oyun seçilmedi
-STR_5438    :Komut listesi açık iken değişiklik uygulanamıyor
-STR_5439    :En az bir 4 saniyelik ‘Bekle’ komutu ‘Yeniden Başlat’ komutunu kullanmak için gereklidir
 STR_5440    :Oyun ön planda değilse oyunu simge durumuna getir
 STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Park değerlendirmesini:
-STR_5443    :Hız{MOVE_X}{87}{STRINGID}
-STR_5444    :Hız:
-STR_5445    :Hız
-STR_5446    :Aktar
 STR_5447    :Alet {STRINGID}
 STR_5448    :Tür {STRINGID}
 STR_5449    :Oyun hızını yavaşlat
@@ -2829,8 +2758,6 @@ STR_5560    :Tüm aletlerin kontrol sıklılığını 10 dakikaya bire ayarlayı
 STR_5561    :Dil yüklenemedi
 STR_5562    :DIKKAT!
 STR_5563    :Bu seçenek henüz deneyim sürecinde. Dikkat ile kullanmanız tavsiye edilir.
-STR_5564    :Hatalı/arızalı madde ekle
-STR_5565    :Hatalı/arızalı madde ekleyiniz. Bu madde üzerindeki herhangi bir öğeyi gizleyecektir.
 STR_5566    :Şifre:
 STR_5567    :Herkese açık
 STR_5568    :Şifre gerekli
@@ -3071,7 +2998,6 @@ STR_5844    :Servere bağşantınız koptuğu halde{NEWLINE}serverden çıkılma
 STR_5845    :Üst araç çubuğuna ‘Debugging Araçları’ simgesi eklensin/kaldırısın{NEWLINE}Bu ayar ile konsolda aktif olacakdır
 STR_5846    :Oyunun hangi ara ile otomatik kaydedileceğini seçiniz
 STR_5847    :Ana ekrandaki arka planda görüntülünen başlık dizisi seçenekleri{NEWLINE}RCT1 veya RCT2 başlık dizilerini kullanmak isterseniz, ilk önce başlık dizisinde kullanılan senaryoları OpenRCT2’ye yüklemeniz gereklidir
-STR_5848    :Başlık dizisi değiştiriniz veya oluşturunuz
 STR_5849    :Yeni işciler otomatikman{NEWLINE}bir yere yerleştiriliyor
 STR_5851    :Yeni inşa edilen aletlere{NEWLINE}otomatikman seçdiğiniz kontrol süreci ayarlanıyor
 STR_5853    :Ses efektlerini aç/kapat
@@ -3271,7 +3197,6 @@ STR_6047    :Kenarları düzleştir
 STR_6048    :Harita arızası
 STR_6049    :PNG dosyası okunamadı
 STR_6050    :Bitmap dosyası okunamadı
-STR_6051    :Uzunluk ve genişlik uyuşması lazım
 STR_6052    :Harita çok büyük olduğundan dolayı küçültülücekdir
 STR_6053    :Harita normalleştirilemiyor
 STR_6054    :Sadece 24 bit Bitmap dosyaları destekleniyor
@@ -3385,23 +3310,8 @@ STR_6170    :Kolaylaştırmalar
 STR_6171    :Arama
 STR_6172    :Arama
 STR_6173    :Aramak istediğiniz müşterinin ismini giriniz:
-STR_6174    :Kayıdlı oyun yükle
-STR_6175    :Senaryo yükle
-STR_6176    :Seçilen senaryo:
-STR_6177    :Yükle{MOVE_X}{87}Senaryo seçilmedi
-STR_6178    :Yükle{MOVE_X}{87}{RED}Senaryo bulunamadı
-STR_6179    :Seçiniz
-STR_6180    :Senaryo seçilmedi
-STR_6181    :{RED}Senaryo bulunamadı
-STR_6182    :Takip{MOVE_X}{87}{STRING}
-STR_6183    :Takip{MOVE_X}{87}Cisim seçilmedi
-STR_6184    :Takip
-STR_6185    :Alet/Kişi seçiniz
-STR_6186    :Alet/Kişi seçilemdi
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Kusmuk
 STR_6189    :Ördek
-STR_6190    :Varsayılan başlık dizisi oynarken cisim seçemezsiniz
 STR_6191    :Zemin
 STR_6192    :Duvar
 STR_6193    :{COMMA16} müşteri
@@ -3916,44 +3826,8 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :Ana blok
-
-[TTRFTL02]
-STR_NAME    :Çatı
-
-[TTRFTL03]
-STR_NAME    :Çatı
-
-[TTRFTL04]
-STR_NAME    :Çatı
-
-[TTRFTL07]
-STR_NAME    :Çatı
-
-[TTRFTL08]
-STR_NAME    :Çatı
-
-[TTPIRF02]
-STR_NAME    :Çatı
-
-[TTPIRF03]
-STR_NAME    :Çatı
-
-[TTPIRF04]
-STR_NAME    :Çatı
-
 [TTPIRF05]
 STR_NAME    :Çatı
-
-[TTPIRF07]
-STR_NAME    :Çatı
-
-[TTPIRF08]
-STR_NAME    :Çatı
-
-[MG-PRAR]
-STR_NAME    :Geçitli duvar
 
 [TTRFWD01]
 STR_NAME    :Çatı

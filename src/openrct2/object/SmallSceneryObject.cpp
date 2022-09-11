@@ -167,12 +167,7 @@ void SmallSceneryObject::PerformFixes()
     }
 
     // ToonTowner's Pirate roofs. Make them show up in the Pirate Theming.
-    if (identifier == "TTPIRF02" ||
-        identifier == "TTPIRF03" ||
-        identifier == "TTPIRF04" ||
-        identifier == "TTPIRF05" ||
-        identifier == "TTPIRF07" ||
-        identifier == "TTPIRF08" ||
+    if (identifier == "TTPIRF05" ||
         identifier == "TTPRF09 " ||
         identifier == "TTPRF10 " ||
         identifier == "TTPRF11 ")

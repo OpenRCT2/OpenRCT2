@@ -20,6 +20,7 @@
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/MazePlaceTrackAction.h"
 #include "../actions/RideCreateAction.h"
+#include "../actions/RideDemolishAction.h"
 #include "../actions/RideEntranceExitPlaceAction.h"
 #include "../actions/SmallSceneryPlaceAction.h"
 #include "../actions/SmallSceneryRemoveAction.h"
@@ -91,7 +92,7 @@ static uint8_t TrackDesignGetEntranceStyle(const Ride& ride)
     return GetStationStyleFromIdentifier(objectName);
 }
 
-rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
+StringId TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
 {
     type = ride.type;
 
@@ -112,9 +113,7 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
 
     for (int32_t i = 0; i < RCT2::Limits::MaxTrainsPerRide; i++)
     {
-        vehicle_colours[i].body_colour = ride.vehicle_colours[i].Body;
-        vehicle_colours[i].trim_colour = ride.vehicle_colours[i].Trim;
-        vehicle_additional_colour[i] = ride.vehicle_colours[i].Tertiary;
+        vehicle_colours[i] = ride.vehicle_colours[i];
     }
 
     for (int32_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
@@ -173,7 +172,7 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
     }
 }
 
-rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
+StringId TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
 {
     CoordsXYE trackElement;
     if (!ride_try_get_origin_element(&ride, &trackElement))
@@ -351,7 +350,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
     return STR_NONE;
 }
 
-rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
+StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
 {
     auto startLoc = MazeGetFirstElement(ride);
 
@@ -494,7 +493,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
     return tile;
 }
 
-rct_string_id TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
+StringId TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
 {
     scenery_elements = _trackSavedTileElementsDesc;
     // Run an element loop
@@ -607,7 +606,6 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(vehicle_object);
     stream << DS_TAG(space_required_x);
     stream << DS_TAG(space_required_y);
-    stream << DS_TAG(vehicle_additional_colour);
     stream << DS_TAG(lift_hill_speed);
     stream << DS_TAG(num_circuits);
 
@@ -1297,7 +1295,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
  *  rct2: 0x006D0964
  */
 static GameActions::Result TrackDesignPlaceAllScenery(
-    TrackDesignState& tds, const std::vector<TrackDesignSceneryElement>& sceneryList)
+    TrackDesignState& tds, const std::vector<TrackDesignSceneryElement>& sceneryList, uint8_t rotation)
 {
     const auto& origin = tds.Origin;
 
@@ -1317,8 +1315,6 @@ static GameActions::Result TrackDesignPlaceAllScenery(
 
         for (const auto& scenery : sceneryList)
         {
-            uint8_t rotation = _currentTrackPieceDirection;
-
             auto mapCoord = CoordsXYZ{ CoordsXY(origin) + scenery.loc.Rotate(rotation), origin.z };
             TrackDesignUpdatePreviewBounds(tds, mapCoord);
 
@@ -1541,10 +1537,9 @@ static GameActions::Result TrackDesignPlaceMaze(TrackDesignState& tds, TrackDesi
 
     if (tds.PlaceOperation == PTD_OPERATION_REMOVE_GHOST)
     {
-        ride_action_modify(
-            ride, RIDE_MODIFY_DEMOLISH,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                | GAME_COMMAND_FLAG_GHOST);
+        auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+        gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+        GameActions::Execute(&gameAction);
     }
 
     tds.Origin = coords;
@@ -1889,7 +1884,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
     }
 
     // Scenery elements
-    auto sceneryPlaceRes = TrackDesignPlaceAllScenery(tds, td6->scenery_elements);
+    auto sceneryPlaceRes = TrackDesignPlaceAllScenery(tds, td6->scenery_elements, coords.direction);
     if (sceneryPlaceRes.Error != GameActions::Status::Ok)
     {
         return sceneryPlaceRes;
@@ -2016,9 +2011,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     {
         for (int32_t i = 0; i < RCT12::Limits::MaxVehicleColours; i++)
         {
-            ride->vehicle_colours[i].Body = td6->vehicle_colours[i].body_colour;
-            ride->vehicle_colours[i].Trim = td6->vehicle_colours[i].trim_colour;
-            ride->vehicle_colours[i].Tertiary = td6->vehicle_additional_colour[i];
+            ride->vehicle_colours[i] = td6->vehicle_colours[i];
         }
     }
 
