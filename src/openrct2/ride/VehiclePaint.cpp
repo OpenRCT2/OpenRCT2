@@ -3765,8 +3765,8 @@ void Vehicle::Paint(paint_session& session, int32_t imageDirection) const
 
     if (IsCrashedVehicle)
     {
-        PaintAddImageAsParent(session, SPR_WATER_PARTICLES_DENSE_0 
-            + animation_frame, { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
+        PaintAddImageAsParent(
+            session, SPR_WATER_PARTICLES_DENSE_0 + animation_frame, { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
         return;
     }
 
