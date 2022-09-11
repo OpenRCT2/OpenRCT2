@@ -116,12 +116,12 @@ namespace Config
             return LanguagesDescriptors[value].locale;
         }
 
-        int32_t GetValue(const std::string& key, int32_t defaultValue) const override
+        int32_t GetValue(std::string_view key, int32_t defaultValue) const override
         {
             int32_t i = 0;
             for (const auto& langDesc : LanguagesDescriptors)
             {
-                if (String::Equals(key.c_str(), langDesc.locale))
+                if (String::Equals(key, langDesc.locale))
                 {
                     return i;
                 }

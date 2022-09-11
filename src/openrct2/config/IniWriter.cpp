@@ -27,7 +27,7 @@ public:
     {
     }
 
-    void WriteSection(const std::string& name) override
+    void WriteSection(std::string_view name) override
     {
         if (!_firstSection)
         {
@@ -35,30 +35,30 @@ public:
         }
         _firstSection = false;
 
-        WriteLine("[" + name + "]");
+        WriteLine("[" + std::string{ name } + "]");
     }
 
-    void WriteBoolean(const std::string& name, bool value) override
+    void WriteBoolean(std::string_view name, bool value) override
     {
         WriteProperty(name, value ? "true" : "false");
     }
 
-    void WriteInt32(const std::string& name, int32_t value) override
+    void WriteInt32(std::string_view name, int32_t value) override
     {
         WriteProperty(name, std::to_string(value));
     }
 
-    void WriteInt64(const std::string& name, int64_t value) override
+    void WriteInt64(std::string_view name, int64_t value) override
     {
         WriteProperty(name, std::to_string(value));
     }
 
-    void WriteFloat(const std::string& name, float value) override
+    void WriteFloat(std::string_view name, float value) override
     {
         WriteProperty(name, std::to_string(value));
     }
 
-    void WriteString(const std::string& name, const std::string& value) override
+    void WriteString(std::string_view name, std::string_view value) override
     {
         std::ostringstream buffer;
         buffer << '"';
@@ -75,15 +75,15 @@ public:
         WriteProperty(name, buffer.str());
     }
 
-    void WriteEnum(const std::string& name, const std::string& key) override
+    void WriteEnum(std::string_view name, std::string_view key) override
     {
         WriteProperty(name, key);
     }
 
 private:
-    void WriteProperty(const std::string& name, const std::string& value)
+    void WriteProperty(std::string_view name, std::string_view value)
     {
-        WriteLine(name + " = " + value);
+        WriteLine(std::string{ name } + " = " + std::string{ value });
     }
 
     void WriteLine()
@@ -91,17 +91,12 @@ private:
         _stream->Write(PLATFORM_NEWLINE, String::SizeOf(PLATFORM_NEWLINE));
     }
 
-    void WriteLine(const std::string& line)
+    void WriteLine(std::string_view line)
     {
-        _stream->Write(line.c_str(), line.size());
+        _stream->Write(line.data(), line.size());
         WriteLine();
     }
 };
-
-void IIniWriter::WriteString(const std::string& name, const utf8* value)
-{
-    WriteString(name, String::ToStd(value));
-}
 
 std::unique_ptr<IIniWriter> CreateIniWriter(OpenRCT2::IStream* stream)
 {

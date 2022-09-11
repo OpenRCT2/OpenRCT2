@@ -26,16 +26,16 @@ struct IIniWriter
 {
     virtual ~IIniWriter() = default;
 
-    virtual void WriteSection(const std::string& name) abstract;
+    virtual void WriteSection(std::string_view name) abstract;
 
-    virtual void WriteBoolean(const std::string& name, bool value) abstract;
-    virtual void WriteInt32(const std::string& name, int32_t value) abstract;
-    virtual void WriteInt64(const std::string& name, int64_t value) abstract;
-    virtual void WriteFloat(const std::string& name, float value) abstract;
-    virtual void WriteString(const std::string& name, const std::string& value) abstract;
-    virtual void WriteEnum(const std::string& name, const std::string& key) abstract;
+    virtual void WriteBoolean(std::string_view name, bool value) abstract;
+    virtual void WriteInt32(std::string_view name, int32_t value) abstract;
+    virtual void WriteInt64(std::string_view name, int64_t value) abstract;
+    virtual void WriteFloat(std::string_view name, float value) abstract;
+    virtual void WriteString(std::string_view name, std::string_view value) abstract;
+    virtual void WriteEnum(std::string_view name, std::string_view key) abstract;
 
-    template<typename T> void WriteEnum(const std::string& name, T value, const IConfigEnum<T>& configEnum)
+    template<typename T> void WriteEnum(std::string_view name, T value, const IConfigEnum<T>& configEnum)
     {
         static_assert(sizeof(T) <= sizeof(int32_t), "Type too large");
 
@@ -49,8 +49,6 @@ struct IIniWriter
             WriteEnum(name, key);
         }
     }
-
-    void WriteString(const std::string& name, const utf8* value);
 };
 
 [[nodiscard]] std::unique_ptr<IIniWriter> CreateIniWriter(OpenRCT2::IStream* stream);

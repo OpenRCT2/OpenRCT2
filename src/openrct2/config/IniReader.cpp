@@ -115,9 +115,9 @@ public:
         ParseSections();
     }
 
-    bool ReadSection(const std::string& name) override
+    bool ReadSection(std::string_view name) override
     {
-        auto it = _sections.find(name);
+        auto it = _sections.find(std::string{ name });
         if (it == _sections.end())
         {
             return false;
@@ -127,7 +127,7 @@ public:
         return true;
     }
 
-    bool GetBoolean(const std::string& name, bool defaultValue) const override
+    bool GetBoolean(std::string_view name, bool defaultValue) const override
     {
         bool result = defaultValue;
         std::string value;
@@ -138,7 +138,7 @@ public:
         return result;
     }
 
-    int32_t GetInt32(const std::string& name, int32_t defaultValue) const override
+    int32_t GetInt32(std::string_view name, int32_t defaultValue) const override
     {
         int32_t result = defaultValue;
         std::string value;
@@ -155,7 +155,7 @@ public:
         return result;
     }
 
-    int64_t GetInt64(const std::string& name, int64_t defaultValue) const override
+    int64_t GetInt64(std::string_view name, int64_t defaultValue) const override
     {
         int64_t result = defaultValue;
         std::string value;
@@ -172,7 +172,7 @@ public:
         return result;
     }
 
-    float GetFloat(const std::string& name, float defaultValue) const override
+    float GetFloat(std::string_view name, float defaultValue) const override
     {
         float result = defaultValue;
         std::string value;
@@ -189,7 +189,7 @@ public:
         return result;
     }
 
-    std::string GetString(const std::string& name, const std::string& defaultValue) const override
+    std::string GetString(std::string_view name, std::string_view defaultValue) const override
     {
         std::string result;
         if (!TryGetString(name, &result))
@@ -199,9 +199,9 @@ public:
         return result;
     }
 
-    bool TryGetString(const std::string& name, std::string* outValue) const override
+    bool TryGetString(std::string_view name, std::string* outValue) const override
     {
-        auto it = _values.find(name);
+        auto it = _values.find(std::string{ name });
         if (it == _values.end())
         {
             return false;
@@ -316,7 +316,7 @@ private:
         _values[key] = std::move(value);
     }
 
-    std::string TrimComment(const std::string& s)
+    std::string_view TrimComment(std::string_view s)
     {
         char inQuotes = 0;
         bool escaped = false;
@@ -341,25 +341,24 @@ private:
         return s;
     }
 
-    std::string UnquoteValue(const std::string& s)
+    std::string_view UnquoteValue(std::string_view s)
     {
-        std::string result = s;
         size_t length = s.size();
         if (length >= 2)
         {
             if ((s[0] == '"' || s[0] == '\'') && s[0] == s[length - 1])
             {
-                result = s.substr(1, length - 2);
+                s = s.substr(1, length - 2);
             }
         }
-        return result;
+        return s;
     }
 
-    std::string UnescapeValue(const std::string& s)
+    std::string UnescapeValue(std::string_view s)
     {
         if (s.find_first_of('\\') == std::string::npos)
         {
-            return s;
+            return std::string{ s };
         }
 
         bool escaped = false;
@@ -391,43 +390,43 @@ private:
 class DefaultIniReader final : public IIniReader
 {
 public:
-    bool ReadSection([[maybe_unused]] const std::string& name) override
+    bool ReadSection([[maybe_unused]] std::string_view name) override
     {
         return true;
     }
 
-    bool GetBoolean([[maybe_unused]] const std::string& name, bool defaultValue) const override
+    bool GetBoolean([[maybe_unused]] std::string_view name, bool defaultValue) const override
     {
         return defaultValue;
     }
 
-    int32_t GetInt32([[maybe_unused]] const std::string& name, int32_t defaultValue) const override
+    int32_t GetInt32([[maybe_unused]] std::string_view name, int32_t defaultValue) const override
     {
         return defaultValue;
     }
 
-    int64_t GetInt64([[maybe_unused]] const std::string& name, int64_t defaultValue) const override
+    int64_t GetInt64([[maybe_unused]] std::string_view name, int64_t defaultValue) const override
     {
         return defaultValue;
     }
 
-    float GetFloat([[maybe_unused]] const std::string& name, float defaultValue) const override
+    float GetFloat([[maybe_unused]] std::string_view name, float defaultValue) const override
     {
         return defaultValue;
     }
 
-    std::string GetString([[maybe_unused]] const std::string& name, const std::string& defaultValue) const override
+    std::string GetString([[maybe_unused]] std::string_view name, std::string_view defaultValue) const override
     {
-        return defaultValue;
+        return std::string{ defaultValue };
     }
 
-    bool TryGetString([[maybe_unused]] const std::string& name, [[maybe_unused]] std::string* outValue) const override
+    bool TryGetString([[maybe_unused]] std::string_view name, [[maybe_unused]] std::string* outValue) const override
     {
         return false;
     }
 };
 
-utf8* IIniReader::GetCString(const std::string& name, const utf8* defaultValue) const
+utf8* IIniReader::GetCString(std::string_view name, const utf8* defaultValue) const
 {
     std::string szValue;
     if (!TryGetString(name, &szValue))

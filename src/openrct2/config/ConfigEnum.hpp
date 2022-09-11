@@ -12,6 +12,7 @@
 #include "../core/String.hpp"
 
 #include <initializer_list>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -31,7 +32,7 @@ template<typename T> struct IConfigEnum
 {
     virtual ~IConfigEnum() = default;
     virtual std::string GetName(T value) const abstract;
-    virtual T GetValue(const std::string& key, T defaultValue) const abstract;
+    virtual T GetValue(std::string_view key, T defaultValue) const abstract;
 };
 
 template<typename T> class ConfigEnum final : public IConfigEnum<T>
@@ -57,7 +58,7 @@ public:
         return std::string();
     }
 
-    T GetValue(const std::string& key, T defaultValue) const override
+    T GetValue(std::string_view key, T defaultValue) const override
     {
         for (const auto& entry : _entries)
         {
