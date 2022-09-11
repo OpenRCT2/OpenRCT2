@@ -64,7 +64,7 @@
 - Fix: [#17866] [Plugin] Wrong Soft Guest Cap at start of new game
 - Fix: [#17959] Areas marked for dirty drawing are too large.
 - Fix: [#17966] Reversed steel trains do not properly import from S4.
-- Fix: [#18008] Steeplechase S-bends had multiple 'gaps' visible in the tracks.
+- Fix: [#18008] Steeplechase S-bends has multiple gaps visible in the tracks.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
