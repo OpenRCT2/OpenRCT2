@@ -377,7 +377,7 @@ namespace Editor
 
             gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, 144);
+            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, 400);
         }
 
         climate_reset(gClimate);
