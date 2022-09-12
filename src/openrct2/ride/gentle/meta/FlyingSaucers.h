@@ -53,7 +53,6 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
         { COLOUR_SATURATED_RED, COLOUR_BRIGHT_YELLOW, COLOUR_BLACK },
         { COLOUR_YELLOW, COLOUR_SATURATED_RED, COLOUR_BLACK },
         { COLOUR_ICY_BLUE, COLOUR_WHITE, COLOUR_BLACK },
-
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_FLYING_SAUCERS_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
