@@ -214,6 +214,33 @@ static constexpr const UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
     { WindowClass::Changelog,              COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_DARK_BROWN,          COLOUR_WHITE,               COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
     THEME_DEF_END,
 };
+#define COLOURS_RCTC(c0, c1, c2, c3, c4, c5) { { (c0), (c1), (c2), (c3), (c4), (c5) } }
+
+static constexpr const UIThemeWindowEntry PredefinedThemeRCTC_Entries[] =
+{
+    { WindowClass::TopToolbar,             COLOURS_RCT1(COLOUR_BLACK,               COLOUR_BLACK,                COLOUR_BLACK,                COLOUR_BLACK,     COLOUR_YELLOW,    COLOUR_YELLOW)    },
+    { WindowClass::BottomToolbar,          COLOURS_RCT1(TRANSLUCENT(COLOUR_BLACK),  TRANSLUCENT(COLOUR_BLACK),   COLOUR_BLACK,               COLOUR_YELLOW,   COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::Ride,                   COLOURS_RCT1(COLOUR_BORDEAUX_RED,       COLOUR_BLACK,                COLOUR_YELLOW,     COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::RideList,               COLOURS_RCT1(COLOUR_BORDEAUX_RED,       COLOUR_GREY,                COLOUR_GREY,                COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::ConstructRide,          COLOURS_RCT1(COLOUR_BORDEAUX_RED,       COLOUR_GREY,                COLOUR_GREY,                COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::Peep,                   COLOURS_RCT1(COLOUR_LIGHT_BROWN,        COLOUR_BORDEAUX_RED,        COLOUR_BORDEAUX_RED,        COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::GuestList,              COLOURS_RCT1(COLOUR_LIGHT_BROWN,        COLOUR_BORDEAUX_RED,        COLOUR_BORDEAUX_RED,        COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::StaffList,              COLOURS_RCT1(COLOUR_DARK_GREEN,         COLOUR_YELLOW,        COLOUR_YELLOW,        COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::Finances,               COLOURS_RCT1(COLOUR_LIGHT_PURPLE,       COLOUR_GREY,                COLOUR_GREY,                COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::TitleMenu,              COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),  TRANSLUCENT(COLOUR_GREY),   TRANSLUCENT(COLOUR_GREY),   COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::TitleExit,              COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),  TRANSLUCENT(COLOUR_GREY),   TRANSLUCENT(COLOUR_GREY),   COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::NewCampaign,            COLOURS_RCT1(COLOUR_BLACK,       COLOUR_YELLOW,        COLOUR_GREY,                COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::TitleOptions,           COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),  TRANSLUCENT(COLOUR_GREY),   TRANSLUCENT(COLOUR_GREY),   COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::Staff,                  COLOURS_RCT1(COLOUR_DARK_GREY,         COLOUR_LIGHT_BROWN,        COLOUR_LIGHT_BROWN,        COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::Options,                COLOURS_RCT1(COLOUR_BLACK,               COLOUR_DARK_BROWN,          COLOUR_DARK_BROWN,          COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::KeyboardShortcutList,   COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_DARK_BROWN,          COLOUR_DARK_BROWN,          COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::ChangeKeyboardShortcut, COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_DARK_BROWN,          COLOUR_DARK_BROWN,          COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::TrackDesignList,        COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_DARK_BROWN,          COLOUR_DARK_BROWN,          COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::Map,                    COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_BLACK,                COLOUR_YELLOW,                COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::About,                  COLOURS_RCT1(COLOUR_BLACK,               COLOUR_DARK_BROWN,          COLOUR_WHITE,               COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::Changelog,              COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_DARK_BROWN,          COLOUR_WHITE,               COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    THEME_DEF_END,
+};
 // clang-format on
 
 static constexpr const UIThemeWindowEntry PredefinedThemeRCT2_Entries[] = {
@@ -224,8 +251,12 @@ const UITheme PredefinedThemeRCT1 = UITheme::CreatePredefined(
     "*RCT1", PredefinedThemeRCT1_Entries,
     UITHEME_FLAG_USE_LIGHTS_RIDE | UITHEME_FLAG_USE_LIGHTS_PARK | UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT
         | UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
-
+const UITheme PredefinedThemeRCTC = UITheme::CreatePredefined("*RCTC", PredefinedThemeRCTC_Entries,
+    UITHEME_FLAG_USE_RCTC_RIDE_LIGHTS | UITHEME_FLAG_USE_RCTC_PARK_LIGHTS;
 const UITheme PredefinedThemeRCT2 = UITheme::CreatePredefined("*RCT2", PredefinedThemeRCT2_Entries, 0);
+
+
+
 
 struct PredefinedTheme
 {
@@ -236,6 +267,7 @@ struct PredefinedTheme
 static constexpr const PredefinedTheme PredefinedThemes[] = {
     { &PredefinedThemeRCT1, STR_TITLE_SEQUENCE_RCT1 },
     { &PredefinedThemeRCT2, STR_TITLE_SEQUENCE_RCT2 },
+    { &PredefinedThemeRCTC, STR_TITLE_SEQUENCE_OpenRCT2 },
 };
 
 #pragma endregion
