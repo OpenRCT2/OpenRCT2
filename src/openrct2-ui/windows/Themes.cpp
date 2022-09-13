@@ -63,7 +63,9 @@ enum WindowThemesWidgetIdx
     WIDX_THEMES_RCT1_RIDE_LIGHTS,
     WIDX_THEMES_RCT1_PARK_LIGHTS,
     WIDX_THEMES_RCT1_SCENARIO_FONT,
-    WIDX_THEMES_RCT1_BOTTOM_TOOLBAR
+    WIDX_THEMES_RCT1_BOTTOM_TOOLBAR,
+    WIDX_THEMES_RCTC_RIDE_LIGHTS,
+    WIDX_THEMES_RCTC_PARK_LIGHTS,
 };
 
 static constexpr const StringId WINDOW_TITLE = STR_THEMES_TITLE;
@@ -96,6 +98,8 @@ static rct_widget window_themes_widgets[] = {
     MakeWidget({ 10, 69}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                               ), // rct1 park lights
     MakeWidget({ 10, 84}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                     ), // rct1 scenario font
     MakeWidget({ 10, 99}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                              ), // rct1 bottom toolbar
+    MakeWidget({ 10, 114}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCTC_RIDE_CONTROLS                                               ), // rct classic ride lights
+    MakeWidget({ 10, 129}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCTC_PARK_CONTROLS                                               ), // rct classic park lights
     WIDGETS_END,
 };
 
@@ -409,6 +413,8 @@ public:
             window_themes_widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
             window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Checkbox;
             window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Checkbox;
+            window_themes_widgets[WIDX_THEMES_RCTC_RIDE_LIGHTS].type = WindowWidgetType::Checkbox;
+            window_themes_widgets[WIDX_THEMES_RCTC_PARK_LIGHTS].type = WindowWidgetType::Checkbox;
             window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Checkbox;
             window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Checkbox;
             window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
@@ -432,6 +438,8 @@ public:
             window_themes_widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Scroll;
             window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
             window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
+            window_themes_widgets[WIDX_THEMES_RCTC_RIDE_LIGHTS].type = WindowWidgetType::Empty;
+            window_themes_widgets[WIDX_THEMES_RCTC_PARK_LIGHTS].type = WindowWidgetType::Empty;
             window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Empty;
             window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Empty;
             window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
