@@ -72,7 +72,6 @@ private:
     CoordsXY _previousClipSelectionB = gMapSize.ToCoordsXY();
     bool _toolActive{ false };
     bool _dragging{ false };
-    bool _firstStart = true;
     static inline DisplayType _clipHeightDisplayType;
 
 public:
@@ -344,13 +343,6 @@ public:
 
     void OnOpen() override
     {
-        if (_firstStart)
-        {
-            _firstStart = false;
-            gClipSelectionA = { 0, 0 };
-            gClipSelectionB = gMapSize.ToCoordsXY();
-        }
-
         this->widgets = window_view_clipping_widgets;
         this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
         WindowInitScrollWidgets(this);

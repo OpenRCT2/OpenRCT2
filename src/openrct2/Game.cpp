@@ -41,6 +41,7 @@
 #include "network/network.h"
 #include "object/Object.h"
 #include "object/ObjectList.h"
+#include "paint/Paint.h"
 #include "platform/Platform.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
@@ -501,6 +502,9 @@ void game_load_init()
 
     OpenRCT2::Audio::StopTitleMusic();
     gGameSpeed = 1;
+    gClipSelectionA = { 0,0 };
+    gClipSelectionB = gMapSize.ToCoordsXY();
+    printf("a\n");
 }
 
 void game_load_scripts()
