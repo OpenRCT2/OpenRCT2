@@ -997,7 +997,7 @@ void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::str
 {
     if (plugin == nullptr)
     {
-        _console.WriteLine(std::string(message));
+        _console.WriteLine(message);
     }
     else
     {

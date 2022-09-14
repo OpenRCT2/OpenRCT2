@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../common.h"
 #include "../config/Config.h"
+#include "../core/String.hpp"
 #include "../interface/Cursors.h"
 
 #include <memory>
@@ -119,18 +120,18 @@ namespace OpenRCT2
             virtual void ProcessMessages() abstract;
             virtual void TriggerResize() abstract;
 
-            virtual void ShowMessageBox(const std::string& message) abstract;
+            virtual void ShowMessageBox(std::string_view message) abstract;
             virtual int32_t ShowMessageBox(
-                const std::string& title, const std::string& message, const std::vector<std::string>& options) abstract;
+                std::string_view title, std::string_view message, const std::vector<std::string>& options) abstract;
 
             virtual bool HasMenuSupport() abstract;
             // Creates a menu with a series of options, returns the index of the selected option
             virtual int32_t ShowMenuDialog(
-                const std::vector<std::string>& options, const std::string& title, const std::string& text) abstract;
-            virtual void OpenFolder(const std::string& path) abstract;
-            virtual void OpenURL(const std::string& url) abstract;
+                const std::vector<std::string>& options, std::string_view title, std::string_view text) abstract;
+            virtual void OpenFolder(u8string_view path) abstract;
+            virtual void OpenURL(std::string_view url) abstract;
             virtual std::string ShowFileDialog(const FileDialogDesc& desc) abstract;
-            virtual std::string ShowDirectoryDialog(const std::string& title) abstract;
+            virtual std::string ShowDirectoryDialog(std::string_view title) abstract;
             virtual bool HasFilePicker() const abstract;
 
             // Input

@@ -340,17 +340,17 @@ CExceptionHandler crash_init()
 #endif // USE_BREAKPAD
 }
 
-void crash_register_additional_file(const std::string& key, u8string_view path)
+void crash_register_additional_file(std::string_view key, u8string_view path)
 {
 #ifdef USE_BREAKPAD
-    _uploadFiles[String::ToWideChar(key.c_str())] = String::ToWideChar(path);
+    _uploadFiles[String::ToWideChar(key)] = String::ToWideChar(path);
 #endif // USE_BREAKPAD
 }
 
-void crash_unregister_additional_file(const std::string& key)
+void crash_unregister_additional_file(std::string_view key)
 {
 #ifdef USE_BREAKPAD
-    auto it = _uploadFiles.find(String::ToWideChar(key.c_str()));
+    auto it = _uploadFiles.find(String::ToWideChar(key));
     if (it != _uploadFiles.end())
     {
         _uploadFiles.erase(it);

@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <openrct2/common.h>
+#include <openrct2/core/String.hpp>
 #include <string>
 #include <vector>
 
@@ -33,15 +34,15 @@ namespace OpenRCT2
             virtual void SetWindowIcon(SDL_Window* window) abstract;
             virtual bool IsSteamOverlayAttached() abstract;
 
-            virtual void ShowMessageBox(SDL_Window* window, const std::string& message) abstract;
+            virtual void ShowMessageBox(SDL_Window* window, std::string_view message) abstract;
             virtual bool HasMenuSupport() abstract;
             virtual int32_t ShowMenuDialog(
-                const std::vector<std::string>& options, const std::string& title, const std::string& text) abstract;
-            virtual void OpenFolder(const std::string& path) abstract;
+                const std::vector<std::string>& options, std::string_view title, std::string_view text) abstract;
+            virtual void OpenFolder(u8string_view path) abstract;
 
-            virtual void OpenURL(const std::string& url) abstract;
+            virtual void OpenURL(std::string_view url) abstract;
             virtual std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) abstract;
-            virtual std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) abstract;
+            virtual std::string ShowDirectoryDialog(SDL_Window* window, std::string_view title) abstract;
 
             virtual bool HasFilePicker() const abstract;
         };

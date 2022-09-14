@@ -309,7 +309,7 @@ namespace OpenRCT2::Scripting
             InitialiseCustomTool(_scriptEngine, desc);
         }
 
-        void registerMenuItem(std::string text, DukValue callback)
+        void registerMenuItem(const std::string& text, DukValue callback)
         {
             auto& execInfo = _scriptEngine.GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();

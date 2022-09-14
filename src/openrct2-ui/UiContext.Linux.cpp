@@ -88,9 +88,10 @@ namespace OpenRCT2::Ui
 #    endif
         }
 
-        void ShowMessageBox(SDL_Window* window, const std::string& message) override
+        void ShowMessageBox(SDL_Window* window, std::string_view message) override
         {
-            log_verbose(message.c_str());
+            auto messageStr = std::string{ message };
+            log_verbose(messageStr.c_str());
 
             std::string executablePath;
             DIALOG_TYPE dtype = GetDialogApp(&executablePath);
@@ -100,32 +101,32 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::KDIALOG:
                 {
                     std::string cmd = String::StdFormat(
-                        "%s --title \"OpenRCT2\" --msgbox \"%s\"", executablePath.c_str(), message.c_str());
+                        "%s --title \"OpenRCT2\" --msgbox \"%s\"", executablePath.c_str(), messageStr.c_str());
                     Platform::Execute(cmd);
                     break;
                 }
                 case DIALOG_TYPE::ZENITY:
                 {
                     std::string cmd = String::StdFormat(
-                        "%s --title=\"OpenRCT2\" --info --text=\"%s\"", executablePath.c_str(), message.c_str());
+                        "%s --title=\"OpenRCT2\" --info --text=\"%s\"", executablePath.c_str(), messageStr.c_str());
                     Platform::Execute(cmd);
                     break;
                 }
                 default:
-                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenRCT2", message.c_str(), window);
+                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenRCT2", messageStr.c_str(), window);
                     break;
             }
         }
 
-        void OpenFolder(const std::string& path) override
+        void OpenFolder(u8string_view path) override
         {
             std::string cmd = String::StdFormat("xdg-open %s", EscapePathForShell(path).c_str());
             Platform::Execute(cmd);
         }
 
-        void OpenURL(const std::string& url) override
+        void OpenURL(std::string_view url) override
         {
-            std::string cmd = String::StdFormat("xdg-open %s", url.c_str());
+            std::string cmd = String::StdFormat("xdg-open %s", std::string{ url }.c_str());
             Platform::Execute(cmd);
         }
 
@@ -217,7 +218,7 @@ namespace OpenRCT2::Ui
             return result;
         }
 
-        std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
+        std::string ShowDirectoryDialog(SDL_Window* window, std::string_view title) override
         {
             std::string result;
             std::string executablePath;
@@ -271,8 +272,7 @@ namespace OpenRCT2::Ui
             return dtype != DIALOG_TYPE::NONE;
         }
 
-        int32_t ShowMenuDialog(
-            const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+        int32_t ShowMenuDialog(const std::vector<std::string>& options, std::string_view title, std::string_view text) override
         {
             std::string executablePath;
             DIALOG_TYPE dtype = GetDialogApp(&executablePath);
@@ -300,7 +300,8 @@ namespace OpenRCT2::Ui
                     {
                         sb.Append(String::StdFormat(" '%s'", option.c_str()));
                     }
-                    sb.Append(String::StdFormat(" --title '%s' --text '%s'", title.c_str(), text.c_str()));
+                    sb.Append(String::StdFormat(
+                        " --title '%s' --text '%s'", std::string{ title }.c_str(), std::string{ text }.c_str()));
 
                     std::string buff;
                     Platform::Execute(sb.GetBuffer(), &buff);
@@ -309,8 +310,9 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::KDIALOG:
                 {
                     auto sb = StringBuilder();
-                    sb.Append(String::StdFormat("kdialog --geometry %dx%d --title '%s' --menu ", width, height, title.c_str()));
-                    sb.Append(String::StdFormat(" '%s'", text.c_str()));
+                    sb.Append(String::StdFormat(
+                        "kdialog --geometry %dx%d --title '%s' --menu ", width, height, std::string{ title }.c_str()));
+                    sb.Append(String::StdFormat(" '%s'", std::string{ text }.c_str()));
                     for (const auto& option : options)
                     {
                         sb.Append(String::StdFormat(" '%s' '%s'", option.c_str(), option.c_str()));

@@ -45,7 +45,7 @@ namespace Cursor
         { "CURSOR_ARROW", CursorID::Arrow },
     };
 
-    CursorID FromString(const std::string& s, CursorID defaultValue)
+    CursorID FromString(std::string_view s, CursorID defaultValue)
     {
         assert(defaultValue != CursorID::Undefined);
 

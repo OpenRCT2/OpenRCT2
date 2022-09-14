@@ -607,7 +607,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
                         if (!text.empty())
                         {
                             ScreenSize cellSize = { std::numeric_limits<int32_t>::max(), LIST_ROW_HEIGHT };
-                            PaintCell(dpi, { 0, y }, cellSize, text.c_str(), isHighlighted);
+                            PaintCell(dpi, { 0, y }, cellSize, text, isHighlighted);
                         }
                     }
                 }
@@ -623,7 +623,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
                             if (!text.empty())
                             {
                                 ScreenSize cellSize = { column.Width, LIST_ROW_HEIGHT };
-                                PaintCell(dpi, { x, y }, cellSize, text.c_str(), isHighlighted);
+                                PaintCell(dpi, { x, y }, cellSize, text, isHighlighted);
                             }
                         }
                         x += column.Width;
@@ -664,7 +664,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
 }
 
 void CustomListView::PaintHeading(
-    rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
+    rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, std::string_view text,
     ColumnSortOrder sortOrder, bool isPressed) const
 {
     auto boxFlags = 0;
@@ -675,7 +675,7 @@ void CustomListView::PaintHeading(
     gfx_fill_rect_inset(dpi, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
     if (!text.empty())
     {
-        PaintCell(dpi, pos, size, text.c_str(), false);
+        PaintCell(dpi, pos, size, text, false);
     }
 
     if (sortOrder == ColumnSortOrder::Ascending)
@@ -752,13 +752,14 @@ void CustomListView::PaintSeperator(
 }
 
 void CustomListView::PaintCell(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, std::string_view text, bool isHighlighted) const
 {
     StringId stringId = isHighlighted ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
 
     auto ft = Formatter();
+    auto textStr = std::string{ text };
     ft.Add<StringId>(STR_STRING);
-    ft.Add<const char*>(text);
+    ft.Add<const char*>(textStr.c_str());
     DrawTextEllipsised(dpi, pos, size.width, stringId, ft, {});
 }
 

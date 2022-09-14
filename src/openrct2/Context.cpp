@@ -296,12 +296,12 @@ namespace OpenRCT2
             return EXIT_FAILURE;
         }
 
-        void WriteLine(const std::string& s) override
+        void WriteLine(std::string_view s) override
         {
             _stdInOutConsole.WriteLine(s);
         }
 
-        void WriteErrorLine(const std::string& s) override
+        void WriteErrorLine(std::string_view s) override
         {
             _stdInOutConsole.WriteLineError(s);
         }
@@ -1213,16 +1213,18 @@ namespace OpenRCT2
             CopyOriginalUserFilesOver(DIRID::LANDSCAPE, "*.sc6");
         }
 
-        void CopyOriginalUserFilesOver(DIRID dirid, const std::string& pattern)
+        void CopyOriginalUserFilesOver(DIRID dirid, std::string_view pattern)
         {
             auto src = _env->GetDirectoryPath(DIRBASE::RCT2, dirid);
             auto dst = _env->GetDirectoryPath(DIRBASE::USER, dirid);
             CopyOriginalUserFilesOver(src, dst, pattern);
         }
 
-        void CopyOriginalUserFilesOver(const std::string& srcRoot, const std::string& dstRoot, const std::string& pattern)
+        void CopyOriginalUserFilesOver(u8string_view srcRoot, u8string_view dstRoot, std::string_view pattern)
         {
-            log_verbose("CopyOriginalUserFilesOver('%s', '%s', '%s')", srcRoot.c_str(), dstRoot.c_str(), pattern.c_str());
+            log_verbose(
+                "CopyOriginalUserFilesOver('%s', '%s', '%s')", std::string{ srcRoot }.c_str(), std::string{ dstRoot }.c_str(),
+                std::string{ pattern }.c_str());
 
             auto scanPattern = Path::Combine(srcRoot, pattern);
             auto scanner = Path::ScanDirectory(scanPattern, true);
@@ -1256,7 +1258,7 @@ namespace OpenRCT2
         }
 
 #ifndef DISABLE_HTTP
-        std::vector<uint8_t> DownloadPark(const std::string& url)
+        std::vector<uint8_t> DownloadPark(std::string_view url)
         {
             // Download park to buffer in memory
             Http::Request request;

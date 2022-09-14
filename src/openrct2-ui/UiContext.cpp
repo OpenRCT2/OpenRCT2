@@ -635,13 +635,12 @@ public:
         CreateWindow(windowPos);
     }
 
-    void ShowMessageBox(const std::string& message) override
+    void ShowMessageBox(std::string_view message) override
     {
         _platformUiContext->ShowMessageBox(_window, message);
     }
 
-    int32_t ShowMessageBox(
-        const std::string& title, const std::string& message, const std::vector<std::string>& options) override
+    int32_t ShowMessageBox(std::string_view title, std::string_view message, const std::vector<std::string>& options) override
     {
         auto message_box_button_data = std::make_unique<SDL_MessageBoxButtonData[]>(options.size());
         for (size_t i = 0; i < options.size(); i++)
@@ -650,10 +649,12 @@ public:
             message_box_button_data[i].text = options[i].c_str();
         }
 
+        auto titleStr = std::string{ title };
+        auto messageStr = std::string{ message };
         SDL_MessageBoxData message_box_data{};
         message_box_data.window = _window;
-        message_box_data.title = title.c_str();
-        message_box_data.message = message.c_str();
+        message_box_data.title = titleStr.c_str();
+        message_box_data.message = messageStr.c_str();
         message_box_data.numbuttons = static_cast<int>(options.size());
         message_box_data.buttons = message_box_button_data.get();
 
@@ -669,17 +670,17 @@ public:
         return _platformUiContext->HasMenuSupport();
     }
 
-    int32_t ShowMenuDialog(const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+    int32_t ShowMenuDialog(const std::vector<std::string>& options, std::string_view title, std::string_view text) override
     {
         return _platformUiContext->ShowMenuDialog(options, title, text);
     }
 
-    void OpenFolder(const std::string& path) override
+    void OpenFolder(u8string_view path) override
     {
         _platformUiContext->OpenFolder(path);
     }
 
-    void OpenURL(const std::string& url) override
+    void OpenURL(std::string_view url) override
     {
         _platformUiContext->OpenURL(url);
     }
@@ -689,7 +690,7 @@ public:
         return _platformUiContext->ShowFileDialog(_window, desc);
     }
 
-    std::string ShowDirectoryDialog(const std::string& title) override
+    std::string ShowDirectoryDialog(std::string_view title) override
     {
         return _platformUiContext->ShowDirectoryDialog(_window, title);
     }

@@ -87,10 +87,10 @@ namespace OpenRCT2::Ui
         {
         }
 
-        void ShowMessageBox(const std::string& /*message*/) override
+        void ShowMessageBox(std::string_view /*message*/) override
         {
         }
-        int32_t ShowMessageBox(const std::string&, const std::string&, const std::vector<std::string>&) override
+        int32_t ShowMessageBox(std::string_view, std::string_view, const std::vector<std::string>&) override
         {
             return -1;
         }
@@ -99,22 +99,21 @@ namespace OpenRCT2::Ui
             return false;
         }
 
-        int32_t ShowMenuDialog(
-            const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+        int32_t ShowMenuDialog(const std::vector<std::string>& options, std::string_view title, std::string_view text) override
         {
             return static_cast<int32_t>(options.size());
         }
-        void OpenFolder(const std::string& /*path*/) override
+        void OpenFolder(u8string_view /*path*/) override
         {
         }
-        void OpenURL(const std::string& /*url*/) override
+        void OpenURL(std::string_view /*url*/) override
         {
         }
         std::string ShowFileDialog(const FileDialogDesc& /*desc*/) override
         {
             return std::string();
         }
-        std::string ShowDirectoryDialog(const std::string& /*title*/) override
+        std::string ShowDirectoryDialog(u8string_view /*title*/) override
         {
             return std::string();
         }

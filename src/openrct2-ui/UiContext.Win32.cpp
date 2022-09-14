@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui
             return (GetModuleHandleA("GameOverlayRenderer.dll") != nullptr);
         }
 
-        void ShowMessageBox(SDL_Window* window, const std::string& message) override
+        void ShowMessageBox(SDL_Window* window, std::string_view message) override
         {
             HWND hwnd = GetHWND(window);
             std::wstring messageW = String::ToWideChar(message);
@@ -98,19 +98,18 @@ namespace OpenRCT2::Ui
             return false;
         }
 
-        int32_t ShowMenuDialog(
-            const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+        int32_t ShowMenuDialog(const std::vector<std::string>& options, std::string_view title, std::string_view text) override
         {
             return -1;
         }
 
-        void OpenFolder(const std::string& path) override
+        void OpenFolder(u8string_view path) override
         {
             std::wstring pathW = String::ToWideChar(path);
             ShellExecuteW(NULL, L"open", pathW.c_str(), NULL, NULL, SW_SHOWNORMAL);
         }
 
-        void OpenURL(const std::string& url) override
+        void OpenURL(std::string_view url) override
         {
             std::wstring urlW = String::ToWideChar(url);
             ShellExecuteW(NULL, L"open", urlW.c_str(), NULL, NULL, SW_SHOWNORMAL);
@@ -173,7 +172,7 @@ namespace OpenRCT2::Ui
             return resultFilename;
         }
 
-        std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
+        std::string ShowDirectoryDialog(SDL_Window* window, std::string_view title) override
         {
             std::string result;
 

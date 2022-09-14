@@ -285,18 +285,18 @@ private:
      *
      * @param text
      */
-    void ProcessChangelogText(const std::string& text)
+    void ProcessChangelogText(std::string_view text)
     {
         std::string::size_type pos = 0;
         std::string::size_type prev = 0;
         while ((pos = text.find('\n', prev)) != std::string::npos)
         {
-            _changelogLines.push_back(text.substr(prev, pos - prev));
+            _changelogLines.emplace_back(text.substr(prev, pos - prev));
             prev = pos + 1;
         }
 
         // To get the last substring (or only, if delimiter is not found)
-        _changelogLines.push_back(text.substr(prev));
+        _changelogLines.emplace_back(text.substr(prev));
 
         _changelogLongestLineWidth = 0;
         for (const auto& line : _changelogLines)

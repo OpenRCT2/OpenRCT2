@@ -45,17 +45,16 @@ namespace OpenRCT2::Ui
             return false;
         }
 
-        int32_t ShowMenuDialog(
-            const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+        int32_t ShowMenuDialog(const std::vector<std::string>& options, std::string_view title, std::string_view text) override
         {
             return -1;
         }
 
-        void ShowMessageBox(SDL_Window* window, const std::string& message) override
+        void ShowMessageBox(SDL_Window* window, std::string_view message) override
         {
-            log_verbose(message.c_str());
+            log_verbose(std::string{ message }.c_str());
 
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenRCT2", message.c_str(), window);
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenRCT2", std::string{ message }.c_str(), window);
         }
 
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
@@ -65,19 +64,19 @@ namespace OpenRCT2::Ui
             return nullptr;
         }
 
-        std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
+        std::string ShowDirectoryDialog(SDL_Window* window, std::string_view title) override
         {
-            log_info(title.c_str());
+            log_info(std::string{ title }.c_str());
             STUB();
 
             return "/sdcard/rct2";
         }
 
-        void OpenFolder(const std::string& path) override
+        void OpenFolder(u8string_view path) override
         {
         }
 
-        void OpenURL(const std::string& url) override
+        void OpenURL(std::string_view url) override
         {
             STUB();
         }

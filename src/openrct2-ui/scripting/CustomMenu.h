@@ -38,7 +38,7 @@ namespace OpenRCT2::Scripting
         DukValue Callback;
 
         CustomToolbarMenuItem(
-            std::shared_ptr<Plugin> owner, CustomToolbarMenuItemKind kind, const std::string& text, DukValue callback)
+            std::shared_ptr<Plugin> owner, CustomToolbarMenuItemKind kind, std::string_view text, DukValue callback)
             : Owner(owner)
             , Kind(kind)
             , Text(text)

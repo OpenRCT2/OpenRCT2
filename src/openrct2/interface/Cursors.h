@@ -49,7 +49,7 @@ enum class CursorID : uint8_t
 
 namespace Cursor
 {
-    CursorID FromString(const std::string& s, CursorID defaultValue);
+    CursorID FromString(std::string_view s, CursorID defaultValue);
 }
 
 namespace OpenRCT2::Ui

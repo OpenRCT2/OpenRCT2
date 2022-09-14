@@ -140,11 +140,11 @@ namespace OpenRCT2::Ui::Windows
 
     private:
         void PaintHeading(
-            rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
+            rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, std::string_view text,
             ColumnSortOrder sortOrder, bool isPressed) const;
         void PaintSeperator(rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const;
         void PaintCell(
-            rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text,
+            rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, std::string_view text,
             bool isHighlighted) const;
         std::optional<RowColumn> GetItemIndexAt(const ScreenCoordsXY& pos);
         rct_widget* GetWidget() const;
