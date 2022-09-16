@@ -21,6 +21,8 @@ public:
     StaffSetOrdersAction() = default;
     StaffSetOrdersAction(EntityId spriteIndex, uint8_t ordersId);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
