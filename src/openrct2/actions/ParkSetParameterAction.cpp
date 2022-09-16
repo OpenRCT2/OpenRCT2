@@ -20,6 +20,12 @@ ParkSetParameterAction::ParkSetParameterAction(ParkParameter parameter, uint64_t
 {
 }
 
+void ParkSetParameterAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("parameter", _parameter);
+    visitor.Visit("value", _value);
+}
+
 uint16_t ParkSetParameterAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
