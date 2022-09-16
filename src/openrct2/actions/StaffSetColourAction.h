@@ -21,6 +21,8 @@ public:
     StaffSetColourAction() = default;
     StaffSetColourAction(StaffType staffType, uint8_t colour);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
