@@ -36,6 +36,8 @@ public:
     ParkSetParameterAction() = default;
     ParkSetParameterAction(ParkParameter parameter, uint64_t value = 0);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
