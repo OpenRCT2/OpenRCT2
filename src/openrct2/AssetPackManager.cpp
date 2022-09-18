@@ -12,6 +12,7 @@
 #include "AssetPack.h"
 #include "Context.h"
 #include "PlatformEnvironment.h"
+#include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/FileSystem.hpp"
 #include "core/String.hpp"
@@ -39,6 +40,24 @@ AssetPack* AssetPackManager::GetAssetPack(size_t index)
     if (index >= _assetPacks.size())
         return nullptr;
     return _assetPacks[index].get();
+}
+
+AssetPack* AssetPackManager::GetAssetPack(std::string_view id)
+{
+    auto index = GetAssetPackIndex(id);
+    if (index != std::numeric_limits<size_t>::max())
+        return _assetPacks[index].get();
+    return nullptr;
+}
+
+size_t AssetPackManager::GetAssetPackIndex(std::string_view id)
+{
+    auto it = std::find_if(_assetPacks.begin(), _assetPacks.end(), [&](const std::unique_ptr<AssetPack>& assetPack) {
+        return assetPack != nullptr ? assetPack->Id == id : false;
+    });
+    if (it == _assetPacks.end())
+        return std::numeric_limits<size_t>::max();
+    return std::distance(_assetPacks.begin(), it);
 }
 
 void AssetPackManager::Scan()
@@ -108,4 +127,72 @@ void AssetPackManager::AddAssetPack(const fs::path& path)
         auto fileName = path.filename().u8string();
         Console::Error::WriteFormat("Unable to load asset pack: %s (%s)", fileName.c_str(), e.what());
     }
+}
+
+template<typename TFunc> static void EnumerateCommaSeparatedList(std::string_view csl, TFunc func)
+{
+    size_t elStart = 0;
+    for (size_t i = 0; i <= csl.size(); i++)
+    {
+        if (i == csl.size() || csl[i] == ',')
+        {
+            auto el = csl.substr(elStart, i - elStart);
+            if (el.size() != 0)
+                func(el);
+            elStart = i + 1;
+        }
+    }
+}
+
+void AssetPackManager::LoadEnabledAssetPacks()
+{
+    // Re-order asset packs
+    std::vector<std::unique_ptr<AssetPack>> newAssetPacks;
+    EnumerateCommaSeparatedList(gConfigGeneral.asset_pack_order, [&](std::string_view id) {
+        auto index = GetAssetPackIndex(id);
+        if (index != std::numeric_limits<size_t>::max())
+        {
+            newAssetPacks.push_back(std::move(_assetPacks[index]));
+        }
+    });
+    for (auto& assetPack : _assetPacks)
+    {
+        if (assetPack != nullptr)
+        {
+            newAssetPacks.push_back(std::move(assetPack));
+        }
+    }
+    _assetPacks = std::move(newAssetPacks);
+
+    // Set which asset packs are enabled
+    EnumerateCommaSeparatedList(gConfigGeneral.enabled_asset_packs, [&](std::string_view id) {
+        auto assetPack = GetAssetPack(id);
+        if (assetPack != nullptr)
+        {
+            assetPack->SetEnabled(true);
+        }
+    });
+}
+
+void AssetPackManager::SaveEnabledAssetPacks()
+{
+    u8string orderList;
+    u8string enabledList;
+    for (const auto& assetPack : _assetPacks)
+    {
+        orderList.append(assetPack->Id);
+        orderList.push_back(',');
+        if (assetPack->IsEnabled())
+        {
+            enabledList.append(assetPack->Id);
+            enabledList.push_back(',');
+        }
+    }
+    if (orderList.size() > 0)
+        orderList.pop_back();
+    if (enabledList.size() > 0)
+        enabledList.pop_back();
+    gConfigGeneral.asset_pack_order = orderList;
+    gConfigGeneral.enabled_asset_packs = enabledList;
+    config_save_default();
 }

@@ -288,6 +288,12 @@ private:
     {
         auto& objectManager = GetContext()->GetObjectManager();
         objectManager.ResetObjects();
+
+        auto assetPackManager = GetContext()->GetAssetPackManager();
+        if (assetPackManager != nullptr)
+        {
+            assetPackManager->SaveEnabledAssetPacks();
+        }
     }
 };
 

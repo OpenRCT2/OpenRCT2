@@ -214,6 +214,8 @@ namespace Config
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
+            model->asset_pack_order = reader->GetString("asset_pack_order", "");
+            model->enabled_asset_packs = reader->GetString("enabled_asset_packs", "");
             model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", true);
             model->transparent_water = reader->GetBoolean("transparent_water", true);
 
@@ -298,6 +300,8 @@ namespace Config
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
+        writer->WriteString("asset_pack_order", model->asset_pack_order);
+        writer->WriteString("enabled_asset_packs", model->enabled_asset_packs);
         writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
         writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
         writer->WriteBoolean("transparent_water", model->transparent_water);

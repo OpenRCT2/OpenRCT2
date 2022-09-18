@@ -442,6 +442,7 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless)
             {
                 _assetPackManager->Scan();
+                _assetPackManager->LoadEnabledAssetPacks();
                 _assetPackManager->Reload();
             }
 

@@ -31,7 +31,7 @@ namespace OpenRCT2
 
         AudioSampleTable _sampleTable;
         std::vector<Entry> _entries;
-        bool _enabled = true;
+        bool _enabled;
 
     public:
         fs::path Path;
