@@ -110,9 +110,9 @@ public:
         if (index < 0 || static_cast<size_t>(index) >= GetNumAssetPacks())
             return;
 
-        if (_selectedIndex != index)
+        if (_selectedIndex != static_cast<size_t>(index))
         {
-            _selectedIndex = index;
+            _selectedIndex = static_cast<size_t>(index);
             Invalidate();
         }
     }
@@ -123,9 +123,9 @@ public:
         if (index < 0 || static_cast<size_t>(index) >= GetNumAssetPacks())
             return;
 
-        if (_highlightedIndex != index)
+        if (_highlightedIndex != static_cast<size_t>(index))
         {
-            _highlightedIndex = index;
+            _highlightedIndex = static_cast<size_t>(index);
             Invalidate();
         }
     }
