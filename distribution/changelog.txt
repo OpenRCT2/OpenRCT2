@@ -15,6 +15,7 @@
 - Feature: [objects#198] Add additional pirate roofs.
 - Feature: [objects#205] Add additional glass roofs.
 - Feature: [objects#209] Add the Steel Roller Coaster train and 2-across Inverted Train from RollerCoaster Tycoon 1.
+- Feature: [#18050] Add asset pack manager and asset packs.
 - Improved: [#15358] Park and scenario names can now contain up to 128 characters.
 - Improved: [#15589] Numpad Enter can now be used to close text input.
 - Improved: [#16819] Don’t prompt to “Save game as” when saving a loaded saved game (excepting autosaves).
