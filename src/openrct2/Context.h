@@ -81,6 +81,7 @@ class NetworkBase;
 
 namespace OpenRCT2
 {
+    class AssetPackManager;
     class GameState;
 
     struct IPlatformEnvironment;
@@ -136,6 +137,7 @@ namespace OpenRCT2
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;
+        virtual AssetPackManager* GetAssetPackManager() abstract;
         virtual IGameStateSnapshots* GetGameStateSnapshots() abstract;
         virtual DrawingEngine GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;

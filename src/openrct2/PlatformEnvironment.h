@@ -51,6 +51,7 @@ namespace OpenRCT2
         REPLAY,      // Contains recorded replays.
         LOG_DESYNCS, // Contains desync reports.
         CRASH,       // Contains crash dumps.
+        ASSET_PACK,  // Contains asset packs.
     };
 
     enum class PATHID

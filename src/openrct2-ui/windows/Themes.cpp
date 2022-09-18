@@ -200,6 +200,7 @@ static WindowClass window_themes_tab_6_classes[] = {
     WindowClass::Options,
     WindowClass::KeyboardShortcutList,
     WindowClass::ChangeKeyboardShortcut,
+    WindowClass::AssetPacks,
     WindowClass::Loadsave,
     WindowClass::About,
     WindowClass::Changelog,
