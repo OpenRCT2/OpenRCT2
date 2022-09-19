@@ -150,6 +150,33 @@ void ServerList::AddRange(const std::vector<ServerListEntry>& entries)
     Sort();
 }
 
+void ServerList::AddOrUpdateRange(const std::vector<ServerListEntry>& entries)
+{
+    for (auto& existsEntry : _serverEntries)
+    {
+        auto match = std::find_if(
+            entries.begin(), entries.end(), [&](const ServerListEntry& entry) { return existsEntry.Address == entry.Address; });
+        if (match != entries.end())
+        {
+            // keep favorites
+            auto fav = existsEntry.Favourite;
+
+            existsEntry = *match;
+            existsEntry.Favourite = fav;
+        }
+    }
+
+    std::vector<ServerListEntry> newServers;
+    std::copy_if(entries.begin(), entries.end(), std::back_inserter(newServers), [this](const ServerListEntry& entry) {
+        return std::find_if(
+                   _serverEntries.begin(), _serverEntries.end(),
+                   [&](const ServerListEntry& existsEntry) { return existsEntry.Address == entry.Address; })
+            == _serverEntries.end();
+    });
+
+    AddRange(newServers);
+}
+
 void ServerList::Clear() noexcept
 {
     _serverEntries.clear();
