@@ -11,6 +11,7 @@
 - Feature: [#17821] [Plugin] Add API for track subpositions and vehicle subposition.
 - Feature: [#17877] Add three real-life flying roller coaster colour schemes.
 - Feature: [#17900] Add “Classic Wooden Coaster” with shallow banked turns.
+- Feature: [#18057] Staff members now wait for passing or stalled vehicles before crossing railway tracks.
 - Feature: [objects#198] Add additional pirate roofs.
 - Feature: [objects#205] Add additional glass roofs.
 - Feature: [objects#209] Add the Steel Roller Coaster train and 2-across Inverted Train from RollerCoaster Tycoon 1.

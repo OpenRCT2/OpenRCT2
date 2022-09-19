@@ -5299,16 +5299,10 @@ void Guest::UpdateWalking()
         }
     }
 
-    // Check if vehicle is blocking the destination tile
-    auto curPos = TileCoordsXYZ(GetLocation());
-    auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
-    if (curPos.x != dstPos.x || curPos.y != dstPos.y)
+    if (PathIsBlockedByVehicle())
     {
-        if (footpath_is_blocked_by_vehicle(dstPos))
-        {
-            // Wait for vehicle to pass
-            return;
-        }
+        // Wait for vehicle to pass
+        return;
     }
 
     uint8_t pathingResult;
