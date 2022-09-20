@@ -17,6 +17,7 @@
 #include "core/FileSystem.hpp"
 #include "core/String.hpp"
 #include "object/AudioSampleTable.h"
+#include "platform/Platform.h"
 
 #include <cstdio>
 
@@ -67,7 +68,11 @@ void AssetPackManager::Scan()
     auto context = GetContext();
     auto env = context->GetPlatformEnvironment();
     auto assetPackDirectory = fs::u8path(env->GetDirectoryPath(DIRBASE::USER, DIRID::ASSET_PACK));
-    for (const fs::directory_entry& entry : fs::recursive_directory_iterator(assetPackDirectory))
+    Platform::EnsureDirectoryExists(assetPackDirectory.u8string());
+
+    // Recursively scan for .parkap files
+    std::error_code ec;
+    for (const fs::directory_entry& entry : fs::recursive_directory_iterator(assetPackDirectory, ec))
     {
         if (!entry.is_directory())
         {
