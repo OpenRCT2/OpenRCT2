@@ -6554,21 +6554,11 @@ static void flying_rc_track_booster(
     }
     else
     {
-        switch (direction)
-        {
-            case 0:
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | SPR_G2_BM_INVERT_BOOSTER_1, { 0, 0, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 22 });
-                break;
-            case 1:
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | SPR_G2_BM_INVERT_BOOSTER_2, { 0, 0, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 22 });
-                break;
-        }
+        const auto imageId = (direction & 1) ? SPR_G2_BM_INVERT_BOOSTER_2 : SPR_G2_BM_INVERT_BOOSTER_1;
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours[SCHEME_TRACK] | imageId, { 0, 0, height + 24 }, { 32, 20, 1 },
+            { 0, 6, height + 22 });
+
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         if (track_paint_util_should_paint_supports(session.MapPosition))
