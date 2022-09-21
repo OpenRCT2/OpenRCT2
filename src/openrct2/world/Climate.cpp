@@ -317,7 +317,7 @@ static void climate_update_weather_sound()
     if (gClimateCurrent.WeatherEffect == WeatherEffectType::Rain || gClimateCurrent.WeatherEffect == WeatherEffectType::Storm)
     {
         // Start playing the weather sound
-        if (_weatherSoundChannel == nullptr)
+        if (_weatherSoundChannel == nullptr || _weatherSoundChannel->IsDone())
         {
             _weatherSoundChannel = CreateAudioChannel(SoundId::Rain, true, DStoMixerVolume(-4000));
         }
