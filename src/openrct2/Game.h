@@ -102,6 +102,7 @@ enum class GameCommand : int32_t
     SetDate,                  // GA
     Custom,                   // GA
     ChangeMapSize,
+    FreezeRideRating,
     Count,
 };
 
