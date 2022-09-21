@@ -2723,6 +2723,12 @@ static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
         auto& rideEntries = objManager.GetAllRideEntries(rideType);
+        // If there are no vehicles for this ride type, enable all the track pieces.
+        if (rideEntries.size() == 0)
+        {
+            disabledPieces.reset();
+        }
+
         for (auto rideEntryIndex : rideEntries)
         {
             const auto* currentRideEntry = get_ride_entry(rideEntryIndex);
