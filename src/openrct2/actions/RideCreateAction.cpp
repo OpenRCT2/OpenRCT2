@@ -153,22 +153,22 @@ GameActions::Result RideCreateAction::Execute() const
     ride->lifecycle_flags = 0;
     ride->vehicle_change_timeout = 0;
     ride->num_stations = 0;
-    ride->num_vehicles = 1;
+    ride->NumTrains = 1;
     if (gCheatsDisableTrainLengthLimit)
     {
         // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
         if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
         {
-            ride->proposed_num_vehicles = 12;
+            ride->ProposedNumTrains = 12;
         }
         else
         {
-            ride->proposed_num_vehicles = rideEntry->cars_per_flat_ride;
+            ride->ProposedNumTrains = rideEntry->cars_per_flat_ride;
         }
     }
     else
     {
-        ride->proposed_num_vehicles = 32;
+        ride->ProposedNumTrains = 32;
     }
     ride->max_trains = OpenRCT2::Limits::MaxTrainsPerRide;
     ride->num_cars_per_train = 1;

@@ -903,9 +903,9 @@ namespace RCT1
                 dst->vehicles[i] = EntityId::GetNull();
             }
 
-            dst->num_vehicles = src->num_trains;
+            dst->NumTrains = src->NumTrains;
             dst->num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
-            dst->proposed_num_vehicles = src->num_trains;
+            dst->ProposedNumTrains = src->NumTrains;
             dst->max_trains = src->max_trains;
             dst->proposed_num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
             dst->special_track_elements = src->special_track_elements;

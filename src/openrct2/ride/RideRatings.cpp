@@ -911,7 +911,7 @@ static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, Ride* ride)
     // various variables set on the ride itself.
 
     // https://gist.github.com/kevinburke/e19b803cd2769d96c540
-    upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerTrain * ride->num_vehicles;
+    upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerTrain * ride->NumTrains;
     upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerCar * ride->num_cars_per_train;
 
     // slight upkeep boosts for some rides - 5 for mini railway, 10 for log
@@ -2580,7 +2580,7 @@ void ride_ratings_calculate_go_karts(Ride* ride, RideRatingUpdateState& state)
     ride_ratings_set(&ratings, RIDE_RATING(1, 42), RIDE_RATING(1, 73), RIDE_RATING(0, 40));
     ride_ratings_apply_length(&ratings, ride, 700, 32768);
 
-    if (ride->mode == RideMode::Race && ride->num_vehicles >= 4)
+    if (ride->mode == RideMode::Race && ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(1, 40), RIDE_RATING(0, 50), 0);
 
@@ -2684,14 +2684,14 @@ void ride_ratings_calculate_dodgems(Ride* ride, RideRatingUpdateState& state)
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 35));
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
 
     ride_ratings_add(&ratings, ride->operation_option, ride->operation_option / 2, 0);
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
@@ -3844,14 +3844,14 @@ void ride_ratings_calculate_flying_saucers(Ride* ride, RideRatingUpdateState& st
         /* .nausea =     */ RIDE_RATING(0, 39),
     };
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
 
     ride_ratings_add(&ratings, ride->time_limit, ride->time_limit / 2, 0);
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }

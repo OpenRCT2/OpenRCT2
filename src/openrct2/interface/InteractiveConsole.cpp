@@ -272,7 +272,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        for (int32_t i = 0; i < ride->num_vehicles; ++i)
+                        for (int32_t i = 0; i < ride->NumTrains; ++i)
                         {
                             for (Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
                                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
