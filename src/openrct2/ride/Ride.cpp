@@ -5696,9 +5696,9 @@ void determine_ride_entrance_and_exit_locations()
             // Search the map to find it. Skip the outer ring of invisible tiles.
             bool alreadyFoundEntrance = false;
             bool alreadyFoundExit = false;
-            for (int32_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
+            for (int32_t y = 1; y < gMapSize.y - 1; y++)
             {
-                for (int32_t x = 1; x < MAXIMUM_MAP_SIZE_TECHNICAL - 1; x++)
+                for (int32_t x = 1; x < gMapSize.x - 1; x++)
                 {
                     TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
 
@@ -5860,9 +5860,9 @@ void Ride::IncreaseNumShelteredSections()
 
 void Ride::UpdateRideTypeForAllPieces()
 {
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < gMapSize.y; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < gMapSize.x; x++)
         {
             auto* tileElement = map_get_first_element_at(TileCoordsXY(x, y));
             if (tileElement == nullptr)

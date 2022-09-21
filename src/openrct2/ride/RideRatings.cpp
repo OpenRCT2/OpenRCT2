@@ -1456,10 +1456,9 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     // Count surrounding scenery items
     int32_t numSceneryItems = 0;
     auto tileLocation = TileCoordsXY(location);
-    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, MAXIMUM_MAP_SIZE_TECHNICAL - 1); yy++)
+    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, gMapSize.y - 1); yy++)
     {
-        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
-             xx++)
+        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, gMapSize.x - 1); xx++)
         {
             // Count scenery items on this tile
             TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy });
