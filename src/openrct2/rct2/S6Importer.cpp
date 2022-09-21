@@ -542,6 +542,9 @@ namespace RCT2
 
         void FixLandOwnership() const
         {
+            // Checking _s6.scenario_filename is generally more reliable as it survives renaming.
+            // However, some WW/TT scenarios have this incorrectly set to "Six Flags Magic Mountain.SC6",
+            // so for those cases (as well as for SFMM proper, we’ll have to check the filename.
             if (String::Equals(_s6.scenario_filename, "Europe - European Cultural Festival.SC6"))
             {
                 // This scenario breaks pathfinding. Create passages between the worlds. (List is grouped by neighbouring
@@ -557,7 +560,67 @@ namespace RCT2
                     OWNERSHIP_OWNED);
                 // clang-format on
             }
-            else if (String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6"))
+            else if (String::Equals(_s6.scenario_filename, "Six Flags Holland.SC6"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 112, 33 }, { 112, 34 },
+                        { 113, 117 }, { 114, 117 }, { 115, 117 }, { 116, 117 }, { 117, 117 }, { 114, 118 }, { 115, 118 }, { 116, 118 }, { 117, 118 },
+                    },
+                    OWNERSHIP_AVAILABLE, true);
+                // clang-format on
+            }
+            else if (String::Equals(_s6.scenario_filename, "North America - Grand Canyon.SC6"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 128, 90 },
+                        { 135, 91 }, { 136, 91 },
+                        { 129, 90 }, { 130, 90 }, { 131, 90 }, { 132, 90 }, 
+                        { 137, 92 }, { 138, 92 }, { 139, 92 }, { 140, 92 },
+                        { 125, 88 }, { 126, 89 }, { 127, 91 }, { 127, 92 }, { 127, 93 },
+                        {  47, 85 }, {  48, 85 },
+                        {  32, 97 },
+                    },
+                    OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE, true);
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        {  98, 64 }, {  98, 65 }, {  98, 66 },
+                        {  96, 84 },
+                    },
+                    OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, true);
+                // clang-format on
+            }
+            else if (
+                String::Equals(gScenarioFileName, "Six Flags Magic Mountain.SC6", true)
+                || String::Equals(gScenarioFileName, "six flags magic mountain.sea", true))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 104, 190 }, { 105, 190 }, { 108, 197 }, 
+                        { 75, 167 }, 
+                        { 61, 92 }, { 61, 93 }, { 61, 94 }, { 61, 95 }, { 62, 90 }, { 62, 91 }, { 62, 92 }, { 62, 93 }, { 62, 94 },
+                        { 92, 57 }, { 93, 57 },
+                        { 89, 40 }, { 89, 41 }, { 89, 42 }, { 90, 42 }, 
+                        { 168, 20 }, { 169, 20 },
+                    },
+                    OWNERSHIP_AVAILABLE, true);
+                // clang-format on
+            }
+            else if (String::Equals(_s6.scenario_filename, "Great Wall of China Tourism Enhancement.SC6"))
+            {
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 127, 31 },
+                    },
+                    OWNERSHIP_OWNED);
+            }
+            else if (
+                String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6", true)
+                || String::Equals(gScenarioFileName, "n america - extreme hawaiian island.sea", true))
             {
                 FixLandOwnershipTilesWithOwnership(
                     {
