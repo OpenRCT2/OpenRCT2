@@ -1220,9 +1220,9 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.overall_view.y);
 
                     // Vehicles
-                    cs.ReadWrite(ride.num_vehicles);
+                    cs.ReadWrite(ride.NumTrains);
                     cs.ReadWrite(ride.num_cars_per_train);
-                    cs.ReadWrite(ride.proposed_num_vehicles);
+                    cs.ReadWrite(ride.ProposedNumTrains);
                     cs.ReadWrite(ride.proposed_num_cars_per_train);
                     cs.ReadWrite(ride.max_trains);
                     if (version < 0x5)

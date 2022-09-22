@@ -885,9 +885,9 @@ namespace RCT2
             dst->depart_flags = src->depart_flags;
 
             dst->num_stations = src->num_stations;
-            dst->num_vehicles = src->num_vehicles;
+            dst->NumTrains = src->NumTrains;
             dst->num_cars_per_train = src->num_cars_per_train;
-            dst->proposed_num_vehicles = src->proposed_num_vehicles;
+            dst->ProposedNumTrains = src->ProposedNumTrains;
             dst->proposed_num_cars_per_train = src->proposed_num_cars_per_train;
             dst->max_trains = src->max_trains;
             dst->MinCarsPerTrain = src->GetMinCarsPerTrain();
