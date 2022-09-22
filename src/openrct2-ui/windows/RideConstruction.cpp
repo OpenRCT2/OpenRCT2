@@ -2723,6 +2723,12 @@ static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
         auto& rideEntries = objManager.GetAllRideEntries(rideType);
+        // If there are no vehicles for this ride type, enable all the track pieces.
+        if (rideEntries.size() == 0)
+        {
+            disabledPieces.reset();
+        }
+
         for (auto rideEntryIndex : rideEntries)
         {
             const auto* currentRideEntry = get_ride_entry(rideEntryIndex);
@@ -2730,7 +2736,8 @@ static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType
                 continue;
 
             // Non-default vehicle visuals do not use this system, so we have to assume it supports all the track pieces.
-            if (currentRideEntry->Cars[0].PaintStyle != VEHICLE_VISUAL_DEFAULT || rideType == RIDE_TYPE_CHAIRLIFT)
+            if (currentRideEntry->Cars[0].PaintStyle != VEHICLE_VISUAL_DEFAULT || rideType == RIDE_TYPE_CHAIRLIFT
+                || (currentRideEntry->Cars[0].flags & CAR_ENTRY_FLAG_SLIDE_SWING))
             {
                 disabledPieces.reset();
                 break;

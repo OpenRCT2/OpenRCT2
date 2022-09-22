@@ -55,6 +55,7 @@
 #include "RideDemolishAction.h"
 #include "RideEntranceExitPlaceAction.h"
 #include "RideEntranceExitRemoveAction.h"
+#include "RideFreezeRatingAction.h"
 #include "RideSetAppearanceAction.h"
 #include "RideSetColourSchemeAction.h"
 #include "RideSetNameAction.h"
@@ -159,6 +160,7 @@ namespace GameActions
         REGISTER_ACTION(RideSetNameAction);
         REGISTER_ACTION(RideSetPriceAction);
         REGISTER_ACTION(RideSetStatusAction);
+        REGISTER_ACTION(RideFreezeRatingAction);
         REGISTER_ACTION(RideSetAppearanceAction);
         REGISTER_ACTION(RideSetVehicleAction);
         REGISTER_ACTION(RideSetSettingAction);
