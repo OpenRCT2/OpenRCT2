@@ -68,6 +68,7 @@
 - Fix: [#18009] Visual glitch with litter at edge of sloped path.
 - Fix: [#18026] Park rating drops to 0 with more than 32k guests, total ride excitement or intensity.
 - Fix: [#18051] Visual glitch with Mine Ride's large unbanked turn.
+- Fix: [#18035] Favourited servers don’t get their online status updated.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
