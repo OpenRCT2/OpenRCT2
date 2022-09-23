@@ -158,7 +158,7 @@ void ServerList::AddOrUpdateRange(const std::vector<ServerListEntry>& entries)
             entries.begin(), entries.end(), [&](const ServerListEntry& entry) { return existsEntry.Address == entry.Address; });
         if (match != entries.end())
         {
-            // keep favorites
+            // Keep favourites
             auto fav = existsEntry.Favourite;
 
             existsEntry = *match;

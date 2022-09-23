@@ -581,7 +581,7 @@ static void ServerListFetchServersCheck(rct_window* w)
             {
                 auto [entries, statusText] = _fetchFuture.get();
                 _serverList.AddOrUpdateRange(entries);
-                _serverList.WriteFavourites(); // update favourites in case favourited server info changes.
+                _serverList.WriteFavourites(); // Update favourites in case favourited server info changes
                 _numPlayersOnline = _serverList.GetTotalPlayerCount();
                 _statusText = STR_X_PLAYERS_ONLINE;
                 if (statusText != STR_NONE)
