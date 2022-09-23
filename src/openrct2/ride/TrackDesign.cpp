@@ -124,7 +124,7 @@ StringId TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
     }
 
     depart_flags = ride.depart_flags;
-    number_of_trains = ride.num_vehicles;
+    number_of_trains = ride.NumTrains;
     number_of_cars_per_train = ride.num_cars_per_train;
     min_waiting_time = ride.min_waiting_time;
     max_waiting_time = ride.max_waiting_time;

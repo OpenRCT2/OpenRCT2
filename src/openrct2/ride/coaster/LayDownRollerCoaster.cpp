@@ -16492,5 +16492,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_lay_down_rc(int32_t trackType)
         case TrackElemType::FlyerHalfLoopUninvertedDown:
             return lay_down_rc_track_half_loop_uninverted_down;
     }
-    return nullptr;
+    return get_track_paint_function_corkscrew_rc(trackType);
 }

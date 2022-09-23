@@ -2533,7 +2533,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
             return false;
 
-        for (int32_t i = 0; i < ride->num_vehicles; ++i)
+        for (int32_t i = 0; i < ride->NumTrains; ++i)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
             if (vehicle == nullptr)
@@ -3931,7 +3931,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     {
         vehicle->mini_golf_flags &= ~MiniGolfFlag::Flag5;
 
-        for (size_t i = 0; i < ride->num_vehicles; ++i)
+        for (size_t i = 0; i < ride->NumTrains; ++i)
         {
             Vehicle* train = GetEntity<Vehicle>(ride->vehicles[i]);
             if (train == nullptr)

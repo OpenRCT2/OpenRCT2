@@ -1025,9 +1025,9 @@ namespace OpenRCT2
 
         void UpdateTrackElementsRideType()
         {
-            for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+            for (int32_t y = 0; y < gMapSize.y; y++)
             {
-                for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+                for (int32_t x = 0; x < gMapSize.x; x++)
                 {
                     TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
@@ -1220,9 +1220,9 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.overall_view.y);
 
                     // Vehicles
-                    cs.ReadWrite(ride.num_vehicles);
+                    cs.ReadWrite(ride.NumTrains);
                     cs.ReadWrite(ride.num_cars_per_train);
-                    cs.ReadWrite(ride.proposed_num_vehicles);
+                    cs.ReadWrite(ride.ProposedNumTrains);
                     cs.ReadWrite(ride.proposed_num_cars_per_train);
                     cs.ReadWrite(ride.max_trains);
                     if (version < 0x5)
