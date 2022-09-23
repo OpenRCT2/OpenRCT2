@@ -9250,29 +9250,25 @@ void Vehicle::UpdateCrossings() const
 
     xyElement = { backVehicle->TrackLocation,
                   map_get_track_element_at_of_type_seq(backVehicle->TrackLocation, backVehicle->GetTrackType(), 0) };
-    curZ = backVehicle->TrackLocation.z;
-
-    if (xyElement.element != nullptr)
+    if (xyElement.element == nullptr)
     {
-        uint8_t freeCount = travellingForwards ? 3 : 1;
+        return;
+    }
 
-        while (freeCount-- > 0)
+    uint8_t freeCount = travellingForwards ? 3 : 1;
+    while (freeCount-- > 0)
+    {
+        auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
+        if (pathElement != nullptr)
         {
-            if (travellingForwards)
-            {
-                if (track_block_get_previous(xyElement, &output))
-                {
-                    xyElement.x = output.begin_x;
-                    xyElement.y = output.begin_y;
-                    xyElement.element = output.begin_element;
-                }
-            }
+            pathElement->SetIsBlockedByVehicle(false);
+        }
 
-            auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
-            if (pathElement != nullptr)
-            {
-                pathElement->SetIsBlockedByVehicle(false);
-            }
+        if (travellingForwards && freeCount > 0 && track_block_get_previous(xyElement, &output))
+        {
+            xyElement.x = output.begin_x;
+            xyElement.y = output.begin_y;
+            xyElement.element = output.begin_element;
         }
     }
 }
