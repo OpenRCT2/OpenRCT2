@@ -9258,17 +9258,17 @@ void Vehicle::UpdateCrossings() const
     uint8_t freeCount = travellingForwards ? 3 : 1;
     while (freeCount-- > 0)
     {
-        if (travellingForwards && track_block_get_previous(xyElement, &output))
-        {
-            xyElement.x = output.begin_x;
-            xyElement.y = output.begin_y;
-            xyElement.element = output.begin_element;
-        }
-
         auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
         if (pathElement != nullptr)
         {
             pathElement->SetIsBlockedByVehicle(false);
+        }
+
+        if (travellingForwards && freeCount > 0 && track_block_get_previous(xyElement, &output))
+        {
+            xyElement.x = output.begin_x;
+            xyElement.y = output.begin_y;
+            xyElement.element = output.begin_element;
         }
     }
 }

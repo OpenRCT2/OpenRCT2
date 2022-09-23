@@ -29,6 +29,7 @@
 - Change: [#17762] Use vertical tabs in the New Game dialog.
 - Fix: [#5141] Headless server is counted as a player.
 - Fix: [#7466] Coaster track not drawn at tunnel exit.
+- Fix: [#10535] Guests getting stuck at specific level crossings.
 - Fix: [#14337] Guest blocking ride entrance after ride price changed to be unaffordable.
 - Fix: [#15328] Wooden Roller Coaster incorrectly draws a railing on the first station piece (original bug).
 - Fix: [#16392] Scenery on sloped surface is placed at wrong height.
