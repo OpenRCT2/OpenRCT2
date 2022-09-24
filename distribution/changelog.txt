@@ -27,6 +27,7 @@
 - Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
 - Change: [#17655] Lower default price for the Crooked House.
+- Change: [#17745] Make maintenance cost of Mini-Golf more balanced.
 - Change: [#17762] Use vertical tabs in the New Game dialog.
 - Fix: [#5141] Headless server is counted as a player.
 - Fix: [#7466] Coaster track not drawn at tunnel exit.
