@@ -127,6 +127,8 @@ namespace OpenRCT2::Audio
         DoorClose,
         Portcullis,
         CrowdAmbience,
+        LiftRMC,
+        TrackFrictionRMC,
         NoScream = 254,
         Null = 255
     };
