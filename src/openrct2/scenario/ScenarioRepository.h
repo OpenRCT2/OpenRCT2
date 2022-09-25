@@ -33,6 +33,7 @@ enum class ScenarioSource : uint8_t
     RCT2_WW,
     RCT2_TT,
     Real,
+    Extras,
     Other
 };
 
