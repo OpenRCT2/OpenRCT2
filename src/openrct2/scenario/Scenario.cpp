@@ -440,8 +440,8 @@ bool scenario_create_ducks()
     constexpr int32_t SquareRadiusSize = SquareCentre * 32;
 
     CoordsXY centrePos;
-    centrePos.x = SquareRadiusSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
-    centrePos.y = SquareRadiusSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
+    centrePos.x = SquareRadiusSize + (scenario_rand_max(gMapSize.x - SquareCentre) * 32);
+    centrePos.y = SquareRadiusSize + (scenario_rand_max(gMapSize.y - SquareCentre) * 32);
 
     Guard::Assert(map_is_location_valid(centrePos));
 

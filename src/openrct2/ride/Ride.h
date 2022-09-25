@@ -128,9 +128,9 @@ struct Ride
     EntityId vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
-    uint8_t num_vehicles;
+    uint8_t NumTrains;
     uint8_t num_cars_per_train;
-    uint8_t proposed_num_vehicles;
+    uint8_t ProposedNumTrains;
     uint8_t proposed_num_cars_per_train;
     uint8_t max_trains;
     uint8_t MinCarsPerTrain;
@@ -319,7 +319,7 @@ public:
     void SetToDefaultInspectionInterval();
     void SetRideEntry(ObjectEntryIndex entryIndex);
 
-    void SetNumVehicles(int32_t numVehicles);
+    void SetNumTrains(int32_t numTrains);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
     void UpdateMaxVehicles();
     void UpdateNumberOfCircuits();
