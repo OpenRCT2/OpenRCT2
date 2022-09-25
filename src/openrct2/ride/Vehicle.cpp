@@ -9266,6 +9266,16 @@ void Vehicle::UpdateCrossings() const
             xyElement.y = output.begin_y;
             xyElement.element = output.begin_element;
         }
+        else if (!travellingForwards)
+        {
+            CoordsXYE next;
+            if (track_block_get_next(&xyElement, &next, &curZ, &direction))
+            {
+                xyElement.x = next.x;
+                xyElement.y = next.y;
+                xyElement.element = next.element;
+            }
+        }
 
         auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
         if (pathElement != nullptr)
