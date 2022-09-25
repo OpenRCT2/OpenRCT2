@@ -7670,8 +7670,6 @@ loc_6DAEB9:
     uint16_t trackTotalProgress = GetTrackProgress();
     if (newTrackProgress >= trackTotalProgress)
     {
-        UpdateCrossings();
-
         if (!UpdateTrackMotionForwardsGetNewTrack(trackType, curRide, rideEntry))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
@@ -7684,6 +7682,7 @@ loc_6DAEB9:
 
     track_progress = newTrackProgress;
     UpdateHandleWaterSplash();
+    UpdateCrossings();
 
     // loc_6DB706
     const auto moveInfo = GetMoveInfo();
@@ -8004,8 +8003,6 @@ bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, Ride* curRide, rct_
         uint16_t newTrackProgress = track_progress - 1;
         if (newTrackProgress == 0xFFFF)
         {
-            UpdateCrossings();
-
             if (!UpdateTrackMotionBackwardsGetNewTrack(trackType, curRide, &newTrackProgress))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
@@ -8014,6 +8011,8 @@ bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, Ride* curRide, rct_
                 return false;
             }
         }
+
+        UpdateCrossings();
 
         // loc_6DBD42
         track_progress = newTrackProgress;
@@ -9152,6 +9151,14 @@ void Vehicle::InvalidateWindow()
 
 void Vehicle::UpdateCrossings() const
 {
+    // Many New Element parks have invisible rides hacked into the path.
+    // Limit path blocking to rides actually supporting level crossings to prevent peeps getting stuck everywhere.
+    auto curRide = GetRide();
+    if (curRide == nullptr || !GetRideTypeDescriptor(curRide->type).HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
+    {
+        return;
+    }
+
     if (TrainHead() != this)
     {
         return;
@@ -9197,12 +9204,7 @@ void Vehicle::UpdateCrossings() const
         while (true)
         {
             auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
-            auto curRide = GetRide();
-
-            // Many New Element parks have invisible rides hacked into the path.
-            // Limit path blocking to rides actually supporting level crossings to prevent peeps getting stuck everywhere.
-            if (pathElement != nullptr && curRide != nullptr
-                && GetRideTypeDescriptor(curRide->type).HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
+            if (pathElement != nullptr)
             {
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
                 {
@@ -9258,17 +9260,17 @@ void Vehicle::UpdateCrossings() const
     uint8_t freeCount = travellingForwards ? 3 : 1;
     while (freeCount-- > 0)
     {
-        auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
-        if (pathElement != nullptr)
-        {
-            pathElement->SetIsBlockedByVehicle(false);
-        }
-
-        if (travellingForwards && freeCount > 0 && track_block_get_previous(xyElement, &output))
+        if (travellingForwards && track_block_get_previous(xyElement, &output))
         {
             xyElement.x = output.begin_x;
             xyElement.y = output.begin_y;
             xyElement.element = output.begin_element;
+        }
+
+        auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
+        if (pathElement != nullptr)
+        {
+            pathElement->SetIsBlockedByVehicle(false);
         }
     }
 }
