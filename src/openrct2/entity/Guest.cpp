@@ -5299,12 +5299,6 @@ void Guest::UpdateWalking()
         }
     }
 
-    if (PathIsBlockedByVehicle())
-    {
-        // Wait for vehicle to pass
-        return;
-    }
-
     uint8_t pathingResult;
     PerformNextAction(pathingResult);
     if (!(pathingResult & PATHING_DESTINATION_REACHED))

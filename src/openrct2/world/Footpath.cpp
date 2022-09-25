@@ -2021,9 +2021,9 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
     } while (!(tileElement++)->IsLastForTile());
 }
 
-bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
+bool footpath_is_blocked_by_vehicle(const TileElement* tileElement)
 {
-    auto pathElement = map_get_path_element_at(position);
+    auto pathElement = tileElement->AsPath();
     return pathElement != nullptr && pathElement->IsBlockedByVehicle();
 }
 

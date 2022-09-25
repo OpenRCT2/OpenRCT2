@@ -321,18 +321,6 @@ bool Peep::CheckForPath()
     return false;
 }
 
-bool Peep::PathIsBlockedByVehicle()
-{
-    auto curPos = TileCoordsXYZ(GetLocation());
-    auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
-    if ((curPos.x != dstPos.x || curPos.y != dstPos.y) && footpath_is_blocked_by_vehicle(dstPos))
-    {
-        return true;
-    }
-
-    return false;
-}
-
 PeepActionSpriteType Peep::GetActionSpriteType()
 {
     if (IsActionInterruptable())
@@ -1978,7 +1966,19 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
 static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool vandalism)
 {
     auto tile_element = coords.element;
-    peep->NextLoc = { coords.ToTileStart(), tile_element->GetBaseZ() };
+    CoordsXYZ coordsXYZ = { coords.ToTileStart(), tile_element->GetBaseZ() };
+    if (footpath_is_blocked_by_vehicle(tile_element))
+    {
+        auto staff = peep->As<Staff>();
+        if (staff == nullptr || !staff->IsMechanicHeadingToFixRideBlockingPath(coordsXYZ))
+        {
+            // Wait for vehicle to pass
+            peep->Action = PeepActionType::Idle;
+            return;
+        }
+    }
+
+    peep->NextLoc = coordsXYZ;
     peep->SetNextFlags(tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped(), false);
 
     int16_t z = peep->GetZOnSlope(coords.x, coords.y);

@@ -67,6 +67,8 @@ public:
     bool HasPatrolArea() const;
     void SetPatrolArea(const std::vector<TileCoordsXY>& area);
 
+    bool IsMechanicHeadingToFixRideBlockingPath(const CoordsXYZ& nextPos);
+
 private:
     void UpdatePatrolling();
     void UpdateMowing();
@@ -94,7 +96,6 @@ private:
     bool DoMechanicPathFinding();
     bool DoEntertainerPathFinding();
     bool DoMiscPathFinding();
-    bool IsMechanicHeadingToFixRideBlockingPath();
 
     Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
