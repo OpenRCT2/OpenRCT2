@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <SDL_keycode.h>
 #include <algorithm>
 #include <iterator>
 #include <openrct2-ui/interface/Widget.h>
@@ -408,13 +409,13 @@ void WindowTextInputOpen(
     WindowTextInputRawOpen(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
 }
 
-void WindowTextInputKey(rct_window* w, char keychar)
+void WindowTextInputKey(rct_window* w, uint32_t keycode)
 {
     const auto wndNumber = w->number;
     const auto wndClass = w->classification;
 
     // If the return button is pressed stop text input
-    if (keychar == '\r')
+    if (keycode == SDLK_RETURN || keycode == SDLK_KP_ENTER)
     {
         if (w->classification == WindowClass::Textinput)
         {

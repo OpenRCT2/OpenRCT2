@@ -16,7 +16,8 @@
 - Feature: [objects#205] Add additional glass roofs.
 - Feature: [objects#209] Add the Steel Roller Coaster train and 2-across Inverted Train from RollerCoaster Tycoon 1.
 - Improved: [#15358] Park and scenario names can now contain up to 128 characters.
-- Improved: [#16819] Don't prompt to 'Save game as' when saving a loaded saved game (excepting autosaves).
+- Improved: [#15589] Numpad Enter can now be used to close text input.
+- Improved: [#16819] Don't prompt to “Save game as” when saving a loaded saved game (excepting autosaves).
 - Improved: [#16840] Add support for rectangular heightmaps.
 - Improved: [#17575] You can now search for Authors in Object Selection.
 - Improved: [#17806] Added warning when using RCT1 objects without RCT1 linked.
