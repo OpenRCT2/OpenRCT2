@@ -3270,7 +3270,6 @@ STR_6154    :Biztonsági okokból nem javasolt az OpenRCT2 emelt jogosultságokk
 STR_6155    :Se a KDialog, se a Zenity nincs telepítve. Kérlek telepítsd valamelyiket, vagy konfiguráld a parancssorból.
 STR_6156    :A név le van foglalva
 STR_6157    :Konzol
-STR_6158    :Fájl betöltése sikertelen…{NEWLINE}Nem kompatibilis RCTC verzió: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Rendelkezésre álló járművek: {BLACK}{STRING}
 STR_6161    :Rácsok megjelenítése be/ki
 STR_6162    :Forgó vad egér

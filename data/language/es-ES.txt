@@ -3308,7 +3308,6 @@ STR_6154    :Por razones de seguridad, No es recomendable iniciar OpenRCT2 con p
 STR_6155    :Ni KDialog ni Zenity están instalados. Instale uno o configure uno desde la línea de comando.
 STR_6156    :El nombre está reservado
 STR_6157    :Consola
-STR_6158    :No se pudo cargar este archivo…{NEWLINE}Versión RCT incompatible: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Vehículos Disponibles: {BLACK}{STRING}
 STR_6161    :Alternar líneas de cuadrícula
 STR_6162    :Ratón Giratorio Salvaje

@@ -3304,7 +3304,6 @@ STR_6154    :Pro kialoj sekurigaj, ne estas rekomendita por lanĉi OpenRCT2 kun 
 STR_6155    :Nek KDialog nek Zenity estas instalita. Bonvolu instali unu, aŭ agordu per la komanda linio.
 STR_6156    :Nomo estas reservita
 STR_6157    :Konzolo
-STR_6158    :Ne eblas ŝargi ĉi tiun dosieron…{NEWLINE}Malkongrua RCTC versio: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Veturiloj disponeblaj: {BLACK}{STRING}
 STR_6161    :Baskulilo por montri kradliniojn
 STR_6162    :Turniĝanta Sovaĝa Muso
