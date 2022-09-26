@@ -457,7 +457,7 @@ namespace OpenRCT2
 
         void ReadWriteGeneralChunk(OrcaStream& os)
         {
-            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this](OrcaStream::ChunkStream& cs) {
+            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this, &os](OrcaStream::ChunkStream& cs) {
                 // Only GAME_PAUSED_NORMAL from gGamePaused is relevant.
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -508,6 +508,11 @@ namespace OpenRCT2
                 cs.ReadWrite(gWidePathTileLoopPosition);
 
                 ReadWriteRideRatingCalculationData(cs, gRideRatingUpdateState);
+
+                if (os.GetHeader().TargetVersion >= 14)
+                {
+                    cs.ReadWrite(gIsAutosave);
+                }
             });
             if (!found)
             {
@@ -1025,9 +1030,9 @@ namespace OpenRCT2
 
         void UpdateTrackElementsRideType()
         {
-            for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+            for (int32_t y = 0; y < gMapSize.y; y++)
             {
-                for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+                for (int32_t x = 0; x < gMapSize.x; x++)
                 {
                     TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
@@ -1220,9 +1225,9 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.overall_view.y);
 
                     // Vehicles
-                    cs.ReadWrite(ride.num_vehicles);
+                    cs.ReadWrite(ride.NumTrains);
                     cs.ReadWrite(ride.num_cars_per_train);
-                    cs.ReadWrite(ride.proposed_num_vehicles);
+                    cs.ReadWrite(ride.ProposedNumTrains);
                     cs.ReadWrite(ride.proposed_num_cars_per_train);
                     cs.ReadWrite(ride.max_trains);
                     if (version < 0x5)
@@ -2286,7 +2291,8 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         log_verbose("saving game");
     }
 
-    if (!(flags & S6_SAVE_FLAG_AUTOMATIC))
+    gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
+    if (!gIsAutosave)
     {
         window_close_construction_windows();
     }

@@ -58,6 +58,7 @@ namespace OpenRCT2::Scripting
         { "rct2_ww", ScenarioSource::RCT2_WW },
         { "rct2_tt", ScenarioSource::RCT2_TT },
         { "real", ScenarioSource::Real },
+        { "extras", ScenarioSource::Extras },
         { "other", ScenarioSource::Other },
     });
 
