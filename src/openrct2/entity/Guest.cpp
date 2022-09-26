@@ -2533,7 +2533,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
             return false;
 
-        for (int32_t i = 0; i < ride->NumTrains; ++i)
+        for (int32_t i = 0; i < ride->num_vehicles; ++i)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
             if (vehicle == nullptr)
@@ -3931,7 +3931,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     {
         vehicle->mini_golf_flags &= ~MiniGolfFlag::Flag5;
 
-        for (size_t i = 0; i < ride->NumTrains; ++i)
+        for (size_t i = 0; i < ride->num_vehicles; ++i)
         {
             Vehicle* train = GetEntity<Vehicle>(ride->vehicles[i]);
             if (train == nullptr)
@@ -5299,10 +5299,16 @@ void Guest::UpdateWalking()
         }
     }
 
-    if (PathIsBlockedByVehicle())
+    // Check if vehicle is blocking the destination tile
+    auto curPos = TileCoordsXYZ(GetLocation());
+    auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
+    if (curPos.x != dstPos.x || curPos.y != dstPos.y)
     {
-        // Wait for vehicle to pass
-        return;
+        if (footpath_is_blocked_by_vehicle(dstPos))
+        {
+            // Wait for vehicle to pass
+            return;
+        }
     }
 
     uint8_t pathingResult;

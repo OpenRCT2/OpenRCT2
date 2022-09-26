@@ -146,6 +146,7 @@ rct_window* WindowServerListOpen()
 
     safe_strcpy(_playerName, gConfigNetwork.player_name.c_str(), sizeof(_playerName));
 
+    _serverList.ReadAndAddFavourites();
     window->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
     ServerListFetchServersBegin();
@@ -580,8 +581,7 @@ static void ServerListFetchServersCheck(rct_window* w)
             try
             {
                 auto [entries, statusText] = _fetchFuture.get();
-                _serverList.AddOrUpdateRange(entries);
-                _serverList.WriteFavourites(); // Update favourites in case favourited server info changes
+                _serverList.AddRange(entries);
                 _numPlayersOnline = _serverList.GetTotalPlayerCount();
                 _statusText = STR_X_PLAYERS_ONLINE;
                 if (statusText != STR_NONE)

@@ -80,8 +80,6 @@ float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 bool gInMapInitCode = false;
 std::string gCurrentLoadedPath;
-bool gIsAutosave = false;
-bool gIsAutosaveLoaded = false;
 
 bool gLoadKeepWindowsOpen = false;
 
@@ -563,7 +561,7 @@ void reset_all_sprite_quadrant_placements()
 
 void save_game()
 {
-    if (!gFirstTimeSaving && !gIsAutosaveLoaded)
+    if (!gFirstTimeSaving)
     {
         const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
         save_game_with_name(savePath);
@@ -593,11 +591,10 @@ void save_game_cmd(u8string_view name /* = {} */)
 void save_game_with_name(u8string_view name)
 {
     log_verbose("Saving to %s", u8string(name).c_str());
-    if (scenario_save(name, gConfigGeneral.save_plugin_data ? 1 : 0))
+    if (scenario_save(name, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0)))
     {
         log_verbose("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
-        gIsAutosaveLoaded = false;
         gScreenAge = 0;
     }
 }
@@ -729,8 +726,6 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
         context_load_park_from_file(path);
         game_load_scripts();
         game_notify_map_changed();
-        gIsAutosaveLoaded = gIsAutosave;
-        gFirstTimeSaving = false;
     }
 }
 

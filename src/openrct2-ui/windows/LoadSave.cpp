@@ -1000,7 +1000,6 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             {
                 gScenarioSavePath = pathBuffer;
                 gCurrentLoadedPath = pathBuffer;
-                gIsAutosaveLoaded = false;
                 gFirstTimeSaving = false;
 
                 window_close_by_class(WindowClass::Loadsave);

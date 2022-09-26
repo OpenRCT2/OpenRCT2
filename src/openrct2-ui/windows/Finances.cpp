@@ -299,8 +299,6 @@ public:
             WindowInitScrollWidgets(*this);
         }
 
-        disabled_widgets = 0;
-
         for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
             SetWidgetPressed(WIDX_TAB_1 + i, false);
         SetWidgetPressed(WIDX_TAB_1 + page, true);

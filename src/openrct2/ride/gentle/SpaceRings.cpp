@@ -38,7 +38,7 @@ static void paint_space_rings_structure(
 {
     uint32_t vehicleIndex = (segment - direction) & 0x3;
 
-    if (ride.num_stations == 0 || vehicleIndex < ride.NumTrains)
+    if (ride.num_stations == 0 || vehicleIndex < ride.num_vehicles)
     {
         rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
 

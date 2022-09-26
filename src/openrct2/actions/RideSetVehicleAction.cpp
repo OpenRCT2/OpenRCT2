@@ -137,7 +137,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
-            ride->ProposedNumTrains = _value;
+            ride->proposed_num_vehicles = _value;
             break;
         case RideSetVehicleType::NumCarsPerTrain:
         {

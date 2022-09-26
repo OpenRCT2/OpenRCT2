@@ -94,7 +94,6 @@ private:
     bool DoMechanicPathFinding();
     bool DoEntertainerPathFinding();
     bool DoMiscPathFinding();
-    bool IsMechanicHeadingToFixRideBlockingPath();
 
     Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 

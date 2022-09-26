@@ -2408,7 +2408,7 @@ declare global {
     interface ScenarioFile {
         id: number;
         category: "beginner" | "challenging" | "expert" | "real" | "other" | "dlc" | "build_your_own";
-        sourceGame: "rct1" | "rct1_aa" | "rct1_ll" | "rct2" | "rct2_ww" | "rct2_tt" | "real" | "extras" | "other";
+        sourceGame: "rct1" | "rct1_aa" | "rct1_ll" | "rct2" | "rct2_ww" | "rct2_tt" | "real" | "other";
         path: string;
         internalName: string;
         name: string;
@@ -2666,29 +2666,20 @@ declare global {
     }
 
     interface Window {
-        readonly classification: number;
-        readonly number: number;
+        classification: number;
+        number: number;
         x: number;
         y: number;
-        /**
-         * The window is resizable (by the user) if and only if minWidth !== maxWidth or minHeight !== maxHeight.
-         * In that case, the window displays a small widget in the lower right corner that the user can use to resize the window by clicking and dragging.
-         * 
-         * When writing to width (or height), if the window is resizable, the new value will be clamped to fit the corresponding min/max values.
-         * Otherwise, if the window is not resizable, both the width (or height) and the corresponding min/max values are set to the new value.
-         * 
-         * For the default min/max values, see {@link WindowDesc}.
-         */
         width: number;
         height: number;
         minWidth: number;
         maxWidth: number;
         minHeight: number;
         maxHeight: number;
-        readonly isSticky: boolean;
+        isSticky: boolean;
         colours: number[];
         title: string;
-        readonly widgets: Widget[];
+        widgets: Widget[];
         tabIndex: number;
 
         close(): void;
@@ -2704,14 +2695,6 @@ declare global {
         height: number;
         title: string;
         id?: number;
-        /**
-         * See {@link Window} for information about the behaviour of min/max width/height after window creation.
-         * 
-         * Behaviour during window creation:
-         * If at least one of the parameters min/max width/height is present, the window is considered to be resizable.
-         * In that case, the min values default to zero (if unspecified) and the max values default to 0xFFFF (if unspecified).
-         * Otherwise, the min/max width values default to width and the min/max height values default to height.
-         */
         minWidth?: number;
         minHeight?: number;
         maxWidth?: number;

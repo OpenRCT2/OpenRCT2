@@ -108,9 +108,9 @@ namespace RCT2
 
         // Not sure if these should be uint or sint.
         uint8_t num_stations;                // 0x0C7
-        uint8_t NumTrains;                   // 0x0C8
+        uint8_t num_vehicles;                // 0x0C8
         uint8_t num_cars_per_train;          // 0x0C9
-        uint8_t ProposedNumTrains;           // 0x0CA
+        uint8_t proposed_num_vehicles;       // 0x0CA
         uint8_t proposed_num_cars_per_train; // 0x0CB
         uint8_t max_trains;                  // 0x0CC
         uint8_t min_max_cars_per_train;      // 0x0CD
