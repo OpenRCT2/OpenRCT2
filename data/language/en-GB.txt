@@ -4073,22 +4073,7 @@ STR_DTLS    :
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :Roof
-
-[TTPIRF03]
-STR_NAME    :Roof
-
-[TTPIRF04]
-STR_NAME    :Roof
-
 [TTPIRF05]
-STR_NAME    :Roof
-
-[TTPIRF07]
-STR_NAME    :Roof
-
-[TTPIRF08]
 STR_NAME    :Roof
 
 [TTRFWD01]
@@ -4114,15 +4099,6 @@ STR_NAME    :Roof
 
 [TTRFWD08]
 STR_NAME    :Roof
-
-[TTRFGL01]
-STR_NAME    :Glass Roof
-
-[TTRFGL02]
-STR_NAME    :Glass Roof
-
-[TTRFGL03]
-STR_NAME    :Glass Roof
 
 [ACWW33]
 STR_NAME    :Wooden Post Wall
