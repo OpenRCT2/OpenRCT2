@@ -6296,18 +6296,19 @@ static utf8 _moneyInputText[MONEY_STRING_MAXLENGTH];
 
 static void UpdateSamePriceThroughoutFlags(ShopItem shop_item)
 {
-    uint64_t newFlags;
-
     if (GetShopItemDescriptor(shop_item).IsPhoto())
     {
-        newFlags = gSamePriceThroughoutPark;
-        newFlags ^= EnumsToFlags(ShopItem::Photo, ShopItem::Photo2, ShopItem::Photo3, ShopItem::Photo4);
+        auto newFlags = gSamePriceThroughoutPark;
+        if (gSamePriceThroughoutPark & EnumToFlag(shop_item))
+            newFlags &= ~EnumsToFlags(ShopItem::Photo, ShopItem::Photo2, ShopItem::Photo3, ShopItem::Photo4);
+        else
+            newFlags |= EnumsToFlags(ShopItem::Photo, ShopItem::Photo2, ShopItem::Photo3, ShopItem::Photo4);
         auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
         GameActions::Execute(&parkSetParameter);
     }
     else
     {
-        newFlags = gSamePriceThroughoutPark;
+        auto newFlags = gSamePriceThroughoutPark;
         newFlags ^= EnumToFlag(shop_item);
         auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
         GameActions::Execute(&parkSetParameter);
