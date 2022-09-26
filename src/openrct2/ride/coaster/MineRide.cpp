@@ -373,7 +373,7 @@ static void mine_ride_track_left_quarter_turn_5(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 19430, { 0, 0, height }, { 16, 16, 3 },
-                        { 6, 6, height });
+                        { 16, 16, height });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(

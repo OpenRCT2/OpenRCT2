@@ -18,7 +18,6 @@
 #include "../Version.h"
 #include "../actions/ClimateSetAction.h"
 #include "../actions/ParkSetParameterAction.h"
-#include "../actions/RideFreezeRatingAction.h"
 #include "../actions/RideSetPriceAction.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/ScenarioSetSettingAction.h"
@@ -273,7 +272,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        for (int32_t i = 0; i < ride->NumTrains; ++i)
+                        for (int32_t i = 0; i < ride->num_vehicles; ++i)
                         {
                             for (Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
                                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
@@ -300,8 +299,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto rideIndex = RideId::FromUnderlying(ride_index);
-                    auto ride = get_ride(rideIndex);
+                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
                     if (excitement <= 0)
                     {
                         console.WriteFormatLine("Excitement value must be strictly positive");
@@ -312,8 +310,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Excitement, excitement);
-                        GameActions::Execute(&rideAction);
+                        ride->excitement = excitement;
                     }
                 }
             }
@@ -333,8 +330,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto rideIndex = RideId::FromUnderlying(ride_index);
-                    auto ride = get_ride(rideIndex);
+                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
                     if (intensity <= 0)
                     {
                         console.WriteFormatLine("Intensity value must be strictly positive");
@@ -345,8 +341,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Intensity, intensity);
-                        GameActions::Execute(&rideAction);
+                        ride->intensity = intensity;
                     }
                 }
             }
@@ -366,8 +361,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto rideIndex = RideId::FromUnderlying(ride_index);
-                    auto ride = get_ride(rideIndex);
+                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
                     if (nausea <= 0)
                     {
                         console.WriteFormatLine("Nausea value must be strictly positive");
@@ -378,8 +372,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Nausea, nausea);
-                        GameActions::Execute(&rideAction);
+                        ride->nausea = nausea;
                     }
                 }
             }

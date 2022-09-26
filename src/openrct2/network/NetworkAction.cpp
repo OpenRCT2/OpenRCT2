@@ -237,7 +237,6 @@ const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> N
         {
             GameCommand::Cheat,
             GameCommand::SetDate,
-            GameCommand::FreezeRideRating,
         },
     },
     NetworkAction{

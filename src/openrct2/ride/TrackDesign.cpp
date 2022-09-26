@@ -124,7 +124,7 @@ StringId TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
     }
 
     depart_flags = ride.depart_flags;
-    number_of_trains = ride.NumTrains;
+    number_of_trains = ride.num_vehicles;
     number_of_cars_per_train = ride.num_cars_per_train;
     min_waiting_time = ride.min_waiting_time;
     max_waiting_time = ride.max_waiting_time;
@@ -1257,11 +1257,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     return GameActions::Result();
                 }
 
-                if (tds.PlaceOperation == PTD_OPERATION_PLACE)
-                {
-                    footpath_queue_chain_reset();
-                    footpath_remove_edges_at(mapCoord, reinterpret_cast<TileElement*>(pathElement));
-                }
+                footpath_queue_chain_reset();
+                footpath_remove_edges_at(mapCoord, reinterpret_cast<TileElement*>(pathElement));
 
                 flags = GAME_COMMAND_FLAG_APPLY;
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
@@ -1277,13 +1274,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 {
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
-
-                if (tds.PlaceOperation == PTD_OPERATION_PLACE)
-                {
-                    footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
-                    footpath_update_queue_chains();
-                }
-
+                footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
+                footpath_update_queue_chains();
                 return GameActions::Result();
             }
             break;

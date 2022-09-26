@@ -99,14 +99,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                if (window_can_resize(*w))
-                {
-                    window_resize(*w, value - w->width, 0);
-                }
-                else
-                {
-                    window_set_resize(*w, value, w->min_height, value, w->max_height);
-                }
+                window_resize(*w, value - w->width, 0);
             }
         }
         int32_t height_get() const
@@ -123,14 +116,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                if (window_can_resize(*w))
-                {
-                    window_resize(*w, 0, value - w->height);
-                }
-                else
-                {
-                    window_set_resize(*w, w->min_width, value, w->max_width, value);
-                }
+                window_resize(*w, 0, value - w->height);
             }
         }
         int32_t minWidth_get() const

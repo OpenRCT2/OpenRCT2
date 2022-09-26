@@ -111,7 +111,6 @@
     <ClInclude Include="actions\RideDemolishAction.h" />
     <ClInclude Include="actions\RideEntranceExitPlaceAction.h" />
     <ClInclude Include="actions\RideEntranceExitRemoveAction.h" />
-    <ClInclude Include="actions\RideFreezeRatingAction.h" />
     <ClInclude Include="actions\RideSetAppearanceAction.h" />
     <ClInclude Include="actions\RideSetColourSchemeAction.h" />
     <ClInclude Include="actions\RideSetNameAction.h" />
@@ -607,7 +606,6 @@
     <ClCompile Include="actions\RideDemolishAction.cpp" />
     <ClCompile Include="actions\RideEntranceExitPlaceAction.cpp" />
     <ClCompile Include="actions\RideEntranceExitRemoveAction.cpp" />
-    <ClCompile Include="actions\RideFreezeRatingAction.cpp" />
     <ClCompile Include="actions\RideSetAppearanceAction.cpp" />
     <ClCompile Include="actions\RideSetColourSchemeAction.cpp" />
     <ClCompile Include="actions\RideSetNameAction.cpp" />

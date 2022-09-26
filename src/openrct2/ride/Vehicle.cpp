@@ -2139,7 +2139,7 @@ static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, Ent
     while (ride->vehicles[trainIndex] != spriteIndex)
     {
         trainIndex++;
-        if (trainIndex >= ride->NumTrains)
+        if (trainIndex >= ride->num_vehicles)
         {
             // This should really return nullopt, but doing so
             // would break some hacked parks that hide track by setting tracked rides'
@@ -2663,7 +2663,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
     }
 
     // Look for a vehicle on this station waiting to depart.
-    for (int32_t i = 0; i < ride->NumTrains; i++)
+    for (int32_t i = 0; i < ride->num_vehicles; i++)
     {
         auto* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
         if (vehicle == nullptr)
@@ -2801,7 +2801,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                         auto curRide = get_ride(rideId);
                         if (curRide != nullptr)
                         {
-                            for (int32_t i = 0; i < curRide->NumTrains; i++)
+                            for (int32_t i = 0; i < curRide->num_vehicles; i++)
                             {
                                 Vehicle* v = GetEntity<Vehicle>(curRide->vehicles[i]);
                                 if (v == nullptr)
@@ -2839,7 +2839,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     int32_t numTrainsAtStation = 0;
                     int32_t numTravelingTrains = 0;
                     auto currentStation = sv->stationIndex;
-                    for (int32_t i = 0; i < sv_ride->NumTrains; i++)
+                    for (int32_t i = 0; i < sv_ride->num_vehicles; i++)
                     {
                         auto* otherVehicle = GetEntity<Vehicle>(sv_ride->vehicles[i]);
                         if (otherVehicle == nullptr)
@@ -2864,9 +2864,9 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     }
 
                     int32_t totalTrains = numTrainsAtStation + numTravelingTrains;
-                    if (totalTrains != sv_ride->NumTrains || numTravelingTrains >= sv_ride->NumTrains / 2)
+                    if (totalTrains != sv_ride->num_vehicles || numTravelingTrains >= sv_ride->num_vehicles / 2)
                     {
-                        // if (numArrivingTrains > 0 || numTravelingTrains >= sv_ride->NumTrains / 2) {
+                        // if (numArrivingTrains > 0 || numTravelingTrains >= sv_ride->num_vehicles / 2) {
                         /* Sync condition: If there are trains arriving at the
                          * station or half or more of the ride trains are
                          * travelling, this station must be sync-ed before the
@@ -3411,7 +3411,7 @@ void Vehicle::CheckIfMissing()
         ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.vehicle).number);
 
         uint8_t vehicleIndex = 0;
-        for (; vehicleIndex < curRide->NumTrains; ++vehicleIndex)
+        for (; vehicleIndex < curRide->num_vehicles; ++vehicleIndex)
             if (curRide->vehicles[vehicleIndex] == sprite_index)
                 break;
 
@@ -9250,25 +9250,29 @@ void Vehicle::UpdateCrossings() const
 
     xyElement = { backVehicle->TrackLocation,
                   map_get_track_element_at_of_type_seq(backVehicle->TrackLocation, backVehicle->GetTrackType(), 0) };
-    if (xyElement.element == nullptr)
-    {
-        return;
-    }
+    curZ = backVehicle->TrackLocation.z;
 
-    uint8_t freeCount = travellingForwards ? 3 : 1;
-    while (freeCount-- > 0)
+    if (xyElement.element != nullptr)
     {
-        auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
-        if (pathElement != nullptr)
-        {
-            pathElement->SetIsBlockedByVehicle(false);
-        }
+        uint8_t freeCount = travellingForwards ? 3 : 1;
 
-        if (travellingForwards && freeCount > 0 && track_block_get_previous(xyElement, &output))
+        while (freeCount-- > 0)
         {
-            xyElement.x = output.begin_x;
-            xyElement.y = output.begin_y;
-            xyElement.element = output.begin_element;
+            if (travellingForwards)
+            {
+                if (track_block_get_previous(xyElement, &output))
+                {
+                    xyElement.x = output.begin_x;
+                    xyElement.y = output.begin_y;
+                    xyElement.element = output.begin_element;
+                }
+            }
+
+            auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
+            if (pathElement != nullptr)
+            {
+                pathElement->SetIsBlockedByVehicle(false);
+            }
         }
     }
 }

@@ -9,7 +9,6 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Hielke Morsink (Broxzier)
 * Tulio Paschoalin Leao (tupaschoal)
 * Olivier Wervers (Oli414)
-* Rik Smeets (rik-smeets)
 
 ## Former development team members
 * Lewis Fox (LRFLEW)

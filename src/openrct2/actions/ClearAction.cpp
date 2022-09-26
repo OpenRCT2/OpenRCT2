@@ -207,9 +207,9 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
 void ClearAction::ResetClearLargeSceneryFlag()
 {
     // TODO: Improve efficiency of this
-    for (int32_t y = 0; y < gMapSize.y; y++)
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        for (int32_t x = 0; x < gMapSize.x; x++)
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
             auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
             do

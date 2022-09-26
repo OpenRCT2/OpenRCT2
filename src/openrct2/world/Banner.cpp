@@ -260,9 +260,9 @@ void fix_duplicated_banners()
     std::vector<bool> activeBanners;
     activeBanners.resize(MAX_BANNERS);
 
-    for (int y = 0; y < gMapSize.y; y++)
+    for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        for (int x = 0; x < gMapSize.x; x++)
+        for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
             const auto bannerPos = TileCoordsXY{ x, y }.ToCoordsXY();
             for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(bannerPos))
