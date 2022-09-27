@@ -30,6 +30,7 @@
 #include "interface/Window_internal.h"
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
+#include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "object/DefaultObjects.h"
 #include "object/ObjectManager.h"
@@ -45,7 +46,6 @@
 #include "world/Footpath.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include <openrct2/management/Finance.h>
 
 #include <algorithm>
 #include <array>

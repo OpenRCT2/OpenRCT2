@@ -34,6 +34,8 @@ enum class ExpenditureType : int32_t
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
 #define FINANCE_GRAPH_SIZE 128
 
+constexpr const uint8_t MaxBankLoanInterestRate = 255;
+
 extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
 
 extern money64 gInitialCash;
@@ -43,11 +45,13 @@ extern uint8_t gBankLoanInterestRate;
 extern money64 gMaxBankLoan;
 extern money64 gCurrentExpenditure;
 extern money64 gCurrentProfit;
+
 /**
  * The total profit for the entire scenario that precedes
  * the current financial table.
  */
 extern money64 gHistoricalProfit;
+
 extern money64 gWeeklyProfitAverageDividend;
 extern uint16_t gWeeklyProfitAverageDivisor;
 extern money64 gCashHistory[FINANCE_GRAPH_SIZE];
@@ -74,5 +78,3 @@ money64 finance_get_maximum_loan();
 money64 finance_get_current_cash();
 
 money64 finance_get_last_month_shop_profit();
-
-constexpr const uint8_t MaxBankLoanInterestRate = 255;
