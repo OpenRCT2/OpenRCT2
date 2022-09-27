@@ -499,7 +499,7 @@ public:
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
         {
-            window_close(*w);
+            Close();
         }
         // Check if the mouse is hovering over the list
         if (!WidgetIsHighlighted(*this, WIDX_LIST))
