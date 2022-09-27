@@ -508,7 +508,7 @@ private:
                 Invalidate();
                 break;
             case WIDX_INTEREST_RATE_INCREASE:
-                if (gBankLoanInterestRate < 80)
+                if (gBankLoanInterestRate < MaxBankLoanInterestRate)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::AnnualInterestRate, gBankLoanInterestRate + 1);
@@ -523,7 +523,7 @@ private:
             case WIDX_INTEREST_RATE_DECREASE:
                 if (gBankLoanInterestRate > 0)
                 {
-                    auto interest = std::min(80, gBankLoanInterestRate - 1);
+                    auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gBankLoanInterestRate - 1);
                     auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::AnnualInterestRate, interest);
                     GameActions::Execute(&scenarioSetSetting);
                 }

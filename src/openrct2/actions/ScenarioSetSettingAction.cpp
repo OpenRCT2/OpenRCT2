@@ -89,7 +89,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             window_invalidate_by_class(WindowClass::Finances);
             break;
         case ScenarioSetSetting::AnnualInterestRate:
-            gBankLoanInterestRate = std::clamp<uint8_t>(_value, 0, 80);
+            gBankLoanInterestRate = std::clamp<uint8_t>(_value, 0, MaxBankLoanInterestRate);
             window_invalidate_by_class(WindowClass::Finances);
             break;
         case ScenarioSetSetting::ForbidMarketingCampaigns:

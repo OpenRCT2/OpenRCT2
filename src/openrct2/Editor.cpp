@@ -45,6 +45,7 @@
 #include "world/Footpath.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+#include <openrct2/management/Finance.h>
 
 #include <algorithm>
 #include <array>
@@ -377,7 +378,7 @@ namespace Editor
 
             gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, 80);
+            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
         climate_reset(gClimate);

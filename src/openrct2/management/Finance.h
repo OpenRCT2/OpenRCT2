@@ -43,13 +43,11 @@ extern uint8_t gBankLoanInterestRate;
 extern money64 gMaxBankLoan;
 extern money64 gCurrentExpenditure;
 extern money64 gCurrentProfit;
-
 /**
  * The total profit for the entire scenario that precedes
  * the current financial table.
  */
 extern money64 gHistoricalProfit;
-
 extern money64 gWeeklyProfitAverageDividend;
 extern uint16_t gWeeklyProfitAverageDivisor;
 extern money64 gCashHistory[FINANCE_GRAPH_SIZE];
@@ -76,3 +74,5 @@ money64 finance_get_maximum_loan();
 money64 finance_get_current_cash();
 
 money64 finance_get_last_month_shop_profit();
+
+constexpr const uint8_t MaxBankLoanInterestRate = 255;
