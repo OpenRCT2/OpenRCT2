@@ -31,6 +31,7 @@
 - Change: [#17655] Lower default price for the Crooked House.
 - Change: [#17745] Make maintenance cost of Mini-Golf more balanced.
 - Change: [#17762] Use vertical tabs in the New Game dialog.
+- Change: [#18113] Increased limit of Loan Interest in Scenario Editor to 255%
 - Fix: [#5141] Headless server is counted as a player.
 - Fix: [#7466] Coaster track not drawn at tunnel exit.
 - Fix: [#10535] Guests getting stuck at specific level crossings.
