@@ -18,7 +18,7 @@ private:
 
 public:
     ParkSetLoanAction() = default;
-    ParkSetLoanAction(money32 value);
+    ParkSetLoanAction(money64 value);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

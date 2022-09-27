@@ -82,6 +82,7 @@
 - Fix: [#18035] Favourited servers don’t get their online status updated.
 - Fix: [#18051] Visual glitch with Mine Ride's large unbanked turn (original bug).
 - Fix: [#18059] [Plugin] Width and height of custom window not changeable via script.
+- Fix: [#18087] Bank balance is clamped to a 32-bit integer every transaction.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------

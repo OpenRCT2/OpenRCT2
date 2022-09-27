@@ -517,7 +517,7 @@ void SetCheatAction::SetScenarioNoMoney(bool enabled) const
     window_invalidate_by_class(WindowClass::Cheats);
 }
 
-void SetCheatAction::SetMoney(money32 amount) const
+void SetCheatAction::SetMoney(money64 amount) const
 {
     gCash = amount;
 
@@ -525,9 +525,9 @@ void SetCheatAction::SetMoney(money32 amount) const
     window_invalidate_by_class(WindowClass::BottomToolbar);
 }
 
-void SetCheatAction::AddMoney(money32 amount) const
+void SetCheatAction::AddMoney(money64 amount) const
 {
-    gCash = add_clamp_money32(gCash, amount);
+    gCash = add_clamp_money64(gCash, amount);
 
     window_invalidate_by_class(WindowClass::Finances);
     window_invalidate_by_class(WindowClass::BottomToolbar);
