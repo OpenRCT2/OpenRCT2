@@ -302,7 +302,7 @@ static void paint_river_rapids_track_flat(
 
         imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW)
             | session.TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 3 }, { 0, 27, height + 17 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 2, 5 }, { 10, 10, height });
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -817,7 +817,7 @@ static void paint_river_rapids_track_whirlpool(
 
         imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW)
             | session.TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 3 }, { 0, 27, height + 17 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 2, 5 }, { 10, 10, height });
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
