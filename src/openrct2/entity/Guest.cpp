@@ -2924,6 +2924,11 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
             {
                 Ride* ride;
 
+                if (tileElement->IsGhost())
+                {
+                    continue;
+                }
+
                 switch (tileElement->GetType())
                 {
                     case TileElementType::Path:
