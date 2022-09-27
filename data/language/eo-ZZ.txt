@@ -3619,6 +3619,11 @@ STR_6511    :Sengravida Ruliĝo (dekstre)
 STR_6512    :Granda Sengravida Ruliĝo (maldekstre)
 STR_6513    :Granda Sengravida Ruliĝo (dekstre)
 STR_6514    :Nevalida alteco!
+STR_6515    :{BLACK}RCT1 ne estas ligita - retropaŝaj bildoj estos uzitaj.
+STR_6516    :Unu aŭ pli objektoj aldonitaj bezonas je RCT1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
+STR_6517    :Unu aŭ pli objektoj en ĉi tiu parko bezonas je RCT1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
+STR_6518    :{BLACK}Musumu super scenaro por vidi ĝian priskribon kaj celon. Alklaku ĝin por ekludi.
+STR_6519    :Ekstraĵoj
 
 #############
 # Scenarios #
