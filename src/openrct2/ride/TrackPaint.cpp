@@ -799,28 +799,24 @@ bool track_paint_util_draw_station_covers_2(
     };
 
     int32_t imageOffset = 0;
-    CoordsXYZ bounds, boundsOffset;
+    BoundBoxXYZ boundBox;
     CoordsXYZ offset = CoordsXYZ(0, 0, height);
     switch (edge)
     {
         case EDGE_NE:
-            bounds = CoordsXYZ(1, 30, heights[stationVariant][0]);
-            boundsOffset = CoordsXYZ(0, 1, height + 1);
+            boundBox = { { 0, 1, height + 1 }, { 1, 30, heights[stationVariant][0] } };
             imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_SE_NW_BACK_1 : SPR_STATION_COVER_OFFSET_SE_NW_BACK_0;
             break;
         case EDGE_SE:
-            bounds = CoordsXYZ(32, 32, 0);
-            boundsOffset = CoordsXYZ(0, 0, height + 1 + heights[stationVariant][0]);
+            boundBox = { { 0, 0, height + 1 + heights[stationVariant][0] }, { 32, 32, 0 } };
             imageOffset = SPR_STATION_COVER_OFFSET_NE_SW_FRONT;
             break;
         case EDGE_SW:
-            bounds = CoordsXYZ(32, 32, 0);
-            boundsOffset = CoordsXYZ(0, 0, height + 1 + heights[stationVariant][0]);
+            boundBox = { { 0, 0, height + 1 + heights[stationVariant][0] }, { 32, 32, 0 } };
             imageOffset = SPR_STATION_COVER_OFFSET_SE_NW_FRONT;
             break;
         case EDGE_NW:
-            bounds = CoordsXYZ(30, 1, heights[stationVariant][0]);
-            boundsOffset = CoordsXYZ(1, 0, height + 1);
+            boundBox = { { 1, 0, height + 1 }, { 30, 1, heights[stationVariant][0] } };
             imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_NE_SW_BACK_1 : SPR_STATION_COVER_OFFSET_NE_SW_BACK_0;
             break;
     }
@@ -832,13 +828,13 @@ bool track_paint_util_draw_station_covers_2(
 
     auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
     auto imageId = imageTemplate.WithIndex(baseImageIndex + imageOffset);
-    PaintAddImageAsParent(session, imageId, offset, bounds, boundsOffset);
+    PaintAddImageAsParent(session, imageId, offset, boundBox);
 
     // Glass
     if (session.TrackColours[SCHEME_MISC] == IMAGE_TYPE_REMAP && (stationObject->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT))
     {
         imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparancy(imageTemplate.GetPrimary());
-        PaintAddImageAsChild(session, imageId, offset, bounds, boundsOffset);
+        PaintAddImageAsChild(session, imageId, offset, boundBox);
     }
     return true;
 }

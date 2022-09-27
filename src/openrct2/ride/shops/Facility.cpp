@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../interface/Viewport.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
@@ -34,8 +35,7 @@ static void PaintFacility(
     auto lengthX = (direction & 1) == 0 ? 28 : 2;
     auto lengthY = (direction & 1) == 0 ? 2 : 28;
     CoordsXYZ offset(0, 0, height);
-    CoordsXYZ bbLength(lengthX, lengthY, 29);
-    CoordsXYZ bbOffset(direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height);
+    BoundBoxXYZ bb = { { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height }, { lengthX, lengthY, 29 } };
 
     auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
     auto imageIndex = firstCarEntry->base_image_id + ((direction + 2) & 3);
@@ -45,12 +45,12 @@ static void PaintFacility(
         auto foundationImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_3]);
         auto foundationImageIndex = (direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS;
         auto foundationImageId = foundationImageTemplate.WithIndex(foundationImageIndex);
-        PaintAddImageAsParent(session, foundationImageId, offset, bbLength, bbOffset);
-        PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
+        PaintAddImageAsParent(session, foundationImageId, offset, bb);
+        PaintAddImageAsChild(session, imageId, offset, bb);
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, offset, bbLength, bbOffset);
+        PaintAddImageAsParent(session, imageId, offset, bb);
     }
 
     // Base image if door was drawn

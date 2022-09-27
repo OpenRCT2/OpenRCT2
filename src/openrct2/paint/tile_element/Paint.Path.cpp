@@ -36,6 +36,7 @@
 #include "../../world/Scenery.h"
 #include "../../world/Surface.h"
 #include "../../world/TileInspector.h"
+#include "../Boundbox.h"
 #include "../Supports.h"
 #include "Paint.Surface.h"
 #include "Paint.TileElement.h"
@@ -63,23 +64,23 @@ static constexpr const uint8_t byte_98D6E0[] = {
 };
 
 // clang-format off
-static constexpr const int16_t stru_98D804[][4] = {
-    { 3, 3, 26, 26 },
-    { 0, 3, 29, 26 },
-    { 3, 3, 26, 29 },
-    { 0, 3, 29, 29 },
-    { 3, 3, 29, 26 },
-    { 0, 3, 32, 26 },
-    { 3, 3, 29, 29 },
-    { 0, 3, 32, 29 },
-    { 3, 0, 26, 29 },
-    { 0, 0, 29, 29 },
-    { 3, 0, 26, 32 },
-    { 0, 0, 29, 32 },
-    { 3, 0, 29, 29 },
-    { 0, 0, 32, 29 },
-    { 3, 0, 29, 32 },
-    { 0, 0, 32, 32 },
+static constexpr const BoundBoxXY stru_98D804[] = {
+    { { 3, 3 }, { 26, 26 } },
+    { { 0, 3 }, { 29, 26 } },
+    { { 3, 3 }, { 26, 29 } },
+    { { 0, 3 }, { 29, 29 } },
+    { { 3, 3 }, { 29, 26 } },
+    { { 0, 3 }, { 32, 26 } },
+    { { 3, 3 }, { 29, 29 } },
+    { { 0, 3 }, { 32, 29 } },
+    { { 3, 0 }, { 26, 29 } },
+    { { 0, 0 }, { 29, 29 } },
+    { { 3, 0 }, { 26, 32 } },
+    { { 0, 0 }, { 29, 32 } },
+    { { 3, 0 }, { 29, 29 } },
+    { { 0, 0 }, { 32, 29 } },
+    { { 3, 0 }, { 29, 32 } },
+    { { 0, 0 }, { 32, 32 } },
 };
 
 static constexpr const uint8_t byte_98D8A4[] = {
@@ -1053,8 +1054,8 @@ void path_paint_box_support(
     uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
         | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
 
-    CoordsXY boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
-    CoordsXY boundBoxSize = { stru_98D804[edges][2], stru_98D804[edges][3] };
+    CoordsXY boundBoxOffset = stru_98D804[edges].offset;
+    CoordsXY boundBoxSize = stru_98D804[edges].length;
 
     uint16_t edi = edges | (corners << 4);
 
@@ -1120,7 +1121,7 @@ void path_paint_box_support(
         {
             PaintAddImageAsChild(
                 session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height },
-                { boundBoxSize.x, boundBoxSize.y, 0 }, { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
+                { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
         }
     }
 
@@ -1188,9 +1189,8 @@ void path_paint_pole_support(
     uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
         | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
 
-    CoordsXY boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
-
-    CoordsXY boundBoxSize = { stru_98D804[edges][2], stru_98D804[edges][3] };
+    CoordsXY boundBoxOffset = stru_98D804[edges].offset;
+    CoordsXY boundBoxSize = stru_98D804[edges].length;
 
     uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
         | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
@@ -1260,7 +1260,7 @@ void path_paint_pole_support(
         {
             PaintAddImageAsChild(
                 session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height },
-                { boundBoxSize.x, boundBoxSize.y, 0 }, { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
+                { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
         }
     }
 

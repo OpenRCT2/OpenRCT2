@@ -15,6 +15,7 @@
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
+#include "Boundbox.h"
 
 #include <mutex>
 #include <thread>
@@ -299,17 +300,17 @@ paint_struct* PaintAddImageAsParent(
 paint_struct* PaintAddImageAsParent(
     paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
 paint_struct* PaintAddImageAsParent(
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+paint_struct* PaintAddImageAsParent(
     paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset);
 [[nodiscard]] paint_struct* PaintAddImageAsOrphan(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset);
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 paint_struct* PaintAddImageAsChild(
     paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsChild(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
-    const CoordsXYZ& boundBoxOffset);
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
 paint_struct* PaintAddImageAsChildRotated(
     paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
