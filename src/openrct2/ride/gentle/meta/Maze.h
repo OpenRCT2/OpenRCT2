@@ -52,11 +52,15 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "maze"),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Maze),
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::Ride),
     SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceMaze),
+    SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_Default),
+    SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationDefault),
+    SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Maze),
 };
 // clang-format on

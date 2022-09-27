@@ -97,6 +97,7 @@ STR_0092    :Montaña Rusa Impulso MLI
 STR_0093    :Montaña Rusa Híbrida 
 STR_0094    :Montaña Rusa de un solo carril
 STR_0095    :Montaña Rusa Alpina
+STR_0096    :Montaña Rusa de madera clásica
 STR_0512    :Una montaña rusa pequeña de acero con una subida en espiral y vagones con asientos en línea.
 STR_0513    :Una montaña rusa en el que los pasajeros permanecen de pie.
 STR_0514    :Los vagones suspendidos bajo los raíles se balancean hacia los lados en las curvas.
@@ -146,7 +147,7 @@ STR_0560    :
 STR_0561    :
 STR_0562    :Vagones autopropulsados viajan a lo largo de una pista multinivel pasando por paisajes fantasmagóricos y efectos especiales.
 STR_0563    :Los pasajeros permanecen de pie en unos vagones con sujeciones especiales atravesando caídas y múltiples inversiones.
-STR_0564    :Esta montaña rusa, construida en madera, es rápida, rústica, ruidosa y ofrece una experiencia ‘fuera de control’ con muchos ‘vuelos’.
+STR_0564    :Esta montaña rusa, construida en madera, es rápida, bruta, ruidosa y ofrece una experiencia ‘fuera de control’ con muchas ‘caídas’.
 STR_0565    :Una montaña rusa de madera con suaves caídas y giros, donde los vagones se mantienen en la vía mediante ruedas laterales de fricción y la gravedad.
 STR_0566    :Los vagones individuales giran en un tramo de vía en estrecho zig-zag con curvas y caídas bruscas.
 STR_0567    :Los pasajeros, sentados en sillas suspendidas a ambos lados de la vía son colgados cabeza abajo mientras sufren bruscas zambullidas y varias inversiones.
@@ -179,6 +180,7 @@ STR_0602    :Los vagones se aceleran por los motores lineales de inducción.
 STR_0603    :Una montaña rusa estilo de madera con vías de acero, lo que le permite caídas empinadas e inversiones.
 STR_0604    :Los pasajeros viajan en fila india en una pista de monorraíl estrecha, mientras corren a través de inversiones estrechas y cambios de dirección.
 STR_0605    :Los pasajeros bajan por una serpenteante vía de acero, frenando para controlar su velocidad.
+STR_0606    :Una montaña rusa de madera de estilo antiguo con un recorrido rápido y bruto, con muchas caídas, algunas fuerzas G laterales, y diseñada para ofrecer una experiencia ‘fuera de control’.
 STR_0767    :Visitante {INT32}
 STR_0768    :Manitas {INT32}
 STR_0769    :Mecánico {INT32}
@@ -283,7 +285,7 @@ STR_0892    :Captura de pantalla guardada como ‘{STRINGID}’
 STR_0893    :¡No se pudo tomar la Captura de pantalla!
 STR_0894    :¡Datos de paisaje lleno!
 STR_0895    :No se puede construir una parte arriba y otra bajo tierra
-STR_0896    :{POP16}{POP16}Construcción de {STRINGID} 
+STR_0896    :Construcción de {POP16}{POP16}{STRINGID} 
 STR_0897    :Dirección
 STR_0898    :Curva izquierda
 STR_0899    :Curva derecha
@@ -388,10 +390,10 @@ STR_0998    :No se permiten más estaciones en esta atracción
 STR_0999    :Requiere un andén de estación
 STR_1000    :El trayecto no completa un circuito
 STR_1001    :Trayecto no adecuado para este tipo de tren
-STR_1002    :No se puede abrir {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :No se puede probar {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :No se puede cerrar {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :No se puede iniciar construcción en {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :No se puede abrir {STRINGID}…
+STR_1003    :No se puede probar {STRINGID}…
+STR_1004    :No se puede cerrar {STRINGID}…
+STR_1005    :No se puede iniciar construcción en {STRINGID}…
 STR_1006    :Debe ser cerrado antes
 STR_1007    :No se puede crear suficientes vehículos
 STR_1008    :Abrir, cerrar o probar esta atracción
@@ -3306,7 +3308,6 @@ STR_6154    :Por razones de seguridad, No es recomendable iniciar OpenRCT2 con p
 STR_6155    :Ni KDialog ni Zenity están instalados. Instale uno o configure uno desde la línea de comando.
 STR_6156    :El nombre está reservado
 STR_6157    :Consola
-STR_6158    :No se pudo cargar este archivo…{NEWLINE}Versión RCT incompatible: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Vehículos Disponibles: {BLACK}{STRING}
 STR_6161    :Alternar líneas de cuadrícula
 STR_6162    :Ratón Giratorio Salvaje
@@ -3435,7 +3436,7 @@ STR_6322    :{WINDOW_COLOUR_2}Id sprite: {BLACK}{INT32}
 STR_6323    :Simulando
 STR_6324    :Simular
 STR_6325    :Simular Atracción
-STR_6326    :No se puede simular {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :No se puede simular {STRINGID}…
 STR_6327    :Fondo transparente para capturas de pantalla gigantes
 STR_6328    :Con esta opción activada, las capturas gigantes tendrán un fondo transparente en vez del fondo negro por defecto.
 STR_6329    :{STRING}{STRINGID}
@@ -3456,7 +3457,7 @@ STR_6344    :Inspector de cuadrícula: Disminuir coordenada Y
 STR_6345    :Inspector de cuadrícula: Aumentar altura del elemento
 STR_6346    :Inspector de cuadrícula: Disminuir altura del elemento
 STR_6347    :¡Agregados a los caminos no se pueden añadir en cruces de nivel!
-STR_6348    :¡Primero remueve el cruce de nivel!
+STR_6348    :¡Primero quita el cruce de nivel!
 STR_6349    :Secuencia de la pantalla de inicio al azar
 STR_6350    :Distribuir
 STR_6351    :Herramienta de distribución de escenografía
@@ -3621,6 +3622,7 @@ STR_6510    :Giro de Gravedad Cero (izq)
 STR_6511    :Giro de Gravedad Cero (der)
 STR_6512    :Giro de Gravedad Cero grande (izq)
 STR_6513    :Giro de Gravedad Cero grande (der)
+STR_6514    :¡Altura no válida!
 
 ##############
 # Escenarios #
@@ -4069,22 +4071,7 @@ STR_DTLS    :
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :Techo
-
-[TTPIRF03]
-STR_NAME    :Techo
-
-[TTPIRF04]
-STR_NAME    :Techo
-
 [TTPIRF05]
-STR_NAME    :Techo
-
-[TTPIRF07]
-STR_NAME    :Techo
-
-[TTPIRF08]
 STR_NAME    :Techo
 
 [TTRFWD01]
@@ -4174,7 +4161,7 @@ STR_DTLS    :Comenzando desde cero, construye las atracciones de este Six Flags 
 <Build your own Six Flags Park>
 STR_SCNR    :Construye tu propio parque Six Flags
 STR_PARK    :Six Flags
-STR_DTLS    :Construye tu propio diseño de un parque Six Flags - Ya sea incluyendo atracciones de otros parques Six Flags, o poniendo tu propia impronta.
+STR_DTLS    :Construye tu propio diseño de un parque Six Flags. Ya sea incluyendo atracciones de otros parques Six Flags, o poniendo tu propia impronta.
 
 <Bumbly Bazaar>
 STR_SCNR    :Bazar Ruidoso
@@ -4184,7 +4171,7 @@ STR_DTLS    :Comenzando desde un pequeño mercado, tu desafío es aumentar los i
 <Crazy Castle>
 STR_SCNR    :Castillo Loco
 STR_PARK    :Castillo Loco
-STR_DTLS    :Has heredado un gran castillo - tu trabajo es convertirlo en un pequeño parque temático.
+STR_DTLS    :Has heredado un gran castillo. Tu trabajo es convertirlo en un pequeño parque temático.
 
 <Dusty Greens>
 STR_SCNR    :Greens polvorientos
@@ -4219,7 +4206,7 @@ STR_DTLS    :Constratado por una gran cadena de parque de atracciones, tu tarea 
 <Gravity Gardens>
 STR_SCNR    :Jardines Gravitacionales
 STR_PARK    :Jardines Gravitacionales
-STR_DTLS    :Tu desafío es construir un parque de montañas rusas en los bellos Jardines Gravitacionales - Ninguna otra atracción, sólo Montañas Rusas!
+STR_DTLS    :Tu desafío es construir un parque de montañas rusas en los bellos Jardines Gravitacionales. ¡Ninguna otra atracción, sólo Montañas Rusas!
 
 <Infernal Views>
 STR_SCNR    :Vistas Infernales
@@ -4244,7 +4231,7 @@ STR_DTLS    :Prueba tu capacidad para administrar y mejorar este parque Six Flag
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Atraer mas visitantes al parque!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal. ¡Atraer más visitantes al parque!
 
 <Six Flags Holland>
 STR_SCNR    :Six Flags Holanda
@@ -4254,12 +4241,12 @@ STR_DTLS    :Prueba tu capacidad para administrar y mejorar este parque Six Flag
 <Six Flags Magic Mountain>
 STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Repagar el préstamo y mantener el valor del parque!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal. ¡Pagar el préstamo y mantener el valor del parque!
 
 <Six Flags over Texas>
 STR_SCNR    :Six Flags sobre Tejas
 STR_PARK    :Six Flags sobre Tejas
-STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Atraer mas visitantes al parque!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal. ¡Atraer más visitantes al parque!
 
 ###############################################################################
 ## Wacky Worlds Scenarios
@@ -4431,4 +4418,4 @@ STR_DTLS    :Este antiguo parque temático ha visto tiempos mejores. Ayuda al pr
 <Panda World>
 STR_SCNR    :Mundo Panda
 STR_PARK    :Mundo Panda
-STR_DTLS    :Añade mas atracciones y consigue mas visitantes en este parque pandatemático.
+STR_DTLS    :Añade mas atracciones y consigue más visitantes en este parque pandatemático.

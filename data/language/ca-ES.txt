@@ -97,6 +97,7 @@ STR_0092    :Muntanya russa d’impuls LIM
 STR_0093    :Muntanya russa híbrida
 STR_0094    :Muntanya russa d’un sol rail
 STR_0095    :Muntanya russa alpina
+STR_0096    :Muntanya russa clàssica de fusta
 STR_0512    :Muntanya russa compacta amb una pujada en espiral i caigudes sinuoses suaus.
 STR_0513    :Muntanya russa amb inversions en la qual els passatgers es mantenen drets.
 STR_0514    :Els cotxes que pengen per sota dels rails es balancegen cap a fora en les corbes.
@@ -179,6 +180,7 @@ STR_0602    :Els vagons d’aquesta muntanya russa s’acceleren fora de l’and
 STR_0603    :Una muntanya russa de fusta amb una via d’acer, el que permet unes caigudes empinades i inversions.
 STR_0604    :Els passatgers van en fila per una via monorail estreta i passen a gran velocitat per tirabuixons i inversions.
 STR_0605    :Els passatgers baixen per una via d’acer sinuosa, frenant per controlar la velocitat.
+STR_0606    :Una muntanya russa d'estil antic i de fusta, on els cotxes es mouen de pressa amb gran part al descobert, algunes accelerades laterals i dissenyada perquè els passatgers es sentin com si l'atracció estigués fora de control.
 STR_0767    :Visitant {INT32}
 STR_0768    :Encarregat de neteja {INT32}
 STR_0769    :Mecànic {INT32}
@@ -283,7 +285,7 @@ STR_0892    :S’ha desat la captura de pantalla com a «{STRINGID}».
 STR_0893    :La captura de pantalla no s’ha pogut fer.
 STR_0894    :L’àrea de dades de paisatge està plena.
 STR_0895    :No es pot construir part a sobre i part sota terra.
-STR_0896    :{POP16}{POP16}Construcció de {STRINGID}
+STR_0896    :Construcció de {POP16}{POP16}{STRINGID}
 STR_0897    :Direcció
 STR_0898    :Corba a l’esquerra
 STR_0899    :Corba a la dreta
@@ -388,10 +390,10 @@ STR_0998    :Aquesta atracció no admet més andanes.
 STR_0999    :Hi manca una andana.
 STR_1000    :El circuit de la via no està tancat.
 STR_1001    :El circuit no és adequat per a aquest tipus de tren.
-STR_1002    :No es pot obrir {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :No es pot provar {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :No es pot tancar {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :No es pot iniciar la construcció en {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :No es pot obrir {STRINGID}…
+STR_1003    :No es pot provar {STRINGID}…
+STR_1004    :No es pot tancar {STRINGID}…
+STR_1005    :No es pot iniciar la construcció en {STRINGID}…
 STR_1006    :S’ha de tancar abans.
 STR_1007    :No es poden crear suficients vehicles.
 STR_1008    :Obre, tanca o prova aquesta atracció.
@@ -3307,7 +3309,6 @@ STR_6154    :Per motius de seguretat, no es recomana executar l’OpenRCT2 amb p
 STR_6155    :Ni el KDialog ni el Zenity estan instal·lats. Si us plau, instal·leu-ne un o configureu-los des de la línia d’ordres.
 STR_6156    :El nom està reservat.
 STR_6157    :Consola
-STR_6158    :Aquest fitxer no s’ha pogut carregar…{NEWLINE}Versió RCTC incompatible: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
 STR_6161    :Mostra les línies de la quadrícula
 STR_6162    :«Wild Mouse» giratori
@@ -3436,7 +3437,7 @@ STR_6322    :{WINDOW_COLOUR_2}ID de l’sprite: {BLACK}{INT32}
 STR_6323    :Es simula
 STR_6324    :Simula
 STR_6325    :Simula l’atracció
-STR_6326    :No es pot simular {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :No es pot simular {STRINGID}…
 STR_6327    :Fons transparent per captures de pantalla gegants
 STR_6328    :Si s’activa, les captures de pantalla gegants tindran un fons transparent en lloc del color negre per defecte.
 STR_6329    :{STRING}{STRINGID}
@@ -4074,23 +4075,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Sostre
-
-[TTPIRF03]
-STR_NAME    :Sostre
-
-[TTPIRF04]
-STR_NAME    :Sostre
-
 [TTPIRF05]
-STR_NAME    :Sostre
-
-[TTPIRF07]
-STR_NAME    :Sostre
-
-[TTPIRF08]
 STR_NAME    :Sostre
 
 [TTRFWD01]

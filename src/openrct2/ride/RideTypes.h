@@ -25,7 +25,7 @@ using ride_type_t = uint16_t;
  */
 struct RideSelection
 {
-    uint8_t Type;
+    ride_type_t Type;
     ObjectEntryIndex EntryIndex;
 
     bool operator==(const RideSelection& other) const

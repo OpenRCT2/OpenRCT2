@@ -142,7 +142,7 @@ public:
         CreateViewport();
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         rct_widget* widget = &widgets[widgetIndex];
         auto* banner = GetBanner(GetBannerIndex());
@@ -176,7 +176,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
@@ -215,7 +215,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         switch (widgetIndex)
         {
@@ -239,7 +239,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (widgetIndex == WIDX_BANNER_TEXT)
         {
@@ -300,12 +300,12 @@ public:
  */
 rct_window* WindowBannerOpen(rct_windownumber number)
 {
-    auto w = static_cast<BannerWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
+    auto w = static_cast<BannerWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<BannerWindow>(WC_BANNER, WW, WH, 0);
+    w = WindowCreate<BannerWindow>(WindowClass::Banner, WW, WH, 0);
 
     if (w != nullptr)
         w->Initialise(number);

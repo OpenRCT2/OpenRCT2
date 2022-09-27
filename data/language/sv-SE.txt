@@ -386,10 +386,10 @@ STR_0998    :Inga fler stationer är tillåtna för den här åkturen
 STR_0999    :En stationsplattform krävs
 STR_1000    :Banan är inte ihopkopplad
 STR_1001    :Banan är ej lämplig för vagntypen
-STR_1002    :Kan inte öppna {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Kan inte testa {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Kan inte stänga {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Kan inte påbörja byggnadsarbetet på {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Kan inte öppna {STRINGID}…
+STR_1003    :Kan inte testa {STRINGID}…
+STR_1004    :Kan inte stänga {STRINGID}…
+STR_1005    :Kan inte påbörja byggnadsarbetet på {STRINGID}…
 STR_1006    :Måste vara stängd först
 STR_1007    :Kan inte skapa tillräckligt med vagnar
 STR_1008    :Öppna, stäng eller testa åktur eller attraktion
@@ -3305,7 +3305,6 @@ STR_6154    :Av säkerhetsskäl är det inte rekommenderat att köra OpenRCT2 me
 STR_6155    :Varken KDialog eller Zenity är installerade. Vänligen installera en av dem eller konfigurera från kommandoraden.
 STR_6156    :Namnet är reserverat
 STR_6157    :Utvecklarkonsol
-STR_6158    :Misslyckades att ladda denna fil…{NEWLINE}Inkompatibel RCTC-version: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Tillgängliga fordon: {BLACK}{STRING} 
 STR_6161    :Växla rutmönster på terräng
 STR_6162    :Snurrande vildmus
@@ -3434,7 +3433,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
 STR_6323    :Simulerar
 STR_6324    :Simulera
 STR_6325    :Simulera åktur eller attraktion
-STR_6326    :Kan inte simulera {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Kan inte simulera {STRINGID}…
 STR_6327    :Genomskinlig bakgrund för stora skärmdumpar
 STR_6328    :Med det här alternativet aktiverat kommer stora skärmdumpar ha genomskinlig bakgrund istället för den vanliga svarta.
 STR_6329    :{STRING}{STRINGID}
@@ -4017,23 +4016,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tak
-
-[TTPIRF03]
-STR_NAME    :Tak
-
-[TTPIRF04]
-STR_NAME    :Tak
-
 [TTPIRF05]
-STR_NAME    :Tak
-
-[TTPIRF07]
-STR_NAME    :Tak
-
-[TTPIRF08]
 STR_NAME    :Tak
 
 [TTRFWD01]

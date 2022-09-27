@@ -95,6 +95,8 @@ STR_0090    :رحلة مصغرة
 STR_0091    :رحلة غير معروفة (59)
 STR_0092    :LIM أفعوانية مُطلقة بواسطة
 STR_0093    :أفعوانية هجينة
+STR_0094    :أفعوانية سكة حديدية مفردة
+STR_0095    :أفعوانية جبال الألب
 STR_0512    :أفعوانية دوارة مدمجة مع مرتفع حلزوني و إنخفاضات ملتفة ناعمة.
 STR_0513    :أفعوانية دوارة للأعلي حيث يبقي الركاب في مسار أفقي.
 STR_0514    :تتحرك القطارات المعلقة أسفل مسار الإفعوانية الدوارة إلى الجانب وحول الزوايا
@@ -110,23 +112,23 @@ STR_0523    :يسافر الراكبون ببطء في السيارات التي
 STR_0524    :يتم إطلاق سيارة السقوط الحر بشكل عمودي في برج فولاذي طويل ثم يتم السماح لها بالهبوط الحر
 STR_0525    :يركب الراكبون مسارًا متعرجًا يوجهه فقط الانحنائات والتماليات للمسار شبه الدائري
 STR_0526    :يسافر الركاب في كابينة المشاهدة الدوارة التي تصعد علي طول برج طويل
-STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
-STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
-STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_0527    :أفعوانية مجنزرة سلسة قادرة علي القيام بدورانات رأسية
+STR_0528    :يُسافر الراكبون في قوارب مطاطية عبر مسار أنبوبي ملتوي نصف دائري أو مغلق بالكامل
+STR_0529    :قطار أفعوانية بشكل قطار انفاق التعدين يافطة يتقدم بسرعة في مسار يبدوا وكأنه سكة حديد قديمة
+STR_0530    :تتدلي السيارات من كابل فولاذي مستمرة بالدوران من احدي جوانب الرحلة إلي الاخري
+STR_0531    :أفعوانية مدمجة مجنزرة فولاذية حيث ينتقل القطار عبر حلقات وتمعجات الطريق
 STR_0532    :تم بناء المتاهة من السياجات أو الجدران بطول 6 أقدام، يتجول الزوار حول المتاهة ويمكنهم المغادرة فقط عندما يعثورن على المخرج
 STR_0533    :مبنى خشبي مع درج داخلي ومزلفة لولبية خارجية للاستخدام مع المزالق
 STR_0534    :يتسابق الزوار مع بعضهم البعض في عربات صغيرة على مضمار أسفلتي
 STR_0535    :تتحرك القوارب على طول قناة مائية، وتهبط على منحدرات شديدة الانحدار مبللة الراكبين
-STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_0536    :قوارب دائرية تتعرج على طول قناة مائية واسعة، متدفقة عبر الشلالات والمنحدرات الرغوية لإثارة الركاب
 STR_0537    :يصطدم الضيوف ببعضهم البعض بسيارة إصطدامية ذاتية القيادة عاملة بالكهرباء
 STR_0538    :سفينة قراصنة كبيرة تقوم بأرجحة
 STR_0539    :سفينة متصلة بزراع مع ثقل موازن في الجهة الأخري، وتتأرجح مكونة لفة بدرجة 360
 STR_0540    :كشك حيث يمكن للضيوف شراء الطعام
 STR_0542    :كشك حيث يمكن للضيوف شراء المشروبات
 STR_0544    :كشك يبيع الهدايا التذكارية
-STR_0545    :Traditional rotating carousel with carved wooden horses
+STR_0545    :دوامة خيل تقليدية مع أحصنة خشبية منحوتة
 STR_0547    :كشك حيث يمكن للضيوف شراء خرائط للحديقة والشمسيات
 STR_0548    :مبني الحمامات
 STR_0549    :عجلة كبيرة دواره مع كراسي مفتوحة
@@ -175,6 +177,8 @@ STR_0599    :A compact roller coaster with individual cars and smooth twisting d
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
 STR_0603    :أفعوانية خشبية مع مسار فولاذي، تسمح بإنحدارت وإنعكاسات حادة.
+STR_0604    :يركب الراكبون سيارة صغيرة على مسار أحادي ضيق، حيث يتسابقون عبر طرق مُنعكسة وملفات حادة.
+STR_0605    :يتزلق الراكبون على مسار فولاذي متعرج، مع إستخدام المكابح للتحكم في السرعة
 STR_0767    :زائر {INT32}
 STR_0768    :رجل مساعد {INT32}
 STR_0769    :ميكانيكي {INT32}
@@ -228,8 +232,8 @@ STR_0821    :ديسمبر
 STR_0822    :غير قادر علي الوصول لملف بيانات الجرافيك
 STR_0823    :ملف البيانات مفقود أو لا يمكن الوصول إليه
 STR_0824    :{BLACK}❌
-STR_0825    :الأسم المختار مستخدم مسبقاً
-STR_0826    :أسماء كثيرة جداً محددة
+STR_0825    :الأسم المختار مُستخدم مسبقاً
+STR_0826    :تم تحديد الكثير من الأسماء
 STR_0827    :{CURRENCY2DP} لا نقود كافية - يتطلب 
 STR_0828    :أغلق النافذة
 STR_0829    :عنوان النافذة - إسحب هذا لكي تحرك النافذة
@@ -289,7 +293,7 @@ STR_0902    :Left-hand curve (very small radius)
 STR_0903    :Right-hand curve (very small radius)
 STR_0904    :Left-hand curve (large radius)
 STR_0905    :Right-hand curve (large radius)
-STR_0906    :Straight
+STR_0906    :مُستقيم
 STR_0907    :إنحدار
 STR_0908    :لفة/صرف
 STR_0909    :.دوران الكرسي
@@ -307,8 +311,8 @@ STR_0920    :مستوي
 STR_0921    :إنحدار للأعلي
 STR_0922    :إنحدار حاد للأعلي
 STR_0923    :إرتفاع رأسي
-STR_0924    :Helix down
-STR_0925    :Helix up
+STR_0924    :ملف للإسفل
+STR_0925    :ملف للإعلي
 STR_0926    :…لا يمكن مسح هذا
 STR_0927    :…لا يمكن بناء هذا هنا
 STR_0928    :Chain lift, to pull cars up slopes
@@ -384,10 +388,10 @@ STR_0998    :No more stations allowed on this ride
 STR_0999    :يتطلب منصة محطة
 STR_1000    :المسار ليس دائرة متصلة
 STR_1001    :المسار غير مناسب لهذا القطار
-STR_1002    :{POP16}{POP16}{POP16}{STRINGID}…لا يمكن فتح
-STR_1003    :{POP16}{POP16}{POP16}{STRINGID}…لا يمكن إختبار
-STR_1004    :{POP16}{POP16}{POP16}{STRINGID}…لا يمكن إغلاق
-STR_1005    :{POP16}{POP16}{POP16}{STRINGID}…لا يمكن بدء البناء في
+STR_1002    :{STRINGID}…لا يمكن فتح
+STR_1003    :{STRINGID}…لا يمكن إختبار
+STR_1004    :{STRINGID}…لا يمكن إغلاق
+STR_1005    :{STRINGID}…لا يمكن بدء البناء في
 STR_1006    :يجب أن يُغلق أولاً
 STR_1007    :غير قادر علي إنشاء أي مركبات أخري
 STR_1008    :Open, close, or test ride/attraction
@@ -428,7 +432,7 @@ STR_1042    :إحفظ المشهد
 STR_1043    :OpenRCT2 ملف حفظ
 STR_1044    :OpenRCT2 ملف مشهد
 STR_1045    :OpenRCT2 Landscape File
-STR_1046    :OpenRCT2 Track Design File
+STR_1046    :OpenRCT2 ملف تصميم المسار
 STR_1047    :!حفظ اللعبة فشل
 STR_1048    :!حفظ السيناريو فشل
 STR_1049    :!حفظ المشهد فشل
@@ -471,7 +475,7 @@ STR_1085    :فيلم: ”راكبي الإثارة”
 STR_1086    :فيلم ثري دي: ”مطاردوا العاصفة”
 STR_1087    :فيلم ثري دي: ”غزاة الفضاء”
 STR_1088    :الوضع العنيف
-STR_1089    :Berserk mode
+STR_1089    :الوضع الهائج
 STR_1090    :وضع المنزل المسكون
 STR_1091    :وضع عرض السيرك
 STR_1092    :Downward launch
@@ -632,104 +636,104 @@ STR_1246    :مسارات
 STR_1247    :{COMMA16} مسار
 STR_1248    :{COMMA16} مسارات
 STR_1249    :{COMMA16}مسار
-STR_1250    :docking platform
-STR_1251    :docking platforms
-STR_1252    :Docking platform
-STR_1253    :Docking platforms
-STR_1254    :{COMMA16} docking platform
-STR_1255    :{COMMA16} docking platforms
-STR_1256    :Docking platform {COMMA16}
-STR_1257    :station
-STR_1258    :stations
-STR_1259    :Station
-STR_1260    :Stations
-STR_1261    :{COMMA16} station
-STR_1262    :{COMMA16} stations
-STR_1263    :Station {COMMA16}
-STR_1264    :car
-STR_1265    :cars
-STR_1266    :Car
-STR_1267    :Cars
-STR_1268    :{COMMA16} car
-STR_1269    :{COMMA16} cars
-STR_1270    :Car {COMMA16}
-STR_1271    :building
-STR_1272    :buildings
-STR_1273    :Building
-STR_1274    :Buildings
-STR_1275    :{COMMA16} building
-STR_1276    :{COMMA16} buildings
-STR_1277    :Building {COMMA16}
-STR_1278    :structure
-STR_1279    :structures
-STR_1280    :Structure
-STR_1281    :Structures
-STR_1282    :{COMMA16} structure
-STR_1283    :{COMMA16} structures
-STR_1284    :Structure {COMMA16}
-STR_1285    :ship
-STR_1286    :ships
-STR_1287    :Ship
-STR_1288    :Ships
-STR_1289    :{COMMA16} ship
-STR_1290    :{COMMA16} ships
-STR_1291    :Ship {COMMA16}
-STR_1292    :cabin
-STR_1293    :cabins
-STR_1294    :Cabin
-STR_1295    :Cabins
-STR_1296    :{COMMA16} cabin
-STR_1297    :{COMMA16} cabins
-STR_1298    :Cabin {COMMA16}
-STR_1299    :wheel
-STR_1300    :wheels
-STR_1301    :Wheel
-STR_1302    :Wheels
-STR_1303    :{COMMA16} wheel
-STR_1304    :{COMMA16} wheels
-STR_1305    :Wheel {COMMA16}
-STR_1306    :ring
-STR_1307    :rings
-STR_1308    :Ring
-STR_1309    :Rings
-STR_1310    :{COMMA16} ring
-STR_1311    :{COMMA16} rings
-STR_1312    :Ring {COMMA16}
-STR_1313    :player
-STR_1314    :players
-STR_1315    :Player
-STR_1316    :Players
-STR_1317    :{COMMA16} player
-STR_1318    :{COMMA16} players
-STR_1319    :Player {COMMA16}
-STR_1320    :course
-STR_1321    :courses
-STR_1322    :Course
-STR_1323    :Courses
-STR_1324    :{COMMA16} course
-STR_1325    :{COMMA16} courses
-STR_1326    :Course {COMMA16}
-STR_1327    :Rotate objects by 90°
+STR_1250    :منصة التوقف
+STR_1251    :منصات التوقف
+STR_1252    :منصة التوقف
+STR_1253    :منصات التوقف
+STR_1254    :{COMMA16} منصة التوقف
+STR_1255    :{COMMA16} منصات التوقف
+STR_1256    :منصة التوقف {COMMA16}
+STR_1257    :محطة
+STR_1258    :محطات
+STR_1259    :محطة
+STR_1260    :محطات
+STR_1261    :{COMMA16} محطة
+STR_1262    :{COMMA16} محطات
+STR_1263    :محطة {COMMA16}
+STR_1264    :عربة
+STR_1265    :عربات
+STR_1266    :عربة
+STR_1267    :عربات
+STR_1268    :{COMMA16} عربة
+STR_1269    :{COMMA16} عربات
+STR_1270    :عربة {COMMA16}
+STR_1271    :مبني
+STR_1272    :مباني
+STR_1273    :مبني
+STR_1274    :مباني
+STR_1275    :{COMMA16} مبني
+STR_1276    :{COMMA16} مباني
+STR_1277    :مبني {COMMA16}
+STR_1278    :هيكل
+STR_1279    :هياكل
+STR_1280    :هيكل
+STR_1281    :هياكل
+STR_1282    :{COMMA16} هيكل
+STR_1283    :{COMMA16} هياكل
+STR_1284    :هيكل {COMMA16}
+STR_1285    :سفينة
+STR_1286    :سُفن
+STR_1287    :سفينة
+STR_1288    :سُفن
+STR_1289    :{COMMA16} سفينة
+STR_1290    :{COMMA16} سُفن
+STR_1291    :سفينة {COMMA16}
+STR_1292    :مقصورة
+STR_1293    :مقصورات
+STR_1294    :مقصورة
+STR_1295    :مقصورات
+STR_1296    :{COMMA16} مقصورة
+STR_1297    :{COMMA16} مقصورات
+STR_1298    :مقصورة {COMMA16}
+STR_1299    :عجلة
+STR_1300    :عجلات
+STR_1301    :عجلة
+STR_1302    :عجلات
+STR_1303    :{COMMA16} عجلة
+STR_1304    :{COMMA16} عجلات
+STR_1305    :عجلة {COMMA16}
+STR_1306    :حلقة
+STR_1307    :حلقات
+STR_1308    :حلقة
+STR_1309    :حلقات
+STR_1310    :{COMMA16} حلقة
+STR_1311    :{COMMA16} حلقات
+STR_1312    :حلقة {COMMA16}
+STR_1313    :لاعب
+STR_1314    :لاعبين
+STR_1315    :لاعب
+STR_1316    :لاعبين
+STR_1317    :{COMMA16} لاعب
+STR_1318    :{COMMA16} لاعبين
+STR_1319    :لاعب {COMMA16}
+STR_1320    :مسار
+STR_1321    :مسارات
+STR_1322    :مسار
+STR_1323    :مسارات
+STR_1324    :{COMMA16} مسار
+STR_1325    :{COMMA16} مسارات
+STR_1326    :مسار {COMMA16}
+STR_1327    :أدر العنصر 90°
 STR_1328    :Level land required
-STR_1329    :{WINDOW_COLOUR_2}Launch speed:
-STR_1330    :Maximum speed when leaving station
+STR_1329    :{WINDOW_COLOUR_2}سرعة الإطلاق:
+STR_1330    :أقصي سرعة عند مغادرة المحطة
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1335    :{STRINGID} - Entrance{POP16}{POP16}
-STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Entrance
-STR_1337    :{STRINGID} - Exit{POP16}{POP16}
-STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
-STR_1339    :{BLACK}No test results yet…
-STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
-STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1335    :{STRINGID} - المدخل{POP16}{POP16}
+STR_1336    :{STRINGID} - المحطة {POP16}{COMMA16} مدخل
+STR_1337    :{STRINGID} - المخرج{POP16}{POP16}
+STR_1338    :{STRINGID} - المحطة {POP16}{COMMA16} مخرج
+STR_1339    :{BLACK}لا يوجد نتائج إختبار بعد…
+STR_1340    :{WINDOW_COLOUR_2}أقصي سرعة: {BLACK}{VELOCITY}
+STR_1341    :{WINDOW_COLOUR_2}وقت الرحلة: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
 STR_1343    :{DURATION} / 
-STR_1344    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1344    :{WINDOW_COLOUR_2}طول الرحلة: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} / 
-STR_1347    :{WINDOW_COLOUR_2}Average speed: {BLACK}{VELOCITY}
+STR_1347    :{WINDOW_COLOUR_2}متوسط السرعة: {BLACK}{VELOCITY}
 STR_1348    :{WINDOW_COLOUR_2}Max. positive vertical Gs: {BLACK}{COMMA2DP32}g
 STR_1349    :{WINDOW_COLOUR_2}Max. positive vertical Gs: {OUTLINE}{RED}{COMMA2DP32}g
 STR_1350    :{WINDOW_COLOUR_2}Max. negative vertical Gs: {BLACK}{COMMA2DP32}g
@@ -741,8 +745,8 @@ STR_1355    :{WINDOW_COLOUR_2}Drops: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Total ‘air’ time: {BLACK}{COMMA2DP32}secs
-STR_1359    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minute
-STR_1360    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minutes
+STR_1359    :{WINDOW_COLOUR_2}وقت الطوابير: {BLACK}{COMMA16} دقيقة
+STR_1360    :{WINDOW_COLOUR_2}وقت الطوابير: {BLACK}{COMMA16} دقائق
 STR_1361    :لا يمكن تغيير السرعة…
 STR_1362    :لا يمكن تغيير سرعة الإطلاق…
 STR_1363    :Too high for supports!
@@ -786,7 +790,7 @@ STR_1400    :مدخل
 STR_1401    :مخرج
 STR_1402    :Build or move entrance to ride/attraction
 STR_1403    :Build or move exit from ride/attraction
-STR_1404    :Rotate 90°
+STR_1404    :أدر 90°
 STR_1405    :Mirror image
 STR_1406    :Toggle scenery on/off (if available for this design)
 STR_1407    :{WINDOW_COLOUR_2}Build this…
@@ -809,28 +813,28 @@ STR_1423    :Queue line path
 STR_1424    :Footpath
 STR_1425    :خطوات أقدام
 STR_1426    :طابور إنتظار
-STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
+STR_1427    :{WINDOW_COLOUR_2}العملاء: {BLACK}{COMMA32} بالساعة
 STR_1428    :{WINDOW_COLOUR_2}Admission price:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :حر
 STR_1431    :يمشي
-STR_1432    :Heading for {STRINGID}
-STR_1433    :Queuing for {STRINGID}
-STR_1434    :Drowning
+STR_1432    :يتجه لـ {STRINGID}
+STR_1433    :ينتظر لـ {STRINGID}
+STR_1434    :يغرق
 STR_1435    :علي {STRINGID}
 STR_1436    :في {STRINGID}
 STR_1437    :عند {STRINGID}
 STR_1438    :جالس
 STR_1439    :(حدد المكان)
-STR_1440    :Mowing grass
+STR_1440    :يجز العشب
 STR_1441    :Sweeping footpath
 STR_1442    :Emptying litter bin
 STR_1443    :Watering gardens
 STR_1444    :Watching {STRINGID}
 STR_1445    :Watching construction of {STRINGID}
-STR_1446    :Looking at scenery
+STR_1446    :يشاهد المناظر الطبيعية
 STR_1447    :يغادر الظلام
-STR_1448    :Watching new ride being constructed
+STR_1448    :يشاهد رحلة جديدة قيد الإنشاء
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
@@ -851,8 +855,8 @@ STR_1465    :Helix up (large)
 STR_1466    :Helix down (small)
 STR_1467    :Helix down (large)
 STR_1468    :العاملون
-STR_1469    :Ride must start and end with stations
-STR_1470    :Station not long enough
+STR_1469    :يجب أن تبدأ الرحلة وتنتهي بمحطة
+STR_1470    :المحطة ليست طويلة بشكل كافي
 STR_1471    :{WINDOW_COLOUR_2}السرعة:
 STR_1472    :السرعة لهذه الرحلة
 STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -865,27 +869,27 @@ STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
 STR_1480    :“لا يمكنني تحمل كلفة {STRINGID}”
 STR_1481    :“لقد أنفقت كل مالي”
 STR_1482    :“أنا أشعر بالتعب”
-STR_1483    :“أنا أشعر بالتنعب الشديد”
+STR_1483    :“أنا أشعر بالتعب الشديد”
 STR_1484    :“I want to go on something more thrilling than {STRINGID}”
 STR_1485    :“{STRINGID} looks too intense for me”
-STR_1486    :“لقد إنتهيت من {STRINGID} yet”
+STR_1486    :“لقد إنتهيت من {STRINGID}”
 STR_1487    :“Just looking at {STRINGID} makes me feel sick”
-STR_1488    :“I’m not paying that much to go on {STRINGID}”
+STR_1488    :“أنا لن ادفع هذا القدر من أجل {STRINGID}”
 STR_1489    :“أنا أود الذهاب للمنزل”
-STR_1490    :“{STRINGID} is really good value”
-STR_1491    :“I’ve already got {STRINGID}”
-STR_1492    :“I can’t afford {STRINGID}”
-STR_1493    :“I’m not hungry”
-STR_1494    :“I’m not thirsty”
+STR_1490    :“جيدة فعلاً {STRINGID} قيمة ”
+STR_1491    :“لقد حصلت بالفعل علي {STRINGID}”
+STR_1492    :“لا يمكنني تحمل كلفة {STRINGID}”
+STR_1493    :“أنا لست جائعاً”
+STR_1494    :“أنا لست عطشاً”
 STR_1495    :“النجدة! أنا أغرق!”
 STR_1496    :“أنا تائه!”
-STR_1497    :“{STRINGID} was great”
-STR_1498    :“I’ve been queuing for {STRINGID} for ages”
+STR_1497    :“عظيماً {STRINGID} كان”
+STR_1498    :“أنا أقف في طابور الإنتظار لـ {STRINGID} منذ وقت طويل”
 STR_1499    :“أنا مرهق”
 STR_1500    :“أنا جائع”
 STR_1501    :“أنا عطشان”
 STR_1502    :“أنا سوف أذهب إلي الحمام”
-STR_1503    :“I can’t find {STRINGID}”
+STR_1503    :“لا يمكنني إيجاد {STRINGID}”
 STR_1504    :“I’m not paying that much to use {STRINGID}”
 STR_1505    :“I’m not going on {STRINGID} while it’s raining”
 STR_1506    :“The litter here is really bad”
@@ -896,10 +900,10 @@ STR_1510    :“I’m not going on {STRINGID} - It isn’t safe”
 STR_1511    :“This path is disgusting”
 STR_1512    :“It’s too crowded here”
 STR_1513    :“The vandalism here is really bad”
-STR_1514    :“Great scenery!”
+STR_1514    :“مشهد عظيم!”
 STR_1515    :“This park is really clean and tidy”
 STR_1516    :“The jumping fountains are great”
-STR_1517    :“The music is nice here”
+STR_1517    :“الموسيقي جميلة هُنا”
 STR_1518    :“This balloon from {STRINGID} is really good value”
 STR_1519    :“This cuddly toy from {STRINGID} is really good value”
 STR_1520    :“This park map from {STRINGID} is really good value”
@@ -1041,22 +1045,22 @@ STR_1657    :{WINDOW_COLOUR_2}Preferred ride
 STR_1658    :{WINDOW_COLOUR_2}intensity: {BLACK}less than {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}intensity: {BLACK}between {COMMA16} and {COMMA16}
 STR_1660    :{WINDOW_COLOUR_2}intensity: {BLACK}more than {COMMA16}
-STR_1661    :{WINDOW_COLOUR_2}Nausea tolerance: {BLACK}{STRINGID}
+STR_1661    :{WINDOW_COLOUR_2}تحمل الغثيان: {BLACK}{STRINGID}
 STR_1662    :{WINDOW_COLOUR_2}السعادة:
-STR_1663    :{WINDOW_COLOUR_2}Nausea:
+STR_1663    :{WINDOW_COLOUR_2}الغثيان:
 STR_1664    :{WINDOW_COLOUR_2}الطاقة:
 STR_1665    :{WINDOW_COLOUR_2}الجوع:
 STR_1666    :{WINDOW_COLOUR_2}الجوع:
 STR_1667    :{WINDOW_COLOUR_2}الحمام:
 STR_1668    :{WINDOW_COLOUR_2}الرضا: {BLACK}غير معروف
 STR_1669    :{WINDOW_COLOUR_2}الرضا: {BLACK}{COMMA16}%
-STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
+STR_1670    :{WINDOW_COLOUR_2}الزبائن الكُلين: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}الربح الكلي: {BLACK}{CURRENCY2DP}
 STR_1672    :فرامل
 STR_1673    :Spinning Control Toggle Track
 STR_1674    :سرعة الفرملة
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :Set speed limit for brakes
+STR_1676    :حدد السرعة القصوي للفرملة
 STR_1677    :{WINDOW_COLOUR_2}الشهرة: {BLACK}غير معروف
 STR_1678    :{WINDOW_COLOUR_2}الشهرة: {BLACK}{COMMA16}%
 STR_1679    :Helix up (left)
@@ -1086,16 +1090,16 @@ STR_1702    :أجر حارس أمن جديد
 STR_1703    :أجر مُرفه جديد
 STR_1704    :لا يمكن تأجير عاملين جدد…
 STR_1705    :طرد هذا العامل
-STR_1706    :Move this person to a new location
-STR_1707    :Too many staff in game
-STR_1708    :Set patrol area for this staff member
-STR_1709    :Sack staff
+STR_1706    :حرك هذا الشخص لمكان جديد
+STR_1707    :عمال كثيرون في اللعبة
+STR_1708    :حدد مكان عمل هذا العامل
+STR_1709    :طرد العامل
 STR_1710    :نعم
-STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
+STR_1711    :{WINDOW_COLOUR_1}هل أنت متأكد أنك تريد طرد {STRINGID}?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
-STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}جز العشب
 STR_1716    :إسم خاطئ للحديقة
 STR_1717    :لا يمكن إعادة تسمية الحديقة…
 STR_1718    :أسم الحديقة
@@ -1108,7 +1112,7 @@ STR_1724    :لا يمكن إغلاق الحديقة…
 STR_1725    :لا يمكن شراء الأرض…
 STR_1726    :الأرض ليست للبيع!
 STR_1727    :حقوق الإنشاء ليست للبيع!
-STR_1728    :Can’t buy construction rights here…
+STR_1728    :لا يمكنك شراء حقوق البناء هُنا
 STR_1729    :الأرض ليست مملوكة للحديقة!
 STR_1730    :{RED}مغلقة 
 STR_1731    :{WHITE}{STRINGID} - - 
@@ -1201,7 +1205,7 @@ STR_1824    :Show guests on this ride/attraction
 STR_1825    :Show guests queuing for this ride/attraction
 STR_1826    :الوضع
 STR_1827    :Popularity
-STR_1828    :Satisfaction
+STR_1828    :الرضا
 STR_1829    :الربح
 STR_1830    :طول طابور الإنتظار
 STR_1831    :Queue time
@@ -1210,11 +1214,11 @@ STR_1833    :Down-time
 STR_1834    :Guests favourite
 STR_1835    :Popularity: Unknown
 STR_1836    :Popularity: {COMMA16}%
-STR_1837    :Satisfaction: Unknown
-STR_1838    :Satisfaction: {COMMA16}%
+STR_1837    :الرضا: غير معروف
+STR_1838    :الرضا: {COMMA16}%
 STR_1839    :Reliability: {COMMA16}%
 STR_1840    :Down-time: {COMMA16}%
-STR_1841    :Profit: {CURRENCY2DP} per hour
+STR_1841    :الربح: {CURRENCY2DP} بالساعة
 STR_1842    :Favourite of: {COMMA16} guest
 STR_1843    :Favourite of: {COMMA16} guests
 STR_1844    :Select information type to show in ride/attraction list
@@ -1251,14 +1255,14 @@ STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
 STR_1878    :{WINDOW_COLOUR_2}Inspection:
-STR_1879    :Every 10 minutes
-STR_1880    :Every 20 minutes
-STR_1881    :Every 30 minutes
-STR_1882    :Every 45 minutes
-STR_1883    :Every hour
-STR_1884    :Every 2 hours
-STR_1885    :Never
-STR_1886    :Inspecting {STRINGID}
+STR_1879    :كل 10 دقائق
+STR_1880    :كل 20 دقائق
+STR_1881    :كل 30 دقائق
+STR_1882    :كل 45 دقائق
+STR_1883    :كل ساعة
+STR_1884    :كل 2 ساعة
+STR_1885    :أبداً
+STR_1886    :يفحص {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
 STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
 STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
@@ -2230,15 +2234,15 @@ STR_3181    :Object Selection - {STRINGID}
 STR_3182    :Park entrance type must be selected
 STR_3183    :Water type must be selected
 STR_3184    :Ride Vehicles/Attractions
-STR_3185    :Small Scenery
-STR_3186    :Large Scenery
+STR_3185    :مشهد صغير
+STR_3186    :مشهد كبير
 STR_3187    :Walls/Fences
-STR_3188    :Path Signs
-STR_3189    :Footpaths
+STR_3188    :علامات مسارات الاقدام
+STR_3189    :مسارات الاقدام القديمة
 STR_3190    :Path Extras
 STR_3191    :Scenery Groups
 STR_3192    :Park Entrance
-STR_3193    :Water
+STR_3193    :مباة
 STR_3195    :Invention List
 STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
@@ -2492,15 +2496,15 @@ STR_5189    :تطوير
 STR_5190    :خريطة
 STR_5191    :Viewport
 STR_5192    :الأخبار الحالية
-STR_5193    :Land
-STR_5194    :Water
-STR_5195    :Clear Scenery
-STR_5196    :Land Rights
-STR_5197    :Scenery
-STR_5198    :Footpath
+STR_5193    :أرض
+STR_5194    :مياة
+STR_5195    :أخلي المشهد
+STR_5196    :حقوق الأرض
+STR_5197    :مشهد
+STR_5198    :مسار الاقدام
 STR_5199    :Ride Construction
 STR_5200    :Track Design Place
-STR_5201    :New Ride
+STR_5201    :رحلة جديدة
 STR_5202    :Track Design Selection
 STR_5203    :Ride
 STR_5204    :Ride List
@@ -2534,11 +2538,11 @@ STR_5231    :Rides and Guests
 STR_5232    :Editors
 STR_5233    :Miscellaneous
 STR_5234    :Prompts
-STR_5235    :Settings
+STR_5235    :إعدادات
 STR_5236    :نافذة
 STR_5237    :لوحة
 STR_5238    :الثيم الحالي
-STR_5239    :Duplicate
+STR_5239    :إستنساخ
 STR_5240    :Enter a name for the theme
 STR_5241    :Can’t change this theme
 STR_5242    :Theme name already exists
@@ -2628,11 +2632,11 @@ STR_5352    :{BLACK}السعادة:
 STR_5353    :{BLACK}الطاقة:
 STR_5354    :{BLACK}الجوع:
 STR_5355    :{BLACK}العطش:
-STR_5356    :{BLACK}الإشمئزاز:
-STR_5357    :{BLACK}تسامح الإشمئزاز:
+STR_5356    :{BLACK}الغثيان:
+STR_5357    :{BLACK}تحمل الغثيان:
 STR_5358    :{BLACK}الحمام:
 STR_5359    :مسح الزوار
-STR_5360    :Removes all guests from the map
+STR_5360    :مسح كل الزوار من الخريطة
 STR_5361    :Give all guests:
 STR_5362    :{BLACK}Set all guests’ preferred ride intensity to:
 STR_5363    :أكثر من 1
@@ -2749,7 +2753,7 @@ STR_5544    :أحمر فاتح
 STR_5545    :وردي غامق
 STR_5546    :وردي مشرق
 STR_5547    :وردي فاتح
-STR_5548    :Show all operating modes
+STR_5548    :أظهر كل أوضاع التشغيل
 STR_5549    :السنة/الشهر/اليوم
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :السنة/اليوم/الشهر
@@ -2764,7 +2768,7 @@ STR_5559    :10 min. inspections
 STR_5560    :Sets the inspection time to ‘Every 10 minutes’ on all rides
 STR_5561    :فشل في تحميل اللغه
 STR_5562    :تحذير!
-STR_5563    :This feature is currently unstable, take extra caution.
+STR_5563    :هذه الخاصية حالياً غير ثابتة، خذ إحتياطك.
 STR_5566    :كلمة السر:
 STR_5567    :إعلان
 STR_5568    :كلمة السر مطلوبة
@@ -2781,8 +2785,8 @@ STR_5578    :الروبية الروسية (₽)
 STR_5579    :معدل تكبير النافذه:
 STR_5580    :كرونة تشيكية (Kč)
 STR_5581    :أظهر معدل الإطارات
-STR_5582    :Trap mouse cursor in window
-STR_5583    :{COMMA1DP16}m/s
+STR_5582    :حصر المؤشر بداخل نافذة اللعبة
+STR_5583    :{COMMA1DP16}م/ث
 STR_5584    :SI
 STR_5585    :Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :Automatically open shops and stalls
@@ -2836,7 +2840,7 @@ STR_5634    :إعدادات +
 STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
 STR_5637    :لا يُمكن فعل هذا…
-STR_5638    :Permission denied
+STR_5638    :رُفض الإذن
 STR_5639    :أظهر قائمة اللاعبين
 STR_5640    :إدارة المجموعات
 STR_5641    :المجموعة الإفتراضية:
@@ -2851,7 +2855,7 @@ STR_5649    :أنشئ الرحلة
 STR_5650    :حذف الرحلة
 STR_5651    :بناء الرحلة
 STR_5652    :خصائص الرحلة
-STR_5653    :Scenery
+STR_5653    :مشهد
 STR_5654    :المسار
 STR_5655    :زائر
 STR_5656    :العاملين
@@ -3172,18 +3176,18 @@ STR_6014    :Guests will only pay entrance tickets for rides and services.{NEWLI
 STR_6015    :منحدر
 STR_6016    :عدل المُربع
 STR_6017    :من فضلك أبطئ
-STR_6018    :بناء الرحلة - أستدر شمالاً
-STR_6019    :بناء الرحلة - أستدر يميناً
-STR_6020    :بناء الرحلة - أستخدم المسار الإفتراضي
+STR_6018    :البناء - أدر شمالاً
+STR_6019    :البناء - أدر يميناً
+STR_6020    :البناء - أستخدم المسار الإفتراضي
 STR_6021    :بنال الرحلة - أنحدر للآسفل
-STR_6022    :بناء الرحلة - أصعد للأعلي
-STR_6023    :بناء الرحلة - Toggle chain lift
-STR_6024    :بناء الرحلة - ميلان لليسار
-STR_6025    :بناء الرحلة - ميلان لليمين
-STR_6026    :بناء الرحلة - المسار السابق
-STR_6027    :بناء الرحلة - المسار التالي
-STR_6028    :بناء الرحلة - بناء المحدد
-STR_6029    :بناء الرحلة - إهدم المحدد
+STR_6022    :البناء - أصعد للأعلي
+STR_6023    :البناء - Toggle chain lift
+STR_6024    :البناء - مل لليسار
+STR_6025    :البناء - مل لليمين
+STR_6026    :البناء - المسار السابق
+STR_6027    :البناء - المسار التالي
+STR_6028    :البناء - بناء المحدد
+STR_6029    :البناء - هدم المحدد
 STR_6030    :Scenery picker. Click any scenery on the map to select the same piece for construction.
 STR_6031    ::وصف السرفر
 STR_6032    :ترحيب السرفر:
@@ -3303,7 +3307,6 @@ STR_6154    :لا يٌفضل تشغيل اللعبة مع هذه الأذون ا
 STR_6155    :ليس هناك KDialog أو Zenity مثبت. الرجاء تثبيت إحداهما، أو إعداده من سطر الأوامر.
 STR_6156    :الأسم محجوز
 STR_6157    :وحدة التحكم
-STR_6158    :فشل في تحميل هذا الملف…{NEWLINE}نسخة الملف غير متوافقة: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}المركبات المتوفرة: {BLACK}{STRING}
 STR_6161    :إظهار/إخفاء شبكة الإرشاد
 STR_6162    :الفأر البري الدوار
@@ -3427,7 +3430,7 @@ STR_6322    :{WINDOW_COLOUR_2} {BLACK}{INT32} :رقم النقش المتحرك
 STR_6323    :يُحاكي
 STR_6324    :حاكي
 STR_6325    :حاكي الرحلة/المزار
-STR_6326    :…{POP16}{POP16}{POP16}{STRINGID} لا يمكن محاكاة
+STR_6326    :…{STRINGID} لا يمكن محاكاة
 STR_6327    :خلفية شفافة للقطات الشاشة العملاقة
 STR_6328    :.مع هذا الإعداد، صور لقطة الشاشة العملاقة ستحصل علي خلفية شفافة بدلاً من الخلفية السوداء الإفتراضية
 STR_6329    :{STRING}{STRINGID}
@@ -3472,7 +3475,7 @@ STR_6367    :{WINDOW_COLOUR_2}إطارات الحركة:
 STR_6368    :لأسباب تتعلق بالتوافق، لا يوصى بتشغيل OpenRCT2 مع برنامج واين. يحتوي OpenRCT2 "على دعم أصلي لأنظمة "ماك أو إس" و"لينكس" و"فري بي إس دي" و"أوبن بي إس دي.
 STR_6369    :السماح ببناء المسار على ارتفاعات غير صالحة
 STR_6370    :{SMALLFONT}{BLACK}يسمح بوضع قطع المسار في أي مساحة إرتفاع
-STR_6371    :يحتوي المسار المحدد على تثبيت RollerCoaster Tycoon 1 ، لكن ملف "csg1i.dat" مفقود. يجب نسخ هذا الملف من القرص المضغوط RollerCoaster Tycoon 1 إلى مجلد "Data" الخاص بتثبيت RollerCoaster Tycoon 1 على الهارد لديك.
+STR_6371    :يحتوي المسار المحدد على تثبيت RollerCoaster Tycoon 1 ، لكن ملف "csg1i.dat" مفقود. يجب نسخ هذا الملف من Loopy Landscapes أو RCT Deluxe CD RollerCoaster Tycoon 1 إلى مجلد "Data" الخاص بتثبيت RollerCoaster Tycoon 1 على الهارد لديك.
 STR_6372    :يحتوي المسار المحدد على تثبيت RollerCoaster Tycoon 1 ، لكن هذا الإصدار غير مناسب. يحتاج OpenRCT2 إلى تثبيت Loopy Landscapes أو RCT Deluxe من أجل استخدام أصول RollerCoaster Tycoon 1.
 STR_6373    :تفعيل التحقق من الترخيص
 STR_6374    :C
@@ -3499,13 +3502,112 @@ STR_6394    :الموضوع
 STR_6395    :الصيانة
 STR_6396    :تعطيل شاشة التوقف وتوفير طاقة الشاشة
 STR_6397    :{SMALLFONT}{BLACK}إذا تم تفعيلة، فسيتم منع شاشة التوقف وميزات توفير طاقة الشاشة الأخرى أثناء تشغيل OpenRCT2.
-
+STR_6398    :يحتوي الملف علي رحلة غير مدعومة. من فضلك قم بالتحديث لاحدث نسخة من اللعبة.
+STR_6399    :OpenRCT2 تحتاج للملفات من RollerCoaster Tycoon 2 الاصلية لكي تعمل. من فضلك حدد المسار للعبة في “game_path” بداخل config.ini الي المكان الذي تم تثبيت اللعبة  RollerCoaster Tycoon 2, ثم أعد تشغيل OpenRCT2.
+STR_6400    :انا لدي مثبت GOG لللعبة RollerCoaster Tycoon 2, لكنه ليس مُثبت
+STR_6401    :قمت بتثبيت RollerCoaster Tycoon 2 بالفعل
+STR_6402    :ثبيت بياناتOpenRCT2
+STR_6403    :حدد الافضل بالنسبة لك
+STR_6404    :من فضلك حدد مُثبت GOG للعبة RollerCoaster Tycoon 2.
+STR_6405    :حدد مُثبت GOG
+STR_6406    :مُثبت GOG RollerCoaster Tycoon 2
+STR_6407    :قد يستغرق هذا بضع دقائق.
+STR_6408    :من فضلك قد بتثبيت “innoextract” لاستخراج مُثبت GOG, ثم أعد تشغيل OpenRCT2.
+STR_6409    :الملف المُحدد ليس مُثبت GOG للعبة RollerCoaster Tycoon 2. ربما قمت بتحميل مُثبت برنامج GOG Galaxy أو قمت بإختيار الملف الخاطئ.
+STR_6410    :تصغير/تكبير
+STR_6411    :أظهر الازار للتصغير والتكبير في شريط الادوات
+STR_6412    :NumPad Enter
+STR_6413    :Shift
+STR_6414    :L Shift
+STR_6415    :R Shift
+STR_6416    :Ctrl
+STR_6417    :L Ctrl
+STR_6418    :R Ctrl
+STR_6419    :Alt
+STR_6420    :L Alt
+STR_6421    :R Alt
+STR_6422    :Cmd
+STR_6423    :L Cmd
+STR_6424    :R Cmd
+STR_6425    :Joy Left
+STR_6426    :Joy Right
+STR_6427    :Joy Up
+STR_6428    :Joy Down
+STR_6429    :Joy {INT32}
+STR_6430    :LMB
+STR_6431    :RMB
+STR_6432    :Mouse {INT32}
+STR_6433    :حذف
+STR_6434    :حذف كل الإرتباطات من هذا الإختصار.
+STR_6435    :{WINDOW_COLOUR_2}أوقف المُخربون: {BLACK}{COMMA16}
+STR_6436    :تفعيل الإخفاء
+STR_6437    :مرئي
+STR_6438    :م
+STR_6439    :عارض البلاط: تفعيل الإخفاء
+STR_6440    :مياة شفافة
+STR_6441    :يجب تحديد سطح ممر واحد على الأقل من غير قائمة انتظار.
+STR_6442    :يجب تحديد سطح ممر واحد على الأقل بقائمة انتظار.
+STR_6443    :يجب تحديد جوانب حديدية واحدة للممر على الأقل.
+STR_6444    :أسطح الممر
+STR_6445    :جوانب حديدية للممر
+STR_6446    :{WINDOW_COLOUR_2}أسم السطح: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}أسم الجانب الحديدي: {BLACK}{STRINGID}
+STR_6448    :صيغة عنصر غير معروفة
+STR_6449    :{WINDOW_COLOUR_2}الأغاني:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}يبيع: {BLACK}{STRING}
+STR_6453    :نسخ بيانات النسخة
+STR_6454    :لا يمكن إعادة تسمية اللافتة
+STR_6455    :لا يمكن إعادة تسمية الشعار…
+STR_6456    :لقطة شاشة عملاقة
+STR_6457    :أبلغ عن المشكلة علي جيت هاب
+STR_6458    :تتبع هذا في العرض الاساسي
+STR_6460    :إت
+STR_6461    :إتجاه
+STR_6462    :الإثارة
+STR_6463    :الإثارة: {COMMA2DP32}
+STR_6464    :الشدة
+STR_6465    :الشدة: {COMMA2DP32}
+STR_6466    :الغثيان
+STR_6467    :الغثيان: {COMMA2DP32}
+STR_6468    :غير معروف بعد
+STR_6469    :عدل المنطقة الأصغر من منطقة الدورية
+STR_6470    :عدل المنطقة الأكبر من منطقة الدورية
+STR_6471    :شاهد من خلال الغطاء النباتي
+STR_6472    :شاهد من خلال السيارات
+STR_6473    :شاهد من خلال الداعمين
+STR_6474    :شاهد من خلال الضيوف
+STR_6475    :شاهد من خلال العاملون
+STR_6476    :غطاء نباتي شفاف
+STR_6477    :مشهد خفي
+STR_6478    :مسارات أقدام خفية
+STR_6479    :رحلات خفية
+STR_6480    :شاحانات خفية
+STR_6481    :إعدادات الاخفاء
+STR_6482    :إعدادات الاخفاء
+STR_6483    :إفتح إعدادات الإخفاء
+STR_6484    :مفتاح شاهد من خلال الغطاء النباتي 
+STR_6485    :مفتاح شاهد من خلال السيارات
+STR_6486    :تفعيل شاهد من خلال الضيوف
+STR_6487    :تفعيل شاهد من خلال العاملون
+STR_6488    :{RED}يشكو الضيوف من طوابير الإنتظار الطويلة بحديقتك.{NEWLINE}قلل الطوابير الطويلة المسببة للمشكلة، أو زد عدد الرحلات.
+STR_6489    :خطأ: نسخة حديقة غير مدعومة
+STR_6490    :تحذير: نسخة حديقة شبه مدعومة
+STR_6491    :حُفظت هذه الحديقة في نسخة أحدث من اللعبة. الحديقة نسخة {INT32} و تتطلب علي الأقل نسخة{INT32}.
+STR_6492    :حُفظت هذه الحديقة في نسخة قديمة من اللعبة، ولا يمكن فتحها في النسخة الحالية من اللعبة. نسخة الحديقة هي{INT32}.
+STR_6493    :حُفظت هذه الحديقة في نسخة أحدث من اللعبة، ربما فُقدت بعض البيانات. نسخة الحديقة هي{INT32} وتتطلب علي الأقل نسخة{INT32}.
+STR_6494    :تجميع حسب نوع الرحلة
+STR_6495    :مجموعة الرحلات حسب نوع الرحلة بدلاً من عرض كل مركبة على حدة.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :اظغط علي البلاط لعرض عناصره.{NEWLINE}Ctrl + ظغطة لتحديد عنصر البلاط تحديداً.
+STR_6498    :غير قادر على إبقاء شكل الخريطة بهيئة مربع.
 
 #############
 # Scenarios #
-#############
-
-## RCT Original
+################
+# RCT Original #
+################
 <Forest Frontiers>
 STR_SCNR    :حدود الغابات
 STR_PARK    :حدود الغابات
@@ -3524,12 +3626,12 @@ STR_DTLS    :إبدء من لاشئ، إبني حديقة مزدهرة حول ب
 <Diamond Heights>
 STR_SCNR    :المرتفعات الألماسية
 STR_PARK    :المرتفعات الألماسية
-STR_DTLS    :Diamond Heights is already a successful theme park with great rides - develop it to double its value
+STR_DTLS    :المرتفعات الألماسية هي بالفعل حديقة ترفيهية ناجحة مع رحلات رائعة - قم بتطويرها لمضاعفة قيمتها
 
 <Evergreen Gardens>
 STR_SCNR    :الحدائق الخضراء دائماً
 STR_PARK    :الحدائق الخضراء دائماً
-STR_DTLS    :Convert the beautiful Evergreen Gardens into a thriving theme park
+STR_DTLS    :حول الحدائق الخضراء دائماً إلى مدينة ترفيهية مزدهرة
 
 <Bumbly Beach>
 STR_SCNR    :Bumbly Beach
@@ -3574,12 +3676,12 @@ STR_DTLS    :This theme park has some well-designed modern rides, but plenty of 
 <Mystic Mountain>
 STR_SCNR    :الجبل السحري
 STR_PARK    :الجبل السحري
-STR_DTLS    :In the hilly forests of Mystic Mountain, build a theme park from scratch
+STR_DTLS    :في غابات الجبل السحري، قم ببناء مدينة ملاهي من الصفر
 
 <Pacific Pyramids>
-STR_SCNR    :جبال المحيط الهادئ
-STR_PARK    :جبال المحيط الهادئ
-STR_DTLS    :Convert the Egyptian Ruins tourist attraction into a thriving theme park
+STR_SCNR    :أهرامات المحيط الهادئ
+STR_PARK    :أهرامات المحيط الهادئ
+STR_DTLS    :تحويل المعالم السياحية المصرية الأثرية إلى مدينة ترفيهية مزدهرة
 
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods
@@ -3594,7 +3696,7 @@ STR_DTLS    :Convert this sleepy town’s pier into a thriving attraction
 <Lightning Peaks>
 STR_SCNR    :قمم الضوء
 STR_PARK    :قمم الضوء
-STR_DTLS    :The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele
+STR_DTLS    :تحظى جبال "قمم الضوء" الجميلة بشعبية كبيرة بين المشاة والمتنزهين - استخدم الأرض المتاحة لجذب زوار جدد يبحثون عن الإثارة
 
 <Ivory Towers>
 STR_SCNR    :Ivory Towers
@@ -3604,16 +3706,16 @@ STR_DTLS    :A well-established park, which has a few problems
 <Rainbow Valley>
 STR_SCNR    :وادي قوس القزح
 STR_PARK    :وادي قوس القزح
-STR_DTLS    :Rainbow Valley’s local authority won’t allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+STR_DTLS    :لن تسمح السلطة المحلية في "وادي قوس القزح" بأي تغييرات في المناظر الطبيعية أو إزالة الأشجار الكبيرة، ولكن يجب عليك تطوير المنطقة لتصبح حديقة ملاهي كبيرة
 
 <Thunder Rock>
 STR_SCNR    :صخرة الرعد
 STR_PARK    :صخرة الرعد
-STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people
+STR_DTLS    :تقف "صخرة الرعد" في وسط الصحراء وتجذب العديد من السياح - استخدم المساحة المتاحة لبناء رحلات ركوب لجذب المزيد من الزوار
 
 <Mega Park>
-STR_SCNR    :حديقة عملاقة
-STR_PARK    :حديقة عملاقة
+STR_SCNR    :الحديقة العملاقة
+STR_PARK    :الحدبقة العملاقة
 STR_DTLS    :فقط للمتعة!
 
 ## Added Attractions
@@ -3625,7 +3727,7 @@ STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
 <Three Monkeys Park>
 STR_SCNR    :حديقة القرود الثلاثة
 STR_PARK    :حديقة القرود الثلاثة
-STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+STR_DTLS    :في قلب هذه الحديقة النامية الكبيرة توجد سفينة فولاذية عملاقة ثلاثية الحلقات للسباقات أو المبارزات
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
@@ -3640,12 +3742,12 @@ STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
 <Funtopia>
 STR_SCNR    :فينتوبيا
 STR_PARK    :فينتوبيا
-STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
+STR_DTLS    :تغطي هذه الحديقة جانبي الطريق السريع، ولديها العديد من الرحلات التي تعمل بالفعل
 
 <Haunted Harbour>
 STR_SCNR    :الميناء المسكون
 STR_PARK    :الميناء المسكون
-STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
+STR_DTLS    :وافقت السلطة المحلية على بيع الأراضي المجاورة بسعر رخيص لهذه الحديقة الساحلية الصغيرة، بشرط الحفاظ على بعض الرحلات.
 
 <Fun Fortress>
 STR_SCNR    :قلعة المرح
@@ -3680,12 +3782,12 @@ STR_DTLS    :This elderly park has many historical rides but is badly in debt
 <Magic Quarters>
 STR_SCNR    :مقر السحر الرئيسي
 STR_PARK    :مقر السحر الرئيسي
-STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+STR_DTLS    :تم تنظيف مساحة كبيرة من الأرض وأصبحت جاهزة جُزئيًا لتحويلها إلى مدينة ملاهي ذات مناظر طبيعية
 
 <Fruit Farm>
 STR_SCNR    :مزرعة الفواكه
 STR_PARK    :مزرعة الفواكه
-STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+STR_DTLS    :قامت مزرعة فواكه مزدهرة ببناء خط سكة حديد لزيادة ربحها، وظيفتك هي تطويرها إلى مدينة ملاهي كاملة
 
 <Butterfly Dam>
 STR_SCNR    :سد الفراشات
@@ -3700,7 +3802,7 @@ STR_DTLS    :وادي كبير متوفر لك لكي تطورة إلي حديق
 <Thunderstorm Park>
 STR_SCNR    :حديقة العاصفة البرقية
 STR_PARK    :حديقة العاصفة البرقية
-STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+STR_DTLS    :الجو رطب للغاية هنا لدرجة أنه تم بناء هرم عملاق للسماح ببناء بعض الألعاب تحته
 
 <Harmonic Hills>
 STR_SCNR    :السهول المتناغمة
@@ -3750,12 +3852,12 @@ STR_DTLS    :A four lane steeplechase ride is the centrepiece of this expanding 
 <Mineral Park>
 STR_SCNR    :حديقة المعادن
 STR_PARK    :حديقة المعادن
-STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+STR_DTLS    :حوّل هذا المحجر المهجور إلى مكان يجذب السياح الباحثين عن الإثارة
 
 <Coaster Crazy>
 STR_SCNR    :جنون الأفعوانيات
 STR_PARK    :جنون الأفعوانيات
-STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast roller coaster park
+STR_DTLS    :لديك أموال محدودة ولكن لديك وقت غير محدود لتحويل هذه المنطقة الجبلية إلى حديقة أفعوانيات شاسعة
 
 <Urban Park>
 STR_SCNR    :الحديقة الحضرية
@@ -3852,7 +3954,7 @@ STR_DTLS    :هذا المنتزه الترفيهي يحتوي على العدي
 <Frightmare Hills>
 STR_SCNR    :سهول الرعب
 STR_PARK    :سهول الرعب
-STR_DTLS    :حديقة مرعبة مع أفعوانية المركزية العملاقة
+STR_DTLS    :حديقة مرعبة مع الأفعوانية المركزية العملاقة
 
 <Thunder Rocks>
 STR_SCNR    :صخور الرعد
@@ -3942,3 +4044,354 @@ STR_DTLS    :
 STR_SCNR    :حصن مفارقة تاريخية
 STR_PARK    :حصن مفارقة تاريخية
 STR_DTLS    :
+
+###########
+# Scenery #
+###########
+
+## Start OpenRCT2 Official
+[TTPIRF05]
+STR_NAME    :سقف
+
+[TTRFWD01]
+STR_NAME    :سقف
+
+[TTRFWD02]
+STR_NAME    :سقف
+
+[TTRFWD03]
+STR_NAME    :سقف
+
+[TTRFWD04]
+STR_NAME    :سقف
+
+[TTRFWD05]
+STR_NAME    :سقف
+
+[TTRFWD06]
+STR_NAME    :سقف
+
+[TTRFWD07]
+STR_NAME    :سقف
+
+[TTRFWD08]
+STR_NAME    :سقف
+
+[TTRFGL01]
+STR_NAME    :سقف زجاجي
+
+[TTRFGL02]
+STR_NAME    :سقف زجاجي
+
+[TTRFGL03]
+STR_NAME    :سقف زجاجي
+
+[ACWW33]
+STR_NAME    :حائط خشبي
+
+[ACWWF32]
+STR_NAME    :حائط خشبي
+
+## End OpenRCT2 Official
+
+###############################################################################
+## RCT2 Scenarios
+###############################################################################
+<Alpine Adventures>
+STR_SCNR    :مغامرات جبال الألب
+STR_PARK    :مغامرات جبال الألب
+STR_DTLS    :قم بتحويل منتجع تزلج جبلي صغير إلى متنزه ترفيهي ذا طابع ثلجي
+
+<Amity Airfield>
+STR_SCNR    :مطار أميتي
+STR_PARK    :مطار أميتي
+STR_DTLS    :قم ببناء متنزه ترفيهي ذا طابع الطيران بهذا المطار المهجور
+
+<Botany Breakers>
+STR_SCNR    :قاطع النباتات
+STR_PARK    :قاطع النباتات
+STR_DTLS    :التحدي الخاص بك هو بناء حديقة عالية الربح في جزيرة الفردوس هذه
+
+<Build your own Six Flags Belgium>
+STR_SCNR    :قم ببناء ستة أعلام بلجيكا الخاصة بك
+STR_PARK    :ستة أعلام بلجيكا
+STR_DTLS    :قم ببناء نسختك الخاصة من هذه حديقة الأعلام الستة الأوروبية
+
+<Build your own Six Flags Great Adventure>
+STR_SCNR    :قم ببناء مغامرتك الرائعة ذات الأعلام الستة
+STR_PARK    :مغامرات الستة أعلام العظيمة
+STR_DTLS    :استخدم مهارات التصميم الخاصة بك لإعادة إنشاء حديقة الأعلام الستة
+
+<Build your own Six Flags Holland>
+STR_SCNR    :قم ببناء ستة أعلام هولندا الخاصة بك
+STR_PARK    :ستة أعلام هولندا
+STR_DTLS    :قم ببناء حديقة الأعلام الستة الأوروبية بالطريقة التي تريدها
+
+<Build your own Six Flags Magic Mountain>
+STR_SCNR    :قم ببناء جبل سحر الستةأعلام الخاص بك
+STR_PARK    :جبل سحر الستةأعلام
+STR_DTLS    :قم بإنشاء نسختك الخاصة من حديقة الستة أعلام الضخمة هذه
+
+<Build your own Six Flags over Texas>
+STR_SCNR    :قم ببناء الأعلام الستة الخاصة بولاية تكساس
+STR_PARK    :الأعلام الستة الخاصة بولاية تكساس
+STR_DTLS    :بدءاً من الصفر ، قم ببناء الرحلات في حديقة الأعلام الستة
+
+<Build your own Six Flags Park>
+STR_SCNR    :قم ببناء حديقة الستةأعلام الخاص بك
+STR_PARK    :الستة أعلام
+STR_DTLS    :قم ببناء التصميم الخاص بك لحديقة الأعلام الستة - أو قم ببناء الرحلات من حدائق الأعلام الستة الأخرى أو قم بتصميم وبناء ألعابك الخاصة
+
+<Bumbly Bazaar>
+STR_SCNR    :بازار بومبلي
+STR_PARK    :بازار بومبلي
+STR_DTLS    :بدءًا من بازار صغير، يتمثل التحدي الذي تواجهه في زيادة أرباح المتاجر والأكشاك عن طريق بناء الرحلات والأفعوانيات لجذب المزيد من الزوار
+
+<Crazy Castle>
+STR_SCNR    :القصر المجنون
+STR_PARK    :القصر المجنون
+STR_DTLS    :لقد وَرثت قلعة كبيرة. مهمتك هي تحويلها إلى حديقة صغيرة.
+
+<Dusty Greens>
+STR_SCNR    :الخضار المُغبر
+STR_PARK    :الخضار المُغبر
+STR_DTLS    :يقع الخضار المُغبر بالقرب من تقاطع طريق سريع في الصحراء، وهو فرصة لتطوير منتجع الغولف الصغير إلى حديقة ترفيهية مزدهرة
+
+<Electric Fields>
+STR_SCNR    :الحقول الكهربائية
+STR_PARK    :الحقول الكهربائية
+STR_DTLS    :لقد ورثت مزرعة صغيرة، والتحدي الذي تواجهه هو بناء حديقة صغيرة بين الحقول والمباني الزراعية
+
+<Extreme Heights>
+STR_SCNR    :Extreme Heights
+STR_PARK    :Extreme Heights
+STR_DTLS    :Free of financial restrictions, your challenge is to expand this desert park to attract people seeking the ultimate thrills
+
+<Factory Capers>
+STR_SCNR    :Factory Capers
+STR_PARK    :Factory Capers
+STR_DTLS    :An abandoned factory complex is an opportunity to build a mechanical-themed amusement park
+
+<Fungus Woods>
+STR_SCNR    :Fungus Woods
+STR_PARK    :Fungus Woods
+STR_DTLS    :Restricted to only older-style wooden rides, your challenge is to build a thriving theme park in Fungus Woods
+
+<Ghost Town>
+STR_SCNR    :Ghost Town
+STR_PARK    :Ghost Town
+STR_DTLS    :Hired by a large amusement park chain, your task is to build them a giant roller coaster park around an abandoned mining town
+
+<Gravity Gardens>
+STR_SCNR    :Gravity Gardens
+STR_PARK    :Gravity Gardens
+STR_DTLS    :Your challenge is to build a roller coaster park in the beautiful Gravity Gardens. No other rides, just roller coasters!
+
+<Infernal Views>
+STR_SCNR    :Infernal Views
+STR_PARK    :Infernal Views
+STR_DTLS    :A park nestled precariously on lava rock with streams of magma
+
+<Lucky Lake>
+STR_SCNR    :Lucky Lake
+STR_PARK    :Lucky Lake
+STR_DTLS    :With unlimited funds but a challenging lake location, this park will be a challenge to expand and manage
+
+<Rainbow Summit>
+STR_SCNR    :Rainbow Summit
+STR_PARK    :Rainbow Summit
+STR_DTLS    :Built on a hillside, this park is forbidden from building anything tall. Can you expand the park and make it successful?
+
+<Six Flags Belgium>
+STR_SCNR    :Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Try your hand at running and improving this Six Flags park
+
+<Six Flags Great Adventure>
+STR_SCNR    :Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don’t forget your ultimate aim: to attract more guests to the park!
+
+<Six Flags Holland>
+STR_SCNR    :Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Try your hand at running and improving this Six Flags park
+
+<Six Flags Magic Mountain>
+STR_SCNR    :Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don’t forget your ultimate aim: to repay your loan while keeping the park value up!
+
+<Six Flags over Texas>
+STR_SCNR    :Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don’t forget your ultimate aim: to attract more guests to the park!
+
+###############################################################################
+## Wacky Worlds Scenarios
+###############################################################################
+<Africa - African Diamond Mine>
+STR_SCNR    :أفريقيا - منجم الماس الأفريقي
+STR_PARK    :مناجم أفريقيا
+STR_DTLS    :لقد ورثت منجم ألماس مهجور ووجدت ألماسة ثمينة. قررت استثمار هذه الأموال لبناء مدينة ملاهي مشهورة عالميًا.
+
+<Africa - Oasis>
+STR_SCNR    :أفريقيا - الواحة
+STR_PARK    :جنون السراب
+STR_DTLS    :تم اكتشاف واحة صحراوية والتي ستوفر موقعًا جميلًا للحديقة. تم توفير المواصلات من وإلى الواحة.
+
+<Africa - Victoria Falls>
+STR_SCNR    :أفريقيا - شلالات فيكتوريا
+STR_PARK    :على الحافة
+STR_DTLS    :تم بناء سد يوفر طاقة كهرومائية وفيرة ورخيصة لتشغيل الحديقة. أنت بحاجة للوصول إلى قيمة عالية للحديقة للمساعدة في سداد قرض السد.
+
+<Antarctic - Ecological Salvage>
+STR_SCNR    :أنتاركتيكا - الإنقاذ البيئي
+STR_PARK    :المغامرات الثلجية
+STR_DTLS    :لقد لجأت إليك وكالة البيئة لتحويل مصفاة نفط قديمة صديقة للبيئة إلى منطقة جذب سياحي كبرى. الأرض رخيصة لكن الفائدة على القرض مرتفعة. يمكنك بيع المباني القديمة من أجل بعض النقود.
+
+<Asia - Great Wall of China Tourism Enhancement>
+STR_SCNR    :آسيا - تعزيز السياحة بسور الصين العظيم
+STR_PARK    :سور الصين العظيم
+STR_DTLS    :قررت السلطات تعزيز السياحة حول السور العظيم من خلال بناء مدينة ترفيهية على الأرض المجاورة. المال ليس مُعضلة!
+
+<Asia - Japanese Coastal Reclaim>
+STR_SCNR    :آسيا - استصلاح السواحل اليابانية
+STR_PARK    :شاطئ أوكيناوا
+STR_DTLS    :نفدت مساحة الحديقة الموجودة. خيارك الوحيد هو البناء في البحر، وهكذا حصلت على قرض. يتم فرض قيود الارتفاع على المباني الخاصة بك بسبب الأساسات ومخاطر الزلازل.
+
+<Asia - Maharaja Palace>
+STR_SCNR    :اسيا - قصر المهراجا
+STR_PARK    :حديقة المهراجا
+STR_DTLS    :لقد تم تكليفك من قبل المهراجا لإحضار الترفيه لعدد كبير من السكان المحليين. حيث يتعين عليك بناء حديقة مستوحاة من قصر المهراجا.
+
+<Australasia - Ayers Rock>
+STR_SCNR    :أستراليا - صخور أولورو
+STR_PARK    :مغامرات أولورو
+STR_DTLS    :أنت تساعد السكان الأصليين في بناء حديقة كجزء من برنامج التوعية الثقافية. تحتاج إلى الوصول إلى عدد كبير من الزوار لتثقيفهم حول التراث الفريد للسكان الأصليين.
+
+<Australasia - Fun at the Beach>
+STR_SCNR    :أستراليا - المرح على الشاطئ
+STR_PARK    :حفلة شواء على الشاطئ
+STR_DTLS    :تعرضت حديقة الفقمة الخاصة برجل أعمال محلي للإفلاس. أنت حاليًا تدير حديقة صغيرة، قُمت بشراء الحديقة الأخرى من شركة البناء. ويتعين عليك الأن تطوير حديقة مشتركة كبيرة.
+
+<Europe - European Cultural Festival>
+STR_SCNR    :أوروبا - المهرجان الثقافي الأوروبي
+STR_PARK    :الروعة الأوروبية
+STR_DTLS    :لقد تم إحضارك لتولي مركز جذب الزوار الثقافيين الأوروبيين ويجب عليك زيادة عدد الضيوف من أجل سداد دعم الاتحاد الأوروبي بحلول نهاية الدورة الحالية للبرلمان الأوروبي.
+
+<Europe - Renovation>
+STR_SCNR    :أوروبا - التجديد
+STR_PARK    :من الرماد
+STR_DTLS    :لقد أصبحت هذه الحديقة القديمة بحالة يرثى لها. حَصلت على منحة من الاتحاد الأوروبي لإعادة هذه المنطقة المحرومة إلى مجدها السابق! تحتاج إلى تجديد الحديقة وسداد المنحة.
+
+<N. America - Extreme Hawaiian Island>
+STR_SCNR    :أمريكا الشمالية - جزيرة هاواي الأخيرة
+STR_PARK    :واكي وايكيكي
+STR_DTLS    :يشعر سكان هاواي بالملل من ركوب الأمواج ويبحثون عن شيء أكثر إثارة. تحتاج إلى بناء حديقة مع وضع ذلك في الاعتبار للحفاظ على التصنيف المرتفع لمناطق الجذب السياحي في المنطقة.
+
+<North America - Grand Canyon>
+STR_SCNR    :أمريكا الشمالية - الوادي العظيم
+STR_PARK    :أحداث الوادي
+STR_DTLS    :عليك بناء حديقة على أرض محدودة على جانبي هذا الكنز الطبيعي - لديك الفرصة لشراء الأراضي المجاورة من الهنود الأمريكيين الأصليين. تحتاج إلى إكمال الهدف للحفاظ على سكان المدينة المحلية.
+
+<North America - Rollercoaster Heaven>
+STR_SCNR    :أمريكا الشمالية - جنة الأفعوانيات
+STR_PARK    :جنة الأفعوانيات
+STR_DTLS    :أنت رجل أعمال ناجح في إجازة طويلة وترغب في استغلال هذا الوقت في تحويل حديقة المدينة إلى جنة أفعوانيات. المال ليس عائقًا!
+
+<South America - Inca Lost City>
+STR_SCNR    :أمريكا الجنوبية - مدينة الإنكا المفقودة
+STR_PARK    :مؤسس المدينة المفقودة
+STR_DTLS    :لتعزيز السياحة المحلية، يجب عليك إنشاء حديقة تتماشى مع محيطها، ولها قيود على الارتفاع.
+
+<South America - Rain Forest Plateau>
+STR_SCNR    :أمريكا الجنوبية - هضبة الغابات المطيرة
+STR_PARK    :العاب الغابات المطيرة
+STR_DTLS    :المساحة محدودة في الغابات المطيرة الثمينة - حيث يجب عليك ضم أكبر قدر ممكن في المساحة المخلية الحالية، من أجل توفير بديل قابل للتطبيق لصناعة الأخشاب المحليةالمساحة محدودة في الغابات المطيرة الثمينة - يجب حشر أكبر قدر ممكن في المساحة المخلية الحالية، من أجل توفير بديل قابل للتطبيق لصناعة الأخشاب المحلية.
+
+<South America - Rio Carnival>
+STR_SCNR    :أمريكا الجنوبية - كرنفال ريو
+STR_PARK    :شواطئ باو دي أسوكار
+STR_DTLS    :انت تُدير حديقة صغيرة بالقرب من مدينة ريو لكن البنك طالبك بالقرض. تحتاج إلى زيادة ربحك بسرعة لتسديد هذا الدين غير المتوقع.
+
+###############################################################################
+## Time Twister Scenarios
+###############################################################################
+<Dark Age - Castle>
+STR_SCNR    :العصور المظلمة - القلعة
+STR_PARK    :قلعة كليفسايد
+STR_DTLS    :الأعضاء المحليون في مجتمع إعادة تمثيل المعركة جادون إلى حد ما بشأن هوايتهم. لقد عهدوا إليك بمهمة بناء مدينة ملاهي بطابع العصور المظلمة على أراضي قلعة كليفسايد.
+
+<Dark Age - Robin Hood>
+STR_SCNR    :العصور المظلمة - روبن هود
+STR_PARK    :غابة شيروود
+STR_DTLS    :لتحرير الثروة من الأثرياء وتوزيعها على المحتاجين، قررت أنت ورجالك التابعين بناء مدينة ملاهي في غابة شيروود.
+
+<Future - First Encounters>
+STR_SCNR    :المستقبل - اللقاءات الأولى
+STR_PARK    :الروعة خارج الأرض
+STR_DTLS    :تم اكتشاف الحياة على كوكب بعيد، قم ببناء متنزه غريب للاستفادة من موجة الاهتمام غير المسبوقة.
+
+<Future - Future World>
+STR_SCNR    :المستقبل - عالم المستقبل
+STR_PARK    :مدينة الجوزاء
+STR_DTLS    :أظهر رؤيتك المبتكرة والمثالية للمستقبل - ابتكر تصميمًا مستقبليًا للحديقة يتضمن أحدث عوامل الجذب.
+
+<Mythological - Animatronic Film Set>
+STR_SCNR    :الأساطير  - موقع أفلام أنيماترونكس
+STR_PARK    :تحفيات أنيماترونكس
+STR_DTLS    :لقد تم تكليفك بمهمة تشغيل وتحسين مدينة ملاهي موجودة، والتي تم إنشاؤها على مجموعة أفلام قديمة. أنشئ تكريمًا لرسامي تقنية إيقاف الحركة الرائدين الذين قاموا بإحياء الكائنات الأسطورية على الشاشة الفضية لأول مرة.
+
+<Mythological - Cradle of Civilisation>
+STR_SCNR    :الأساطير - مهد الحضارة
+STR_PARK    :جنون الأساطير
+STR_DTLS    :أنت تمتلك جزيرة ذات قيمة أثرية معينة. لقد قررت تمويل الحفاظ عليها من خلال بناء مدينة ملاهي على أساس التراث الأسطوري الغني للمنطقة.
+
+<Prehistoric - After the Asteroid>
+STR_SCNR    :ماقبل التاريخ - بعد النيزك
+STR_PARK    :المذبحة الحفرة
+STR_DTLS    :أنت تمتلك حفرة نيزك قديمة متربة. بروح ريادة الأعمال الحقيقية، قررت إنشاء مدينة ملاهي ذات طابع نايزك وكويكبات وتحويل أرضك التي تبدو بلا قيمة إلى ثروة كبيرة.
+
+<Prehistoric - Jurassic Safari>
+STR_SCNR    :ماقبل التاريخ - سفاري جوراسي 
+STR_PARK    :كوسترسورس
+STR_DTLS    :لقد تم تكليفك بمهمة بناء مدينة ملاهي ذات طابع من العصر الجوراسي. لتحسين وصول الزائرين إلى المعروضات النباتية والحيوانية الغريبة، ستحتاج إلى إنشاء رحلات تجول في الوادي وداخله.
+
+<Prehistoric - Stone Age>
+STR_SCNR    :ماقبل التاريخ - العصر الحجري
+STR_PARK    :الرحلات الحجرية
+STR_DTLS    :لإحباط مطوري الطرق السريعة والحفاظ على الدوائر الحجرية القديمة الغامضة، ستحتاج إلى إنشاء مدينة ملاهي ذا طابع العصر الحجري وزيادة الأرباح. ومع ذلك، قد يشكل جذب الزوار تحديًا، حيث أن التضاريس غير مضيافة.
+
+<Roaring Twenties - Prison Island>
+STR_SCNR    :العشرينيات الصاخبة - جزيرة السجن
+STR_PARK    :ألكتراز
+STR_DTLS    :جزيرة السجن سيئة السمعة - التي زاد عدد سكانها ذات يوم بالمهربين والمبتزين - معروضة للبيع الآن. لقد قررت تحويلها إلى منطقة جذب سياحي كبرى، والمال ليس مُعضلة
+
+<Roaring Twenties - Schneider Cup>
+STR_SCNR    :العشرينيات الصاخبة - كأس شنايدر
+STR_PARK    :شواطئ شنايدر
+STR_DTLS    :تقترب الذكرى 75 لفوز جدك بكأس شنايدر في غضون بضع سنوات. سوف تكرم إنجازه من خلال بناء مدينة ملاهي على أساس سباق الطائرات المائية الشهير.
+
+<Roaring Twenties - Skyscrapers>
+STR_SCNR    :العشرينيات الصاخبة - ناطحات السحب
+STR_PARK    :متروبوليس
+STR_DTLS    :أنت تمتلك قطعة أرض فارغة بالقرب من الجزء المنخفض من المدينة. لتحقيق أقصى استفادة من الممتلكات الحضرية الخاصة بك ، قم ببناء مدينة ملاهي مع ناطحات سحاب مستوحاة من العمارة الشاهقة على طراز فن الآرت ديكو في العشرينات.
+
+<Rock 'n' Roll - Flower Power>
+STR_SCNR    :روك أند رول - قوة الورود
+STR_PARK    :وودستوك
+STR_DTLS    :يُقام مهرجان موسيقي سنوي كبير على أرضك. أنشئ متنزهًا عصريًا للترفيه عن الجمهور المفعم بالحيوية.
+
+<Rock 'n' Roll - Rock 'n' Roll>
+STR_SCNR    :روك أند رول - روك أند رول
+STR_PARK    :إحياء الروك أند رول
+STR_DTLS    :شهدت مدينة ملاهي القديمة هذه أيامًا أفضل. ساعد المالك على إضفاء مظهر روك أند رول وحول المكان إلى مكان ناجح.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :عالم الباندا
+STR_PARK    :عالم الباندا
+STR_DTLS    :أضف رحلات أكثر وقم بجذب مزيد من الناس إلى الحديقة بطابع الباندا

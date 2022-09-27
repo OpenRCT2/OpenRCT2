@@ -103,7 +103,7 @@ static void setup_track_designer_objects()
         {
             *selectionFlags |= ObjectSelectionFlags::Flag6;
 
-            for (uint8_t rideType : item->RideInfo.RideType)
+            for (auto rideType : item->RideInfo.RideType)
             {
                 if (rideType != RIDE_TYPE_NULL)
                 {

@@ -138,14 +138,14 @@ namespace RCT2
         min_max_cars_per_train |= newValue & 0x0F;
     }
 
-    bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
+    bool RCT2TrackTypeIsBooster(ride_type_t rideType, uint16_t trackType)
     {
         // Boosters share their ID with the Spinning Control track.
         return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && rideType != RIDE_TYPE_STEEL_WILD_MOUSE
             && trackType == TrackElemType::Booster;
     }
 
-    track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType, bool convertFlat)
+    track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType, bool convertFlat)
     {
         if (convertFlat && GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
             return RCT12FlatTrackTypeToOpenRCT2(origTrackType);

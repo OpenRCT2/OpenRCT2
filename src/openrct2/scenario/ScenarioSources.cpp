@@ -287,7 +287,7 @@ namespace ScenarioSources
     };
 
     // Other parks
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesOtherParks[] =
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesExtrasParks[] =
     {
         { SC_FORT_ANACHRONISM,                          "Fort Anachronism",                                 SCENARIO_CATEGORY_DLC            },
         { SC_PCPLAYER,                                  "PC Player",                                        SCENARIO_CATEGORY_DLC            },
@@ -327,7 +327,7 @@ namespace ScenarioSources
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2WW),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2TT),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRealParks),
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesOtherParks),
+        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesExtrasParks),
     };
     // clang-format on
 

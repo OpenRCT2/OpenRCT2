@@ -214,7 +214,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex idx) override
+    void OnMouseUp(WidgetIndex idx) override
     {
         switch (idx)
         {
@@ -270,7 +270,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex idx) override
+    void OnMouseDown(WidgetIndex idx) override
     {
         switch (page)
         {
@@ -283,7 +283,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         switch (page)
         {
@@ -321,7 +321,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         switch (page)
         {
@@ -408,12 +408,12 @@ private:
     }
 
 #pragma region Entrance page
-    void OnMouseUpEntrance(rct_widgetindex widgetIndex)
+    void OnMouseUpEntrance(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_BUY_LAND_RIGHTS:
-                context_open_window(WC_LAND_RIGHTS);
+                context_open_window(WindowClass::LandRights);
                 break;
             case WIDX_LOCATE:
                 ScrollToViewport();
@@ -441,7 +441,7 @@ private:
         InitViewport();
     }
 
-    void OnMouseDownEntrance(rct_widgetindex widgetIndex)
+    void OnMouseDownEntrance(WidgetIndex widgetIndex)
     {
         if (widgetIndex == WIDX_OPEN_OR_CLOSE)
         {
@@ -466,7 +466,7 @@ private:
         }
     }
 
-    void OnDropdownEntrance(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OnDropdownEntrance(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (widgetIndex == WIDX_OPEN_OR_CLOSE)
         {
@@ -490,7 +490,7 @@ private:
         widget_invalidate(*this, WIDX_TAB_1);
     }
 
-    void OnTextInputEntrance(rct_widgetindex widgetIndex, std::string_view text)
+    void OnTextInputEntrance(WidgetIndex widgetIndex, std::string_view text)
     {
         if (widgetIndex == WIDX_RENAME && !text.empty())
         {
@@ -645,7 +645,7 @@ private:
                 viewport_create(
                     this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                     viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
-                flags |= (1 << 2);
+                flags |= WF_NO_SCROLLING;
                 Invalidate();
             }
         }
@@ -821,7 +821,7 @@ private:
         window_set_resize(*this, 230, 124, 230, 124);
     }
 
-    void OnMouseDownPrice(rct_widgetindex widgetIndex)
+    void OnMouseDownPrice(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -1004,7 +1004,7 @@ private:
 #pragma endregion
 
 #pragma region Objective page
-    void OnMouseUpObjective(rct_widgetindex widgetIndex)
+    void OnMouseUpObjective(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -1032,7 +1032,7 @@ private:
         widget_invalidate(*this, WIDX_TAB_6);
     }
 
-    void OnTextInputObjective(rct_widgetindex widgetIndex, std::string_view text)
+    void OnTextInputObjective(WidgetIndex widgetIndex, std::string_view text)
     {
         if (widgetIndex == WIDX_ENTER_NAME && !text.empty())
         {
@@ -1298,7 +1298,7 @@ private:
 
 static ParkWindow* ParkWindowOpen(uint8_t page)
 {
-    auto* wnd = WindowFocusOrCreate<ParkWindow>(WC_PARK_INFORMATION, 230, 174 + 9, WF_10);
+    auto* wnd = WindowFocusOrCreate<ParkWindow>(WindowClass::ParkInformation, 230, 174 + 9, WF_10);
     if (wnd != nullptr && page != WINDOW_PARK_PAGE_ENTRANCE)
     {
         wnd->OnMouseUp(WIDX_TAB_1 + page);

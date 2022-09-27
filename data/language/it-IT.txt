@@ -96,6 +96,8 @@ STR_0091    :Attrazione sconosciuta (59)
 STR_0092    :Ottovolante a lancio MIL
 STR_0093    :Ottovolante ibrido
 STR_0094    :Ottovolante a binario singolo
+STR_0095    :Ottovolante Alpino
+STR_0096    :Ottovolante di legno classico
 STR_0512    :Un ottovolante compatto con una salita a spirale e cadute fluide e tortuose.
 STR_0513    :Un ottovolante con giro della morte dove i passeggeri si trovano in una posizione eretta
 STR_0514    :I treni, sospesi sotto l’ottovolante, durante le curve oscillano lateralmente
@@ -177,6 +179,8 @@ STR_0600    :I treni della miniera motorizzati scorrono lungo un percorso fluido
 STR_0602    :I treni dell’ottovolante sono spinti fuori dalla stazione tramite motori a induzione lineare per correre lungo avvitamenti e inversioni
 STR_0603    :Un ottovolante in legno con i binari in acciaio, in grado di avere ripide discese e inversioni.
 STR_0604    :I visitatori viaggiano lungo un sottile tracciato da monorotaia, attraverso strette inversioni e cambi di direzione.
+STR_0605    :I visitatori scendono lungo una rotaia piena di curve, frenando per controllare la velocità del loro vagone
+STR_0606    :Un ottovolante di legno vecchio stile con un percorso veloce e turbolento, con molto air-time, G laterali, progettata per farti sentire 'fuori controllo'
 STR_0767    :Visitatore {INT32}
 STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
@@ -313,10 +317,10 @@ STR_0925    :Elica verso l’alto
 STR_0926    :Impossibile rimuoverlo…
 STR_0927    :Impossibile costruirlo qui…
 STR_0928    :Catena da traino, per spostare le carrozze lungo le salite
-STR_0929    :Curva a “S” (sinistra)
-STR_0930    :Curva a “S” (destra)
-STR_0931    :Giro verticale (sx)
-STR_0932    :Giro verticale (dx)
+STR_0929    :Curva a “S” (Sx)
+STR_0930    :Curva a “S” (Dx)
+STR_0931    :Giro verticale (Sx)
+STR_0932    :Giro verticale (Dx)
 STR_0933    :Prima occorre modificare l’altezza del terreno
 STR_0934    :L’entrata dell’attrazione è d’intralcio
 STR_0935    :L’uscita dell’attrazione è d’intralcio
@@ -385,10 +389,10 @@ STR_0998    :Non è possibile collocare altre stazioni per questa attrazione
 STR_0999    :È necessaria una piattaforma stazione
 STR_1000    :Il tracciato non costituisce un circuito completo
 STR_1001    :Il tracciato non è adatto al tipo di treno
-STR_1002    :Impossibile aprire {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Impossibile provare {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Impossibile chiudere {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Impossibile iniziare la costruzione su {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Impossibile aprire {STRINGID}…
+STR_1003    :Impossibile provare {STRINGID}…
+STR_1004    :Impossibile chiudere {STRINGID}…
+STR_1005    :Impossibile iniziare la costruzione su {STRINGID}…
 STR_1006    :Prima dev’essere chiusa/o
 STR_1007    :Impossibile creare abbastanza veicoli
 STR_1008    :Apri, chiudi o prova un’attrazione
@@ -741,7 +745,7 @@ STR_1353    :{WINDOW_COLOUR_2}Max. forza G laterale: {OUTLINE}{RED}{COMMA2DP32}G
 STR_1354    :{WINDOW_COLOUR_2}Picco più alto: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Discese: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversioni: {BLACK}{COMMA16}
-STR_1357    :{WINDOW_COLOUR_2}Buchi: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}Buche: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Assenza di peso in totale: {BLACK}{COMMA2DP32}secondi
 STR_1359    :{WINDOW_COLOUR_2}Tempo d’attesa: {BLACK}{COMMA16} minuti.
 STR_1360    :{WINDOW_COLOUR_2}Tempo d’attesa: {BLACK}{COMMA16} minuti.
@@ -749,24 +753,24 @@ STR_1361    :Impossibile cambiare la velocità…
 STR_1362    :Impossibile cambiare la velocità di lancio…
 STR_1363    :Troppo in alto per i supporti!
 STR_1364    :I supporti del tracciato non possono essere ulteriormente estesi!
-STR_1365    :Curva in-linea (sx)
-STR_1366    :Curva in-linea (dx)
-STR_1367    :Mezzo giro della morte
-STR_1368    :Mezzo avvitamento (sx)
-STR_1369    :Mezzo avvitamento (dx)
-STR_1370    :Avvitamento (sx)
-STR_1371    :Avvitamento (dx)
+STR_1365    :Curva in-linea (Sx)
+STR_1366    :Curva in-linea (Dx)
+STR_1367    :Mezzo giro morte Piccolo
+STR_1368    :Mezzo avvitamento (Sx)
+STR_1369    :Mezzo avvitamento (Dx)
+STR_1370    :Avvitamento (Sx)
+STR_1371    :Avvitamento (Dx)
 STR_1372    :Sal.  x traino a lancio
-STR_1373    :1/2 giro morte gr. (sx)
-STR_1374    :1/2 giro morte gr. (dx)
+STR_1373    :1/2 giro morte gr. (Sx)
+STR_1374    :1/2 giro morte gr. (Dx)
 STR_1375    :Trasferimento in alto
 STR_1376    :Trasferimento in basso
-STR_1377    :Avvitamento ond. (sx)
-STR_1378    :Avvitamento ond. (dx)
-STR_1379    :Invertitore (sinistra)
-STR_1380    :Invertitore (destra)
-STR_1381    :Salita trainata curva (sx)
-STR_1382    :Salita trainata curva (sx)
+STR_1377    :Avvitamento ond. (Sx)
+STR_1378    :Avvitamento ond. (Dx)
+STR_1379    :Invertitore (Sx)
+STR_1380    :Invertitore (Dx)
+STR_1381    :Salita trainata curva (Sx)
+STR_1382    :Salita trainata curva (Dx)
 STR_1383    :1/4 di giro della morte
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :Altre configurazioni del tracciato
@@ -1061,10 +1065,10 @@ STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Fissa un limite di velocità per i freni
 STR_1677    :{WINDOW_COLOUR_2}Popolarità: {BLACK}Ignota
 STR_1678    :{WINDOW_COLOUR_2}Popolarità: {BLACK}{COMMA16}%
-STR_1679    :Elica in su (sinistra)
-STR_1680    :Elica in su (destra)
-STR_1681    :Elica in giù (sinistra)
-STR_1682    :Elica in giù (destra)
+STR_1679    :Elica in su (Sx)
+STR_1680    :Elica in su (Dx)
+STR_1681    :Elica in giù (Sx)
+STR_1682    :Elica in giù (Dx)
 STR_1683    :Dimens. alla base 2 x 2
 STR_1684    :Dimens. alla base 4 x 4
 STR_1685    :Dimens. alla base 2 x 4
@@ -1153,7 +1157,7 @@ STR_1770    :Numero di oscillazioni complete
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Può esserci soltanto una sezione di foto-in-corsa per attrazione
 STR_1774    :Può esserci soltanto una salita per il traino con cavo per attrazione
-STR_1777    :Musica attrazione
+STR_1777    :Musica attrazioni
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume da panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Costume da tigre
@@ -1685,7 +1689,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distanze e velocità:
 STR_2330    :{WINDOW_COLOUR_2}Temperatura:
 STR_2331    :{WINDOW_COLOUR_2}Indicazioni altezza:
 STR_2332    :Unità
-STR_2333    :Impostazioni audio
+STR_2333    :Effetti sonori
 STR_2334    :Sterline (£)
 STR_2335    :Dollari ($)
 STR_2336    :Franchi (F)
@@ -1950,7 +1954,7 @@ STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, anno {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, anno {COMMA16}
-STR_2738    :Musica schermata del titolo:
+STR_2738    :Musica schermata iniziale:
 STR_2739    :Nessuno
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
@@ -2696,7 +2700,7 @@ STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Mostra i messaggi recenti
 STR_5489    :Mostra solo i visitatori seguiti
-STR_5490    :Disabilità audio quando si perde il focus
+STR_5490    :Disabilita audio quando si cambia finestra
 STR_5491    :Lista Invenzioni
 STR_5492    :Opzioni Scenario
 STR_5493    :Mostra Messaggio
@@ -3307,7 +3311,6 @@ STR_6154    :Per motivi di sicurezza si sconsiglia l’esecuzione di OpenRCT2 co
 STR_6155    :Né KDialog né Zenity sono installati. Installarne uno o configurare attraverso la linea di comando.
 STR_6156    :Il nome è riservato
 STR_6157    :Console
-STR_6158    :Impossibile caricare questo file…{NEWLINE}Versione di RCTC incompatibile: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Veicoli disponibili: {BLACK}{STRING}
 STR_6161    :Mostra/nascondi griglia
 STR_6162    :Topo tutto matto rotante
@@ -3436,7 +3439,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulazione
 STR_6324    :Simula
 STR_6325    :Simula attrazione
-STR_6326    :Non è stato possibile simulare {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Non è stato possibile simulare {STRINGID}…
 STR_6327    :Cattura schermate giganti con sfondo trasparente
 STR_6328    :Con questa opzione attivata, le schermate giganti (screenshot) saranno catturate con uno sfondo trasparente invece di quello nero
 STR_6329    :{STRING}{STRINGID}
@@ -3523,24 +3526,24 @@ STR_6410    :Zoom avanti/indietro
 STR_6411    :Mostra bottoni per zoomare avanti e indietro nella barra degli strumenti
 STR_6412    :Invio BlocNum
 STR_6413    :Maiusc
-STR_6414    :Maiusc sx
-STR_6415    :Maiusc dx
+STR_6414    :Maiusc Sx
+STR_6415    :Maiusc Dx
 STR_6416    :Ctrl
-STR_6417    :Ctrl sx
-STR_6418    :Ctrl dx
+STR_6417    :Ctrl Sx
+STR_6418    :Ctrl Dx
 STR_6419    :Alt
-STR_6420    :Alt sx
-STR_6421    :Alt dx
+STR_6420    :Alt Sx
+STR_6421    :Alt Dx
 STR_6422    :Cmd
-STR_6423    :Cmd sx
-STR_6424    :Cmd dx
+STR_6423    :Cmd Sx
+STR_6424    :Cmd Dx
 STR_6425    :Sinistra joy
 STR_6426    :Destra joy
 STR_6427    :Su joy
 STR_6428    :Giù joy
 STR_6429    :Joy {INT32}
-STR_6430    :Clic sx
-STR_6431    :Clic dx
+STR_6430    :Clic Sx
+STR_6431    :Clic Dx
 STR_6432    :Mouse {INT32}
 STR_6433    :Rimuovi
 STR_6434    :Rimuovi tutte le associazioni per questa scorciatoia.
@@ -3592,10 +3595,10 @@ STR_6480    :Veicoli invisibili
 STR_6481    :Opzioni trasparenza
 STR_6482    :Opzioni trasparenza
 STR_6483    :Apri le opzioni trasparenza
-STR_6484    :Mostra/nascondi vegetazione trasparente
-STR_6485    :Mostra/nascondi veicoli trasparenti
-STR_6486    :Mostra/nascondi visitatori trasparenti
-STR_6487    :Mostra/nascondi personale trasparente
+STR_6484    :Mostra/nascondi vegetazione 
+STR_6485    :Mostra/nascondi veicoli 
+STR_6486    :Mostra/nascondi visitatori 
+STR_6487    :Mostra/nascondi personale 
 STR_6488    :{RED}I visitatori si lamentano per la lunghezza delle code nel tuo parco.{NEWLINE}Prendi in considerazione di accorciare quelle problematiche o di aumentare il flusso di visitatori delle attrazioni.
 STR_6489    :Errore: versione parco non compatibile
 STR_6490    :Avviso: versione parco semi-compatibile
@@ -3607,7 +3610,22 @@ STR_6495    :Raggruppa le attrazioni in base al loro tipo anziché mostrare ogni
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Fai clic su una cella per mostrare i suoi elementi.{NEWLINE}Fai Ctrl + clic su una cella per selezionarla direttamente.
 STR_6498    :Attivare per mantenere la mappa di forma quadrata.
-
+STR_6499    :Veicolo non supportato dal formato del tracciato
+STR_6500    :Tipo di rotaia non supportato dal formato del tracciato
+STR_6501    :Colore Casuale
+STR_6502    :Inserire valore compreso tra {COMMA16} e {COMMA16}
+STR_6503    :Dev’essere selezionato almeno un oggetto-stazione
+STR_6504    :Dev’essere selezionato almeno un tipo di suprefice del terreno
+STR_6505    :Dev’essere selezionato almeno un tipo di bordo del terreno
+STR_6506    :Mezzo Avvitamento Grande (Sx)
+STR_6507    :Mezzo Avvitamento Grande (Dx)
+STR_6508    :Mezzo Giro Medio (Sx)
+STR_6509    :Mezzo Giro Medio (Dx)
+STR_6510    :Zero G Roll (Sx)
+STR_6511    :Zero G Roll (Dx)
+STR_6512    :Zero G Roll Grande (Sx)
+STR_6513    :Zero G Roll Grande (Dx)
+STR_6514    :Altezza non valida!
 
 #############
 # Scenarios #
@@ -4056,23 +4074,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tetto
-
-[TTPIRF03]
-STR_NAME    :Tetto
-
-[TTPIRF04]
-STR_NAME    :Tetto
-
 [TTPIRF05]
-STR_NAME    :Tetto
-
-[TTPIRF07]
-STR_NAME    :Tetto
-
-[TTPIRF08]
 STR_NAME    :Tetto
 
 [TTRFWD01]

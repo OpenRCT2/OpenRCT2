@@ -385,10 +385,10 @@ STR_0998    :Ikke flere stationer tilladt for denne forlystelse
 STR_0999    :Kræver en station platform
 STR_1000    :Banen er ikke en komplet bane
 STR_1001    :Banen passer ikke til denne type vogn
-STR_1002    :Kan ikke åbne {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Kan ikke teste {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Kan ikke lukke {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Kan ikke begynde konstruktion af {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Kan ikke åbne {STRINGID}…
+STR_1003    :Kan ikke teste {STRINGID}…
+STR_1004    :Kan ikke lukke {STRINGID}…
+STR_1005    :Kan ikke begynde konstruktion af {STRINGID}…
 STR_1006    :Skal først lukkes
 STR_1007    :Kan ikke lave nok vogne
 STR_1008    :Åben, test eller luk forlystelse/attraktion
@@ -3300,7 +3300,6 @@ STR_6154    :Af sikkerhedsmæssige årsager anbefales det ikke at køre OpenRCT2
 STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en, eller konfigurer fra kommando linjen.
 STR_6156    :Navn er reserveret
 STR_6157    :Konsol
-STR_6158    :Kan ikke hente denne fil…{NEWLINE}ikke kompatibel RCTC version: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Tilgængelige køretøjer: {BLACK}{STRING}
 STR_6161    :Skift gitterlinjer Visning til/fra
 STR_6162    :Snurrende Vild Mus
@@ -3429,7 +3428,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulérer
 STR_6324    :Simulér
 STR_6325    :Simulér forlystelse/attraktion
-STR_6326    :Kan ikke simulére {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Kan ikke simulére {STRINGID}…
 STR_6327    :Transparent baggrund for gigantisk Skærmbillede
 STR_6328    :Med denne indstilling aktiveret, vil gigantisk skærmbillede have transparent baggrund i stedet for en standard sort baggrund.
 STR_6329    :{STRING}{STRINGID}
@@ -4043,23 +4042,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tag
-
-[TTPIRF03]
-STR_NAME    :Tag
-
-[TTPIRF04]
-STR_NAME    :Tag
-
 [TTPIRF05]
-STR_NAME    :Tag
-
-[TTPIRF07]
-STR_NAME    :Tag
-
-[TTPIRF08]
 STR_NAME    :Tag
 
 [TTRFWD01]

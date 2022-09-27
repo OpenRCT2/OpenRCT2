@@ -381,10 +381,10 @@ STR_0998    :この乗物にはこれ以上発着所を設置できません
 STR_0999    :乗り場が必要です。
 STR_1000    :コースが完全に一周していません
 STR_1001    :このコースは、この列車には適合しません
-STR_1002    :{POP16}{POP16}{POP16}{STRINGID}をオープンすることができません…
-STR_1003    :{POP16}{POP16}{POP16}{STRINGID}をテストすることができません…
-STR_1004    :{POP16}{POP16}{POP16}{STRINGID}を閉鎖することができません…
-STR_1005    :{POP16}{POP16}{POP16}{STRINGID}の建設を始めることができません…
+STR_1002    :{STRINGID}をオープンすることができません…
+STR_1003    :{STRINGID}をテストすることができません…
+STR_1004    :{STRINGID}を閉鎖することができません…
+STR_1005    :{STRINGID}の建設を始めることができません…
 STR_1006    :最初に閉鎖しなければなりません
 STR_1007    :充分な数の車両が造れません
 STR_1008    :乗物/施設をオープンする、閉鎖する、またはテストする
@@ -3128,13 +3128,13 @@ STR_5977    :Right side up
 STR_5978    :Left side up
 STR_5979    :Wall type: {BLACK}{COMMA16}
 STR_5980    :Banner text: {BLACK}{STRINGID}
-STR_5981    :Not a banner
+STR_5981    :バナーではありません
 STR_5982    :Large scenery type: {BLACK}{COMMA16}
 STR_5983    :Large scenery piece ID: {BLACK}{COMMA16}
 STR_5984    :Blocked paths:
 STR_5985    :新しいフォルダ
 STR_5986    :新しいフォルダの名を入力して下さい。
-STR_5987    :Unable to create folder
+STR_5987    :フォルダを作成できません
 STR_5988    :No remaining land rights for sale
 STR_5989    :No remaining construction rights for sale
 STR_5990    :No remaining land rights or construction rights for sale
@@ -3296,7 +3296,6 @@ STR_6154    :高い権限でOpenRCT2を実行することは推奨されませ�
 STR_6155    :KDialogやZenityがインストールしませんでした。どれかがインストールして下さい又は、コマンドラインから設定して下さい。
 STR_6156    :その名が残しました。
 STR_6157    :コンソール
-STR_6158    :ファイルのロードことが失敗しました…{NEWLINE}互換性なしのRCTCバージョン: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}可能な車両: {BLACK}{STRING}
 STR_6161    :地形グリッドの切り替え
 STR_6162    :スピニング・ワイルド・マウス
@@ -3425,7 +3424,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :シミュレーション中
 STR_6324    :シミュレーション
 STR_6325    :ライドやアトラクションをシミュレーションする
-STR_6326    :{POP16}{POP16}{POP16}{STRINGID}をシミュレートできません…
+STR_6326    :{STRINGID}をシミュレートできません…
 STR_6327    :拡大スクリーンショットに透明な背景を使用
 STR_6328    :このオプションでは、拡大スクリーンショットの際にデフォルトの黒背景ではなく透明な背景を使用
 STR_6329    :{STRING}{STRINGID}
@@ -3462,6 +3461,7 @@ STR_6360    :{BLACK}{COMMA32}
 STR_6361    :乗り物のライトの効果を表示にする（試験的）
 STR_6362    :有効になっている場合、追跡された乗り物の車両は夜間にライトアップされます。
 STR_6363    :テキストをクリップボードにコピーしました。
+STR_6440    :透明な水
 
 #############
 # Scenarios #
@@ -3911,44 +3911,8 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :ベースブロック
-
-[TTRFTL02]
-STR_NAME    :屋根
-
-[TTRFTL03]
-STR_NAME    :屋根
-
-[TTRFTL04]
-STR_NAME    :屋根
-
-[TTRFTL07]
-STR_NAME    :屋根
-
-[TTRFTL08]
-STR_NAME    :屋根
-
-[TTPIRF02]
-STR_NAME    :屋根
-
-[TTPIRF03]
-STR_NAME    :屋根
-
-[TTPIRF04]
-STR_NAME    :屋根
-
 [TTPIRF05]
 STR_NAME    :屋根
-
-[TTPIRF07]
-STR_NAME    :屋根
-
-[TTPIRF08]
-STR_NAME    :屋根
-
-[MG-PRAR]
-STR_NAME    :通路のある壁
 
 [TTRFWD01]
 STR_NAME    :屋根

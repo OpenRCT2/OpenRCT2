@@ -385,10 +385,10 @@ STR_0998    :No more stations allowed on this ride
 STR_0999    :Requires a station platform
 STR_1000    :Track is not a complete circuit
 STR_1001    :Track unsuitable for type of train
-STR_1002    :Can’t open {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Can’t test {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Can’t close {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Can’t start construction on {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Can’t open {STRINGID}…
+STR_1003    :Can’t test {STRINGID}…
+STR_1004    :Can’t close {STRINGID}…
+STR_1005    :Can’t start construction on {STRINGID}…
 STR_1006    :Must be closed first
 STR_1007    :Unable to create enough vehicles
 STR_1008    :Open, close, or test ride/attraction
@@ -3302,7 +3302,6 @@ STR_6154    :For security reasons, it is not recommended to run OpenRCT2 with el
 STR_6155    :Neither KDialog nor Zenity are installed. Please install one, or configure from the command line.
 STR_6156    :Name is reserved
 STR_6157    :Console
-STR_6158    :Failed to load this file…{NEWLINE}Incompatible RCTC version: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Available vehicles: {BLACK}{STRING}
 STR_6161    :Gridlines display toggle
 STR_6162    :Spinning Wild Mouse
@@ -3431,7 +3430,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulating
 STR_6324    :Simulate
 STR_6325    :Simulate ride/attraction
-STR_6326    :Can’t simulate {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Can’t simulate {STRINGID}…
 STR_6327    :Transparent background for giant screenshots
 STR_6328    :With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
 STR_6329    :{STRING}{STRINGID}
@@ -3987,23 +3986,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Roof
-
-[TTPIRF03]
-STR_NAME    :Roof
-
-[TTPIRF04]
-STR_NAME    :Roof
-
 [TTPIRF05]
-STR_NAME    :Roof
-
-[TTPIRF07]
-STR_NAME    :Roof
-
-[TTPIRF08]
 STR_NAME    :Roof
 
 [TTRFWD01]

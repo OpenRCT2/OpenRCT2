@@ -124,8 +124,8 @@ static void research_calculate_expected_date()
 
 static void research_invalidate_related_windows()
 {
-    window_invalidate_by_class(WC_CONSTRUCT_RIDE);
-    window_invalidate_by_class(WC_RESEARCH);
+    window_invalidate_by_class(WindowClass::ConstructRide);
+    window_invalidate_by_class(WindowClass::Research);
 }
 
 static void research_mark_as_fully_completed()
@@ -199,7 +199,7 @@ void research_finish_item(ResearchItem* researchItem)
     if (researchItem->type == Research::EntryType::Ride)
     {
         // Ride
-        uint32_t base_ride_type = researchItem->baseRideType;
+        auto base_ride_type = researchItem->baseRideType;
         ObjectEntryIndex rideEntryIndex = researchItem->entryIndex;
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
@@ -505,7 +505,7 @@ void research_populate_list_random()
     }
 }
 
-bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched)
+bool research_insert_ride_entry(ride_type_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched)
 {
     if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {

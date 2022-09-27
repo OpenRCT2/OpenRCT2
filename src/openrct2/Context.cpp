@@ -317,7 +317,7 @@ namespace OpenRCT2
         void Quit() override
         {
             gSavePromptMode = PromptMode::Quit;
-            context_open_window(WC_SAVE_PROMPT);
+            context_open_window(WindowClass::SavePrompt);
         }
 
         bool Initialise() final override
@@ -694,6 +694,13 @@ namespace OpenRCT2
                     ft.Add<uint32_t>(result.TargetVersion);
                     windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
                 }
+                else if (HasObjectsThatUseFallbackImages())
+                {
+                    Console::Error::WriteLine("Park has objects which require RCT1 linked. Fallback images will be used.");
+                    auto windowManager = _uiContext->GetWindowManager();
+                    windowManager->ShowError(STR_PARK_USES_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter());
+                }
+
                 return true;
             }
             catch (const ObjectLoadException& e)
@@ -707,27 +714,13 @@ namespace OpenRCT2
                 }
                 // The path needs to be duplicated as it's a const here
                 // which the window function doesn't like
-                auto intent = Intent(WC_OBJECT_LOAD_ERROR);
+                auto intent = Intent(WindowClass::ObjectLoadError);
                 intent.putExtra(INTENT_EXTRA_PATH, path);
                 intent.putExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
                 intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
 
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->OpenIntent(&intent);
-            }
-            catch (const UnsupportedRCTCFlagException& e)
-            {
-                Console::Error::WriteLine("Unable to open park: unsupported RCT classic feature");
-
-                // If loading the SV6 or SV4 failed return to the title screen if requested.
-                if (loadTitleScreenFirstOnFail)
-                {
-                    title_load();
-                }
-                auto windowManager = _uiContext->GetWindowManager();
-                auto ft = Formatter();
-                ft.Add<uint16_t>(e.Flag);
-                windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE, ft);
             }
             catch (const UnsupportedRideTypeException&)
             {
@@ -777,6 +770,24 @@ namespace OpenRCT2
         }
 
     private:
+        bool HasObjectsThatUseFallbackImages()
+        {
+            for (auto objectType : ObjectTypes)
+            {
+                auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+                for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
+                {
+                    auto obj = _objectManager->GetLoadedObject(objectType, i);
+                    if (obj != nullptr)
+                    {
+                        if (obj->UsesFallbackImages())
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         std::string GetOrPromptRCT2Path()
         {
             auto result = std::string();
@@ -1454,13 +1465,13 @@ void context_set_cursor_trap(bool value)
     GetContext()->GetUiContext()->SetCursorTrap(value);
 }
 
-rct_window* context_open_window(rct_windowclass wc)
+rct_window* context_open_window(WindowClass wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenWindow(wc);
 }
 
-rct_window* context_open_window_view(rct_windowclass wc)
+rct_window* context_open_window_view(uint8_t wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenView(wc);
@@ -1484,7 +1495,7 @@ void context_broadcast_intent(Intent* intent)
     windowManager->BroadcastIntent(*intent);
 }
 
-void context_force_close_window_by_class(rct_windowclass windowClass)
+void context_force_close_window_by_class(WindowClass windowClass)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->ForceClose(windowClass);

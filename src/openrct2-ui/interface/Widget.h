@@ -12,4 +12,4 @@
 #include <openrct2/interface/Widget.h>
 
 uint32_t GetColourButtonImage(colour_t colour);
-rct_widget* GetWidgetByIndex(const rct_window& w, rct_widgetindex widgetIndex);
+rct_widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex);

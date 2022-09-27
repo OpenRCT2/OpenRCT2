@@ -97,6 +97,7 @@ STR_0092    :Onda Fervojo Lanĉita per Linearaj Induktaj Motoroj
 STR_0093    :Hibrida Onda Fervojo
 STR_0094    :Onda Fervojo kun Unuopa Relo
 STR_0095    :Alpa Onda Fervojo
+STR_0096    :Klasika Ligna Onda Fervojo
 STR_0512    :Onda fervojo kompakta kun helikforma lifto kaj glataj kurboplenaj malleviĝoj.
 STR_0513    :Onda fervojo kun lopoj, sur kiun la rajdantoj rajdas starante
 STR_0514    :Trajnoj penditaj sub la trako de la onda fervojo svingiĝas flanken ĉe anguloj
@@ -179,6 +180,7 @@ STR_0602    :Linearaj induktaj motoroj plirapidigas la trajnojn de la onda fervo
 STR_0603    :Ligna onda fervojo kun ŝtala trako, kiu permesas krutajn malleviĝojn kaj inversigojn.
 STR_0604    :Rajdantoj rajdas anservice sur mallarĝa monorela trako, dum ili vetkuras tra krutaj inversigoj kaj ŝanĝoj de direkto.
 STR_0605    :Rajdantoj toboganas malsupren serpentuman ŝtalan trakon, bremsante por regi ilian rapidecon.
+STR_0606    :Maljuna-stila ligna onda fervojo kun rapida kaj malglata rajdo, kun sufiĉe da ‘en-aeraj periodoj’, kelka flanka graviteco, kaj desegnita sentiĝi ‘nedirektebla’
 STR_0767    :Gasto {INT32}
 STR_0768    :Faktoto {INT32}
 STR_0769    :Mekanikisto {INT32}
@@ -387,10 +389,10 @@ STR_0998    :Ne eblas konstrui pli da stacioj por ĉi tiu atrakcio
 STR_0999    :Ĝi bezonas staciplatformon
 STR_1000    :Trako ne estas kompleta cirkvito
 STR_1001    :Trako ne taŭgas kun tia trajno
-STR_1002    :Ne eblas malfermi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Ne eblas elprovi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Ne eblas fermi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Ne eblas ekkonstrui je {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Ne eblas malfermi je {STRINGID}…
+STR_1003    :Ne eblas elprovi je {STRINGID}…
+STR_1004    :Ne eblas fermi je {STRINGID}…
+STR_1005    :Ne eblas ekkonstrui je {STRINGID}…
 STR_1006    :Tio unue devas esti fermita
 STR_1007    :Ne eblas krei sufiĉe da ĉaroj
 STR_1008    :Malfermi, fermi, aŭ elprovi atrakcion
@@ -3302,7 +3304,6 @@ STR_6154    :Pro kialoj sekurigaj, ne estas rekomendita por lanĉi OpenRCT2 kun 
 STR_6155    :Nek KDialog nek Zenity estas instalita. Bonvolu instali unu, aŭ agordu per la komanda linio.
 STR_6156    :Nomo estas reservita
 STR_6157    :Konzolo
-STR_6158    :Ne eblas ŝargi ĉi tiun dosieron…{NEWLINE}Malkongrua RCTC versio: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Veturiloj disponeblaj: {BLACK}{STRING}
 STR_6161    :Baskulilo por montri kradliniojn
 STR_6162    :Turniĝanta Sovaĝa Muso
@@ -3431,7 +3432,7 @@ STR_6322    :{WINDOW_COLOUR_2}Identigilo de rastrumeto: {BLACK}{INT32}
 STR_6323    :Simulas
 STR_6324    :Simuli
 STR_6325    :Simuli atrakcion
-STR_6326    :Ne eblas simuli je {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Ne eblas simuli je {STRINGID}…
 STR_6327    :Transvidebla fono por gigantaj ekranokopioj
 STR_6328    :Kun ĉi tiu opcio ŝaltita, gigantaj ekranokopioj havos transvideblan fonon anstataŭ la defaŭlta nigra koloro.
 STR_6329    :{STRING}{STRINGID}
@@ -3618,6 +3619,11 @@ STR_6511    :Sengravida Ruliĝo (dekstre)
 STR_6512    :Granda Sengravida Ruliĝo (maldekstre)
 STR_6513    :Granda Sengravida Ruliĝo (dekstre)
 STR_6514    :Nevalida alteco!
+STR_6515    :{BLACK}RCT1 ne estas ligita - retropaŝaj bildoj estos uzitaj.
+STR_6516    :Unu aŭ pli objektoj aldonitaj bezonas je RCT1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
+STR_6517    :Unu aŭ pli objektoj en ĉi tiu parko bezonas je RCT1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
+STR_6518    :{BLACK}Musumu super scenaro por vidi ĝian priskribon kaj celon. Alklaku ĝin por ekludi.
+STR_6519    :Ekstraĵoj
 
 #############
 # Scenarios #
@@ -4066,23 +4072,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tegmento
-
-[TTPIRF03]
-STR_NAME    :Tegmento
-
-[TTPIRF04]
-STR_NAME    :Tegmento
-
 [TTPIRF05]
-STR_NAME    :Tegmento
-
-[TTPIRF07]
-STR_NAME    :Tegmento
-
-[TTPIRF08]
 STR_NAME    :Tegmento
 
 [TTRFWD01]

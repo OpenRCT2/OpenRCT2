@@ -33,6 +33,7 @@
 #include "coaster/meta/AlpineCoaster.h"
 #include "coaster/meta/BobsleighCoaster.h"
 #include "coaster/meta/ClassicMiniRollerCoaster.h"
+#include "coaster/meta/ClassicWoodenRollerCoaster.h"
 #include "coaster/meta/CompactInvertedCoaster.h"
 #include "coaster/meta/CorkscrewRollerCoaster.h"
 #include "coaster/meta/FlyingRollerCoaster.h"
@@ -334,6 +335,7 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_HYBRID_COASTER                     */ HybridCoasterRTD,
     /* RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER         */ SingleRailRollerCoasterRTD,
     /* RIDE_TYPE_ALPINE_COASTER                     */ AlpineCoasterRTD,
+    /* RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER      */ ClassicWoodenRollerCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const
@@ -382,6 +384,7 @@ bool RideTypeDescriptor::SupportsRideMode(RideMode rideMode) const
 }
 
 static RideTrackGroup _enabledRidePieces = {};
+static RideTrackGroup _disabledRidePieces = {};
 
 bool IsTrackEnabled(int32_t trackFlagIndex)
 {
@@ -391,4 +394,14 @@ bool IsTrackEnabled(int32_t trackFlagIndex)
 void UpdateEnabledRidePieces(ride_type_t rideType)
 {
     GetRideTypeDescriptor(rideType).GetAvailableTrackPieces(_enabledRidePieces);
+
+    if (!gCheatsEnableAllDrawableTrackPieces)
+    {
+        _enabledRidePieces &= ~_disabledRidePieces;
+    }
+}
+
+void UpdateDisabledRidePieces(const RideTrackGroup& res)
+{
+    _disabledRidePieces = res;
 }

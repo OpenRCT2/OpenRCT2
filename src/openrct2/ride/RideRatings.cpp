@@ -285,7 +285,7 @@ static void ride_ratings_update_state_3(RideRatingUpdateState& state)
     ride_ratings_calculate(state, ride);
     ride_ratings_calculate_value(ride);
 
-    window_invalidate_by_number(WC_RIDE, state.CurrentRide.ToUnderlying());
+    window_invalidate_by_number(WindowClass::Ride, state.CurrentRide.ToUnderlying());
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
@@ -739,32 +739,36 @@ static void ride_ratings_calculate(RideRatingUpdateState& state, Ride* ride)
 #endif
 
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(HOOK_TYPE::RIDE_RATINGS_CALCULATE))
+    // Only call the 'ride.ratings.calculate' API hook if testing of the ride is complete
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto originalExcitement = ride->excitement;
-        auto originalIntensity = ride->intensity;
-        auto originalNausea = ride->nausea;
+        auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(HOOK_TYPE::RIDE_RATINGS_CALCULATE))
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto originalExcitement = ride->excitement;
+            auto originalIntensity = ride->intensity;
+            auto originalNausea = ride->nausea;
 
-        // Create event args object
-        auto obj = DukObject(ctx);
-        obj.Set("rideId", ride->id.ToUnderlying());
-        obj.Set("excitement", originalExcitement);
-        obj.Set("intensity", originalIntensity);
-        obj.Set("nausea", originalNausea);
+            // Create event args object
+            auto obj = DukObject(ctx);
+            obj.Set("rideId", ride->id.ToUnderlying());
+            obj.Set("excitement", originalExcitement);
+            obj.Set("intensity", originalIntensity);
+            obj.Set("nausea", originalNausea);
 
-        // Call the subscriptions
-        auto e = obj.Take();
-        hookEngine.Call(HOOK_TYPE::RIDE_RATINGS_CALCULATE, e, true);
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(HOOK_TYPE::RIDE_RATINGS_CALCULATE, e, true);
 
-        auto scriptExcitement = AsOrDefault(e["excitement"], static_cast<int32_t>(originalExcitement));
-        auto scriptIntensity = AsOrDefault(e["intensity"], static_cast<int32_t>(originalIntensity));
-        auto scriptNausea = AsOrDefault(e["nausea"], static_cast<int32_t>(originalNausea));
+            auto scriptExcitement = AsOrDefault(e["excitement"], static_cast<int32_t>(originalExcitement));
+            auto scriptIntensity = AsOrDefault(e["intensity"], static_cast<int32_t>(originalIntensity));
+            auto scriptNausea = AsOrDefault(e["nausea"], static_cast<int32_t>(originalNausea));
 
-        ride->excitement = std::clamp<int32_t>(scriptExcitement, 0, INT16_MAX);
-        ride->intensity = std::clamp<int32_t>(scriptIntensity, 0, INT16_MAX);
-        ride->nausea = std::clamp<int32_t>(scriptNausea, 0, INT16_MAX);
+            ride->excitement = std::clamp<int32_t>(scriptExcitement, 0, INT16_MAX);
+            ride->intensity = std::clamp<int32_t>(scriptIntensity, 0, INT16_MAX);
+            ride->nausea = std::clamp<int32_t>(scriptNausea, 0, INT16_MAX);
+        }
     }
 #endif
 }
@@ -907,7 +911,7 @@ static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, Ride* ride)
     // various variables set on the ride itself.
 
     // https://gist.github.com/kevinburke/e19b803cd2769d96c540
-    upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerTrain * ride->num_vehicles;
+    upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerTrain * ride->NumTrains;
     upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerCar * ride->num_cars_per_train;
 
     // slight upkeep boosts for some rides - 5 for mini railway, 10 for log
@@ -1205,48 +1209,52 @@ static RatingTuple get_inversions_ratings(uint16_t inversions)
     return rating;
 }
 
-static RatingTuple get_special_track_elements_rating(uint8_t type, Ride* ride)
+void SpecialTrackElementRatingsAjustment_Default(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea)
+{
+    if (ride->HasWaterSplash())
+    {
+        excitement += 50;
+        intensity += 30;
+        nausea += 20;
+    }
+    if (ride->HasWaterfall())
+    {
+        excitement += 55;
+        intensity += 30;
+    }
+    if (ride->HasWhirlpool())
+    {
+        excitement += 35;
+        intensity += 20;
+        nausea += 23;
+    }
+}
+
+void SpecialTrackElementRatingsAjustment_GhostTrain(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea)
+{
+    if (ride->HasSpinningTunnel())
+    {
+        excitement += 40;
+        intensity += 25;
+        nausea += 55;
+    }
+}
+
+void SpecialTrackElementRatingsAjustment_LogFlume(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea)
+{
+    if (ride->HasLogReverser())
+    {
+        excitement += 48;
+        intensity += 55;
+        nausea += 65;
+    }
+}
+
+static RatingTuple GetSpecialTrackElementsRating(uint8_t type, Ride* ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
-
-    if (type == RIDE_TYPE_GHOST_TRAIN)
-    {
-        if (ride->HasSpinningTunnel())
-        {
-            excitement += 40;
-            intensity += 25;
-            nausea += 55;
-        }
-    }
-    else if (type == RIDE_TYPE_LOG_FLUME)
-    {
-        if (ride->HasLogReverser())
-        {
-            excitement += 48;
-            intensity += 55;
-            nausea += 65;
-        }
-    }
-    else
-    {
-        if (ride->HasWaterSplash())
-        {
-            excitement += 50;
-            intensity += 30;
-            nausea += 20;
-        }
-        if (ride->HasWaterfall())
-        {
-            excitement += 55;
-            intensity += 30;
-        }
-        if (ride->HasWhirlpool())
-        {
-            excitement += 35;
-            intensity += 20;
-            nausea += 23;
-        }
-    }
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    rtd.SpecialElementRatingAdjustment(ride, excitement, intensity, nausea);
 
     uint8_t helixSections = ride_get_helix_sections(ride);
 
@@ -1272,7 +1280,7 @@ static RatingTuple ride_ratings_get_turns_ratings(Ride* ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
 
-    RatingTuple specialTrackElementsRating = get_special_track_elements_rating(ride->type, ride);
+    RatingTuple specialTrackElementsRating = GetSpecialTrackElementsRating(ride->type, ride);
     excitement += specialTrackElementsRating.Excitement;
     intensity += specialTrackElementsRating.Intensity;
     nausea += specialTrackElementsRating.Nausea;
@@ -1448,10 +1456,9 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     // Count surrounding scenery items
     int32_t numSceneryItems = 0;
     auto tileLocation = TileCoordsXY(location);
-    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, MAXIMUM_MAP_SIZE_TECHNICAL - 1); yy++)
+    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, gMapSize.y - 1); yy++)
     {
-        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
-             xx++)
+        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, gMapSize.x - 1); xx++)
         {
             // Count scenery items on this tile
             TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy });
@@ -2572,7 +2579,7 @@ void ride_ratings_calculate_go_karts(Ride* ride, RideRatingUpdateState& state)
     ride_ratings_set(&ratings, RIDE_RATING(1, 42), RIDE_RATING(1, 73), RIDE_RATING(0, 40));
     ride_ratings_apply_length(&ratings, ride, 700, 32768);
 
-    if (ride->mode == RideMode::Race && ride->num_vehicles >= 4)
+    if (ride->mode == RideMode::Race && ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(1, 40), RIDE_RATING(0, 50), 0);
 
@@ -2676,14 +2683,14 @@ void ride_ratings_calculate_dodgems(Ride* ride, RideRatingUpdateState& state)
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 35));
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
 
     ride_ratings_add(&ratings, ride->operation_option, ride->operation_option / 2, 0);
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
@@ -3836,14 +3843,14 @@ void ride_ratings_calculate_flying_saucers(Ride* ride, RideRatingUpdateState& st
         /* .nausea =     */ RIDE_RATING(0, 39),
     };
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
 
     ride_ratings_add(&ratings, ride->time_limit, ride->time_limit / 2, 0);
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
@@ -4471,7 +4478,7 @@ void ride_ratings_calculate_alpine_coaster(Ride* ride, RideRatingUpdateState& st
 
 #pragma region Ride rating calculation function table
 
-ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType)
+ride_ratings_calculation ride_ratings_get_calculate_func(ride_type_t rideType)
 {
     return GetRideTypeDescriptor(rideType).RatingsCalculationFunction;
 }

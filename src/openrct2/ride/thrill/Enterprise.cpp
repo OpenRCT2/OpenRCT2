@@ -10,6 +10,7 @@
 #include "../../common.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"
@@ -20,7 +21,7 @@
 
 static void PaintEnterpriseRiders(
     paint_session& session, const rct_ride_entry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
-    const CoordsXYZ& bbLength, const CoordsXYZ& bbOffset)
+    const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 0 })
         return;
@@ -37,7 +38,7 @@ static void PaintEnterpriseRiders(
         auto frameOffset2 = floor2(imageOffset, 4) * 4;
         auto imageTemplate = ImageId(0, vehicle.peep_tshirt_colours[i]);
         auto imageId = imageTemplate.WithIndex(baseImageIndex + 196 + frameOffset1 + frameOffset2);
-        PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
+        PaintAddImageAsChild(session, imageId, offset, bb);
     }
 }
 
@@ -60,8 +61,7 @@ static void PaintEnterpriseStructure(
     }
 
     CoordsXYZ offset(xOffset, yOffset, height + 7);
-    CoordsXYZ bbLength(24, 24, 48);
-    CoordsXYZ bbOffset(0, 0, height + 7);
+    BoundBoxXYZ bb = { { 0, 0, height + 7 }, { 24, 24, 48 } };
 
     uint32_t imageOffset = trackElement.GetDirectionWithOffset(session.CurrentRotation);
     if (vehicle != nullptr)
@@ -76,11 +76,11 @@ static void PaintEnterpriseStructure(
         imageTemplate = ImageId::FromUInt32(imageFlags);
     }
     auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
-    PaintAddImageAsParent(session, imageId, offset, bbLength, bbOffset);
+    PaintAddImageAsParent(session, imageId, offset, bb);
 
     if (vehicle != nullptr)
     {
-        PaintEnterpriseRiders(session, *rideEntry, *vehicle, imageOffset, offset, bbLength, bbOffset);
+        PaintEnterpriseRiders(session, *rideEntry, *vehicle, imageOffset, offset, bb);
     }
 
     session.CurrentlyDrawnEntity = nullptr;

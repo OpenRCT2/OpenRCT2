@@ -52,7 +52,7 @@ static constexpr const int32_t GroupByTrackTypeWidth = 172;
  * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
  * type are kept together.
  */
-static constexpr const char RideTypeViewOrder[] = {
+static constexpr const ride_type_t RideTypeViewOrder[] = {
     // Transport rides
     RIDE_TYPE_MINIATURE_RAILWAY,
     RIDE_TYPE_MONORAIL,
@@ -64,6 +64,7 @@ static constexpr const char RideTypeViewOrder[] = {
     RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER,
     RIDE_TYPE_VIRGINIA_REEL,
     RIDE_TYPE_REVERSER_ROLLER_COASTER,
+    RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER,
     RIDE_TYPE_WOODEN_ROLLER_COASTER,
     RIDE_TYPE_WOODEN_WILD_MOUSE,
     RIDE_TYPE_STEEL_WILD_MOUSE,
@@ -328,7 +329,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -349,7 +350,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
         {
@@ -523,9 +524,10 @@ private:
         Close();
         window_close_construction_windows();
 
-        if (_lastTrackDesignCount > 0)
+        auto count = GetNumTrackDesigns(item);
+        if (count > 0)
         {
-            auto intent = Intent(WC_TRACK_DESIGN_LIST);
+            auto intent = Intent(WindowClass::TrackDesignList);
             intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
             intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.EntryIndex);
             context_open_intent(&intent);
@@ -537,6 +539,12 @@ private:
 
     int32_t GetNumTrackDesigns(RideSelection item)
     {
+        // Cache the result
+        if (item.Type == _lastTrackDesignCountRideType.Type && item.EntryIndex == _lastTrackDesignCountRideType.EntryIndex)
+        {
+            return _lastTrackDesignCount;
+        }
+
         std::string entryName;
 
         if (item.Type < 0x80)
@@ -548,7 +556,9 @@ private:
         }
 
         auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-        return static_cast<int32_t>(repo->GetCountForObjectEntry(item.Type, entryName));
+        _lastTrackDesignCount = static_cast<int32_t>(repo->GetCountForObjectEntry(item.Type, entryName));
+        _lastTrackDesignCountRideType = item;
+        return _lastTrackDesignCount;
     }
 
     void UpdateVehicleAvailability(ObjectEntryIndex rideType)
@@ -602,7 +612,7 @@ private:
         // For each ride type in the view order list
         for (int32_t i = 0; i < static_cast<int32_t>(std::size(RideTypeViewOrder)); i++)
         {
-            uint8_t rideType = RideTypeViewOrder[i];
+            auto rideType = RideTypeViewOrder[i];
             if (rideType == RIDE_TYPE_NULL)
                 continue;
 
@@ -616,7 +626,7 @@ private:
         nextListItem->EntryIndex = OBJECT_ENTRY_INDEX_NULL;
     }
 
-    RideSelection* IterateOverRideType(uint8_t rideType, RideSelection* nextListItem, RideSelection* listEnd)
+    RideSelection* IterateOverRideType(ride_type_t rideType, RideSelection* nextListItem, RideSelection* listEnd)
     {
         bool buttonForRideTypeCreated = false;
         bool allowDrawingOverLastButton = false;
@@ -847,28 +857,10 @@ private:
             }
         }
 
+        auto count = GetNumTrackDesigns(item);
+        auto designCountStringId = GetDesignsAvailableStringId(count);
         ft = Formatter();
-        if (item.Type != _lastTrackDesignCountRideType.Type || item.EntryIndex != _lastTrackDesignCountRideType.EntryIndex)
-        {
-            _lastTrackDesignCountRideType = item;
-            _lastTrackDesignCount = GetNumTrackDesigns(item);
-        }
-        ft.Add<int32_t>(_lastTrackDesignCount);
-
-        StringId designCountStringId;
-        switch (_lastTrackDesignCount)
-        {
-            case 0:
-                designCountStringId = STR_CUSTOM_DESIGNED_LAYOUT;
-                break;
-            case 1:
-                designCountStringId = STR_1_DESIGN_AVAILABLE;
-                break;
-            default:
-                designCountStringId = STR_X_DESIGNS_AVAILABLE;
-                break;
-        }
-
+        ft.Add<int32_t>(count);
         DrawTextBasic(&dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
         // Price
@@ -894,7 +886,7 @@ private:
 
     void DrawTabImage(rct_drawpixelinfo& dpi, NewRideTabId tab, int32_t spriteIndex)
     {
-        rct_widgetindex widgetIndex = WIDX_TAB_1 + tab;
+        WidgetIndex widgetIndex = WIDX_TAB_1 + tab;
 
         if (widgets[widgetIndex].type != WindowWidgetType::Empty && !WidgetIsDisabled(*this, widgetIndex))
         {
@@ -919,6 +911,19 @@ private:
         DrawTabImage(dpi, WATER_TAB, SPR_TAB_RIDES_WATER_0);
         DrawTabImage(dpi, SHOP_TAB, SPR_TAB_RIDES_SHOP_0);
         DrawTabImage(dpi, RESEARCH_TAB, SPR_TAB_FINANCES_RESEARCH_0);
+    }
+
+    StringId GetDesignsAvailableStringId(int32_t count)
+    {
+        switch (count)
+        {
+            case 0:
+                return STR_CUSTOM_DESIGNED_LAYOUT;
+            case 1:
+                return STR_1_DESIGN_AVAILABLE;
+            default:
+                return STR_X_DESIGNS_AVAILABLE;
+        }
     }
 };
 
@@ -951,16 +956,16 @@ rct_window* WindowNewRideOpen()
 {
     rct_window* window;
 
-    window = window_bring_to_front_by_class(WC_CONSTRUCT_RIDE);
+    window = window_bring_to_front_by_class(WindowClass::ConstructRide);
     if (window)
     {
         return window;
     }
 
-    window_close_by_class(WC_TRACK_DESIGN_LIST);
-    window_close_by_class(WC_TRACK_DESIGN_PLACE);
+    window_close_by_class(WindowClass::TrackDesignList);
+    window_close_by_class(WindowClass::TrackDesignPlace);
 
-    window = WindowCreate<NewRideWindow>(WC_CONSTRUCT_RIDE, WindowWidth, WindowHeight, WF_10 | WF_AUTO_POSITION);
+    window = WindowCreate<NewRideWindow>(WindowClass::ConstructRide, WindowWidth, WindowHeight, WF_10 | WF_AUTO_POSITION);
     return window;
 }
 
@@ -977,14 +982,14 @@ rct_window* WindowNewRideOpenResearch()
  */
 void WindowNewRideFocus(RideSelection rideItem)
 {
-    auto w = static_cast<NewRideWindow*>(window_find_by_class(WC_CONSTRUCT_RIDE));
+    auto w = static_cast<NewRideWindow*>(window_find_by_class(WindowClass::ConstructRide));
     if (!w)
     {
         return;
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(rideItem.EntryIndex);
-    uint8_t rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
+    auto rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
 
     w->SetPage(GetRideTypeDescriptor(rideTypeIndex).Category);
 }

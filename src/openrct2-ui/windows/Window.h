@@ -118,8 +118,8 @@ rct_window* WindowMapOpen();
 void WindowMapReset();
 
 rct_window* WindowResearchOpen();
-void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex);
-void WindowResearchFundingPagePaint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex);
+void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingPagePaint(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex baseWidgetIndex);
 
 rct_window* WindowNewRideOpen();
 rct_window* WindowNewRideOpenResearch();
@@ -149,12 +149,12 @@ rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose);
 rct_window* WindowNetworkStatusOpenPassword();
 void WindowNetworkStatusClose();
 
-void WindowTextInputKey(rct_window* w, char keychar);
+void WindowTextInputKey(rct_window* w, uint32_t keycode);
 void WindowTextInputOpen(
-    rct_window* call_w, rct_widgetindex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     StringId existing_text, uintptr_t existing_args, int32_t maxLength);
 void WindowTextInputRawOpen(
-    rct_window* call_w, rct_widgetindex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     const_utf8string existing_text, int32_t maxLength);
 
 void WindowTextInputOpen(
@@ -195,7 +195,7 @@ rct_window* WindowEditorObjectSelectionOpen();
 
 void WindowTooltipReset(const ScreenCoordsXY& screenCoords);
 void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords);
-void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 void WindowTooltipClose();
 
 rct_window* WindowSceneryScatterOpen();

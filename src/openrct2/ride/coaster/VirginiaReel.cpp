@@ -189,7 +189,7 @@ void vehicle_visual_virginia_reel(
     const vehicle_boundbox* bb = &_virginiaReelBoundbox[baseImage_id >> 3];
 
     baseImage_id += carEntry->base_image_id;
-    int32_t image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    int32_t image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.Body, vehicle->colours.Trim);
     if (vehicle->IsGhost())
     {
         image_id = (image_id & 0x7FFFF) | CONSTRUCTION_MARKER;

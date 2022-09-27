@@ -535,6 +535,12 @@
         "y_offset": 2
     },
     {
+        "path": "sideways-tab.png"
+    },
+    {
+        "path": "sideways-tab-active.png"
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
@@ -15888,5 +15894,38 @@
         "x_offset": -5,
         "y_offset": -20,
         "palette": "keep"
+    },
+    {
+        "path": "track/wooden/station_block_brake_open_sw_ne.png",
+        "x_offset": -34,
+        "y_offset": -8
+    },
+    {
+        "path": "track/wooden/station_block_brake_open_nw_se.png",
+        "x_offset": -30,
+        "y_offset": -8
+    },
+    {
+        "path": "track/wooden/station_block_brake_closed_sw_ne.png",
+        "x_offset": -34,
+        "y_offset": -8
+    },
+    {
+        "path": "track/wooden/station_block_brake_closed_nw_se.png",
+        "x_offset": -30,
+        "y_offset": -8
+    },
+    {
+        "path": "empty.png"
+    },
+    {
+        "path": "track/wooden/classic_wooden_preview_track.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "track/wooden/classic_wooden_preview_supports.png",
+        "x_offset": 2,
+        "y_offset": 1
     }
 ]

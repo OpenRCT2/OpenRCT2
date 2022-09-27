@@ -192,7 +192,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 case EntityType::Guest:
                 case EntityType::Staff:
                 {
-                    auto intent = Intent(WC_PEEP);
+                    auto intent = Intent(WindowClass::Peep);
                     intent.putExtra(INTENT_EXTRA_PEEP, entity);
                     context_open_intent(&intent);
                     break;
@@ -231,7 +231,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
             return true;
         }
         case ViewportInteractionItem::ParkEntrance:
-            context_open_window(WC_PARK_INFORMATION);
+            context_open_window(WindowClass::ParkInformation);
             return true;
         default:
             return false;
@@ -446,7 +446,8 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
 
     if (!(input_test_flag(INPUT_FLAG_6)) || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
     {
-        if (window_find_by_class(WC_RIDE_CONSTRUCTION) == nullptr && window_find_by_class(WC_FOOTPATH) == nullptr)
+        if (window_find_by_class(WindowClass::RideConstruction) == nullptr
+            && window_find_by_class(WindowClass::Footpath) == nullptr)
         {
             info.SpriteType = ViewportInteractionItem::None;
             return info;
@@ -565,7 +566,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
         break;
         case ViewportInteractionItem::Ride:
             tileElement = { info.Loc, info.Element };
-            ride_modify(&tileElement);
+            ride_modify(tileElement);
             break;
         case ViewportInteractionItem::Scenery:
             ViewportInteractionRemoveScenery(info.Element, info.Loc);
@@ -617,7 +618,7 @@ static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const Co
 
     auto z = tileElement->GetBaseZ();
 
-    w = window_find_by_class(WC_FOOTPATH);
+    w = window_find_by_class(WindowClass::Footpath);
     if (w != nullptr)
         footpath_provisional_update();
 

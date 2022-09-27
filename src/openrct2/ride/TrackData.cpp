@@ -7183,6 +7183,8 @@ namespace OpenRCT2
 
         const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type)
         {
+            if (type >= _trackElementDescriptors.size())
+                return _trackElementDescriptors[0];
             return _trackElementDescriptors[type];
         }
 

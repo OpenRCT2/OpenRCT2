@@ -60,7 +60,7 @@ GameActions::Result StaffFireAction::Execute() const
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
-    window_close_by_class(WC_FIRE_PROMPT);
+    window_close_by_class(WindowClass::FirePrompt);
     peep_sprite_remove(staff);
     // Due to patrol areas best to invalidate the whole screen on removal of staff
     gfx_invalidate_screen();

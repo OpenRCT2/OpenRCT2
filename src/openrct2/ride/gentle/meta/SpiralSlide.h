@@ -53,11 +53,16 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SPIRAL_SLIDE_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "spiral_slide"),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::Ride),
     SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceSpiralSlide),
+    SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_Default),
+    SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationDefault),
+    SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
+    SET_FIELD(RideUpdate, UpdateSpiralSlide),
 };
 // clang-format on

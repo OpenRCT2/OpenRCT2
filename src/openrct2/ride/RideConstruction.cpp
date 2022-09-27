@@ -49,7 +49,6 @@
 #include "Vehicle.h"
 
 using namespace OpenRCT2::TrackMetaData;
-bool gGotoStartPlacementMode = false;
 
 money16 gTotalRideValueForMoney;
 
@@ -103,7 +102,6 @@ static int32_t ride_check_if_construction_allowed(Ride* ride)
     }
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        ft.Increment(6);
         ride->FormatNameTo(ft);
         context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING, ft);
         return 0;
@@ -111,7 +109,6 @@ static int32_t ride_check_if_construction_allowed(Ride* ride)
 
     if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
-        ft.Increment(6);
         ride->FormatNameTo(ft);
         context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST, ft);
         return 0;
@@ -126,7 +123,7 @@ static rct_window* ride_create_or_find_construction_window(RideId rideIndex)
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
     intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
     windowManager->BroadcastIntent(intent);
-    return window_find_by_class(WC_RIDE_CONSTRUCTION);
+    return window_find_by_class(WindowClass::RideConstruction);
 }
 
 /**
@@ -141,7 +138,7 @@ void ride_construct(Ride* ride)
         ride_find_track_gap(ride, &trackElement, &trackElement);
 
         rct_window* w = window_get_main();
-        if (w != nullptr && ride_modify(&trackElement))
+        if (w != nullptr && ride_modify(trackElement))
             window_scroll_to_location(*w, { trackElement, trackElement.element->GetBaseZ() });
     }
     else
@@ -241,7 +238,7 @@ void ride_clear_for_construction(Ride* ride)
     ride->RemoveVehicles();
     ride_clear_blocked_tiles(ride);
 
-    auto w = window_find_by_number(WC_RIDE, ride->id.ToUnderlying());
+    auto w = window_find_by_number(WindowClass::Ride, ride->id.ToUnderlying());
     if (w != nullptr)
         window_event_resize_call(w);
 }
@@ -900,20 +897,20 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     auto stationIndex = entranceElement->GetStationIndex();
 
     // Get or create construction window for ride
-    auto constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    auto constructionWindow = window_find_by_class(WindowClass::RideConstruction);
     if (constructionWindow == nullptr)
     {
         if (!ride_initialise_construction_window(ride))
             return false;
 
-        constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        constructionWindow = window_find_by_class(WindowClass::RideConstruction);
         if (constructionWindow == nullptr)
             return false;
     }
 
     ride_construction_invalidate_current_track();
     if (_rideConstructionState != RideConstructionState::EntranceExit || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-        || gCurrentToolWidget.window_classification != WC_RIDE_CONSTRUCTION)
+        || gCurrentToolWidget.window_classification != WindowClass::RideConstruction)
     {
         // Replace entrance / exit
         tool_set(
@@ -943,13 +940,13 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
             gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                           : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
             gRideEntranceExitPlaceType = entranceType;
-            window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
+            window_invalidate_by_class(WindowClass::RideConstruction);
         });
 
         GameActions::Execute(&rideEntranceExitRemove);
     }
 
-    window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
+    window_invalidate_by_class(WindowClass::RideConstruction);
     return true;
 }
 
@@ -985,9 +982,9 @@ static bool ride_modify_maze(const CoordsXYE& tileElement)
  *
  *  rct2: 0x006CC056
  */
-bool ride_modify(CoordsXYE* input)
+bool ride_modify(const CoordsXYE& input)
 {
-    auto tileElement = *input;
+    auto tileElement = input;
     if (tileElement.element == nullptr)
         return false;
 
@@ -1005,7 +1002,6 @@ bool ride_modify(CoordsXYE* input)
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
     {
         Formatter ft;
-        ft.Increment(6);
         ride->FormatNameTo(ft);
         context_show_error(
             STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE, ft);

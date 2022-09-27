@@ -96,6 +96,8 @@ STR_0091    :Ismeretlen játék (59)
 STR_0092    :Aszinkronmotoros hullámvasút
 STR_0093    :Hibrid hullámvasút
 STR_0094    :Egysínű hullámvasút
+STR_0095    :Alpesi hullámvasút
+STR_0096    :Klasszikus fa hullámvasút
 STR_0512    :Egy kompakt hullámvasút spirális felvonórésszel és sima, csavaros esésekkel
 STR_0513    :Egy átforduló hullámvasút, amelyen az utasok álló helyzetben utaznak
 STR_0514    :A hullámvasút pályája alatt felfüggesztett vonatok oldalt kilengenek a kanyarokban
@@ -166,6 +168,8 @@ STR_0600    :Motoros bányavonatok futnak egy sima és csavaros pálya mentén
 STR_0602    :A hullámvasút vonatai aszinkronmotoros gyorsítással hagyják el az állomást, hogy átszáguldjanak a csavaros fordítókon
 STR_0603    :Egy fa stílusú hullámvasút acélpályával, meredek esésekkel és fordítókkal.
 STR_0604    :Az utasok egymás mögött utaznak egy keskeny, egysínű pályán, ahogy átszáguldanak a szoros fordítókon és irányváltásokon.
+STR_0605    :Az utasok egy kanyargós acélpályán szánkóznak lefelé, fékezéssel szabályozva a sebességüket
+STR_0606    :Egy régebbi stílusú, fából készült hullámvasút gyors és durva utazással, rengeteg légi idővel, némi oldalirányú G-vel, és úgy tervezték, hogy „kontrollvesztettség” érzetét nyújtsa
 STR_0767    :Vendég {INT32}
 STR_0768    :Mindenes {INT32}
 STR_0769    :Gépész {INT32}
@@ -377,10 +381,10 @@ STR_0998    :A játék nem tartalmazhat több állomást
 STR_0999    :Állomásra van szüksége
 STR_1000    :A pálya nem teljes körpálya 
 STR_1001    :A vonattípus számára nem megfelelő pálya
-STR_1002    :{POP16}{POP16}{POP16}{STRINGID} nem nyitható meg…
-STR_1003    :{POP16}{POP16}{POP16}{STRINGID} nem tesztelhető…
-STR_1004    :{POP16}{POP16}{POP16}{STRINGID} nem zárható be…
-STR_1005    :{POP16}{POP16}{POP16}{STRINGID} nem építhető át…
+STR_1002    :{STRINGID} nem nyitható meg…
+STR_1003    :{STRINGID} nem tesztelhető…
+STR_1004    :{STRINGID} nem zárható be…
+STR_1005    :{STRINGID} nem építhető át…
 STR_1006    :Előbb be kell zárni
 STR_1007    :Nem lehet elég járművet létrehozni
 STR_1008    :Játék/épület megnyitása, bezárása vagy tesztelése
@@ -744,7 +748,7 @@ STR_1363    :Túl magas az állványzat számára!
 STR_1364    :A fenti pálya állványzata nem hosszabbítható meg jobban!
 STR_1365    :Kis csavar (balra)
 STR_1366    :Kis csavar (jobbra)
-STR_1367    :Félhurok
+STR_1367    :Kis félhurok
 STR_1368    :Fél dugóhúzó (balra)
 STR_1369    :Fél dugóhúzó (jobbra)
 STR_1370    :Orsó (balra)
@@ -2226,7 +2230,7 @@ STR_3185    :Kis díszletek
 STR_3186    :Nagy díszletek
 STR_3187    :Falak/kerítések
 STR_3188    :Úti hirdetőtáblák
-STR_3189    :Utak
+STR_3189    :Régi típusú utak
 STR_3190    :Úti extrák
 STR_3191    :Díszletcsoportok
 STR_3192    :Park bejárata
@@ -3266,7 +3270,6 @@ STR_6154    :Biztonsági okokból nem javasolt az OpenRCT2 emelt jogosultságokk
 STR_6155    :Se a KDialog, se a Zenity nincs telepítve. Kérlek telepítsd valamelyiket, vagy konfiguráld a parancssorból.
 STR_6156    :A név le van foglalva
 STR_6157    :Konzol
-STR_6158    :Fájl betöltése sikertelen…{NEWLINE}Nem kompatibilis RCTC verzió: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Rendelkezésre álló járművek: {BLACK}{STRING}
 STR_6161    :Rácsok megjelenítése be/ki
 STR_6162    :Forgó vad egér
@@ -3395,7 +3398,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Szimuláció folyamatban
 STR_6324    :Szimulálás
 STR_6325    :Játék/épület szimulálása
-STR_6326    :{POP16}{POP16}{POP16}{STRINGID} nem szimulálható…
+STR_6326    :{STRINGID} nem szimulálható…
 STR_6327    :Átlátszó hátterű óriás képmentések
 STR_6328    :Ha ez az opció ki van jelölve, az óriás képmentések átlátszó hátterűek lesznek az alapértelmezett fekete szín helyett.
 STR_6329    :{STRING}{STRINGID}
@@ -3439,7 +3442,7 @@ STR_6367    :Animációs képkocka:
 STR_6368    :Kompatibilitási okok miatt nem javasolt az OpenRCT2 Wine-al történő futtatása. Az OpenRCT2 natív macOS, Linux, FreeBSD és OpenBSD támogatással rendelkezik.
 STR_6369    :Pályaépítés érvénytelen magasságokban
 STR_6370    :Lehetővé teszi, hogy bármely köztes magasságban lehessen pályarészeket elhelyezni
-STR_6371    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de a „csg1i.dat” fájl hiányzik. Ezt a fájlt át kell másolni a RollerCoaster Tycoon 1 CD-ről a merevlemezedre telepített RollerCoaster Tycoon 1 „Data” mappájába.
+STR_6371    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de a „csg1i.dat” fájl hiányzik. Ezt a fájlt át kell másolni a Loopy Landscapes vagy RCT Deluxe CD-ről a merevlemezedre telepített RollerCoaster Tycoon 1 „Data” mappájába.
 STR_6372    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de ez a verzió nem megfelelő. Az OpenRCT2-nek egy Loopy Landscapes, vagy RCT Deluxe telepítésre van szüksége a RollerCoaster Tycoon 1 fájljainak használatához.
 STR_6373    :Űrszelvény-ellenőrzés be/ki
 STR_6374    :Ű
@@ -3506,7 +3509,7 @@ STR_6434    :A jelenlegi gyorsbillentyű összes hozzárendelésének törlése.
 STR_6435    :{WINDOW_COLOUR_2}Megállított vandálok: {BLACK}{COMMA32}
 STR_6436    :Láthatatlanság be/ki
 STR_6437    :Látható
-STR_6438    :{MOVE_X}{2}👁
+STR_6438    :L
 STR_6439    :Mezővizsgáló: Láthatatlanság be/ki
 STR_6440    :Átlátszó víz
 STR_6441    :Legalább egy nem várósori útobjektum legyen kiválasztva.
@@ -3527,7 +3530,61 @@ STR_6455    :A felirat nem nevezhető át…
 STR_6456    :Óriás képmentés
 STR_6457    :Hiba jelentése a GitHubon
 STR_6458    :Követés a fő nézetben
-
+STR_6460    :I
+STR_6461    :Irány
+STR_6462    :Izgalom
+STR_6463    :Izgalom: {COMMA2DP32}
+STR_6464    :Intenzitás
+STR_6465    :Intenzitás: {COMMA2DP32}
+STR_6466    :Émelygés
+STR_6467    :Émelygés: {COMMA2DP32}
+STR_6468    :Még nem ismert
+STR_6469    :Kisebb járőrözési terület módosítása
+STR_6470    :Nagyobb járőrözési terület módosítása
+STR_6471    :Átlátszó növényzet
+STR_6472    :Átlátszó járművek
+STR_6473    :Átlátszó állványzatok
+STR_6474    :Láthatatlan vendégek
+STR_6475    :Láthatatlan személyzet
+STR_6476    :Láthatatlan növényzet
+STR_6477    :Láthatatlan díszletek
+STR_6478    :Láthatatlan utak
+STR_6479    :Láthatatlan játékok
+STR_6480    :Láthatatlan járművek
+STR_6481    :Átlátszósági beállítások
+STR_6482    :Átlátszósági beállítások
+STR_6483    :Átlátszósági beállítások megnyitása
+STR_6484    :Átlátszó növényzet be/ki
+STR_6485    :Átlátszó járművek be/ki
+STR_6486    :Vendégek elrejtése be/ki
+STR_6487    :Személyzet elrejtése be/ki
+STR_6488    :{RED}A vendégek panaszkodnak a parkban a sorok hosszára.{NEWLINE}Próbáld meg a problémás sorokat lerövidíteni, vagy növeld a játékok áteresztőképességét.
+STR_6489    :Hiba: Nem kompatibilis park verzió
+STR_6490    :Figyelmeztetés: Félig kompatibilis park verzió
+STR_6491    :Ezt a parkot az OpenRCT2 egy későbbi verziójában mentették el. A park v{INT32}, és legalább v{INT32}-t igényel.
+STR_6492    :Ez a park az OpenRCT2 egy régi verziójában lett elmentve, és nem nyitható meg az OpenRCT2 ezen verziójával. A park v{INT32}.
+STR_6493    :Ezt a parkot az OpenRCT2 egy későbbi verziójában mentették el, egyes adatok elveszhetnek. A park v{INT32}, és legalább v{INT32}-t igényel.
+STR_6494    :Játéktípus szerinti csoportosítás
+STR_6495    :Csoportosítsa a játékokat a játéktípusok szerint, ahelyett, hogy minden járművet külön-külön mutatna.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Kattints egy mezőre a mezőelemei megjelenítéséhez.{NEWLINE}Ctrl + kattintás egy mezőelemre a közvetlen kijelöléshez.
+STR_6498    :Engedélyezd a négyzet alakú térképforma megtartásához.
+STR_6499    :A játékterv formátum által nem támogatott járműtípus
+STR_6500    :A játékterv formátum által nem támogatott pályaelemek
+STR_6501    :Véletlenszerű szín
+STR_6502    :Írj be egy értéket {COMMA16} és {COMMA16} között
+STR_6503    :Legalább egy állomásobjektumot ki kell választani
+STR_6504    :Legalább egy terepfelületet ki kell választani
+STR_6505    :Legalább egy terepszegélyt ki kell választani
+STR_6506    :Nagy fél dugóhúzó (balra)
+STR_6507    :Nagy fél dugóhúzó (jobbra)
+STR_6508    :Közepes fél hurok (balra)
+STR_6509    :Közepes fél hurok (jobbra)
+STR_6510    :Zéró G orsó (balra)
+STR_6511    :Zéró G orsó (jobbra)
+STR_6512    :Nagy Zéró G orsó (balra)
+STR_6513    :Nagy Zéró G orsó (jobbra)
+STR_6514    :Érvénytelen magasság!
 
 #############
 # Scenarios #
@@ -3976,22 +4033,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[TTPIRF02]
-STR_NAME    :Tető
-
-[TTPIRF03]
-STR_NAME    :Tető
-
-[TTPIRF04]
-STR_NAME    :Tető
-
 [TTPIRF05]
-STR_NAME    :Tető
-
-[TTPIRF07]
-STR_NAME    :Tető
-
-[TTPIRF08]
 STR_NAME    :Tető
 
 [TTRFWD01]

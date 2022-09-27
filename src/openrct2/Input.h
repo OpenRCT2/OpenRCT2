@@ -68,9 +68,9 @@ enum PLACE_OBJECT_MODIFIER
 
 struct widget_ref
 {
-    rct_windowclass window_classification;
+    WindowClass window_classification;
     rct_windownumber window_number;
-    rct_widgetindex widget_index;
+    WidgetIndex widget_index;
 };
 
 extern uint8_t gInputPlaceObjectModifier;
@@ -92,7 +92,7 @@ extern InputState _inputState;
 extern uint8_t _inputFlags;
 extern uint16_t _tooltipNotShownTicks;
 
-void InputWindowPositionBegin(rct_window& w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+void InputWindowPositionBegin(rct_window& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 
 void title_handle_keyboard_input();
 void GameHandleInput();

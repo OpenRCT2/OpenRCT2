@@ -321,6 +321,18 @@ bool Peep::CheckForPath()
     return false;
 }
 
+bool Peep::PathIsBlockedByVehicle()
+{
+    auto curPos = TileCoordsXYZ(GetLocation());
+    auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
+    if ((curPos.x != dstPos.x || curPos.y != dstPos.y) && footpath_is_blocked_by_vehicle(dstPos))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 PeepActionSpriteType Peep::GetActionSpriteType()
 {
     if (IsActionInterruptable())
@@ -534,7 +546,7 @@ void peep_decrement_num_riders(Peep* peep)
  */
 void peep_window_state_update(Peep* peep)
 {
-    rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index.ToUnderlying());
+    rct_window* w = window_find_by_number(WindowClass::Peep, peep->sprite_index.ToUnderlying());
     if (w != nullptr)
         window_event_invalidate_call(w);
 
@@ -550,13 +562,13 @@ void peep_window_state_update(Peep* peep)
             }
         }
 
-        window_invalidate_by_number(WC_PEEP, peep->sprite_index);
-        window_invalidate_by_class(WC_GUEST_LIST);
+        window_invalidate_by_number(WindowClass::Peep, peep->sprite_index);
+        window_invalidate_by_class(WindowClass::GuestList);
     }
     else
     {
-        window_invalidate_by_number(WC_PEEP, peep->sprite_index);
-        window_invalidate_by_class(WC_STAFF_LIST);
+        window_invalidate_by_number(WindowClass::Peep, peep->sprite_index);
+        window_invalidate_by_class(WindowClass::StaffList);
     }
 }
 
@@ -662,9 +674,9 @@ void peep_sprite_remove(Peep* peep)
     }
     peep->Invalidate();
 
-    window_close_by_number(WC_PEEP, peep->sprite_index);
+    window_close_by_number(WindowClass::Peep, peep->sprite_index);
 
-    window_close_by_number(WC_FIRE_PROMPT, EnumValue(peep->Type));
+    window_close_by_number(WindowClass::FirePrompt, EnumValue(peep->Type));
 
     auto* staff = peep->As<Staff>();
     // Needed for invalidations after sprite removal
@@ -1948,7 +1960,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         }
 
         gTotalAdmissions++;
-        window_invalidate_by_number(WC_PARK_INFORMATION, 0);
+        window_invalidate_by_number(WindowClass::ParkInformation, 0);
 
         guest->Var37 = 1;
         auto destination = guest->GetDestination();

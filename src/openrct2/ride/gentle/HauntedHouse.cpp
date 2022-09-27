@@ -9,6 +9,7 @@
 
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"
@@ -17,13 +18,7 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-struct haunted_house_bound_box
-{
-    CoordsXY offset;
-    CoordsXY length;
-};
-
-static constexpr haunted_house_bound_box haunted_house_data[] = {
+static constexpr BoundBoxXY HauntedHouseData[] = {
     { { 6, 0 }, { 42, 24 } }, { { 0, 0 }, { 0, 0 } },   { { -16, -16 }, { 32, 32 } },
     { { 0, 0 }, { 0, 0 } },   { { 0, 6 }, { 24, 42 } }, { { 0, 0 }, { 0, 0 } },
 };
@@ -45,7 +40,7 @@ static void PaintHauntedHouseStructure(
         frameNum = vehicle->Pitch;
     }
 
-    const auto& boundBox = haunted_house_data[part];
+    const auto& boundBox = HauntedHouseData[part];
     auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
     auto baseImageIndex = rideEntry->Cars[0].base_image_id;
     auto imageIndex = baseImageIndex + direction;
@@ -58,7 +53,7 @@ static void PaintHauntedHouseStructure(
         imageIndex = baseImageIndex + 3 + ((direction & 3) * 18) + frameNum;
         PaintAddImageAsChild(
             session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height },
-            { boundBox.length.x, boundBox.length.y, 127 }, { boundBox.offset.x, boundBox.offset.y, height });
+            { { boundBox.offset, height }, { boundBox.length, 127 } });
     }
 
     session.CurrentlyDrawnEntity = nullptr;

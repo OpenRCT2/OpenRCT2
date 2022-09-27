@@ -10,6 +10,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"
@@ -34,20 +35,12 @@ static constexpr const uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] 
     33,
 };
 
-struct swinging_inverter_ship_bound_box
-{
-    int16_t length_x;
-    int16_t length_y;
-    int16_t offset_x;
-    int16_t offset_y;
-};
-
 /** rct2: 0x01428020 */
-static constexpr const swinging_inverter_ship_bound_box swinging_inverter_ship_bounds[] = {
-    { 32, 16, 0, 8 },
-    { 16, 32, 8, 0 },
-    { 32, 16, 0, 8 },
-    { 16, 32, 8, 0 },
+static constexpr const BoundBoxXY SwingingInverterShipBounds[] = {
+    { { 0, 8 }, { 32, 16 } },
+    { { 8, 0 }, { 16, 32 } },
+    { { 0, 8 }, { 32, 16 } },
+    { { 8, 0 }, { 16, 32 } },
 };
 
 enum
@@ -72,10 +65,9 @@ static void PaintSwingingInverterShipStructure(
     if (rideEntry == nullptr)
         return;
 
-    const auto& boundBox = swinging_inverter_ship_bounds[direction];
+    const auto& boundBox = SwingingInverterShipBounds[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height);
-    CoordsXYZ bbLength(boundBox.length_x, boundBox.length_y, 127);
-    CoordsXYZ bbOffset(boundBox.offset_x, boundBox.offset_y, height);
+    BoundBoxXYZ bb = { { boundBox.offset, height }, { boundBox.length, 127 } };
 
     Vehicle* vehicle = nullptr;
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
@@ -119,13 +111,13 @@ static void PaintSwingingInverterShipStructure(
 
     if (direction & 2)
     {
-        PaintAddImageAsParent(session, vehicleImageId, offset, bbLength, bbOffset);
-        PaintAddImageAsChild(session, frameImageId, offset, bbLength, bbOffset);
+        PaintAddImageAsParent(session, vehicleImageId, offset, bb);
+        PaintAddImageAsChild(session, frameImageId, offset, bb);
     }
     else
     {
-        PaintAddImageAsParent(session, frameImageId, offset, bbLength, bbOffset);
-        PaintAddImageAsChild(session, vehicleImageId, offset, bbLength, bbOffset);
+        PaintAddImageAsParent(session, frameImageId, offset, bb);
+        PaintAddImageAsChild(session, vehicleImageId, offset, bb);
     }
 
     session.CurrentlyDrawnEntity = nullptr;

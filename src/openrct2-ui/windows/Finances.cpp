@@ -240,7 +240,7 @@ public:
         InvalidateWidget(WIDX_TAB_1 + page);
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (page)
         {
@@ -253,7 +253,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -281,7 +281,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         if (page == WINDOW_FINANCES_PAGE_RESEARCH)
         {
@@ -298,6 +298,8 @@ public:
             widgets = targetWidgets;
             WindowInitScrollWidgets(*this);
         }
+
+        disabled_widgets = 0;
 
         for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
             SetWidgetPressed(WIDX_TAB_1 + i, false);
@@ -379,14 +381,12 @@ public:
         }
 
         // Expenditure / Income values for each month
-        int16_t currentMonthYear = static_cast<int16_t>(gDateMonthsElapsed);
+        uint16_t currentMonthYear = static_cast<uint16_t>(gDateMonthsElapsed);
         for (int32_t i = SummaryMaxAvailableMonth(); i >= 0; i--)
         {
             screenCoords.y = 0;
 
-            int16_t monthyear = currentMonthYear - i;
-            if (monthyear < 0)
-                continue;
+            uint16_t monthyear = currentMonthYear - i;
 
             // Month heading
             auto ft = Formatter();
@@ -475,7 +475,7 @@ public:
 
 #pragma region Summary Events
 
-    void OnMouseDownSummary(rct_widgetindex widgetIndex)
+    void OnMouseDownSummary(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -764,7 +764,7 @@ public:
 
 #pragma region Marketing Events
 
-    void OnMouseUpMarketing(rct_widgetindex widgetIndex)
+    void OnMouseUpMarketing(WidgetIndex widgetIndex)
     {
         if (widgetIndex >= WIDX_CAMPAIGN_1 && widgetIndex <= WIDX_CAMPAIGN_6)
         {
@@ -885,7 +885,7 @@ public:
 
 #pragma region Research Events
 
-    void OnMouseUpResearch(rct_widgetindex widgetIndex)
+    void OnMouseUpResearch(WidgetIndex widgetIndex)
     {
         if (widgetIndex >= WIDX_TRANSPORT_RIDES && widgetIndex <= WIDX_SCENERY_AND_THEMING)
         {
@@ -897,7 +897,7 @@ public:
         }
     }
 
-    void OnMouseDownResearch(rct_widgetindex widgetIndex)
+    void OnMouseDownResearch(WidgetIndex widgetIndex)
     {
         if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
             return;
@@ -918,7 +918,7 @@ public:
         Dropdown::SetChecked(currentResearchLevel, true);
     }
 
-    void OnDropdownResearch(rct_widgetindex widgetIndex, int32_t selectedIndex)
+    void OnDropdownResearch(WidgetIndex widgetIndex, int32_t selectedIndex)
     {
         if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || selectedIndex == -1)
             return;
@@ -978,7 +978,7 @@ public:
 
 #pragma endregion
 
-    void InitialiseScrollPosition(rct_widgetindex widgetIndex, int32_t scrollId)
+    void InitialiseScrollPosition(WidgetIndex widgetIndex, int32_t scrollId)
     {
         const auto& widget = this->widgets[widgetIndex];
         scrolls[scrollId].h_left = std::max(0, scrolls[scrollId].h_right - (widget.width() - 2));
@@ -988,7 +988,7 @@ public:
 
     void DrawTabImage(rct_drawpixelinfo& dpi, int32_t tabPage, int32_t spriteIndex)
     {
-        rct_widgetindex widgetIndex = WIDX_TAB_1 + tabPage;
+        WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
         if (!IsWidgetDisabled(widgetIndex))
         {
@@ -1016,12 +1016,12 @@ public:
 
 rct_window* WindowFinancesOpen()
 {
-    return WindowFocusOrCreate<FinancesWindow>(WC_FINANCES, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+    return WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
 }
 
 rct_window* WindowFinancesResearchOpen()
 {
-    auto* window = WindowFocusOrCreate<FinancesWindow>(WC_FINANCES, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+    auto* window = WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
 
     if (window != nullptr)
         window->SetPage(WINDOW_FINANCES_PAGE_RESEARCH);

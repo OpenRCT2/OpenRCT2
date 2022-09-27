@@ -64,7 +64,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -77,7 +77,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -107,7 +107,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         int32_t size;
         char* end;
@@ -187,5 +187,5 @@ private:
 
 rct_window* WindowWaterOpen()
 {
-    return WindowFocusOrCreate<WaterWindow>(WC_WATER, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    return WindowFocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 }

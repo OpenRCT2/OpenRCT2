@@ -144,7 +144,7 @@ public:
 
     void Draw(rct_drawpixelinfo* dpi) override
     {
-        auto bgColour = ThemeGetColour(WC_CHAT, 0);
+        auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
         chat_draw(dpi, bgColour);
         _inGameConsole.Draw(dpi);
     }

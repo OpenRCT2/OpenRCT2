@@ -54,6 +54,7 @@ constexpr const RideTypeDescriptor ObservationTowerRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_TRACK, SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "observation_tower"),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_ObservationTower),
 };
 // clang-format on

@@ -99,6 +99,7 @@ STR_0092    :Moteur à induction linéaire
 STR_0093    :Montagnes russes hybrides
 STR_0094    :Montagnes russes à rail unique
 STR_0095    :Montagnes russes alpines
+STR_0096    :Montagnes russes en bois classiques
 STR_0512    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0513    :Grand huit que les passagers parcourent debout
 STR_0514    :Des voitures suspendues sous la voie se balancent dans les virages des montagnes russes
@@ -181,6 +182,7 @@ STR_0602    :Train de montagnes russes propulsé hors de la station par des mote
 STR_0603    :Train de montagnes russes en bois avec des rails en acier, permettant des grandes chutes et des inversions.
 STR_0604    :Les passagers parcourent une voie à rail unique dans des voitures mono-places, à travers des inversions et des virages serrés
 STR_0605    :Les passagers dévalent une voie en acier sinueuse, freinant pour contrôler leur vitesse
+STR_0606    :Une montagne russe en bois au style ancien, rapide et turbulente, avec de nombreux moments en suspension, quelques forces latérales et conçues pour paraître hors de contrôle
 STR_0767    :Visiteur {INT32}
 STR_0768    :Agent d’entretien {INT32}
 STR_0769    :Mécanicien {INT32}
@@ -391,10 +393,10 @@ STR_0998    :Plus de quais autorisés sur cette attraction
 STR_0999    :Nécessite un quai
 STR_1000    :La voie ne constitue pas un circuit complet
 STR_1001    :La voie est inadaptée à ce type de train
-STR_1002    :Impossible d’ouvrir {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Impossible de tester {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Impossible de fermer {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Impossible de commencer la construction sur {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Impossible d’ouvrir {STRINGID}…
+STR_1003    :Impossible de tester {STRINGID}…
+STR_1004    :Impossible de fermer {STRINGID}…
+STR_1005    :Impossible de commencer la construction sur {STRINGID}…
 STR_1006    :Doit être fermé d’abord
 STR_1007    :Impossible de créer suffisamment de véhicules
 STR_1008    :Ouvrir, fermer ou tester une attraction
@@ -3311,7 +3313,6 @@ STR_6154    :Pour des raisons de sécurité, il n’est pas recommandé de déma
 STR_6155    :Ni KDialog ni Zenity ne sont installés. Veuillez installer l’un des deux, ou configurez depuis la ligne de commande.
 STR_6156    :Le nom est réservé
 STR_6157    :Console
-STR_6158    :Erreur lors de l’ouverture de ce fichier…{NEWLINE}Version incompatible de RCTC : {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Véhicules disponibles : {BLACK}{STRING}
 STR_6161    :Afficher/masquer les lignes de quadrillage
 STR_6162    :Souris folle tournante
@@ -3440,7 +3441,7 @@ STR_6322    :{WINDOW_COLOUR_2}Identifiant image-objet : {BLACK}{INT32}
 STR_6323    :Simulation
 STR_6324    :Simuler
 STR_6325    :Simule l’attraction
-STR_6326    :Impossible de simuler {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Impossible de simuler {STRINGID}…
 STR_6327    :Fond transparent pour les captures d’écran géantes
 STR_6328    :Quand cette option est activée, les captures d’écran auront un fond transparent plutôt qu’un fond noir
 STR_6329    :{STRING}{STRINGID}
@@ -3626,6 +3627,12 @@ STR_6510    :Zero-G roll (gauche)
 STR_6511    :Zero-G roll (droite)
 STR_6512    :Grand zero-G roll (gauche)
 STR_6513    :Grand zero-G roll (droite)
+STR_6514    :Hauteur invalide !
+STR_6515    :{BLACK}RCT1 pas lié — des images de secours seront utilisées.
+STR_6516    :Un ou plusieurs des objets ajoutés nécessitent que RCT1 soit lié pour être affichés correctement. Des images de secours seront utilisées.
+STR_6517    :Un ou plusieurs objets de ce parc nécessitent que RCT1 soit lié pour être affichés correctement. Des images de secours seront utilisées.
+STR_6518    :{BLACK}Survolez un scénario pour afficher sa description et son objectif. Cliquez pour commencer à jouer.
+STR_6519    :Extras
 
 #############
 # Scenarios #
@@ -4377,22 +4384,7 @@ STR_DTLS    :Ajoutez davantage d’attractions et attirez plus de visiteurs avec
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :Toit
-
-[TTPIRF03]
-STR_NAME    :Toit
-
-[TTPIRF04]
-STR_NAME    :Toit
-
 [TTPIRF05]
-STR_NAME    :Toit
-
-[TTPIRF07]
-STR_NAME    :Toit
-
-[TTPIRF08]
 STR_NAME    :Toit
 
 [TTRFWD01]

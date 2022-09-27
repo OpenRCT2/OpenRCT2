@@ -387,10 +387,10 @@ STR_0998    :Não há mais estações permitidas nesta atração
 STR_0999    :Requer uma plataforma de estação
 STR_1000    :A pista não é um circuito completo
 STR_1001    :Pista inadequada para este tipo de trem
-STR_1002    :Impossível Abrir {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Impossível Testar {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Impossível Fechar {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Impossível começar a construção no {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Impossível Abrir {STRINGID}…
+STR_1003    :Impossível Testar {STRINGID}…
+STR_1004    :Impossível Fechar {STRINGID}…
+STR_1005    :Impossível começar a construção no {STRINGID}…
 STR_1006    :Deve ser fechado primeiro
 STR_1007    :Impossível criar veículos suficientes
 STR_1008    :Abrir, fechar ou testar atração
@@ -3302,7 +3302,6 @@ STR_6154    :Por motivos de segurança, não é recomendado rodar o OpenRCT2 com
 STR_6155    :Nem KDialog ou Zenity estão instalados. Por favor, instale um, ou configure pela linha de comando.
 STR_6156    :Nome está reservado
 STR_6157    :Console
-STR_6158    :Falha ao carregar este arquivo…{NEWLINE}Versão do RCTC incompatível: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Veículos disponíveis: {BLACK}{STRING}
 STR_6161    :Alternar exibição de grade
 STR_6162    :Rato Maluco Giratório
@@ -3431,7 +3430,7 @@ STR_6322    :{WINDOW_COLOUR_2}Id da Sprite: {BLACK}{INT32}
 STR_6323    :Simulando
 STR_6324    :Simular
 STR_6325    :Simular brinquedo/atração
-STR_6326    :Não é possível simular {POP16}{POP16}{POP16}{STRINGID}..
+STR_6326    :Não é possível simular {STRINGID}..
 STR_6327    :Fundo transparente para capturas de tela gigantes
 STR_6328    :Com essa opção habilitada, capturas de tela gigantes terão fundo transparente em vez da cor preta padrão.
 STR_6329    :{STRING}{STRINGID}
@@ -4066,22 +4065,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[TTPIRF02]
-STR_NAME    :Telhado
-
-[TTPIRF03]
-STR_NAME    :Telhado
-
-[TTPIRF04]
-STR_NAME    :Telhado
-
 [TTPIRF05]
-STR_NAME    :Telhado
-
-[TTPIRF07]
-STR_NAME    :Telhado
-
-[TTPIRF08]
 STR_NAME    :Telhado
 
 [TTRFWD01]

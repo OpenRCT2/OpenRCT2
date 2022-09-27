@@ -59,7 +59,7 @@ public:
         colours[2] = COLOUR_LIGHT_BROWN;
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         auto* widget = &widgets[widgetIndex - 1];
 
@@ -112,7 +112,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -125,7 +125,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (dropdownIndex == -1)
             return;
@@ -150,7 +150,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (text.empty())
             return;
@@ -225,5 +225,5 @@ public:
 
 rct_window* CustomCurrencyWindowOpen()
 {
-    return WindowFocusOrCreate<CustomCurrencyWindow>(WC_CUSTOM_CURRENCY_CONFIG, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, WW, WH, WF_CENTRE_SCREEN);
 }

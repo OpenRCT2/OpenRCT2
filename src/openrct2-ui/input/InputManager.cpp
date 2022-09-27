@@ -197,7 +197,7 @@ void InputManager::Process(const InputEvent& e)
 
         if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
-            auto w = window_find_by_class(WC_TEXTINPUT);
+            auto w = window_find_by_class(WindowClass::Textinput);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -386,7 +386,7 @@ bool InputManager::HasTextInputFocus() const
     if (gUsingWidgetTextBox || gChatOpen)
         return true;
 
-    auto w = window_find_by_class(WC_TEXTINPUT);
+    auto w = window_find_by_class(WindowClass::Textinput);
     if (w != nullptr)
         return true;
 

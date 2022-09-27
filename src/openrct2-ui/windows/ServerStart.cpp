@@ -89,7 +89,7 @@ public:
         safe_strcpy(_description, gConfigNetwork.server_description.c_str(), sizeof(_description));
         safe_strcpy(_greeting, gConfigNetwork.server_greeting.c_str(), sizeof(_greeting));
     }
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -138,7 +138,7 @@ public:
                 break;
             case WIDX_LOAD_SERVER:
                 network_set_password(_password);
-                auto intent = Intent(WC_LOADSAVE);
+                auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
                 intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(LoadSaveCallback));
                 context_open_intent(&intent);
@@ -147,7 +147,7 @@ public:
     }
     void OnPrepareDraw() override
     {
-        ColourSchemeUpdateByClass(this, WC_SERVER_LIST);
+        ColourSchemeUpdateByClass(this, WindowClass::ServerList);
 
         WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
         auto ft = Formatter::Common();
@@ -165,7 +165,7 @@ public:
             widget_invalidate(*this, WIDX_PASSWORD_INPUT);
         }
     }
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (text.empty())
             return;
@@ -301,7 +301,7 @@ private:
 
 rct_window* WindowServerStartOpen()
 {
-    return WindowFocusOrCreate<ServerStartWindow>(WC_SERVER_START, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, WW, WH, WF_CENTRE_SCREEN);
 }
 
 #endif
