@@ -321,6 +321,18 @@ bool Peep::CheckForPath()
     return false;
 }
 
+bool Peep::PathIsBlockedByVehicle()
+{
+    auto curPos = TileCoordsXYZ(GetLocation());
+    auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
+    if ((curPos.x != dstPos.x || curPos.y != dstPos.y) && footpath_is_blocked_by_vehicle(dstPos))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 PeepActionSpriteType Peep::GetActionSpriteType()
 {
     if (IsActionInterruptable())

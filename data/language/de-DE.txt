@@ -3301,7 +3301,6 @@ STR_6154    :Aus Sicherheitsgründen wird nicht empfohlen, OpenRCT2 mit erweiter
 STR_6155    :Weder KDialog noch Zenity sind installiert. Bitte installieren Sie eins oder konfigurieren Sie es über die Kommandozeile.
 STR_6156    :Name ist reserviert
 STR_6157    :Konsole
-STR_6158    :Laden der Datei fehlgeschlagen…{NEWLINE}Inkompatible RCTC-Version: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Verfügbare Fahrzeuge: {BLACK}{STRING} 
 STR_6161    :Gitternetzlinien ein-/ausblenden
 STR_6162    :Rotierende Wilde Maus

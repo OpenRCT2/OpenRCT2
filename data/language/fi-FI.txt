@@ -3309,7 +3309,6 @@ STR_6154    :Turvasyistä ei ole suositeltavaa pelata OpenRCT2:a korotetuilla k�
 STR_6155    :Sekä KDialog että Zenity eivät ole asennettuina. Ole hyvä ja asenna yksi, tai määritä komentoriviltä.
 STR_6156    :Nimi on varattu
 STR_6157    :Konsoli
-STR_6158    :Tiedostoa ei voi ladata…{NEWLINE}Yhteensopimaton RCTC-versio: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Vaunutyypit saatavilla: {BLACK}{STRING}
 STR_6161    :Maastoruudukko -kytkin
 STR_6162    :Pyörivä villihiiri

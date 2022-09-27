@@ -3295,7 +3295,6 @@ STR_6154    :Güvenlik nedenleriyle, OpenRCT2’yi yükseltilmiş izinlerle çal
 STR_6155    :Ne KDialog nede Zenity kurulu. Ya ikisinden birisini kurunuz yada konsol üzeri komut ile ayarlayınız
 STR_6156    :Isim kullanılıyor
 STR_6157    :Konsol
-STR_6158    :Bu dosya yüklenemedi…{NEWLINE}RCTC versiyonu uyumsuz: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Mevcut araçlar/tasarımlar: {BLACK}{STRING}
 STR_6161    :Zemin çizgisi
 STR_6162    :Rotasyonlu Vahşi Fare

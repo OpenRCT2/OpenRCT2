@@ -3315,7 +3315,6 @@ STR_6154    :Av sikkerhetshensyn er det er ikke anbefalt å kjøre OpenRCT2 med 
 STR_6155    :Hverken KDialog eller Zenity er installert. Installer en av dem, eller konfigurer fra kommandolinjen.
 STR_6156    :Reservert navn
 STR_6157    :Kommandolinje
-STR_6158    :Kunne ikke laste inn fil…{NEWLINE}RCTC-versjon {COMMA16} er ikke kompatibel.
 STR_6160    :{WINDOW_COLOUR_2}Tilgjengelige kjøretøy: {BLACK}{STRING}
 STR_6161    :Vis/skjul rutemønster i landskap
 STR_6162    :Spinnende ville mus

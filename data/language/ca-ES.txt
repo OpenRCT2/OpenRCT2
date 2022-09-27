@@ -3309,7 +3309,6 @@ STR_6154    :Per motius de seguretat, no es recomana executar l’OpenRCT2 amb p
 STR_6155    :Ni el KDialog ni el Zenity estan instal·lats. Si us plau, instal·leu-ne un o configureu-los des de la línia d’ordres.
 STR_6156    :El nom està reservat.
 STR_6157    :Consola
-STR_6158    :Aquest fitxer no s’ha pogut carregar…{NEWLINE}Versió RCTC incompatible: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
 STR_6161    :Mostra les línies de la quadrícula
 STR_6162    :«Wild Mouse» giratori
