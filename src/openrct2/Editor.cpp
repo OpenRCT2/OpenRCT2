@@ -30,6 +30,7 @@
 #include "interface/Window_internal.h"
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
+#include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "object/DefaultObjects.h"
 #include "object/ObjectManager.h"
@@ -377,7 +378,7 @@ namespace Editor
 
             gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, 80);
+            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
         climate_reset(gClimate);
