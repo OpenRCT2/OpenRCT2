@@ -97,6 +97,7 @@ STR_0092    :LIM Launched Roller Coaster
 STR_0093    :Hybrid Coaster
 STR_0094    :Single Rail Roller Coaster
 STR_0095    :Alpine Coaster
+STR_0096    :Classic Wooden Roller Coaster
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
@@ -179,6 +180,7 @@ STR_0602    :Roller coaster trains are accelerated out of the station by linear 
 STR_0603    :A wooden style roller coaster with a steel track, allowing for steep drops and inversions
 STR_0604    :Riders ride single file on a narrow monorail track, as they race through tight inversions and direction changes
 STR_0605    :Riders toboggan down a meandering steel track, braking to control their speed
+STR_0606    :An older-style wooden roller coaster with a fast and rough ride, with plenty of air-time, some lateral G’s, and designed to feel ‘out-of-control’
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
@@ -340,7 +342,6 @@ STR_0950    :Load Game
 STR_0951    :Quit Game
 STR_0952    :Quit Game
 STR_0953    :Load Landscape
-STR_0954    :
 STR_0955    :Select seat rotation angle for this track section
 STR_0956    :-180°
 STR_0957    :-135°
@@ -388,10 +389,10 @@ STR_0998    :No more stations allowed on this ride
 STR_0999    :Requires a station platform
 STR_1000    :Track is not a complete circuit
 STR_1001    :Track unsuitable for type of train
-STR_1002    :Can’t open {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Can’t test {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Can’t close {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Can’t start construction on {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Can’t open {STRINGID}…
+STR_1003    :Can’t test {STRINGID}…
+STR_1004    :Can’t close {STRINGID}…
+STR_1005    :Can’t start construction on {STRINGID}…
 STR_1006    :Must be closed first
 STR_1007    :Unable to create enough vehicles
 STR_1008    :Open, close, or test ride/attraction
@@ -753,7 +754,7 @@ STR_1363    :Too high for supports!
 STR_1364    :Supports for track above can’t be extended any further!
 STR_1365    :In-line Twist (left)
 STR_1366    :In-line Twist (right)
-STR_1367    :Half Loop
+STR_1367    :Small Half Loop
 STR_1368    :Half Corkscrew (left)
 STR_1369    :Half Corkscrew (right)
 STR_1370    :Barrel Roll (left)
@@ -3303,7 +3304,6 @@ STR_6154    :For security reasons, it is not recommended to run OpenRCT2 with el
 STR_6155    :Neither KDialog nor Zenity are installed. Please install one, or configure from the command line.
 STR_6156    :Name is reserved
 STR_6157    :Console
-STR_6158    :Failed to load this file…{NEWLINE}Incompatible RCTC version: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Available vehicles: {BLACK}{STRING}
 STR_6161    :Gridlines display toggle
 STR_6162    :Spinning Wild Mouse
@@ -3432,7 +3432,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulating
 STR_6324    :Simulate
 STR_6325    :Simulate ride/attraction
-STR_6326    :Can’t simulate {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Can’t simulate {STRINGID}…
 STR_6327    :Transparent background for giant screenshots
 STR_6328    :With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
 STR_6329    :{STRING}{STRINGID}
@@ -3495,8 +3495,8 @@ STR_6386    :Blizzard
 STR_6387    :Can’t lower element here…
 STR_6388    :Can’t raise element here…
 STR_6389    :Invalid clearance
-STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.
-STR_6391    :Please select your RCT2 directory
+STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic in order to work. Please select the directory where you installed RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic.
+STR_6391    :Please select your RCT2 or RCTC directory
 STR_6392    :Could not find {STRING} at this path.
 STR_6393    :Objective Selection
 STR_6394    :Objective
@@ -3504,9 +3504,9 @@ STR_6395    :Maintenance
 STR_6396    :Disable screensaver and monitor power saving
 STR_6397    :If checked, screensaver and other monitor power saving features will be inhibited while OpenRCT2 is running.
 STR_6398    :File contains unsupported ride types. Please update to a newer version of OpenRCT2.
-STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please set the “game_path” variable in config.ini to the directory where you installed RollerCoaster Tycoon 2, then restart OpenRCT2.
+STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic in order to work. Please set the “game_path” variable in config.ini to the directory where you installed RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic, then restart OpenRCT2.
 STR_6400    :I have the GOG offline installer for RollerCoaster Tycoon 2 downloaded, but it is not installed
-STR_6401    :I have RollerCoaster Tycoon 2 installed already
+STR_6401    :I have RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic installed already
 STR_6402    :OpenRCT2 Data Setup
 STR_6403    :Select which applies best to you
 STR_6404    :Please select the GOG RollerCoaster Tycoon 2 installer.
@@ -3610,6 +3610,20 @@ STR_6502    :Enter value between {COMMA16} and {COMMA16}
 STR_6503    :At least one station object must be selected
 STR_6504    :At least one terrain surface must be selected
 STR_6505    :At least one terrain edge must be selected
+STR_6506    :Large Half Corkscrew (left)
+STR_6507    :Large Half Corkscrew (right)
+STR_6508    :Medium Half Loop (left)
+STR_6509    :Medium Half Loop (right)
+STR_6510    :Zero G Roll (left)
+STR_6511    :Zero G Roll (right)
+STR_6512    :Large Zero G Roll (left)
+STR_6513    :Large Zero G Roll (right)
+STR_6514    :Invalid height!
+STR_6515    :{BLACK}RCT1 not linked - fallback images will be used.
+STR_6516    :One or more objects added require RCT1 linked for proper display. Fallback images will be used.
+STR_6517    :One or more objects in this park require RCT1 linked for proper display. Fallback images will be used.
+STR_6518    :{BLACK}Hover over a scenario to view its description and objective. Click it to start playing.
+STR_6519    :Extras
 
 #############
 # Scenarios #
@@ -4059,22 +4073,7 @@ STR_DTLS    :
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :Roof
-
-[TTPIRF03]
-STR_NAME    :Roof
-
-[TTPIRF04]
-STR_NAME    :Roof
-
 [TTPIRF05]
-STR_NAME    :Roof
-
-[TTPIRF07]
-STR_NAME    :Roof
-
-[TTPIRF08]
 STR_NAME    :Roof
 
 [TTRFWD01]
@@ -4100,15 +4099,6 @@ STR_NAME    :Roof
 
 [TTRFWD08]
 STR_NAME    :Roof
-
-[TTRFGL01]
-STR_NAME    :Glass Roof
-
-[TTRFGL02]
-STR_NAME    :Glass Roof
-
-[TTRFGL03]
-STR_NAME    :Glass Roof
 
 [ACWW33]
 STR_NAME    :Wooden Post Wall

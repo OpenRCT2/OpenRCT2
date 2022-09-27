@@ -158,8 +158,9 @@ static void PaintSmallSceneryBody(
     else
     {
         uint8_t quadrant = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) & 3;
-        offset.x = SceneryQuadrantOffsets[quadrant].x;
-        offset.y = SceneryQuadrantOffsets[quadrant].y;
+        // -1 to maintain compatibility with existing CSOs in context of issue #17616
+        offset.x = SceneryQuadrantOffsets[quadrant].x - 1;
+        offset.y = SceneryQuadrantOffsets[quadrant].y - 1;
         boxOffset.x = offset.x;
         boxOffset.y = offset.y;
     }

@@ -58,12 +58,12 @@ static rct_widget window_install_track_widgets[] = {
 };
 
 static void WindowInstallTrackClose(rct_window *w);
-static void WindowInstallTrackMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowInstallTrackMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowInstallTrackInvalidate(rct_window *w);
 static void WindowInstallTrackPaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowInstallTrackTextInput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowInstallTrackTextInput(rct_window *w, WidgetIndex widgetIndex, char *text);
 
-static rct_window_event_list window_install_track_events([](auto& events)
+static WindowEventList window_install_track_events([](auto& events)
 {
     events.close = &WindowInstallTrackClose;
     events.mouse_up = &WindowInstallTrackMouseup;
@@ -106,7 +106,7 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
         return nullptr;
     }
 
-    window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+    window_close_by_class(WindowClass::EditorObjectSelection);
     window_close_construction_windows();
 
     gTrackDesignSceneryToggle = false;
@@ -117,7 +117,7 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
     int32_t x = screenWidth / 2 - 201;
     int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
-    rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
+    rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WindowClass::InstallTrack, 0);
     w->widgets = window_install_track_widgets;
     WindowInitScrollWidgets(*w);
     w->track_list.track_list_being_updated = false;
@@ -150,7 +150,7 @@ static void WindowInstallTrackClose(rct_window* w)
  *
  *  rct2: 0x006D407A
  */
-static void WindowInstallTrackMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowInstallTrackMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -412,7 +412,7 @@ static void WindowInstallTrackPaint(rct_window* w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006D40A7
  */
-static void WindowInstallTrackTextInput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowInstallTrackTextInput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     if (widgetIndex != WIDX_INSTALL || str_is_null_or_empty(text))
     {

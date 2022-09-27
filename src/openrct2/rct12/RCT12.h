@@ -844,6 +844,13 @@ struct RCT12ResearchItem
 };
 assert_struct_size(RCT12ResearchItem, 5);
 
+struct RCT12VehicleColour
+{
+    uint8_t body_colour;
+    uint8_t trim_colour;
+};
+assert_struct_size(RCT12VehicleColour, 2);
+
 #pragma pack(pop)
 
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);

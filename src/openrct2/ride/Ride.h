@@ -12,6 +12,7 @@
 #include "../Limits.h"
 #include "../actions/ResultWithMessage.h"
 #include "../common.h"
+#include "../core/BitSet.hpp"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
@@ -19,6 +20,7 @@
 #include "RideColour.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
+#include "Track.h"
 #include "VehicleColour.h"
 
 #include <array>
@@ -111,7 +113,7 @@ enum class RideStatus : uint8_t;
 struct Ride
 {
     RideId id = RideId::GetNull();
-    uint8_t type = RIDE_TYPE_NULL;
+    ride_type_t type = RIDE_TYPE_NULL;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
     ObjectEntryIndex subtype;
@@ -126,9 +128,9 @@ struct Ride
     EntityId vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
-    uint8_t num_vehicles;
+    uint8_t NumTrains;
     uint8_t num_cars_per_train;
-    uint8_t proposed_num_vehicles;
+    uint8_t ProposedNumTrains;
     uint8_t proposed_num_cars_per_train;
     uint8_t max_trains;
     uint8_t MinCarsPerTrain;
@@ -277,6 +279,10 @@ struct Ride
     uint8_t current_issues;
     uint32_t last_issue_time;
 
+    // TO-DO: those friend functions are temporary, find a way to not access the private fields
+    friend void UpdateSpiralSlide(Ride& ride);
+    friend void UpdateChairlift(Ride& ride);
+
 private:
     std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide> stations;
 
@@ -296,8 +302,6 @@ public:
 
 private:
     void Update();
-    void UpdateChairlift();
-    void UpdateSpiralSlide();
     void UpdateQueueLength(StationIndex stationIndex);
     ResultWithMessage CreateVehicles(const CoordsXYE& element, bool isApplying);
     void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
@@ -315,7 +319,7 @@ public:
     void SetToDefaultInspectionInterval();
     void SetRideEntry(ObjectEntryIndex entryIndex);
 
-    void SetNumVehicles(int32_t numVehicles);
+    void SetNumTrains(int32_t numTrains);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
     void UpdateMaxVehicles();
     void UpdateNumberOfCircuits();
@@ -394,6 +398,8 @@ public:
     bool HasRecolourableShopItems() const;
     bool HasStation() const;
 };
+void UpdateSpiralSlide(Ride& ride);
+void UpdateChairlift(Ride& ride);
 
 #pragma pack(push, 1)
 
@@ -592,6 +598,7 @@ enum
     RIDE_TYPE_HYBRID_COASTER,
     RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER,
     RIDE_TYPE_ALPINE_COASTER,
+    RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER,
 
     RIDE_TYPE_COUNT
 };
@@ -1002,7 +1009,6 @@ void ride_check_all_reachable();
 
 bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
 int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);
-void ride_construct_new(RideSelection listItem);
 void ride_construct(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
@@ -1019,10 +1025,8 @@ void ride_set_map_tooltip(TileElement* tileElement);
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
 TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex stationIndex);
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos);
-void ride_set_status(Ride* ride, RideStatus status);
-void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 int32_t ride_get_refund_price(const Ride* ride);
-int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
+int32_t ride_get_random_colour_preset_index(ride_type_t rideType);
 money32 ride_get_common_price(Ride* forRide);
 
 void ride_clear_for_construction(Ride* ride);
@@ -1061,7 +1065,8 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);
 
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void ride_update_vehicle_colours(Ride* ride);
-uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
+
+OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
 
 enum class RideSetSetting : uint8_t;
 money32 set_operating_setting(RideId rideId, RideSetSetting setting, uint8_t value);
@@ -1071,14 +1076,10 @@ void UpdateGhostTrackAndArrow();
 
 void ride_reset_all_names();
 
-void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type);
-
 uint32_t ride_customers_per_hour(const Ride* ride);
 uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
 
 Vehicle* ride_get_broken_vehicle(const Ride* ride);
-
-void window_ride_construction_do_entrance_exit_check();
 
 money16 ride_get_price(const Ride* ride);
 
@@ -1087,14 +1088,12 @@ bool ride_has_adjacent_station(Ride* ride);
 bool ride_has_station_shelter(Ride* ride);
 bool ride_has_ratings(const Ride* ride);
 
-uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry);
-int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed);
+ride_type_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry);
+int32_t get_booster_speed(ride_type_t rideType, int32_t rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
 
 int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
-
-void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);

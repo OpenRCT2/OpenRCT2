@@ -331,7 +331,7 @@ public:
     void OnExitRide(Ride* ride);
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
-    void StopPurchaseThought(uint8_t ride_type);
+    void StopPurchaseThought(ride_type_t rideType);
     void TryGetUpFromSitting();
     bool ShouldRideWhileRaining(const Ride& ride);
     void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
@@ -400,7 +400,9 @@ private:
     void UpdateRideLeaveVehicle();
     void UpdateRideApproachExit();
     void UpdateRideInExit();
+
     void UpdateRideApproachVehicleWaypoints();
+
     void UpdateRideApproachExitWaypoints();
     void UpdateRideApproachSpiralSlide();
     void UpdateRideOnSpiralSlide();
@@ -424,6 +426,9 @@ private:
     bool FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array);
     void GoToRideEntrance(Ride* ride);
 };
+
+void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
+void UpdateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
 
 static_assert(sizeof(Guest) <= 512);
 
@@ -467,8 +472,6 @@ extern uint8_t gGuestInitialThirst;
 
 extern uint32_t gNextGuestNumber;
 
-void guest_set_name(EntityId spriteIndex, const char* name);
-
 void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft);
 
 void increment_guests_in_park();
@@ -479,3 +482,6 @@ void decrement_guests_heading_for_park();
 void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
 void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
 void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
+
+CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
+CoordsXY GetGuestWaypointLocationEnterprise(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);

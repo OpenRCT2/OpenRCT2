@@ -903,9 +903,9 @@ namespace RCT1
                 dst->vehicles[i] = EntityId::GetNull();
             }
 
-            dst->num_vehicles = src->num_trains;
+            dst->NumTrains = src->NumTrains;
             dst->num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
-            dst->proposed_num_vehicles = src->num_trains;
+            dst->ProposedNumTrains = src->NumTrains;
             dst->max_trains = src->max_trains;
             dst->proposed_num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
             dst->special_track_elements = src->special_track_elements;
@@ -1221,41 +1221,41 @@ namespace RCT1
             // RCT1 had no third colour
             if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
             {
-                dst->colours.body_colour = RCT1::GetColour(src->colours.body_colour);
+                dst->colours.Body = RCT1::GetColour(src->colours.body_colour);
             }
             else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
             {
-                dst->colours.body_colour = RCT1::GetColour(src->colours.trim_colour);
+                dst->colours.Body = RCT1::GetColour(src->colours.trim_colour);
             }
             else
             {
-                dst->colours.body_colour = colourSchemeCopyDescriptor.colour1;
+                dst->colours.Body = colourSchemeCopyDescriptor.colour1;
             }
 
             if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
             {
-                dst->colours.trim_colour = RCT1::GetColour(src->colours.body_colour);
+                dst->colours.Trim = RCT1::GetColour(src->colours.body_colour);
             }
             else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
             {
-                dst->colours.trim_colour = RCT1::GetColour(src->colours.trim_colour);
+                dst->colours.Trim = RCT1::GetColour(src->colours.trim_colour);
             }
             else
             {
-                dst->colours.trim_colour = colourSchemeCopyDescriptor.colour2;
+                dst->colours.Trim = colourSchemeCopyDescriptor.colour2;
             }
 
             if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
             {
-                dst->colours_extended = RCT1::GetColour(src->colours.body_colour);
+                dst->colours.Tertiary = RCT1::GetColour(src->colours.body_colour);
             }
             else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
             {
-                dst->colours_extended = RCT1::GetColour(src->colours.trim_colour);
+                dst->colours.Tertiary = RCT1::GetColour(src->colours.trim_colour);
             }
             else
             {
-                dst->colours_extended = colourSchemeCopyDescriptor.colour3;
+                dst->colours.Tertiary = colourSchemeCopyDescriptor.colour3;
             }
         }
 

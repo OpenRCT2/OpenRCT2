@@ -89,7 +89,7 @@ void viewport_init_all()
     // ?
     input_reset_flags();
     input_set_state(InputState::Reset);
-    gPressedWidget.window_classification = 255;
+    gPressedWidget.window_classification = WindowClass::Null;
     gPickupPeepImage = ImageId();
     reset_tooltip_not_shown();
     gMapSelectFlags = 0;
@@ -535,8 +535,8 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
 // rct2: 0x006E7A15
 static void viewport_set_underground_flag(int32_t underground, rct_window* window, rct_viewport* viewport)
 {
-    if (window->classification != WC_MAIN_WINDOW
-        || (window->classification == WC_MAIN_WINDOW && !window->viewport_smart_follow_sprite.IsNull()))
+    if (window->classification != WindowClass::MainWindow
+        || (window->classification == WindowClass::MainWindow && !window->viewport_smart_follow_sprite.IsNull()))
     {
         if (!underground)
         {
@@ -1916,7 +1916,7 @@ void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenR
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         auto owner = windowManager->GetOwner(viewport);
-        if (owner != nullptr && owner->classification != WC_MAIN_WINDOW)
+        if (owner != nullptr && owner->classification != WindowClass::MainWindow)
         {
             // note, window_is_visible will update viewport->visibility, so this should have a low hit count
             if (!window_is_visible(*owner))
@@ -1940,7 +1940,7 @@ void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenR
         topLeft = { viewport->zoom.ApplyInversedTo(topLeft.x), viewport->zoom.ApplyInversedTo(topLeft.y) };
         topLeft += viewport->pos;
 
-        bottomRight = { std::max(bottomRight.x, viewportRight), std::max(bottomRight.y, viewportBottom) };
+        bottomRight = { std::min(bottomRight.x, viewportRight), std::min(bottomRight.y, viewportBottom) };
         bottomRight -= viewport->viewPos;
         bottomRight = { viewport->zoom.ApplyInversedTo(bottomRight.x), viewport->zoom.ApplyInversedTo(bottomRight.y) };
         bottomRight += viewport->pos;

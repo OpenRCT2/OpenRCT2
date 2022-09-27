@@ -121,16 +121,16 @@ static rct_widget *window_editor_objective_options_widgets[] = {
 
 #pragma region Events
 
-static void WindowEditorObjectiveOptionsMainMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorObjectiveOptionsMainMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowEditorObjectiveOptionsMainResize(rct_window *w);
-static void WindowEditorObjectiveOptionsMainMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void WindowEditorObjectiveOptionsMainDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowEditorObjectiveOptionsMainMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowEditorObjectiveOptionsMainDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowEditorObjectiveOptionsMainUpdate(rct_window *w);
-static void WindowEditorObjectiveOptionsMainTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowEditorObjectiveOptionsMainTextinput(rct_window *w, WidgetIndex widgetIndex, char *text);
 static void WindowEditorObjectiveOptionsMainInvalidate(rct_window *w);
 static void WindowEditorObjectiveOptionsMainPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void WindowEditorObjectiveOptionsRidesMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorObjectiveOptionsRidesMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowEditorObjectiveOptionsRidesResize(rct_window *w);
 static void WindowEditorObjectiveOptionsRidesUpdate(rct_window *w);
 static void WindowEditorObjectiveOptionsRidesScrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
@@ -141,7 +141,7 @@ static void WindowEditorObjectiveOptionsRidesPaint(rct_window *w, rct_drawpixeli
 static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 // 0x009A9DF4
-static rct_window_event_list window_objective_options_main_events([](auto& events)
+static WindowEventList window_objective_options_main_events([](auto& events)
 {
     events.mouse_up = &WindowEditorObjectiveOptionsMainMouseup;
     events.resize = &WindowEditorObjectiveOptionsMainResize;
@@ -154,7 +154,7 @@ static rct_window_event_list window_objective_options_main_events([](auto& event
 });
 
 // 0x009A9F58
-static rct_window_event_list window_objective_options_rides_events([](auto& events)
+static WindowEventList window_objective_options_rides_events([](auto& events)
 {
     events.mouse_up = &WindowEditorObjectiveOptionsRidesMouseup;
     events.resize = &WindowEditorObjectiveOptionsRidesResize;
@@ -167,7 +167,7 @@ static rct_window_event_list window_objective_options_rides_events([](auto& even
     events.scroll_paint = &WindowEditorObjectiveOptionsRidesScrollpaint;
 });
 
-static rct_window_event_list *window_editor_objective_options_page_events[] = {
+static WindowEventList *window_editor_objective_options_page_events[] = {
     &window_objective_options_main_events,
     &window_objective_options_rides_events,
 };
@@ -198,11 +198,11 @@ rct_window* WindowEditorObjectiveOptionsOpen()
 {
     rct_window* w;
 
-    w = window_bring_to_front_by_class(WC_EDITOR_OBJECTIVE_OPTIONS);
+    w = window_bring_to_front_by_class(WindowClass::EditorObjectiveOptions);
     if (w != nullptr)
         return w;
 
-    w = WindowCreateCentred(450, 228, &window_objective_options_main_events, WC_EDITOR_OBJECTIVE_OPTIONS, WF_10);
+    w = WindowCreateCentred(450, 228, &window_objective_options_main_events, WindowClass::EditorObjectiveOptions, WF_10);
     w->widgets = window_editor_objective_options_main_widgets;
     w->pressed_widgets = 0;
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
@@ -335,7 +335,7 @@ static void WindowEditorObjectiveOptionsSetObjective(rct_window* w, int32_t obje
  *
  *  rct2: 0x006719CA
  */
-static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -591,7 +591,7 @@ static void WindowEditorObjectiveOptionsArg2Decrease(rct_window* w)
  *
  *  rct2: 0x00671A0D
  */
-static void WindowEditorObjectiveOptionsMainMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowEditorObjectiveOptionsMainMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -620,7 +620,7 @@ static void WindowEditorObjectiveOptionsMainMousedown(rct_window* w, rct_widgeti
  *
  *  rct2: 0x00671A54
  */
-static void WindowEditorObjectiveOptionsMainDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowEditorObjectiveOptionsMainDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     uint8_t newObjectiveType;
 
@@ -677,7 +677,7 @@ static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
  *
  *  rct2: 0x00671A73
  */
-static void WindowEditorObjectiveOptionsMainTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowEditorObjectiveOptionsMainTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
     if (text == nullptr)
         return;
@@ -913,7 +913,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
  *
  *  rct2: 0x006724A4
  */
-static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {

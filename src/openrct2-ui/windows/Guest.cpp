@@ -17,6 +17,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/GuestSetFlagsAction.h>
+#include <openrct2/actions/GuestSetNameAction.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/Guest.h>
@@ -199,7 +200,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widx) override
+    void OnMouseUp(WidgetIndex widx) override
     {
         switch (widx)
         {
@@ -224,14 +225,14 @@ public:
                 break;
         }
     }
-    void OnMouseDown(rct_widgetindex widx) override
+    void OnMouseDown(WidgetIndex widx) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnMouseDownOverview(widx);
         }
     }
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
@@ -282,28 +283,28 @@ public:
                 break;
         }
     }
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnToolUpdateOverview(widgetIndex, screenCoords);
         }
     }
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnToolDownOverview(widgetIndex, screenCoords);
         }
     }
-    void OnToolAbort(rct_widgetindex widgetIndex) override
+    void OnToolAbort(WidgetIndex widgetIndex) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnToolAbortOverview(widgetIndex);
         }
     }
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
@@ -605,7 +606,7 @@ private:
         OnViewportRotate();
     }
 
-    void OnMouseUpOverview(rct_widgetindex widgetIndex)
+    void OnMouseUpOverview(WidgetIndex widgetIndex)
     {
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -629,7 +630,7 @@ private:
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
+                    rct_window* wind = window_find_by_number(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
                         tool_set(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
@@ -656,7 +657,7 @@ private:
         }
     }
 
-    void OnMouseDownOverview(rct_widgetindex widgetIndex)
+    void OnMouseDownOverview(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -666,7 +667,7 @@ private:
         }
     }
 
-    void OnDropdownOverview(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OnDropdownOverview(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -895,7 +896,7 @@ private:
         }
     }
 
-    void OnTextInputOverview(rct_widgetindex widgetIndex, std::string_view text)
+    void OnTextInputOverview(WidgetIndex widgetIndex, std::string_view text)
     {
         if (widgetIndex != WIDX_RENAME)
             return;
@@ -903,10 +904,11 @@ private:
         if (text.empty())
             return;
         std::string sText(text);
-        guest_set_name(EntityId::FromUnderlying(number), sText.c_str());
+        auto gameAction = GuestSetNameAction(EntityId::FromUnderlying(number), sText);
+        GameActions::Execute(&gameAction);
     }
 
-    void OnToolUpdateOverview(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void OnToolUpdateOverview(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -950,7 +952,7 @@ private:
         gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
     }
 
-    void OnToolDownOverview(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void OnToolDownOverview(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -974,7 +976,7 @@ private:
         GameActions::Execute(&pickupAction);
     }
 
-    void OnToolAbortOverview(rct_widgetindex widgetIndex)
+    void OnToolAbortOverview(WidgetIndex widgetIndex)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -1291,7 +1293,7 @@ private:
         if (index >= no_list_items)
             return;
 
-        auto intent = Intent(WC_RIDE);
+        auto intent = Intent(WindowClass::Ride);
         intent.putExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
         context_open_intent(&intent);
     }
@@ -1922,14 +1924,15 @@ rct_window* WindowGuestOpen(Peep* peep)
         return WindowStaffOpen(peep);
     }
 
-    auto* window = static_cast<GuestWindow*>(window_bring_to_front_by_number(WC_PEEP, peep->sprite_index.ToUnderlying()));
+    auto* window = static_cast<GuestWindow*>(
+        window_bring_to_front_by_number(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
     if (window == nullptr)
     {
         int32_t windowWidth = 192;
         if (gConfigGeneral.debugging_tools)
             windowWidth += TabWidth;
 
-        window = WindowCreate<GuestWindow>(WC_PEEP, windowWidth, 157, WF_RESIZABLE);
+        window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
         if (window == nullptr)
         {
             return nullptr;

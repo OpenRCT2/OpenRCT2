@@ -153,22 +153,22 @@ GameActions::Result RideCreateAction::Execute() const
     ride->lifecycle_flags = 0;
     ride->vehicle_change_timeout = 0;
     ride->num_stations = 0;
-    ride->num_vehicles = 1;
+    ride->NumTrains = 1;
     if (gCheatsDisableTrainLengthLimit)
     {
         // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
         if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
         {
-            ride->proposed_num_vehicles = 12;
+            ride->ProposedNumTrains = 12;
         }
         else
         {
-            ride->proposed_num_vehicles = rideEntry->cars_per_flat_ride;
+            ride->ProposedNumTrains = rideEntry->cars_per_flat_ride;
         }
     }
     else
     {
-        ride->proposed_num_vehicles = 32;
+        ride->ProposedNumTrains = 32;
     }
     ride->max_trains = OpenRCT2::Limits::MaxTrainsPerRide;
     ride->num_cars_per_train = 1;
@@ -235,7 +235,7 @@ GameActions::Result RideCreateAction::Execute() const
             ride->price[0] = 0;
         }
 
-        if (ride->type == RIDE_TYPE_TOILETS)
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
         {
             if (shop_item_has_common_price(ShopItem::Admission))
             {
@@ -263,7 +263,7 @@ GameActions::Result RideCreateAction::Execute() const
         }
 
         // Set the on-ride photo price, whether the ride has one or not (except shops).
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) && shop_item_has_common_price(ShopItem::Photo))
         {
             money32 price = shop_item_get_common_price(ride, ShopItem::Photo);
             if (price != MONEY32_UNDEFINED)
@@ -319,7 +319,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->MinCarsPerTrain = rideEntry->min_cars_in_train;
     ride->MaxCarsPerTrain = rideEntry->max_cars_in_train;
     ride_set_vehicle_colours_to_random_preset(ride, _colour2);
-    window_invalidate_by_class(WC_RIDE_LIST);
+    window_invalidate_by_class(WindowClass::RideList);
 
     res.Expenditure = ExpenditureType::RideConstruction;
     res.SetData(RideId{ rideIndex });

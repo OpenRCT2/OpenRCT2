@@ -79,7 +79,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 28;
+    static constexpr uint16_t VERSION = 29;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -97,7 +97,7 @@ public:
     }
 
 public:
-    std::tuple<bool, ObjectRepositoryItem> Create([[maybe_unused]] int32_t language, const std::string& path) const override
+    std::optional<ObjectRepositoryItem> Create([[maybe_unused]] int32_t language, const std::string& path) const override
     {
         std::unique_ptr<Object> object;
         auto extension = Path::GetExtension(path);
@@ -113,6 +113,7 @@ public:
         {
             object = ObjectFactory::CreateObjectFromLegacyFile(_objectRepository, path.c_str(), false);
         }
+
         if (object != nullptr)
         {
             ObjectRepositoryItem item = {};
@@ -125,13 +126,13 @@ public:
             item.Authors = object->GetAuthors();
             item.Sources = object->GetSourceGames();
             object->SetRepositoryItem(&item);
-            return std::make_tuple(true, item);
+            return item;
         }
-        return std::make_tuple(false, ObjectRepositoryItem());
+        return std::nullopt;
     }
 
 protected:
-    void Serialise(DataSerialiser& ds, ObjectRepositoryItem& item) const override
+    void Serialise(DataSerialiser& ds, const ObjectRepositoryItem& item) const override
     {
         ds << item.Type;
         ds << item.Generation;
@@ -443,11 +444,9 @@ private:
     void ScanObject(const std::string& path)
     {
         auto language = LocalisationService_GetCurrentLanguage();
-        auto result = _fileIndex.Create(language, path);
-        if (std::get<0>(result))
+        if (auto result = _fileIndex.Create(language, path); result.has_value())
         {
-            auto ori = std::get<1>(result);
-            AddItem(ori);
+            AddItem(result.value());
         }
     }
 
@@ -653,18 +652,6 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
         default:
             return true;
     }
-}
-
-const rct_object_entry* object_list_find(rct_object_entry* entry)
-{
-    const rct_object_entry* result = nullptr;
-    auto& objRepo = GetContext()->GetObjectRepository();
-    auto item = objRepo.FindObject(entry);
-    if (item != nullptr)
-    {
-        result = &item->ObjectEntry;
-    }
-    return result;
 }
 
 std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry)

@@ -148,7 +148,7 @@ static void water_rc_track_station(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_station(session, ride, trackSequence, direction, height, trackElement, RIDE_TYPE_WATER_COASTER);
+    junior_rc_paint_station(session, ride, trackSequence, direction, height, trackElement, false);
 }
 
 static void water_rc_track_60_deg_up(

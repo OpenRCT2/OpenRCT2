@@ -35,7 +35,7 @@ struct TrackRepositoryItem
 {
     std::string Name;
     std::string Path;
-    uint8_t RideType = RIDE_TYPE_NULL;
+    ride_type_t RideType = RIDE_TYPE_NULL;
     std::string ObjectEntry;
     uint32_t Flags = 0;
 };
@@ -57,7 +57,7 @@ class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444954; // TIDX
-    static constexpr uint16_t VERSION = 4;
+    static constexpr uint16_t VERSION = 5;
     static constexpr auto PATTERN = "*.td4;*.td6";
 
 public:
@@ -73,7 +73,7 @@ public:
     }
 
 public:
-    std::tuple<bool, TrackRepositoryItem> Create(int32_t, const std::string& path) const override
+    std::optional<TrackRepositoryItem> Create(int32_t, const std::string& path) const override
     {
         auto td6 = TrackDesignImport(path.c_str());
         if (td6 != nullptr)
@@ -88,14 +88,14 @@ public:
             {
                 item.Flags |= TRIF_READ_ONLY;
             }
-            return std::make_tuple(true, item);
+            return item;
         }
 
-        return std::make_tuple(true, TrackRepositoryItem());
+        return std::nullopt;
     }
 
 protected:
-    void Serialise(DataSerialiser& ds, TrackRepositoryItem& item) const override
+    void Serialise(DataSerialiser& ds, const TrackRepositoryItem& item) const override
     {
         ds << item.Name;
         ds << item.Path;
@@ -136,7 +136,7 @@ public:
      * @param entry The entry name to count the track list of. Leave empty to count track list for the non-separated types (e.g.
      * Hyper-Twister, Car Ride)
      */
-    size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const override
+    size_t GetCountForObjectEntry(ride_type_t rideType, const std::string& entry) const override
     {
         size_t count = 0;
         const auto& repo = GetContext()->GetObjectRepository();
@@ -170,7 +170,7 @@ public:
      * @param entry The entry name to build a track list for. Leave empty to build track list for the non-separated types (e.g.
      * Hyper-Twister, Car Ride)
      */
-    std::vector<TrackDesignFileRef> GetItemsForObjectEntry(uint8_t rideType, const std::string& entry) const override
+    std::vector<TrackDesignFileRef> GetItemsForObjectEntry(ride_type_t rideType, const std::string& entry) const override
     {
         std::vector<TrackDesignFileRef> refs;
         const auto& repo = GetContext()->GetObjectRepository();
@@ -266,10 +266,9 @@ public:
         if (File::Copy(path, newPath, false))
         {
             auto language = LocalisationService_GetCurrentLanguage();
-            auto td = _fileIndex.Create(language, newPath);
-            if (std::get<0>(td))
+            if (auto td = _fileIndex.Create(language, newPath); td.has_value())
             {
-                _items.push_back(std::move(std::get<1>(td)));
+                _items.push_back(std::move(td.value()));
                 SortItems();
                 result = path;
             }

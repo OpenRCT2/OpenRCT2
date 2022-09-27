@@ -11,7 +11,6 @@
 
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
-#include "../ride/VehicleColour.h"
 #include "Limits.h"
 
 namespace RCT1
@@ -156,9 +155,9 @@ namespace RCT1
         uint16_t vehicles[Limits::MaxTrainsPerRide];             // 0x05E
         uint8_t depart_flags;                                    // 0x076
         uint8_t num_stations;                                    // 0x077
-        uint8_t num_trains;                                      // 0x078
+        uint8_t NumTrains;                                       // 0x078
         uint8_t num_cars_per_train;                              // 0x079
-        uint8_t proposed_num_vehicles;                           // 0x07A
+        uint8_t ProposedNumTrains;                               // 0x07A
         uint8_t proposed_num_cars_per_train;                     // 0x07B
         uint8_t max_trains;                                      // 0x07C
         uint8_t min_max_cars_per_train;                          // 0x07D
@@ -307,7 +306,7 @@ namespace RCT1
         int32_t acceleration;       // 0x2C
         uint8_t ride;               // 0x30
         uint8_t CarType;            // 0x31
-        rct_vehicle_colour colours; // 0x32
+        RCT12VehicleColour colours; // 0x32
         union
         {
             uint16_t track_progress; // 0x34
@@ -797,7 +796,7 @@ namespace RCT1
         uint32_t flags;                                               // 0x02
         uint8_t mode;                                                 // 0x06
         uint8_t version_and_colour_scheme;                            // 0x07 0b0000_VVCC
-        rct_vehicle_colour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x08
+        RCT12VehicleColour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x08
         uint8_t track_spine_colour_v0;                                // 0x20
         uint8_t track_rail_colour_v0;                                 // 0x21
         uint8_t track_support_colour_v0;                              // 0x22
@@ -1196,6 +1195,9 @@ namespace RCT1
         MINIATURE_RAILWAY_TENDER = 15,
         MINIATURE_RAILWAY_LOCOMOTIVE = 16,
         MINIATURE_RAILWAY_CARRIAGE = 17,
+        WOODEN_RC_TRAIN_BACKWARDS = 20,
+        STEEL_RC_REVERSED_FRONT = 23,
+        STEEL_RC_REVERSED_CARRIAGE = 24,
         MINE_TRAIN_FRONT = 35,
         MINE_TRAIN_CARRIAGE = 36,
         CORKSCREW_RC_FRONT = 38,
@@ -1275,7 +1277,7 @@ namespace RCT1
         RCT1_PATH_SUPPORT_TYPE_BAMBOO,
     };
 
-    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType);
+    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType);
 } // namespace RCT1
 
 void load_from_sv4(const char* path);

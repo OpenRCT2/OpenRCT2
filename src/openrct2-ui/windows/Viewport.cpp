@@ -60,7 +60,7 @@ private:
     {
         number = 1;
         window_visit_each([&](rct_window* w) {
-            if (w != nullptr && w != this && w->classification == WC_VIEWPORT)
+            if (w != nullptr && w != this && w->classification == WindowClass::Viewport)
             {
                 if (w->number >= number)
                     number = w->number + 1;
@@ -117,7 +117,7 @@ public:
         // widget_invalidate(*this, WIDX_VIEWPORT);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -221,7 +221,7 @@ rct_window* WindowViewportOpen()
     int32_t width = (screenWidth / 2);
     int32_t height = (screenHeight / 2);
 
-    auto* w = WindowCreate<ViewportWindow>(WC_VIEWPORT, std::max(WW, width), std::max(WH, height), WF_RESIZABLE);
+    auto* w = WindowCreate<ViewportWindow>(WindowClass::Viewport, std::max(WW, width), std::max(WH, height), WF_RESIZABLE);
 
     if (w != nullptr)
         return w;

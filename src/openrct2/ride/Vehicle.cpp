@@ -664,7 +664,7 @@ const rct_vehicle_info* Vehicle::GetMoveInfo() const
     return vehicle_get_move_info(TrackSubposition, GetTrackType(), GetTrackDirection(), track_progress);
 }
 
-static uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction)
+uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction)
 {
     uint16_t typeAndDirection = (type << 2) | (direction & 3);
 
@@ -804,7 +804,7 @@ bool Vehicle::SoundCanPlay() const
     auto left = g_music_tracking_viewport->viewPos.x;
     auto bottom = g_music_tracking_viewport->viewPos.y;
 
-    if (window_get_classification(*gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    if (window_get_classification(*gWindowAudioExclusive) == WindowClass::MainWindow)
     {
         left -= quarter_w;
         bottom -= quarter_h;
@@ -816,7 +816,7 @@ bool Vehicle::SoundCanPlay() const
     auto right = g_music_tracking_viewport->view_width + left;
     auto top = g_music_tracking_viewport->view_height + bottom;
 
-    if (window_get_classification(*gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    if (window_get_classification(*gWindowAudioExclusive) == WindowClass::MainWindow)
     {
         right += quarter_w + quarter_w;
         top += quarter_h + quarter_h;
@@ -1416,6 +1416,36 @@ bool Vehicle::OpenRestraints()
     return restraintsOpen;
 }
 
+void RideUpdateMeasurementsSpecialElements_Default(Ride* ride, const track_type_t trackType)
+{
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    uint16_t trackFlags = ted.Flags;
+    if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
+    {
+        if (ride->inversions < OpenRCT2::Limits::MaxInversions)
+            ride->inversions++;
+    }
+}
+
+void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride* ride, const track_type_t trackType)
+{
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    uint16_t trackFlags = ted.Flags;
+    if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
+    {
+        if (ride->holes < OpenRCT2::Limits::MaxGolfHoles)
+            ride->holes++;
+    }
+}
+
+void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride* ride, const track_type_t trackType)
+{
+    if (trackType >= TrackElemType::FlatCovered && trackType <= TrackElemType::RightQuarterTurn3TilesCovered)
+    {
+        ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+    }
+}
+
 /**
  *
  *  rct2: 0x006D6D1F
@@ -1432,7 +1462,7 @@ void Vehicle::UpdateMeasurements()
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
         curRide->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
-        window_invalidate_by_number(WC_RIDE, ride.ToUnderlying());
+        window_invalidate_by_number(WindowClass::Ride, ride.ToUnderlying());
         return;
     }
 
@@ -1520,13 +1550,8 @@ void Vehicle::UpdateMeasurements()
             curRide->testing_flags &= ~RIDE_TESTING_POWERED_LIFT;
         }
 
-        if (curRide->type == RIDE_TYPE_WATER_COASTER)
-        {
-            if (trackElemType >= TrackElemType::FlatCovered && trackElemType <= TrackElemType::RightQuarterTurn3TilesCovered)
-            {
-                curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
-            }
-        }
+        const auto& rtd = curRide->GetRideTypeDescriptor();
+        rtd.UpdateMeasurementsSpecialElements(curRide, trackElemType);
 
         switch (trackElemType)
         {
@@ -1550,7 +1575,6 @@ void Vehicle::UpdateMeasurements()
 
         const auto& ted = GetTrackElementDescriptor(trackElemType);
         uint16_t trackFlags = ted.Flags;
-
         uint32_t testingFlags = curRide->testing_flags;
         if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
         {
@@ -1686,23 +1710,6 @@ void Vehicle::UpdateMeasurements()
             curRide->drops |= drops;
 
             curRide->start_drop_height = z / COORDS_Z_STEP;
-        }
-
-        if (curRide->type == RIDE_TYPE_MINI_GOLF)
-        {
-            if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
-            {
-                if (curRide->holes < OpenRCT2::Limits::MaxGolfHoles)
-                    curRide->holes++;
-            }
-        }
-        else
-        {
-            if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
-            {
-                if (curRide->inversions < OpenRCT2::Limits::MaxInversions)
-                    curRide->inversions++;
-            }
         }
 
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
@@ -2132,7 +2139,7 @@ static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, Ent
     while (ride->vehicles[trainIndex] != spriteIndex)
     {
         trainIndex++;
-        if (trainIndex >= ride->num_vehicles)
+        if (trainIndex >= ride->NumTrains)
         {
             // This should really return nullopt, but doing so
             // would break some hacked parks that hide track by setting tracked rides'
@@ -2656,7 +2663,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
     }
 
     // Look for a vehicle on this station waiting to depart.
-    for (int32_t i = 0; i < ride->num_vehicles; i++)
+    for (int32_t i = 0; i < ride->NumTrains; i++)
     {
         auto* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
         if (vehicle == nullptr)
@@ -2794,7 +2801,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                         auto curRide = get_ride(rideId);
                         if (curRide != nullptr)
                         {
-                            for (int32_t i = 0; i < curRide->num_vehicles; i++)
+                            for (int32_t i = 0; i < curRide->NumTrains; i++)
                             {
                                 Vehicle* v = GetEntity<Vehicle>(curRide->vehicles[i]);
                                 if (v == nullptr)
@@ -2832,7 +2839,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     int32_t numTrainsAtStation = 0;
                     int32_t numTravelingTrains = 0;
                     auto currentStation = sv->stationIndex;
-                    for (int32_t i = 0; i < sv_ride->num_vehicles; i++)
+                    for (int32_t i = 0; i < sv_ride->NumTrains; i++)
                     {
                         auto* otherVehicle = GetEntity<Vehicle>(sv_ride->vehicles[i]);
                         if (otherVehicle == nullptr)
@@ -2857,9 +2864,9 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     }
 
                     int32_t totalTrains = numTrainsAtStation + numTravelingTrains;
-                    if (totalTrains != sv_ride->num_vehicles || numTravelingTrains >= sv_ride->num_vehicles / 2)
+                    if (totalTrains != sv_ride->NumTrains || numTravelingTrains >= sv_ride->NumTrains / 2)
                     {
-                        // if (numArrivingTrains > 0 || numTravelingTrains >= sv_ride->num_vehicles / 2) {
+                        // if (numArrivingTrains > 0 || numTravelingTrains >= sv_ride->NumTrains / 2) {
                         /* Sync condition: If there are trains arriving at the
                          * station or half or more of the ride trains are
                          * travelling, this station must be sync-ed before the
@@ -2949,7 +2956,7 @@ static void test_finish(Ride& ride)
 
     totalTime = std::max(totalTime, 1u);
     ride.average_speed = ride.average_speed / totalTime;
-    window_invalidate_by_number(WC_RIDE, ride.id.ToUnderlying());
+    window_invalidate_by_number(WindowClass::Ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::UpdateTestFinish()
@@ -2999,7 +3006,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     }
     ride.total_air_time = 0;
     ride.current_test_station = curStation;
-    window_invalidate_by_number(WC_RIDE, ride.id.ToUnderlying());
+    window_invalidate_by_number(WindowClass::Ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::TestReset()
@@ -3157,7 +3164,7 @@ void Vehicle::UpdateDeparting()
     }
 
     CarEntry* carEntry = &rideEntry->Cars[vehicle_type];
-
+    const auto& rtd = curRide->GetRideTypeDescriptor();
     switch (curRide->mode)
     {
         case RideMode::ReverseInclineLaunchedShuttle:
@@ -3169,17 +3176,10 @@ void Vehicle::UpdateDeparting()
         case RideMode::PoweredLaunchBlockSectioned:
         case RideMode::LimPoweredLaunch:
         case RideMode::UpwardLaunch:
-            if (curRide->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER)
-            {
-                if ((curRide->launch_speed << 16) > velocity)
-                {
-                    acceleration = curRide->launch_speed << 13;
-                }
-                break;
-            }
-
             if ((curRide->launch_speed << 16) > velocity)
-                acceleration = curRide->launch_speed << 12;
+            {
+                acceleration = curRide->launch_speed << rtd.OperatingSettings.AccelerationFactor;
+            }
             break;
         case RideMode::DownwardLaunch:
             if (NumLaunches >= 1)
@@ -3411,7 +3411,7 @@ void Vehicle::CheckIfMissing()
         ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.vehicle).number);
 
         uint8_t vehicleIndex = 0;
-        for (; vehicleIndex < curRide->num_vehicles; ++vehicleIndex)
+        for (; vehicleIndex < curRide->NumTrains; ++vehicleIndex)
             if (curRide->vehicles[vehicleIndex] == sprite_index)
                 break;
 
@@ -4830,6 +4830,24 @@ void Vehicle::UpdateSimulatorOperating()
     var_C0 = 0;
 }
 
+void UpdateRotatingDefault(Vehicle& vehicle)
+{
+    vehicle.sub_state = 1;
+    vehicle.UpdateRotating();
+}
+
+void UpdateRotatingEnterprise(Vehicle& vehicle)
+{
+    if (vehicle.sub_state == 2)
+    {
+        vehicle.SetState(Vehicle::Status::Arriving);
+        vehicle.var_C0 = 0;
+        return;
+    }
+
+    UpdateRotatingDefault(vehicle);
+}
+
 /**
  *
  *  rct2: 0x006D92FF
@@ -4910,15 +4928,8 @@ void Vehicle::UpdateRotating()
         }
     }
 
-    if (curRide->type == RIDE_TYPE_ENTERPRISE && sub_state == 2)
-    {
-        SetState(Vehicle::Status::Arriving);
-        var_C0 = 0;
-        return;
-    }
-
-    sub_state = 1;
-    UpdateRotating();
+    const auto& rtd = GetRideTypeDescriptor(curRide->type);
+    rtd.UpdateRotating(*this);
 }
 
 /**
@@ -9239,29 +9250,25 @@ void Vehicle::UpdateCrossings() const
 
     xyElement = { backVehicle->TrackLocation,
                   map_get_track_element_at_of_type_seq(backVehicle->TrackLocation, backVehicle->GetTrackType(), 0) };
-    curZ = backVehicle->TrackLocation.z;
-
-    if (xyElement.element != nullptr)
+    if (xyElement.element == nullptr)
     {
-        uint8_t freeCount = travellingForwards ? 3 : 1;
+        return;
+    }
 
-        while (freeCount-- > 0)
+    uint8_t freeCount = travellingForwards ? 3 : 1;
+    while (freeCount-- > 0)
+    {
+        auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
+        if (pathElement != nullptr)
         {
-            if (travellingForwards)
-            {
-                if (track_block_get_previous(xyElement, &output))
-                {
-                    xyElement.x = output.begin_x;
-                    xyElement.y = output.begin_y;
-                    xyElement.element = output.begin_element;
-                }
-            }
+            pathElement->SetIsBlockedByVehicle(false);
+        }
 
-            auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
-            if (pathElement != nullptr)
-            {
-                pathElement->SetIsBlockedByVehicle(false);
-            }
+        if (travellingForwards && freeCount > 0 && track_block_get_previous(xyElement, &output))
+        {
+            xyElement.x = output.begin_x;
+            xyElement.y = output.begin_y;
+            xyElement.element = output.begin_element;
         }
     }
 }
@@ -9389,7 +9396,6 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << mini_golf_current_animation;
     stream << mini_golf_flags;
     stream << ride_subtype;
-    stream << colours_extended;
     stream << seat_rotation;
     stream << target_seat_rotation;
     stream << BoatLocation;

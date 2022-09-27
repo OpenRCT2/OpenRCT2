@@ -155,7 +155,7 @@ std::optional<uint8_t> MusicObject::GetOriginalStyleId() const
     return _originalStyleId;
 }
 
-bool MusicObject::SupportsRideType(uint8_t rideType)
+bool MusicObject::SupportsRideType(ride_type_t rideType)
 {
     if (_rideTypes.size() == 0)
     {
@@ -185,9 +185,8 @@ ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view 
 {
     if (path.find("$RCT2:DATA/") == 0)
     {
-        auto platformEnvironment = GetContext()->GetPlatformEnvironment();
-        auto dir = platformEnvironment->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-        auto path2 = Path::Combine(dir, std::string(path.substr(11)));
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto path2 = env->FindFile(DIRBASE::RCT2, DIRID::DATA, path.substr(11));
         return ObjectAsset(path2);
     }
 

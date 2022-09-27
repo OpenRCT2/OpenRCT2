@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "openrct2/actions/MazeSetTrackAction.h"
-
 #include <algorithm>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -19,7 +17,10 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/MazeSetTrackAction.h>
+#include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
+#include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/actions/TrackPlaceAction.h>
 #include <openrct2/actions/TrackRemoveAction.h>
 #include <openrct2/actions/TrackSetBrakeSpeedAction.h>
@@ -28,6 +29,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/object/ObjectManager.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
@@ -113,7 +115,7 @@ static rct_widget window_ride_construction_widgets[] = {
     MakeWidget        ({116,  29}, { 22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_RIGHT_CURVE,       STR_RIDE_CONSTRUCTION_RIGHT_CURVE_TIP               ),
     MakeWidget        ({138,  29}, { 22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL, STR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL_TIP         ),
     MakeWidget        ({138,  29}, { 22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL, STR_RIDE_CONSTRUCTION_RIGHT_CURVE_VERY_SMALL_TIP    ),
-    MakeWidget        ({ 17,  55}, {132,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_YELLOW_STRING,                       STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
+    MakeWidget        ({  6,  55}, {154,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_YELLOW_STRING,                       STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
     MakeWidget        ({ 23,  88}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP,  STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP          ),
     MakeWidget        ({ 47,  88}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,        STR_RIDE_CONSTRUCTION_SLOPE_DOWN_TIP                ),
     MakeWidget        ({ 71,  88}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL,       STR_RIDE_CONSTRUCTION_LEVEL_TIP                     ),
@@ -153,6 +155,7 @@ static int32_t _trackPlaceZ;
 static money32 _trackPlaceCost;
 static StringId _trackPlaceErrorMessage;
 static bool _autoRotatingShop;
+static bool _gotoStartPlacementMode = false;
 
 static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
@@ -165,6 +168,8 @@ static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_450,     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_495,
 };
 
+static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type);
+
 static int32_t RideGetAlternativeType(Ride* ride)
 {
     return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? ride->GetRideTypeDescriptor().AlternateType
@@ -174,7 +179,7 @@ static int32_t RideGetAlternativeType(Ride* ride)
 /* move to ride.c */
 static void CloseRideWindowForConstruction(RideId rideId)
 {
-    rct_window* w = window_find_by_number(WC_RIDE, rideId.ToUnderlying());
+    rct_window* w = window_find_by_number(WindowClass::Ride, rideId.ToUnderlying());
     if (w != nullptr && w->page == 1)
         window_close(*w);
 }
@@ -187,8 +192,8 @@ class RideConstructionWindow final : public Window
 {
 private:
     uint8_t _currentlyShowingBrakeOrBoosterSpeed{};
-    uint32_t _currentDisabledSpecialTrackPieces{};
-    track_type_t _currentPossibleRideConfigurations[32]{};
+    uint64_t _currentDisabledSpecialTrackPieces{};
+    track_type_t _currentPossibleRideConfigurations[64]{};
     uint16_t _numCurrentPossibleRideConfigurations{};
     uint16_t _numCurrentPossibleSpecialTrackPieces{};
     bool _autoOpeningShop{};
@@ -274,13 +279,14 @@ public:
                 if (!_autoOpeningShop)
                 {
                     _autoOpeningShop = true;
-                    ride_set_status(currentRide, RideStatus::Open);
+                    auto gameAction = RideSetStatusAction(currentRide->id, RideStatus::Open);
+                    GameActions::Execute(&gameAction);
                     _autoOpeningShop = false;
                 }
             }
 
             currentRide->SetToDefaultInspectionInterval();
-            auto intent = Intent(WC_RIDE);
+            auto intent = Intent(WindowClass::Ride);
             intent.putExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
             context_open_intent(&intent);
         }
@@ -288,7 +294,8 @@ public:
         {
             int32_t previousPauseState = gGamePaused;
             gGamePaused = 0;
-            ride_action_modify(currentRide, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+            auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+            GameActions::Execute(&gameAction);
             gGamePaused = previousPauseState;
         }
     }
@@ -847,7 +854,7 @@ public:
         if (currentDisabledWidgets == disabledWidgets)
             return;
 
-        for (rct_widgetindex i = 0; i < 64; i++)
+        for (WidgetIndex i = 0; i < 64; i++)
         {
             if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
             {
@@ -907,7 +914,7 @@ public:
             case RideConstructionState::Back:
             case RideConstructionState::Selected:
                 if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-                    && gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION)
+                    && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
                 {
                     tool_cancel();
                 }
@@ -919,7 +926,7 @@ public:
         UpdateGhostTrackAndArrow();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         WindowRideConstructionUpdateEnabledTrackPieces();
         switch (widgetIndex)
@@ -956,14 +963,15 @@ public:
                 if (currentRide != nullptr)
                 {
                     auto status = currentRide->status == RideStatus::Simulating ? RideStatus::Closed : RideStatus::Simulating;
-                    ride_set_status(currentRide, status);
+                    auto gameAction = RideSetStatusAction(currentRide->id, status);
+                    GameActions::Execute(&gameAction);
                 }
                 break;
             }
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         auto currentRide = get_ride(_currentRideIndex);
         if (currentRide == nullptr)
@@ -1367,7 +1375,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         if (widgetIndex != WIDX_SPECIAL_TRACK_DROPDOWN)
             return;
@@ -1394,7 +1402,7 @@ public:
         window_ride_construction_update_active_elements();
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (widgetIndex)
         {
@@ -1408,7 +1416,7 @@ public:
         }
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         switch (widgetIndex)
         {
@@ -1433,10 +1441,10 @@ public:
         StringId stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
         if (_currentTrackCurve & RideConstructionSpecialPieceSelected)
         {
+            const auto& rtd = currentRide->GetRideTypeDescriptor();
             const auto& ted = GetTrackElementDescriptor(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
             stringId = ted.Description;
-            if (stringId == STR_RAPIDS
-                && (currentRide->type == RIDE_TYPE_MONSTER_TRUCKS || currentRide->type == RIDE_TYPE_CAR_RIDE))
+            if (stringId == STR_RAPIDS && rtd.Category != RIDE_CATEGORY_WATER)
             {
                 stringId = STR_LOG_BUMPS;
             }
@@ -1530,7 +1538,7 @@ public:
         int32_t rideType = RideGetAlternativeType(currentRide);
 
         hold_down_widgets = 0;
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP) || !currentRide->HasStation())
+        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
         {
             widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
             widgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
@@ -1957,7 +1965,7 @@ public:
                 return;
         }
 
-        rct_widgetindex widgetIndex;
+        WidgetIndex widgetIndex;
         switch (_currentTrackCurve)
         {
             case TRACK_CURVE_NONE:
@@ -2107,18 +2115,17 @@ public:
                     }
                 }
             }
-
-            if ((bank == TRACK_BANK_UPSIDE_DOWN || ted.Definition.bank_end == TRACK_BANK_UPSIDE_DOWN)
-                && bank != _previousTrackBankEnd)
+            if ((ted.Definition.bank_start == TRACK_BANK_UPSIDE_DOWN || ted.Definition.bank_end == TRACK_BANK_UPSIDE_DOWN)
+                && (bank != _previousTrackBankEnd))
                 continue;
 
             _currentPossibleRideConfigurations[currentPossibleRideConfigurationIndex] = trackType;
-            _currentDisabledSpecialTrackPieces |= (1 << currentPossibleRideConfigurationIndex);
+            _currentDisabledSpecialTrackPieces |= (1ULL << currentPossibleRideConfigurationIndex);
             if (_currentTrackPieceDirection < 4 && slope == _previousTrackSlopeEnd && bank == _previousTrackBankEnd
                 && (trackType != TrackElemType::TowerBase
                     || currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES)))
             {
-                _currentDisabledSpecialTrackPieces &= ~(1 << currentPossibleRideConfigurationIndex);
+                _currentDisabledSpecialTrackPieces &= ~(1ULL << currentPossibleRideConfigurationIndex);
                 _numCurrentPossibleSpecialTrackPieces++;
             }
             currentPossibleRideConfigurationIndex++;
@@ -2325,7 +2332,7 @@ private:
             *newCoords = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
             direction = trackBeginEnd.begin_direction;
             type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-            gGotoStartPlacementMode = false;
+            _gotoStartPlacementMode = false;
         }
         else if (track_block_get_next(&inputElement, &outputElement, &newCoords->z, &direction))
         {
@@ -2333,7 +2340,7 @@ private:
             newCoords->y = outputElement.y;
             direction = outputElement.element->GetDirection();
             type = outputElement.element->AsTrack()->GetTrackType();
-            gGotoStartPlacementMode = false;
+            _gotoStartPlacementMode = false;
         }
         else
         {
@@ -2351,12 +2358,12 @@ private:
             const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
             const rct_preview_track* trackBlock = ted.Block;
             newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
-            gGotoStartPlacementMode = true;
+            _gotoStartPlacementMode = true;
 
             // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
             auto currentRide = get_ride(_currentRideIndex);
             const auto& rtd = currentRide->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
             {
                 ride_initialise_construction_window(currentRide);
             }
@@ -2497,9 +2504,12 @@ private:
             if (trackPieceStringId == STR_RAPIDS)
             {
                 auto currentRide = get_ride(_currentRideIndex);
-                if (currentRide != nullptr
-                    && (currentRide->type == RIDE_TYPE_MONSTER_TRUCKS || currentRide->type == RIDE_TYPE_CAR_RIDE))
-                    trackPieceStringId = STR_LOG_BUMPS;
+                if (currentRide != nullptr)
+                {
+                    const auto& rtd = currentRide->GetRideTypeDescriptor();
+                    if (rtd.Category != RIDE_CATEGORY_WATER)
+                        trackPieceStringId = STR_LOG_BUMPS;
+                }
             }
             gDropdownItems[i].Format = trackPieceStringId;
             if ((trackPiece | RideConstructionSpecialPieceSelected) == _currentTrackCurve)
@@ -2512,9 +2522,9 @@ private:
             { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 0,
             _numCurrentPossibleRideConfigurations, widget->width());
 
-        for (int32_t i = 0; i < 32; i++)
+        for (int32_t i = 0; i < 64; i++)
         {
-            if (_currentDisabledSpecialTrackPieces & (1 << i))
+            if (_currentDisabledSpecialTrackPieces & (1ULL << i))
             {
                 Dropdown::SetDisabled(i, true);
             }
@@ -2557,13 +2567,13 @@ private:
                 tool_cancel();
                 if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
                 {
-                    window_close_by_class(WC_RIDE_CONSTRUCTION);
+                    window_close_by_class(WindowClass::RideConstruction);
                 }
             }
             else
             {
                 gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-                window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
+                window_invalidate_by_class(WindowClass::RideConstruction);
                 gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                     : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
@@ -2701,6 +2711,47 @@ private:
     }
 };
 
+static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType)
+{
+    RideTrackGroup disabledPieces{};
+    const auto& rtd = GetRideTypeDescriptor(rideType);
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        // Set all pieces as “disabled”. When looping over the ride entries,
+        // pieces will be re-enabled as soon as a single entry supports it.
+        disabledPieces.flip();
+
+        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& rideEntries = objManager.GetAllRideEntries(rideType);
+        // If there are no vehicles for this ride type, enable all the track pieces.
+        if (rideEntries.size() == 0)
+        {
+            disabledPieces.reset();
+        }
+
+        for (auto rideEntryIndex : rideEntries)
+        {
+            const auto* currentRideEntry = get_ride_entry(rideEntryIndex);
+            if (currentRideEntry == nullptr)
+                continue;
+
+            // Non-default vehicle visuals do not use this system, so we have to assume it supports all the track pieces.
+            if (currentRideEntry->Cars[0].PaintStyle != VEHICLE_VISUAL_DEFAULT || rideType == RIDE_TYPE_CHAIRLIFT
+                || (currentRideEntry->Cars[0].flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+            {
+                disabledPieces.reset();
+                break;
+            }
+
+            // Any pieces that this ride entry supports must be taken out of the array.
+            auto supportedPieces = ride_entry_get_supported_track_pieces(currentRideEntry);
+            disabledPieces &= supportedPieces.flip();
+        }
+    }
+
+    UpdateDisabledRidePieces(disabledPieces);
+}
+
 /**
  *
  *  rct2: 0x006CB481
@@ -2716,19 +2767,26 @@ rct_window* WindowRideConstructionOpen()
         return nullptr;
     }
 
-    if (currentRide->type == RIDE_TYPE_MAZE)
-    {
-        return context_open_window_view(WV_MAZE_CONSTRUCTION);
-    }
+    WindowRideConstructionUpdateDisabledPieces(currentRide->type);
 
-    return WindowCreate<RideConstructionWindow>(WC_RIDE_CONSTRUCTION, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
+    const auto& rtd = currentRide->GetRideTypeDescriptor();
+    switch (rtd.ConstructionWindowContext)
+    {
+        case RideConstructionWindowContext::Maze:
+            return context_open_window_view(WV_MAZE_CONSTRUCTION);
+        case RideConstructionWindowContext::Default:
+            return WindowCreate<RideConstructionWindow>(
+                WindowClass::RideConstruction, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
+    }
+    return WindowCreate<RideConstructionWindow>(
+        WindowClass::RideConstruction, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
 }
 
 static void CloseConstructWindowOnCompletion(Ride* ride)
 {
     if (_rideConstructionState == RideConstructionState::State0)
     {
-        auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        auto w = window_find_by_class(WindowClass::RideConstruction);
         if (w != nullptr)
         {
             if (ride_are_all_possible_entrances_and_exits_built(ride).Successful)
@@ -2738,6 +2796,28 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
             else
             {
                 window_event_mouse_up_call(w, WIDX_ENTRANCE);
+            }
+        }
+    }
+}
+
+static void window_ride_construction_do_entrance_exit_check()
+{
+    auto w = window_find_by_class(WindowClass::RideConstruction);
+    auto ride = get_ride(_currentRideIndex);
+    if (w == nullptr || ride == nullptr)
+    {
+        return;
+    }
+
+    if (_rideConstructionState == RideConstructionState::State0)
+    {
+        w = window_find_by_class(WindowClass::RideConstruction);
+        if (w != nullptr)
+        {
+            if (!ride_are_all_possible_entrances_and_exits_built(ride).Successful)
+            {
+                window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
             }
         }
     }
@@ -2783,7 +2863,7 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
         window_ride_construction_update_active_elements();
     }
 
-    window_close_by_class(WC_ERROR);
+    window_close_by_class(WindowClass::Error);
     CloseConstructWindowOnCompletion(ride);
 }
 
@@ -2826,7 +2906,7 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
         window_ride_construction_update_active_elements();
     }
 
-    window_close_by_class(WC_ERROR);
+    window_close_by_class(WindowClass::Error);
     CloseConstructWindowOnCompletion(ride);
 }
 
@@ -2950,7 +3030,7 @@ void WindowRideConstructionUpdateActiveElementsImpl()
         return;
     }
 
-    auto window = static_cast<RideConstructionWindow*>(window_find_by_class(WC_RIDE_CONSTRUCTION));
+    auto window = static_cast<RideConstructionWindow*>(window_find_by_class(WindowClass::RideConstruction));
     if (!window)
     {
         return;
@@ -3168,7 +3248,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
     if (ride->type != RIDE_TYPE_MAZE)
     {
-        auto window = static_cast<RideConstructionWindow*>(window_find_by_class(WC_RIDE_CONSTRUCTION));
+        auto window = static_cast<RideConstructionWindow*>(window_find_by_class(WindowClass::RideConstruction));
         if (!window)
         {
             return;
@@ -3269,7 +3349,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     }
 
     if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
-        && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+        && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
     {
         TileElement* pathsByDir[NumOrthogonalDirections];
 
@@ -3473,7 +3553,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             _currentTrackSelectionFlags = 0;
             auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
             context_broadcast_intent(&intent);
-            w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+            w = window_find_by_class(WindowClass::RideConstruction);
             if (w == nullptr)
                 break;
 
@@ -3506,7 +3586,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                     || zAttempts == (numAttempts - 1) || z < 0)
                 {
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
-                    w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+                    w = window_find_by_class(WindowClass::RideConstruction);
                     if (w != nullptr)
                     {
                         tool_set(*w, WIDX_CONSTRUCT, Tool::Crosshair);
@@ -3522,7 +3602,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             }
             else
             {
-                window_close_by_class(WC_ERROR);
+                window_close_by_class(WindowClass::Error);
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, _currentTrackBegin);
                 break;
             }
@@ -3538,7 +3618,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
         _currentTrackBegin.z = z;
         _currentTrackSelectionFlags = 0;
         window_ride_construction_update_active_elements();
-        w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        w = window_find_by_class(WindowClass::RideConstruction);
         if (w == nullptr)
             break;
 
@@ -3591,7 +3671,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
 void window_ride_construction_keyboard_shortcut_turn_left()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -3837,7 +3917,7 @@ void window_ride_construction_keyboard_shortcut_turn_left()
 
 void window_ride_construction_keyboard_shortcut_turn_right()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4083,7 +4163,7 @@ void window_ride_construction_keyboard_shortcut_turn_right()
 
 void window_ride_construction_keyboard_shortcut_use_track_default()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4113,7 +4193,7 @@ void window_ride_construction_keyboard_shortcut_use_track_default()
 
 void window_ride_construction_keyboard_shortcut_slope_down()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4223,7 +4303,7 @@ void window_ride_construction_keyboard_shortcut_slope_down()
 
 void window_ride_construction_keyboard_shortcut_slope_up()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4329,7 +4409,7 @@ void window_ride_construction_keyboard_shortcut_slope_up()
 
 void window_ride_construction_keyboard_shortcut_chain_lift_toggle()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_CHAIN_LIFT) || w->widgets[WIDX_CHAIN_LIFT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4340,7 +4420,7 @@ void window_ride_construction_keyboard_shortcut_chain_lift_toggle()
 
 void window_ride_construction_keyboard_shortcut_bank_left()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT)
         || w->widgets[WIDX_BANK_STRAIGHT].type == WindowWidgetType::Empty)
     {
@@ -4376,7 +4456,7 @@ void window_ride_construction_keyboard_shortcut_bank_left()
 
 void window_ride_construction_keyboard_shortcut_bank_right()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT)
         || w->widgets[WIDX_BANK_STRAIGHT].type == WindowWidgetType::Empty)
     {
@@ -4412,7 +4492,7 @@ void window_ride_construction_keyboard_shortcut_bank_right()
 
 void window_ride_construction_keyboard_shortcut_previous_track()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_PREVIOUS_SECTION)
         || w->widgets[WIDX_PREVIOUS_SECTION].type == WindowWidgetType::Empty)
     {
@@ -4424,7 +4504,7 @@ void window_ride_construction_keyboard_shortcut_previous_track()
 
 void window_ride_construction_keyboard_shortcut_next_track()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_NEXT_SECTION)
         || w->widgets[WIDX_NEXT_SECTION].type == WindowWidgetType::Empty)
     {
@@ -4436,7 +4516,7 @@ void window_ride_construction_keyboard_shortcut_next_track()
 
 void window_ride_construction_keyboard_shortcut_build_current()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_CONSTRUCT) || w->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4447,11 +4527,84 @@ void window_ride_construction_keyboard_shortcut_build_current()
 
 void window_ride_construction_keyboard_shortcut_demolish_current()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_DEMOLISH) || w->widgets[WIDX_DEMOLISH].type == WindowWidgetType::Empty)
     {
         return;
     }
 
     window_event_mouse_up_call(w, WIDX_DEMOLISH);
+}
+
+static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type)
+{
+    if (_gotoStartPlacementMode)
+    {
+        _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
+        _rideConstructionState = RideConstructionState::Front;
+        _currentTrackSelectionFlags = 0;
+        _currentTrackPieceDirection = piecePos.direction & 3;
+        auto savedCurrentTrackCurve = _currentTrackCurve;
+        int32_t savedPreviousTrackSlopeEnd = _previousTrackSlopeEnd;
+        int32_t savedCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
+        int32_t savedPreviousTrackBankEnd = _previousTrackBankEnd;
+        int32_t savedCurrentTrackBankEnd = _currentTrackBankEnd;
+        int32_t savedCurrentTrackAlternative = _currentTrackAlternative;
+        int32_t savedCurrentTrackLiftHill = _currentTrackLiftHill;
+        ride_construction_set_default_next_piece();
+        window_ride_construction_update_active_elements();
+        auto ride = get_ride(_currentRideIndex);
+        if (!ride_try_get_origin_element(ride, nullptr))
+        {
+            ride_initialise_construction_window(ride);
+            _currentTrackPieceDirection = piecePos.direction & 3;
+            if (!(savedCurrentTrackCurve & RideConstructionSpecialPieceSelected))
+            {
+                _currentTrackCurve = savedCurrentTrackCurve;
+                _previousTrackSlopeEnd = savedPreviousTrackSlopeEnd;
+                _currentTrackSlopeEnd = savedCurrentTrackSlopeEnd;
+                _previousTrackBankEnd = savedPreviousTrackBankEnd;
+                _currentTrackBankEnd = savedCurrentTrackBankEnd;
+                _currentTrackAlternative = savedCurrentTrackAlternative;
+                _currentTrackLiftHill = savedCurrentTrackLiftHill;
+                window_ride_construction_update_active_elements();
+            }
+        }
+    }
+    else
+    {
+        if (_rideConstructionState2 == RideConstructionState::Selected
+            || _rideConstructionState2 == RideConstructionState::Front)
+        {
+            if (type == TrackElemType::MiddleStation || type == TrackElemType::BeginStation)
+            {
+                type = TrackElemType::EndStation;
+            }
+        }
+        if (_rideConstructionState2 == RideConstructionState::Back)
+        {
+            if (type == TrackElemType::MiddleStation)
+            {
+                type = TrackElemType::BeginStation;
+            }
+        }
+        if (network_get_mode() == NETWORK_MODE_CLIENT)
+        {
+            // rideConstructionState needs to be set again to the proper value, this only affects the client
+            _rideConstructionState = RideConstructionState::Selected;
+        }
+        _currentTrackBegin = piecePos;
+        _currentTrackPieceDirection = piecePos.direction;
+        _currentTrackPieceType = type;
+        _currentTrackSelectionFlags = 0;
+        if (_rideConstructionState2 == RideConstructionState::Front)
+        {
+            ride_select_next_section();
+        }
+        else if (_rideConstructionState2 == RideConstructionState::Back)
+        {
+            ride_select_previous_section();
+        }
+        window_ride_construction_update_active_elements();
+    }
 }

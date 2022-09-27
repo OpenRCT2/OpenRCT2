@@ -33,6 +33,7 @@ enum class ScenarioSource : uint8_t
     RCT2_WW,
     RCT2_TT,
     Real,
+    Extras,
     Other
 };
 
@@ -44,7 +45,7 @@ struct scenario_index_entry
     // Category / sequence
     uint8_t category;
     ScenarioSource source_game;
-    int16_t source_index;
+    int16_t source_index = -1;
     uint16_t sc_id;
 
     // Objective

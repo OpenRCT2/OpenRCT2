@@ -69,12 +69,12 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
 
 uint8_t gToolbarDirtyFlags;
 
-static void WindowGameBottomToolbarMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback);
+static void WindowGameBottomToolbarMouseup(rct_window *w, WidgetIndex widgetIndex);
+static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback);
 static void WindowGameBottomToolbarInvalidate(rct_window *w);
 static void WindowGameBottomToolbarPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowGameBottomToolbarUpdate(rct_window* w);
-static void WindowGameBottomToolbarCursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
+static void WindowGameBottomToolbarCursor(rct_window *w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
 static void WindowGameBottomToolbarUnknown05(rct_window *w);
 
 static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo *dpi, rct_window *w);
@@ -87,7 +87,7 @@ static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo *dpi, rct_w
  *
  *  rct2: 0x0097BFDC
  */
-static rct_window_event_list window_game_bottom_toolbar_events([](auto& events)
+static WindowEventList window_game_bottom_toolbar_events([](auto& events)
 {
     events.mouse_up = &WindowGameBottomToolbarMouseup;
     events.unknown_05 = &WindowGameBottomToolbarUnknown05;
@@ -116,7 +116,7 @@ rct_window* WindowGameBottomToolbarOpen()
 
     rct_window* window = WindowCreate(
         ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
-        WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
+        WindowClass::BottomToolbar, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
 
     window->frame_no = 0;
@@ -133,7 +133,7 @@ rct_window* WindowGameBottomToolbarOpen()
  *
  *  rct2: 0x0066C588
  */
-static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowGameBottomToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     News::Item* newsItem;
 
@@ -142,7 +142,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widget
         case WIDX_LEFT_OUTSET:
         case WIDX_MONEY:
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-                context_open_window(WC_FINANCES);
+                context_open_window(WindowClass::Finances);
             break;
         case WIDX_GUESTS:
             context_open_window_view(WV_PARK_GUESTS);
@@ -153,7 +153,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widget
         case WIDX_MIDDLE_INSET:
             if (News::IsQueueEmpty())
             {
-                context_open_window(WC_RECENT_NEWS);
+                context_open_window(WindowClass::RecentNews);
             }
             else
             {
@@ -183,12 +183,12 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widget
             break;
         case WIDX_RIGHT_OUTSET:
         case WIDX_DATE:
-            context_open_window(WC_RECENT_NEWS);
+            context_open_window(WindowClass::RecentNews);
             break;
     }
 }
 
-static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const rct_widgetindex widgetIndex, const StringId fallback)
+static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback)
 {
     int32_t month, day;
     auto ft = Formatter();
@@ -338,7 +338,7 @@ void WindowGameBottomToolbarInvalidateNewsItem()
 {
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
-        widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, WIDX_MIDDLE_OUTSET);
+        widget_invalidate_by_class(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);
     }
 }
 
@@ -406,7 +406,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
                                             w->windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
         colour_t colour
-            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
+            = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_MONEY
                    ? COLOUR_WHITE
                    : NOT_TRANSLUCENT(w->colours[0]));
         StringId stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
@@ -435,7 +435,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
         StringId stringId = gNumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
                                                   : _guestCountFormats[gGuestChangeModifier];
         colour_t colour
-            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
+            = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_GUESTS
                    ? COLOUR_WHITE
                    : NOT_TRANSLUCENT(w->colours[0]));
         auto ft = Formatter();
@@ -502,7 +502,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
     int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
     colour_t colour
-        = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
+        = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_DATE
                ? COLOUR_WHITE
                : NOT_TRANSLUCENT(w->colours[0]));
     StringId stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
@@ -702,7 +702,7 @@ static void WindowGameBottomToolbarUpdate(rct_window* w)
  *  rct2: 0x0066C644
  */
 static void WindowGameBottomToolbarCursor(
-    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
+    rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
     switch (widgetIndex)
     {

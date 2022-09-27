@@ -80,6 +80,8 @@ float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 bool gInMapInitCode = false;
 std::string gCurrentLoadedPath;
+bool gIsAutosave = false;
+bool gIsAutosaveLoaded = false;
 
 bool gLoadKeepWindowsOpen = false;
 
@@ -95,7 +97,7 @@ using namespace OpenRCT2;
 void game_reset_speed()
 {
     gGameSpeed = 1;
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
 }
 
 void game_increase_game_speed()
@@ -103,7 +105,7 @@ void game_increase_game_speed()
     gGameSpeed = std::min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
     if (gGameSpeed == 5)
         gGameSpeed = 8;
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
 }
 
 void game_reduce_game_speed()
@@ -111,7 +113,7 @@ void game_reduce_game_speed()
     gGameSpeed = std::max(1, gGameSpeed - 1);
     if (gGameSpeed == 7)
         gGameSpeed = 4;
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
 }
 
 /**
@@ -120,9 +122,9 @@ void game_reduce_game_speed()
  */
 void game_create_windows()
 {
-    context_open_window(WC_MAIN_WINDOW);
-    context_open_window(WC_TOP_TOOLBAR);
-    context_open_window(WC_BOTTOM_TOOLBAR);
+    context_open_window(WindowClass::MainWindow);
+    context_open_window(WindowClass::TopToolbar);
+    context_open_window(WindowClass::BottomToolbar);
     window_resize_gui(context_get_width(), context_get_height());
 }
 
@@ -300,7 +302,7 @@ void update_palette_effects()
 void pause_toggle()
 {
     gGamePaused ^= GAME_PAUSED_NORMAL;
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
         OpenRCT2::Audio::StopAll();
@@ -323,7 +325,7 @@ bool game_is_not_paused()
  */
 static void load_landscape()
 {
-    auto intent = Intent(WC_LOADSAVE);
+    auto intent = Intent(WindowClass::Loadsave);
     intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
     context_open_intent(&intent);
 }
@@ -561,7 +563,7 @@ void reset_all_sprite_quadrant_placements()
 
 void save_game()
 {
-    if (!gFirstTimeSaving)
+    if (!gFirstTimeSaving && !gIsAutosaveLoaded)
     {
         const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
         save_game_with_name(savePath);
@@ -591,10 +593,11 @@ void save_game_cmd(u8string_view name /* = {} */)
 void save_game_with_name(u8string_view name)
 {
     log_verbose("Saving to %s", u8string(name).c_str());
-    if (scenario_save(name, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0)))
+    if (scenario_save(name, gConfigGeneral.save_plugin_data ? 1 : 0))
     {
         log_verbose("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
+        gIsAutosaveLoaded = false;
         gScreenAge = 0;
     }
 }
@@ -603,7 +606,7 @@ std::unique_ptr<Intent> create_save_game_as_intent()
 {
     auto name = Path::GetFileNameWithoutExtension(gScenarioSavePath);
 
-    auto intent = std::make_unique<Intent>(WC_LOADSAVE);
+    auto intent = std::make_unique<Intent>(WindowClass::Loadsave);
     intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
     intent->putExtra(INTENT_EXTRA_PATH, name);
 
@@ -722,10 +725,12 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
     {
         game_notify_map_change();
         game_unload_scripts();
-        window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+        window_close_by_class(WindowClass::EditorObjectSelection);
         context_load_park_from_file(path);
         game_load_scripts();
         game_notify_map_changed();
+        gIsAutosaveLoaded = gIsAutosave;
+        gFirstTimeSaving = false;
     }
 }
 
@@ -748,7 +753,7 @@ void game_load_or_quit_no_save_prompt()
             }
             else
             {
-                auto intent = Intent(WC_LOADSAVE);
+                auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
                 intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(game_load_or_quit_no_save_prompt_callback));
                 context_open_intent(&intent);

@@ -110,7 +110,7 @@ private:
 
             if (_downloadStatusInfo == DownloadStatusInfo())
             {
-                context_force_close_window_by_class(WC_NETWORK_STATUS);
+                context_force_close_window_by_class(WindowClass::NetworkStatus);
             }
             else
             {
@@ -133,7 +133,7 @@ private:
                         str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, ft.Data());
                 }
 
-                auto intent = Intent(WC_NETWORK_STATUS);
+                auto intent = Intent(WindowClass::NetworkStatus);
                 intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
                 intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
                 context_open_intent(&intent);
@@ -404,7 +404,7 @@ public:
         _invalidEntries.shrink_to_fit();
     }
 
-    void OnMouseUp(const rct_widgetindex widgetIndex) override
+    void OnMouseUp(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -564,10 +564,10 @@ public:
 rct_window* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
     // Check if window is already open
-    auto* window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
+    auto* window = window_bring_to_front_by_class(WindowClass::ObjectLoadError);
     if (window == nullptr)
     {
-        window = WindowCreate<ObjectLoadErrorWindow>(WC_OBJECT_LOAD_ERROR, WW, WH, 0);
+        window = WindowCreate<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
     }
 
     static_cast<ObjectLoadErrorWindow*>(window)->Initialise(path, numMissingObjects, missingObjects);
