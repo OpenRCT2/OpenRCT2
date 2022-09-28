@@ -119,6 +119,6 @@ void Balloon::Paint(paint_session& session, int32_t imageDirection) const
         imageId += 8;
     }
 
-    imageId = imageId | (colour << 19) | IMAGE_TYPE_REMAP;
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    auto image = ImageId(imageId, colour);
+    PaintAddImageAsParent(session, image, { 0, 0, z }, { 1, 1, 0 });
 }

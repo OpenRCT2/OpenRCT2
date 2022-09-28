@@ -376,6 +376,6 @@ void Duck::Paint(paint_session& session, int32_t imageDirection) const
     uint32_t imageId = GetFrameImage(imageDirection);
     if (imageId != 0)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+        PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
     }
 }

@@ -183,7 +183,7 @@ void vehicle_visual_river_rapids(
 {
     imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
 
-    int32_t image_id;
+    ImageId image_id;
     int32_t baseImage_id = imageDirection;
     uint32_t rotation = session.CurrentRotation;
     int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
@@ -224,11 +224,10 @@ void vehicle_visual_river_rapids(
     baseImage_id += carEntry->base_image_id;
 
     const vehicle_boundbox* bb = &_riverRapidsBoundbox[j];
-    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.Body, vehicle->colours.Trim);
+    image_id = ImageId(baseImage_id, vehicle->colours.Body, vehicle->colours.Trim);
     if (vehicle->IsGhost())
     {
-        image_id &= 0x7FFFF;
-        image_id |= CONSTRUCTION_MARKER;
+        image_id = ConstructionMarker.WithIndex(image_id.GetIndex());
     }
     PaintAddImageAsParent(
         session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
@@ -239,16 +238,15 @@ void vehicle_visual_river_rapids(
         // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip, but
         // that's how the original does it...)
         int32_t peeps = ((ecx / 8) + 0) & 3;
-        image_id = (baseImage_id + ((peeps + 1) * 72))
-            | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
+        image_id = ImageId(baseImage_id + ((peeps + 1) * 72), vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
         PaintAddImageAsChild(
             session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
             { bb->offset_x, bb->offset_y, bb->offset_z + z });
         if (vehicle->num_peeps > 2)
         {
             peeps = ((ecx / 8) + 2) & 3;
-            image_id = (baseImage_id + ((peeps + 1) * 72))
-                | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
+            image_id = ImageId(
+                baseImage_id + ((peeps + 1) * 72), vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
             PaintAddImageAsChild(
                 session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
                 { bb->offset_x, bb->offset_y, bb->offset_z + z });
@@ -256,8 +254,8 @@ void vehicle_visual_river_rapids(
         if (vehicle->num_peeps > 4)
         {
             peeps = ((ecx / 8) + 1) & 3;
-            image_id = (baseImage_id + ((peeps + 1) * 72))
-                | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
+            image_id = ImageId(
+                baseImage_id + ((peeps + 1) * 72), vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
             PaintAddImageAsChild(
                 session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
                 { bb->offset_x, bb->offset_y, bb->offset_z + z });
@@ -265,8 +263,8 @@ void vehicle_visual_river_rapids(
         if (vehicle->num_peeps > 6)
         {
             peeps = ((ecx / 8) + 3) & 3;
-            image_id = (baseImage_id + ((peeps + 1) * 72))
-                | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
+            image_id = ImageId(
+                baseImage_id + ((peeps + 1) * 72), vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
             PaintAddImageAsChild(
                 session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
                 { bb->offset_x, bb->offset_y, bb->offset_z + z });

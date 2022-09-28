@@ -157,26 +157,29 @@ static void maze_paint_setup(
 
     if (maze_entry & (MAZE_ENTRY_FLAG_0 | MAZE_ENTRY_FLAG_13 | MAZE_ENTRY_FLAG_14))
         PaintAddImageAsParent(
-            session, base_image_id + SPR_MAZE_OFFSET_COLUMN_TOP_LEFT, { 14, 0, height }, { 2, 1, 9 }, { 15, 1, height + 2 });
+            session, ImageId(base_image_id + SPR_MAZE_OFFSET_COLUMN_TOP_LEFT), { 14, 0, height }, { 2, 1, 9 },
+            { 15, 1, height + 2 });
 
     if (maze_entry & (MAZE_ENTRY_FLAG_5 | MAZE_ENTRY_FLAG_6 | MAZE_ENTRY_FLAG_8))
         PaintAddImageAsParent(
-            session, base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_RIGHT, { 14, 30, height }, { 2, 1, 9 },
+            session, ImageId(base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_RIGHT), { 14, 30, height }, { 2, 1, 9 },
             { 15, 30, height + 2 });
 
     if (maze_entry & (MAZE_ENTRY_FLAG_1 | MAZE_ENTRY_FLAG_2 | MAZE_ENTRY_FLAG_4))
         PaintAddImageAsParent(
-            session, base_image_id + SPR_MAZE_OFFSET_COLUMN_TOP_RIGHT, { 0, 14, height }, { 1, 2, 9 }, { 1, 15, height + 2 });
+            session, ImageId(base_image_id + SPR_MAZE_OFFSET_COLUMN_TOP_RIGHT), { 0, 14, height }, { 1, 2, 9 },
+            { 1, 15, height + 2 });
 
     if (maze_entry & (MAZE_ENTRY_FLAG_9 | MAZE_ENTRY_FLAG_10 | MAZE_ENTRY_FLAG_12))
         PaintAddImageAsParent(
-            session, base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_LEFT, { 30, 14, height }, { 1, 2, 9 },
+            session, ImageId(base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_LEFT), { 30, 14, height }, { 1, 2, 9 },
             { 30, 15, height + 2 });
 
     if (maze_entry & (MAZE_ENTRY_FLAG_2 | MAZE_ENTRY_FLAG_6 | MAZE_ENTRY_FLAG_10 | MAZE_ENTRY_FLAG_14))
     {
         PaintAddImageAsParent(
-            session, base_image_id + SPR_MAZE_OFFSET_COLUMN_CENTRE, { 14, 14, height }, { 2, 2, 8 }, { 15, 15, height + 2 });
+            session, ImageId(base_image_id + SPR_MAZE_OFFSET_COLUMN_CENTRE), { 14, 14, height }, { 2, 2, 8 },
+            { 15, 15, height + 2 });
 
         paint_util_set_segment_support_height(session, SEGMENT_C4, height + 12, 0x20);
     }
