@@ -37,12 +37,12 @@ static void PaintFacility(
     CoordsXYZ offset(0, 0, height);
     BoundBoxXYZ bb = { { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height }, { lengthX, lengthY, 29 } };
 
-    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto imageTemplate = session.TrackColours[SCHEME_TRACK];
     auto imageIndex = firstCarEntry->base_image_id + ((direction + 2) & 3);
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (hasSupports)
     {
-        auto foundationImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_3]);
+        auto foundationImageTemplate = session.TrackColours[SCHEME_3];
         auto foundationImageIndex = (direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS;
         auto foundationImageId = foundationImageTemplate.WithIndex(foundationImageIndex);
         PaintAddImageAsParent(session, foundationImageId, offset, bb);

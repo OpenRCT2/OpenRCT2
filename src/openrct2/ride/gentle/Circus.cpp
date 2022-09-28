@@ -32,9 +32,9 @@ static void PaintCircusTent(paint_session& session, const Ride& ride, uint8_t di
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (!imageFlags.HasPrimary())
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        imageTemplate = imageFlags;
     }
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
 

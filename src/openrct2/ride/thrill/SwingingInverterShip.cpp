@@ -101,11 +101,11 @@ static void PaintSwingingInverterShipStructure(
 
     auto vehicleImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        vehicleImageTemplate = ImageId::FromUInt32(imageFlags);
+        vehicleImageTemplate = imageFlags;
     }
-    auto frameImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto frameImageTemplate = session.TrackColours[SCHEME_TRACK];
     auto vehicleImageId = vehicleImageTemplate.WithIndex(vehicleImageIndex);
     auto frameImageId = frameImageTemplate.WithIndex(SwingingInverterShipFrameSprites[direction]);
 
@@ -129,7 +129,7 @@ static void PaintSwingingInverterShip(
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
-    uint32_t imageId;
+    ImageId imageId;
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -148,25 +148,25 @@ static void PaintSwingingInverterShip(
 
         if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
         {
-            imageId = SPR_STATION_BASE_D | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_BASE_D);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
             switch (direction)
             {
                 case 0:
-                    imageId = SPR_STATION_PLATFORM_SW_NE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_PLATFORM_SW_NE);
                     PaintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
                     break;
                 case 1:
-                    imageId = SPR_STATION_PLATFORM_NW_SE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_PLATFORM_NW_SE);
                     PaintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
                     break;
                 case 2:
-                    imageId = SPR_STATION_PLATFORM_SW_NE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_PLATFORM_SW_NE);
                     PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 32, 8, 1 }, { -2, 0, height });
                     break;
                 case 3:
-                    imageId = SPR_STATION_PLATFORM_NW_SE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_PLATFORM_NW_SE);
                     PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 8, 32, 1 }, { 0, -2, height });
                     break;
             }

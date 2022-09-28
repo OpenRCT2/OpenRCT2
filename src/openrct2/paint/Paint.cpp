@@ -778,6 +778,13 @@ paint_struct* PaintAddImageAsChild(
     return PaintAddImageAsChild(session, ImageId::FromUInt32(image_id), offset, { boundBoxOffset, boundBoxLength });
 }
 
+paint_struct* PaintAddImageAsChild(
+    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    const CoordsXYZ& boundBoxOffset)
+{
+    return PaintAddImageAsChild(session, imageId, offset, { boundBoxOffset, boundBoxLength });
+}
+
 /**
  *
  *  rct2: 0x006874B0, 0x00687618, 0x0068778C, 0x00687902, 0x0098199C

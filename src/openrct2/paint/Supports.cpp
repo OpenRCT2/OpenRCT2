@@ -798,7 +798,7 @@ bool wooden_b_supports_paint_setup(
  *  rct2: 0x00663105
  */
 bool metal_a_supports_paint_setup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags)
+    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageColourFlags)
 {
     support_height* supportSegments = session.SupportSegments;
 
@@ -813,7 +813,7 @@ bool metal_a_supports_paint_setup(
         {
             return false;
         }
-        imageColourFlags = ImageId(0).WithTransparancy(FilterPaletteID::PaletteDarken1).ToUInt32();
+        imageColourFlags = ImageId(0).WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
     int16_t originalHeight = height;
@@ -862,8 +862,7 @@ bool metal_a_supports_paint_setup(
         int16_t boundBoxLengthX = _97B062[ebp].x;
         int16_t boundBoxLengthY = _97B062[ebp].y;
 
-        uint32_t image_id = _metalSupportTypeToCrossbeamImages[supportType][ebp];
-        image_id |= imageColourFlags;
+        auto image_id = imageColourFlags.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]);
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { boundBoxLengthX, boundBoxLengthY, 1 });
 
         segment = newSegment;
@@ -879,9 +878,9 @@ bool metal_a_supports_paint_setup(
         int8_t xOffset = SupportBoundBoxes[segment].x;
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
-        uint32_t image_id = _97B15C[supportType].base_id;
-        image_id += metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
-        image_id |= imageColourFlags;
+        uint32_t imageIndex = _97B15C[supportType].base_id;
+        imageIndex += metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
+        auto image_id = imageColourFlags.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, supportSegments[segment].height }, { 0, 0, 5 });
 
@@ -903,9 +902,9 @@ bool metal_a_supports_paint_setup(
         int8_t xOffset = SupportBoundBoxes[segment].x;
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
-        uint32_t image_id = _97B15C[supportType].beam_id;
-        image_id += heightDiff - 1;
-        image_id |= imageColourFlags;
+        uint32_t imageIndex = _97B15C[supportType].beam_id;
+        imageIndex += heightDiff - 1;
+        auto image_id = imageColourFlags.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { 0, 0, heightDiff - 1 });
     }
@@ -931,13 +930,13 @@ bool metal_a_supports_paint_setup(
         int8_t xOffset = SupportBoundBoxes[segment].x;
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
-        uint32_t image_id = _97B15C[supportType].beam_id;
-        image_id += z - 1;
-        image_id |= imageColourFlags;
+        uint32_t imageIndex = _97B15C[supportType].beam_id;
+        imageIndex += z - 1;
 
         if (count == 3 && z == 0x10)
-            image_id++;
+            imageIndex++;
 
+        auto image_id = imageColourFlags.WithIndex(imageIndex);
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { 0, 0, z - 1 });
 
         height += z;
@@ -975,9 +974,9 @@ bool metal_a_supports_paint_setup(
         int8_t xOffset = SupportBoundBoxes[segment].x;
         int8_t yOffset = SupportBoundBoxes[segment].y;
 
-        uint32_t image_id = _97B190[supportType].beam_id;
-        image_id += z - 1;
-        image_id |= imageColourFlags;
+        uint32_t imageIndex = _97B190[supportType].beam_id;
+        imageIndex += z - 1;
+        auto image_id = imageColourFlags.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { 0, 0, 0 }, boundBoxOffset);
 
@@ -1000,7 +999,7 @@ bool metal_a_supports_paint_setup(
  * @return (Carry Flag)
  */
 bool metal_b_supports_paint_setup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags)
+    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageColourFlags)
 {
     support_height* supportSegments = session.SupportSegments;
     uint8_t originalSegment = segment;
@@ -1016,7 +1015,7 @@ bool metal_b_supports_paint_setup(
         {
             return false;
         }
-        imageColourFlags = ImageId(0).WithTransparancy(FilterPaletteID::PaletteDarken1).ToUInt32();
+        imageColourFlags = ImageId(0).WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
     uint16_t _9E3294 = 0xFFFF;
@@ -1062,7 +1061,7 @@ bool metal_b_supports_paint_setup(
         }
 
         PaintAddImageAsParent(
-            session, _metalSupportTypeToCrossbeamImages[supportType][ebp] | imageColourFlags,
+            session, imageColourFlags.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]),
             { SupportBoundBoxes[originalSegment] + loc_97B052[ebp], baseHeight }, { _97B062[ebp], 1 });
     }
 
@@ -1079,7 +1078,8 @@ bool metal_b_supports_paint_setup(
         uint32_t imageId = _97B15C[supportType].base_id + imageOffset;
 
         PaintAddImageAsParent(
-            session, imageId | imageColourFlags, { SupportBoundBoxes[segment], supportSegments[segment].height }, { 0, 0, 5 });
+            session, imageColourFlags.WithIndex(imageId), { SupportBoundBoxes[segment], supportSegments[segment].height },
+            { 0, 0, 5 });
 
         baseHeight = supportSegments[segment].height + 6;
     }
@@ -1094,7 +1094,7 @@ bool metal_b_supports_paint_setup(
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
-            session, (_97B15C[supportType].beam_id + (heightDiff - 1)) | imageColourFlags,
+            session, imageColourFlags.WithIndex(_97B15C[supportType].beam_id + (heightDiff - 1)),
             { SupportBoundBoxes[segment], baseHeight }, { 0, 0, heightDiff - 1 });
     }
 
@@ -1130,7 +1130,7 @@ bool metal_b_supports_paint_setup(
         }
 
         PaintAddImageAsParent(
-            session, imageId | imageColourFlags, { SupportBoundBoxes[segment], baseHeight }, { 0, 0, beamLength - 1 });
+            session, imageColourFlags.WithIndex(imageId), { SupportBoundBoxes[segment], baseHeight }, { 0, 0, beamLength - 1 });
 
         baseHeight += beamLength;
         i++;
@@ -1159,7 +1159,7 @@ bool metal_b_supports_paint_setup(
 
             uint32_t imageId = _97B15C[supportType].beam_id + (beamLength - 1);
             PaintAddImageAsParent(
-                session, imageId | imageColourFlags, { SupportBoundBoxes[originalSegment], baseHeight }, { 0, 0, 0 },
+                session, imageColourFlags.WithIndex(imageId), { SupportBoundBoxes[originalSegment], baseHeight }, { 0, 0, 0 },
                 { SupportBoundBoxes[originalSegment], height });
             baseHeight += beamLength;
         }

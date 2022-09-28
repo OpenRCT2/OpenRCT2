@@ -69,11 +69,11 @@ static void submarine_ride_paint_track_station(
 {
     const auto* stationObj = ride.GetStationObject();
     int32_t heightLower = height - 16;
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction & 1)
     {
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 20, 32, 3 }, { 6, 0, heightLower });
 
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
@@ -82,7 +82,7 @@ static void submarine_ride_paint_track_station(
     }
     else
     {
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 32, 20, 3 }, { 0, 6, heightLower });
 
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
@@ -99,17 +99,17 @@ static void submarine_ride_paint_track_flat(
     const TrackElement& trackElement)
 {
     int32_t heightLower = height - 16;
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction & 1)
     {
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 20, 32, 3 }, { 6, 0, heightLower });
         paint_util_push_tunnel_right(session, heightLower, TUNNEL_0);
     }
     else
     {
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 32, 20, 3 }, { 0, 6, heightLower });
         paint_util_push_tunnel_left(session, heightLower, TUNNEL_0);
     }

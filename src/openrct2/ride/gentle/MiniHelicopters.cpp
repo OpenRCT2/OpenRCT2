@@ -21,14 +21,14 @@ static void paint_mini_helicopters_track_station(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction == 0 || direction == 2)
     {
-        imageId = SPR_STATION_BASE_B_SW_NE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
 
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 0, height });
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -37,10 +37,10 @@ static void paint_mini_helicopters_track_station(
     }
     else if (direction == 1 || direction == 3)
     {
-        imageId = SPR_STATION_BASE_B_NW_SE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
 
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 0, 0, height });
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -59,17 +59,17 @@ static void paint_mini_helicopters_track_flat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction & 1)
     {
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else
     {
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
@@ -91,27 +91,31 @@ static void paint_mini_helicopters_track_flat_to_25_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     switch (direction)
     {
         case 0:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_SW_NE | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_SW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
             paint_util_push_tunnel_left(session, height, TUNNEL_0);
             break;
         case 1:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_NW_SE | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_NW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
             paint_util_push_tunnel_right(session, height, TUNNEL_2);
             break;
         case 2:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_NE_SW | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_NE_SW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
             paint_util_push_tunnel_left(session, height, TUNNEL_2);
             break;
         case 3:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_SE_NW | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_SE_NW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
             paint_util_push_tunnel_right(session, height, TUNNEL_0);
             break;
@@ -132,27 +136,27 @@ static void paint_mini_helicopters_track_25_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     switch (direction)
     {
         case 0:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_SW_NE | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_SW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_1);
             break;
         case 1:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_NW_SE | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_NW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
             break;
         case 2:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_NE_SW | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_NE_SW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
             break;
         case 3:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_SE_NW | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_SE_NW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_1);
             break;
@@ -173,27 +177,31 @@ static void paint_mini_helicopters_track_25_deg_up_to_flat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     switch (direction)
     {
         case 0:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SW_NE | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_0);
             break;
         case 1:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NW_SE | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_12);
             break;
         case 2:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NE_SW | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NE_SW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_12);
             break;
         case 3:
-            imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SE_NW | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SE_NW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_0);
             break;

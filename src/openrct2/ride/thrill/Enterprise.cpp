@@ -71,9 +71,9 @@ static void PaintEnterpriseStructure(
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        imageTemplate = imageFlags;
     }
     auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
     PaintAddImageAsParent(session, imageId, offset, bb);

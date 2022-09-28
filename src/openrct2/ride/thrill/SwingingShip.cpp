@@ -121,12 +121,12 @@ static void PaintSwingingShipStructure(
         }
     }
 
-    auto supportsImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto supportsImageTemplate = session.TrackColours[SCHEME_TRACK];
     auto vehicleImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        vehicleImageTemplate = ImageId::FromUInt32(imageFlags);
+        vehicleImageTemplate = imageFlags;
     }
 
     // Supports (back)
@@ -156,7 +156,7 @@ static void PaintSwingingShip(
 {
     uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];
 
-    uint32_t imageId;
+    ImageId imageId;
     bool hasFence;
 
     const StationObject* stationObject = ride.GetStationObject();
@@ -172,7 +172,7 @@ static void PaintSwingingShip(
 
         if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
         {
-            imageId = SPR_STATION_BASE_A_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_BASE_A_NW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
         }
     }
@@ -183,7 +183,7 @@ static void PaintSwingingShip(
 
         if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
         {
-            imageId = SPR_STATION_BASE_A_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_BASE_A_SW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
         }
     }
@@ -200,18 +200,18 @@ static void PaintSwingingShip(
                     EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
                 if (relativeTrackSequence == 2)
                 {
-                    imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE)
-                        | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                        (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE));
                 }
                 else
                 {
-                    imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE)
-                        | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                        (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE));
                 }
                 PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 8, 32, 1 }, { 0, -2, height + 9 });
 
-                imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE)
-                    | session.TrackColours[SCHEME_TRACK];
+                imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                    (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE));
                 PaintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
 
                 hasFence = track_paint_util_has_fence(
@@ -220,21 +220,21 @@ static void PaintSwingingShip(
                 {
                     if (hasFence)
                     {
-                        imageId = SPR_STATION_BEGIN_ANGLE_FENCE_NW_SE | session.TrackColours[SCHEME_TRACK];
+                        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_BEGIN_ANGLE_FENCE_NW_SE);
                         PaintAddImageAsParent(session, imageId, { 31, 0, height + 11 }, { 1, 32, 7 });
                     }
                     else
                     {
-                        imageId = SPR_STATION_FENCE_SMALL_SW_NE | session.TrackColours[SCHEME_TRACK];
+                        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_FENCE_SMALL_SW_NE);
                         PaintAddImageAsParent(session, imageId, { 23, 31, height + 11 }, { 8, 1, 7 });
                     }
 
-                    imageId = SPR_STATION_FENCE_SMALL_SW_NE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_FENCE_SMALL_SW_NE);
                     PaintAddImageAsParent(session, imageId, { 0, 31, height + 11 }, { 8, 1, 7 });
                 }
                 else if (hasFence)
                 {
-                    imageId = SPR_STATION_FENCE_NW_SE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_FENCE_NW_SE);
                     PaintAddImageAsParent(session, imageId, { 31, 0, height + 11 }, { 1, 32, 7 });
                 }
             }
@@ -247,18 +247,18 @@ static void PaintSwingingShip(
                     EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
                 if (relativeTrackSequence == 2)
                 {
-                    imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE)
-                        | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                        (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE));
                 }
                 else
                 {
-                    imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE)
-                        | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                        (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE));
                 }
                 PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 32, 8, 1 }, { -2, 0, height + 9 });
 
-                imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE)
-                    | session.TrackColours[SCHEME_TRACK];
+                imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                    (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE));
                 PaintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
 
                 hasFence = track_paint_util_has_fence(
@@ -267,21 +267,21 @@ static void PaintSwingingShip(
                 {
                     if (hasFence)
                     {
-                        imageId = SPR_STATION_BEGIN_ANGLE_FENCE_SW_NE | session.TrackColours[SCHEME_TRACK];
+                        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_BEGIN_ANGLE_FENCE_SW_NE);
                         PaintAddImageAsParent(session, imageId, { 0, 31, height + 11 }, { 32, 1, 7 });
                     }
                     else
                     {
-                        imageId = SPR_STATION_FENCE_SMALL_NW_SE | session.TrackColours[SCHEME_TRACK];
+                        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_FENCE_SMALL_NW_SE);
                         PaintAddImageAsParent(session, imageId, { 31, 23, height + 11 }, { 1, 8, 7 });
                     }
 
-                    imageId = SPR_STATION_FENCE_SMALL_NW_SE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_FENCE_SMALL_NW_SE);
                     PaintAddImageAsParent(session, imageId, { 31, 0, height + 11 }, { 1, 8, 7 });
                 }
                 else if (hasFence)
                 {
-                    imageId = SPR_STATION_FENCE_SW_NE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_FENCE_SW_NE);
                     PaintAddImageAsParent(session, imageId, { 0, 31, height + 11 }, { 32, 1, 7 });
                 }
             }

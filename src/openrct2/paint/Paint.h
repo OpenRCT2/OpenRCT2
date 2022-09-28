@@ -198,7 +198,7 @@ struct PaintSessionCore
     uint32_t ViewFlags;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
-    uint32_t TrackColours[4];
+    ImageId TrackColours[4];
     support_height SupportSegments[9];
     support_height Support;
     uint16_t WaterHeight;
@@ -287,6 +287,9 @@ extern CoordsXY gClipSelectionB;
 
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
 #define CONSTRUCTION_MARKER (COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP)
+constexpr const ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
+constexpr const ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
+
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
 extern bool gPaintBlockedTiles;
@@ -310,14 +313,23 @@ paint_struct* PaintAddImageAsChild(
     paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsChild(
+    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    const CoordsXYZ& boundBoxOffset);
+paint_struct* PaintAddImageAsChild(
     paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
 paint_struct* PaintAddImageAsChildRotated(
-    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
+paint_struct* PaintAddImageAsParentRotated(
+    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize);
 paint_struct* PaintAddImageAsParentRotated(
     paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize);
+paint_struct* PaintAddImageAsParentRotated(
+    paint_session& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsParentRotated(
     paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
