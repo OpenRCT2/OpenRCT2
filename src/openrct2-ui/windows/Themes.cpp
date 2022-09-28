@@ -811,7 +811,8 @@ public:
 
                     uint8_t colour = ThemeGetColour(wc, j);
                     const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
-                    auto image = ImageId(isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour & ~COLOUR_FLAG_TRANSLUCENT);
+                    auto image = ImageId(
+                        isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour & ~COLOUR_FLAG_TRANSLUCENT);
                     gfx_draw_sprite(&dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
 
                     ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };

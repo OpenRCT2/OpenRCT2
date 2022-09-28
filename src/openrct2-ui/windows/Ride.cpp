@@ -4112,7 +4112,7 @@ static void WindowRideMaintenancePaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Locate mechanic button image
     rct_widget* widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-    auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour << 24);
+    auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
     gfx_draw_sprite(dpi, image, screenCoords);
 
     // Inspection label

@@ -1267,14 +1267,13 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
                 continue;
             }
 
-            colour_t colour1 = COLOUR_BRIGHT_PURPLE;
-            colour_t colour2 = COLOUR_GREY;
+            FilterPaletteID fpId = static_cast<FilterPaletteID>(37);
             if (gMapSelectFlags & MAP_SELECT_FLAG_GREEN)
             {
-                colour1 = COLOUR_SATURATED_GREEN;
+                fpId = static_cast<FilterPaletteID>(43);
             }
 
-            const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape], colour1, colour2);
+            const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape], fpId);
             PaintAttachToPreviousPS(session, image_id, 0, 0);
             break;
         }
