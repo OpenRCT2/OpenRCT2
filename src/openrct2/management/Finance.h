@@ -60,8 +60,8 @@ extern money64 gParkValueHistory[FINANCE_GRAPH_SIZE];
 extern money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
 bool finance_check_money_required(uint32_t flags);
-bool finance_check_affordability(money32 cost, uint32_t flags);
-void finance_payment(money32 amount, ExpenditureType type);
+bool finance_check_affordability(money64 cost, uint32_t flags);
+void finance_payment(money64 amount, ExpenditureType type);
 void finance_pay_wages();
 void finance_pay_research();
 void finance_pay_interest();

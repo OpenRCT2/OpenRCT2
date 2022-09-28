@@ -17,7 +17,7 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
-ParkSetLoanAction::ParkSetLoanAction(money32 value)
+ParkSetLoanAction::ParkSetLoanAction(money64 value)
     : _value(value)
 {
 }

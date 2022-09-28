@@ -44,8 +44,8 @@ private:
     void ResetRideCrashStatus() const;
     void Set10MinuteInspection() const;
     void SetScenarioNoMoney(bool enabled) const;
-    void SetMoney(money32 amount) const;
-    void AddMoney(money32 amount) const;
+    void SetMoney(money64 amount) const;
+    void AddMoney(money64 amount) const;
     void ClearLoan() const;
     void GenerateGuests(int32_t count) const;
     void SetGuestParameter(int32_t parameter, int32_t value) const;
