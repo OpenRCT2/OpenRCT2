@@ -104,9 +104,10 @@ public:
     void FilterRect(
         rct_drawpixelinfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
     void DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line) override;
-    void DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y) override;
-    void DrawSpriteRawMasked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, ImageId maskImage, ImageId colourImage) override;
-    void DrawSpriteSolid(rct_drawpixelinfo* dpi, ImageId image, int32_t x, int32_t y, uint8_t colour) override;
+    void DrawSprite(rct_drawpixelinfo* dpi, const ImageId& imageId, int32_t x, int32_t y) override;
+    void DrawSpriteRawMasked(
+        rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId& maskImage, const ImageId& colourImage) override;
+    void DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId& image, int32_t x, int32_t y, uint8_t colour) override;
     void DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawBitmap(
         rct_drawpixelinfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x,
@@ -586,7 +587,7 @@ void OpenGLDrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, con
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
+void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, const ImageId& imageId, int32_t x, int32_t y)
 {
     CalculcateClipping(dpi);
 
@@ -737,7 +738,7 @@ void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, i
 }
 
 void OpenGLDrawingContext::DrawSpriteRawMasked(
-    rct_drawpixelinfo* dpi, int32_t x, int32_t y, ImageId maskImage, ImageId colourImage)
+    rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId& maskImage, const ImageId& colourImage)
 {
     CalculcateClipping(dpi);
 
@@ -799,7 +800,7 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, ImageId image, int32_t x, int32_t y, uint8_t colour)
+void OpenGLDrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId& image, int32_t x, int32_t y, uint8_t colour)
 {
     CalculcateClipping(dpi);
 

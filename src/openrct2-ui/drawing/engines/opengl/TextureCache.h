@@ -221,8 +221,8 @@ public:
     TextureCache();
     ~TextureCache();
     void InvalidateImage(ImageIndex image);
-    BasicTextureInfo GetOrLoadImageTexture(ImageId imageId);
-    BasicTextureInfo GetOrLoadGlyphTexture(ImageId imageId, const PaletteMap& paletteMap);
+    BasicTextureInfo GetOrLoadImageTexture(const ImageId& imageId);
+    BasicTextureInfo GetOrLoadGlyphTexture(const ImageId& imageId, const PaletteMap& paletteMap);
     BasicTextureInfo GetOrLoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
 
     GLuint GetAtlasesTexture();
@@ -233,12 +233,12 @@ private:
     void CreateTextures();
     void GeneratePaletteTexture();
     void EnlargeAtlasesTexture(GLuint newEntries);
-    AtlasTextureInfo LoadImageTexture(ImageId image);
-    AtlasTextureInfo LoadGlyphTexture(ImageId image, const PaletteMap& paletteMap);
+    AtlasTextureInfo LoadImageTexture(const ImageId& image);
+    AtlasTextureInfo LoadGlyphTexture(const ImageId& image, const PaletteMap& paletteMap);
     AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
     AtlasTextureInfo LoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
-    static rct_drawpixelinfo GetImageAsDPI(ImageId imageId);
-    static rct_drawpixelinfo GetGlyphAsDPI(ImageId imageId, const PaletteMap& paletteMap);
+    static rct_drawpixelinfo GetImageAsDPI(const ImageId& imageId);
+    static rct_drawpixelinfo GetGlyphAsDPI(const ImageId& imageId, const PaletteMap& paletteMap);
     void FreeTextures();
 
     static rct_drawpixelinfo CreateDPI(int32_t width, int32_t height);
