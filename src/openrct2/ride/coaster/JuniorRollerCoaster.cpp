@@ -1847,7 +1847,7 @@ void junior_rc_paint_track_flat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    uint32_t imageId = junior_rc_track_pieces_flat[EnumValue(chainType)][direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_flat[EnumValue(chainType)][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 
@@ -1867,24 +1867,24 @@ void junior_rc_paint_station(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, bool drawBlockBrake)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     bool isBraked = trackElement.BlockBrakeClosed();
 
     if (direction == 0 || direction == 2)
     {
         // height -= 2 (height - 2)
-        imageId = SPR_STATION_BASE_B_SW_NE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
 
         // height += 2 (height)
         if (trackElement.GetTrackType() == TrackElemType::EndStation && drawBlockBrake)
         {
-            imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
         }
         else
         {
-            imageId = junior_rc_track_pieces_station[false][direction] | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_station[false][direction]);
         }
         PaintAddImageAsChild(session, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 0, height });
 
@@ -1896,17 +1896,17 @@ void junior_rc_paint_station(
     else if (direction == 1 || direction == 3)
     {
         // height -= 2 (height - 2)
-        imageId = SPR_STATION_BASE_B_NW_SE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
 
         // height += 2 (height)
         if (trackElement.GetTrackType() == TrackElemType::EndStation && drawBlockBrake)
         {
-            imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
         }
         else
         {
-            imageId = junior_rc_track_pieces_station[false][direction] | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_station[false][direction]);
         }
         PaintAddImageAsChild(session, imageId, { 6, 0, height }, { 20, 32, 1 }, { 0, 0, height });
 
@@ -1925,7 +1925,8 @@ void junior_rc_paint_track_25_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    uint32_t imageId = junior_rc_track_pieces_25_deg_up[EnumValue(chainType)][direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        junior_rc_track_pieces_25_deg_up[EnumValue(chainType)][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
 
     int8_t tunnelHeights[4] = { -8, 8, 8, -8 };
@@ -1947,8 +1948,8 @@ void junior_rc_paint_track_flat_to_25_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    uint32_t imageId = junior_rc_track_pieces_flat_to_25_deg_up[EnumValue(chainType)][direction]
-        | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        junior_rc_track_pieces_flat_to_25_deg_up[EnumValue(chainType)][direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
     if (direction == 0 || direction == 3)
@@ -1976,8 +1977,8 @@ void junior_rc_paint_track_25_deg_up_to_flat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    uint32_t imageId = junior_rc_track_pieces_25_deg_up_to_flat[EnumValue(chainType)][direction]
-        | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        junior_rc_track_pieces_25_deg_up_to_flat[EnumValue(chainType)][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
 
     uint8_t tunnelType;
@@ -2117,9 +2118,9 @@ static void junior_rc_flat_to_left_bank_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id;
+    ImageId image_id;
 
-    image_id = junior_rc_track_pieces_flat_to_left_bank[direction][0] | session.TrackColours[SCHEME_TRACK];
+    image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_flat_to_left_bank[direction][0]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
@@ -2135,7 +2136,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(
 
     if (junior_rc_track_pieces_flat_to_left_bank[direction][1] != 0)
     {
-        image_id = junior_rc_track_pieces_flat_to_left_bank[direction][1] | session.TrackColours[SCHEME_TRACK];
+        image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_flat_to_left_bank[direction][1]);
 
         if (direction & 1)
         {
@@ -2165,9 +2166,9 @@ static void junior_rc_flat_to_right_bank_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id;
+    ImageId image_id;
 
-    image_id = junior_rc_track_pieces_flat_to_right_bank[direction][0] | session.TrackColours[SCHEME_TRACK];
+    image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_flat_to_right_bank[direction][0]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
@@ -2183,7 +2184,7 @@ static void junior_rc_flat_to_right_bank_paint_setup(
 
     if (junior_rc_track_pieces_flat_to_right_bank[direction][1] != 0)
     {
-        image_id = junior_rc_track_pieces_flat_to_right_bank[direction][1] | session.TrackColours[SCHEME_TRACK];
+        image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_flat_to_right_bank[direction][1]);
 
         if (direction & 1)
         {
@@ -2299,12 +2300,12 @@ static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(
 
     if (direction == 1 && trackSequence == 6)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_NW_SW_PART_4_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_NW_SW_PART_4_2);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
     }
     else if (direction == 3 && trackSequence == 0)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_SE_NE_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_SE_NE_PART_0_2);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
     }
 
@@ -2393,9 +2394,9 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id;
+    ImageId image_id;
 
-    image_id = junior_rc_track_pieces_left_banked_to_25_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_left_banked_to_25_deg_up[direction][0]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
@@ -2407,7 +2408,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(
 
     if (junior_rc_track_pieces_left_banked_to_25_deg_up[direction][1] != 0)
     {
-        image_id = junior_rc_track_pieces_left_banked_to_25_deg_up[direction][1] | session.TrackColours[SCHEME_TRACK];
+        image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_left_banked_to_25_deg_up[direction][1]);
 
         if (direction & 1)
         {
@@ -2453,9 +2454,9 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id;
+    ImageId image_id;
 
-    image_id = junior_rc_track_pieces_right_banked_to_25_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_right_banked_to_25_deg_up[direction][0]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
@@ -2467,7 +2468,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(
 
     if (junior_rc_track_pieces_right_banked_to_25_deg_up[direction][1] != 0)
     {
-        image_id = junior_rc_track_pieces_right_banked_to_25_deg_up[direction][1] | session.TrackColours[SCHEME_TRACK];
+        image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_right_banked_to_25_deg_up[direction][1]);
 
         if (direction & 1)
         {
@@ -2513,7 +2514,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id;
+    ImageId image_id;
 
     uint8_t tunnelType;
     int16_t tunnelHeight;
@@ -2528,7 +2529,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
         tunnelHeight = height - 8;
     }
 
-    image_id = junior_rc_track_pieces_25_deg_up_to_left_bank[direction][0] | session.TrackColours[SCHEME_TRACK];
+    image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_25_deg_up_to_left_bank[direction][0]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
@@ -2544,7 +2545,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
 
     if (junior_rc_track_pieces_25_deg_up_to_left_bank[direction][1] != 0)
     {
-        image_id = junior_rc_track_pieces_25_deg_up_to_left_bank[direction][1] | session.TrackColours[SCHEME_TRACK];
+        image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_25_deg_up_to_left_bank[direction][1]);
 
         if (direction & 1)
         {
@@ -2574,7 +2575,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id;
+    ImageId image_id;
 
     uint8_t tunnelType;
     int16_t tunnelHeight;
@@ -2589,7 +2590,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
         tunnelHeight = height - 8;
     }
 
-    image_id = junior_rc_track_pieces_25_deg_up_to_right_bank[direction][0] | session.TrackColours[SCHEME_TRACK];
+    image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_25_deg_up_to_right_bank[direction][0]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
@@ -2605,7 +2606,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
 
     if (junior_rc_track_pieces_25_deg_up_to_right_bank[direction][1] != 0)
     {
-        image_id = junior_rc_track_pieces_25_deg_up_to_right_bank[direction][1] | session.TrackColours[SCHEME_TRACK];
+        image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_25_deg_up_to_right_bank[direction][1]);
 
         if (direction & 1)
         {
@@ -2689,9 +2690,9 @@ static void junior_rc_left_bank_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id;
+    ImageId image_id;
 
-    image_id = junior_rc_track_pieces_left_bank[direction] | session.TrackColours[SCHEME_TRACK];
+    image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_left_bank[direction]);
     PaintAddImageAsParent(
         session, image_id, { 0, 0, height }, junior_rc_left_bank_bound_lengths[direction],
         { junior_rc_left_bank_bound_offsets[direction], height });
@@ -2952,7 +2953,8 @@ static void junior_rc_s_bend_left_paint_setup(
         { 32, 20 },
     };
 
-    uint32_t imageId = junior_rc_track_pieces_s_bend_left[(direction & 1)][trackSequence] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        junior_rc_track_pieces_s_bend_left[(direction & 1)][trackSequence]);
     CoordsXY offset = offsetList[trackSequence];
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
@@ -3053,7 +3055,8 @@ static void junior_rc_s_bend_right_paint_setup(
         { 32, 20 },
     };
 
-    uint32_t imageId = junior_rc_track_pieces_s_bend_right[direction & 1][trackSequence] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        junior_rc_track_pieces_s_bend_right[direction & 1][trackSequence]);
     CoordsXY offset = offsetList[trackSequence];
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
@@ -3247,12 +3250,12 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
 
     if (direction == 1 && trackSequence == 3)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_NW_SW_PART_2_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_NW_SW_PART_2_2);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
     }
     else if (direction == 3 && trackSequence == 0)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_SE_NE_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_SE_NE_PART_0_2);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
     }
 
@@ -3291,7 +3294,7 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    uint32_t imageId = 0;
+    auto imageId = ImageId(0);
     CoordsXY offset;
     CoordsXY boundsLength;
     CoordsXY boundsOffset;
@@ -3299,21 +3302,21 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
     switch (trackSequence)
     {
         case 0:
-            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[EnumValue(chainType)][direction][0]
-                | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[EnumValue(chainType)][direction][0]);
             offset = defaultRightQuarterTurn3TilesOffsets[direction][0];
             boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][0];
             boundsOffset = offset;
             break;
         case 3:
-            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[EnumValue(chainType)][direction][1]
-                | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[EnumValue(chainType)][direction][1]);
             offset = defaultRightQuarterTurn3TilesOffsets[direction][2];
             boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][2];
             boundsOffset = offset;
             break;
     }
-    if (imageId != 0)
+    if (imageId.GetIndex() != 0)
     {
         PaintAddImageAsParent(session, imageId, { offset, height }, { boundsLength, 1 }, { boundsOffset, height });
     }
@@ -3373,7 +3376,7 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    uint32_t imageId = 0;
+    auto imageId = ImageId(0);
     CoordsXY offset;
     CoordsXY boundsLength;
     CoordsXY boundsOffset;
@@ -3381,21 +3384,21 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
     switch (trackSequence)
     {
         case 0:
-            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[EnumValue(chainType)][direction][0]
-                | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[EnumValue(chainType)][direction][0]);
             offset = defaultRightQuarterTurn3TilesOffsets[direction][0];
             boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][0];
             boundsOffset = offset;
             break;
         case 3:
-            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[EnumValue(chainType)][direction][1]
-                | session.TrackColours[SCHEME_TRACK];
+            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+                junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[EnumValue(chainType)][direction][1]);
             offset = defaultRightQuarterTurn3TilesOffsets[direction][2];
             boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][2];
             boundsOffset = offset;
             break;
     }
-    if (imageId != 0)
+    if (imageId.GetIndex() != 0)
     {
         PaintAddImageAsParent(
             session, imageId, { offset, height }, { boundsLength.x, boundsLength.y, 1 }, { boundsOffset, height });
@@ -3890,9 +3893,9 @@ static void junior_rc_brake_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id;
+    ImageId image_id;
 
-    image_id = junior_rc_track_pieces_brake[direction] | session.TrackColours[SCHEME_TRACK];
+    image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_brake[direction]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
@@ -3924,11 +3927,11 @@ static void junior_rc_block_brake_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id;
+    ImageId image_id;
 
     bool isBraked = trackElement.BlockBrakeClosed();
 
-    image_id = junior_rc_track_pieces_block_brake[isBraked][direction] | session.TrackColours[SCHEME_TRACK];
+    image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
@@ -4794,7 +4797,7 @@ static void junior_rc_diag_flat_to_left_bank_paint_setup(
 
     if (direction == 0 && trackSequence == 1)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
     }
@@ -4821,7 +4824,7 @@ static void junior_rc_diag_flat_to_right_bank_paint_setup(
 
     if (direction == 2 && trackSequence == 2)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
     }
@@ -4848,7 +4851,7 @@ static void junior_rc_diag_left_bank_to_flat_paint_setup(
 
     if (direction == 0 && trackSequence == 1)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
     }
@@ -4875,7 +4878,7 @@ static void junior_rc_diag_right_bank_to_flat_paint_setup(
 
     if (direction == 2 && trackSequence == 2)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
     }
@@ -4902,7 +4905,7 @@ static void junior_rc_diag_left_bank_to_25_deg_up_paint_setup(
 
     if (direction == 0 && trackSequence == 1)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
@@ -4929,7 +4932,7 @@ static void junior_rc_diag_right_bank_to_25_deg_up_paint_setup(
 
     if (direction == 2 && trackSequence == 2)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
@@ -4956,7 +4959,7 @@ static void junior_rc_diag_25_deg_up_to_left_bank_paint_setup(
 
     if (direction == 0 && trackSequence == 1)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
@@ -4983,7 +4986,7 @@ static void junior_rc_diag_25_deg_up_to_right_bank_paint_setup(
 
     if (direction == 2 && trackSequence == 2)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
@@ -5010,7 +5013,7 @@ static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(
 
     if (direction == 0 && trackSequence == 1)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
@@ -5037,7 +5040,7 @@ static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(
 
     if (direction == 2 && trackSequence == 2)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
@@ -5064,7 +5067,7 @@ static void junior_rc_diag_25_deg_down_to_left_bank_paint_setup(
 
     if (direction == 0 && trackSequence == 1)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
@@ -5091,7 +5094,7 @@ static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(
 
     if (direction == 2 && trackSequence == 2)
     {
-        uint32_t imageId = SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2 | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2);
 
         PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
@@ -5199,9 +5202,8 @@ void junior_rc_paint_track_60_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    uint32_t image_id = session.TrackColours[SCHEME_TRACK];
-
-    image_id |= junior_rc_track_pieces_60_deg_up[EnumValue(chainType)][direction];
+    auto image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
+        junior_rc_track_pieces_60_deg_up[EnumValue(chainType)][direction]);
 
     PaintAddImageAsParent(
         session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
@@ -5279,9 +5281,8 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    uint32_t image_id = session.TrackColours[SCHEME_TRACK];
-
-    image_id |= junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][0];
+    auto image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
+        junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][0]);
 
     PaintAddImageAsParent(
         session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
@@ -5291,9 +5292,8 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
 
     if (junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][1] != 0)
     {
-        image_id = session.TrackColours[SCHEME_TRACK];
-
-        image_id |= junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][1];
+        image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
+            junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][1]);
 
         PaintAddImageAsParent(
             session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
@@ -5352,9 +5352,8 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    uint32_t image_id = session.TrackColours[SCHEME_TRACK];
-
-    image_id |= junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][0];
+    auto image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
+        junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][0]);
 
     PaintAddImageAsParent(
         session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
@@ -5364,9 +5363,8 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
 
     if (junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][1] != 0)
     {
-        image_id = session.TrackColours[SCHEME_TRACK];
-
-        image_id |= junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][1];
+        image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
+            junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][1]);
 
         PaintAddImageAsParent(
             session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
@@ -5490,8 +5488,8 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
     {
         PaintAddImageAsParent(
             session,
-            junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction]
-                | session.TrackColours[SCHEME_TRACK],
+            session.TrackColours[SCHEME_TRACK].WithIndex(
+                junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction]),
             { -16, -16, height }, { 16, 16, 1 }, { 0, 0, height });
     }
     else
@@ -5522,8 +5520,8 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
     {
         PaintAddImageAsParent(
             session,
-            junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[EnumValue(chainType)][direction]
-                | session.TrackColours[SCHEME_TRACK],
+            session.TrackColours[SCHEME_TRACK].WithIndex(
+                junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[EnumValue(chainType)][direction]),
             { -16, -16, height }, { 16, 16, 1 }, { 0, 0, height });
     }
     else
@@ -5666,11 +5664,9 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id = session.TrackColours[SCHEME_TRACK];
-
     bool isChained = trackElement.HasChain();
-
-    image_id |= junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][0];
+    auto image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
+        junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][0]);
 
     PaintAddImageAsParent(
         session, image_id, { junior_rc_flat_to_60_deg_up_tile_offsets[direction][0], height + 24 },
@@ -5679,9 +5675,8 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
 
     if (junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][1] != 0)
     {
-        image_id = session.TrackColours[SCHEME_TRACK];
-
-        image_id |= junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][1];
+        image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
+            junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][1]);
 
         PaintAddImageAsParent(
             session, image_id, { junior_rc_flat_to_60_deg_up_tile_offsets[direction][1], height },
@@ -5729,11 +5724,9 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t image_id = session.TrackColours[SCHEME_TRACK];
-
     bool isChained = trackElement.HasChain();
-
-    image_id |= junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][0];
+    auto image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
+        junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][0]);
 
     PaintAddImageAsParent(
         session, image_id, { junior_rc_60_deg_up_to_flat_tile_offsets[direction][0], height + 24 },
@@ -5742,9 +5735,8 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(
 
     if (junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][1] != 0)
     {
-        image_id = session.TrackColours[SCHEME_TRACK];
-
-        image_id |= junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][1];
+        image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
+            junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][1]);
 
         PaintAddImageAsParent(
             session, image_id, { junior_rc_60_deg_up_to_flat_tile_offsets[direction][1], height },
@@ -5870,14 +5862,16 @@ static void junior_rc_booster_paint_setup(
     if (direction & 1)
     {
         PaintAddImageAsParent(
-            session, SPR_JUNIOR_RC_BOOSTER_NE_SW | session.TrackColours[SCHEME_TRACK], { 0, 0, height }, { 20, 32, 1 });
+            session, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BOOSTER_NE_SW), { 0, 0, height },
+            { 20, 32, 1 });
 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else
     {
         PaintAddImageAsParent(
-            session, SPR_JUNIOR_RC_BOOSTER_NW_SE | session.TrackColours[SCHEME_TRACK], { 0, 0, height }, { 32, 20, 1 });
+            session, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BOOSTER_NW_SE), { 0, 0, height },
+            { 32, 20, 1 });
 
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
@@ -5897,14 +5891,15 @@ static void junior_rc_track_on_ride_photo(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = junior_rc_track_pieces_flat[0][direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_flat[0][direction]);
     constexpr const int8_t photoCameraOffset = -1;
 
     switch (direction)
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height + photoCameraOffset }, { 32, 32, 1 });
+                session, direction, ImageId(IMAGE_TYPE_REMAP | SPR_STATION_BASE_D), { 0, 0, height + photoCameraOffset },
+                { 32, 32, 1 });
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
@@ -5913,7 +5908,8 @@ static void junior_rc_track_on_ride_photo(
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height + photoCameraOffset }, { 32, 32, 1 });
+                session, direction, ImageId(IMAGE_TYPE_REMAP | SPR_STATION_BASE_D), { 0, 0, height + photoCameraOffset },
+                { 32, 32, 1 });
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
@@ -5922,7 +5918,8 @@ static void junior_rc_track_on_ride_photo(
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height + photoCameraOffset }, { 32, 32, 1 });
+                session, direction, ImageId(IMAGE_TYPE_REMAP | SPR_STATION_BASE_D), { 0, 0, height + photoCameraOffset },
+                { 32, 32, 1 });
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
@@ -5931,7 +5928,8 @@ static void junior_rc_track_on_ride_photo(
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height + photoCameraOffset }, { 32, 32, 1 });
+                session, direction, ImageId(IMAGE_TYPE_REMAP | SPR_STATION_BASE_D), { 0, 0, height + photoCameraOffset },
+                { 32, 32, 1 });
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(

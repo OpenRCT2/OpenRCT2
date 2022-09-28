@@ -35,25 +35,19 @@ static void PaintShop(
     CoordsXYZ offset(0, 0, height);
     BoundBoxXYZ bb = { { 2, 2, height }, { 28, 28, 45 } };
 
-    auto imageFlags = session.TrackColours[SCHEME_TRACK];
-    if (imageFlags & IMAGE_TYPE_REMAP_2_PLUS)
-    {
-        imageFlags &= ~IMAGE_TYPE_REMAP_2_PLUS;
-        imageFlags &= ~(31 << 24);
-    }
-    auto imageTemplate = ImageId::FromUInt32(imageFlags);
+    auto imageFlags = session.TrackColours[SCHEME_TRACK].WithoutSecondary();
     auto imageIndex = firstCarEntry->base_image_id + direction;
     if (hasSupports)
     {
-        auto foundationImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_3]);
+        auto foundationImageTemplate = session.TrackColours[SCHEME_3];
         auto foundationImageIndex = (direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS;
         auto foundationImageId = foundationImageTemplate.WithIndex(foundationImageIndex);
         PaintAddImageAsParent(session, foundationImageId, offset, bb);
-        PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), offset, bb);
+        PaintAddImageAsChild(session, imageFlags.WithIndex(imageIndex), offset, bb);
     }
     else
     {
-        PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, bb);
+        PaintAddImageAsParent(session, imageFlags.WithIndex(imageIndex), offset, bb);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

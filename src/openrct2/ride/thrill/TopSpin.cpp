@@ -103,9 +103,9 @@ static void PaintTopSpinSeat(
 
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        imageTemplate = imageFlags;
     }
 
     PaintAddImageAsChild(session, imageTemplate.WithIndex(seatImageIndex), seatCoords, bb);
@@ -152,9 +152,9 @@ static void PaintTopSpinVehicle(
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto supportImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].supports);
     auto armImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].additional);
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        supportImageTemplate = ImageId::FromUInt32(imageFlags);
+        supportImageTemplate = imageFlags;
         armImageTemplate = supportImageTemplate;
     }
 

@@ -172,7 +172,8 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     {
         uint8_t arrowRotation = (rotation + (gMapSelectArrowDirection & 3)) & 3;
 
-        uint32_t imageId = arrowRotation + (gMapSelectArrowDirection & 0xFC) + 0x20900C27;
+        uint32_t imageIndex = arrowRotation + (gMapSelectArrowDirection & 0xFC) + PEEP_SPAWN_ARROW_0;
+        ImageId imageId = ImageId(imageIndex, COLOUR_YELLOW);
         int32_t arrowZ = gMapSelectArrowPosition.z;
 
         session.SpritePosition.x = coords.x;

@@ -53,19 +53,18 @@ static void paint_space_rings_structure(
             frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
         }
 
-        uint32_t imageColourFlags = session.TrackColours[SCHEME_MISC];
+        auto imageColourFlags = session.TrackColours[SCHEME_MISC];
         if ((ride.colour_scheme_type & 3) != RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN)
         {
             vehicleIndex = 0;
         }
 
-        if (imageColourFlags == IMAGE_TYPE_REMAP)
+        if (imageColourFlags.ToUInt32() == IMAGE_TYPE_REMAP)
         {
-            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
-                ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
+            imageColourFlags = ImageId(0, ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
         }
 
-        uint32_t imageId = (baseImageId + frameNum) | imageColourFlags;
+        auto imageId = imageColourFlags.WithIndex(baseImageId + frameNum);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 20, 23 }, { -10, -10, height });
 
         if (vehicle != nullptr && vehicle->num_peeps > 0)
@@ -73,8 +72,8 @@ static void paint_space_rings_structure(
             auto* rider = GetEntity<Guest>(vehicle->peep[0]);
             if (rider != nullptr)
             {
-                imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->TshirtColour, rider->TrousersColour);
-                imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
+                imageColourFlags = ImageId(0, rider->TshirtColour, rider->TrousersColour);
+                imageId = imageColourFlags.WithIndex((baseImageId & 0x7FFFF) + 352 + frameNum);
                 PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 20, 23 }, { -10, -10, height });
             }
         }
@@ -94,7 +93,7 @@ static void paint_space_rings(
     int32_t edges = edges_3x3[trackSequence];
     CoordsXY position = session.MapPosition;
 
-    uint32_t imageId;
+    ImageId imageId;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
@@ -106,12 +105,12 @@ static void paint_space_rings(
         case 7:
             if (track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session.CurrentRotation))
             {
-                imageId = SPR_SPACE_RINGS_FENCE_SW | session.TrackColours[SCHEME_MISC];
+                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_SPACE_RINGS_FENCE_SW);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 2 });
             }
             if (track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session.CurrentRotation))
             {
-                imageId = SPR_SPACE_RINGS_FENCE_SE | session.TrackColours[SCHEME_MISC];
+                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_SPACE_RINGS_FENCE_SE);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 2 });
             }
             break;

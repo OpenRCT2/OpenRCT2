@@ -160,7 +160,7 @@ static void paint_car_ride_track_flat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_flat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -191,7 +191,7 @@ static void paint_car_ride_track_25_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_25_deg_up[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_25_deg_up[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -229,7 +229,7 @@ static void paint_car_ride_track_flat_to_25_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_flat_to_25_deg_up[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_flat_to_25_deg_up[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -267,7 +267,7 @@ static void paint_car_ride_track_25_deg_up_to_flat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_25_deg_up_to_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_25_deg_up_to_flat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -329,20 +329,20 @@ static void paint_car_ride_station(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction == 0 || direction == 2)
     {
-        imageId = SPR_STATION_BASE_B_SW_NE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
     }
     else if (direction == 1 || direction == 3)
     {
-        imageId = SPR_STATION_BASE_B_NW_SE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
     }
 
-    imageId = car_ride_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_flat[direction]);
     if (direction == 0 || direction == 2)
     {
         PaintAddImageAsChild(session, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 0, height });
@@ -429,7 +429,7 @@ static void paint_car_ride_track_left_quarter_turn_1_tile(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_left_quarter_turn_1_tile[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_left_quarter_turn_1_tile[direction]);
 
     switch (direction)
     {
@@ -468,7 +468,7 @@ static void paint_car_ride_track_spinning_tunnel(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_flat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -501,7 +501,7 @@ static void paint_car_ride_track_60_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_60_deg_up[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_60_deg_up[direction]);
 
     switch (direction)
     {
@@ -550,7 +550,7 @@ static void paint_car_ride_track_25_deg_up_to_60_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][0]);
 
     if (direction == 0 || direction == 2)
     {
@@ -563,7 +563,7 @@ static void paint_car_ride_track_25_deg_up_to_60_deg_up(
 
     if (car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][1] != 0)
     {
-        imageId = car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][1] | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][1]);
 
         if (direction == 0 || direction == 2)
         {
@@ -606,7 +606,7 @@ static void paint_car_ride_track_60_deg_up_to_25_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][0]);
 
     if (direction == 0 || direction == 2)
     {
@@ -619,7 +619,7 @@ static void paint_car_ride_track_60_deg_up_to_25_deg_up(
 
     if (car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][1] != 0)
     {
-        imageId = car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][1] | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][1]);
 
         if (direction == 0 || direction == 2)
         {
@@ -686,7 +686,7 @@ static void paint_car_ride_track_log_bumps(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_log_bumps[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(car_ride_track_pieces_log_bumps[direction]);
 
     if (direction == 0 || direction == 2)
     {

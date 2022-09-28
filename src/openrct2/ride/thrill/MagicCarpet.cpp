@@ -117,7 +117,7 @@ static void PaintMagicCarpetFrame(
     paint_session& session, Plane plane, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetFrameImage(plane, direction);
-    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto imageTemplate = session.TrackColours[SCHEME_TRACK];
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (plane == Plane::Back)
     {
@@ -133,7 +133,7 @@ static void PaintMagicCarpetPendulum(
     paint_session& session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetPendulumImage(plane, direction, swing);
-    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto imageTemplate = session.TrackColours[SCHEME_TRACK];
     auto imageId = imageTemplate.WithIndex(imageIndex);
     PaintAddImageAsChild(session, imageId, offset, bb);
 }
@@ -166,9 +166,9 @@ static void PaintMagicCarpetVehicle(
     // Vehicle
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        imageTemplate = imageFlags;
     }
     auto vehicleImageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsChild(session, imageTemplate.WithIndex(vehicleImageIndex), offset, bb);
@@ -238,7 +238,7 @@ static void PaintMagicCarpet(
 
             if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
             {
-                uint32_t imageId = SPR_STATION_BASE_D | session.TrackColours[SCHEME_SUPPORTS];
+                auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_BASE_D);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
             }
             break;

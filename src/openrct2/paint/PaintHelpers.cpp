@@ -12,21 +12,21 @@
 #include "Paint.h"
 
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    paint_session& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {
     if (direction & 1)
     {
         return PaintAddImageAsParent(
-            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
+            session, imageId, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
             { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
     }
 
-    return PaintAddImageAsParent(session, image_id, offset, boundBoxSize, boundBoxOffset);
+    return PaintAddImageAsParent(session, imageId, offset, boundBoxSize, boundBoxOffset);
 }
 
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize)
 {
     if (direction & 1)
@@ -39,7 +39,7 @@ paint_struct* PaintAddImageAsParentRotated(
 }
 
 paint_struct* PaintAddImageAsChildRotated(
-    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {
     if (direction & 1)

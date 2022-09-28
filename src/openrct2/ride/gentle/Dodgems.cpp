@@ -36,10 +36,10 @@ static constexpr const uint32_t dodgems_fence_sprites[] = {
 
 static void paint_dodgems_roof(paint_session& session, int32_t height, int32_t offset)
 {
-    uint32_t image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | session.TrackColours[SCHEME_TRACK];
+    auto image_id = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_DODGEMS_ROOF_FRAME + offset));
     PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 32, 2 });
 
-    image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (EnumValue(FilterPaletteID::PaletteDarken3) << 19) | IMAGE_TYPE_TRANSPARENT;
+    image_id = ImageId(SPR_DODGEMS_ROOF_GLASS + offset).WithTransparancy(FilterPaletteID::PaletteDarken3);
     PaintAttachToPreviousPS(session, image_id, 0, 0);
 }
 
@@ -57,7 +57,7 @@ static void paint_dodgems(
 
     if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
-        uint32_t imageId = SPR_DODGEMS_FLOOR | session.TrackColours[SCHEME_SUPPORTS];
+        auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_DODGEMS_FLOOR);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 1, 1, height });
 
         track_paint_util_paint_fences(

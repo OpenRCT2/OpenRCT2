@@ -232,7 +232,7 @@ static void paint_virginia_reel_track_flat(
         sprites = virginia_reel_track_pieces_flat_lift_hill;
     }
 
-    uint32_t imageId = sprites[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 27, 32, 2 }, { 2, 0, height });
@@ -261,7 +261,7 @@ static void paint_virginia_reel_track_25_deg_up(
         sprites = virginia_reel_track_pieces_25_deg_up_lift_hill;
     }
 
-    uint32_t imageId = sprites[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction]);
     paint_struct* ps;
 
     if (direction & 1)
@@ -313,7 +313,7 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(
         sprites = virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill;
     }
 
-    uint32_t imageId = sprites[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction]);
     paint_struct* ps;
     switch (direction)
     {
@@ -360,7 +360,7 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(
         sprites = virginia_reel_track_pieces_25_deg_up_to_flat_lift_hill;
     }
 
-    uint32_t imageId = sprites[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction]);
     paint_struct* ps;
 
     if (direction & 1)
@@ -430,24 +430,24 @@ static void paint_virginia_reel_station(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction == 0 || direction == 2)
     {
-        imageId = SPR_STATION_BASE_B_SW_NE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 2 }, { 0, 2, height });
 
-        imageId = SPR_VIRGINIA_REEL_FLAT_SW_NE | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_VIRGINIA_REEL_FLAT_SW_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 0, height });
 
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
     else if (direction == 1 || direction == 3)
     {
-        imageId = SPR_STATION_BASE_B_NW_SE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 2 }, { 2, 0, height });
 
-        imageId = SPR_VIRGINIA_REEL_FLAT_NW_SE | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_VIRGINIA_REEL_FLAT_NW_SE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 32, 2 }, { 0, 0, height });
 
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);

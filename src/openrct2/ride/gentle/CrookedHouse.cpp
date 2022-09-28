@@ -71,7 +71,7 @@ static void PaintCrookedHouseStructure(
     }
 
     const auto& boundBox = CrookedHouseData[segment];
-    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
+    auto imageTemplate = session.TrackColours[SCHEME_MISC];
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsParent(
         session, imageTemplate.WithIndex(imageIndex), { x_offset, y_offset, height + 3 }, { boundBox.length, 127 },
