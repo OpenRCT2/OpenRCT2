@@ -4100,15 +4100,6 @@ STR_NAME    :지붕
 [TTRFWD08]
 STR_NAME    :지붕
 
-[TTRFGL01]
-STR_NAME    :유리 지붕
-
-[TTRFGL02]
-STR_NAME    :유리 지붕
-
-[TTRFGL03]
-STR_NAME    :유리 지붕
-
 [ACWW33]
 STR_NAME    :나무 기둥 벽
 

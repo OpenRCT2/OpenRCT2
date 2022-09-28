@@ -97,6 +97,7 @@ STR_0092    :Montanha-Russa de Indução Linear
 STR_0093    :Montanha-Russa Híbrida
 STR_0094    :Montanha-Russa de Trilho Único
 STR_0095    :Montanha-Russa Alpina
+STR_0096    :Montanha-Russa de Madeira Clássica
 STR_0512    :Uma montanha russa compacta com subida de elevação em espiral e quedas suaves e retorcidas
 STR_0513    :Uma montanha russa de looping onde passageiros andam em pé
 STR_0514    :Trens suspensos abaixo do trilho da montanha-russa balançam para fora nas curvas
@@ -179,6 +180,7 @@ STR_0602    :Trens da montanha-russa são acelerados para fora da estação por 
 STR_0603    :Uma montanha-russa com estilo semelhante à de madeira, mas trilhos de aço, permitindo quedas íngremes e inversões.
 STR_0604    :Passageiros andam numa fila única em uma pista estreita de monotrilho, enquanto correm por inversões apertadas e mudanças de direções.
 STR_0605    :Passageiros descem de tobogã por um trilho de aço sinuoso, freando para controlar suas velocidades
+STR_0606    :Uma montanha-russa de madeira de estilo mais antigo com um trajeto rápido e duro, com muito ‘tempo no ar’, alguma força G lateral e projetada para um sentimento de ‘perda de controle’
 STR_0767    :Visitante {INT32}
 STR_0768    :Faxineiro {INT32}
 STR_0769    :Mecânico {INT32}
@@ -3617,6 +3619,11 @@ STR_6511    :Giro de Gravidade Zero (direita)
 STR_6512    :Giro de Gravidade Zero Grande (esquerda)
 STR_6513    :Giro de Gravidade Zero Grande (direita)
 STR_6514    :Altura inválida!
+STR_6515    :{BLACK}RCT1 não associado - imagens de reserva serão usadas.
+STR_6516    :Um ou mais objetos adicionados requerem o RCT1 associado para exibição correta. Imagens de reserva serão usadas.
+STR_6517    :Um ou mais objetos nesse parque requerem o RCT1 associado para exibição correta. Imagens de reserva serão usadas.
+STR_6518    :{BLACK}Coloque o mouse sobre um cenário para ver sua descrição e objetivo. Clique para começar a jogar.
+STR_6519    :Extras
 
 #############
 # Scenarios #
@@ -4091,15 +4098,6 @@ STR_NAME    :Telhado
 
 [TTRFWD08]
 STR_NAME    :Telhado
-
-[TTRFGL01]
-STR_NAME    :Telhado de Vidro
-
-[TTRFGL02]
-STR_NAME    :Telhado de Vidro
-
-[TTRFGL03]
-STR_NAME    :Telhado de Vidro
 
 [ACWW33]
 STR_NAME    :Parede de Poste de Madeira

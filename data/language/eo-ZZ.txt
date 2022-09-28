@@ -4099,15 +4099,6 @@ STR_NAME    :Tegmento
 [TTRFWD08]
 STR_NAME    :Tegmento
 
-[TTRFGL01]
-STR_NAME    :Vitra Tegmento
-
-[TTRFGL02]
-STR_NAME    :Vitra Tegmento
-
-[TTRFGL03]
-STR_NAME    :Vitra Tegmento
-
 [ACWW33]
 STR_NAME    :Muro el Lignaj Fostoj
 

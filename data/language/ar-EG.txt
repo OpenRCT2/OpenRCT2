@@ -4077,15 +4077,6 @@ STR_NAME    :سقف
 [TTRFWD08]
 STR_NAME    :سقف
 
-[TTRFGL01]
-STR_NAME    :سقف زجاجي
-
-[TTRFGL02]
-STR_NAME    :سقف زجاجي
-
-[TTRFGL03]
-STR_NAME    :سقف زجاجي
-
 [ACWW33]
 STR_NAME    :حائط خشبي
 
