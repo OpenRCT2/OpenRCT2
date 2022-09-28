@@ -401,13 +401,13 @@ PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
     return nullptr;
 }
 
-PathElement* map_get_first_path_element_at_or_up_from_z(const TileCoordsXYZ& loc)
+PathElement* MapGetFirstPathElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc)
 {
     for (auto* element : TileElementsView<PathElement>(loc.ToCoordsXY()))
     {
         if (element->IsGhost())
             continue;
-        if (element->base_height >= loc.z)
+        if (element->base_height >= loc.baseZ && element->base_height <= loc.clearanceZ)
             return element;
     }
     return nullptr;
