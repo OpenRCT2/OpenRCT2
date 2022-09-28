@@ -169,6 +169,7 @@ int32_t map_height_from_slope(const CoordsXY& coords, int32_t slopeDirection, bo
 BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t direction);
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords);
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc);
+PathElement* map_get_first_path_element_at_or_up_from_z(const TileCoordsXYZ& loc);
 WallElement* map_get_wall_element_at(const CoordsXYZD& wallCoords);
 WallElement* map_get_wall_element_at(const CoordsXYRangedZ& coords);
 SmallSceneryElement* map_get_small_scenery_element_at(const CoordsXYZ& sceneryCoords, int32_t type, uint8_t quadrant);

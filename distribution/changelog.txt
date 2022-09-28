@@ -70,6 +70,7 @@
 - Fix: [#17931] The in-game command ‘count_objects’ crashes the game.
 - Fix: [#17865] With difficult guest generation, tested but unopened rides still contribute to the guest cap.
 - Fix: [#17866] [Plugin] Wrong Soft Guest Cap at start of new game.
+- Fix: [#17889] Peeps don't stop at level railway crossings if approached from downhill.
 - Fix: [#17980] Queue lines of track designs mess up existing queue lines if dragged through them.
 - Fix: [#17959] Areas marked for dirty drawing are too large.
 - Fix: [#17963] Some marketing campaigns can’t be started after Finances window tab has been on Research.

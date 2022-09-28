@@ -401,6 +401,18 @@ PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
     return nullptr;
 }
 
+PathElement* map_get_first_path_element_at_or_up_from_z(const TileCoordsXYZ& loc)
+{
+    for (auto* element : TileElementsView<PathElement>(loc.ToCoordsXY()))
+    {
+        if (element->IsGhost())
+            continue;
+        if (element->base_height >= loc.z)
+            return element;
+    }
+    return nullptr;
+}
+
 BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t position)
 {
     const auto bannerTilePos = TileCoordsXYZ{ bannerPos };
