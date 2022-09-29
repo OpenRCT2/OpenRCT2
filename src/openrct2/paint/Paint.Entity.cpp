@@ -85,11 +85,11 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
             {
                 continue;
             }
-            if (entityPos.x < gClipSelectionA.x || entityPos.x > gClipSelectionB.x + 28)
+            if (entityPos.x < gClipSelectionA.x || entityPos.x > gClipSelectionB.x + 31)
             {
                 continue;
             }
-            if (entityPos.y < gClipSelectionA.y || entityPos.y > gClipSelectionB.y + 28)
+            if (entityPos.y < gClipSelectionA.y || entityPos.y > gClipSelectionB.y + 31)
             {
                 continue;
             }
