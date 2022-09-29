@@ -4095,15 +4095,6 @@ STR_NAME    :屋顶
 [TTRFWD08]
 STR_NAME    :屋顶
 
-[TTRFGL01]
-STR_NAME    :玻璃屋顶
-
-[TTRFGL02]
-STR_NAME    :玻璃屋顶
-
-[TTRFGL03]
-STR_NAME    :玻璃屋顶
-
 [ACWW33]
 STR_NAME    :木柱墙
 

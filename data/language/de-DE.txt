@@ -4093,15 +4093,6 @@ STR_NAME    :Dach
 [TTRFWD08]
 STR_NAME    :Dach
 
-[TTRFGL01]
-STR_NAME    :Glasdach
-
-[TTRFGL02]
-STR_NAME    :Glasdach
-
-[TTRFGL03]
-STR_NAME    :Glasdach
-
 [ACWW33]
 STR_NAME    :Holzpfostenwand
 

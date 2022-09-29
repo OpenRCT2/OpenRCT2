@@ -368,10 +368,10 @@ static void dinghy_slide_track_flat(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[isChained][direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[isChained][direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -398,10 +398,11 @@ static void dinghy_slide_track_station(
     };
 
     PaintAddImageAsParentRotated(
-        session, direction, imageIds[direction][0] | session.TrackColours[SCHEME_TRACK], { 0, 0, height }, { 32, 20, 1 },
-        { 0, 6, height + 3 });
+        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
+        { 32, 20, 1 }, { 0, 6, height + 3 });
     PaintAddImageAsParentRotated(
-        session, direction, imageIds[direction][1] | session.TrackColours[SCHEME_MISC], { 0, 0, height }, { 32, 32, 1 });
+        session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
+        { 32, 32, 1 });
 
     metal_a_supports_paint_setup(
         session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -436,10 +437,10 @@ static void dinghy_slide_track_25_deg_up(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[isChained][direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[isChained][direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 50 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -472,10 +473,10 @@ static void dinghy_slide_track_60_deg_up(
         { SPR_DINGHY_SLIDE_60_DEG_SE_NW, SPR_DINGHY_SLIDE_60_DEG_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 98 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -517,10 +518,10 @@ static void dinghy_slide_track_flat_to_25_deg_up(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[isChained][direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[isChained][direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -553,10 +554,10 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up(
         { SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_SE_NW, SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -589,10 +590,10 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up(
         { SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_SE_NW, SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -634,10 +635,10 @@ static void dinghy_slide_track_25_deg_up_to_flat(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[isChained][direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[isChained][direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -868,8 +869,8 @@ static void dinghy_slide_track_s_bend_left(
         },
     };
 
-    uint32_t imageId = imageIds[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -975,8 +976,8 @@ static void dinghy_slide_track_s_bend_right(
         },
     };
 
-    uint32_t imageId = imageIds[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -1149,10 +1150,10 @@ static void dinghy_slide_track_flat_covered(
         { SPR_DINGHY_SLIDE_FLAT_COVERED_NW_SE, SPR_DINGHY_SLIDE_FLAT_COVERED_FRONT_NW_SE },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -1178,10 +1179,10 @@ static void dinghy_slide_track_25_deg_up_covered(
         { SPR_DINGHY_SLIDE_25_DEG_COVERED_SE_NW, SPR_DINGHY_SLIDE_25_DEG_COVERED_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 50 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -1214,10 +1215,10 @@ static void dinghy_slide_track_60_deg_up_covered(
         { SPR_DINGHY_SLIDE_60_DEG_COVERED_SE_NW, SPR_DINGHY_SLIDE_60_DEG_COVERED_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 98 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -1250,10 +1251,10 @@ static void dinghy_slide_track_flat_to_25_deg_up_covered(
         { SPR_DINGHY_SLIDE_FLAT_TO_25_DEG_COVERED_SE_NW, SPR_DINGHY_SLIDE_FLAT_TO_25_DEG_COVERED_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -1286,10 +1287,10 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up_covered(
         { SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_COVERED_SE_NW, SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_COVERED_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -1322,10 +1323,10 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up_covered(
         { SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_COVERED_SE_NW, SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_COVERED_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -1358,10 +1359,10 @@ static void dinghy_slide_track_25_deg_up_to_flat_covered(
         { SPR_DINGHY_SLIDE_25_DEG_TO_FLAT_COVERED_SE_NW, SPR_DINGHY_SLIDE_25_DEG_TO_FLAT_COVERED_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-    imageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -1585,8 +1586,8 @@ static void dinghy_slide_track_s_bend_left_covered(
         },
     };
 
-    uint32_t imageId = imageIds[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -1692,8 +1693,8 @@ static void dinghy_slide_track_s_bend_right_covered(
         },
     };
 
-    uint32_t imageId = imageIds[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)

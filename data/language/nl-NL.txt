@@ -4427,16 +4427,6 @@ STR_DESC    :Een kiosk waar bezoekers kaarten van het park en paraplu’s kunnen
 #################
 
 ## Start CC
-# TT Glass Roofs
-[TTRFGL01]
-STR_NAME    :Glazen dak
-
-[TTRFGL02]
-STR_NAME    :Glazen dak
-
-[TTRFGL03]
-STR_NAME    :Glazen dak
-
 ## TT Pirate roofs and eaves
 [TTPIRF05]
 STR_NAME    :Dak

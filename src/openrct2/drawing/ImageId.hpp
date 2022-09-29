@@ -254,6 +254,14 @@ public:
         return result;
     }
 
+    [[nodiscard]] constexpr ImageId WithoutSecondary() const
+    {
+        ImageId result = *this;
+        result._secondary = 0;
+        result._flags &= ~NEW_FLAG_SECONDARY;
+        return result;
+    }
+
     [[nodiscard]] constexpr ImageId WithTertiary(colour_t tertiary) const
     {
         ImageId result = *this;

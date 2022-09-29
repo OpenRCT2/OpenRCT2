@@ -61,7 +61,7 @@ static void maze_paint_setup(
 
     uint32_t rotation = session.CurrentRotation;
     // draw ground
-    int32_t image_id = SPR_TERRAIN_DIRT | session.TrackColours[SCHEME_MISC];
+    auto image_id = session.TrackColours[SCHEME_MISC].WithIndex(SPR_TERRAIN_DIRT);
     PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 32, 0 });
 
     wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session.TrackColours[SCHEME_3]);
@@ -85,9 +85,9 @@ static void maze_paint_setup(
             break;
     }
 
-    base_image_id |= session.TrackColours[SCHEME_MISC];
+    auto baseImage = session.TrackColours[SCHEME_MISC].WithIndex(base_image_id);
 
-    image_id = base_image_id + SPR_MAZE_OFFSET_WALL_CENTRE;
+    image_id = baseImage.WithIndexOffset(SPR_MAZE_OFFSET_WALL_CENTRE);
     if (maze_entry & MAZE_ENTRY_FLAG_3)
         PaintAddImageAsParent(session, image_id, { 2, 2, height }, { 10, 10, 9 }, { 3, 3, height + 2 });
 
@@ -100,49 +100,49 @@ static void maze_paint_setup(
     if (maze_entry & MAZE_ENTRY_FLAG_15)
         PaintAddImageAsParent(session, image_id, { 18, 2, height }, { 10, 10, 9 }, { 19, 3, height + 2 });
 
-    image_id = base_image_id + SPR_MAZE_OFFSET_WALL_TOP_LEFT;
+    image_id = baseImage.WithIndexOffset(SPR_MAZE_OFFSET_WALL_TOP_LEFT);
     if (maze_entry & MAZE_ENTRY_FLAG_0)
         PaintAddImageAsParent(session, image_id, { 2, 0, height }, { 10, 1, 9 }, { 3, 1, height + 2 });
 
     if (maze_entry & MAZE_ENTRY_FLAG_13)
         PaintAddImageAsParent(session, image_id, { 18, 0, height }, { 10, 1, 9 }, { 19, 1, height + 2 });
 
-    image_id = base_image_id + SPR_MAZE_OFFSET_WALL_BOTTOM_RIGHT;
+    image_id = baseImage.WithIndexOffset(SPR_MAZE_OFFSET_WALL_BOTTOM_RIGHT);
     if (maze_entry & MAZE_ENTRY_FLAG_5)
         PaintAddImageAsParent(session, image_id, { 2, 30, height }, { 10, 1, 9 }, { 3, 30, height + 2 });
 
     if (maze_entry & MAZE_ENTRY_FLAG_8)
         PaintAddImageAsParent(session, image_id, { 18, 30, height }, { 10, 1, 9 }, { 19, 30, height + 2 });
 
-    image_id = base_image_id + SPR_MAZE_OFFSET_WALL_TOP_RIGHT;
+    image_id = baseImage.WithIndexOffset(SPR_MAZE_OFFSET_WALL_TOP_RIGHT);
     if (maze_entry & MAZE_ENTRY_FLAG_1)
         PaintAddImageAsParent(session, image_id, { 0, 2, height }, { 1, 10, 9 }, { 1, 3, height + 2 });
 
     if (maze_entry & MAZE_ENTRY_FLAG_4)
         PaintAddImageAsParent(session, image_id, { 0, 18, height }, { 1, 10, 9 }, { 1, 19, height + 2 });
 
-    image_id = base_image_id + SPR_MAZE_OFFSET_WALL_BOTTOM_LEFT;
+    image_id = baseImage.WithIndexOffset(SPR_MAZE_OFFSET_WALL_BOTTOM_LEFT);
     if (maze_entry & MAZE_ENTRY_FLAG_12)
         PaintAddImageAsParent(session, image_id, { 30, 2, height }, { 1, 10, 9 }, { 30, 3, height + 2 });
 
     if (maze_entry & MAZE_ENTRY_FLAG_9)
         PaintAddImageAsParent(session, image_id, { 30, 18, height }, { 1, 10, 9 }, { 30, 19, height + 2 });
 
-    image_id = base_image_id + SPR_MAZE_OFFSET_WALL_INNER_NE_SW;
+    image_id = baseImage.WithIndexOffset(SPR_MAZE_OFFSET_WALL_INNER_NE_SW);
     if (maze_entry & MAZE_ENTRY_FLAG_2)
         PaintAddImageAsParent(session, image_id, { 2, 14, height }, { 10, 4, 9 }, { 3, 14, height + 2 });
 
     if (maze_entry & MAZE_ENTRY_FLAG_10)
         PaintAddImageAsParent(session, image_id, { 18, 14, height }, { 10, 4, 9 }, { 19, 14, height + 2 });
 
-    image_id = base_image_id + SPR_MAZE_OFFSET_WALL_INNER_NW_SE;
+    image_id = baseImage.WithIndexOffset(SPR_MAZE_OFFSET_WALL_INNER_NW_SE);
     if (maze_entry & MAZE_ENTRY_FLAG_14)
         PaintAddImageAsParent(session, image_id, { 14, 2, height }, { 4, 10, 9 }, { 14, 3, height + 2 });
 
     if (maze_entry & MAZE_ENTRY_FLAG_6)
         PaintAddImageAsParent(session, image_id, { 14, 18, height }, { 4, 10, 9 }, { 14, 19, height + 2 });
 
-    image_id = base_image_id + SPR_MAZE_OFFSET_COLUMN_CORNER;
+    image_id = baseImage.WithIndexOffset(SPR_MAZE_OFFSET_COLUMN_CORNER);
     if (maze_entry & (MAZE_ENTRY_FLAG_0 | MAZE_ENTRY_FLAG_1))
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 1, 9 }, { 1, 1, height + 2 });
 

@@ -48,7 +48,7 @@ static void paint_flying_saucers(
 
     if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
-        uint32_t imageId = SPR_FLYING_SAUCERS_FLOOR | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FLYING_SAUCERS_FLOOR);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 1, 1, height });
     }
 

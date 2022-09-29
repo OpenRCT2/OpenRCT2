@@ -426,7 +426,7 @@ void JumpingFountain::Paint(paint_session& session, int32_t imageDirection) cons
 
     uint32_t baseImageId = (FountainType == JumpingFountainType::Snow) ? JumpingFountainSnowBaseImage
                                                                        : JumpingFountainWaterBaseImage;
-    uint32_t imageId = baseImageId + imageDirection * 16 + frame;
+    auto imageId = ImageId(baseImageId + imageDirection * 16 + frame);
     constexpr std::array antiClockWiseBoundingBoxes = {
         CoordsXY{ -COORDS_XY_STEP, -3 },
         CoordsXY{ 0, -3 },

@@ -180,7 +180,7 @@ static void paint_ghost_train_track_flat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = ghost_train_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_flat[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
@@ -202,10 +202,10 @@ static void paint_ghost_train_track_25_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = ghost_train_track_pieces_25_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_25_deg_up[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
-    imageId = ghost_train_track_pieces_25_deg_up[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_25_deg_up[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 23 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -250,10 +250,10 @@ static void paint_ghost_train_track_flat_to_25_deg_up(
         doorImage = doorOpeningOutwardsToImage[trackElement.GetDoorBState()];
     }
 
-    uint32_t imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_flat_to_25_deg_up[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
-    imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_flat_to_25_deg_up[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 15 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -286,10 +286,10 @@ static void paint_ghost_train_track_25_deg_up_to_flat_shared(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_25_deg_up_to_flat[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
-    imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_25_deg_up_to_flat[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 15 }, { 0, 27, height });
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -371,7 +371,7 @@ static void paint_ghost_train_station(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     static constexpr const std::array imageIds = {
         SPR_STATION_BASE_B_SW_NE,
@@ -380,10 +380,10 @@ static void paint_ghost_train_station(
         SPR_STATION_BASE_B_NW_SE,
     };
 
-    imageId = imageIds[direction] | session.TrackColours[SCHEME_MISC];
+    imageId = session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height - 2 }, { 32, 28, 3 }, { 0, 2, height });
 
-    imageId = ghost_train_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_flat[direction]);
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 0, height });
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -495,7 +495,7 @@ static void paint_ghost_train_track_spinning_tunnel(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = ghost_train_track_pieces_spinning_tunnel_track[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_spinning_tunnel_track[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 28, 20, 3 }, { 2, 6, height });
 
@@ -515,7 +515,7 @@ static void paint_ghost_train_track_brakes(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = ghost_train_track_pieces_brakes[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_brakes[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 

@@ -4101,15 +4101,6 @@ STR_NAME    :Tetto
 [TTRFWD08]
 STR_NAME    :Tetto
 
-[TTRFGL01]
-STR_NAME    :Tetto di vetro
-
-[TTRFGL02]
-STR_NAME    :Tetto di vetro
-
-[TTRFGL03]
-STR_NAME    :Tetto di vetro
-
 [ACWW33]
 STR_NAME    :Muro di pali di legno
 

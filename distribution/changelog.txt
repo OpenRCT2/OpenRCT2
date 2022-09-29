@@ -17,7 +17,7 @@
 - Feature: [objects#209] Add the Steel Roller Coaster train and 2-across Inverted Train from RollerCoaster Tycoon 1.
 - Improved: [#15358] Park and scenario names can now contain up to 128 characters.
 - Improved: [#15589] Numpad Enter can now be used to close text input.
-- Improved: [#16819] Don't prompt to “Save game as” when saving a loaded saved game (excepting autosaves).
+- Improved: [#16819] Don’t prompt to “Save game as” when saving a loaded saved game (excepting autosaves).
 - Improved: [#16840] Add support for rectangular heightmaps.
 - Improved: [#17575] You can now search for Authors in Object Selection.
 - Improved: [#17806] Added warning when using RCT1 objects without RCT1 linked.
@@ -70,6 +70,7 @@
 - Fix: [#17931] The in-game command ‘count_objects’ crashes the game.
 - Fix: [#17865] With difficult guest generation, tested but unopened rides still contribute to the guest cap.
 - Fix: [#17866] [Plugin] Wrong Soft Guest Cap at start of new game.
+- Fix: [#17889] Peeps don’t stop at level railway crossings if approached from downhill.
 - Fix: [#17980] Queue lines of track designs mess up existing queue lines if dragged through them.
 - Fix: [#17959] Areas marked for dirty drawing are too large.
 - Fix: [#17963] Some marketing campaigns can’t be started after Finances window tab has been on Research.
@@ -81,8 +82,9 @@
 - Fix: [#18026] Park rating drops to 0 with more than 32k guests, total ride excitement or intensity.
 - Fix: [#18032] All non-interactive widgets (labels, groupboxes) produce sound when clicked.
 - Fix: [#18035] Favourited servers don’t get their online status updated.
-- Fix: [#18051] Visual glitch with Mine Ride's large unbanked turn (original bug).
+- Fix: [#18051] Visual glitch with Mine Ride’s large unbanked turn (original bug).
 - Fix: [#18059] [Plugin] Width and height of custom window not changeable via script.
+- Fix: [#18087] Bank balance is clamped to a 32-bit integer every transaction.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
@@ -106,7 +108,7 @@
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
 - Removed: [#16911, #17411] Residual support for pre-Vista Windows systems.
 - Fix: [#13997] Placing a track design interferes with other players building a ride.
-- Fix: [#15787] When deselecting "Show banner text in upper case", the banners remain upper case for 10 seconds.
+- Fix: [#15787] When deselecting “Show banner text in upper case”, the banners remain upper case for 10 seconds.
 - Fix: [#16539] CustomListView header not clickable when listview is scrolled.
 - Fix: [#16799] Browsing “Up” in the Load Save window shows no files, only folders.
 - Fix: [#16934] Park size displayed incorrectly in Park window.

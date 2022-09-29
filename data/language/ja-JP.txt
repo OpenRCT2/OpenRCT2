@@ -3938,15 +3938,6 @@ STR_NAME    :屋根
 [TTRFWD08]
 STR_NAME    :屋根
 
-[TTRFGL01]
-STR_NAME    :ガラス屋根
-
-[TTRFGL02]
-STR_NAME    :ガラス屋根
-
-[TTRFGL03]
-STR_NAME    :ガラス屋根
-
 [ACWW33]
 STR_NAME    :木製のポスト壁
 

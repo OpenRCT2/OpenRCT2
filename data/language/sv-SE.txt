@@ -4043,15 +4043,6 @@ STR_NAME    :Tak
 [TTRFWD08]
 STR_NAME    :Tak
 
-[TTRFGL01]
-STR_NAME    :Glastak
-
-[TTRFGL02]
-STR_NAME    :Glastak
-
-[TTRFGL03]
-STR_NAME    :Glastak
-
 [ACWW33]
 STR_NAME    :Träpalissad
 

@@ -4102,15 +4102,6 @@ STR_NAME    :Sostre
 [TTRFWD08]
 STR_NAME    :Sostre
 
-[TTRFGL01]
-STR_NAME    :Sostre de vidre
-
-[TTRFGL02]
-STR_NAME    :Sostre de vidre
-
-[TTRFGL03]
-STR_NAME    :Sostre de vidre
-
 [ACWW33]
 STR_NAME    :Paret de pals de fusta
 

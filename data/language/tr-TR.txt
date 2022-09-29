@@ -3852,15 +3852,6 @@ STR_NAME    :Çatı
 [TTRFWD08]
 STR_NAME    :Çatı
 
-[TTRFGL01]
-STR_NAME    :Cam çatı
-
-[TTRFGL02]
-STR_NAME    :Cam çatı
-
-[TTRFGL03]
-STR_NAME    :Cam çatı
-
 [ACWW33]
 STR_NAME    :Direkli ahşap duvar
 

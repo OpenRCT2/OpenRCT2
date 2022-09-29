@@ -51,9 +51,9 @@ static void paint_twist_structure(
 
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        imageTemplate = imageFlags;
     }
 
     auto baseImageId = rideEntry->Cars[0].base_image_id;
@@ -89,7 +89,7 @@ static void paint_twist(
 
     const uint8_t edges = edges_3x3[trackSequence];
 
-    uint32_t imageId;
+    ImageId imageId;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
@@ -101,12 +101,12 @@ static void paint_twist(
         case 7:
             if (track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation))
             {
-                imageId = SPR_FENCE_ROPE_SW | session.TrackColours[SCHEME_MISC];
+                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_FENCE_ROPE_SW);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 3 });
             }
             if (track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation))
             {
-                imageId = SPR_FENCE_ROPE_SE | session.TrackColours[SCHEME_MISC];
+                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_FENCE_ROPE_SE);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
             }
             break;

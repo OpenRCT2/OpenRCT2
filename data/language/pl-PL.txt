@@ -4092,15 +4092,6 @@ STR_NAME    :Roof
 [TTRFWD08]
 STR_NAME    :Roof
 
-[TTRFGL01]
-STR_NAME    :Glass Roof
-
-[TTRFGL02]
-STR_NAME    :Glass Roof
-
-[TTRFGL03]
-STR_NAME    :Glass Roof
-
 [ACWW33]
 STR_NAME    :Wooden Post Wall
 

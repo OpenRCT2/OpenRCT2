@@ -140,9 +140,11 @@ void ride_ratings_calculate_inverted_impulse_coaster(Ride* ride, RideRatingUpdat
 void ride_ratings_calculate_mini_roller_coaster(Ride* ride, RideRatingUpdateState& state);
 void ride_ratings_calculate_mine_ride(Ride* ride, RideRatingUpdateState& state);
 void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride, RideRatingUpdateState& state);
+void ride_ratings_calculate_classic_mini_roller_coaster(Ride* ride, RideRatingUpdateState& state);
 void ride_ratings_calculate_hybrid_coaster(Ride* ride, RideRatingUpdateState& state);
 void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride, RideRatingUpdateState& state);
 void ride_ratings_calculate_alpine_coaster(Ride* ride, RideRatingUpdateState& state);
+void ride_ratings_calculate_classic_wooden_roller_coaster(Ride* ride, RideRatingUpdateState& state);
 void ride_ratings_calculate_drink_stall(Ride* ride, RideRatingUpdateState& state);
 
 // Special Track Element Adjustment functions for RTDs

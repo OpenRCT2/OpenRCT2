@@ -762,7 +762,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 
         if (argv[0] == "money" && invalidArguments(&invalidArgs, double_valid[0]))
         {
-            money32 money = ToMoney32FromGBP(double_val[0]);
+            money32 money = ToMoney64FromGBP(double_val[0]);
             if (gCash != money)
             {
                 auto setCheatAction = SetCheatAction(CheatType::SetMoney, money);
@@ -796,7 +796,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             auto scenarioSetSetting = ScenarioSetSettingAction(
                 ScenarioSetSetting::InitialLoan,
                 std::clamp<money64>(
-                    ToMoney32FromGBP(int_val[0]) - ToMoney32FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan));
+                    ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set current_loan command failed, likely due to permissions.");

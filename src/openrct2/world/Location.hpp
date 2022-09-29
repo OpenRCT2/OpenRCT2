@@ -489,6 +489,34 @@ struct TileCoordsXYZ : public TileCoordsXY
     }
 };
 
+struct TileCoordsXYRangedZ : public TileCoordsXY
+{
+    int32_t baseZ{};
+    int32_t clearanceZ{};
+
+    constexpr TileCoordsXYRangedZ() = default;
+    constexpr TileCoordsXYRangedZ(int32_t _x, int32_t _y, int32_t _baseZ, int32_t _clearanceZ)
+        : TileCoordsXY(_x, _y)
+        , baseZ(_baseZ)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+
+    constexpr TileCoordsXYRangedZ(const TileCoordsXY& _c, int32_t _baseZ, int32_t _clearanceZ)
+        : TileCoordsXY(_c)
+        , baseZ(_baseZ)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+
+    constexpr TileCoordsXYRangedZ(const TileCoordsXYZ& _c, int32_t _clearanceZ)
+        : TileCoordsXY(_c)
+        , baseZ(_c.z)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+};
+
 /**
  * Cardinal directions are represented by the Direction type. It has four
  * possible values:

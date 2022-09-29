@@ -160,7 +160,7 @@ static constexpr const uint32_t monorail_cycles_track_pieces_flat_quarter_turn_3
 };
 
 static paint_struct* paint_monorail_cycles_util_7c(
-    paint_session& session, bool flip, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    paint_session& session, bool flip, ImageId image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z, uint32_t rotation)
 {
@@ -181,7 +181,7 @@ static void paint_monorail_cycles_track_flat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = monorail_cycles_track_pieces_flat[(direction & 1)] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_cycles_track_pieces_flat[(direction & 1)]);
     paint_monorail_cycles_util_7c(
         session, static_cast<bool>(direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, session.CurrentRotation);
 
@@ -208,14 +208,14 @@ static void paint_monorail_cycles_station(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction == 0 || direction == 2)
     {
-        imageId = SPR_STATION_BASE_B_SW_NE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
 
-        imageId = SPR_MONORAIL_CYCLES_FLAT_SW_NE | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_MONORAIL_CYCLES_FLAT_SW_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 0, height });
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -224,10 +224,10 @@ static void paint_monorail_cycles_station(
     }
     else if (direction == 1 || direction == 3)
     {
-        imageId = SPR_STATION_BASE_B_NW_SE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
 
-        imageId = SPR_MONORAIL_CYCLES_FLAT_NW_SE | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_MONORAIL_CYCLES_FLAT_NW_SE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 0, 0, height });
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -439,8 +439,8 @@ static void paint_monorail_cycles_track_s_bend_left(
         trackSequence = 3 - trackSequence;
     }
 
-    uint32_t imageId = monorail_cycles_track_pieces_s_bend_left[direction & 1][trackSequence]
-        | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        monorail_cycles_track_pieces_s_bend_left[direction & 1][trackSequence]);
     switch (trackSequence)
     {
         case 0:
@@ -548,8 +548,8 @@ static void paint_monorail_cycles_track_s_bend_right(
         trackSequence = 3 - trackSequence;
     }
 
-    uint32_t imageId = monorail_cycles_track_pieces_s_bend_right[direction & 1][trackSequence]
-        | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        monorail_cycles_track_pieces_s_bend_right[direction & 1][trackSequence]);
     switch (trackSequence)
     {
         case 0:

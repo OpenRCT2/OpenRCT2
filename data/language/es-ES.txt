@@ -4098,15 +4098,6 @@ STR_NAME    :Techo
 [TTRFWD08]
 STR_NAME    :Techo
 
-[TTRFGL01]
-STR_NAME    :Techo de vidrio
-
-[TTRFGL02]
-STR_NAME    :Techo de vidrio
-
-[TTRFGL03]
-STR_NAME    :Techo de vidrio
-
 [ACWW33]
 STR_NAME    :Pared de Madera
 
