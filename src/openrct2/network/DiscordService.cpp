@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/localisation/Formatting.h"
 #ifdef __ENABLE_DISCORD__
 
 #    include "DiscordService.h"
@@ -99,7 +100,24 @@ void DiscordService::RefreshPresence() const
             }
             else
             {
-                state = String::ToStd(network_get_server_name());
+                
+                OpenRCT2::FmtString fmtServerName(network_get_server_name());
+                std::string serverName;
+                for (const auto& token : fmtServerName)
+                {
+                    if (token.IsLiteral())
+                    {
+                        serverName += token.text;
+                    }
+                    else if (token.IsCodepoint())
+                    {
+                        auto codepoint = token.GetCodepoint();
+                        char buffer[8]{};
+                        utf8_write_codepoint(buffer, codepoint);
+                        serverName += buffer;
+                    }
+                }
+                state = serverName;
 
                 // NOTE: the party size is displayed next to state
                 discordPresence.partyId = network_get_server_name();
