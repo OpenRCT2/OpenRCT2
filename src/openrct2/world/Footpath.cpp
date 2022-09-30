@@ -2023,7 +2023,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
 
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
 {
-    auto pathElement = MapGetFirstPathElementWithBaseHeightBetween({ position, position.z + PATH_HEIGHT_STEP });
+    auto pathElement = MapGetFirstTileElementWithBaseHeightBetween<PathElement>({ position, position.z + PATH_HEIGHT_STEP });
     return pathElement != nullptr && pathElement->IsBlockedByVehicle();
 }
 

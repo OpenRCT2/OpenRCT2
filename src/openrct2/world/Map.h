@@ -164,12 +164,12 @@ void map_strip_ghost_flag_from_elements();
 TileElement* map_get_first_element_at(const CoordsXY& tilePos);
 TileElement* map_get_first_element_at(const TileCoordsXY& tilePos);
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n);
+TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type);
 void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements);
 int32_t map_height_from_slope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
 BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t direction);
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords);
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc);
-PathElement* MapGetFirstPathElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc);
 WallElement* map_get_wall_element_at(const CoordsXYZD& wallCoords);
 WallElement* map_get_wall_element_at(const CoordsXYRangedZ& coords);
 SmallSceneryElement* map_get_small_scenery_element_at(const CoordsXYZ& sceneryCoords, int32_t type, uint8_t quadrant);
@@ -197,6 +197,12 @@ void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
 bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
 TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
+
+template<typename T = TileElement> T* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc)
+{
+    auto* element = MapGetFirstTileElementWithBaseHeightBetween(loc, T::ElementType);
+    return element != nullptr ? element->template as<T>() : nullptr;
+}
 
 template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
 {
