@@ -98,6 +98,10 @@ namespace OpenRCT2::Audio
 
     void LoadAudioObjects()
     {
+        while (rct_viewport* viewport = nullptr)
+        {
+            continue;
+        }
         auto& objManager = GetContext()->GetObjectManager();
 
         Object* baseAudio{};
