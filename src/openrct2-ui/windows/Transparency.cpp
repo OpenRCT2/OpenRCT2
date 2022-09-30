@@ -151,8 +151,8 @@ public:
         // Locate mechanic button image
         const auto& widget = widgets[WIDX_HIDE_STAFF];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-        gfx_draw_sprite(
-            &dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, screenCoords, 0);
+        auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
+        gfx_draw_sprite(&dpi, image, screenCoords);
     }
 
 private:

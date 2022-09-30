@@ -462,10 +462,6 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 }
 
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) (IMAGE_TYPE_REMAP | ((colourId) << 19))
-#define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId)                                                                     \
-    (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | (((primaryId) << 19) | ((secondaryId) << 24)))
-#define SPRITE_ID_PALETTE_COLOUR_3(primaryId, secondaryId)                                                                     \
-    (IMAGE_TYPE_REMAP_2_PLUS | (((primaryId) << 19) | ((secondaryId) << 24)))
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
 
@@ -523,7 +519,7 @@ bool gfx_load_csg();
 void gfx_unload_g1();
 void gfx_unload_g2();
 void gfx_unload_csg();
-const rct_g1_element* gfx_get_g1_element(ImageId imageId);
+const rct_g1_element* gfx_get_g1_element(const ImageId& imageId);
 const rct_g1_element* gfx_get_g1_element(ImageIndex image_id);
 void gfx_set_g1_element(ImageIndex imageId, const rct_g1_element* g1);
 std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
@@ -531,19 +527,17 @@ bool is_csg_loaded();
 void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_rle_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, ImageId image_id, const ScreenCoordsXY& coords);
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, const ScreenCoordsXY& coords, uint32_t tertiary_colour);
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId& image_id, const ScreenCoordsXY& coords);
 void FASTCALL
     gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image_id, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, uint32_t image, const ScreenCoordsXY& coords, uint8_t colour);
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
-void FASTCALL
-    gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, ImageId maskImage, ImageId colourImage);
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& spriteCoords);
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, const ImageId& image, const ScreenCoordsXY& coords, uint8_t colour);
+void FASTCALL gfx_draw_sprite_raw_masked(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const ImageId& maskImage, const ImageId& colourImage);
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, const ImageId& imageId, const ScreenCoordsXY& spriteCoords);
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+    rct_drawpixelinfo* dpi, const ImageId& imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL gfx_draw_sprite_raw_masked_software(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, ImageId maskImage, ImageId colourImage);
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId& maskImage, const ImageId& colourImage);
 
 // string
 void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
@@ -578,7 +572,7 @@ void scrolling_text_invalidate();
 
 class Formatter;
 
-int32_t scrolling_text_setup(
+ImageId scrolling_text_setup(
     struct paint_session& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour);
 
 rct_size16 FASTCALL gfx_get_sprite_size(uint32_t image_id);

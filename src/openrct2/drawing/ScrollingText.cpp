@@ -1446,7 +1446,7 @@ void scrolling_text_invalidate()
     }
 }
 
-int32_t scrolling_text_setup(
+ImageId scrolling_text_setup(
     paint_session& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
@@ -1456,13 +1456,13 @@ int32_t scrolling_text_setup(
     rct_drawpixelinfo* dpi = &session.DPI;
 
     if (dpi->zoom_level > ZoomLevel{ 0 })
-        return SPR_SCROLLING_TEXT_DEFAULT;
+        return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
 
     _drawSCrollNextIndex++;
     ft.Rewind();
     int32_t scrollIndex = scrolling_text_get_matching_or_oldest(stringId, ft, scroll, scrollingMode, colour);
     if (scrollIndex >= SPR_SCROLLING_TEXT_START)
-        return scrollIndex;
+        return ImageId(scrollIndex);
 
     // Setup scrolling text
     auto scrollText = &_drawScrollTextList[scrollIndex];
@@ -1491,7 +1491,7 @@ int32_t scrolling_text_setup(
 
     uint32_t imageId = SPR_SCROLLING_TEXT_START + scrollIndex;
     drawing_engine_invalidate_image(imageId);
-    return imageId;
+    return ImageId(imageId);
 }
 
 static void scrolling_text_set_bitmap_for_sprite(

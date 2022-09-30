@@ -189,10 +189,10 @@ void vehicle_visual_virginia_reel(
     const vehicle_boundbox* bb = &_virginiaReelBoundbox[baseImage_id >> 3];
 
     baseImage_id += carEntry->base_image_id;
-    int32_t image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.Body, vehicle->colours.Trim);
+    auto image_id = ImageId(baseImage_id, vehicle->colours.Body, vehicle->colours.Trim);
     if (vehicle->IsGhost())
     {
-        image_id = (image_id & 0x7FFFF) | CONSTRUCTION_MARKER;
+        image_id = ConstructionMarker.WithIndex(image_id.GetIndex());
     }
     PaintAddImageAsParent(
         session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
@@ -210,7 +210,7 @@ void vehicle_visual_virginia_reel(
         {
             if (riding_peep_sprites[i] != 0xFF)
             {
-                image_id = (baseImage_id + ((i + 1) * 72)) | SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[i]);
+                image_id = ImageId(baseImage_id + ((i + 1) * 72), riding_peep_sprites[i]);
                 PaintAddImageAsChild(
                     session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
                     { bb->offset_x, bb->offset_y, bb->offset_z + z });

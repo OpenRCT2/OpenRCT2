@@ -246,7 +246,7 @@ static void PaintParkEntranceScrollingText(
     auto imageIndex = scrolling_text_setup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, COLOUR_BLACK);
     auto textHeight = height + entrance.GetTextHeight();
-    PaintAddImageAsChild(session, ImageId(imageIndex), { 0, 0, textHeight }, { { 2, 2, textHeight }, { 28, 28, 47 } });
+    PaintAddImageAsChild(session, imageIndex, { 0, 0, textHeight }, { { 2, 2, textHeight }, { 28, 28, 47 } });
 }
 
 static void PaintParkEntranceLightEffects(paint_session& session)

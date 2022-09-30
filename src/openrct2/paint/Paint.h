@@ -286,7 +286,6 @@ extern CoordsXY gClipSelectionA;
 extern CoordsXY gClipSelectionB;
 
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
-#define CONSTRUCTION_MARKER (COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP)
 constexpr const ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
 constexpr const ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
 
@@ -296,27 +295,19 @@ extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
 
 paint_struct* PaintAddImageAsParent(
-    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
 paint_struct* PaintAddImageAsParent(
-    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsParent(
-    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
-paint_struct* PaintAddImageAsParent(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
-paint_struct* PaintAddImageAsParent(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset);
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 [[nodiscard]] paint_struct* PaintAddImageAsOrphan(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 paint_struct* PaintAddImageAsChild(
-    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsChild(
-    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
-    const CoordsXYZ& boundBoxOffset);
-paint_struct* PaintAddImageAsChild(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
 paint_struct* PaintAddImageAsChildRotated(
     paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
@@ -325,20 +316,13 @@ paint_struct* PaintAddImageAsParentRotated(
     paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize);
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize);
-paint_struct* PaintAddImageAsParentRotated(
     paint_session& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
-paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
 
 void paint_util_push_tunnel_rotated(paint_session& session, uint8_t direction, uint16_t height, uint8_t type);
 
-bool PaintAttachToPreviousAttach(paint_session& session, ImageId imageId, int32_t x, int32_t y);
-bool PaintAttachToPreviousPS(paint_session& session, ImageId image_id, int32_t x, int32_t y);
-bool PaintAttachToPreviousPS(paint_session& session, uint32_t image_id, int32_t x, int32_t y);
+bool PaintAttachToPreviousAttach(paint_session& session, const ImageId& imageId, int32_t x, int32_t y);
+bool PaintAttachToPreviousPS(paint_session& session, const ImageId& image_id, int32_t x, int32_t y);
 void PaintFloatingMoneyEffect(
     paint_session& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);

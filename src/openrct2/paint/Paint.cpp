@@ -688,22 +688,16 @@ void PaintSessionFree([[maybe_unused]] paint_session* session)
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
  */
 paint_struct* PaintAddImageAsParent(
-    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
-    return PaintAddImageAsParent(session, ImageId::FromUInt32(image_id), offset, { offset, boundBoxSize });
+    return PaintAddImageAsParent(session, image_id, offset, { offset, boundBoxSize });
 }
 
 paint_struct* PaintAddImageAsParent(
-    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset)
 {
-    return PaintAddImageAsParent(session, ImageId::FromUInt32(image_id), offset, { boundBoxOffset, boundBoxSize });
-}
-
-paint_struct* PaintAddImageAsParent(
-    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
-{
-    return PaintAddImageAsParent(session, imageId, offset, { offset, boundBoxSize });
+    return PaintAddImageAsParent(session, image_id, offset, { boundBoxOffset, boundBoxSize });
 }
 
 /**
@@ -723,7 +717,7 @@ paint_struct* PaintAddImageAsParent(
  */
 // Track Pieces, Shops.
 paint_struct* PaintAddImageAsParent(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     session.LastPS = nullptr;
     session.LastAttachedPS = nullptr;
@@ -737,13 +731,6 @@ paint_struct* PaintAddImageAsParent(
     PaintSessionAddPSToQuadrant(session, ps);
 
     return ps;
-}
-
-paint_struct* PaintAddImageAsParent(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset)
-{
-    return PaintAddImageAsParent(session, image_id, offset, { boundBoxOffset, boundBoxSize });
 }
 
 /**
@@ -764,7 +751,7 @@ paint_struct* PaintAddImageAsParent(
  * Creates a paint struct but does not allocate to a paint quadrant. Result cannot be ignored!
  */
 [[nodiscard]] paint_struct* PaintAddImageAsOrphan(
-    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+    paint_session& session, const ImageId& imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     session.LastPS = nullptr;
     session.LastAttachedPS = nullptr;
@@ -772,14 +759,7 @@ paint_struct* PaintAddImageAsParent(
 }
 
 paint_struct* PaintAddImageAsChild(
-    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
-    const CoordsXYZ& boundBoxOffset)
-{
-    return PaintAddImageAsChild(session, ImageId::FromUInt32(image_id), offset, { boundBoxOffset, boundBoxLength });
-}
-
-paint_struct* PaintAddImageAsChild(
-    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    paint_session& session, const ImageId& imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset)
 {
     return PaintAddImageAsChild(session, imageId, offset, { boundBoxOffset, boundBoxLength });
@@ -803,7 +783,7 @@ paint_struct* PaintAddImageAsChild(
  * If there is no parent paint struct then image is added as a parent
  */
 paint_struct* PaintAddImageAsChild(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     paint_struct* parentPS = session.LastPS;
     if (parentPS == nullptr)
@@ -830,7 +810,7 @@ paint_struct* PaintAddImageAsChild(
  * @param y (cx)
  * @return (!CF) success
  */
-bool PaintAttachToPreviousAttach(paint_session& session, ImageId imageId, int32_t x, int32_t y)
+bool PaintAttachToPreviousAttach(paint_session& session, const ImageId& imageId, int32_t x, int32_t y)
 {
     auto* previousAttachedPS = session.LastAttachedPS;
     if (previousAttachedPS == nullptr)
@@ -863,12 +843,7 @@ bool PaintAttachToPreviousAttach(paint_session& session, ImageId imageId, int32_
  * @param y (cx)
  * @return (!CF) success
  */
-bool PaintAttachToPreviousPS(paint_session& session, uint32_t image_id, int32_t x, int32_t y)
-{
-    return PaintAttachToPreviousPS(session, ImageId::FromUInt32(image_id), x, y);
-}
-
-bool PaintAttachToPreviousPS(paint_session& session, ImageId image_id, int32_t x, int32_t y)
+bool PaintAttachToPreviousPS(paint_session& session, const ImageId& image_id, int32_t x, int32_t y)
 {
     auto* masterPs = session.LastPS;
     if (masterPs == nullptr)

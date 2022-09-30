@@ -802,7 +802,7 @@ static void paint_log_flume_track_on_ride_photo(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    PaintAddImageAsParent(session, SPR_STATION_BASE_D | IMAGE_TYPE_REMAP, { 0, 0, height }, { 32, 32, 1 });
+    PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
 
     if (direction & 1)
     {

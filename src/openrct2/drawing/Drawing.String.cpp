@@ -758,12 +758,13 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
         }
         case FormatToken::InlineSprite:
         {
-            auto g1 = gfx_get_g1_element(token.parameter & 0x7FFFF);
+            auto imageId = ImageId::FromUInt32(token.parameter);
+            auto g1 = gfx_get_g1_element(imageId.GetIndex());
             if (g1 != nullptr && g1->width <= 32 && g1->height <= 32)
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
                 {
-                    gfx_draw_sprite(dpi, token.parameter, { info->x, info->y }, 0);
+                    gfx_draw_sprite(dpi, imageId, { info->x, info->y });
                 }
                 info->x += g1->width;
             }

@@ -2110,10 +2110,11 @@ private:
             uint8_t window_colour = NOT_TRANSLUCENT(colours[widget->colour]);
 
             // Draw greyed out (light border bottom right shadow)
-            gfx_draw_sprite_solid(dpi, spriteIndex, screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
+            gfx_draw_sprite_solid(
+                dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
 
             // Draw greyed out (dark)
-            gfx_draw_sprite_solid(dpi, spriteIndex, screenCoords, ColourMapA[window_colour].mid_light);
+            gfx_draw_sprite_solid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
         }
     }
 
