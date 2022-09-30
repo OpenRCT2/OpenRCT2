@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -95,7 +95,7 @@ static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t in
 
 /**
  * This is a small hack function to keep calling the ride rating processor until
- * the given ride's ratings have been calculated. What ever is currently being
+ * the given ride's ratings have been calculated. Whatever is currently being
  * processed will be overwritten.
  * Only purpose of this function currently is for testing.
  */
@@ -124,8 +124,8 @@ void ride_ratings_update_all()
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
-    // NOTE: Until the new save format only one ride can be updated at once.
-    // The SV6 format can store only a single state.
+    // NOTE: With the new save format more than one ride can be updated at once, but this has not yet been implemented.
+    // The SV6 format could store only a single state.
     ride_ratings_update_state(gRideRatingUpdateState);
 }
 
