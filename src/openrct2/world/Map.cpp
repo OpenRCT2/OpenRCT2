@@ -371,6 +371,22 @@ TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
     return nullptr;
 }
 
+TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type)
+{
+    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
+    if (tileElement == nullptr)
+        return nullptr;
+    do
+    {
+        if (tileElement->GetType() != type)
+            continue;
+        if (tileElement->base_height >= loc.baseZ && tileElement->base_height <= loc.clearanceZ)
+            return tileElement;
+    } while (!(tileElement++)->IsLastForTile());
+
+    return nullptr;
+}
+
 void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
 {
     if (!map_is_location_valid(tilePos.ToCoordsXY()))
@@ -397,18 +413,6 @@ PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
         if (element->base_height != loc.z)
             continue;
         return element;
-    }
-    return nullptr;
-}
-
-PathElement* MapGetFirstPathElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc)
-{
-    for (auto* element : TileElementsView<PathElement>(loc.ToCoordsXY()))
-    {
-        if (element->IsGhost())
-            continue;
-        if (element->base_height >= loc.baseZ && element->base_height <= loc.clearanceZ)
-            return element;
     }
     return nullptr;
 }

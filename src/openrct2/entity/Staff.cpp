@@ -864,10 +864,17 @@ bool Staff::DoMiscPathFinding()
 
 bool Staff::IsMechanicHeadingToFixRideBlockingPath()
 {
-    auto trackElement = map_get_track_element_at(CoordsXYZ{ GetDestination(), NextLoc.z });
+    if (!IsMechanic())
+        return false;
+
+    auto tileCoords = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
+    auto trackElement = MapGetFirstTileElementWithBaseHeightBetween<TrackElement>(
+        { tileCoords, tileCoords.z + PATH_HEIGHT_STEP });
+    if (trackElement == nullptr)
+        return false;
+
     auto ride = get_ride(trackElement->GetRideIndex());
-    return AssignedStaffType == StaffType::Mechanic && ride->id == CurrentRide
-        && ride->breakdown_reason == BREAKDOWN_SAFETY_CUT_OUT;
+    return ride->id == CurrentRide && ride->breakdown_reason == BREAKDOWN_SAFETY_CUT_OUT;
 }
 
 /**
