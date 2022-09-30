@@ -733,9 +733,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
         window_top_toolbar_widgets[WIDX_PARK].type = WindowWidgetType::Empty;
-        window_top_toolbar_widgets[WIDX_STAFF].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_GUESTS].type = WindowWidgetType::Empty;
-        window_top_toolbar_widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
@@ -744,17 +742,16 @@ static void WindowTopToolbarInvalidate(rct_window* w)
         {
             window_top_toolbar_widgets[WIDX_LAND].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_WATER].type = WindowWidgetType::Empty;
-        }
-
-        if (gEditorStep != EditorStep::RollercoasterDesigner)
-        {
-            window_top_toolbar_widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
-            window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
-            window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_STAFF].type = WindowWidgetType::Empty;
         }
 
         if (gEditorStep != EditorStep::LandscapeEditor && gEditorStep != EditorStep::RollercoasterDesigner)
         {
+            window_top_toolbar_widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
+
             window_top_toolbar_widgets[WIDX_MAP].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_PATH].type = WindowWidgetType::Empty;

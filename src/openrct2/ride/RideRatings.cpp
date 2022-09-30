@@ -121,9 +121,6 @@ void ride_ratings_update_all()
 {
     PROFILED_FUNCTION();
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        return;
-
     // NOTE: Until the new save format only one ride can be updated at once.
     // The SV6 format can store only a single state.
     ride_ratings_update_state(gRideRatingUpdateState);

@@ -63,7 +63,11 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
 {
     InteractionInfo info{};
     // No click input for scenario editor or track manager
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
+    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+        return info;
+
+    // No click input in scenario editor if not in landscape designer
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep != EditorStep::LandscapeEditor)
         return info;
 
     //
@@ -251,6 +255,10 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
     if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_MANAGER))
         return info;
 
+    // No click input in editor unless in landscape mode
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep != EditorStep::LandscapeEditor)
+        return info;
+
     //
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
         return info;
@@ -265,7 +273,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         case ViewportInteractionItem::Entity:
         {
             auto sprite = info.Entity;
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->Type != EntityType::Vehicle)
+            if (sprite->Type != EntityType::Vehicle)
             {
                 info.SpriteType = ViewportInteractionItem::None;
                 return info;
@@ -289,11 +297,6 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         }
         case ViewportInteractionItem::Ride:
         {
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-            {
-                info.SpriteType = ViewportInteractionItem::None;
-                return info;
-            }
             if (tileElement->GetType() == TileElementType::Path)
             {
                 info.SpriteType = ViewportInteractionItem::None;

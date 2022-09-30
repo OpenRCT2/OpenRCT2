@@ -946,28 +946,6 @@ void Ride::UpdateAll()
 {
     PROFILED_FUNCTION();
 
-    // Remove all rides if scenario editor
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-    {
-        switch (gEditorStep)
-        {
-            case EditorStep::ObjectSelection:
-            case EditorStep::LandscapeEditor:
-            case EditorStep::InventionsListSetUp:
-                for (auto& ride : GetRideManager())
-                    ride.Delete();
-                break;
-            case EditorStep::OptionsSelection:
-            case EditorStep::ObjectiveSelection:
-            case EditorStep::SaveScenario:
-            case EditorStep::RollercoasterDesigner:
-            case EditorStep::DesignsManager:
-            case EditorStep::Invalid:
-                break;
-        }
-        return;
-    }
-
     window_update_viewport_ride_music();
 
     // Update rides
@@ -2026,9 +2004,6 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
 void ride_measurements_update()
 {
     PROFILED_FUNCTION();
-
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        return;
 
     // For each ride measurement
     for (auto& ride : GetRideManager())

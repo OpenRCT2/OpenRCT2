@@ -265,7 +265,7 @@ static void ShortcutBuildNewRide()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gEditorStep == EditorStep::LandscapeEditor)
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {

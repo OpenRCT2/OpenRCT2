@@ -783,7 +783,7 @@ template<typename T> int32_t Train<T>::Mass()
 
 bool Vehicle::SoundCanPlay() const
 {
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep != EditorStep::LandscapeEditor)
         return false;
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
@@ -1234,7 +1234,7 @@ void vehicle_update_all()
 {
     PROFILED_FUNCTION();
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep != EditorStep::LandscapeEditor)
         return;
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
