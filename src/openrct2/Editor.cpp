@@ -381,7 +381,7 @@ namespace Editor
             gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
-        climate_reset(gClimate);
+        ClimateReset(gClimate);
 
         News::InitQueue();
     }

@@ -57,7 +57,7 @@ GameActions::Result BannerSetStyleAction::Query() const
     auto location = banner->position.ToCoordsXY().ToTileCentre();
     res.Position = { location, tile_element_height(location) };
 
-    TileElement* tileElement = banner_get_tile_element(_bannerIndex);
+    TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
     if (tileElement == nullptr)
     {
@@ -111,7 +111,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
     auto location = banner->position.ToCoordsXY().ToTileCentre();
     res.Position = { location, tile_element_height(location) };
 
-    TileElement* tileElement = banner_get_tile_element(_bannerIndex);
+    TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
     if (tileElement == nullptr)
     {

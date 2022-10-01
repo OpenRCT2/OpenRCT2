@@ -76,15 +76,15 @@ extern ClimateState gClimateNext;
 extern uint16_t gClimateUpdateTimer;
 extern uint16_t gClimateLightningFlash;
 
-int32_t climate_celsius_to_fahrenheit(int32_t celsius);
-void climate_reset(ClimateType climate);
-void climate_update();
-void climate_update_sound();
+int32_t ClimateCelsiusToFahrenheit(int32_t celsius);
+void ClimateReset(ClimateType climate);
+void ClimateUpdate();
+void ClimateUpdateSound();
 void ClimateStopWeatherSound();
-void climate_force_weather(WeatherType weather);
+void ClimateForceWeather(WeatherType weather);
 
-bool climate_is_raining();
-bool climate_is_snowing();
+bool ClimateIsRaining();
+bool ClimateIsSnowing();
 bool WeatherIsDry(WeatherType);
-FilterPaletteID climate_get_weather_gloom_palette_id(const ClimateState& state);
-uint32_t climate_get_weather_sprite_id(const ClimateState& state);
+FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state);
+uint32_t ClimateGetWeatherSpriteId(const ClimateState& state);

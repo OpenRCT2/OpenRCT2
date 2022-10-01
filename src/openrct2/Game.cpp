@@ -206,7 +206,7 @@ void update_palette_effects()
         uint32_t shade = 0;
         if (gConfigGeneral.render_weather_gloom)
         {
-            auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
+            auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
@@ -441,10 +441,10 @@ void game_fix_save_vars()
     ResearchFix();
 
     // Fix banner list pointing to NULL map elements
-    banner_reset_broken_index();
+    BannerResetBrokenIndex();
 
     // Fix banners which share their index
-    fix_duplicated_banners();
+    BannerFixDuplicates();
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
