@@ -3625,6 +3625,8 @@ STR_6517    :One or more objects in this park require RCT1 linked for proper dis
 STR_6518    :{BLACK}Hover over a scenario to view its description and objective. Click it to start playing.
 STR_6519    :Extras
 STR_6520    :Asset Packs
+STR_6521    :Low Priority
+STR_6522    :High Priority
 
 #############
 # Scenarios #

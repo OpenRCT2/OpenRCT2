@@ -13,6 +13,8 @@
 #include <openrct2/AssetPackManager.h>
 #include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/sprites.h>
 
@@ -48,6 +50,8 @@ static rct_widget WindowAssetPacksWidgets[] = {
 class AssetPacksWindow final : public Window
 {
 private:
+    static constexpr int32_t ItemHeight = SCROLLABLE_ROW_HEIGHT + 1;
+    static constexpr int32_t ItemCheckBoxSize = ItemHeight - 3;
     std::optional<size_t> _highlightedIndex;
     std::optional<size_t> _selectedIndex;
 
@@ -91,8 +95,8 @@ public:
         auto assetPackManager = GetContext()->GetAssetPackManager();
         if (assetPackManager != nullptr)
         {
-            auto numAssetPacks = assetPackManager->GetCount();
-            result.height = static_cast<int32_t>(numAssetPacks * SCROLLABLE_ROW_HEIGHT);
+            auto numAssetPacks = assetPackManager->GetCount() + 2; // Add 2 for separators
+            result.height = static_cast<int32_t>(numAssetPacks * ItemHeight);
         }
 
         if (_highlightedIndex)
@@ -106,26 +110,39 @@ public:
 
     void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        const auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
-        if (index < 0 || static_cast<size_t>(index) >= GetNumAssetPacks())
-            return;
+        auto isCheckBox = false;
+        auto index = GetAssetPackIndexFromPosition(screenCoords, isCheckBox);
 
-        if (_selectedIndex != static_cast<size_t>(index))
+        // Click on checkbox
+        if (index && isCheckBox)
         {
-            _selectedIndex = static_cast<size_t>(index);
+            auto assetPackManager = GetContext()->GetAssetPackManager();
+            if (assetPackManager != nullptr)
+            {
+                auto assetPack = assetPackManager->GetAssetPack(*index);
+                if (assetPack != nullptr)
+                {
+                    assetPack->SetEnabled(!assetPack->IsEnabled());
+                    Invalidate();
+                }
+            }
+        }
+
+        // Select item
+        if (_selectedIndex != index)
+        {
+            _selectedIndex = index;
             Invalidate();
         }
     }
 
     void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        const auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
-        if (index < 0 || static_cast<size_t>(index) >= GetNumAssetPacks())
-            return;
-
-        if (_highlightedIndex != static_cast<size_t>(index))
+        auto isCheckBox = false;
+        auto index = GetAssetPackIndexFromPosition(screenCoords, isCheckBox);
+        if (_highlightedIndex != index)
         {
-            _highlightedIndex = static_cast<size_t>(index);
+            _highlightedIndex = index;
             Invalidate();
         }
     }
@@ -185,40 +202,131 @@ public:
             return;
 
         auto numAssetPacks = assetPackManager->GetCount();
-        for (size_t i = 0; i < numAssetPacks; i++)
+        for (size_t i = 0; i <= numAssetPacks + 1; i++)
         {
             if (y > dpi.y + dpi.height)
                 break;
             if (y + 11 < dpi.y)
                 continue;
 
-            auto assetPack = assetPackManager->GetAssetPack(i);
-            if (assetPack != nullptr)
+            if (i == 0 || i == numAssetPacks + 1)
             {
-                auto stringId = STR_BLACK_STRING;
-                auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + SCROLLABLE_ROW_HEIGHT - 1 } };
-                if (i == _selectedIndex)
-                {
-                    gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
-                    stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                }
-                else if (i == _highlightedIndex)
-                {
-                    gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
-                }
-
-                auto ft = Formatter();
-                ft.Add<StringId>(assetPack->IsEnabled() ? STR_TOGGLE_OPTION_CHECKED : STR_TOGGLE_OPTION);
-                ft.Add<StringId>(STR_STRING);
-                ft.Add<const char*>(assetPack->Name.c_str());
-                DrawTextEllipsised(&dpi, { 0, y }, listWidth, stringId, ft);
+                auto text = i == 0 ? STR_LOW_PRIORITY : STR_HIGH_PRIORITY;
+                PaintSeperator(dpi, { 0, y }, { listWidth, y + ItemHeight - 1 }, text);
             }
+            else
+            {
+                auto assetPackIndex = i - 1;
+                auto assetPack = assetPackManager->GetAssetPack(assetPackIndex);
+                if (assetPack != nullptr)
+                {
+                    auto stringId = STR_BLACK_STRING;
+                    auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
+                    if (assetPackIndex == _selectedIndex)
+                    {
+                        gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+                        stringId = STR_WINDOW_COLOUR_2_STRINGID;
+                    }
+                    else if (assetPackIndex == _highlightedIndex)
+                    {
+                        gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+                    }
 
-            y += SCROLLABLE_ROW_HEIGHT;
+                    auto ft = Formatter();
+                    ft.Add<StringId>(STR_STRING);
+                    ft.Add<const char*>(assetPack->Name.c_str());
+                    DrawTextEllipsised(&dpi, { 16, y + 1 }, listWidth, stringId, ft);
+
+                    auto checkboxSize = ItemHeight - 3;
+                    PaintCheckbox(
+                        dpi, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, assetPack->IsEnabled());
+                }
+            }
+            y += ItemHeight;
         }
     }
 
 private:
+    void PaintSeperator(rct_drawpixelinfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, StringId text) const
+    {
+        auto hasText = text != STR_NONE;
+        auto left = pos.x + 4;
+        auto right = pos.x + size.width - 4;
+        auto centreX = size.width / 2;
+        auto lineY0 = pos.y + 5;
+        auto lineY1 = lineY0 + 1;
+
+        auto baseColour = colours[1];
+        auto lightColour = ColourMapA[baseColour].lighter;
+        auto darkColour = ColourMapA[baseColour].mid_dark;
+
+        if (hasText)
+        {
+            // Draw string
+            Formatter ft;
+            ft.Add<StringId>(text);
+            DrawTextBasic(&dpi, { centreX, pos.y }, STR_STRINGID, ft, { baseColour, TextAlignment::CENTRE });
+
+            // Get string dimensions
+            format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
+            int32_t categoryStringHalfWidth = (gfx_get_string_width(gCommonStringFormatBuffer, FontSpriteBase::MEDIUM) / 2) + 4;
+            int32_t strLeft = centreX - categoryStringHalfWidth;
+            int32_t strRight = centreX + categoryStringHalfWidth;
+
+            // Draw light horizontal rule
+            auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
+            auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY0 };
+            gfx_draw_line(&dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+
+            auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY0 };
+            auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY0 };
+            gfx_draw_line(&dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
+
+            // Draw dark horizontal rule
+            auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
+            auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY1 };
+            gfx_draw_line(&dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+
+            auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY1 };
+            auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY1 };
+            gfx_draw_line(&dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
+        }
+        else
+        {
+            // Draw light horizontal rule
+            auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
+            auto lightLineRightBottom1 = ScreenCoordsXY{ right, lineY0 };
+            gfx_draw_line(&dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+
+            // Draw dark horizontal rule
+            auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
+            auto darkLineRightBottom1 = ScreenCoordsXY{ right, lineY1 };
+            gfx_draw_line(&dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+        }
+    }
+
+    void PaintCheckbox(rct_drawpixelinfo& dpi, const ScreenRect& rect, bool checked)
+    {
+        gfx_fill_rect_inset(&dpi, rect, colours[1], INSET_RECT_F_E0);
+        if (checked)
+        {
+            auto checkmark = Formatter();
+            checkmark.Add<StringId>(STR_STRING);
+            checkmark.Add<char*>(CheckBoxMarkString);
+            DrawTextBasic(&dpi, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
+        }
+    }
+
+    std::optional<size_t> GetAssetPackIndexFromPosition(const ScreenCoordsXY& pos, bool& isCheckBox)
+    {
+        const auto index = (pos.y / ItemHeight) - 1;
+        if (index < 0 || static_cast<size_t>(index) >= GetNumAssetPacks())
+            return {};
+
+        isCheckBox = pos.x >= 2 && pos.x <= 2 + ItemCheckBoxSize + 1;
+        return static_cast<size_t>(index);
+    }
+
     size_t GetNumAssetPacks() const
     {
         auto assetPackManager = GetContext()->GetAssetPackManager();
@@ -276,7 +384,7 @@ private:
             (*_selectedIndex)--;
             Invalidate();
         }
-        else if (*_selectedIndex < assetPackManager->GetCount() - 1)
+        else if (direction > 0 && *_selectedIndex < assetPackManager->GetCount() - 1)
         {
             assetPackManager->Swap(*_selectedIndex, *_selectedIndex + 1);
             (*_selectedIndex)++;
