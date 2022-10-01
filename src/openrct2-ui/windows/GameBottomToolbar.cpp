@@ -523,7 +523,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
     StringId format = STR_CELSIUS_VALUE;
     if (gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit)
     {
-        temperature = climate_celsius_to_fahrenheit(temperature);
+        temperature = ClimateCelsiusToFahrenheit(temperature);
         format = STR_FAHRENHEIT_VALUE;
     }
     ft = Formatter();
@@ -532,11 +532,11 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
     screenCoords.x += 30;
 
     // Current weather
-    auto currentWeatherSpriteId = climate_get_weather_sprite_id(gClimateCurrent);
+    auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateCurrent);
     gfx_draw_sprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
     // Next weather
-    auto nextWeatherSpriteId = climate_get_weather_sprite_id(gClimateNext);
+    auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateNext);
     if (currentWeatherSpriteId != nextWeatherSpriteId)
     {
         if (gClimateUpdateTimer < 960)

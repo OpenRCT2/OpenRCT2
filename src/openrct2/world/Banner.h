@@ -54,12 +54,12 @@ enum BANNER_FLAGS
     BANNER_FLAG_IS_WALL = (1 << 3)
 };
 
-void banner_init();
-TileElement* banner_get_tile_element(BannerIndex bannerIndex);
-WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex);
-RideId banner_get_closest_ride_index(const CoordsXYZ& mapPos);
-void banner_reset_broken_index();
-void fix_duplicated_banners();
+void BannerInit();
+TileElement* BannerGetTileElement(BannerIndex bannerIndex);
+WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex);
+RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos);
+void BannerResetBrokenIndex();
+void BannerFixDuplicates();
 void UnlinkAllRideBanners();
 void UnlinkAllBannersForRide(RideId rideId);
 Banner* GetBanner(BannerIndex id);

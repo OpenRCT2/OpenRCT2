@@ -1091,7 +1091,7 @@ void viewport_paint(
 
 static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
 {
-    auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
+    auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
     if (paletteId != FilterPaletteID::PaletteNull)
     {
         // Only scale width if zoomed in more than 1:1

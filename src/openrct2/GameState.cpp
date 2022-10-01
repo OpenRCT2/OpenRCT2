@@ -66,12 +66,12 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     map_init(mapSize);
     _park->Initialise();
     finance_init();
-    banner_init();
+    BannerInit();
     ride_init_all();
     ResetAllEntities();
     UpdateConsolidatedPatrolAreas();
     date_reset();
-    climate_reset(ClimateType::CoolAndWet);
+    ClimateReset(ClimateType::CoolAndWet);
     News::InitQueue();
 
     gInMapInitCode = false;
@@ -319,7 +319,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
 
     scenario_update();
     report_time(LogicTimePart::Scenario);
-    climate_update();
+    ClimateUpdate();
     report_time(LogicTimePart::Climate);
     map_update_tiles();
     report_time(LogicTimePart::MapTiles);
@@ -358,7 +358,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     report_time(LogicTimePart::MapAnimation);
     vehicle_sounds_update();
     peep_update_crowd_noise();
-    climate_update_sound();
+    ClimateUpdateSound();
     report_time(LogicTimePart::Sounds);
     editor_open_windows_for_current_step();
 

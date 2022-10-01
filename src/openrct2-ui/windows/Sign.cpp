@@ -99,7 +99,7 @@ public:
         }
 
         auto signViewPosition = banner->position.ToCoordsXY().ToTileCentre();
-        auto* tileElement = banner_get_tile_element(GetBannerIndex());
+        auto* tileElement = BannerGetTileElement(GetBannerIndex());
         if (tileElement == nullptr)
             return false;
 
@@ -156,7 +156,7 @@ public:
                 break;
             case WIDX_SIGN_DEMOLISH:
             {
-                auto* tileElement = banner_get_tile_element(GetBannerIndex());
+                auto* tileElement = BannerGetTileElement(GetBannerIndex());
                 if (tileElement == nullptr)
                 {
                     Close();

@@ -66,7 +66,7 @@ void DrawWeather(rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer)
         if (weatherLevel != WeatherLevel::None && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
             auto drawFunc = DrawRainFunctions[static_cast<int8_t>(weatherLevel)];
-            if (climate_is_snowing())
+            if (ClimateIsSnowing())
             {
                 drawFunc = DrawSnowFunctions[static_cast<int8_t>(weatherLevel)];
             }
