@@ -3628,6 +3628,11 @@ STR_6511    :Volta de gravetat zero (a la dreta)
 STR_6512    :Volta de gravetat zero gran (a l’esquerra)
 STR_6513    :Volta de gravetat zero gran (a la dreta)
 STR_6514    :Altura no vàlida!
+STR_6515    :{BLACK}No s’ha enllaçat el RCT1. S’empraran imatges alternatives.
+STR_6516    :Un o més objectes que s’han afegit necessiten l’enllaç al RCT1 per a veure’ls correctament. Es faran servir imatges alternatives.
+STR_6517    :Un o més objectes d’aquest parc necessiten l’enllaç al RCT1 per a veure’ls correctament. Es faran servir imatges alternatives.
+STR_6518    :{BLACK}Situeu el ratolí damunt d’un escenari per a veure la seva descripció i els seus objectius. Feu clic per a començar a jugar.
+STR_6519    :Extres
 
 #############
 # Scenarios #
