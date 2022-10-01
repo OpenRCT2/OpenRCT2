@@ -167,7 +167,7 @@ public:
             toolstripY += 24;
         }
 
-        SetWidgetDisabled(WIDX_MOVE_UP, !_selectedIndex || _selectedIndex == 0);
+        SetWidgetDisabled(WIDX_MOVE_UP, !_selectedIndex || _selectedIndex == 0U);
         SetWidgetDisabled(WIDX_MOVE_DOWN, !_selectedIndex || _selectedIndex >= GetNumAssetPacks() - 1);
 
         widgets[WIDX_APPLY].bottom = widgets[WIDX_LIST].bottom;
@@ -312,7 +312,7 @@ private:
     {
         const auto index = (pos.y / ItemHeight) - 1;
         if (index < 0 || static_cast<size_t>(index) >= GetNumAssetPacks())
-            return {};
+            return std::nullopt;
 
         isCheckBox = pos.x >= 2 && pos.x <= 2 + ItemCheckBoxSize + 1;
         return static_cast<size_t>(index);
