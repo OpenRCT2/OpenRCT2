@@ -2376,7 +2376,7 @@ void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 
 void Guest::ReadMap()
 {
-    if (IsActionInterruptable())
+    if (IsActionInterruptable() && !IsOnLevelCrossing())
     {
         Action = PeepActionType::ReadMap;
         ActionFrame = 0;
@@ -5205,48 +5205,33 @@ void Guest::UpdateWalking()
     if (!CheckForPath())
         return;
 
-    if (PeepFlags & PEEP_FLAGS_WAVING)
+    if (!IsOnLevelCrossing())
     {
-        if (IsActionInterruptable())
+        if (PeepFlags & PEEP_FLAGS_WAVING && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
-            {
-                Action = PeepActionType::Wave2;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
+            Action = PeepActionType::Wave2;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
 
-                UpdateCurrentActionSpriteType();
-            }
+            UpdateCurrentActionSpriteType();
         }
-    }
 
-    if (PeepFlags & PEEP_FLAGS_PHOTO)
-    {
-        if (IsActionInterruptable())
+        if (PeepFlags & PEEP_FLAGS_PHOTO && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
-            {
-                Action = PeepActionType::TakePhoto;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
+            Action = PeepActionType::TakePhoto;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
 
-                UpdateCurrentActionSpriteType();
-            }
+            UpdateCurrentActionSpriteType();
         }
-    }
 
-    if (PeepFlags & PEEP_FLAGS_PAINTING)
-    {
-        if (IsActionInterruptable())
+        if (PeepFlags & PEEP_FLAGS_PAINTING && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
-            {
-                Action = PeepActionType::DrawPicture;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
+            Action = PeepActionType::DrawPicture;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
 
-                UpdateCurrentActionSpriteType();
-            }
+            UpdateCurrentActionSpriteType();
         }
     }
 
@@ -5406,7 +5391,7 @@ void Guest::UpdateWalking()
 
     RideId ride_to_view;
     uint8_t ride_seat_to_view;
-    if (!peep_find_ride_to_look_at(this, chosen_edge, &ride_to_view, &ride_seat_to_view))
+    if (IsOnLevelCrossing() || !peep_find_ride_to_look_at(this, chosen_edge, &ride_to_view, &ride_seat_to_view))
         return;
 
     // Check if there is a peep watching (and if there is place for us)

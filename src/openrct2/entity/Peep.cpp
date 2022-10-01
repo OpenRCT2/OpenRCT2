@@ -333,6 +333,12 @@ bool Peep::PathIsBlockedByVehicle()
     return false;
 }
 
+bool Peep::IsOnLevelCrossing()
+{
+    auto trackElement = map_get_track_element_at(GetLocation());
+    return trackElement != nullptr;
+}
+
 PeepActionSpriteType Peep::GetActionSpriteType()
 {
     if (IsActionInterruptable())
