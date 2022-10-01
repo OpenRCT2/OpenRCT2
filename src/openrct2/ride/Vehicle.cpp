@@ -1087,6 +1087,11 @@ static void UpdateSound(
     volume = volume / 8;
     volume = std::max(volume - 0x1FFF, -10000);
 
+    if (sound.Channel != nullptr && sound.Channel->IsDone())
+    {
+        sound.Id = OpenRCT2::Audio::SoundId::Null;
+        sound.Channel = nullptr;
+    }
     if (id != sound.Id && sound.Id != OpenRCT2::Audio::SoundId::Null)
     {
         sound.Id = OpenRCT2::Audio::SoundId::Null;
