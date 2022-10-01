@@ -7,9 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "openrct2/localisation/Formatting.h"
 #ifdef __ENABLE_DISCORD__
-
 #    include "DiscordService.h"
 
 #    include "../Context.h"
@@ -17,6 +15,7 @@
 #    include "../OpenRCT2.h"
 #    include "../core/Console.hpp"
 #    include "../core/String.hpp"
+#    include "../localisation/Formatting.h"
 #    include "../localisation/Localisation.h"
 #    include "../world/Park.h"
 #    include "network.h"
@@ -100,7 +99,6 @@ void DiscordService::RefreshPresence() const
             }
             else
             {
-                
                 OpenRCT2::FmtString fmtServerName(network_get_server_name());
                 std::string serverName;
                 for (const auto& token : fmtServerName)
