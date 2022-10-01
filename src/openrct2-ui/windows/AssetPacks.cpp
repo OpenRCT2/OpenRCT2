@@ -30,7 +30,6 @@ enum WindowAssetPacksWidgetIdx {
     WIDX_TITLE,
     WIDX_CLOSE,
     WIDX_LIST,
-    WIDX_TOGGLE,
     WIDX_MOVE_UP,
     WIDX_MOVE_DOWN,
     WIDX_APPLY,
@@ -39,7 +38,6 @@ enum WindowAssetPacksWidgetIdx {
 static rct_widget WindowAssetPacksWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL),
-    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_OPEN, STR_NONE),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_ARROW_UP, STR_NONE),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_ARROW_DOWN, STR_NONE),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_ROTATE_ARROW, STR_NONE),
@@ -73,9 +71,6 @@ public:
         {
             case WIDX_CLOSE:
                 Close();
-                break;
-            case WIDX_TOGGLE:
-                ToggleSelectedAssetPack();
                 break;
             case WIDX_MOVE_UP:
                 ReorderSelectedAssetPack(-1);
@@ -163,10 +158,8 @@ public:
         auto toolstripY = 20;
         auto toolstripRight = width - 2;
         auto toolstripLeft = toolstripRight - 24;
-        auto disabled = !_selectedIndex.has_value();
-        for (WidgetIndex i = WIDX_TOGGLE; i <= WIDX_APPLY; i++)
+        for (WidgetIndex i = WIDX_MOVE_UP; i <= WIDX_APPLY; i++)
         {
-            SetWidgetDisabled(i, disabled);
             widgets[i].top = toolstripY;
             widgets[i].bottom = toolstripY + 24;
             widgets[i].left = toolstripLeft;
@@ -174,11 +167,9 @@ public:
             toolstripY += 24;
         }
 
-        auto isEnabled = IsSelectedAssetPackEnabled();
-        widgets[WIDX_TOGGLE].image = isEnabled ? SPR_OPEN : SPR_CLOSED;
-        SetWidgetPressed(WIDX_TOGGLE, isEnabled);
+        SetWidgetDisabled(WIDX_MOVE_UP, !_selectedIndex || _selectedIndex == 0);
+        SetWidgetDisabled(WIDX_MOVE_DOWN, !_selectedIndex || _selectedIndex >= GetNumAssetPacks() - 1);
 
-        SetWidgetDisabled(WIDX_APPLY, false);
         widgets[WIDX_APPLY].bottom = widgets[WIDX_LIST].bottom;
         widgets[WIDX_APPLY].top = widgets[WIDX_APPLY].bottom - 24;
     }
@@ -268,7 +259,7 @@ private:
             DrawTextBasic(&dpi, { centreX, pos.y }, STR_STRINGID, ft, { baseColour, TextAlignment::CENTRE });
 
             // Get string dimensions
-            format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
+            format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRINGID, ft.Data());
             int32_t categoryStringHalfWidth = (gfx_get_string_width(gCommonStringFormatBuffer, FontSpriteBase::MEDIUM) / 2) + 4;
             int32_t strLeft = centreX - categoryStringHalfWidth;
             int32_t strRight = centreX + categoryStringHalfWidth;
@@ -350,23 +341,6 @@ private:
             }
         }
         return false;
-    }
-
-    void ToggleSelectedAssetPack()
-    {
-        if (_selectedIndex)
-        {
-            auto assetPackManager = GetContext()->GetAssetPackManager();
-            if (assetPackManager != nullptr)
-            {
-                auto assetPack = assetPackManager->GetAssetPack(*_selectedIndex);
-                if (assetPack != nullptr)
-                {
-                    assetPack->SetEnabled(!assetPack->IsEnabled());
-                    Invalidate();
-                }
-            }
-        }
     }
 
     void ReorderSelectedAssetPack(int32_t direction)
