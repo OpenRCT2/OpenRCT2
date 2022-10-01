@@ -521,7 +521,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
             if (_edge == direction)
             {
                 auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
             continue;
@@ -532,12 +532,12 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
         switch (elementType)
         {
             case TileElementType::Entrance:
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 return res;
             case TileElementType::Path:
                 if (tileElement->AsPath()->GetEdges() & (1 << _edge))
                 {
-                    map_obstruction_set_error_text(tileElement, res);
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;
@@ -556,7 +556,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                 if (!(tile.flags & (1 << direction)))
                 {
-                    map_obstruction_set_error_text(tileElement, res);
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;
@@ -566,7 +566,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                 if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
                 {
-                    map_obstruction_set_error_text(tileElement, res);
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;

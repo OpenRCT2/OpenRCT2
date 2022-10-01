@@ -76,7 +76,7 @@ GameActions::Result LandSetHeightAction::Query() const
             if (tileElement != nullptr)
             {
                 auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
         }
@@ -110,7 +110,7 @@ GameActions::Result LandSetHeightAction::Query() const
     if (tileElement != nullptr)
     {
         auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
-        map_obstruction_set_error_text(tileElement, res);
+        MapGetObstructionErrorText(tileElement, res);
         return res;
     }
 
