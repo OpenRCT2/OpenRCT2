@@ -40,10 +40,18 @@ void AudioSampleTable::ReadFromJson(IReadObjectContext* context, const json_t& r
             }
             else if (jSample.is_object())
             {
-                sourceInfo = ParseSource(jSample.at("source").get<std::string>());
-                if (jSample.contains("modifier"))
+                auto& jSource = jSample.at("source");
+                if (jSource.is_string())
                 {
-                    modifier = jSample.at("modifier").get<int32_t>();
+                    sourceInfo = ParseSource(jSource.get<std::string>());
+                    if (jSample.contains("modifier"))
+                    {
+                        auto& jModifier = jSample.at("modifier");
+                        if (jModifier.is_number())
+                        {
+                            modifier = jModifier.get<int32_t>();
+                        }
+                    }
                 }
             }
 
