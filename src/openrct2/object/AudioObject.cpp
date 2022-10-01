@@ -21,7 +21,7 @@ using namespace OpenRCT2::Audio;
 
 void AudioObject::Load()
 {
-    // Start with base images
+    // Start with base samples
     _loadedSampleTable.LoadFrom(_sampleTable, 0, _sampleTable.GetCount());
 
     // Override samples from asset packs

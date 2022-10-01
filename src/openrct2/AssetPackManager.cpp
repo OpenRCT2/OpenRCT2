@@ -107,7 +107,7 @@ void AssetPackManager::LoadSamplesForObject(std::string_view id, AudioSampleTabl
     {
         if (assetPack->IsEnabled() && assetPack->ContainsObject(id))
         {
-            return assetPack->LoadSamplesForObject(id, objectTable);
+            assetPack->LoadSamplesForObject(id, objectTable);
         }
     }
 }
