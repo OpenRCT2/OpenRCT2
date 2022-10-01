@@ -551,6 +551,11 @@
         "y_offset": 5
     },
     {
+        "path": "icons/reload.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",

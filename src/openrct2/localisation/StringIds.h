@@ -3910,6 +3910,9 @@ enum : uint16_t
     STR_ASSET_PACKS = 6520,
     STR_LOW_PRIORITY = 6521,
     STR_HIGH_PRIORITY = 6522,
+    STR_DECREASE_PRIOTITY_TIP = 6523,
+    STR_INCREASE_PRIOTITY_TIP = 6524,
+    STR_RELOAD_ASSET_PACKS_TIP = 6525,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
