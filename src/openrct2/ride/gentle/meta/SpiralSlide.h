@@ -34,7 +34,7 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
     SET_FIELD(Naming, { STR_RIDE_NAME_SPIRAL_SLIDE, STR_RIDE_DESCRIPTION_SPIRAL_SLIDE }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Building, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SPIRAL_SLIDE)),
-    SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
+    SET_FIELD(AvailableBreakdowns, (0)), //non-vanilla behaviour
     SET_FIELD(Heights, { 15, 128, 0, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
