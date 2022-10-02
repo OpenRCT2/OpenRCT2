@@ -76,6 +76,7 @@ void ScWidget::Register(duk_context* ctx)
     dukglue_register_property(ctx, &ScWidget::y_get, &ScWidget::y_set, "y");
     dukglue_register_property(ctx, &ScWidget::width_get, &ScWidget::width_set, "width");
     dukglue_register_property(ctx, &ScWidget::height_get, &ScWidget::height_set, "height");
+    dukglue_register_property(ctx, &ScWidget::tooltip_get, &ScWidget::tooltip_set, "tooltip");
     dukglue_register_property(ctx, &ScWidget::isDisabled_get, &ScWidget::isDisabled_set, "isDisabled");
     dukglue_register_property(ctx, &ScWidget::isVisible_get, &ScWidget::isVisible_set, "isVisible");
 }
