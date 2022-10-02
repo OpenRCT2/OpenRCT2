@@ -18,171 +18,171 @@
 
 enum
 {
-    SPR_MONORAIL_CYCLES_FLAT_SW_NE = 16820,
-    SPR_MONORAIL_CYCLES_FLAT_NW_SE = 16821,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_0 = 16822,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_1 = 16823,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_2 = 16824,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_3 = 16825,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_4 = 16826,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_0 = 16827,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_1 = 16828,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_2 = 16829,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_3 = 16830,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_4 = 16831,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_0 = 16832,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_1 = 16833,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_2 = 16834,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_3 = 16835,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_4 = 16836,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_0 = 16837,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_1 = 16838,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_2 = 16839,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_3 = 16840,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_4 = 16841,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0 = 16842,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1 = 16843,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2 = 16844,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0 = 16845,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1 = 16846,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2 = 16847,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0 = 16848,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1 = 16849,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2 = 16850,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0 = 16851,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1 = 16852,
-    SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2 = 16853,
-    SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_0 = 16854,
-    SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_1 = 16855,
-    SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_2 = 16856,
-    SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_3 = 16857,
-    SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_0 = 16858,
-    SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_1 = 16859,
-    SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_2 = 16860,
-    SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_3 = 16861,
-    SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_0 = 16862,
-    SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_1 = 16863,
-    SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_2 = 16864,
-    SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_3 = 16865,
-    SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_0 = 16866,
-    SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_1 = 16867,
-    SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_2 = 16868,
-    SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_3 = 16869,
+    SprMonorailCyclesFlatSwNe = 16820,
+    SprMonorailCyclesFlatNwSe = 16821,
+    SprMonorailCyclesFlatQuarterTurn5TilesSwSePart0 = 16822,
+    SprMonorailCyclesFlatQuarterTurn5TilesSwSePart1 = 16823,
+    SprMonorailCyclesFlatQuarterTurn5TilesSwSePart2 = 16824,
+    SprMonorailCyclesFlatQuarterTurn5TilesSwSePart3 = 16825,
+    SprMonorailCyclesFlatQuarterTurn5TilesSwSePart4 = 16826,
+    SprMonorailCyclesFlatQuarterTurn5TilesNwSwPart0 = 16827,
+    SprMonorailCyclesFlatQuarterTurn5TilesNwSwPart1 = 16828,
+    SprMonorailCyclesFlatQuarterTurn5TilesNwSwPart2 = 16829,
+    SprMonorailCyclesFlatQuarterTurn5TilesNwSwPart3 = 16830,
+    SprMonorailCyclesFlatQuarterTurn5TilesNwSwPart4 = 16831,
+    SprMonorailCyclesFlatQuarterTurn5TilesNeNwPart0 = 16832,
+    SprMonorailCyclesFlatQuarterTurn5TilesNeNwPart1 = 16833,
+    SprMonorailCyclesFlatQuarterTurn5TilesNeNwPart2 = 16834,
+    SprMonorailCyclesFlatQuarterTurn5TilesNeNwPart3 = 16835,
+    SprMonorailCyclesFlatQuarterTurn5TilesNeNwPart4 = 16836,
+    SprMonorailCyclesFlatQuarterTurn5TilesSeNePart0 = 16837,
+    SprMonorailCyclesFlatQuarterTurn5TilesSeNePart1 = 16838,
+    SprMonorailCyclesFlatQuarterTurn5TilesSeNePart2 = 16839,
+    SprMonorailCyclesFlatQuarterTurn5TilesSeNePart3 = 16840,
+    SprMonorailCyclesFlatQuarterTurn5TilesSeNePart4 = 16841,
+    SprMonorailCyclesFlatQuarterTurn3TilesSwSePart0 = 16842,
+    SprMonorailCyclesFlatQuarterTurn3TilesSwSePart1 = 16843,
+    SprMonorailCyclesFlatQuarterTurn3TilesSwSePart2 = 16844,
+    SprMonorailCyclesFlatQuarterTurn3TilesNwSwPart0 = 16845,
+    SprMonorailCyclesFlatQuarterTurn3TilesNwSwPart1 = 16846,
+    SprMonorailCyclesFlatQuarterTurn3TilesNwSwPart2 = 16847,
+    SprMonorailCyclesFlatQuarterTurn3TilesNeNwPart0 = 16848,
+    SprMonorailCyclesFlatQuarterTurn3TilesNeNwPart1 = 16849,
+    SprMonorailCyclesFlatQuarterTurn3TilesNeNwPart2 = 16850,
+    SprMonorailCyclesFlatQuarterTurn3TilesSeNePart0 = 16851,
+    SprMonorailCyclesFlatQuarterTurn3TilesSeNePart1 = 16852,
+    SprMonorailCyclesFlatQuarterTurn3TilesSeNePart2 = 16853,
+    SprMonorailCyclesSBendLeftSwNePart0 = 16854,
+    SprMonorailCyclesSBendLeftSwNePart1 = 16855,
+    SprMonorailCyclesSBendLeftSwNePart2 = 16856,
+    SprMonorailCyclesSBendLeftSwNePart3 = 16857,
+    SprMonorailCyclesSBendLeftNwSePart0 = 16858,
+    SprMonorailCyclesSBendLeftNwSePart1 = 16859,
+    SprMonorailCyclesSBendLeftNwSePart2 = 16860,
+    SprMonorailCyclesSBendLeftNwSePart3 = 16861,
+    SprMonorailCyclesSBendRightSwNePart0 = 16862,
+    SprMonorailCyclesSBendRightSwNePart1 = 16863,
+    SprMonorailCyclesSBendRightSwNePart2 = 16864,
+    SprMonorailCyclesSBendRightSwNePart3 = 16865,
+    SprMonorailCyclesSBendRightNwSePart0 = 16866,
+    SprMonorailCyclesSBendRightNwSePart1 = 16867,
+    SprMonorailCyclesSBendRightNwSePart2 = 16868,
+    SprMonorailCyclesSBendRightNwSePart3 = 16869,
 };
 
-static constexpr const uint32_t monorail_cycles_track_pieces_flat[2] = {
-    SPR_MONORAIL_CYCLES_FLAT_SW_NE,
-    SPR_MONORAIL_CYCLES_FLAT_NW_SE,
+static constexpr const uint32_t MonorailCyclesTrackPiecesFlat[2] = {
+    SprMonorailCyclesFlatSwNe,
+    SprMonorailCyclesFlatNwSe,
 };
 
-static constexpr const uint32_t monorail_cycles_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
+static constexpr const uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles[4][5] = {
     {
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_0,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_1,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_2,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_3,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_4,
+        SprMonorailCyclesFlatQuarterTurn5TilesSwSePart0,
+        SprMonorailCyclesFlatQuarterTurn5TilesSwSePart1,
+        SprMonorailCyclesFlatQuarterTurn5TilesSwSePart2,
+        SprMonorailCyclesFlatQuarterTurn5TilesSwSePart3,
+        SprMonorailCyclesFlatQuarterTurn5TilesSwSePart4,
     },
     {
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_0,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_1,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_2,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_3,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_4,
+        SprMonorailCyclesFlatQuarterTurn5TilesNwSwPart0,
+        SprMonorailCyclesFlatQuarterTurn5TilesNwSwPart1,
+        SprMonorailCyclesFlatQuarterTurn5TilesNwSwPart2,
+        SprMonorailCyclesFlatQuarterTurn5TilesNwSwPart3,
+        SprMonorailCyclesFlatQuarterTurn5TilesNwSwPart4,
     },
     {
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_0,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_1,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_2,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_3,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_4,
+        SprMonorailCyclesFlatQuarterTurn5TilesNeNwPart0,
+        SprMonorailCyclesFlatQuarterTurn5TilesNeNwPart1,
+        SprMonorailCyclesFlatQuarterTurn5TilesNeNwPart2,
+        SprMonorailCyclesFlatQuarterTurn5TilesNeNwPart3,
+        SprMonorailCyclesFlatQuarterTurn5TilesNeNwPart4,
     },
     {
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_0,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_1,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_2,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_3,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_4,
-    },
-};
-
-static constexpr const uint32_t monorail_cycles_track_pieces_s_bend_left[2][4] = {
-    {
-        SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_0,
-        SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_1,
-        SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_2,
-        SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_3,
-    },
-    {
-        SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_0,
-        SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_1,
-        SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_2,
-        SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_3,
+        SprMonorailCyclesFlatQuarterTurn5TilesSeNePart0,
+        SprMonorailCyclesFlatQuarterTurn5TilesSeNePart1,
+        SprMonorailCyclesFlatQuarterTurn5TilesSeNePart2,
+        SprMonorailCyclesFlatQuarterTurn5TilesSeNePart3,
+        SprMonorailCyclesFlatQuarterTurn5TilesSeNePart4,
     },
 };
 
-static constexpr const uint32_t monorail_cycles_track_pieces_s_bend_right[2][4] = {
+static constexpr const uint32_t MonorailCyclesTrackPiecesSBendLeft[2][4] = {
     {
-        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_0,
-        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_1,
-        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_2,
-        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_3,
+        SprMonorailCyclesSBendLeftSwNePart0,
+        SprMonorailCyclesSBendLeftSwNePart1,
+        SprMonorailCyclesSBendLeftSwNePart2,
+        SprMonorailCyclesSBendLeftSwNePart3,
     },
     {
-        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_0,
-        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_1,
-        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_2,
-        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_3,
-    },
-};
-
-static constexpr const uint32_t monorail_cycles_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
-    {
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2,
-    },
-    {
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2,
-    },
-    {
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2,
-    },
-    {
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
-        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2,
+        SprMonorailCyclesSBendLeftNwSePart0,
+        SprMonorailCyclesSBendLeftNwSePart1,
+        SprMonorailCyclesSBendLeftNwSePart2,
+        SprMonorailCyclesSBendLeftNwSePart3,
     },
 };
 
-static paint_struct* paint_monorail_cycles_util_7c(
-    paint_session& session, bool flip, ImageId image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z, uint32_t rotation)
+static constexpr const uint32_t MonorailCyclesTrackPiecesSBendRight[2][4] = {
+    {
+        SprMonorailCyclesSBendRightSwNePart0,
+        SprMonorailCyclesSBendRightSwNePart1,
+        SprMonorailCyclesSBendRightSwNePart2,
+        SprMonorailCyclesSBendRightSwNePart3,
+    },
+    {
+        SprMonorailCyclesSBendRightNwSePart0,
+        SprMonorailCyclesSBendRightNwSePart1,
+        SprMonorailCyclesSBendRightNwSePart2,
+        SprMonorailCyclesSBendRightNwSePart3,
+    },
+};
+
+static constexpr const uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4][3] = {
+    {
+        SprMonorailCyclesFlatQuarterTurn3TilesSwSePart0,
+        SprMonorailCyclesFlatQuarterTurn3TilesSwSePart1,
+        SprMonorailCyclesFlatQuarterTurn3TilesSwSePart2,
+    },
+    {
+        SprMonorailCyclesFlatQuarterTurn3TilesNwSwPart0,
+        SprMonorailCyclesFlatQuarterTurn3TilesNwSwPart1,
+        SprMonorailCyclesFlatQuarterTurn3TilesNwSwPart2,
+    },
+    {
+        SprMonorailCyclesFlatQuarterTurn3TilesNeNwPart0,
+        SprMonorailCyclesFlatQuarterTurn3TilesNeNwPart1,
+        SprMonorailCyclesFlatQuarterTurn3TilesNeNwPart2,
+    },
+    {
+        SprMonorailCyclesFlatQuarterTurn3TilesSeNePart0,
+        SprMonorailCyclesFlatQuarterTurn3TilesSeNePart1,
+        SprMonorailCyclesFlatQuarterTurn3TilesSeNePart2,
+    },
+};
+
+static paint_struct* PaintMonorailCyclesUtil7C(
+    paint_session& session, bool flip, ImageId imageId, int8_t xOffset, int8_t yOffset, int16_t boundBoxLengthX,
+    int16_t boundBoxLengthY, int8_t boundBoxLengthZ, int16_t zOffset, int16_t boundBoxOffsetX, int16_t boundBoxOffsetY,
+    int16_t boundBoxOffsetZ, uint32_t rotation)
 {
     if (flip)
     {
         return PaintAddImageAsParent(
-            session, image_id, { y_offset, x_offset, z_offset }, { bound_box_length_y, bound_box_length_x, bound_box_length_z },
-            { bound_box_offset_y, bound_box_offset_x, bound_box_offset_z });
+            session, imageId, { yOffset, xOffset, zOffset }, { boundBoxLengthY, boundBoxLengthX, boundBoxLengthZ },
+            { boundBoxOffsetY, boundBoxOffsetX, boundBoxOffsetZ });
     }
 
     return PaintAddImageAsParent(
-        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
-        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
+        session, imageId, { xOffset, yOffset, zOffset }, { boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ },
+        { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ });
 }
 
 /** rct2: 0x0088AD48 */
-static void paint_monorail_cycles_track_flat(
+static void PaintMonorailCyclesTrackFlat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_cycles_track_pieces_flat[(direction & 1)]);
-    paint_monorail_cycles_util_7c(
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MonorailCyclesTrackPiecesFlat[(direction & 1)]);
+    PaintMonorailCyclesUtil7C(
         session, static_cast<bool>(direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, session.CurrentRotation);
 
     if (direction & 1)
@@ -204,7 +204,7 @@ static void paint_monorail_cycles_track_flat(
 }
 
 /** rct2: 0x0088ADD8 */
-static void paint_monorail_cycles_station(
+static void PaintMonorailCyclesStation(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -215,7 +215,7 @@ static void paint_monorail_cycles_station(
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_MONORAIL_CYCLES_FLAT_SW_NE);
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMonorailCyclesFlatSwNe);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 0, height });
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -227,7 +227,7 @@ static void paint_monorail_cycles_station(
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_MONORAIL_CYCLES_FLAT_NW_SE);
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMonorailCyclesFlatNwSe);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 0, 0, height });
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -242,13 +242,13 @@ static void paint_monorail_cycles_station(
 }
 
 /** rct2: 0x0088AD88 */
-static void paint_monorail_cycles_track_left_quarter_turn_3_tiles(
+static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
-        monorail_cycles_track_pieces_flat_quarter_turn_3_tiles);
+        MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
     track_paint_util_left_quarter_turn_3_tiles_tunnel(session, height, TUNNEL_0, direction, trackSequence);
 
     switch (trackSequence)
@@ -280,23 +280,22 @@ static constexpr const uint8_t monorail_cycles_right_quarter_turn_3_tiles_to_lef
 };
 
 /** rct2: 0x0088AD98 */
-static void paint_monorail_cycles_track_right_quarter_turn_3_tiles(
+static void PaintMonorailCyclesTrackRightQuarterTurn3Tiles(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
-    paint_monorail_cycles_track_left_quarter_turn_3_tiles(
-        session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
-static constexpr const int8_t monorail_cycles_track_right_quarter_turn_5_tiles_support_height_offset[][7] = {
+static constexpr const int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[][7] = {
     { -2, 0, -2, 0, 0, -3, -1 },
     { -3, 0, 0, 0, 0, 0, 0 },
     { 0 },
     { 0, 0, 0, 0, 0, -2, -3 },
 };
 
-static constexpr const int8_t monorail_cycles_track_right_quarter_turn_5_tiles_support_special[][7] = {
+static constexpr const int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[][7] = {
     { 0, 0, 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0, 0, 1 },
     { 0, 0, 1, 0, 0, 1, 1 },
@@ -304,18 +303,17 @@ static constexpr const int8_t monorail_cycles_track_right_quarter_turn_5_tiles_s
 };
 
 /** rct2: 0x0088ADB8 */
-static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(
+static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
-        monorail_cycles_track_pieces_flat_quarter_turn_5_tiles, nullptr, defaultRightQuarterTurn5TilesBoundLengths,
+        MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles, nullptr, defaultRightQuarterTurn5TilesBoundLengths,
         defaultRightQuarterTurn5TilesBoundOffsets);
 
-    int32_t supportHeight = height
-        + monorail_cycles_track_right_quarter_turn_5_tiles_support_height_offset[direction][trackSequence];
-    int32_t supportSpecial = monorail_cycles_track_right_quarter_turn_5_tiles_support_special[direction][trackSequence];
+    int32_t supportHeight = height + MonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[direction][trackSequence];
+    int32_t supportSpecial = MonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[direction][trackSequence];
     switch (trackSequence)
     {
         case 0:
@@ -420,17 +418,16 @@ static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(
 }
 
 /** rct2: 0x0088ADA8 */
-static void paint_monorail_cycles_track_left_quarter_turn_5_tiles(
+static void PaintMonorailCyclesTrackLeftQuarterTurn5Tiles(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    paint_monorail_cycles_track_right_quarter_turn_5_tiles(
-        session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    PaintMonorailCyclesTrackRightQuarterTurn5Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
 /** rct2: 0x0088ADC8 */
-static void paint_monorail_cycles_track_s_bend_left(
+static void PaintMonorailCyclesTrackSBendLeft(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -440,23 +437,23 @@ static void paint_monorail_cycles_track_s_bend_left(
     }
 
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-        monorail_cycles_track_pieces_s_bend_left[direction & 1][trackSequence]);
+        MonorailCyclesTrackPiecesSBendLeft[direction & 1][trackSequence]);
     switch (trackSequence)
     {
         case 0:
-            paint_monorail_cycles_util_7c(
+            PaintMonorailCyclesUtil7C(
                 session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
             break;
         case 1:
-            paint_monorail_cycles_util_7c(
+            PaintMonorailCyclesUtil7C(
                 session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, session.CurrentRotation);
             break;
         case 2:
-            paint_monorail_cycles_util_7c(
+            PaintMonorailCyclesUtil7C(
                 session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, session.CurrentRotation);
             break;
         case 3:
-            paint_monorail_cycles_util_7c(
+            PaintMonorailCyclesUtil7C(
                 session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
             break;
     }
@@ -539,7 +536,7 @@ static void paint_monorail_cycles_track_s_bend_left(
 }
 
 /** rct2: 0x*/
-static void paint_monorail_cycles_track_s_bend_right(
+static void PaintMonorailCyclesTrackSBendRight(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -549,23 +546,23 @@ static void paint_monorail_cycles_track_s_bend_right(
     }
 
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-        monorail_cycles_track_pieces_s_bend_right[direction & 1][trackSequence]);
+        MonorailCyclesTrackPiecesSBendRight[direction & 1][trackSequence]);
     switch (trackSequence)
     {
         case 0:
-            paint_monorail_cycles_util_7c(
+            PaintMonorailCyclesUtil7C(
                 session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
             break;
         case 1:
-            paint_monorail_cycles_util_7c(
+            PaintMonorailCyclesUtil7C(
                 session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, session.CurrentRotation);
             break;
         case 2:
-            paint_monorail_cycles_util_7c(
+            PaintMonorailCyclesUtil7C(
                 session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, session.CurrentRotation);
             break;
         case 3:
-            paint_monorail_cycles_util_7c(
+            PaintMonorailCyclesUtil7C(
                 session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
             break;
     }
@@ -650,32 +647,32 @@ static void paint_monorail_cycles_track_s_bend_right(
 /**
  * rct2: 0x0088ac88
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_monorail_cycles(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorailCycles(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return paint_monorail_cycles_track_flat;
+            return PaintMonorailCyclesTrackFlat;
 
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_monorail_cycles_station;
+            return PaintMonorailCyclesStation;
 
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return paint_monorail_cycles_track_left_quarter_turn_5_tiles;
+            return PaintMonorailCyclesTrackLeftQuarterTurn5Tiles;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return paint_monorail_cycles_track_right_quarter_turn_5_tiles;
+            return PaintMonorailCyclesTrackRightQuarterTurn5Tiles;
 
         case TrackElemType::SBendLeft:
-            return paint_monorail_cycles_track_s_bend_left;
+            return PaintMonorailCyclesTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return paint_monorail_cycles_track_s_bend_right;
+            return PaintMonorailCyclesTrackSBendRight;
 
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return paint_monorail_cycles_track_left_quarter_turn_3_tiles;
+            return PaintMonorailCyclesTrackLeftQuarterTurn3Tiles;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return paint_monorail_cycles_track_right_quarter_turn_3_tiles;
+            return PaintMonorailCyclesTrackRightQuarterTurn3Tiles;
     }
 
     return nullptr;

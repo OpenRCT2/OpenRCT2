@@ -19,21 +19,21 @@
 #include "../Vehicle.h"
 enum
 {
-    SPR_SPACE_RINGS_FENCE_NE = 22146,
-    SPR_SPACE_RINGS_FENCE_SE = 22147,
-    SPR_SPACE_RINGS_FENCE_SW = 22148,
-    SPR_SPACE_RINGS_FENCE_NW = 22149,
+    SprSpaceRingsFenceNe = 22146,
+    SprSpaceRingsFenceSe = 22147,
+    SprSpaceRingsFenceSw = 22148,
+    SprSpaceRingsFenceNw = 22149,
 };
 
-static constexpr const uint32_t space_rings_fence_sprites[] = {
-    SPR_SPACE_RINGS_FENCE_NE,
-    SPR_SPACE_RINGS_FENCE_SE,
-    SPR_SPACE_RINGS_FENCE_SW,
-    SPR_SPACE_RINGS_FENCE_NW,
+static constexpr const uint32_t SpaceRingsFenceSprites[] = {
+    SprSpaceRingsFenceNe,
+    SprSpaceRingsFenceSe,
+    SprSpaceRingsFenceSw,
+    SprSpaceRingsFenceNw,
 };
 
 /** rct2: 0x00768A3B */
-static void paint_space_rings_structure(
+static void PaintSpaceRingsStructure(
     paint_session& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
 {
     uint32_t vehicleIndex = (segment - direction) & 0x3;
@@ -84,7 +84,7 @@ static void paint_space_rings_structure(
 }
 
 /** rct2: 0x00767C40 */
-static void paint_space_rings(
+static void PaintSpaceRings(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -105,35 +105,35 @@ static void paint_space_rings(
         case 7:
             if (track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session.CurrentRotation))
             {
-                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_SPACE_RINGS_FENCE_SW);
+                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprSpaceRingsFenceSw);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 2 });
             }
             if (track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session.CurrentRotation))
             {
-                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_SPACE_RINGS_FENCE_SE);
+                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprSpaceRingsFenceSe);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 2 });
             }
             break;
         default:
             track_paint_util_paint_fences(
-                session, edges, position, trackElement, ride, session.TrackColours[SCHEME_MISC], height,
-                space_rings_fence_sprites, session.CurrentRotation);
+                session, edges, position, trackElement, ride, session.TrackColours[SCHEME_MISC], height, SpaceRingsFenceSprites,
+                session.CurrentRotation);
             break;
     }
 
     switch (trackSequence)
     {
         case 0:
-            paint_space_rings_structure(session, ride, direction, 0, height + 3);
+            PaintSpaceRingsStructure(session, ride, direction, 0, height + 3);
             break;
         case 5:
-            paint_space_rings_structure(session, ride, direction, 1, height + 3);
+            PaintSpaceRingsStructure(session, ride, direction, 1, height + 3);
             break;
         case 7:
-            paint_space_rings_structure(session, ride, direction, 2, height + 3);
+            PaintSpaceRingsStructure(session, ride, direction, 2, height + 3);
             break;
         case 8:
-            paint_space_rings_structure(session, ride, direction, 3, height + 3);
+            PaintSpaceRingsStructure(session, ride, direction, 3, height + 3);
             break;
     }
 
@@ -176,12 +176,12 @@ static void paint_space_rings(
 /**
  * rct2: 0x0x00767A40
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpaceRings(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {
         return nullptr;
     }
 
-    return paint_space_rings;
+    return PaintSpaceRings;
 }
