@@ -77,6 +77,8 @@ namespace OpenRCT2::RideAudio
 
         RideMusicChannel& operator=(RideMusicChannel&& src) noexcept
         {
+            using std::swap;
+
             RideId = src.RideId;
             TrackIndex = src.TrackIndex;
 
@@ -85,15 +87,8 @@ namespace OpenRCT2::RideAudio
             Pan = src.Pan;
             Frequency = src.Frequency;
 
-            if (Channel != nullptr)
-            {
-                Channel->Stop();
-            }
-            Channel = src.Channel;
-            src.Channel = nullptr;
-
-            Source = src.Source;
-            src.Source = nullptr;
+            swap(Channel, src.Channel);
+            swap(Source, src.Source);
 
             return *this;
         }
@@ -103,12 +98,10 @@ namespace OpenRCT2::RideAudio
             if (Channel != nullptr)
             {
                 Channel->Stop();
-                Channel = nullptr;
-                if (Source != nullptr)
-                {
-                    Source->Release();
-                    Source = nullptr;
-                }
+            }
+            if (Source != nullptr)
+            {
+                Source->Release();
             }
         }
 
