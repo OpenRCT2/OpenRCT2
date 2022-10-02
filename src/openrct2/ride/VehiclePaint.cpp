@@ -3805,7 +3805,7 @@ void Vehicle::Paint(paint_session& session, int32_t imageDirection) const
             vehicle_visual_launched_freefall(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
         case VEHICLE_VISUAL_OBSERVATION_TOWER:
-            vehicle_visual_observation_tower(session, x, imageDirection, y, z + zOffset, this, carEntry);
+            VehicleVisualObservationTower(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
         case VEHICLE_VISUAL_RIVER_RAPIDS:
             vehicle_visual_river_rapids(session, x, imageDirection, y, z + zOffset, this, carEntry);
@@ -3814,7 +3814,7 @@ void Vehicle::Paint(paint_session& session, int32_t imageDirection) const
             vehicle_visual_mini_golf_player(session, x, imageDirection, y, z + zOffset, this);
             break;
         case VEHICLE_VISUAL_MINI_GOLF_BALL:
-            vehicle_visual_mini_golf_ball(session, x, imageDirection, y, z + zOffset, this);
+            VehicleVisualMiniGolfBall(session, x, imageDirection, y, z + zOffset, this);
             break;
         case VEHICLE_VISUAL_REVERSER:
             vehicle_visual_reverser(session, x, imageDirection, y, z + zOffset, this, carEntry);

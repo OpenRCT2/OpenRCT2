@@ -137,7 +137,7 @@ static void PaintCrookedHouse(
     paint_util_set_general_support_height(session, height + 128, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

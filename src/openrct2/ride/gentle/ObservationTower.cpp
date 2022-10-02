@@ -20,9 +20,9 @@
 
 enum
 {
-    SPR_OBSERVATION_TOWER_SEGMENT_BASE = 14986,
-    SPR_OBSERVATION_TOWER_SEGMENT = 14987,
-    SPR_OBSERVATION_TOWER_SEGMENT_TOP = 14988,
+    SprObservationTowerSegmentBase = 14986,
+    SprObservationTowerSegment = 14987,
+    SprObservationTowerSegmentTop = 14988,
 };
 
 static uint32_t GetObservationTowerVehicleBaseImageId(const Vehicle* vehicle, const CarEntry* carEntry, int32_t imageDirection)
@@ -60,7 +60,7 @@ static uint32_t GetObservationTowerVehicleBaseImageId(const Vehicle* vehicle, co
  *
  *  rct2: 0x006D6258
  */
-void vehicle_visual_observation_tower(
+void VehicleVisualObservationTower(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
@@ -79,7 +79,7 @@ void vehicle_visual_observation_tower(
 }
 
 /** rct2: 0x0070DD6C */
-static void paint_observation_tower_base(
+static void PaintObservationTowerBase(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -101,13 +101,13 @@ static void paint_observation_tower_base(
 
     if (trackSequence == 0)
     {
-        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_OBSERVATION_TOWER_SEGMENT_BASE);
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprObservationTowerSegmentBase);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 8, 8, height + 3 });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_OBSERVATION_TOWER_SEGMENT);
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprObservationTowerSegment);
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 32 }, { 2, 2, 30 }, { 8, 8, height + 32 });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_OBSERVATION_TOWER_SEGMENT);
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprObservationTowerSegment);
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 64 }, { 2, 2, 30 }, { 8, 8, height + 64 });
 
         paint_util_set_vertical_tunnel(session, height + 96);
@@ -152,7 +152,7 @@ static void paint_observation_tower_base(
 }
 
 /** rct2: 0x0070DD7C */
-static void paint_observation_tower_section(
+static void PaintObservationTowerSection(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -161,13 +161,13 @@ static void paint_observation_tower_section(
         return;
     }
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_OBSERVATION_TOWER_SEGMENT);
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprObservationTowerSegment);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_OBSERVATION_TOWER_SEGMENT_TOP);
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprObservationTowerSegmentTop);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
     }
 
@@ -180,15 +180,15 @@ static void paint_observation_tower_section(
 /**
  * rct2: 0x0070DC5C
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionObservationTower(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::TowerBase:
-            return paint_observation_tower_base;
+            return PaintObservationTowerBase;
 
         case TrackElemType::TowerSection:
-            return paint_observation_tower_section;
+            return PaintObservationTowerSection;
     }
 
     return nullptr;

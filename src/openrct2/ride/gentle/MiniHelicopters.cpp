@@ -17,7 +17,7 @@
 #include "../VehiclePaint.h"
 
 /** rct2: 0x */
-static void paint_mini_helicopters_track_station(
+static void PaintMiniHelicoptersTrackStation(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -55,7 +55,7 @@ static void paint_mini_helicopters_track_station(
 }
 
 /** rct2: 0x0081F348 */
-static void paint_mini_helicopters_track_flat(
+static void PaintMiniHelicoptersTrackFlat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -87,7 +87,7 @@ static void paint_mini_helicopters_track_flat(
 }
 
 /** rct2: 0x0081F368 */
-static void paint_mini_helicopters_track_flat_to_25_deg_up(
+static void PaintMiniHelicoptersTrackFlatTo25DegUp(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -132,7 +132,7 @@ static void paint_mini_helicopters_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x0081F358 */
-static void paint_mini_helicopters_track_25_deg_up(
+static void PaintMiniHelicoptersTrack25DegUp(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -173,7 +173,7 @@ static void paint_mini_helicopters_track_25_deg_up(
 }
 
 /** rct2: 0x0081F378 */
-static void paint_mini_helicopters_track_25_deg_up_to_flat(
+static void PaintMiniHelicoptersTrack25DegUpToFlat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -218,31 +218,31 @@ static void paint_mini_helicopters_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x */
-static void paint_mini_helicopters_track_flat_to_25_deg_down(
+static void PaintMiniHelicoptersTrackFlatTo25DegDown(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_mini_helicopters_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintMiniHelicoptersTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x0081F388 */
-static void paint_mini_helicopters_track_25_deg_down(
+static void PaintMiniHelicoptersTrack25DegDown(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_mini_helicopters_track_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintMiniHelicoptersTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x0081F3A8 */
-static void paint_mini_helicopters_track_25_deg_down_to_flat(
+static void PaintMiniHelicoptersTrack25DegDownToFlat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_mini_helicopters_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintMiniHelicoptersTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x0081F3E8 */
-static void paint_mini_helicopters_track_left_quarter_turn_3_tiles(
+static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -272,7 +272,7 @@ static void paint_mini_helicopters_track_left_quarter_turn_3_tiles(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static constexpr const uint8_t mini_helicopters_right_quarter_turn_3_tiles_to_left_turn_map[] = {
+static constexpr const uint8_t MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[] = {
     3,
     1,
     2,
@@ -280,17 +280,16 @@ static constexpr const uint8_t mini_helicopters_right_quarter_turn_3_tiles_to_le
 };
 
 /** rct2: 0x0081F3F8 */
-static void paint_mini_helicopters_track_right_quarter_turn_3_tiles(
+static void PaintMiniHelicoptersTrackRightQuarterTurn3Tiles(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = mini_helicopters_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
-    paint_mini_helicopters_track_left_quarter_turn_3_tiles(
-        session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    trackSequence = MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[trackSequence];
+    PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 /** rct2: 0x0081F408 */
-static void paint_mini_helicopters_track_left_quarter_turn_1_tile(
+static void PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -305,52 +304,51 @@ static void paint_mini_helicopters_track_left_quarter_turn_1_tile(
 }
 
 /** rct2: 0x0081F418 */
-static void paint_mini_helicopters_track_right_quarter_turn_1_tile(
+static void PaintMiniHelicoptersTrackRightQuarterTurn1Tile(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_mini_helicopters_track_left_quarter_turn_1_tile(
-        session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 /**
  * rct2: 0x0081F268
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniHelicopters(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return paint_mini_helicopters_track_flat;
+            return PaintMiniHelicoptersTrackFlat;
 
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_mini_helicopters_track_station;
+            return PaintMiniHelicoptersTrackStation;
 
         case TrackElemType::Up25:
-            return paint_mini_helicopters_track_25_deg_up;
+            return PaintMiniHelicoptersTrack25DegUp;
         case TrackElemType::FlatToUp25:
-            return paint_mini_helicopters_track_flat_to_25_deg_up;
+            return PaintMiniHelicoptersTrackFlatTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return paint_mini_helicopters_track_25_deg_up_to_flat;
+            return PaintMiniHelicoptersTrack25DegUpToFlat;
 
         case TrackElemType::Down25:
-            return paint_mini_helicopters_track_25_deg_down;
+            return PaintMiniHelicoptersTrack25DegDown;
         case TrackElemType::FlatToDown25:
-            return paint_mini_helicopters_track_flat_to_25_deg_down;
+            return PaintMiniHelicoptersTrackFlatTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return paint_mini_helicopters_track_25_deg_down_to_flat;
+            return PaintMiniHelicoptersTrack25DegDownToFlat;
 
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return paint_mini_helicopters_track_left_quarter_turn_3_tiles;
+            return PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return paint_mini_helicopters_track_right_quarter_turn_3_tiles;
+            return PaintMiniHelicoptersTrackRightQuarterTurn3Tiles;
 
         case TrackElemType::LeftQuarterTurn1Tile:
-            return paint_mini_helicopters_track_left_quarter_turn_1_tile;
+            return PaintMiniHelicoptersTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
-            return paint_mini_helicopters_track_right_quarter_turn_1_tile;
+            return PaintMiniHelicoptersTrackRightQuarterTurn1Tile;
     }
 
     return nullptr;

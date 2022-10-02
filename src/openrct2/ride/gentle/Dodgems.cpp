@@ -18,32 +18,32 @@
 
 enum
 {
-    SPR_DODGEMS_FLOOR = 21925,
-    SPR_DODGEMS_ROOF_FRAME = 21926, // 4 directions
-    SPR_DODGEMS_ROOF_GLASS = 21930, // 4 directions
-    SPR_DODGEMS_FENCE_TOP_RIGHT = 21934,
-    SPR_DODGEMS_FENCE_BOTTOM_RIGHT = 21935,
-    SPR_DODGEMS_FENCE_BOTTOM_LEFT = 21936,
-    SPR_DODGEMS_FENCE_TOP_LEFT = 21937
+    SprDodgemsFloor = 21925,
+    SprDodgemsRoofFrame = 21926, // 4 directions
+    SprDodgemsRoofGlass = 21930, // 4 directions
+    SprDodgemsFenceTopRight = 21934,
+    SprDodgemsFenceBottomRight = 21935,
+    SprDodgemsFenceBottomLeft = 21936,
+    SprDodgemsFenceTopLeft = 21937
 };
 
-static constexpr const uint32_t dodgems_fence_sprites[] = {
-    SPR_DODGEMS_FENCE_TOP_RIGHT,
-    SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
-    SPR_DODGEMS_FENCE_BOTTOM_LEFT,
-    SPR_DODGEMS_FENCE_TOP_LEFT,
+static constexpr const uint32_t DodgemsFenceSprites[] = {
+    SprDodgemsFenceTopRight,
+    SprDodgemsFenceBottomRight,
+    SprDodgemsFenceBottomLeft,
+    SprDodgemsFenceTopLeft,
 };
 
-static void paint_dodgems_roof(paint_session& session, int32_t height, int32_t offset)
+static void PaintDodgemsRoof(paint_session& session, int32_t height, int32_t offset)
 {
-    auto image_id = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_DODGEMS_ROOF_FRAME + offset));
-    PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 32, 2 });
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SprDodgemsRoofFrame + offset));
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 2 });
 
-    image_id = ImageId(SPR_DODGEMS_ROOF_GLASS + offset).WithTransparancy(FilterPaletteID::PaletteDarken3);
-    PaintAttachToPreviousPS(session, image_id, 0, 0);
+    imageId = ImageId(SprDodgemsRoofGlass + offset).WithTransparancy(FilterPaletteID::PaletteDarken3);
+    PaintAttachToPreviousPS(session, imageId, 0, 0);
 }
 
-static void paint_dodgems(
+static void PaintDodgems(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -57,12 +57,12 @@ static void paint_dodgems(
 
     if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
-        auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_DODGEMS_FLOOR);
+        auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SprDodgemsFloor);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 1, 1, height });
 
         track_paint_util_paint_fences(
             session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_SUPPORTS], height,
-            dodgems_fence_sprites, session.CurrentRotation);
+            DodgemsFenceSprites, session.CurrentRotation);
 
         switch (direction)
         {
@@ -72,11 +72,11 @@ static void paint_dodgems(
             case 0:
                 if ((trackSequence / 4) & 1)
                 {
-                    paint_dodgems_roof(session, height + 30, 0);
+                    PaintDodgemsRoof(session, height + 30, 0);
                 }
                 else
                 {
-                    paint_dodgems_roof(session, height + 30, 2);
+                    PaintDodgemsRoof(session, height + 30, 2);
                 }
                 break;
 
@@ -86,11 +86,11 @@ static void paint_dodgems(
             case 1:
                 if ((trackSequence / 4) & 1)
                 {
-                    paint_dodgems_roof(session, height + 30, 1);
+                    PaintDodgemsRoof(session, height + 30, 1);
                 }
                 else
                 {
-                    paint_dodgems_roof(session, height + 30, 3);
+                    PaintDodgemsRoof(session, height + 30, 3);
                 }
                 break;
         }
@@ -103,12 +103,12 @@ static void paint_dodgems(
 /**
  * rct2:
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionDodgems(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack4x4)
     {
         return nullptr;
     }
 
-    return paint_dodgems;
+    return PaintDodgems;
 }

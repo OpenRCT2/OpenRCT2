@@ -164,7 +164,7 @@ static void PaintMerryGoRound(
     paint_util_set_general_support_height(session, height + 64, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMerryGoRound(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

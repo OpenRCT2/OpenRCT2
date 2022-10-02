@@ -19,14 +19,14 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-static constexpr const uint8_t edges_1x4_ne_sw[] = {
+static constexpr const uint8_t Edges1X4NeSw[] = {
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_NE,
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_SW,
 };
 
-static constexpr const uint8_t edges_1x4_nw_se[] = {
+static constexpr const uint8_t Edges1X4NwSe[] = {
     EDGE_NE | EDGE_SW,
     EDGE_NE | EDGE_SW | EDGE_NW,
     EDGE_NE | EDGE_SW,
@@ -110,11 +110,11 @@ static void PaintFerrisWheel(
     int32_t edges;
     if (direction & 1)
     {
-        edges = edges_1x4_nw_se[relativeTrackSequence];
+        edges = Edges1X4NwSe[relativeTrackSequence];
     }
     else
     {
-        edges = edges_1x4_ne_sw[relativeTrackSequence];
+        edges = Edges1X4NeSw[relativeTrackSequence];
     }
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
@@ -169,7 +169,7 @@ static void PaintFerrisWheel(
     paint_util_set_general_support_height(session, height + 176, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFerrisWheel(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack1x4C)
     {
