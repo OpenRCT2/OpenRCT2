@@ -20,7 +20,7 @@
 #include "../Vehicle.h"
 
 static void PaintEnterpriseRiders(
-    paint_session& session, const rct_ride_entry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
+    PaintSession& session, const rct_ride_entry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
     const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 0 })
@@ -43,7 +43,7 @@ static void PaintEnterpriseRiders(
 }
 
 static void PaintEnterpriseStructure(
-    paint_session& session, const Ride& ride, int8_t xOffset, int8_t yOffset, uint16_t height, const TrackElement& trackElement)
+    PaintSession& session, const Ride& ride, int8_t xOffset, int8_t yOffset, uint16_t height, const TrackElement& trackElement)
 {
     const auto* rideEntry = get_ride_entry(ride.subtype);
     if (rideEntry == nullptr)
@@ -88,14 +88,14 @@ static void PaintEnterpriseStructure(
 }
 
 static void PaintEnterprise(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_4x4[direction][trackSequence];
 
     int32_t edges = edges_4x4[trackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
     track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
@@ -150,21 +150,21 @@ static void PaintEnterprise(
     switch (trackSequence)
     {
         case 0:
-            cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
+            cornerSegments = SegmentB4 | SegmentC8 | SegmentCC;
             break;
         case 3:
-            cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4;
+            cornerSegments = SegmentCC | SegmentBC | SegmentD4;
             break;
         case 12:
-            cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0;
+            cornerSegments = SegmentC8 | SegmentB8 | SegmentD0;
             break;
         case 15:
-            cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4;
+            cornerSegments = SegmentD0 | SegmentC0 | SegmentD4;
             break;
     }
-    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 160, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 160, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int32_t trackType)

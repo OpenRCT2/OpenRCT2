@@ -53,21 +53,21 @@ static std::list<rct_viewport> _viewports;
 rct_viewport* g_music_tracking_viewport;
 
 static std::unique_ptr<JobPool> _paintJobs;
-static std::vector<paint_session*> _paintColumns;
+static std::vector<PaintSession*> _paintColumns;
 
 ScreenCoordsXY gSavedView;
 ZoomLevel gSavedViewZoom;
 uint8_t gSavedViewRotation;
 
-paint_entry* gNextFreePaintStruct;
+PaintEntry* gNextFreePaintStruct;
 uint8_t gCurrentRotation;
 
 static uint32_t _currentImageType;
-InteractionInfo::InteractionInfo(const paint_struct* ps)
-    : Loc(ps->map_x, ps->map_y)
-    , Element(ps->tileElement)
-    , Entity(ps->entity)
-    , SpriteType(ps->sprite_type)
+InteractionInfo::InteractionInfo(const PaintStruct* ps)
+    : Loc(ps->MapX, ps->MapY)
+    , Element(ps->Tile)
+    , Entity(ps->Entity)
+    , SpriteType(ps->SpriteType)
 {
 }
 static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi);
@@ -842,7 +842,7 @@ void viewport_render(
 }
 
 static void record_session(
-    const paint_session& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
+    const PaintSession& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
 {
     // Perform a deep copy of the paint session, use relative offsets.
     // This is done to extract the session for benchmark.
@@ -853,7 +853,7 @@ static void record_session(
     recordedSession.Entries.resize(session.PaintEntryChain.GetCount());
 
     // Mind the offset needs to be calculated against the original `session`, not `session_copy`
-    std::unordered_map<paint_struct*, paint_struct*> entryRemap;
+    std::unordered_map<PaintStruct*, PaintStruct*> entryRemap;
 
     // Copy all entries
     auto paintIndex = 0;
@@ -865,16 +865,16 @@ static void record_session(
             auto& src = chain->PaintStructs[i];
             auto& dst = recordedSession.Entries[paintIndex++];
             dst = src;
-            entryRemap[src.AsBasic()] = reinterpret_cast<paint_struct*>(i * sizeof(paint_entry));
+            entryRemap[src.AsBasic()] = reinterpret_cast<PaintStruct*>(i * sizeof(PaintEntry));
         }
         chain = chain->Next;
     }
-    entryRemap[nullptr] = reinterpret_cast<paint_struct*>(-1);
+    entryRemap[nullptr] = reinterpret_cast<PaintStruct*>(-1);
 
     // Remap all entries
     for (auto& ps : recordedSession.Entries)
     {
-        auto& ptr = ps.AsBasic()->next_quadrant_ps;
+        auto& ptr = ps.AsBasic()->NextQuadrantPs;
         auto it = entryRemap.find(ptr);
         if (it == entryRemap.end())
         {
@@ -902,7 +902,7 @@ static void record_session(
 }
 
 static void viewport_fill_column(
-    paint_session& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
+    PaintSession& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
 {
     PROFILED_FUNCTION();
 
@@ -914,7 +914,7 @@ static void viewport_fill_column(
     PaintSessionArrange(session);
 }
 
-static void viewport_paint_column(paint_session& session)
+static void viewport_paint_column(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
@@ -1027,7 +1027,7 @@ void viewport_paint(
     // Generate and sort columns.
     for (x = alignedX; x < rightBorder; x += 32, index++)
     {
-        paint_session* session = PaintSessionAlloc(&dpi1, viewFlags);
+        PaintSession* session = PaintSessionAlloc(&dpi1, viewFlags);
         _paintColumns.push_back(session);
 
         rct_drawpixelinfo& dpi2 = session->DPI;
@@ -1404,14 +1404,14 @@ static bool IsTileElementVegetation(const TileElement* tileElement)
     return false;
 }
 
-VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFlags)
+VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags)
 {
-    switch (ps->sprite_type)
+    switch (ps->SpriteType)
     {
         case ViewportInteractionItem::Entity:
-            if (ps->entity != nullptr)
+            if (ps->Entity != nullptr)
             {
-                switch (ps->entity->Type)
+                switch (ps->Entity->Type)
                 {
                     case EntityType::Vehicle:
                         if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES)
@@ -1454,9 +1454,9 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
         case ViewportInteractionItem::Scenery:
         case ViewportInteractionItem::LargeScenery:
         case ViewportInteractionItem::Wall:
-            if (ps->tileElement != nullptr)
+            if (ps->Tile != nullptr)
             {
-                if (IsTileElementVegetation(ps->tileElement))
+                if (IsTileElementVegetation(ps->Tile))
                 {
                     if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION)
                     {
@@ -1472,7 +1472,7 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
                     }
                 }
             }
-            if (ps->sprite_type == ViewportInteractionItem::Wall && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+            if (ps->SpriteType == ViewportInteractionItem::Wall && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
             {
                 return VisibilityKind::Partial;
             }
@@ -1486,12 +1486,12 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
 /**
  * Checks if a paint_struct sprite type is in the filter mask.
  */
-static bool PSSpriteTypeIsInFilter(paint_struct* ps, uint16_t filter)
+static bool PSSpriteTypeIsInFilter(PaintStruct* ps, uint16_t filter)
 {
-    if (ps->sprite_type != ViewportInteractionItem::None && ps->sprite_type != ViewportInteractionItem::Label
-        && ps->sprite_type <= ViewportInteractionItem::Banner)
+    if (ps->SpriteType != ViewportInteractionItem::None && ps->SpriteType != ViewportInteractionItem::Label
+        && ps->SpriteType <= ViewportInteractionItem::Banner)
     {
-        auto mask = EnumToFlag(ps->sprite_type);
+        auto mask = EnumToFlag(ps->SpriteType);
         if (filter & mask)
         {
             return true;
@@ -1804,36 +1804,36 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, ImageId imageId, c
  *
  *  rct2: 0x0068862C
  */
-InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint32_t viewFlags, uint16_t filter)
+InteractionInfo set_interaction_info_from_paint_session(PaintSession* session, uint32_t viewFlags, uint16_t filter)
 {
     PROFILED_FUNCTION();
 
-    paint_struct* ps = &session->PaintHead;
+    PaintStruct* ps = &session->PaintHead;
     rct_drawpixelinfo* dpi = &session->DPI;
     InteractionInfo info{};
 
-    while ((ps = ps->next_quadrant_ps) != nullptr)
+    while ((ps = ps->NextQuadrantPs) != nullptr)
     {
-        paint_struct* old_ps = ps;
-        paint_struct* next_ps = ps;
+        PaintStruct* old_ps = ps;
+        PaintStruct* next_ps = ps;
         while (next_ps != nullptr)
         {
             ps = next_ps;
-            if (is_sprite_interacted_with(dpi, ps->image_id, { ps->x, ps->y }))
+            if (is_sprite_interacted_with(dpi, ps->ImgId, { ps->X, ps->Y }))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
                     info = { ps };
                 }
             }
-            next_ps = ps->children;
+            next_ps = ps->Children;
         }
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnull-dereference"
-        for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
+        for (AttachedPaintStruct* attached_ps = ps->AttachedPs; attached_ps != nullptr; attached_ps = attached_ps->Next)
         {
-            if (is_sprite_interacted_with(dpi, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
+            if (is_sprite_interacted_with(dpi, attached_ps->ImgId, { (attached_ps->X + ps->X), (attached_ps->Y + ps->Y) }))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
@@ -1895,7 +1895,7 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
         dpi.zoom_level = myviewport->zoom;
         dpi.width = 1;
 
-        paint_session* session = PaintSessionAlloc(&dpi, myviewport->flags);
+        PaintSession* session = PaintSessionAlloc(&dpi, myviewport->flags);
         PaintSessionGenerate(*session);
         PaintSessionArrange(*session);
         info = set_interaction_info_from_paint_session(session, myviewport->flags, flags & 0xFFFF);

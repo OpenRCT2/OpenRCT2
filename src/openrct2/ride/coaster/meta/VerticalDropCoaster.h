@@ -25,7 +25,7 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_HALF_LOOP, TRACK_CORKSCREW, TRACK_BARREL_ROLL, TRACK_POWERED_LIFT, TRACK_HALF_LOOP_LARGE, TRACK_QUARTER_LOOP, TRACK_BOOSTER, TRACK_TWIST}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_bolliger_mabillard<METAL_SUPPORTS_BOXED>),
+    SET_FIELD(TrackPaintFunction, get_track_paint_function_bolliger_mabillard<MetalSupportsBoxed>),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),

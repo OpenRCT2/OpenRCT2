@@ -768,7 +768,7 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
             *output = it.current;
             return 1;
         }
-        //#2081: prevent an infinite loop
+        // #2081: prevent an infinite loop
         moveSlowIt = !moveSlowIt;
         if (moveSlowIt)
         {

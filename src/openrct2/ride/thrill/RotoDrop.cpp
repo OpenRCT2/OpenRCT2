@@ -34,7 +34,7 @@ enum
  *  rct2: 0x006D5DA9
  */
 void vehicle_visual_roto_drop(
-    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
     imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
@@ -100,14 +100,14 @@ void vehicle_visual_roto_drop(
 
 /** rct2: 0x00886194 */
 static void paint_roto_drop_base(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -132,10 +132,10 @@ static void paint_roto_drop_base(
             (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT));
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 64 }, { 2, 2, 30 }, { 8, 8, height + 64 });
 
-        paint_util_set_vertical_tunnel(session, height + 96);
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetVerticalTunnel(session, height + 96);
+        PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
 
-        paint_util_set_general_support_height(session, height + 96, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
 
         return;
     }
@@ -144,38 +144,38 @@ static void paint_roto_drop_base(
     switch (trackSequence)
     {
         case 1:
-            blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
+            blockedSegments = SegmentB8 | SegmentC8 | SegmentB4 | SegmentCC | SegmentBC;
             break;
         case 2:
-            blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
+            blockedSegments = SegmentB4 | SegmentCC | SegmentBC;
             break;
         case 3:
-            blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0;
+            blockedSegments = SegmentB4 | SegmentCC | SegmentBC | SegmentD4 | SegmentC0;
             break;
         case 4:
-            blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8;
+            blockedSegments = SegmentB4 | SegmentC8 | SegmentB8;
             break;
         case 5:
-            blockedSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0;
+            blockedSegments = SegmentBC | SegmentD4 | SegmentC0;
             break;
         case 6:
-            blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
+            blockedSegments = SegmentB4 | SegmentC8 | SegmentB8 | SegmentD0 | SegmentC0;
             break;
         case 7:
-            blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC;
+            blockedSegments = SegmentB8 | SegmentD0 | SegmentC0 | SegmentD4 | SegmentBC;
             break;
         case 8:
-            blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
+            blockedSegments = SegmentB8 | SegmentD0 | SegmentC0;
             break;
     }
-    paint_util_set_segment_support_height(session, blockedSegments, 0xFFFF, 0);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll & ~blockedSegments, height + 2, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008861A4 */
 static void paint_roto_drop_tower_section(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence == 1)
@@ -193,10 +193,10 @@ static void paint_roto_drop_tower_section(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
 
-    paint_util_set_vertical_tunnel(session, height + 32);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetVerticalTunnel(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /**

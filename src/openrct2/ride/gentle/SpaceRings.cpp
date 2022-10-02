@@ -34,7 +34,7 @@ static constexpr const uint32_t SpaceRingsFenceSprites[] = {
 
 /** rct2: 0x00768A3B */
 static void PaintSpaceRingsStructure(
-    paint_session& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
 {
     uint32_t vehicleIndex = (segment - direction) & 0x3;
 
@@ -85,7 +85,7 @@ static void PaintSpaceRingsStructure(
 
 /** rct2: 0x00767C40 */
 static void PaintSpaceRings(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -95,7 +95,7 @@ static void PaintSpaceRings(
 
     ImageId imageId;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
     track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
@@ -103,12 +103,12 @@ static void PaintSpaceRings(
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session.CurrentRotation))
+            if (track_paint_util_has_fence(EdgeSW, position, trackElement, ride, session.CurrentRotation))
             {
                 imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprSpaceRingsFenceSw);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 2 });
             }
-            if (track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session.CurrentRotation))
+            if (track_paint_util_has_fence(EdgeSE, position, trackElement, ride, session.CurrentRotation))
             {
                 imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprSpaceRingsFenceSe);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 2 });
@@ -144,33 +144,33 @@ static void PaintSpaceRings(
             cornerSegments = 0;
             break;
         case 1:
-            cornerSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
+            cornerSegments = SegmentB8 | SegmentC8 | SegmentB4 | SegmentCC | SegmentBC;
             break;
         case 2:
-            cornerSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
+            cornerSegments = SegmentB4 | SegmentCC | SegmentBC;
             break;
         case 3:
-            cornerSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0;
+            cornerSegments = SegmentB4 | SegmentCC | SegmentBC | SegmentD4 | SegmentC0;
             break;
         case 4:
-            cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8;
+            cornerSegments = SegmentB4 | SegmentC8 | SegmentB8;
             break;
         case 5:
-            cornerSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0;
+            cornerSegments = SegmentBC | SegmentD4 | SegmentC0;
             break;
         case 6:
-            cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
+            cornerSegments = SegmentB4 | SegmentC8 | SegmentB8 | SegmentD0 | SegmentC0;
             break;
         case 7:
-            cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC;
+            cornerSegments = SegmentB8 | SegmentD0 | SegmentC0 | SegmentD4 | SegmentBC;
             break;
         case 8:
-            cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
+            cornerSegments = SegmentB8 | SegmentD0 | SegmentC0;
             break;
     }
-    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /**

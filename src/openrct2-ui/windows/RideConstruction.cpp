@@ -2628,7 +2628,7 @@ private:
         TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         TileElement tempTrackTileElement{};
         TileElement* backupTileElementArrays[5]{};
-        paint_session* session = PaintSessionAlloc(dpi, 0);
+        PaintSession* session = PaintSessionAlloc(dpi, 0);
         trackDirection &= 3;
 
         auto currentRide = get_ride(rideIndex);
@@ -2691,7 +2691,7 @@ private:
             tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
 
             // Draw this map tile
-            tile_element_paint_setup(*session, coords, true);
+            TileElementPaintSetup(*session, coords, true);
 
             // Restore map elements
             map_set_tile_element(centreTileCoords, backupTileElementArrays[0]);

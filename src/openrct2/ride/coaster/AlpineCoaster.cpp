@@ -27,7 +27,7 @@
 namespace AlpineRC
 {
     static void TrackFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackElement.HasChain())
@@ -57,8 +57,8 @@ namespace AlpineRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
@@ -81,19 +81,19 @@ namespace AlpineRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void TrackStation(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         static constexpr const uint32_t imageIds[4][3] = {
@@ -120,13 +120,13 @@ namespace AlpineRC
             { 32, 28, 2 }, { 0, 2, height });
         track_paint_util_draw_station_metal_supports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS]);
         track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 4, 7);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelSquareFlat);
+        PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void Track25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackElement.HasChain())
@@ -158,8 +158,8 @@ namespace AlpineRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 8, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 8, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
@@ -190,26 +190,26 @@ namespace AlpineRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 8, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 8, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, Tunnel1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, Tunnel2);
         }
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackFlatTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackElement.HasChain())
@@ -239,8 +239,8 @@ namespace AlpineRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 3, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
@@ -271,26 +271,26 @@ namespace AlpineRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 3, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, Tunnel2);
         }
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void Track25DegUpToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackElement.HasChain())
@@ -320,8 +320,8 @@ namespace AlpineRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 6, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
@@ -352,47 +352,47 @@ namespace AlpineRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 6, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, Tunnel0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, Tunnel14);
         }
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 40, 0x20);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
     static void Track25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         Track25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackFlatTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         Track25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftQuarterTurn3(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -425,20 +425,19 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -468,10 +467,9 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -501,28 +499,27 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackRightQuarterTurn3(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -530,7 +527,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftQuarterTurn5(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -563,20 +560,19 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -606,12 +602,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -641,13 +636,12 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -677,12 +671,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 32, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentB8 | SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -712,28 +705,27 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackRightQuarterTurn5(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -741,7 +733,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftEighthToDiag(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -774,16 +766,16 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -813,12 +805,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -848,17 +839,15 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC0 | SegmentC4 | SegmentCC | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -868,46 +857,45 @@ namespace AlpineRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 3)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 7)),
                             { 0, 0, height }, { 16, 18, 3 }, { 0, 16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 11)),
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 15)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackRightEighthToDiag(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -940,16 +928,16 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -979,12 +967,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentBC | SegmentC0 | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -1014,17 +1001,15 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -1034,46 +1019,45 @@ namespace AlpineRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 19)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 23)),
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 27)),
                             { 0, 0, height }, { 16, 18, 3 }, { 0, 16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 31)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackLeftEighthToOrthogonal(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -1081,7 +1065,7 @@ namespace AlpineRC
     }
 
     static void TrackRightEighthToOrthogonal(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -1089,7 +1073,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1119,10 +1103,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1149,10 +1132,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1179,10 +1161,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1190,24 +1171,24 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_a_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalASupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_a_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalASupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_a_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalASupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_a_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalASupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1216,37 +1197,36 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_a_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalASupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_a_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalASupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_a_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalASupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_a_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalASupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackDiag25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1276,10 +1256,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1306,10 +1285,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1336,10 +1314,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1347,24 +1324,24 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1373,37 +1350,36 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
     }
 
     static void TrackDiag25DegUpToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1433,10 +1409,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1463,10 +1438,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1493,10 +1467,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1504,24 +1477,24 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1530,37 +1503,36 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
     }
 
     static void TrackDiagFlatTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1590,10 +1562,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1620,10 +1591,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1650,10 +1620,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1661,24 +1630,24 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 0, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 0, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 0, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 0, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1687,37 +1656,36 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
 
     static void TrackDiag25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1747,10 +1715,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1777,10 +1744,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1807,10 +1773,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1818,24 +1783,24 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1844,37 +1809,36 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
     }
 
     static void TrackDiagFlatTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1904,9 +1868,8 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1933,9 +1896,8 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1962,9 +1924,8 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1972,24 +1933,24 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1998,38 +1959,37 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
                 break;
         }
 
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackDiag25DegDownToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2059,10 +2019,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2089,10 +2048,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2119,10 +2077,9 @@ namespace AlpineRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2130,24 +2087,24 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2156,37 +2113,36 @@ namespace AlpineRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
-                                session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            MetalBSupportsPaintSetup(
+                                session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
 
     static void TrackFlatToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2220,18 +2176,18 @@ namespace AlpineRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(
-                session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+            MetalASupportsPaintSetup(
+                session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void TrackFlatToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2267,32 +2223,32 @@ namespace AlpineRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(
-                session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+            MetalASupportsPaintSetup(
+                session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void TrackLeftBankToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackFlatToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBankToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackFlatToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftBankTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2332,25 +2288,25 @@ namespace AlpineRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(
-                session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
+            MetalASupportsPaintSetup(
+                session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 3, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, Tunnel2);
         }
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void TrackRightBankTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2390,25 +2346,25 @@ namespace AlpineRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(
-                session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
+            MetalASupportsPaintSetup(
+                session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 3, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, Tunnel2);
         }
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void Track25DegUpToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2448,25 +2404,25 @@ namespace AlpineRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(
-                session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height,
+            MetalASupportsPaintSetup(
+                session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 6, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, Tunnel0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, Tunnel14);
         }
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 40, 0x20);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
     static void Track25DegUpToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2506,53 +2462,53 @@ namespace AlpineRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(
-                session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height,
+            MetalASupportsPaintSetup(
+                session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 6, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, Tunnel0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, Tunnel14);
         }
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 40, 0x20);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
     static void TrackLeftBankTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         Track25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBankTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         Track25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2584,25 +2540,25 @@ namespace AlpineRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(
-                session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+            MetalASupportsPaintSetup(
+                session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void TrackRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackDiagFlatToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2617,10 +2573,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -2636,10 +2591,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -2651,45 +2605,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 2)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackDiagFlatToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2704,10 +2656,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -2719,10 +2670,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -2738,45 +2688,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 6)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackDiagLeftBankToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2791,10 +2739,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -2810,10 +2757,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -2825,45 +2771,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 9)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackDiagRightBankToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2878,10 +2822,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -2893,10 +2836,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -2912,45 +2854,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 4)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackDiagLeftBankTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2965,10 +2905,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -2984,10 +2923,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -2999,45 +2937,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 12)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
 
     static void TrackDiagRightBankTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3052,10 +2988,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3067,10 +3002,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3086,45 +3020,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 16)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
 
     static void TrackDiag25DegUpToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3139,10 +3071,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3158,10 +3089,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3173,45 +3103,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 22)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
     }
 
     static void TrackDiag25DegUpToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3226,10 +3154,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3241,10 +3168,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3260,45 +3186,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 26)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
     }
 
     static void TrackDiagLeftBankTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3313,9 +3237,8 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
                 break;
             case 1:
                 switch (direction)
@@ -3331,9 +3254,8 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
                 break;
             case 2:
                 switch (direction)
@@ -3345,45 +3267,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 29)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
                 break;
         }
 
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackDiagRightBankTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3398,9 +3318,8 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
                 break;
             case 1:
                 switch (direction)
@@ -3412,9 +3331,8 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
                 break;
             case 2:
                 switch (direction)
@@ -3430,45 +3348,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 24)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
                 break;
         }
 
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackDiag25DegDownToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3483,10 +3399,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3502,10 +3417,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3517,45 +3431,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 19)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
 
     static void TrackDiag25DegDownToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3570,10 +3482,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3585,10 +3496,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3604,45 +3514,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 14)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalBSupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
 
     static void TrackDiagLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3657,10 +3565,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3672,10 +3579,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3687,45 +3593,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 31)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackDiagRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3740,10 +3644,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3755,10 +3658,9 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3770,45 +3672,43 @@ namespace AlpineRC
                             { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 33)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackLeftQuarterTurn3Bank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3845,20 +3745,19 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 2, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 2, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3888,10 +3787,9 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -3925,28 +3823,27 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 2, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 2, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackRightQuarterTurn3Bank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3954,7 +3851,7 @@ namespace AlpineRC
     }
 
     static void TrackBankedLeftQuarterTurn5(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3991,20 +3888,19 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 1, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 1, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4034,12 +3930,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4069,13 +3964,12 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -4105,12 +3999,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 32, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentB8 | SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -4144,28 +4037,27 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 1, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 1, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackBankedRightQuarterTurn5(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -4173,7 +4065,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftEighthBankToDiag(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4206,16 +4098,16 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -4245,12 +4137,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4280,17 +4171,15 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC0 | SegmentC4 | SegmentCC | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -4300,46 +4189,45 @@ namespace AlpineRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 3)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 7)),
                             { 0, 0, height }, { 16, 18, 0 }, { 0, 16, height + 27 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 11)),
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 15)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackRightEighthBankToDiag(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4372,16 +4260,16 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -4411,12 +4299,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentBC | SegmentC0 | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4446,17 +4333,15 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -4466,46 +4351,45 @@ namespace AlpineRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 19)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 23)),
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 27)),
                             { 0, 0, height }, { 16, 18, 0 }, { 0, 16, height + 27 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 31)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackLeftEighthBankToOrthogonal(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -4513,7 +4397,7 @@ namespace AlpineRC
     }
 
     static void TrackRightEighthBankToOrthogonal(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -4521,7 +4405,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftQuarterTurn3Tile25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4554,23 +4438,22 @@ namespace AlpineRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 8, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 8, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, Tunnel1);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4600,28 +4483,27 @@ namespace AlpineRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 8, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 8, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, Tunnel2);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, Tunnel2);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
 
     static void TrackRightQuarterTurn3Tile25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4654,23 +4536,22 @@ namespace AlpineRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 8, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 8, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, Tunnel1);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4680,53 +4561,52 @@ namespace AlpineRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 9)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 11)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 13)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 15)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, Tunnel2);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, Tunnel2);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
 
     static void TrackLeftQuarterTurn3Tile25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -4734,7 +4614,7 @@ namespace AlpineRC
     }
 
     static void TrackRightQuarterTurn3Tile25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -4742,7 +4622,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftQuarterTurn525DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4775,20 +4655,19 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 8, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 8, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, Tunnel1);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4818,12 +4697,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4853,13 +4731,12 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 4:
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -4889,12 +4766,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 32, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentB8 | SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -4924,28 +4800,27 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 8, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 8, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, Tunnel2);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, Tunnel2);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
 
     static void TrackRightQuarterTurn525DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4978,20 +4853,19 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 8, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 8, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, Tunnel1);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5021,12 +4895,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentBC | SegmentC0 | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5056,13 +4929,12 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 4:
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -5092,12 +4964,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 32, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentB8 | SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -5127,28 +4998,27 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 8, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 8, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height + 8, Tunnel2);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height + 8, Tunnel2);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
 
     static void TrackLeftQuarterTurn525DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -5156,7 +5026,7 @@ namespace AlpineRC
     }
 
     static void TrackRightQuarterTurn525DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -5164,7 +5034,7 @@ namespace AlpineRC
     }
 
     static void TrackSBendLeft(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -5193,17 +5063,16 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -5212,15 +5081,15 @@ namespace AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5233,12 +5102,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 26, 3 }, { 0, 6, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5257,23 +5125,22 @@ namespace AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentBC | SegmentC0 | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5299,28 +5166,27 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackSBendRight(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -5349,17 +5215,16 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -5368,15 +5233,15 @@ namespace AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { 32, 26, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { 32, 26, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5389,12 +5254,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 26, 3 });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentBC | SegmentC0 | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5413,23 +5277,22 @@ namespace AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { 32, 26, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { 32, 26, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5455,28 +5318,27 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackLeftHalfBankedHelixUpSmall(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -5513,21 +5375,20 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 5, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 5, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5557,10 +5418,9 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5594,23 +5454,22 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height + 8 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 9, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 9, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, Tunnel0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -5644,26 +5503,25 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 5, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 5, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -5693,10 +5551,9 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 7:
                 switch (direction)
@@ -5730,24 +5587,23 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 9, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 9, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackRightHalfBankedHelixUpSmall(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -5784,21 +5640,20 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 5, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 5, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5828,10 +5683,9 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentD0 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5865,23 +5719,22 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 9, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 9, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, Tunnel0);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -5915,26 +5768,25 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 5, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 5, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -5964,10 +5816,9 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 7:
                 switch (direction)
@@ -6001,24 +5852,23 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height + 8 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 9, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 9, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackLeftHalfBankedHelixDownSmall(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackSequence >= 4)
@@ -6031,7 +5881,7 @@ namespace AlpineRC
     }
 
     static void TrackRightHalfBankedHelixDownSmall(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackSequence >= 4)
@@ -6044,7 +5894,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftHalfBankedHelixUpLarge(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -6081,21 +5931,20 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 3, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -6125,12 +5974,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -6160,13 +6008,12 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -6196,12 +6043,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 32, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentB8 | SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -6235,23 +6081,22 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height + 8 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 9, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 9, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, Tunnel0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 7:
                 switch (direction)
@@ -6285,26 +6130,25 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 3, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 3, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 8:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 9:
                 switch (direction)
@@ -6334,12 +6178,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 32, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentB8 | SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 10:
                 switch (direction)
@@ -6369,13 +6212,12 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 11:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 12:
                 switch (direction)
@@ -6405,12 +6247,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentBC | SegmentC0 | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 13:
                 switch (direction)
@@ -6444,23 +6285,22 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 9, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 9, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
     static void TrackRightHalfBankedHelixUpLarge(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -6497,21 +6337,20 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 3, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -6541,12 +6380,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentBC | SegmentC0 | SegmentC4 | SegmentCC | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -6576,13 +6414,12 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -6612,12 +6449,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 32, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentB8 | SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -6627,8 +6463,8 @@ namespace AlpineRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 26)),
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height + 8 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6639,40 +6475,39 @@ namespace AlpineRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 37)),
                             { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, Tunnel0);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 7:
                 switch (direction)
@@ -6706,26 +6541,25 @@ namespace AlpineRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 3, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 3, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 8:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 9:
                 switch (direction)
@@ -6755,12 +6589,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 32, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                    PaintUtilRotateSegments(SegmentB8 | SegmentC0 | SegmentC4 | SegmentC8 | SegmentD0 | SegmentD4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 10:
                 switch (direction)
@@ -6790,13 +6623,12 @@ namespace AlpineRC
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 11:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 12:
                 switch (direction)
@@ -6826,12 +6658,11 @@ namespace AlpineRC
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
-                        SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                    PaintUtilRotateSegments(SegmentB4 | SegmentB8 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 13:
                 switch (direction)
@@ -6845,49 +6676,48 @@ namespace AlpineRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 37)),
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsFork, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 26)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height + 8 });
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportsForkAlt, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session,
-                    paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
 
     static void TrackLeftHalfBankedHelixDownLarge(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackSequence >= 7)
@@ -6900,7 +6730,7 @@ namespace AlpineRC
     }
 
     static void TrackRightHalfBankedHelixDownLarge(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackSequence >= 7)
@@ -6913,7 +6743,7 @@ namespace AlpineRC
     }
 
     static void TrackBrakes(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -6933,18 +6763,18 @@ namespace AlpineRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(
-                session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+            MetalASupportsPaintSetup(
+                session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void TrackLeftBankToLeftQuarterTurn3Tile25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -6981,23 +6811,22 @@ namespace AlpineRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 3, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -7027,28 +6856,27 @@ namespace AlpineRC
                             { 6, 0, height }, { 20, 32, 3 }, { 0, 6, height - 6 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 10, height - 6,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 10, height - 6,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height, Tunnel2);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel2);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
     }
 
     static void TrackRightBankToRightQuarterTurn3Tile25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -7085,23 +6913,22 @@ namespace AlpineRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 3, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel0);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -7131,28 +6958,27 @@ namespace AlpineRC
                             { 6, 0, height }, { 20, 32, 3 }, { 0, 6, height - 6 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 10, height - 6,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 10, height - 6,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelRight(session, height, Tunnel2);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_2);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel2);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
     }
 
     static void TrackLeftQuarterTurn3Tile25DegDownToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -7185,23 +7011,22 @@ namespace AlpineRC
                             { 0, 6, height }, { 32, 20, 3 }, { 0, 6, height - 6 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 8, height - 6,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 8, height - 6,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel2);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB4 | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -7235,28 +7060,27 @@ namespace AlpineRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 5, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 5, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentC0 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
     }
 
     static void TrackRightQuarterTurn3Tile25DegDownToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -7289,23 +7113,22 @@ namespace AlpineRC
                             { 0, 6, height }, { 32, 20, 3 }, { 0, 6, height - 6 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 8, height - 6,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsForkAlt : MetalSupportsFork, 4, 8, height - 6,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height, Tunnel2);
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentBC | SegmentC4 | SegmentCC | SegmentD0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -7339,22 +7162,21 @@ namespace AlpineRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, direction & 1 ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 5, height,
+                MetalASupportsPaintSetup(
+                    session, direction & 1 ? MetalSupportsFork : MetalSupportsForkAlt, 4, 5, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height, Tunnel0);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height, Tunnel0);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SegmentB8 | SegmentC4 | SegmentC8 | SegmentD4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
     }

@@ -29,7 +29,7 @@ constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
 class Formatter;
 struct TileElement;
-struct paint_session;
+struct PaintSession;
 
 namespace GameActions
 {
@@ -407,7 +407,7 @@ public: // Peep
     [[nodiscard]] CoordsXY GetDestination() const;
 
     void Serialise(class DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 
     // TODO: Make these private again when done refactoring
 public: // Peep

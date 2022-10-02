@@ -166,26 +166,26 @@ money32 footpath_provisional_set(
     }
 
     // Invalidate previous footpath piece.
-    virtual_floor_invalidate();
+    VirtualFloorInvalidate();
 
     if (!scenery_tool_is_active())
     {
         if (res.Error != GameActions::Status::Ok)
         {
             // If we can't build this, don't show a virtual floor.
-            virtual_floor_set_height(0);
+            VirtualFloorSetHeight(0);
         }
         else if (
             gFootpathConstructSlope == TILE_ELEMENT_SLOPE_FLAT
             || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
         {
             // Going either straight on, or down.
-            virtual_floor_set_height(gProvisionalFootpath.Position.z);
+            VirtualFloorSetHeight(gProvisionalFootpath.Position.z);
         }
         else
         {
             // Going up in the world!
-            virtual_floor_set_height(gProvisionalFootpath.Position.z + LAND_HEIGHT_STEP);
+            VirtualFloorSetHeight(gProvisionalFootpath.Position.z + LAND_HEIGHT_STEP);
         }
     }
 
@@ -1879,7 +1879,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
         }
 
         uint8_t pathConnections = 0;
-        if (tileElement->AsPath()->GetEdges() & EDGE_NW)
+        if (tileElement->AsPath()->GetEdges() & EdgeNW)
         {
             pathConnections |= FOOTPATH_CONNECTION_NW;
             const auto* pathElement = std::get<3>(pathList);
@@ -1889,7 +1889,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
             }
         }
 
-        if (tileElement->AsPath()->GetEdges() & EDGE_NE)
+        if (tileElement->AsPath()->GetEdges() & EdgeNE)
         {
             pathConnections |= FOOTPATH_CONNECTION_NE;
             const auto* pathElement = std::get<0>(pathList);
@@ -1899,7 +1899,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
             }
         }
 
-        if (tileElement->AsPath()->GetEdges() & EDGE_SE)
+        if (tileElement->AsPath()->GetEdges() & EdgeSE)
         {
             pathConnections |= FOOTPATH_CONNECTION_SE;
             /* In the following:
@@ -1914,7 +1914,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
             //}
         }
 
-        if (tileElement->AsPath()->GetEdges() & EDGE_SW)
+        if (tileElement->AsPath()->GetEdges() & EdgeSW)
         {
             pathConnections |= FOOTPATH_CONNECTION_SW;
             /* In the following:
@@ -1932,7 +1932,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
         if ((pathConnections & FOOTPATH_CONNECTION_NW) && std::get<3>(pathList) != nullptr
             && !std::get<3>(pathList)->AsPath()->IsWide())
         {
-            constexpr uint8_t edgeMask1 = EDGE_SE | EDGE_SW;
+            constexpr uint8_t edgeMask1 = EdgeSE | EdgeSW;
             const auto* pathElement0 = std::get<0>(pathList);
             const auto* pathElement7 = std::get<7>(pathList);
             if ((pathConnections & FOOTPATH_CONNECTION_NE) && pathElement7 != nullptr && !pathElement7->AsPath()->IsWide()
@@ -1947,7 +1947,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
              * is always false due to the tile update order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
-            constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_SE;
+            constexpr uint8_t edgeMask2 = EdgeNE | EdgeSE;
             const auto* pathElement2 = std::get<2>(pathList);
             const auto* pathElement6 = std::get<6>(pathList);
             if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathElement6 != nullptr && !(pathElement6)->AsPath()->IsWide()
@@ -1965,7 +1965,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
          * Short circuit the logic appropriately. */
         if ((pathConnections & FOOTPATH_CONNECTION_SE) && std::get<1>(pathList) != nullptr)
         {
-            constexpr uint8_t edgeMask1 = EDGE_SW | EDGE_NW;
+            constexpr uint8_t edgeMask1 = EdgeSW | EdgeNW;
             const auto* pathElement0 = std::get<0>(pathList);
             const auto* pathElement4 = std::get<4>(pathList);
             if ((pathConnections & FOOTPATH_CONNECTION_NE) && (pathElement4 != nullptr)
@@ -1981,7 +1981,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
              * are always false due to the tile update order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
-            constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_NW;
+            constexpr uint8_t edgeMask2 = EdgeNE | EdgeNW;
             const auto* pathElement2 = std::get<2>(pathList);
             const auto* pathElement5 = std::get<5>(pathList);
             if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathElement5 != nullptr

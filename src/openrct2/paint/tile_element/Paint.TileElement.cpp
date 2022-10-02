@@ -34,24 +34,24 @@
 
 #include <algorithm>
 
-static void blank_tiles_paint(paint_session& session, int32_t x, int32_t y);
-static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoords);
+static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
+static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
 
-const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC
-    | SEGMENT_D0 | SEGMENT_D4;
+const int32_t SegmentsAll = SegmentB4 | SegmentB8 | SegmentBC | SegmentC0 | SegmentC4 | SegmentC8 | SegmentCC | SegmentD0
+    | SegmentD4;
 
 /**
  *
  *  rct2: 0x0068B35F
  */
-void tile_element_paint_setup(paint_session& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
+void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
 {
     PROFILED_FUNCTION();
 
     if (!map_is_edge(mapCoords))
     {
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_force_set_general_support_height(session, -1, 0);
+        PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
+        PaintUtilForceSetGeneralSupportHeight(session, -1, 0);
         session.Flags = isTrackPiecePreview ? PaintSessionFlags::IsTrackPiecePreview : 0;
         session.WaterHeight = 0xFFFF;
 
@@ -59,7 +59,7 @@ void tile_element_paint_setup(paint_session& session, const CoordsXY& mapCoords,
     }
     else if (!(session.ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
-        blank_tiles_paint(session, mapCoords.x, mapCoords.y);
+        BlankTilesPaint(session, mapCoords.x, mapCoords.y);
     }
 }
 
@@ -67,7 +67,7 @@ void tile_element_paint_setup(paint_session& session, const CoordsXY& mapCoords,
  *
  *  rct2: 0x0068B60E
  */
-static void blank_tiles_paint(paint_session& session, int32_t x, int32_t y)
+static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
 {
     int32_t dx = 0;
     switch (session.CurrentRotation)
@@ -113,7 +113,7 @@ bool gShowSupportSegmentHeights = false;
  *
  *  rct2: 0x0068B3FB
  */
-static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoords)
+static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords)
 {
     PROFILED_FUNCTION();
 
@@ -136,8 +136,8 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     session.MapPosition.x = coords.x;
     session.MapPosition.y = coords.y;
 
-    auto* tile_element = map_get_first_element_at(session.MapPosition);
-    if (tile_element == nullptr)
+    auto* tileElement = map_get_first_element_at(session.MapPosition);
+    if (tileElement == nullptr)
         return;
     uint8_t rotation = session.CurrentRotation;
 
@@ -145,7 +145,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        partOfVirtualFloor = virtual_floor_tile_is_floor(session.MapPosition);
+        partOfVirtualFloor = VirtualFloorTileIsFloor(session.MapPosition);
     }
 
     switch (rotation)
@@ -186,7 +186,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     if (screenMinY + 52 <= dpi->y)
         return;
 
-    const TileElement* element = tile_element; // push tile_element
+    const TileElement* element = tileElement; // push tile_element
 
     uint16_t max_height = 0;
     do
@@ -204,7 +204,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     if (partOfVirtualFloor)
     {
         // We must pretend this tile is at least as tall as the virtual floor
-        max_height = std::max(max_height, virtual_floor_get_height());
+        max_height = std::max(max_height, VirtualFloorGetHeight());
     }
 
     if (screenMinY - (max_height + 32) >= dpi->y + dpi->height)
@@ -217,17 +217,17 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     int32_t previousBaseZ = 0;
     do
     {
-        if (tile_element->IsInvisible())
+        if (tileElement->IsInvisible())
         {
             continue;
         }
 
         // Only paint tile_elements below the clip height.
-        if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * COORDS_Z_STEP))
+        if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tileElement->GetBaseZ() > gClipHeight * COORDS_Z_STEP))
             continue;
 
-        Direction direction = tile_element->GetDirectionWithOffset(rotation);
-        int32_t baseZ = tile_element->GetBaseZ();
+        Direction direction = tileElement->GetDirectionWithOffset(rotation);
+        int32_t baseZ = tileElement->GetBaseZ();
 
         // If we are on a new baseZ level, look through elements on the
         //  same baseZ and store any types might be relevant to others
@@ -236,15 +236,15 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
             previousBaseZ = baseZ;
             session.PathElementOnSameHeight = nullptr;
             session.TrackElementOnSameHeight = nullptr;
-            const TileElement* tile_element_sub_iterator = tile_element;
+            const TileElement* tile_element_sub_iterator = tileElement;
             while (!(tile_element_sub_iterator++)->IsLastForTile())
             {
-                if (tile_element->IsInvisible())
+                if (tileElement->IsInvisible())
                 {
                     continue;
                 }
 
-                if (tile_element_sub_iterator->GetBaseZ() != tile_element->GetBaseZ())
+                if (tile_element_sub_iterator->GetBaseZ() != tileElement->GetBaseZ())
                 {
                     break;
                 }
@@ -257,41 +257,41 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
         }
 
         CoordsXY mapPosition = session.MapPosition;
-        session.CurrentlyDrawnTileElement = tile_element;
+        session.CurrentlyDrawnTileElement = tileElement;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
-        switch (tile_element->GetType())
+        switch (tileElement->GetType())
         {
             case TileElementType::Surface:
-                PaintSurface(session, direction, baseZ, *(tile_element->AsSurface()));
+                PaintSurface(session, direction, baseZ, *(tileElement->AsSurface()));
                 break;
             case TileElementType::Path:
-                PaintPath(session, baseZ, *(tile_element->AsPath()));
+                PaintPath(session, baseZ, *(tileElement->AsPath()));
                 break;
             case TileElementType::Track:
-                PaintTrack(session, direction, baseZ, *(tile_element->AsTrack()));
+                PaintTrack(session, direction, baseZ, *(tileElement->AsTrack()));
                 break;
             case TileElementType::SmallScenery:
-                PaintSmallScenery(session, direction, baseZ, *(tile_element->AsSmallScenery()));
+                PaintSmallScenery(session, direction, baseZ, *(tileElement->AsSmallScenery()));
                 break;
             case TileElementType::Entrance:
-                PaintEntrance(session, direction, baseZ, *(tile_element->AsEntrance()));
+                PaintEntrance(session, direction, baseZ, *(tileElement->AsEntrance()));
                 break;
             case TileElementType::Wall:
-                PaintWall(session, direction, baseZ, *(tile_element->AsWall()));
+                PaintWall(session, direction, baseZ, *(tileElement->AsWall()));
                 break;
             case TileElementType::LargeScenery:
-                PaintLargeScenery(session, direction, baseZ, *(tile_element->AsLargeScenery()));
+                PaintLargeScenery(session, direction, baseZ, *(tileElement->AsLargeScenery()));
                 break;
             case TileElementType::Banner:
-                PaintBanner(session, direction, baseZ, *(tile_element->AsBanner()));
+                PaintBanner(session, direction, baseZ, *(tileElement->AsBanner()));
                 break;
         }
         session.MapPosition = mapPosition;
-    } while (!(tile_element++)->IsLastForTile());
+    } while (!(tileElement++)->IsLastForTile());
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off && partOfVirtualFloor)
     {
-        virtual_floor_paint(session);
+        VirtualFloorPaint(session);
     }
 
     if (!gShowSupportSegmentHeights)
@@ -299,7 +299,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
         return;
     }
 
-    if ((tile_element - 1)->GetType() == TileElementType::Surface)
+    if ((tileElement - 1)->GetType() == TileElementType::Surface)
     {
         return;
     }
@@ -314,11 +314,11 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     {
         for (int32_t sx = 0; sx < 3; sx++)
         {
-            uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].height;
+            uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].Height;
             auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparancy(FilterPaletteID::PaletteDarken3);
             if (segmentHeight == 0xFFFF)
             {
-                segmentHeight = session.Support.height;
+                segmentHeight = session.Support.Height;
                 // white: 0b101101
                 imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1)
                                        .WithTransparancy(FilterPaletteID::PaletteTranslucentBordeauxRedHighlight);
@@ -330,18 +330,18 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
 
             int32_t xOffset = sy * 10;
             int32_t yOffset = -22 + sx * 10;
-            paint_struct* ps = PaintAddImageAsParent(
+            PaintStruct* ps = PaintAddImageAsParent(
                 session, imageColourFlats, { xOffset, yOffset, segmentHeight }, { 10, 10, 1 },
                 { xOffset + 1, yOffset + 16, segmentHeight });
             if (ps != nullptr)
             {
-                ps->image_id = ps->image_id.WithTertiary(COLOUR_BORDEAUX_RED);
+                ps->ImgId = ps->ImgId.WithTertiary(COLOUR_BORDEAUX_RED);
             }
         }
     }
 }
 
-void paint_util_push_tunnel_left(paint_session& session, uint16_t height, uint8_t type)
+void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, uint8_t type)
 {
     session.LeftTunnels[session.LeftTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
     if (session.LeftTunnelCount < TUNNEL_MAX_COUNT - 1)
@@ -351,7 +351,7 @@ void paint_util_push_tunnel_left(paint_session& session, uint16_t height, uint8_
     }
 }
 
-void paint_util_push_tunnel_right(paint_session& session, uint16_t height, uint8_t type)
+void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, uint8_t type)
 {
     session.RightTunnels[session.RightTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
     if (session.RightTunnelCount < TUNNEL_MAX_COUNT - 1)
@@ -361,48 +361,48 @@ void paint_util_push_tunnel_right(paint_session& session, uint16_t height, uint8
     }
 }
 
-void paint_util_set_vertical_tunnel(paint_session& session, uint16_t height)
+void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height)
 {
     session.VerticalTunnelHeight = height / 16;
 }
 
-void paint_util_set_general_support_height(paint_session& session, int16_t height, uint8_t slope)
+void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
 {
-    if (session.Support.height >= height)
+    if (session.Support.Height >= height)
     {
         return;
     }
 
-    paint_util_force_set_general_support_height(session, height, slope);
+    PaintUtilForceSetGeneralSupportHeight(session, height, slope);
 }
 
-void paint_util_force_set_general_support_height(paint_session& session, int16_t height, uint8_t slope)
+void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
 {
-    session.Support.height = height;
-    session.Support.slope = slope;
+    session.Support.Height = height;
+    session.Support.Slope = slope;
 }
 
-const uint16_t segment_offsets[9] = {
-    SEGMENT_B4, SEGMENT_B8, SEGMENT_BC, SEGMENT_C0, SEGMENT_C4, SEGMENT_C8, SEGMENT_CC, SEGMENT_D0, SEGMENT_D4,
+const uint16_t SegmentOffsets[9] = {
+    SegmentB4, SegmentB8, SegmentBC, SegmentC0, SegmentC4, SegmentC8, SegmentCC, SegmentD0, SegmentD4,
 };
 
-void paint_util_set_segment_support_height(paint_session& session, int32_t segments, uint16_t height, uint8_t slope)
+void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
 {
-    support_height* supportSegments = session.SupportSegments;
+    SupportHeight* supportSegments = session.SupportSegments;
     for (int32_t s = 0; s < 9; s++)
     {
-        if (segments & segment_offsets[s])
+        if (segments & SegmentOffsets[s])
         {
-            supportSegments[s].height = height;
+            supportSegments[s].Height = height;
             if (height != 0xFFFF)
             {
-                supportSegments[s].slope = slope;
+                supportSegments[s].Slope = slope;
             }
         }
     }
 }
 
-uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation)
+uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
 {
     uint8_t temp = segments & 0xFF;
     temp = Numerics::rol8(temp, rotation * 2);
@@ -410,7 +410,7 @@ uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation)
     return (segments & 0xFF00) | temp;
 }
 
-bool PaintShouldShowHeightMarkers(const paint_session& session, const uint32_t viewportFlag)
+bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag)
 {
     auto dpi = &session.DPI;
     return (session.ViewFlags & viewportFlag) && (dpi->zoom_level <= ZoomLevel{ 0 });

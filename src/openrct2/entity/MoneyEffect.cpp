@@ -167,7 +167,7 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
     stream << Wiggle;
 }
 
-void MoneyEffect::Paint(paint_session& session, int32_t imageDirection) const
+void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 

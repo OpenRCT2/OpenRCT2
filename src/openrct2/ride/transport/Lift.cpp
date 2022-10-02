@@ -34,7 +34,7 @@ static constexpr const uint32_t lift_cage_sprites[][2] = {
     { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },
 };
 
-static void paint_lift_cage(paint_session& session, int8_t index, ImageId colourFlags, int32_t height, uint8_t rotation)
+static void paint_lift_cage(PaintSession& session, int8_t index, ImageId colourFlags, int32_t height, uint8_t rotation)
 {
     ImageId imageId;
 
@@ -47,7 +47,7 @@ static void paint_lift_cage(paint_session& session, int8_t index, ImageId colour
 
 /** rct2: 0x0076C6CC */
 static void paint_lift_base(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -60,10 +60,10 @@ static void paint_lift_base(
 
         paint_lift_cage(session, -1, session.TrackColours[SCHEME_TRACK], height + 64, session.CurrentRotation);
 
-        paint_util_set_vertical_tunnel(session, height + 96);
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetVerticalTunnel(session, height + 96);
+        PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
 
-        paint_util_set_general_support_height(session, height + 96, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
 
         return;
     }
@@ -81,38 +81,38 @@ static void paint_lift_base(
     switch (trackSequence)
     {
         case 1:
-            blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
+            blockedSegments = SegmentB8 | SegmentC8 | SegmentB4 | SegmentCC | SegmentBC;
             break;
         case 2:
-            blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
+            blockedSegments = SegmentB4 | SegmentCC | SegmentBC;
             break;
         case 3:
-            blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0;
+            blockedSegments = SegmentB4 | SegmentCC | SegmentBC | SegmentD4 | SegmentC0;
             break;
         case 4:
-            blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8;
+            blockedSegments = SegmentB4 | SegmentC8 | SegmentB8;
             break;
         case 5:
-            blockedSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0;
+            blockedSegments = SegmentBC | SegmentD4 | SegmentC0;
             break;
         case 6:
-            blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
+            blockedSegments = SegmentB4 | SegmentC8 | SegmentB8 | SegmentD0 | SegmentC0;
             break;
         case 7:
-            blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC;
+            blockedSegments = SegmentB8 | SegmentD0 | SegmentC0 | SegmentD4 | SegmentBC;
             break;
         case 8:
-            blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
+            blockedSegments = SegmentB8 | SegmentD0 | SegmentC0;
             break;
     }
-    paint_util_set_segment_support_height(session, blockedSegments, 0xFFFF, 0);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll & ~blockedSegments, height + 2, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0076C6DC */
 static void paint_lift_tower_section(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence == 1)
@@ -122,10 +122,10 @@ static void paint_lift_tower_section(
 
     paint_lift_cage(session, -1, session.TrackColours[SCHEME_TRACK], height, session.CurrentRotation);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
 
-    paint_util_set_vertical_tunnel(session, height + 32);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetVerticalTunnel(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /**

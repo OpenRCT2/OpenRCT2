@@ -395,7 +395,7 @@ void JumpingFountain::Serialise(DataSerialiser& stream)
     stream << Iteration;
 }
 
-void JumpingFountain::Paint(paint_session& session, int32_t imageDirection) const
+void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 

@@ -18,7 +18,7 @@
 #include "../Vehicle.h"
 
 static void Paint3dCinemaDome(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -49,14 +49,14 @@ static void Paint3dCinemaDome(
  * rct2: 0x0076574C
  */
 static void Paint3dCinema(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -93,25 +93,25 @@ static void Paint3dCinema(
     {
         case 1:
             // top
-            cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
+            cornerSegments = SegmentB4 | SegmentC8 | SegmentCC;
             break;
         case 3:
             // right
-            cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4;
+            cornerSegments = SegmentCC | SegmentBC | SegmentD4;
             break;
         case 6:
             // left
-            cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0;
+            cornerSegments = SegmentC8 | SegmentB8 | SegmentD0;
             break;
         case 7:
             // bottom
-            cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4;
+            cornerSegments = SegmentD0 | SegmentC0 | SegmentD4;
             break;
     }
 
-    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 128, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int32_t trackType)

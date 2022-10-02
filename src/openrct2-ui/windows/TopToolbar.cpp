@@ -1346,7 +1346,7 @@ static void Sub6E1F34SmallScenery(
 
         if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
         {
-            virtual_floor_set_height(gSceneryPlaceZ);
+            VirtualFloorSetHeight(gSceneryPlaceZ);
         }
 
         *outQuadrant = quadrant ^ 2;
@@ -1430,7 +1430,7 @@ static void Sub6E1F34SmallScenery(
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_set_height(gSceneryPlaceZ);
+        VirtualFloorSetHeight(gSceneryPlaceZ);
     }
 
     *outQuadrant = 0;
@@ -1464,7 +1464,7 @@ static void Sub6E1F34PathItem(
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_set_height(gSceneryPlaceZ);
+        VirtualFloorSetHeight(gSceneryPlaceZ);
     }
 
     *outZ = info.Element->GetBaseZ();
@@ -1553,7 +1553,7 @@ static void Sub6E1F34Wall(
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_set_height(gSceneryPlaceZ);
+        VirtualFloorSetHeight(gSceneryPlaceZ);
     }
 
     *outEdges = edge;
@@ -1652,7 +1652,7 @@ static void Sub6E1F34LargeScenery(
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_set_height(gSceneryPlaceZ);
+        VirtualFloorSetHeight(gSceneryPlaceZ);
     }
 
     *outDirection = rotation;
@@ -1700,7 +1700,7 @@ static void Sub6E1F34Banner(
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_set_height(gSceneryPlaceZ);
+        VirtualFloorSetHeight(gSceneryPlaceZ);
     }
 
     *outDirection = rotation;
@@ -2613,7 +2613,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_invalidate();
+        VirtualFloorInvalidate();
     }
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;

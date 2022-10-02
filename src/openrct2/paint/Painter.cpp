@@ -131,11 +131,11 @@ void Painter::MeasureFPS()
     _lastSecond = currentTime;
 }
 
-paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags)
+PaintSession* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
     PROFILED_FUNCTION();
 
-    paint_session* session = nullptr;
+    PaintSession* session = nullptr;
 
     if (_freePaintSessions.empty() == false)
     {
@@ -148,7 +148,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     else
     {
         // Create new one in pool.
-        _paintSessionPool.emplace_back(std::make_unique<paint_session>());
+        _paintSessionPool.emplace_back(std::make_unique<PaintSession>());
         session = _paintSessionPool.back().get();
     }
 
@@ -172,7 +172,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     return session;
 }
 
-void Painter::ReleaseSession(paint_session* session)
+void Painter::ReleaseSession(PaintSession* session)
 {
     PROFILED_FUNCTION();
 

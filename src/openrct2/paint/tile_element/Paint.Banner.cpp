@@ -32,7 +32,7 @@ constexpr CoordsXY BannerBoundBoxes[][2] = {
 };
 
 static void PaintBannerScrollingText(
-    paint_session& session, const BannerSceneryEntry& bannerEntry, Banner& banner, const BannerElement& bannerElement,
+    PaintSession& session, const BannerSceneryEntry& bannerEntry, Banner& banner, const BannerElement& bannerElement,
     Direction direction, int32_t height, const CoordsXYZ& bbOffset)
 {
     PROFILED_FUNCTION();
@@ -67,7 +67,7 @@ static void PaintBannerScrollingText(
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { 1, 1, 21 }, bbOffset);
 }
 
-void PaintBanner(paint_session& session, uint8_t direction, int32_t height, const BannerElement& bannerElement)
+void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const BannerElement& bannerElement)
 {
     PROFILED_FUNCTION();
 

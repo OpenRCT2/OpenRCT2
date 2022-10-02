@@ -64,12 +64,12 @@ money32 place_provisional_track_piece(
             viewport_set_visibility(2);
 
         // Invalidate previous track piece (we may not be changing height!)
-        virtual_floor_invalidate();
+        VirtualFloorInvalidate();
 
         if (!scenery_tool_is_active())
         {
             // Set new virtual floor height.
-            virtual_floor_set_height(trackPos.z);
+            VirtualFloorSetHeight(trackPos.z);
         }
 
         return result.Cost;
@@ -106,12 +106,12 @@ money32 place_provisional_track_piece(
         viewport_set_visibility(2);
 
     // Invalidate previous track piece (we may not be changing height!)
-    virtual_floor_invalidate();
+    VirtualFloorInvalidate();
 
     if (!scenery_tool_is_active())
     {
         // Set height to where the next track piece would begin
-        virtual_floor_set_height(trackPos.z - z_begin + z_end);
+        VirtualFloorSetHeight(trackPos.z - z_begin + z_end);
     }
 
     return res.Cost;

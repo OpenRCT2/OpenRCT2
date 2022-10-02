@@ -53,7 +53,7 @@ enum
  * rct: 0x004ACF4A
  */
 static void MazePaintSetup(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint16_t mazeEntry = trackElement.GetMazeEntry();
@@ -61,12 +61,12 @@ static void MazePaintSetup(
 
     uint32_t rotation = session.CurrentRotation;
     // draw ground
-    auto imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_TERRAIN_DIRT);
+    auto imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprTerrainDirt);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 0 });
 
-    wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session.TrackColours[SCHEME_3]);
+    WoodenASupportsPaintSetup(session, (rotation & 1) ? 0 : 1, 0, height, session.TrackColours[SCHEME_3]);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll & ~SegmentC4, 0xFFFF, 0);
 
     int32_t baseImageId = 0;
     switch (ride.track_colour[0].supports)
@@ -178,10 +178,10 @@ static void MazePaintSetup(
         PaintAddImageAsParent(
             session, ImageId(baseImageId + SprMazeOffsetColumnCentre), { 14, 14, height }, { 2, 2, 8 }, { 15, 15, height + 2 });
 
-        paint_util_set_segment_support_height(session, SEGMENT_C4, height + 12, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, SegmentC4, height + 12, 0x20);
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /**

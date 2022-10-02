@@ -11,8 +11,8 @@
 #include "../ride/TrackPaint.h"
 #include "Paint.h"
 
-paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
+PaintStruct* PaintAddImageAsParentRotated(
+    PaintSession& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {
     if (direction & 1)
@@ -25,41 +25,41 @@ paint_struct* PaintAddImageAsParentRotated(
     return PaintAddImageAsParent(session, imageId, offset, boundBoxSize, boundBoxOffset);
 }
 
-paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
+PaintStruct* PaintAddImageAsParentRotated(
+    PaintSession& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize)
 {
     if (direction & 1)
     {
         return PaintAddImageAsParent(
-            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z });
+            session, imageId, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z });
     }
 
-    return PaintAddImageAsParent(session, image_id, offset, boundBoxSize);
+    return PaintAddImageAsParent(session, imageId, offset, boundBoxSize);
 }
 
-paint_struct* PaintAddImageAsChildRotated(
-    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
+PaintStruct* PaintAddImageAsChildRotated(
+    PaintSession& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {
     if (direction & 1)
     {
         return PaintAddImageAsChild(
-            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
+            session, imageId, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
             { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
     }
 
-    return PaintAddImageAsChild(session, image_id, offset, boundBoxSize, boundBoxOffset);
+    return PaintAddImageAsChild(session, imageId, offset, boundBoxSize, boundBoxOffset);
 }
 
-void paint_util_push_tunnel_rotated(paint_session& session, uint8_t direction, uint16_t height, uint8_t type)
+void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type)
 {
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, type);
+        PaintUtilPushTunnelRight(session, height, type);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, type);
+        PaintUtilPushTunnelLeft(session, height, type);
     }
 }

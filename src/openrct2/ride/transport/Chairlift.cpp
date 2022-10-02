@@ -75,18 +75,18 @@ const uint32_t chairlift_bullwheel_frames[] = {
     SPR_CHAIRLIFT_BULLWHEEL_FRAME_4,
 };
 
-static void chairlift_paint_util_draw_supports(paint_session& session, int32_t segments, uint16_t height)
+static void chairlift_paint_util_draw_supports(PaintSession& session, int32_t segments, uint16_t height)
 {
     bool success = false;
 
     for (int32_t s = 0; s < 9; s++)
     {
-        if (!(segments & segment_offsets[s]))
+        if (!(segments & SegmentOffsets[s]))
         {
             continue;
         }
 
-        if (metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]))
+        if (MetalASupportsPaintSetup(session, MetalSupportsTruss, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]))
         {
             success = true;
         }
@@ -97,17 +97,17 @@ static void chairlift_paint_util_draw_supports(paint_session& session, int32_t s
         return;
     }
 
-    support_height* supportSegments = session.SupportSegments;
+    SupportHeight* supportSegments = session.SupportSegments;
     for (int32_t s = 0; s < 9; s++)
     {
-        if (!(segments & segment_offsets[s]))
+        if (!(segments & SegmentOffsets[s]))
         {
             continue;
         }
-        uint16_t temp = supportSegments[s].height;
-        supportSegments[s].height = session.Support.height;
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        supportSegments[s].height = temp;
+        uint16_t temp = supportSegments[s].Height;
+        supportSegments[s].Height = session.Support.Height;
+        MetalASupportsPaintSetup(session, MetalSupportsTruss, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        supportSegments[s].Height = temp;
     }
 }
 
@@ -176,7 +176,7 @@ static bool chairlift_paint_util_is_last_track(
 }
 
 static void chairlift_paint_station_ne_sw(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     const CoordsXY pos = session.MapPosition;
@@ -188,7 +188,7 @@ static void chairlift_paint_station_ne_sw(
 
     const auto* stationObj = ride.GetStationObject();
 
-    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_MISC]);
 
     if (!isStart && !isEnd)
     {
@@ -199,13 +199,13 @@ static void chairlift_paint_station_ne_sw(
     imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
 
-    bool hasFence = track_paint_util_has_fence(EDGE_NW, pos, trackElement, ride, session.CurrentRotation);
+    bool hasFence = track_paint_util_has_fence(EdgeNW, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 2, height + 2 });
     }
-    track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
+    track_paint_util_draw_station_covers(session, EdgeNW, hasFence, stationObj, height);
 
     if ((direction == 2 && isStart) || (direction == 0 && isEnd))
     {
@@ -213,13 +213,13 @@ static void chairlift_paint_station_ne_sw(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 2, 2, height + 4 });
     }
 
-    hasFence = track_paint_util_has_fence(EDGE_SE, pos, trackElement, ride, session.CurrentRotation);
+    hasFence = track_paint_util_has_fence(EdgeSE, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 27 }, { 0, 30, height + 2 });
     }
-    track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
+    track_paint_util_draw_station_covers(session, EdgeSE, hasFence, stationObj, height);
 
     bool drawFrontColumn = true;
     bool drawBackColumn = true;
@@ -262,13 +262,13 @@ static void chairlift_paint_station_ne_sw(
             session, imageId, { 30, 16, height + 2 }, { 1, 1, 7 }, { 1, 16, height + 2 }); // bound offset x is wrong?
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
+    PaintUtilPushTunnelLeft(session, height, TunnelSquareFlat);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void chairlift_paint_station_se_nw(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     const CoordsXY pos = session.MapPosition;
@@ -280,7 +280,7 @@ static void chairlift_paint_station_se_nw(
 
     const auto* stationObj = ride.GetStationObject();
 
-    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     if (!isStart && !isEnd)
     {
@@ -291,13 +291,13 @@ static void chairlift_paint_station_se_nw(
     imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
 
-    bool hasFence = track_paint_util_has_fence(EDGE_NE, pos, trackElement, ride, session.CurrentRotation);
+    bool hasFence = track_paint_util_has_fence(EdgeNE, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 2, 0, height + 2 });
     }
-    track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
+    track_paint_util_draw_station_covers(session, EdgeNE, hasFence, stationObj, height);
 
     if ((direction == 1 && isStart) || (direction == 3 && isEnd))
     {
@@ -305,13 +305,13 @@ static void chairlift_paint_station_se_nw(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 2, 2, height + 4 });
     }
 
-    hasFence = track_paint_util_has_fence(EDGE_SW, pos, trackElement, ride, session.CurrentRotation);
+    hasFence = track_paint_util_has_fence(EdgeSW, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 27 }, { 30, 0, height + 2 });
     }
-    track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+    track_paint_util_draw_station_covers(session, EdgeSW, hasFence, stationObj, height);
 
     bool drawRightColumn = true;
     bool drawLeftColumn = true;
@@ -353,16 +353,16 @@ static void chairlift_paint_station_se_nw(
         PaintAddImageAsParent(
             session, imageId, { 16, 30, height + 2 }, { 1, 1, 7 }, { 16, 1, height + 2 }); // bound offset x is wrong?
 
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TunnelSquareFlat);
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00744068 */
 static void chairlift_paint_station(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction % 2)
@@ -376,7 +376,7 @@ static void chairlift_paint_station(
 }
 
 static void chairlift_paint_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -384,22 +384,22 @@ static void chairlift_paint_flat(
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_CHAIRLIFT_CABLE_FLAT_SE_NW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 6, 32, 2 }, { 13, 0, height + 28 });
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TunnelSquareFlat);
     }
     else
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_CHAIRLIFT_CABLE_FLAT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 6, 2 }, { 0, 13, height + 28 });
-        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TunnelSquareFlat);
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00743FD8 */
 static void chairlift_paint_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -409,35 +409,35 @@ static void chairlift_paint_25_deg_up(
         case 0:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_CHAIRLIFT_CABLE_UP_SW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 6, 2 }, { 0, 13, height + 28 });
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelSquare7);
             break;
 
         case 1:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_CHAIRLIFT_CABLE_UP_NW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 6, 32, 2 }, { 13, 0, height + 28 });
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelSquare8);
             break;
 
         case 2:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_CHAIRLIFT_CABLE_UP_NE_SW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 6, 2 }, { 0, 13, height + 28 });
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelSquare8);
             break;
 
         case 3:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_CHAIRLIFT_CABLE_UP_SE_NW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 6, 32, 2 }, { 13, 0, height + 28 });
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelSquare7);
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x00743FD8 */
 static void chairlift_paint_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -451,7 +451,7 @@ static void chairlift_paint_flat_to_25_deg_up(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20520);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 4, 4, 25 }, { 14, 14, height + 1 });
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelSquareFlat);
             break;
 
         case 1:
@@ -461,7 +461,7 @@ static void chairlift_paint_flat_to_25_deg_up(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20521);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 4, 4, 25 }, { 14, 14, height + 1 });
 
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height, TunnelSquare8);
             break;
 
         case 2:
@@ -471,7 +471,7 @@ static void chairlift_paint_flat_to_25_deg_up(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20522);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 4, 4, 25 }, { 14, 14, height + 1 });
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height, TunnelSquare8);
             break;
 
         case 3:
@@ -481,18 +481,18 @@ static void chairlift_paint_flat_to_25_deg_up(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20523);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 4, 4, 25 }, { 14, 14, height + 1 });
 
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TunnelSquareFlat);
             break;
     }
 
-    chairlift_paint_util_draw_supports(session, SEGMENT_C4, height);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    chairlift_paint_util_draw_supports(session, SegmentC4, height);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x00743FF8 */
 static void chairlift_paint_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -506,7 +506,7 @@ static void chairlift_paint_25_deg_up_to_flat(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20524);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 4, 4, 25 }, { 14, 14, height + 1 });
 
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelSquareFlat);
             break;
 
         case 1:
@@ -516,7 +516,7 @@ static void chairlift_paint_25_deg_up_to_flat(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20525);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 4, 4, 25 }, { 14, 14, height + 1 });
 
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRight(session, height + 8, Tunnel14);
             break;
 
         case 2:
@@ -526,7 +526,7 @@ static void chairlift_paint_25_deg_up_to_flat(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20526);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 4, 4, 25 }, { 14, 14, height + 1 });
 
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelLeft(session, height + 8, Tunnel14);
             break;
 
         case 3:
@@ -536,18 +536,18 @@ static void chairlift_paint_25_deg_up_to_flat(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20527);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 4, 4, 25 }, { 14, 14, height + 1 });
 
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelSquareFlat);
             break;
     }
 
-    chairlift_paint_util_draw_supports(session, SEGMENT_C4, height);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    chairlift_paint_util_draw_supports(session, SegmentC4, height);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x00744008 */
 static void chairlift_paint_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     chairlift_paint_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -555,7 +555,7 @@ static void chairlift_paint_25_deg_down(
 
 /** rct2: 0x00744018 */
 static void chairlift_paint_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     chairlift_paint_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -563,7 +563,7 @@ static void chairlift_paint_flat_to_25_deg_down(
 
 /** rct2: 0x00744028 */
 static void chairlift_paint_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     chairlift_paint_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -571,7 +571,7 @@ static void chairlift_paint_25_deg_down_to_flat(
 
 /** rct2: 0x00744038 */
 static void chairlift_paint_left_quarter_turn_1_tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -588,7 +588,7 @@ static void chairlift_paint_left_quarter_turn_1_tile(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20536);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 28, 4, height });
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelSquareFlat);
             break;
 
         case 1:
@@ -612,7 +612,7 @@ static void chairlift_paint_left_quarter_turn_1_tile(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20538);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 16, 28, height });
 
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TunnelSquareFlat);
             break;
 
         case 3:
@@ -625,20 +625,20 @@ static void chairlift_paint_left_quarter_turn_1_tile(
             imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_20539);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 16, 28, height });
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TunnelSquareFlat);
+            PaintUtilPushTunnelRight(session, height, TunnelSquareFlat);
             break;
     }
 
-    chairlift_paint_util_draw_supports(session, paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_D0, direction), height);
+    chairlift_paint_util_draw_supports(session, PaintUtilRotateSegments(SegmentC8 | SegmentD0, direction), height);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00744048 */
 static void chairlift_paint_right_quarter_turn_1_tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     chairlift_paint_left_quarter_turn_1_tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
