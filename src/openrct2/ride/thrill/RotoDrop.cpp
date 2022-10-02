@@ -187,7 +187,7 @@ static void paint_roto_drop_tower_section(
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
-    if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
+    if ((trackElement.IsLastForTile() || trackElement.GetClearanceZ() < nextTileElement->GetBaseZ()) || trackElement.GetBaseZ() == nextTileElement->GetClearanceZ())
     {
         imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
