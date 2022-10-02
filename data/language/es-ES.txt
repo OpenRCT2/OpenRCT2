@@ -3623,6 +3623,11 @@ STR_6511    :Giro de Gravedad Cero (der)
 STR_6512    :Giro de Gravedad Cero grande (izq)
 STR_6513    :Giro de Gravedad Cero grande (der)
 STR_6514    :¡Altura no válida!
+STR_6515    :{BLACK}RCT1 no ha sido enlazado - se utilizarán imágenes alternativas.
+STR_6516    :Uno o más objetos añadidos requieren haber enlazado RTC1 para su correcta visualización. Se utilizarán imágenes alternativas.
+STR_6517    :Uno o más objetos de este parque requieren haber enlazado RTC1 para su correcta visualización. Se utilizarán imágenes alternativas.
+STR_6518    :{BLACK}Posa el ratón sobre un escenario para ver su descripción y objetivos. Haz click para empezar a jugar.
+STR_6519    :Extras
 
 ##############
 # Escenarios #
