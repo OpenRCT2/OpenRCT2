@@ -3616,7 +3616,11 @@ STR_6511    :Null-G-Rolle (rechts)
 STR_6512    :Große Null-G-Rolle (l.)
 STR_6513    :Große Null-G-Rolle (r.)
 STR_6514    :Ungültige Höhe!
-
+STR_6515    :{BLACK}RCT1 nicht verknüpft - Es werden Fallback-Bilder verwendet.
+STR_6516    :Eines oder mehrere der hinzugefügten Objekte benötigen eine Verknüpfung mit RCT1 für eine korrekte Anzeige. Es werden Fallback-Bilder verwendet.
+STR_6517    :Eines oder mehrere Objekte in diesem Park benötigen eine Verknüpfung mit RCT1 für eine korrekte Anzeige. Es werden Fallback-Bilder verwendet.
+STR_6518    :{BLACK}Zeigen Sie auf ein Szenario, um seine Beschreibung und sein Ziel zu sehen. Klicken Sie, um das Spiel zu beginnen.
+STR_6519    :Extras
 
 
 #############
