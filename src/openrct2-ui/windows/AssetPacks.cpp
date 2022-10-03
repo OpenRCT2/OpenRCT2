@@ -29,7 +29,9 @@ enum WindowAssetPacksWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
+    WIDX_HIGH_LABEL,
     WIDX_LIST,
+    WIDX_LOW_LABEL,
     WIDX_MOVE_UP,
     WIDX_MOVE_DOWN,
     WIDX_APPLY,
@@ -37,7 +39,9 @@ enum WindowAssetPacksWidgetIdx {
 
 static rct_widget WindowAssetPacksWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_HIGH_PRIORITY),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL),
+    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_LOW_PRIORITY),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_ARROW_UP, STR_DECREASE_PRIOTITY_TIP),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_ARROW_DOWN, STR_INCREASE_PRIOTITY_TIP),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_RELOAD, STR_RELOAD_ASSET_PACKS_TIP),
@@ -90,7 +94,7 @@ public:
         auto assetPackManager = GetContext()->GetAssetPackManager();
         if (assetPackManager != nullptr)
         {
-            auto numAssetPacks = assetPackManager->GetCount() + 2; // Add 2 for separators
+            auto numAssetPacks = assetPackManager->GetCount() + 1; // +1 for the base assets item
             result.height = static_cast<int32_t>(numAssetPacks * ItemHeight);
         }
 
@@ -150,10 +154,20 @@ public:
         widgets[WIDX_CLOSE].left = width - 13;
         widgets[WIDX_CLOSE].right = width - 3;
 
-        widgets[WIDX_LIST].left = 6;
-        widgets[WIDX_LIST].top = 20;
-        widgets[WIDX_LIST].right = width - 2 - 24 - 1;
-        widgets[WIDX_LIST].bottom = height - 6;
+        auto& list = widgets[WIDX_LIST];
+        list.left = 6;
+        list.top = 20 + 11 + 3;
+        list.right = width - 2 - 24 - 1;
+        list.bottom = height - 6 - 11 - 3;
+
+        widgets[WIDX_HIGH_LABEL].bottom = list.top - 1;
+        widgets[WIDX_HIGH_LABEL].top = widgets[WIDX_HIGH_LABEL].bottom - 11 - 3;
+        widgets[WIDX_HIGH_LABEL].left = list.left;
+        widgets[WIDX_HIGH_LABEL].right = list.right;
+        widgets[WIDX_LOW_LABEL].top = list.bottom + 1 + 3;
+        widgets[WIDX_LOW_LABEL].bottom = widgets[WIDX_LOW_LABEL].top + 11 + 3;
+        widgets[WIDX_LOW_LABEL].left = list.left;
+        widgets[WIDX_LOW_LABEL].right = list.right;
 
         auto toolstripY = 20;
         auto toolstripRight = width - 2;
@@ -185,52 +199,37 @@ public:
         gfx_fill_rect(
             &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
-        auto listWidth = dpi.width - 1;
-        auto y = 0;
-
         auto assetPackManager = GetContext()->GetAssetPackManager();
         if (assetPackManager == nullptr)
             return;
 
         auto numAssetPacks = assetPackManager->GetCount();
-        for (size_t i = 0; i <= numAssetPacks + 1; i++)
+        auto y = 0;
+        for (size_t i = 0; i <= numAssetPacks; i++)
         {
             if (y > dpi.y + dpi.height)
                 break;
             if (y + 11 < dpi.y)
                 continue;
 
-            if (i == 0 || i == numAssetPacks + 1)
+            auto isSelected = i == _selectedIndex;
+            auto isHighlighted = i == _highlightedIndex;
+            if (i == numAssetPacks)
             {
-                auto text = i == 0 ? STR_LOW_PRIORITY : STR_HIGH_PRIORITY;
-                PaintSeperator(dpi, { 0, y }, { listWidth, y + ItemHeight - 1 }, text);
+                auto ft = Formatter();
+                ft.Add<StringId>(STR_BASE_GRAPHICS_MUSIC_SOUND);
+                PaintItem(dpi, y, ft, true, isSelected, isHighlighted);
             }
             else
             {
-                auto assetPackIndex = i - 1;
-                auto assetPack = assetPackManager->GetAssetPack(assetPackIndex);
+                auto assetPack = assetPackManager->GetAssetPack(i);
                 if (assetPack != nullptr)
                 {
-                    auto stringId = STR_BLACK_STRING;
-                    auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
-                    if (assetPackIndex == _selectedIndex)
-                    {
-                        gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
-                        stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    }
-                    else if (assetPackIndex == _highlightedIndex)
-                    {
-                        gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
-                    }
-
+                    auto isChecked = assetPack->IsEnabled();
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_STRING);
                     ft.Add<const char*>(assetPack->Name.c_str());
-                    DrawTextEllipsised(&dpi, { 16, y + 1 }, listWidth, stringId, ft);
-
-                    auto checkboxSize = ItemHeight - 3;
-                    PaintCheckbox(
-                        dpi, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, assetPack->IsEnabled());
+                    PaintItem(dpi, y, ft, isChecked, isSelected, isHighlighted);
                 }
             }
             y += ItemHeight;
@@ -238,62 +237,25 @@ public:
     }
 
 private:
-    void PaintSeperator(rct_drawpixelinfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, StringId text) const
+    void PaintItem(rct_drawpixelinfo& dpi, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
     {
-        auto hasText = text != STR_NONE;
-        auto left = pos.x + 4;
-        auto right = pos.x + size.width - 4;
-        auto centreX = size.width / 2;
-        auto lineY0 = pos.y + 5;
-        auto lineY1 = lineY0 + 1;
-
-        auto baseColour = colours[1];
-        auto lightColour = ColourMapA[baseColour].lighter;
-        auto darkColour = ColourMapA[baseColour].mid_dark;
-
-        if (hasText)
+        auto listWidth = dpi.width - 1;
+        auto stringId = STR_BLACK_STRING;
+        auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
+        if (isSelected)
         {
-            // Draw string
-            Formatter ft;
-            ft.Add<StringId>(text);
-            DrawTextBasic(&dpi, { centreX, pos.y }, STR_STRINGID, ft, { baseColour, TextAlignment::CENTRE });
-
-            // Get string dimensions
-            format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRINGID, ft.Data());
-            int32_t categoryStringHalfWidth = (gfx_get_string_width(gCommonStringFormatBuffer, FontSpriteBase::MEDIUM) / 2) + 4;
-            int32_t strLeft = centreX - categoryStringHalfWidth;
-            int32_t strRight = centreX + categoryStringHalfWidth;
-
-            // Draw light horizontal rule
-            auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
-            auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY0 };
-            gfx_draw_line(&dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
-
-            auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY0 };
-            auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY0 };
-            gfx_draw_line(&dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
-
-            // Draw dark horizontal rule
-            auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
-            auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY1 };
-            gfx_draw_line(&dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
-
-            auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY1 };
-            auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY1 };
-            gfx_draw_line(&dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
+            gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+            stringId = STR_WINDOW_COLOUR_2_STRINGID;
         }
-        else
+        else if (isHighlighted)
         {
-            // Draw light horizontal rule
-            auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
-            auto lightLineRightBottom1 = ScreenCoordsXY{ right, lineY0 };
-            gfx_draw_line(&dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
-
-            // Draw dark horizontal rule
-            auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
-            auto darkLineRightBottom1 = ScreenCoordsXY{ right, lineY1 };
-            gfx_draw_line(&dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+            gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
         }
+
+        DrawTextEllipsised(&dpi, { 16, y + 1 }, listWidth, stringId, ft);
+
+        auto checkboxSize = ItemHeight - 3;
+        PaintCheckbox(dpi, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, isChecked);
     }
 
     void PaintCheckbox(rct_drawpixelinfo& dpi, const ScreenRect& rect, bool checked)
@@ -310,7 +272,7 @@ private:
 
     std::optional<size_t> GetAssetPackIndexFromPosition(const ScreenCoordsXY& pos, bool& isCheckBox)
     {
-        const auto index = (pos.y / ItemHeight) - 1;
+        const auto index = pos.y / ItemHeight;
         if (index < 0 || static_cast<size_t>(index) >= GetNumAssetPacks())
             return std::nullopt;
 

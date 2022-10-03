@@ -103,13 +103,12 @@ void AssetPackManager::Swap(size_t index, size_t otherIndex)
 
 void AssetPackManager::LoadSamplesForObject(std::string_view id, AudioSampleTable& objectTable)
 {
-    for (auto& assetPack : _assetPacks)
-    {
+    std::for_each(_assetPacks.rbegin(), _assetPacks.rend(), [&](auto& assetPack) {
         if (assetPack->IsEnabled() && assetPack->ContainsObject(id))
         {
             assetPack->LoadSamplesForObject(id, objectTable);
         }
-    }
+    });
 }
 
 void AssetPackManager::ClearAssetPacks()

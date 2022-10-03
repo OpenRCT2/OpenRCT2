@@ -3630,6 +3630,7 @@ STR_6522    :High Priority
 STR_6523    :Decrease the priority of the selected asset pack.
 STR_6524    :Increase the priority of the selected asset pack.
 STR_6525    :Reload all assets in the game with the enabled asset packs.
+STR_6526    :(base graphics, music and sound effects)
 
 #############
 # Scenarios #
