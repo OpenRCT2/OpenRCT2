@@ -35,6 +35,8 @@ namespace OpenRCT2::Ui::Windows
     std::optional<WidgetIndex> FindWidgetIndexByName(rct_window* w, std::string_view name);
     std::string GetWidgetName(rct_window* w, WidgetIndex widgetIndex);
     void SetWidgetName(rct_window* w, WidgetIndex widgetIndex, std::string_view name);
+    std::string GetWidgetTooltip(rct_window* w, WidgetIndex widgetIndex);
+    void SetWidgetTooltip(rct_window* w, WidgetIndex widgetIndex, std::string_view tooltip);
     CustomListView* GetCustomListView(rct_window* w, WidgetIndex widgetIndex);
     int32_t GetWidgetMaxLength(rct_window* w, WidgetIndex widgetIndex);
     void SetWidgetMaxLength(rct_window* w, WidgetIndex widgetIndex, int32_t value);

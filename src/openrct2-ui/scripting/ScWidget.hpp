@@ -291,6 +291,24 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        std::string tooltip_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                return OpenRCT2::Ui::Windows::GetWidgetTooltip(w, _widgetIndex);
+            }
+            return {};
+        }
+        void tooltip_set(const std::string& value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                OpenRCT2::Ui::Windows::SetWidgetTooltip(w, _widgetIndex, value);
+            }
+        }
+
         bool isDisabled_get() const
         {
             auto w = GetWindow();

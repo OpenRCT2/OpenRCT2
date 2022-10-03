@@ -25,6 +25,7 @@
 - Improved: [#17909] Track elements that are not supported by any train are now hidden by default.
 - Improved: [#17924] Improved performance when loading JSON object images from a .DAT file.
 - Improved: [#17955] Modifying ratings via in-game console is now multiplayer-safe and also freezes the ratings.
+- Improved: [#18177] [Plugin] Widget tooltips can now be read and changed.
 - Change: [#9104] Calculate maze support costs.
 - Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
@@ -80,7 +81,7 @@
 - Fix: [#17973] Bins and lamps overlay parts of the land (original bug).
 - Fix: [#18008] Steeplechase S-bends has multiple gaps visible in the tracks (original bug).
 - Fix: [#18009] Visual glitch with litter at edge of sloped path.
-- Fix: [#18025] Fix land ownership in Six Holland, Six Flags Magic Mountain, North America - Grand Canyon and Asia - Great Wall of China Tourism Enhancement scenarios. 
+- Fix: [#18025] Fix land ownership in Six Holland, Six Flags Magic Mountain, North America - Grand Canyon and Asia - Great Wall of China Tourism Enhancement scenarios.
 - Fix: [#18026] Park rating drops to 0 with more than 32k guests, total ride excitement or intensity.
 - Fix: [#18032] All non-interactive widgets (labels, groupboxes) produce sound when clicked.
 - Fix: [#18035] Favourited servers don’t get their online status updated.

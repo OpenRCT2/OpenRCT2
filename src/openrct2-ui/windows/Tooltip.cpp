@@ -116,9 +116,13 @@ void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const 
     OpenRCT2String result;
     if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
     {
+        auto tooltipString = widget->sztooltip;
+        if (*tooltipString == 0)
+            return;
+
         result.str = STR_STRING_TOOLTIP;
         result.args = Formatter();
-        result.args.Add<const char*>(widget->sztooltip);
+        result.args.Add<const char*>(tooltipString);
 
         gTooltipWidget.window_classification = widgetWindow->classification;
         gTooltipWidget.window_number = widgetWindow->number;
