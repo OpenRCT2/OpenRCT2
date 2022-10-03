@@ -948,6 +948,7 @@ PaintEntryPool::Chain::~Chain()
 
 PaintEntryPool::Chain& PaintEntryPool::Chain::operator=(Chain&& chain) noexcept
 {
+    Clear();
     Pool = chain.Pool;
     Head = chain.Head;
     Current = chain.Current;
