@@ -495,8 +495,8 @@ public:
                 if (outScrollArea == SCROLL_PART_VIEW)
                 {
                     const auto isInvented = outScrollId == 0;
-                    int32_t scrollY = outScrollCoords.y + 6;
-                    return InventionListItem{ GetItemFromScrollYIncludeSeps(isInvented, scrollY), isInvented };
+                    int32_t scrollY = outScrollCoords.y + SCROLLABLE_ROW_HEIGHT/2;
+                    return InventionListItem{ GetItemFromScrollY(isInvented, scrollY), isInvented };
                 }
             }
         }
@@ -520,16 +520,28 @@ public:
         _selectedResearchItem = nullptr;
         Invalidate();
 
-        ResearchRemove(item);
-
         auto& researchList = isInvented ? gResearchItemsInvented : gResearchItemsUninvented;
+
+        // when itemIndex < i we need to insert on i-1 else it will ends up on next one
+        size_t itemIndex = SIZE_MAX;
+        for (size_t i = 0; i < researchList.size(); i++)
+        {
+            if (researchList[i] == item)
+            {
+                itemIndex = i;
+                break;
+            }
+        }
+
+        ResearchRemove(item);
+        
         if (beforeItem != nullptr)
         {
             for (size_t i = 0; i < researchList.size(); i++)
             {
                 if (researchList[i] == *beforeItem)
                 {
-                    researchList.insert((researchList.begin() + i), item);
+                    researchList.insert((researchList.begin() + i - (itemIndex < i ? 1 : 0)), item);
                     return;
                 }
             }
@@ -552,20 +564,6 @@ private:
             }
         }
 
-        return nullptr;
-    }
-
-    ResearchItem* GetItemFromScrollYIncludeSeps(bool isInvented, int32_t y) const
-    {
-        auto& researchList = isInvented ? gResearchItemsInvented : gResearchItemsUninvented;
-        for (auto& researchItem : researchList)
-        {
-            y -= SCROLLABLE_ROW_HEIGHT;
-            if (y < 0)
-            {
-                return &researchItem;
-            }
-        }
         return nullptr;
     }
 };
