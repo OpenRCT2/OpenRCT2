@@ -396,7 +396,7 @@ static void Select(const char* path)
     }
 }
 
-static u8string Browse(bool isSave)
+static u8string OpenSystemFileBrowser(bool isSave)
 {
     OpenRCT2::Ui::FileDialogDesc desc = {};
     u8string extension{};
@@ -484,9 +484,32 @@ static u8string Browse(bool isSave)
 class LoadSaveWindow final : public Window
 {
 public:
-    LoadSaveWindow()
+    LoadSaveWindow(int32_t type)
     {
         widgets = window_loadsave_widgets;
+
+        min_width = WW;
+        min_height = WH / 2;
+        max_width = WW * 2;
+        max_height = WH * 2;
+
+        const auto uiContext = OpenRCT2::GetContext()->GetUiContext();
+        if (!uiContext->HasFilePicker())
+        {
+            disabled_widgets |= (1uLL << WIDX_BROWSE);
+            window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
+        }
+
+        const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
+        const auto path = GetDir(type);
+
+        const char* pattern = GetFilterPatternByType(type, isSave);
+        PopulateList(isSave, path, pattern);
+        no_list_items = static_cast<uint16_t>(_listItems.size());
+        selected_list_item = -1;
+
+        InitScrollWidgets();
+        ComputeMaxDateWidth();
     }
 
 private:
@@ -789,7 +812,7 @@ public:
 
             case WIDX_BROWSE:
             {
-                u8string path = Browse(isSave);
+                u8string path = OpenSystemFileBrowser(isSave);
                 if (!path.empty())
                 {
                     Select(path.c_str());
@@ -1014,7 +1037,7 @@ rct_window* WindowLoadsaveOpen(
     auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
     if (gConfigGeneral.UseNativeBrowseDialog && hasFilePicker)
     {
-        const u8string path = Browse(isSave);
+        const u8string path = OpenSystemFileBrowser(isSave);
         if (!path.empty())
         {
             Select(path.c_str());
@@ -1028,25 +1051,8 @@ rct_window* WindowLoadsaveOpen(
     if (w == nullptr)
     {
         w = WindowCreate<LoadSaveWindow>(
-            WindowClass::Loadsave, WW, WH, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
-        w->widgets = window_loadsave_widgets;
-
-        w->min_width = WW;
-        w->min_height = WH / 2;
-        w->max_width = WW * 2;
-        w->max_height = WH * 2;
-
-        if (!hasFilePicker)
-        {
-            w->disabled_widgets |= (1uLL << WIDX_BROWSE);
-            window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
-        }
+            WindowClass::Loadsave, WW, WH, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN, type);
     }
-
-    const char* pattern = GetFilterPatternByType(type, isSave);
-    w->PopulateList(isSave, path.c_str(), pattern);
-    w->no_list_items = static_cast<uint16_t>(_listItems.size());
-    w->selected_list_item = -1;
 
     switch (type & 0x0E)
     {
@@ -1074,10 +1080,8 @@ rct_window* WindowLoadsaveOpen(
 
         default:
             openrct2_assert(true, "Unsupported load/save type: %d", type & 0x0F);
+            break;
     }
-
-    WindowInitScrollWidgets(*w);
-    // WindowLoadsaveComputeMaxDateWidth();
 
     return w;
 }
