@@ -39,7 +39,7 @@ static void PaintDodgemsRoof(paint_session& session, int32_t height, int32_t off
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SprDodgemsRoofFrame + offset));
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 2 });
 
-    imageId = ImageId(SprDodgemsRoofGlass + offset).WithTransparancy(FilterPaletteID::PaletteDarken3);
+    imageId = ImageId(SprDodgemsRoofGlass + offset).WithTransparency(FilterPaletteID::PaletteDarken3);
     PaintAttachToPreviousPS(session, imageId, 0, 0);
 }
 

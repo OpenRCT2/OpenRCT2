@@ -824,7 +824,7 @@ bool track_paint_util_draw_station_covers_2(
     if (session.TrackColours[SCHEME_MISC].ToUInt32() == IMAGE_TYPE_REMAP
         && (stationObject->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT))
     {
-        imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparancy(imageTemplate.GetPrimary());
+        imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparency(imageTemplate.GetPrimary());
         PaintAddImageAsChild(session, imageId, offset, boundBox);
     }
     return true;

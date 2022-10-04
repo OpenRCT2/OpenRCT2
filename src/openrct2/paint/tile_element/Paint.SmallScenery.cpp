@@ -202,7 +202,7 @@ static void PaintSmallSceneryBody(
 
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS) && !imageTemplate.IsRemap())
     {
-        auto imageId = ImageId(baseImageIndex + 4).WithTransparancy(sceneryElement.GetPrimaryColour());
+        auto imageId = ImageId(baseImageIndex + 4).WithTransparency(sceneryElement.GetPrimaryColour());
         PaintAddImageAsChild(session, imageId, offset, boundBox);
     }
 

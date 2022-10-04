@@ -4969,7 +4969,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Glass
                 if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
                 {
-                    auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparancy(trackColour.main);
+                    auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparency(trackColour.main);
                     gfx_draw_sprite(&clippedDpi, glassImageId, { 34, 20 });
                 }
             }

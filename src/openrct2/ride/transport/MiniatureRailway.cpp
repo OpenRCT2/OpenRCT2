@@ -662,7 +662,7 @@ static void paint_miniature_railway_track_flat(
             imageIdAlt = miniature_railway_track_to_grooved_indent(
                 session.PathElementOnSameHeight, direction, session.CurrentRotation);
             PaintAddImageAsChildRotated(
-                session, direction, imageIdAlt.WithTransparancy(FilterPaletteID::PaletteDarken2), { 0, 6, height },
+                session, direction, imageIdAlt.WithTransparency(FilterPaletteID::PaletteDarken2), { 0, 6, height },
                 { 32, 20, 2 }, { 0, 6, height + 2 });
         }
     }
@@ -685,7 +685,7 @@ static void paint_miniature_railway_track_flat(
             imageIdAlt = miniature_railway_track_to_grooved_indent(
                 session.PathElementOnSameHeight, direction, session.CurrentRotation);
             PaintAddImageAsParentRotated(
-                session, direction, imageIdAlt.WithTransparancy(FilterPaletteID::PaletteDarken2), { 0, 6, height },
+                session, direction, imageIdAlt.WithTransparency(FilterPaletteID::PaletteDarken2), { 0, 6, height },
                 { 32, 20, 2 }, { 0, 6, height + 2 });
         }
     }

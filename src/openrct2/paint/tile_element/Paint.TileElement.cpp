@@ -315,13 +315,13 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
         for (int32_t sx = 0; sx < 3; sx++)
         {
             uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].height;
-            auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparancy(FilterPaletteID::PaletteDarken3);
+            auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::PaletteDarken3);
             if (segmentHeight == 0xFFFF)
             {
                 segmentHeight = session.Support.height;
                 // white: 0b101101
                 imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1)
-                                       .WithTransparancy(FilterPaletteID::PaletteTranslucentBordeauxRedHighlight);
+                                       .WithTransparency(FilterPaletteID::PaletteTranslucentBordeauxRedHighlight);
             }
 
             // Only draw supports below the clipping height.
