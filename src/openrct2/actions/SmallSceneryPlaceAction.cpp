@@ -259,7 +259,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
     const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
+        { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -396,7 +396,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
     const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+        { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
         CREATE_CROSSING_MODE_NONE, isTree);
     if (canBuild.Error != GameActions::Status::Ok)
     {

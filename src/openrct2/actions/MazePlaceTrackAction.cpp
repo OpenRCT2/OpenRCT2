@@ -90,7 +90,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     }
 
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags());
+        { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -152,7 +152,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
 
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
+        { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
         GetFlags() | GAME_COMMAND_FLAG_APPLY);
     if (canBuild.Error != GameActions::Status::Ok)
     {

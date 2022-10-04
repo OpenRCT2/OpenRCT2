@@ -301,7 +301,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertQuery(GameActions::Result 
     uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
                                                                           : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), crossingMode);
+        { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
     if (!entrancePath && canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
@@ -370,8 +370,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Resul
     uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
                                                                           : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
-        crossingMode);
+        { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(), crossingMode);
     if (!entrancePath && canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
