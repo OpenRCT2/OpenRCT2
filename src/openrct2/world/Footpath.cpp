@@ -514,26 +514,23 @@ static void FootpathConnectCorners(const CoordsXY& footpathPos, PathElement* ini
         int32_t direction = initialDirection;
         auto currentPos = footpathPos + CoordsDirectionDelta[direction];
 
-        std::get<1>(tileElements) = {
-            FootpathConnectCornersGetNeighbour({ currentPos, z }, (1 << direction_reverse(direction))), currentPos
-        };
+        std::get<1>(tileElements) = { FootpathConnectCornersGetNeighbour({ currentPos, z }, (1 << DirectionReverse(direction))),
+                                      currentPos };
         if (std::get<1>(tileElements).first == nullptr)
             continue;
 
-        direction = direction_next(direction);
+        direction = DirectionNext(direction);
         currentPos += CoordsDirectionDelta[direction];
-        std::get<2>(tileElements) = {
-            FootpathConnectCornersGetNeighbour({ currentPos, z }, (1 << direction_reverse(direction))), currentPos
-        };
+        std::get<2>(tileElements) = { FootpathConnectCornersGetNeighbour({ currentPos, z }, (1 << DirectionReverse(direction))),
+                                      currentPos };
         if (std::get<2>(tileElements).first == nullptr)
             continue;
 
-        direction = direction_next(direction);
+        direction = DirectionNext(direction);
         currentPos += CoordsDirectionDelta[direction];
         // First check link to previous tile
-        std::get<3>(tileElements) = {
-            FootpathConnectCornersGetNeighbour({ currentPos, z }, (1 << direction_reverse(direction))), currentPos
-        };
+        std::get<3>(tileElements) = { FootpathConnectCornersGetNeighbour({ currentPos, z }, (1 << DirectionReverse(direction))),
+                                      currentPos };
         if (std::get<3>(tileElements).first == nullptr)
             continue;
         // Second check link to initial tile
@@ -542,18 +539,18 @@ static void FootpathConnectCorners(const CoordsXY& footpathPos, PathElement* ini
         if (std::get<3>(tileElements).first == nullptr)
             continue;
 
-        direction = direction_next(direction);
+        direction = DirectionNext(direction);
         std::get<3>(tileElements).first->SetCorners(std::get<3>(tileElements).first->GetCorners() | (1 << (direction)));
         map_invalidate_element(
             std::get<3>(tileElements).second, reinterpret_cast<TileElement*>(std::get<3>(tileElements).first));
 
-        direction = direction_prev(direction);
+        direction = DirectionPrev(direction);
         std::get<2>(tileElements).first->SetCorners(std::get<2>(tileElements).first->GetCorners() | (1 << (direction)));
 
         map_invalidate_element(
             std::get<2>(tileElements).second, reinterpret_cast<TileElement*>(std::get<2>(tileElements).first));
 
-        direction = direction_prev(direction);
+        direction = DirectionPrev(direction);
         std::get<1>(tileElements).first->SetCorners(std::get<1>(tileElements).first->GetCorners() | (1 << (direction)));
 
         map_invalidate_element(
@@ -667,7 +664,7 @@ static TileElement* FootpathGetElement(const CoordsXYRangedZ& footpathPos, int32
             if (!tileElement->AsPath()->IsSloped())
                 break;
 
-            auto slope = direction_reverse(tileElement->AsPath()->GetSlopeDirection());
+            auto slope = DirectionReverse(tileElement->AsPath()->GetSlopeDirection());
             if (slope != direction)
                 break;
 
@@ -694,7 +691,7 @@ static bool FootpathReconnectQueueToPath(
             return false;
 
         if (WallInTheWay(
-                { targetQueuePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction_reverse(direction)))
+                { targetQueuePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, DirectionReverse(direction)))
             return false;
     }
 
@@ -707,14 +704,14 @@ static bool FootpathReconnectQueueToPath(
         if (action > 0)
         {
             tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() & ~(1 << direction));
-            targetQueueElement->SetEdges(targetQueueElement->GetEdges() & ~(1 << (direction_reverse(direction) & 3)));
+            targetQueueElement->SetEdges(targetQueueElement->GetEdges() & ~(1 << (DirectionReverse(direction) & 3)));
             if (action >= 2)
                 tileElement->AsPath()->SetSlopeDirection(direction);
         }
         else if (action < 0)
         {
             tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction));
-            targetQueueElement->SetEdges(targetQueueElement->GetEdges() | (1 << (direction_reverse(direction) & 3)));
+            targetQueueElement->SetEdges(targetQueueElement->GetEdges() | (1 << (DirectionReverse(direction) & 3)));
         }
         if (action != 0)
             map_invalidate_tile_full(targetQueuePos);
@@ -776,7 +773,7 @@ static void loc_6A6F1F(
 {
     if (query)
     {
-        if (WallInTheWay({ targetPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction_reverse(direction)))
+        if (WallInTheWay({ targetPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, DirectionReverse(direction)))
         {
             return;
         }
@@ -809,7 +806,7 @@ static void loc_6A6F1F(
     else
     {
         FootpathDisconnectQueueFromPath(targetPos, tileElement, 1 + ((flags >> 6) & 1));
-        tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction_reverse(direction)));
+        tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << DirectionReverse(direction)));
         if (tileElement->AsPath()->IsQueue())
         {
             FootpathQueueChainPush(tileElement->AsPath()->GetRideIndex());
@@ -859,7 +856,7 @@ static void loc_6A6D7E(
                     if (tileElement->GetBaseZ() == initialTileElementPos.z - LAND_HEIGHT_STEP)
                     {
                         if (tileElement->AsPath()->IsSloped()
-                            && tileElement->AsPath()->GetSlopeDirection() == direction_reverse(direction))
+                            && tileElement->AsPath()->GetSlopeDirection() == DirectionReverse(direction))
                         {
                             loc_6A6F1F(
                                 initialTileElementPos, direction, tileElement, initialTileElement, targetPos, flags, query,
@@ -889,8 +886,7 @@ static void loc_6A6D7E(
                         {
                             return;
                         }
-                        uint16_t dx = direction_reverse(
-                            (direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
+                        uint16_t dx = DirectionReverse((direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
 
                         if (!(ted.SequenceProperties[trackSequence] & (1 << dx)))
                         {
@@ -909,7 +905,7 @@ static void loc_6A6D7E(
                     if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
                         if (entrance_has_direction(
-                                *(tileElement->AsEntrance()), direction_reverse(direction - tileElement->GetDirection())))
+                                *(tileElement->AsEntrance()), DirectionReverse(direction - tileElement->GetDirection())))
                         {
                             if (query)
                             {
@@ -1122,7 +1118,7 @@ void FootpathChainRideQueue(
                     if (!tileElement->AsPath()->IsSloped())
                         break;
 
-                    if (direction_reverse(tileElement->AsPath()->GetSlopeDirection()) != direction)
+                    if (DirectionReverse(tileElement->AsPath()->GetSlopeDirection()) != direction)
                         break;
 
                     baseZ -= LAND_HEIGHT_STEP;
@@ -1142,7 +1138,7 @@ void FootpathChainRideQueue(
             int32_t numEdges = bitcount(edges);
             if (numEdges >= 2)
             {
-                int32_t requiredEdgeMask = 1 << direction_reverse(direction);
+                int32_t requiredEdgeMask = 1 << DirectionReverse(direction);
                 if (!(edges & requiredEdgeMask))
                 {
                     break;
@@ -1150,7 +1146,7 @@ void FootpathChainRideQueue(
             }
 
             tileElement->AsPath()->SetHasQueueBanner(false);
-            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction_reverse(direction)));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << DirectionReverse(direction)));
             tileElement->AsPath()->SetRideIndex(rideIndex);
             tileElement->AsPath()->SetStationIndex(entranceIndex);
 
@@ -1169,7 +1165,7 @@ void FootpathChainRideQueue(
             if (tileElement->AsPath()->GetEdges() & (1 << direction))
                 continue;
 
-            direction = direction_reverse(direction);
+            direction = DirectionReverse(direction);
             if (tileElement->AsPath()->GetEdges() & (1 << direction))
                 continue;
         }
@@ -1183,7 +1179,7 @@ void FootpathChainRideQueue(
             lastPathElement->AsPath()->SetHasQueueBanner(true);
             lastPathElement->AsPath()->SetQueueBannerDirection(lastPathDirection); // set the ride sign direction
 
-            map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, { lastPath, lastPathElement->GetBaseZ() });
+            MapAnimationCreate(MAP_ANIMATION_TYPE_QUEUE_BANNER, { lastPath, lastPathElement->GetBaseZ() });
         }
     }
 }
@@ -1239,7 +1235,7 @@ void FootpathUpdateQueueChains()
                     if (tileElement->AsEntrance()->GetRideIndex() != rideIndex)
                         continue;
 
-                    Direction direction = direction_reverse(tileElement->GetDirection());
+                    Direction direction = DirectionReverse(tileElement->GetDirection());
                     FootpathChainRideQueue(
                         rideIndex, ride->GetStationIndex(&station), station.Entrance.ToCoordsXY(), tileElement, direction);
                 } while (!(tileElement++)->IsLastForTile());
@@ -1369,7 +1365,7 @@ static int32_t FootpathIsConnectedToMapEdgeHelper(CoordsXYZ footpathPos, int32_t
         if (ste_tileElement->AsPath()->IsSloped()
             && (ste_slopeDirection = ste_tileElement->AsPath()->GetSlopeDirection()) != ste_direction)
         {
-            if (direction_reverse(ste_slopeDirection) != ste_direction)
+            if (DirectionReverse(ste_slopeDirection) != ste_direction)
                 return true;
             if (ste_tileElement->GetBaseZ() + PATH_HEIGHT_STEP != ste_targetPos.z)
                 return true;
@@ -1421,7 +1417,7 @@ static int32_t FootpathIsConnectedToMapEdgeHelper(CoordsXYZ footpathPos, int32_t
                 FootpathFixOwnership(targetPos);
 
             edges = tileElement->AsPath()->GetEdges();
-            currentTile.direction = direction_reverse(currentTile.direction);
+            currentTile.direction = DirectionReverse(currentTile.direction);
             if (!tileElement->IsLastForTile() && !(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY))
             {
                 int elementIndex = 1;
@@ -2056,7 +2052,7 @@ void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement*
             FootpathQueueChainPush(tileElement->AsEntrance()->GetRideIndex());
             FootpathChainRideQueue(
                 RideId::GetNull(), StationIndex::FromUnderlying(0), footpathPos, tileElement,
-                direction_reverse(tileElement->GetDirection()));
+                DirectionReverse(tileElement->GetDirection()));
         }
     }
 }
@@ -2073,7 +2069,7 @@ static void FootpathRemoveEdgesTowardsHere(
         FootpathQueueChainPush(tileElement->AsPath()->GetRideIndex());
     }
 
-    auto d = direction_reverse(direction);
+    auto d = DirectionReverse(direction);
     tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() & ~(1 << d));
     int32_t cd = ((d - 1) & 3);
     tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
@@ -2143,7 +2139,7 @@ static void FootpathRemoveEdgesTowards(const CoordsXYRangedZ& footPathPos, int32
             if (!tileElement->AsPath()->IsSloped())
                 break;
 
-            uint8_t slope = direction_reverse(tileElement->AsPath()->GetSlopeDirection());
+            uint8_t slope = DirectionReverse(tileElement->AsPath()->GetSlopeDirection());
             if (slope != direction)
                 break;
 
@@ -2174,7 +2170,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                     if (!tileElement->AsPath()->IsSloped())
                         // The footpath is flat, it can be connected to from any direction
                         return true;
-                    if (tileElement->AsPath()->GetSlopeDirection() == direction_reverse(coords.direction))
+                    if (tileElement->AsPath()->GetSlopeDirection() == DirectionReverse(coords.direction))
                         // The footpath is sloped and its lowest point matches the edge connection
                         return true;
                 }

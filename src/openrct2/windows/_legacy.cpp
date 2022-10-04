@@ -330,7 +330,7 @@ bool window_ride_construction_update_state(
 
         CoordsXY offsets = { trackCoordinates.x, trackCoordinates.y };
         CoordsXY coords = { x, y };
-        coords += offsets.Rotate(direction_reverse(trackDirection));
+        coords += offsets.Rotate(DirectionReverse(trackDirection));
         x = static_cast<uint16_t>(coords.x);
         y = static_cast<uint16_t>(coords.y);
     }

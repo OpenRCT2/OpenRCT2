@@ -545,12 +545,12 @@ constexpr Direction ALL_DIRECTIONS[] = {
  * Given a direction, return the direction that points the other way,
  * on the same axis.
  */
-inline constexpr Direction direction_reverse(Direction dir)
+inline constexpr Direction DirectionReverse(Direction dir)
 {
     return dir ^ 2;
 }
 
-inline constexpr bool direction_valid(Direction dir)
+inline constexpr bool DirectionValid(Direction dir)
 {
     return dir < NumOrthogonalDirections;
 }
@@ -559,7 +559,7 @@ inline constexpr bool direction_valid(Direction dir)
  * Given a direction, return the next cardinal direction, wrapping around if necessary.
  * (TODO: Figure out if this is CW or CCW)
  */
-inline constexpr Direction direction_next(Direction dir)
+inline constexpr Direction DirectionNext(Direction dir)
 {
     return (dir + 1) & 0x03;
 }
@@ -568,7 +568,7 @@ inline constexpr Direction direction_next(Direction dir)
  * Given a direction, return the previous cardinal direction, wrapping around if necessary.
  * (TODO: Figure out if this is CW or CCW)
  */
-inline constexpr Direction direction_prev(Direction dir)
+inline constexpr Direction DirectionPrev(Direction dir)
 {
     return (dir - 1) & 0x03;
 }

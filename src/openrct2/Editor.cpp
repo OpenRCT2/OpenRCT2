@@ -543,7 +543,7 @@ namespace Editor
 
         for (const auto& parkEntrance : gParkEntrances)
         {
-            int32_t direction = direction_reverse(parkEntrance.direction);
+            int32_t direction = DirectionReverse(parkEntrance.direction);
 
             switch (FootpathIsConnectedToMapEdge(parkEntrance, direction, 0))
             {

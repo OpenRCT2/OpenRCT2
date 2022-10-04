@@ -405,7 +405,7 @@ static SceneryEntryBase* GetSceneryEntry(const ScenerySelection& item)
         case SCENERY_TYPE_WALL:
             return get_wall_entry(item.EntryIndex);
         case SCENERY_TYPE_LARGE:
-            return get_large_scenery_entry(item.EntryIndex);
+            return GetLargeSceneryEntry(item.EntryIndex);
         case SCENERY_TYPE_BANNER:
             return get_banner_entry(item.EntryIndex);
         default:

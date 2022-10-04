@@ -2753,7 +2753,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
 
     // Other search direction.
     location = station.GetStart();
-    direction = direction_reverse(direction) & 3;
+    direction = DirectionReverse(direction) & 3;
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
@@ -6976,7 +6976,7 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
     auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;
-    direction = direction_reverse(direction);
+    direction = DirectionReverse(direction);
 
     AnimateSceneryDoor<true>({ wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());
 }

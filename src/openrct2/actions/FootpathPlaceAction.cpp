@@ -96,7 +96,7 @@ GameActions::Result FootpathPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
     }
 
-    if (_direction != INVALID_DIRECTION && !direction_valid(_direction))
+    if (_direction != INVALID_DIRECTION && !DirectionValid(_direction))
     {
         log_error("Direction invalid. direction = %u", _direction);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
@@ -137,7 +137,7 @@ GameActions::Result FootpathPlaceAction::Execute() const
             auto zHigh = zLow + PATH_CLEARANCE;
             wall_remove_intersecting_walls(
                 { _loc, zLow, zHigh + ((_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 16 : 0) },
-                direction_reverse(_direction));
+                DirectionReverse(_direction));
             wall_remove_intersecting_walls(
                 { _loc.x - CoordsDirectionDelta[_direction].x, _loc.y - CoordsDirectionDelta[_direction].y, zLow, zHigh },
                 _direction);
@@ -489,7 +489,7 @@ void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) cons
     {
         auto direction = pathElement->GetSlopeDirection();
         int32_t z = pathElement->GetBaseZ();
-        wall_remove_intersecting_walls({ _loc, z, z + (6 * COORDS_Z_STEP) }, direction_reverse(direction));
+        wall_remove_intersecting_walls({ _loc, z, z + (6 * COORDS_Z_STEP) }, DirectionReverse(direction));
         wall_remove_intersecting_walls({ _loc, z, z + (6 * COORDS_Z_STEP) }, direction);
         // Removing walls may have made the pointer invalid, so find it again
         auto tileElement = MapGetFootpathElement(CoordsXYZ(_loc, z));

@@ -580,7 +580,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     CoordsXY trackCoordOffset = { trackCoordinate.x, trackCoordinate.y };
     CoordsXY trackBlockOffset = { trackBlock->x, trackBlock->y };
     coords += trackCoordOffset.Rotate(rotation);
-    coords += trackBlockOffset.Rotate(direction_reverse(rotation));
+    coords += trackBlockOffset.Rotate(DirectionReverse(rotation));
 
     OriginZ -= trackBlock->z;
     OriginZ += trackCoordinate.z_end;
@@ -603,7 +603,7 @@ bool track_block_get_previous_from_zero(
     const CoordsXYZ& startPos, Ride* ride, uint8_t direction, track_begin_end* outTrackBeginEnd)
 {
     uint8_t directionStart = direction;
-    direction = direction_reverse(direction);
+    direction = DirectionReverse(direction);
     auto trackPos = startPos;
 
     if (!(direction & TRACK_BLOCK_2))
@@ -617,7 +617,7 @@ bool track_block_get_previous_from_zero(
         outTrackBeginEnd->end_x = trackPos.x;
         outTrackBeginEnd->end_y = trackPos.y;
         outTrackBeginEnd->begin_element = nullptr;
-        outTrackBeginEnd->begin_direction = direction_reverse(directionStart);
+        outTrackBeginEnd->begin_direction = DirectionReverse(directionStart);
         return false;
     }
 
@@ -660,7 +660,7 @@ bool track_block_get_previous_from_zero(
 
         CoordsXY coords = { outTrackBeginEnd->begin_x, outTrackBeginEnd->begin_y };
         CoordsXY offsets = { nextTrackCoordinate.x, nextTrackCoordinate.y };
-        coords += offsets.Rotate(direction_reverse(nextRotation));
+        coords += offsets.Rotate(DirectionReverse(nextRotation));
         outTrackBeginEnd->begin_x = coords.x;
         outTrackBeginEnd->begin_y = coords.y;
 
@@ -673,7 +673,7 @@ bool track_block_get_previous_from_zero(
 
         outTrackBeginEnd->begin_z += nextTrackBlock2->z - nextTrackBlock->z;
         outTrackBeginEnd->begin_direction = nextRotation;
-        outTrackBeginEnd->end_direction = direction_reverse(directionStart);
+        outTrackBeginEnd->end_direction = DirectionReverse(directionStart);
         return true;
     } while (!(tileElement++)->IsLastForTile());
 
@@ -681,7 +681,7 @@ bool track_block_get_previous_from_zero(
     outTrackBeginEnd->end_y = trackPos.y;
     outTrackBeginEnd->begin_z = trackPos.z;
     outTrackBeginEnd->begin_element = nullptr;
-    outTrackBeginEnd->end_direction = direction_reverse(directionStart);
+    outTrackBeginEnd->end_direction = DirectionReverse(directionStart);
     return false;
 }
 
@@ -722,7 +722,7 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
     uint8_t rotation = trackElement->GetDirection();
     CoordsXY coords = CoordsXY{ trackPos };
     CoordsXY offsets = { trackBlock->x, trackBlock->y };
-    coords += offsets.Rotate(direction_reverse(rotation));
+    coords += offsets.Rotate(DirectionReverse(rotation));
 
     z -= trackBlock->z;
     z += trackCoordinate.z_begin;
@@ -2349,7 +2349,7 @@ static void ride_shop_connected(Ride* ride)
         entrance_directions >>= 1;
 
         // Flip direction north<->south, east<->west
-        uint8_t face_direction = direction_reverse(count);
+        uint8_t face_direction = DirectionReverse(count);
 
         int32_t y2 = shopLoc.y - TileDirectionDelta[face_direction].y;
         int32_t x2 = shopLoc.x - TileDirectionDelta[face_direction].x;
@@ -2664,7 +2664,7 @@ void Ride::ChainQueues() const
                     continue;
 
                 int32_t direction = tileElement->GetDirection();
-                FootpathChainRideQueue(id, GetStationIndex(&station), mapLocation, tileElement, direction_reverse(direction));
+                FootpathChainRideQueue(id, GetStationIndex(&station), mapLocation, tileElement, DirectionReverse(direction));
             } while (!(tileElement++)->IsLastForTile());
         }
     }
@@ -5495,7 +5495,7 @@ bool ride_has_adjacent_station(Ride* ride)
             if (found)
                 break;
             /* Check the other side of the station */
-            direction = direction_reverse(direction);
+            direction = DirectionReverse(direction);
             found = check_for_adjacent_station(stationStart, direction);
             if (found)
                 break;

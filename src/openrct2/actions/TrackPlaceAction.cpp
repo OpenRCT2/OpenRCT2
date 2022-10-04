@@ -82,7 +82,7 @@ GameActions::Result TrackPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
-    if (!direction_valid(_origin.direction))
+    if (!DirectionValid(_origin.direction))
     {
         log_warning("Invalid direction for track placement, direction = %d", _origin.direction);
         return GameActions::Result(
@@ -662,7 +662,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                         int32_t tempDirection = (_origin.direction + chosenDirection) & 3;
                         tempLoc.x += CoordsDirectionDelta[tempDirection].x;
                         tempLoc.y += CoordsDirectionDelta[tempDirection].y;
-                        tempDirection = direction_reverse(tempDirection);
+                        tempDirection = DirectionReverse(tempDirection);
                         wall_remove_intersecting_walls({ tempLoc, baseZ, clearanceZ }, tempDirection & 3);
                     }
                 }

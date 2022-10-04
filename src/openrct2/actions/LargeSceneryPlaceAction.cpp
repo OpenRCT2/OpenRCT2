@@ -79,7 +79,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
-    auto* sceneryEntry = get_large_scenery_entry(_sceneryType);
+    auto* sceneryEntry = GetLargeSceneryEntry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
@@ -191,7 +191,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
 
     money32 supportsCost = 0;
 
-    auto* sceneryEntry = get_large_scenery_entry(_sceneryType);
+    auto* sceneryEntry = GetLargeSceneryEntry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);

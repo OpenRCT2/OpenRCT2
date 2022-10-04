@@ -1459,7 +1459,7 @@ public:
                         { colours[1] });
 
                     // Banner info
-                    auto* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
+                    auto* largeSceneryEntry = GetLargeSceneryEntry(largeSceneryType);
                     if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         auto banner = sceneryElement->GetBanner();

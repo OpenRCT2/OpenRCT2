@@ -444,7 +444,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         {
             if (!(ted.Coordinates.rotation_begin & 4))
             {
-                direction = direction_reverse(trackElement->GetDirection());
+                direction = DirectionReverse(trackElement->GetDirection());
                 if (direction == _edge)
                 {
                     const rct_preview_track* trackBlock = &ted.Block[sequence];
