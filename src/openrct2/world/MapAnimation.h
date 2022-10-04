@@ -39,7 +39,7 @@ enum
     MAP_ANIMATION_TYPE_COUNT
 };
 
-void map_animation_create(int32_t type, const CoordsXYZ& loc);
-void map_animation_invalidate_all();
+void MapAnimationCreate(int32_t type, const CoordsXYZ& loc);
+void MapAnimationInvalidateAll();
 const std::vector<MapAnimation>& GetMapAnimations();
-void AutoCreateMapAnimations();
+void MapAnimationAutoCreate();

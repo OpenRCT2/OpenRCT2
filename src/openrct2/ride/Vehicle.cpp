@@ -6854,7 +6854,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
     {
         door->SetAnimationIsBackwards(isBackwards);
         door->SetAnimationFrame(1);
-        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, doorLocation);
+        MapAnimationCreate(MAP_ANIMATION_TYPE_WALL_DOOR, doorLocation);
         play_scenery_door_open_sound(trackLocation, door);
     }
 
@@ -6961,7 +6961,7 @@ static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement
 {
     tileElement->AsTrack()->SetPhotoTimeout();
 
-    map_animation_create(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { loc, tileElement->GetBaseZ() });
+    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { loc, tileElement->GetBaseZ() });
 }
 
 /**

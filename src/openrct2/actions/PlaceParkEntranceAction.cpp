@@ -170,7 +170,7 @@ GameActions::Result PlaceParkEntranceAction::Execute() const
 
         if (index == 0)
         {
-            map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, { entranceLoc, zLow });
+            MapAnimationCreate(MAP_ANIMATION_TYPE_PARK_ENTRANCE, { entranceLoc, zLow });
         }
     }
 

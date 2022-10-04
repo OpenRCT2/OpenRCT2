@@ -292,7 +292,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
             newSceneryElement->SetBannerIndex(banner->id);
         }
 
-        map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
+        MapAnimationCreate(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
         map_invalidate_tile_full(curTile);
 
         if (tileNum == 0)

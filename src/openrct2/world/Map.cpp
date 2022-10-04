@@ -445,7 +445,7 @@ void map_init(const TileCoordsXY& size)
     gMapSize = size;
     gMapBaseZ = 7;
     map_remove_out_of_range_elements();
-    AutoCreateMapAnimations();
+    MapAnimationAutoCreate();
 
     auto intent = Intent(INTENT_ACTION_MAP);
     context_broadcast_intent(&intent);

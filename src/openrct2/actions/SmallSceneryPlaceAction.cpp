@@ -436,7 +436,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     map_invalidate_tile_full(_loc);
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
     {
-        map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, CoordsXYZ{ _loc, sceneryElement->GetBaseZ() });
+        MapAnimationCreate(MAP_ANIMATION_TYPE_SMALL_SCENERY, CoordsXYZ{ _loc, sceneryElement->GetBaseZ() });
     }
 
     return res;
