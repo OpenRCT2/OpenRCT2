@@ -495,7 +495,7 @@ public:
                 if (outScrollArea == SCROLL_PART_VIEW)
                 {
                     const auto isInvented = outScrollId == 0;
-                    int32_t scrollY = outScrollCoords.y + SCROLLABLE_ROW_HEIGHT/2;
+                    int32_t scrollY = outScrollCoords.y + SCROLLABLE_ROW_HEIGHT / 2;
                     return InventionListItem{ GetItemFromScrollY(isInvented, scrollY), isInvented };
                 }
             }
@@ -534,7 +534,7 @@ public:
         }
 
         ResearchRemove(item);
-        
+
         if (beforeItem != nullptr)
         {
             for (size_t i = 0; i < researchList.size(); i++)
