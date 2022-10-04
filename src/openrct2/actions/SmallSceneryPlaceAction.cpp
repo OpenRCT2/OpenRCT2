@@ -350,7 +350,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_remove_litter({ _loc, targetHeight });
+        FootpathRemoveLitter({ _loc, targetHeight });
         if (!gCheatsDisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
         {
             wall_remove_at({ _loc, targetHeight, targetHeight + sceneryEntry->height });

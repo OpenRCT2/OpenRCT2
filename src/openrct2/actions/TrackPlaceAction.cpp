@@ -261,7 +261,7 @@ GameActions::Result TrackPlaceAction::Query() const
         // When building a level crossing, remove any pre-existing path furniture.
         if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH)
         {
-            auto footpathElement = map_get_footpath_element(mapLoc);
+            auto footpathElement = MapGetFootpathElement(mapLoc);
             if (footpathElement != nullptr && footpathElement->AsPath()->HasAddition())
             {
                 footpathElement->AsPath()->SetAddition(0);
@@ -478,7 +478,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
         {
-            footpath_remove_litter(mapLoc);
+            FootpathRemoveLitter(mapLoc);
             if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
             {
                 wall_remove_at(mapLocWithClearance);
@@ -696,7 +696,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (!gCheatsDisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_connect_edges(mapLoc, tileElement, GetFlags());
+            FootpathConnectEdges(mapLoc, tileElement, GetFlags());
         }
         map_invalidate_tile_full(mapLoc);
     }

@@ -352,7 +352,7 @@ void ride_clear_blocked_tiles(Ride* ride)
                     continue;
 
                 // Unblock footpath element that is at same position
-                auto* footpathElement = map_get_footpath_element(
+                auto* footpathElement = MapGetFootpathElement(
                     TileCoordsXYZ{ tilePos, trackElement->base_height }.ToCoordsXYZ());
 
                 if (footpathElement == nullptr)
@@ -1572,10 +1572,10 @@ void Ride::ValidateStations()
             // remove the ride entrance and clean up if necessary
             if (shouldRemove)
             {
-                footpath_queue_chain_reset();
+                FootpathQueueChainReset();
                 MazeEntranceHedgeReplacement({ location, tileElement });
-                footpath_remove_edges_at(location, tileElement);
-                footpath_update_queue_chains();
+                FootpathRemoveEdgesAt(location, tileElement);
+                FootpathUpdateQueueChains();
                 map_invalidate_tile_full(location);
                 tile_element_remove(tileElement);
                 tileElement--;

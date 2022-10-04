@@ -64,7 +64,7 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_HIGH);
     }
 
-    auto tileElement = map_get_footpath_element(_loc);
+    auto tileElement = MapGetFootpathElement(_loc);
     if (tileElement == nullptr)
     {
         log_warning("Could not find path element.");
@@ -91,12 +91,12 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
 
 GameActions::Result FootpathAdditionRemoveAction::Execute() const
 {
-    auto tileElement = map_get_footpath_element(_loc);
+    auto tileElement = MapGetFootpathElement(_loc);
     auto pathElement = tileElement->AsPath();
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_interrupt_peeps(_loc);
+        FootpathInterruptPeeps(_loc);
     }
 
     if (pathElement == nullptr)

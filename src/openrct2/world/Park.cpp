@@ -278,7 +278,7 @@ void Park::Initialise()
     gParkEntranceFee = 10.00_GBP;
 
     gPeepSpawns.clear();
-    PartEntranceReset();
+    ParkEntranceReset();
 
     gResearchPriorities = EnumsToFlags(
         ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,

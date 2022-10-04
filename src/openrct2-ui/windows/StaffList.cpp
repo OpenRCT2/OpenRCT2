@@ -590,7 +590,7 @@ private:
     {
         int32_t direction{};
         TileElement* tileElement{};
-        auto footpathCoords = footpath_get_coordinates_from_pos(screenCoords, &direction, &tileElement);
+        auto footpathCoords = FootpathGetCoordinatesFromPos(screenCoords, &direction, &tileElement);
         if (footpathCoords.IsNull())
             return nullptr;
 

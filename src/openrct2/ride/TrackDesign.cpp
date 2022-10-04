@@ -1259,8 +1259,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE)
                 {
-                    footpath_queue_chain_reset();
-                    footpath_remove_edges_at(mapCoord, reinterpret_cast<TileElement*>(pathElement));
+                    FootpathQueueChainReset();
+                    FootpathRemoveEdgesAt(mapCoord, reinterpret_cast<TileElement*>(pathElement));
                 }
 
                 flags = GAME_COMMAND_FLAG_APPLY;
@@ -1280,8 +1280,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE)
                 {
-                    footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
-                    footpath_update_queue_chains();
+                    FootpathConnectEdges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
+                    FootpathUpdateQueueChains();
                 }
 
                 return GameActions::Result();

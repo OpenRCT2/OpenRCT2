@@ -118,7 +118,7 @@ protected:
 
             // Check that the peep is still on a footpath. Use next_z instead of pos->z here because pos->z will change
             // when the peep is halfway up a slope, but next_z will not change until they move to the next tile.
-            EXPECT_NE(map_get_footpath_element({ pos->ToCoordsXY(), peep->NextLoc.z }), nullptr);
+            EXPECT_NE(MapGetFootpathElement({ pos->ToCoordsXY(), peep->NextLoc.z }), nullptr);
         }
 
         // Clean up the peep, because we're reusing this loaded context for all tests.

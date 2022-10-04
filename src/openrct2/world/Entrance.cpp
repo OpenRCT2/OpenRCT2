@@ -79,7 +79,7 @@ int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
     return -1;
 }
 
-void PartEntranceReset()
+void ParkEntranceReset()
 {
     gParkEntrances.clear();
 }

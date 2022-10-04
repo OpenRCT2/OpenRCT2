@@ -429,10 +429,10 @@ GameActions::Result TrackRemoveAction::Execute() const
         }
 
         invalidate_test_results(ride);
-        footpath_queue_chain_reset();
+        FootpathQueueChainReset();
         if (!gCheatsDisableClearanceChecks || !(tileElement->IsGhost()))
         {
-            footpath_remove_edges_at(mapLoc, tileElement);
+            FootpathRemoveEdgesAt(mapLoc, tileElement);
         }
         tile_element_remove(tileElement);
         ride->ValidateStations();

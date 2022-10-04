@@ -198,7 +198,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
                         surfaceElement->SetSurfaceStyle(_surfaceStyle);
 
                         map_invalidate_tile_full(coords);
-                        footpath_remove_litter({ coords, tile_element_height(coords) });
+                        FootpathRemoveLitter({ coords, tile_element_height(coords) });
                     }
                 }
             }

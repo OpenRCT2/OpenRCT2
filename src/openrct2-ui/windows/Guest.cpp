@@ -917,7 +917,7 @@ private:
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-        auto mapCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
+        auto mapCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
         if (!mapCoords.IsNull())
         {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -958,7 +958,7 @@ private:
             return;
 
         TileElement* tileElement;
-        auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
+        auto destCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
         if (destCoords.IsNull())
             return;

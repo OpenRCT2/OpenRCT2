@@ -620,7 +620,7 @@ static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const Co
 
     w = window_find_by_class(WindowClass::Footpath);
     if (w != nullptr)
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
 
     tileElement2 = map_get_first_element_at(mapCoords);
     if (tileElement2 == nullptr)

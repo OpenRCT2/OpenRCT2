@@ -93,7 +93,7 @@ GameActions::Result FootpathPlaceFromTrackAction::Execute() const
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_interrupt_peeps(_loc);
+        FootpathInterruptPeeps(_loc);
     }
 
     gFootpathGroundFlags = 0;
@@ -182,7 +182,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
 
     if (!(GetFlags() & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
     {
-        footpath_remove_litter(_loc);
+        FootpathRemoveLitter(_loc);
     }
 
     res.Cost = 12.00_GBP;

@@ -140,9 +140,9 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     res.Position.y = _loc.y + 16;
     res.Position.z = tile_element_height(res.Position);
 
-    footpath_queue_chain_reset();
+    FootpathQueueChainReset();
     MazeEntranceHedgeReplacement({ _loc, entranceElement });
-    footpath_remove_edges_at(_loc, entranceElement);
+    FootpathRemoveEdgesAt(_loc, entranceElement);
 
     tile_element_remove(entranceElement);
 
@@ -156,7 +156,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
         station.Entrance.SetNull();
     }
 
-    footpath_update_queue_chains();
+    FootpathUpdateQueueChains();
 
     map_invalidate_tile_full(_loc);
     return res;

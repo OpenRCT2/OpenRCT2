@@ -731,7 +731,7 @@ void map_update_path_wide_flags()
     auto y = gWidePathTileLoopPosition.y;
     for (int32_t i = 0; i < 128; i++)
     {
-        footpath_update_path_wide_flags({ x, y });
+        FootpathUpdatePathWideFlags({ x, y });
 
         // Next x, y tile
         x += COORDS_XY_STEP;
@@ -1119,8 +1119,8 @@ void map_remove_all_rides()
                     break;
                 [[fallthrough]];
             case TileElementType::Track:
-                footpath_queue_chain_reset();
-                footpath_remove_edges_at(TileCoordsXY{ it.x, it.y }.ToCoordsXY(), it.element);
+                FootpathQueueChainReset();
+                FootpathRemoveEdgesAt(TileCoordsXY{ it.x, it.y }.ToCoordsXY(), it.element);
                 tile_element_remove(it.element);
                 tile_element_iterator_restart_for_tile(&it);
                 break;
@@ -1350,7 +1350,7 @@ void map_remove_provisional_elements()
 
     if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
-        footpath_provisional_remove();
+        FootpathProvisionalRemove();
         gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
     }
     if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
@@ -1374,7 +1374,7 @@ void map_restore_provisional_elements()
     if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
         gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
-        footpath_provisional_set(
+        FootpathProvisionalSet(
             gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
             gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
     }

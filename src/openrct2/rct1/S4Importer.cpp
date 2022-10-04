@@ -2544,11 +2544,11 @@ namespace RCT1
                     exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
 
                     // Trigger footpath update
-                    footpath_queue_chain_reset();
-                    footpath_connect_edges(
+                    FootpathQueueChainReset();
+                    FootpathConnectEdges(
                         entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
                         GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-                    footpath_update_queue_chains();
+                    FootpathUpdateQueueChains();
                 }
             }
         }

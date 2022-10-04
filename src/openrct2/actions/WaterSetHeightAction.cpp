@@ -105,7 +105,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
     res.Position = { _coords, _height * COORDS_Z_STEP };
 
     int32_t surfaceHeight = tile_element_height(_coords);
-    footpath_remove_litter({ _coords, surfaceHeight });
+    FootpathRemoveLitter({ _coords, surfaceHeight });
     if (!gCheatsDisableClearanceChecks)
         wall_remove_at_z({ _coords, surfaceHeight });
 

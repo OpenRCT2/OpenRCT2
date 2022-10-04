@@ -550,7 +550,7 @@ public:
         map_invalidate_selection_rect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-        auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
+        auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
         if (mapCoords.IsNull())
             return;
 
@@ -578,7 +578,7 @@ public:
         // Verify footpath exists at location, and retrieve coordinates
         TileElement* tileElement;
         int32_t direction;
-        auto mapCoords = footpath_get_coordinates_from_pos(screenCoords, &direction, &tileElement);
+        auto mapCoords = FootpathGetCoordinatesFromPos(screenCoords, &direction, &tileElement);
         if (mapCoords.IsNull())
             return;
 
