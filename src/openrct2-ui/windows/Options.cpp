@@ -210,6 +210,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_PATH_TO_RCT1_TEXT,
     WIDX_PATH_TO_RCT1_BUTTON,
     WIDX_PATH_TO_RCT1_CLEAR,
+    WIDX_ASSET_PACKS,
 };
 
 static constexpr const StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
@@ -395,6 +396,7 @@ static rct_widget window_options_advanced_widgets[] = {
     MakeWidget        ({ 23, 169}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
     MakeWidget        ({ 24, 184}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
     MakeWidget        ({289, 184}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
+    MakeWidget        ({ 24, 200}, {140, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_ASSET_PACKS,                           STR_NONE                                     ), // Asset packs
     WIDGETS_END,
 };
 
@@ -1939,6 +1941,9 @@ private:
                     config_save_default();
                 }
                 Invalidate();
+                break;
+            case WIDX_ASSET_PACKS:
+                context_open_window(WindowClass::AssetPacks);
                 break;
         }
     }

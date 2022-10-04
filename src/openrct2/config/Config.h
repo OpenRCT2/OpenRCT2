@@ -105,6 +105,8 @@ struct GeneralConfiguration
     bool steam_overlay_pause;
     bool show_real_names_of_guests;
     bool allow_early_completion;
+    u8string asset_pack_order;
+    u8string enabled_asset_packs;
 
     // Loading and saving
     bool confirmation_prompt;

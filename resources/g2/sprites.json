@@ -541,6 +541,21 @@
         "path": "sideways-tab-active.png"
     },
     {
+        "path": "icons/arrow_up.png",
+        "x_offset": 5,
+        "y_offset": 5
+    },
+    {
+        "path": "icons/arrow_down.png",
+        "x_offset": 5,
+        "y_offset": 5
+    },
+    {
+        "path": "icons/reload.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",

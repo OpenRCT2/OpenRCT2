@@ -3624,6 +3624,13 @@ STR_6516    :One or more objects added require RCT1 linked for proper display. F
 STR_6517    :One or more objects in this park require RCT1 linked for proper display. Fallback images will be used.
 STR_6518    :{BLACK}Hover over a scenario to view its description and objective. Click it to start playing.
 STR_6519    :Extras
+STR_6520    :Asset Packs
+STR_6521    :Low Priority
+STR_6522    :High Priority
+STR_6523    :Decrease the priority of the selected asset pack.
+STR_6524    :Increase the priority of the selected asset pack.
+STR_6525    :Reload all assets in the game with the enabled asset packs.
+STR_6526    :(base graphics, music and sound effects)
 
 #############
 # Scenarios #

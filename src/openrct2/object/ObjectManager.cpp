@@ -16,6 +16,7 @@
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
+#include "../ride/RideAudio.h"
 #include "../util/Util.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
@@ -243,6 +244,7 @@ public:
         // We will need to replay the title music if the title music object got reloaded
         OpenRCT2::Audio::StopTitleMusic();
         OpenRCT2::Audio::PlayTitleMusic();
+        OpenRCT2::RideAudio::StopAllChannels();
     }
 
     std::vector<const ObjectRepositoryItem*> GetPackableObjects() override

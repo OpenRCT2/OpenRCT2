@@ -172,23 +172,14 @@ namespace OpenRCT2::RideAudio
         auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
         if (musicObj != nullptr)
         {
-            auto track = musicObj->GetTrack(instance.TrackIndex);
-            if (track != nullptr)
+            auto shouldLoop = musicObj->GetTrackCount() == 1;
+            auto source = musicObj->GetTrackSample(instance.TrackIndex);
+            if (source != nullptr)
             {
-                auto stream = track->Asset.GetStream();
-                if (stream != nullptr)
+                auto channel = CreateAudioChannel(source, MixerGroup::RideMusic, shouldLoop, 0);
+                if (channel != nullptr)
                 {
-                    auto audioContext = GetContext()->GetAudioContext();
-                    auto source = audioContext->CreateStreamFromWAV(std::move(stream));
-                    if (source != nullptr)
-                    {
-                        auto shouldLoop = musicObj->GetTrackCount() == 1;
-                        auto channel = CreateAudioChannel(source, MixerGroup::RideMusic, shouldLoop, 0);
-                        if (channel != nullptr)
-                        {
-                            _musicChannels.emplace_back(instance, channel, source);
-                        }
-                    }
+                    _musicChannels.emplace_back(instance, channel, source);
                 }
             }
         }

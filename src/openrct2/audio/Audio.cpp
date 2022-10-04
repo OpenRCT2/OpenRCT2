@@ -109,7 +109,6 @@ namespace OpenRCT2::Audio
             baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2cBase);
             if (baseAudio != nullptr)
             {
-                baseAudio->SetIdentifier(AudioObjectIdentifiers::Rct2Base);
                 _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
             }
         }

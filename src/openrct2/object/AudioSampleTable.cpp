@@ -15,89 +15,14 @@
 #include "../core/File.h"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
+#include "Object.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-struct SourceInfo
+std::vector<AudioSampleTable::Entry>& AudioSampleTable::GetEntries()
 {
-    std::string Path;
-    std::vector<int32_t> Range{};
-};
-
-static std::vector<int32_t> ParseRange(std::string_view s)
-{
-    // Currently only supports [###] or [###..###]
-    std::vector<int32_t> result = {};
-    if (s.length() >= 3 && s[0] == '[' && s[s.length() - 1] == ']')
-    {
-        s = s.substr(1, s.length() - 2);
-        auto parts = String::Split(s, "..");
-        if (parts.size() == 1)
-        {
-            result.push_back(std::stoi(parts[0]));
-        }
-        else
-        {
-            auto left = std::stoi(parts[0]);
-            auto right = std::stoi(parts[1]);
-            if (left <= right)
-            {
-                for (auto i = left; i <= right; i++)
-                {
-                    result.push_back(i);
-                }
-            }
-            else
-            {
-                for (auto i = right; i >= left; i--)
-                {
-                    result.push_back(i);
-                }
-            }
-        }
-    }
-    return result;
-}
-
-static SourceInfo ParseSource(std::string_view source)
-{
-    SourceInfo info;
-    if (String::StartsWith(source, "$RCT1:DATA/"))
-    {
-        auto name = source.substr(11);
-        auto rangeStart = name.find('[');
-        if (rangeStart != std::string::npos)
-        {
-            info.Range = ParseRange(name.substr(rangeStart));
-            name = name.substr(0, rangeStart);
-        }
-
-        auto env = GetContext()->GetPlatformEnvironment();
-        info.Path = env->FindFile(DIRBASE::RCT1, DIRID::DATA, name);
-    }
-    else if (String::StartsWith(source, "$RCT2:DATA/"))
-    {
-        auto name = source.substr(11);
-        auto rangeStart = name.find('[');
-        if (rangeStart != std::string::npos)
-        {
-            info.Range = ParseRange(name.substr(rangeStart));
-            name = name.substr(0, rangeStart);
-        }
-
-        auto env = GetContext()->GetPlatformEnvironment();
-        info.Path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, name);
-    }
-    else if (String::StartsWith(source, "$["))
-    {
-        info.Range = ParseRange(source.substr(1));
-    }
-    else
-    {
-        info.Path = source;
-    }
-    return info;
+    return _entries;
 }
 
 void AudioSampleTable::ReadFromJson(IReadObjectContext* context, const json_t& root)
@@ -115,15 +40,23 @@ void AudioSampleTable::ReadFromJson(IReadObjectContext* context, const json_t& r
             }
             else if (jSample.is_object())
             {
-                sourceInfo = ParseSource(jSample.at("source").get<std::string>());
-                if (jSample.contains("modifier"))
+                auto& jSource = jSample.at("source");
+                if (jSource.is_string())
                 {
-                    modifier = jSample.at("modifier").get<int32_t>();
+                    sourceInfo = ParseSource(jSource.get<std::string>());
+                    if (jSample.contains("modifier"))
+                    {
+                        auto& jModifier = jSample.at("modifier");
+                        if (jModifier.is_number())
+                        {
+                            modifier = jModifier.get<int32_t>();
+                        }
+                    }
                 }
             }
 
             auto asset = context->GetAsset(sourceInfo.Path);
-            if (sourceInfo.Range.empty())
+            if (!sourceInfo.SourceRange)
             {
                 auto& entry = _entries.emplace_back();
                 entry.Asset = asset;
@@ -131,7 +64,8 @@ void AudioSampleTable::ReadFromJson(IReadObjectContext* context, const json_t& r
             }
             else
             {
-                for (auto index : sourceInfo.Range)
+                Range<int32_t> r(1, 5);
+                for (auto index : *sourceInfo.SourceRange)
                 {
                     auto& entry = _entries.emplace_back();
                     entry.Asset = asset;
@@ -143,38 +77,31 @@ void AudioSampleTable::ReadFromJson(IReadObjectContext* context, const json_t& r
     }
 }
 
-void AudioSampleTable::LoadFrom(const AudioSampleTable& table, size_t index, size_t length)
+void AudioSampleTable::LoadFrom(const AudioSampleTable& table, size_t sourceStartIndex, size_t length)
 {
-    auto audioContext = GetContext()->GetAudioContext();
-    auto numEntries = std::min(_entries.size(), length);
-    for (size_t i = 0; i < numEntries; i++)
+    // Ensure we stay in bounds of source table
+    if (sourceStartIndex >= table._entries.size())
+        return;
+    length = std::min(length, table._entries.size() - sourceStartIndex);
+
+    // Asset packs may allocate more images for an object that original, or original object may
+    // not allocate any images at all.
+    if (_entries.size() < length)
     {
-        auto& entry = _entries[i];
-        if (entry.Source != nullptr)
-        {
-            continue;
-        }
+        _entries.resize(length);
+    }
 
-        auto sourceIndex = index + i;
-        if (sourceIndex >= table._entries.size())
-        {
-            continue;
-        }
-
-        const auto& sourceEntry = table._entries[sourceIndex];
+    for (size_t i = 0; i < length; i++)
+    {
+        const auto& sourceEntry = table._entries[sourceStartIndex + i];
         if (sourceEntry.Asset)
         {
             auto stream = sourceEntry.Asset->GetStream();
             if (stream != nullptr)
             {
-                if (sourceEntry.PathIndex)
-                {
-                    entry.Source = audioContext->CreateStreamFromCSS(std::move(stream), *sourceEntry.PathIndex);
-                }
-                else
-                {
-                    entry.Source = audioContext->CreateStreamFromWAV(std::move(stream));
-                }
+                auto& entry = _entries[i];
+                entry.Asset = sourceEntry.Asset;
+                entry.PathIndex = sourceEntry.PathIndex;
                 entry.Modifier = sourceEntry.Modifier;
             }
         }
@@ -183,7 +110,15 @@ void AudioSampleTable::LoadFrom(const AudioSampleTable& table, size_t index, siz
 
 void AudioSampleTable::Load()
 {
-    LoadFrom(*this, 0, _entries.size());
+    auto audioContext = GetContext()->GetAudioContext();
+    for (size_t i = 0; i < _entries.size(); i++)
+    {
+        auto& entry = _entries[i];
+        if (entry.Source == nullptr)
+        {
+            entry.Source = LoadSample(static_cast<uint32_t>(i));
+        }
+    }
 }
 
 void AudioSampleTable::Unload()
@@ -210,6 +145,32 @@ IAudioSource* AudioSampleTable::GetSample(uint32_t index) const
         return _entries[index].Source;
     }
     return nullptr;
+}
+
+IAudioSource* AudioSampleTable::LoadSample(uint32_t index) const
+{
+    IAudioSource* result{};
+    if (index < _entries.size())
+    {
+        auto& entry = _entries[index];
+        if (entry.Asset)
+        {
+            auto stream = entry.Asset->GetStream();
+            if (stream != nullptr)
+            {
+                auto audioContext = GetContext()->GetAudioContext();
+                if (entry.PathIndex)
+                {
+                    result = audioContext->CreateStreamFromCSS(std::move(stream), *entry.PathIndex);
+                }
+                else
+                {
+                    result = audioContext->CreateStreamFromWAV(std::move(stream));
+                }
+            }
+        }
+    }
+    return result;
 }
 
 int32_t AudioSampleTable::GetSampleModifier(uint32_t index) const
