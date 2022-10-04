@@ -140,7 +140,7 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
     ImageId glassImageTemplate;
     if (hasGlass)
     {
-        glassImageTemplate = ImageId().WithTransparancy(colourPrimary);
+        glassImageTemplate = ImageId().WithTransparency(colourPrimary);
     }
 
     if (entranceEl.IsGhost())

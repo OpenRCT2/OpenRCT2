@@ -657,7 +657,7 @@ static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, ui
     switch (visibility)
     {
         case VisibilityKind::Partial:
-            return imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
+            return imageId.WithTransparency(FilterPaletteID::PaletteDarken1);
         case VisibilityKind::Hidden:
             return ImageId();
         default:

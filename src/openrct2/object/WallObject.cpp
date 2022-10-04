@@ -85,7 +85,7 @@ void WallObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t heig
 
     if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
     {
-        auto glassImageId = imageId.WithTransparancy(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
+        auto glassImageId = imageId.WithTransparency(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
         gfx_draw_sprite(dpi, glassImageId, screenCoords);
     }
     else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)

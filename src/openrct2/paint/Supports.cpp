@@ -481,7 +481,7 @@ bool wooden_a_supports_paint_setup(
         {
             return false;
         }
-        imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
+        imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
     int32_t z = floor2(session.Support.height + 15, 16);
@@ -642,7 +642,7 @@ bool wooden_b_supports_paint_setup(
         {
             return false;
         }
-        imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
+        imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
     uint16_t baseHeight = ceil2(session.Support.height, 16);
@@ -813,7 +813,7 @@ bool metal_a_supports_paint_setup(
         {
             return false;
         }
-        imageColourFlags = ImageId(0).WithTransparancy(FilterPaletteID::PaletteDarken1);
+        imageColourFlags = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
     int16_t originalHeight = height;
@@ -1015,7 +1015,7 @@ bool metal_b_supports_paint_setup(
         {
             return false;
         }
-        imageColourFlags = ImageId(0).WithTransparancy(FilterPaletteID::PaletteDarken1);
+        imageColourFlags = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
     uint16_t _9E3294 = 0xFFFF;
@@ -1200,7 +1200,7 @@ bool path_a_supports_paint_setup(
         {
             return false;
         }
-        imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
+        imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
     uint16_t baseHeight = ceil2(session.Support.height, 16);
@@ -1352,7 +1352,7 @@ bool path_b_supports_paint_setup(
         {
             return false;
         }
-        imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
+        imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
     if (height < supportSegments[segment].height)

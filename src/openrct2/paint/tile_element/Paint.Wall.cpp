@@ -140,7 +140,7 @@ static void PaintWallWall(
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
     if ((wallEntry.flags & WALL_SCENERY_HAS_GLASS) && !isGhost)
     {
-        auto glassImageId = ImageId(imageIndex + 6).WithTransparancy(imageTemplate.GetPrimary());
+        auto glassImageId = ImageId(imageIndex + 6).WithTransparency(imageTemplate.GetPrimary());
         PaintAddImageAsChild(session, glassImageId, offset, boundBox);
     }
 }
