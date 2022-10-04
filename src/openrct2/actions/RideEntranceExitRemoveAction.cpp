@@ -141,7 +141,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     res.Position.z = tile_element_height(res.Position);
 
     footpath_queue_chain_reset();
-    maze_entrance_hedge_replacement({ _loc, entranceElement });
+    MazeEntranceHedgeReplacement({ _loc, entranceElement });
     footpath_remove_edges_at(_loc, entranceElement);
 
     tile_element_remove(entranceElement);

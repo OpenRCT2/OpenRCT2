@@ -410,7 +410,7 @@ public:
                 hide_construction_rights();
                 break;
             case WIDX_BUILD_PARK_ENTRANCE:
-                park_entrance_remove_ghost();
+                ParkEntranceRemoveGhost();
                 Invalidate();
                 hide_gridlines();
                 hide_land_rights();
@@ -492,7 +492,7 @@ public:
         CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
         if (parkEntrancePosition.IsNull())
         {
-            park_entrance_remove_ghost();
+            ParkEntranceRemoveGhost();
             return;
         }
 
@@ -514,7 +514,7 @@ public:
             return;
         }
 
-        park_entrance_remove_ghost();
+        ParkEntranceRemoveGhost();
 
         auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
         gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
@@ -529,7 +529,7 @@ public:
 
     void PlaceParkEntranceToolDown(const ScreenCoordsXY& screenCoords)
     {
-        park_entrance_remove_ghost();
+        ParkEntranceRemoveGhost();
 
         CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
         if (!parkEntrancePosition.IsNull())

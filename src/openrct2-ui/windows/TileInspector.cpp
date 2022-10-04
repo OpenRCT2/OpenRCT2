@@ -1320,7 +1320,7 @@ public:
                     {
                         // TODO: Make this work with Left/Right park entrance parts
                         ft = Formatter();
-                        ft.Add<StringId>(park_entrance_get_index({ _toolMap, tileElement->GetBaseZ() }));
+                        ft.Add<StringId>(ParkEntranceGetIndex({ _toolMap, tileElement->GetBaseZ() }));
                         DrawTextBasic(
                             &dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, ft,
                             { colours[1] });

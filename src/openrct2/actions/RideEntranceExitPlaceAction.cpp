@@ -209,7 +209,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        maze_entrance_hedge_removal({ _loc, entranceElement->as<TileElement>() });
+        MazeEntranceHedgeRemoval({ _loc, entranceElement->as<TileElement>() });
     }
 
     footpath_connect_edges(_loc, entranceElement->as<TileElement>(), GetFlags());

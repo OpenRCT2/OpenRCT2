@@ -1356,7 +1356,7 @@ void map_remove_provisional_elements()
     if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
     {
         ride_remove_provisional_track_piece();
-        ride_entrance_exit_remove_ghost();
+        RideEntranceExitRemoveGhost();
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.
@@ -1381,7 +1381,7 @@ void map_restore_provisional_elements()
     if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
     {
         ride_restore_provisional_track_piece();
-        ride_entrance_exit_place_provisional_ghost();
+        RideEntranceExitPlaceProvisionalGhost();
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.

@@ -534,7 +534,7 @@ void ride_construction_remove_ghosts()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
-        ride_entrance_exit_remove_ghost();
+        RideEntranceExitRemoveGhost();
         _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
     }
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
@@ -1573,7 +1573,7 @@ void Ride::ValidateStations()
             if (shouldRemove)
             {
                 footpath_queue_chain_reset();
-                maze_entrance_hedge_replacement({ location, tileElement });
+                MazeEntranceHedgeReplacement({ location, tileElement });
                 footpath_remove_edges_at(location, tileElement);
                 footpath_update_queue_chains();
                 map_invalidate_tile_full(location);

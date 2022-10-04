@@ -3453,7 +3453,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
         auto ride = get_ride(_currentRideIndex);
         if (ride != nullptr)
         {
-            _currentTrackPrice = ride_entrance_exit_place_ghost(
+            _currentTrackPrice = RideEntranceExitPlaceGhost(
                 ride, entranceOrExitCoords, entranceOrExitCoords.direction, gRideEntranceExitPlaceType, stationNum);
         }
         window_ride_construction_update_active_elements();

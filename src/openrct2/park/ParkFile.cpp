@@ -1013,7 +1013,7 @@ namespace OpenRCT2
                                 }
                             }
                         }
-                        UpdateParkEntranceLocations();
+                        ParkEntranceUpdateLocations();
                     }
                     else
                     {

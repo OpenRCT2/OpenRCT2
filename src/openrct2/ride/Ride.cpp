@@ -3010,7 +3010,7 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
             if (tileElement->GetBaseZ() != entranceExitMapPos.z)
                 continue;
 
-            maze_entrance_hedge_removal({ entranceExitMapPos, tileElement });
+            MazeEntranceHedgeRemoval({ entranceExitMapPos, tileElement });
         } while (!(tileElement++)->IsLastForTile());
     }
 }

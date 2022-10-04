@@ -54,7 +54,7 @@ static money32 RideEntranceExitPlaceGhost(
  *
  *  rct2: 0x00666F9E
  */
-void park_entrance_remove_ghost()
+void ParkEntranceRemoveGhost()
 {
     if (gParkEntranceGhostExists)
     {
@@ -65,7 +65,7 @@ void park_entrance_remove_ghost()
     }
 }
 
-int32_t park_entrance_get_index(const CoordsXYZ& entrancePos)
+int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 {
     int32_t i = 0;
     for (const auto& entrance : gParkEntrances)
@@ -79,12 +79,12 @@ int32_t park_entrance_get_index(const CoordsXYZ& entrancePos)
     return -1;
 }
 
-void reset_park_entrance()
+void PartEntranceReset()
 {
     gParkEntrances.clear();
 }
 
-void ride_entrance_exit_place_provisional_ghost()
+void RideEntranceExitPlaceProvisionalGhost()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
@@ -94,7 +94,7 @@ void ride_entrance_exit_place_provisional_ghost()
     }
 }
 
-void ride_entrance_exit_remove_ghost()
+void RideEntranceExitRemoveGhost()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
@@ -111,7 +111,7 @@ void ride_entrance_exit_remove_ghost()
  *
  *  rct2: 0x006CA28C
  */
-money32 ride_entrance_exit_place_ghost(
+money32 RideEntranceExitPlaceGhost(
     Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
 {
     ride_construction_remove_ghosts();
@@ -132,7 +132,7 @@ money32 ride_entrance_exit_place_ghost(
  * Replaces the outer hedge walls for an entrance placement removal.
  *  rct2: 0x00666D6F
  */
-void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
+void MazeEntranceHedgeReplacement(const CoordsXYE& entrance)
 {
     int32_t direction = entrance.element->GetDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
@@ -169,7 +169,7 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
  * Removes the hedge walls for an entrance placement.
  *  rct2: 0x00666CBE
  */
-void maze_entrance_hedge_removal(const CoordsXYE& entrance)
+void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
 {
     int32_t direction = entrance.element->GetDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
@@ -208,7 +208,7 @@ void maze_entrance_hedge_removal(const CoordsXYE& entrance)
     } while (!(tileElement++)->IsLastForTile());
 }
 
-void fix_park_entrance_locations(void)
+void ParkEntranceFixLocations(void)
 {
     // Fix gParkEntrance locations for which the tile_element no longer exists
     gParkEntrances.erase(
@@ -218,7 +218,7 @@ void fix_park_entrance_locations(void)
         gParkEntrances.end());
 }
 
-void UpdateParkEntranceLocations()
+void ParkEntranceUpdateLocations()
 {
     gParkEntrances.clear();
     tile_element_iterator it;
