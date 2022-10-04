@@ -15937,7 +15937,7 @@
     {
         "path": "track/lim/barrel_roll_left_1_2.png",
         "x_offset": -11,
-        "y_offset": 8,
+        "y_offset": 7,
         "palette": "keep"
     },
     {
@@ -16122,7 +16122,7 @@
     },
     {
         "path": "track/lim/barrel_roll_right_2_3.png",
-        "x_offset": -7,
+        "x_offset": -10,
         "y_offset": -13,
         "palette": "keep"
     },
@@ -16188,8 +16188,8 @@
     },
     {
         "path": "track/lim/barrel_roll_right_4_2.png",
-        "x_offset": -16,
-        "y_offset": 9,
+        "x_offset": -20,
+        "y_offset": 7,
         "palette": "keep"
     },
     {
