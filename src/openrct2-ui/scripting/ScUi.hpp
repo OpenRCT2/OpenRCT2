@@ -40,16 +40,15 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<SCENARIO_CATEGORY> ScenarioCategoryMap({
-        { "beginner", SCENARIO_CATEGORY_BEGINNER },
-        { "challenging", SCENARIO_CATEGORY_CHALLENGING },
-        { "expert", SCENARIO_CATEGORY_EXPERT },
-        { "real", SCENARIO_CATEGORY_REAL },
-        { "other", SCENARIO_CATEGORY_OTHER },
-        { "dlc", SCENARIO_CATEGORY_DLC },
-        { "build_your_own", SCENARIO_CATEGORY_BUILD_YOUR_OWN },
-        { "competitions", SCENARIO_CATEGORY_COMPETITIONS },
-    });
+    static const DukEnumMap<SCENARIO_CATEGORY> ScenarioCategoryMap({ { "beginner", SCENARIO_CATEGORY_BEGINNER },
+                                                                     { "challenging", SCENARIO_CATEGORY_CHALLENGING },
+                                                                     { "expert", SCENARIO_CATEGORY_EXPERT },
+                                                                     { "real", SCENARIO_CATEGORY_REAL },
+                                                                     { "other", SCENARIO_CATEGORY_OTHER },
+                                                                     { "dlc", SCENARIO_CATEGORY_DLC },
+                                                                     { "build_your_own", SCENARIO_CATEGORY_BUILD_YOUR_OWN },
+                                                                     { "competitions", SCENARIO_CATEGORY_COMPETITIONS },
+                                                                     { "derivative", SCENARIO_CATEGORY_DERIVATIVE } });
 
     static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
         { "rct1", ScenarioSource::RCT1 },
