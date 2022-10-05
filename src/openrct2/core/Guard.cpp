@@ -48,7 +48,7 @@ namespace Guard
     static std::optional<std::string> _lastAssertMessage = std::nullopt;
 
 #ifdef _WIN32
-    [[nodiscard]] static std::string CreateDialogAssertMessage(std::string_view);
+    [[nodiscard]] static std::wstring CreateDialogAssertMessage(std::string_view);
     static void ForceCrash();
 #endif
 
@@ -104,7 +104,8 @@ namespace Guard
             {
                 // Show message box if we are not building for testing
                 auto buffer = CreateDialogAssertMessage(formattedMessage);
-                int32_t result = MessageBoxA(nullptr, buffer.c_str(), OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
+                int32_t result = MessageBoxW(
+                    nullptr, buffer.c_str(), L"" OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
                 if (result == IDABORT)
                 {
                     ForceCrash();
@@ -134,19 +135,19 @@ namespace Guard
     }
 
 #ifdef _WIN32
-    [[nodiscard]] static std::string CreateDialogAssertMessage(std::string_view formattedMessage)
+    [[nodiscard]] static std::wstring CreateDialogAssertMessage(std::string_view formattedMessage)
     {
         StringBuilder sb;
         sb.Append(ASSERTION_MESSAGE);
-        sb.Append("\r\n\r\n");
+        sb.Append("\n\n");
         sb.Append("Version: ");
         sb.Append(gVersionInfoFull);
         if (!formattedMessage.empty())
         {
-            sb.Append("\r\n");
+            sb.Append("\n");
             sb.Append(formattedMessage);
         }
-        return sb.GetStdString();
+        return String::ToWideChar({ sb.GetBuffer(), sb.GetLength() });
     }
 
     static void ForceCrash()

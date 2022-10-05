@@ -62,20 +62,20 @@ namespace OpenRCT2::Ui
     public:
         Win32Context()
         {
-            _win32module = GetModuleHandleA(nullptr);
+            _win32module = GetModuleHandle(nullptr);
         }
 
         void SetWindowIcon(SDL_Window* window) override
         {
             if (_win32module != nullptr)
             {
-                HICON icon = LoadIconA(_win32module, MAKEINTRESOURCEA(IDI_ICON));
+                HICON icon = LoadIcon(_win32module, MAKEINTRESOURCE(IDI_ICON));
                 if (icon != nullptr)
                 {
                     HWND hwnd = GetHWND(window);
                     if (hwnd != nullptr)
                     {
-                        SendMessageA(hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(icon));
+                        SendMessage(hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(icon));
                     }
                 }
             }
@@ -83,7 +83,7 @@ namespace OpenRCT2::Ui
 
         bool IsSteamOverlayAttached() override
         {
-            return (GetModuleHandleA("GameOverlayRenderer.dll") != nullptr);
+            return (GetModuleHandleW(L"GameOverlayRenderer.dll") != nullptr);
         }
 
         void ShowMessageBox(SDL_Window* window, const std::string& message) override

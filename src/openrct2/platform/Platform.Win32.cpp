@@ -45,7 +45,7 @@ static uint32_t _frequency = 0;
 static LARGE_INTEGER _entryTimestamp;
 
 // The name of the mutex used to prevent multiple instances of the game from running
-static constexpr char SINGLE_INSTANCE_MUTEX_NAME[] = "RollerCoaster Tycoon 2_GSKMUTEX";
+static constexpr wchar_t SINGLE_INSTANCE_MUTEX_NAME[] = L"RollerCoaster Tycoon 2_GSKMUTEX";
 
 #    define SOFTWARE_CLASSES L"Software\\Classes"
 #    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
@@ -224,7 +224,7 @@ namespace Platform
     bool IsOSVersionAtLeast(uint32_t major, uint32_t minor, uint32_t build)
     {
         bool result = false;
-        auto hModule = GetModuleHandleA("ntdll.dll");
+        auto hModule = GetModuleHandleW(L"ntdll.dll");
         if (hModule != nullptr)
         {
             using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
@@ -470,7 +470,7 @@ namespace Platform
         if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
         {
             // [hRootKey\.ext]
-            RegDeleteTreeA(hRootKey, extension);
+            RegDeleteTreeW(hRootKey, String::ToWideChar(extension).c_str());
 
             // [hRootKey\OpenRCT2.ext]
             auto progIdName = get_progIdName(extension);
@@ -786,18 +786,15 @@ namespace Platform
 
     bool EnsureDirectoryExists(u8string_view path)
     {
-        if (Path::DirectoryExists(path))
-            return 1;
-
         auto wPath = String::ToWideChar(path);
         auto success = CreateDirectoryW(wPath.c_str(), nullptr);
-        return success != FALSE;
+        return success != FALSE || GetLastError() == ERROR_ALREADY_EXISTS;
     }
 
     bool LockSingleInstance()
     {
         // Check if operating system mutex exists
-        HANDLE mutex = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+        HANDLE mutex = CreateMutexW(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (mutex == nullptr)
         {
             log_error("unable to create mutex");
@@ -871,11 +868,11 @@ namespace Platform
         {
             // [hRootKey\openrct2]
             HKEY hClassKey;
-            if (RegCreateKeyA(hRootKey, "openrct2", &hClassKey) == ERROR_SUCCESS)
+            if (RegCreateKeyW(hRootKey, L"openrct2", &hClassKey) == ERROR_SUCCESS)
             {
-                if (RegSetValueA(hClassKey, nullptr, REG_SZ, "URL:openrct2", 0) == ERROR_SUCCESS)
+                if (RegSetValueW(hClassKey, nullptr, REG_SZ, L"URL:openrct2", 0) == ERROR_SUCCESS)
                 {
-                    if (RegSetKeyValueA(hClassKey, nullptr, "URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS)
+                    if (RegSetKeyValueW(hClassKey, nullptr, L"URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS)
                     {
                         // [hRootKey\openrct2\shell\open\command]
                         wchar_t exePath[MAX_PATH];
