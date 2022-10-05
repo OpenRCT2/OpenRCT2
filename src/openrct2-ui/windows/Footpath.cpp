@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -180,7 +180,7 @@ public:
 
     void OnClose() override
     {
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
         viewport_set_visibility(0);
         map_invalidate_map_selection_tiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -292,7 +292,7 @@ public:
 
                 _windowFootpathCost = MONEY32_UNDEFINED;
                 tool_cancel();
-                footpath_provisional_update();
+                FootpathProvisionalUpdate();
                 map_invalidate_map_selection_tiles();
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                 _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
@@ -309,7 +309,7 @@ public:
 
                 _windowFootpathCost = MONEY32_UNDEFINED;
                 tool_cancel();
-                footpath_provisional_update();
+                FootpathProvisionalUpdate();
                 map_invalidate_map_selection_tiles();
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                 _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
@@ -362,7 +362,7 @@ public:
             return;
         }
 
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
         _windowFootpathCost = MONEY32_UNDEFINED;
         Invalidate();
     }
@@ -524,7 +524,7 @@ private:
         // Recheck area for construction. Set by ride_construction window
         if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_2)
         {
-            footpath_provisional_remove();
+            FootpathProvisionalRemove();
             gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_2;
         }
 
@@ -539,7 +539,7 @@ private:
             FootpathGetNextPathInfo(&type, footpathLoc, &slope);
             auto pathConstructFlags = FootpathCreateConstructFlags(type);
 
-            _windowFootpathCost = footpath_provisional_set(type, railings, footpathLoc, slope, pathConstructFlags);
+            _windowFootpathCost = FootpathProvisionalSet(type, railings, footpathLoc, slope, pathConstructFlags);
             widget_invalidate(*this, WIDX_CONSTRUCT);
         }
 
@@ -741,7 +741,7 @@ private:
      */
     void WindowFootpathMousedownDirection(int32_t direction)
     {
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
         _footpathConstructDirection = (direction - get_current_rotation()) & 3;
         _windowFootpathCost = MONEY32_UNDEFINED;
         WindowFootpathSetEnabledAndPressedWidgets();
@@ -753,7 +753,7 @@ private:
      */
     void WindowFootpathMousedownSlope(int32_t slope)
     {
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
         gFootpathConstructSlope = slope;
         _windowFootpathCost = MONEY32_UNDEFINED;
         WindowFootpathSetEnabledAndPressedWidgets();
@@ -774,7 +774,7 @@ private:
         if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
         {
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            footpath_provisional_update();
+            FootpathProvisionalUpdate();
         }
         else
         {
@@ -791,7 +791,7 @@ private:
             gMapSelectPositionA = info.Loc;
             gMapSelectPositionB = info.Loc;
 
-            footpath_provisional_update();
+            FootpathProvisionalUpdate();
 
             // Set provisional path
             int32_t slope = 0;
@@ -831,7 +831,7 @@ private:
 
             auto pathType = gFootpathSelection.GetSelectedSurface();
             auto constructFlags = FootpathCreateConstructFlags(pathType);
-            _windowFootpathCost = footpath_provisional_set(
+            _windowFootpathCost = FootpathProvisionalSet(
                 pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
             window_invalidate_by_class(WindowClass::Footpath);
         }
@@ -850,7 +850,7 @@ private:
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-        auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
+        auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
         if (mapCoords.IsNull())
         {
             return;
@@ -892,7 +892,7 @@ private:
             return;
         }
 
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
 
         const auto info = get_map_coordinates_from_pos(
             screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
@@ -958,7 +958,7 @@ private:
         int32_t z, direction;
         TileElement* tileElement;
 
-        auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
+        auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
         if (mapCoords.IsNull())
         {
             return;
@@ -1013,7 +1013,7 @@ private:
     void WindowFootpathConstruct()
     {
         _windowFootpathCost = MONEY32_UNDEFINED;
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
 
         ObjectEntryIndex type;
         int32_t slope;
@@ -1067,7 +1067,7 @@ private:
         if (tileElement->AsPath()->IsSloped())
         {
             uint8_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
-            slopeDirection = direction_reverse(slopeDirection);
+            slopeDirection = DirectionReverse(slopeDirection);
             if (slopeDirection == _footpathConstructDirection)
             {
                 z += PATH_HEIGHT_STEP;
@@ -1075,7 +1075,7 @@ private:
         }
 
         // Find a connected edge
-        int32_t edge = direction_reverse(_footpathConstructDirection);
+        int32_t edge = DirectionReverse(_footpathConstructDirection);
         if (!(tileElement->AsPath()->GetEdges() & (1 << edge)))
         {
             edge = (edge + 1) & 3;
@@ -1087,7 +1087,7 @@ private:
                     edge = (edge - 1) & 3;
                     if (!(tileElement->AsPath()->GetEdges() & (1 << edge)))
                     {
-                        edge = direction_reverse(edge);
+                        edge = DirectionReverse(edge);
                     }
                 }
             }
@@ -1098,7 +1098,7 @@ private:
         GameActions::Execute(&action);
 
         // Move selection
-        edge = direction_reverse(edge);
+        edge = DirectionReverse(edge);
         gFootpathConstructFromPosition.x -= CoordsDirectionDelta[edge].x;
         gFootpathConstructFromPosition.y -= CoordsDirectionDelta[edge].y;
         gFootpathConstructFromPosition.z = z;
@@ -1134,7 +1134,7 @@ private:
                 {
                     if (tileElement->AsPath()->IsSloped())
                     {
-                        if (direction_reverse(tileElement->AsPath()->GetSlopeDirection()) != _footpathConstructDirection)
+                        if (DirectionReverse(tileElement->AsPath()->GetSlopeDirection()) != _footpathConstructDirection)
                         {
                             continue;
                         }
@@ -1169,7 +1169,7 @@ private:
         TileElement* tileElement;
 
         _windowFootpathCost = MONEY32_UNDEFINED;
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
 
         tileElement = FootpathGetTileElementToRemove();
         if (tileElement != nullptr)
