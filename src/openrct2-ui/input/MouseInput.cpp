@@ -618,7 +618,7 @@ static void InputScrollBegin(rct_window& w, WidgetIndex widgetIndex, const Scree
 
     _currentScrollArea = scroll_area;
     _currentScrollIndex = scroll_id;
-    window_event_unknown_15_call(&w, scroll_id, scroll_area);
+    window_event_scroll_select_call(&w, scroll_id, scroll_area);
     if (scroll_area == SCROLL_PART_VIEW)
     {
         window_event_scroll_mousedown_call(&w, scroll_id, scrollCoords);
