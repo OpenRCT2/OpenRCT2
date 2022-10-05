@@ -502,7 +502,7 @@ void game_load_init()
 
     OpenRCT2::Audio::StopTitleMusic();
     gGameSpeed = 1;
-    gClipSelectionA = { 0,0 };
+    gClipSelectionA = { 0, 0 };
     gClipSelectionB = gMapSize.ToCoordsXY();
     printf("a\n");
 }
