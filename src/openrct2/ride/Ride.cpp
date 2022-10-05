@@ -5515,22 +5515,6 @@ bool ride_has_ratings(const Ride* ride)
     return ride->excitement != RIDE_RATING_UNDEFINED;
 }
 
-/**
- *  Searches for a non-null ride type in a ride entry.
- *  If none is found, it will still return RIDE_TYPE_NULL.
- */
-ride_type_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
-{
-    for (uint8_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
-    {
-        if (rideEntry->ride_type[i] != RIDE_TYPE_NULL)
-        {
-            return rideEntry->ride_type[i];
-        }
-    }
-    return RIDE_TYPE_NULL;
-}
-
 int32_t get_booster_speed(ride_type_t rideType, int32_t rawSpeed)
 {
     int8_t shiftFactor = GetRideTypeDescriptor(rideType).OperatingSettings.BoosterSpeedFactor;
@@ -5582,7 +5566,7 @@ void fix_invalid_vehicle_sprite_sizes()
 
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category)
 {
-    auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+    auto rideType = rideEntry->GetFirstNonNullRideType();
     return GetRideTypeDescriptor(rideType).Category == category;
 }
 

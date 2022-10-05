@@ -992,6 +992,6 @@ void WindowNewRideFocus(RideSelection rideItem)
     if (rideEntry == nullptr)
         return;
 
-    auto rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
+    auto rideTypeIndex = rideEntry->GetFirstNonNullRideType();
     w->SetPage(GetRideTypeDescriptor(rideTypeIndex).Category);
 }

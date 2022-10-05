@@ -18,6 +18,7 @@
 #include "../rct2/Limits.h"
 #include "../world/Map.h"
 #include "RideColour.h"
+#include "RideEntry.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
 #include "Track.h"
@@ -39,7 +40,6 @@ struct Vehicle;
 struct rct_ride_entry;
 struct ResultWithMessage;
 
-#define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
@@ -1088,7 +1088,6 @@ bool ride_has_adjacent_station(Ride* ride);
 bool ride_has_station_shelter(Ride* ride);
 bool ride_has_ratings(const Ride* ride);
 
-ride_type_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry);
 int32_t get_booster_speed(ride_type_t rideType, int32_t rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);

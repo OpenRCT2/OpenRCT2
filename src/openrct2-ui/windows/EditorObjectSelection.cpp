@@ -1508,7 +1508,7 @@ private:
             ;
 
         rct_ride_entry* ride_entry = get_ride_entry(entry_index);
-        auto rideType = ride_entry_get_first_non_null_ride_type(ride_entry);
+        auto rideType = ride_entry->GetFirstNonNullRideType();
 
         auto intent = Intent(WindowClass::TrackDesignList);
         intent.putExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
@@ -1589,7 +1589,7 @@ void EditorLoadSelectedObjects()
                     if (objectType == ObjectType::Ride)
                     {
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
-                        auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        auto rideType = rideEntry->GetFirstNonNullRideType();
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                         research_insert_ride_entry(rideType, entryIndex, category, true);
                     }
