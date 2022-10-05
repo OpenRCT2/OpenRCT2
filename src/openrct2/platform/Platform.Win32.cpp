@@ -590,109 +590,81 @@ namespace Platform
 
     uint16_t GetLocaleLanguage()
     {
-        CHAR langCode[4];
-
-        if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SABBREVLANGNAME, reinterpret_cast<LPSTR>(&langCode), sizeof(langCode))
-            == 0)
+        wchar_t langCode[LOCALE_NAME_MAX_LENGTH];
+        if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SNAME, langCode, static_cast<int>(std::size(langCode))) == 0)
         {
             return LANGUAGE_UNDEFINED;
         }
 
-        if (strcmp(langCode, "ENG") == 0)
+        const std::pair<std::wstring_view, int16_t> supportedLocales[] = {
+            { L"ar", /*LANGUAGE_ARABIC*/ LANGUAGE_UNDEFINED }, // Experimental, don't risk offering it by default yet
+            { L"ca", LANGUAGE_CATALAN },
+            { L"zh-Hans", LANGUAGE_CHINESE_SIMPLIFIED },  // May not be accurate enough
+            { L"zh-Hant", LANGUAGE_CHINESE_TRADITIONAL }, // May not be accurate enough
+            { L"cs", LANGUAGE_CZECH },
+            { L"da", LANGUAGE_DANISH },
+            { L"de", LANGUAGE_GERMAN },
+            { L"en-GB", LANGUAGE_ENGLISH_UK },
+            { L"en-US", LANGUAGE_ENGLISH_US },
+            { L"eo", LANGUAGE_ESPERANTO },
+            { L"es", LANGUAGE_SPANISH },
+            { L"fr", LANGUAGE_FRENCH },
+            { L"it", LANGUAGE_ITALIAN },
+            { L"ja", LANGUAGE_JAPANESE },
+            { L"ko", LANGUAGE_KOREAN },
+            { L"hu", LANGUAGE_HUNGARIAN },
+            { L"nl", LANGUAGE_DUTCH },
+            { L"no", LANGUAGE_NORWEGIAN },
+            { L"pl", LANGUAGE_POLISH },
+            { L"pt-BR", LANGUAGE_PORTUGUESE_BR },
+            { L"ru", LANGUAGE_RUSSIAN },
+            { L"fi", LANGUAGE_FINNISH },
+            { L"sv", LANGUAGE_SWEDISH },
+            { L"tr", LANGUAGE_TURKISH },
+            { L"vi", LANGUAGE_VIETNAMESE },
+        };
+        static_assert(
+            std::size(supportedLocales) == LANGUAGE_COUNT - 1, "GetLocaleLanguage: List of languages does not match the enum!");
+
+        for (const auto& locale : supportedLocales)
         {
-            return LANGUAGE_ENGLISH_UK;
-        }
-        if (strcmp(langCode, "ENU") == 0)
-        {
-            return LANGUAGE_ENGLISH_US;
-        }
-        if (strcmp(langCode, "DEU") == 0)
-        {
-            return LANGUAGE_GERMAN;
-        }
-        if (strcmp(langCode, "NLD") == 0)
-        {
-            return LANGUAGE_DUTCH;
-        }
-        if (strcmp(langCode, "FRA") == 0)
-        {
-            return LANGUAGE_FRENCH;
-        }
-        if (strcmp(langCode, "HUN") == 0)
-        {
-            return LANGUAGE_HUNGARIAN;
-        }
-        if (strcmp(langCode, "PLK") == 0)
-        {
-            return LANGUAGE_POLISH;
-        }
-        if (strcmp(langCode, "ESP") == 0)
-        {
-            return LANGUAGE_SPANISH;
-        }
-        if (strcmp(langCode, "SVE") == 0)
-        {
-            return LANGUAGE_SWEDISH;
-        }
-        if (strcmp(langCode, "ITA") == 0)
-        {
-            return LANGUAGE_ITALIAN;
-        }
-        if (strcmp(langCode, "POR") == 0)
-        {
-            return LANGUAGE_PORTUGUESE_BR;
-        }
-        if (strcmp(langCode, "FIN") == 0)
-        {
-            return LANGUAGE_FINNISH;
-        }
-        if (strcmp(langCode, "NOR") == 0)
-        {
-            return LANGUAGE_NORWEGIAN;
-        }
-        if (strcmp(langCode, "DAN") == 0)
-        {
-            return LANGUAGE_DANISH;
+            if (wcsncmp(langCode, locale.first.data(), locale.first.length()) == 0)
+            {
+                return locale.second;
+            }
         }
         return LANGUAGE_UNDEFINED;
     }
 
     CurrencyType GetLocaleCurrency()
     {
-        CHAR currCode[4];
-        if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SINTLSYMBOL, reinterpret_cast<LPSTR>(&currCode), sizeof(currCode)) == 0)
+        wchar_t currCode[9];
+        if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SINTLSYMBOL, currCode, static_cast<int>(std::size(currCode))) == 0)
         {
             return Platform::GetCurrencyValue(nullptr);
         }
 
-        return Platform::GetCurrencyValue(currCode);
+        return Platform::GetCurrencyValue(String::ToUtf8(currCode).c_str());
     }
 
     MeasurementFormat GetLocaleMeasurementFormat()
     {
         UINT measurement_system;
-        if (GetLocaleInfo(
-                LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPSTR>(&measurement_system),
-                sizeof(measurement_system))
+        if (GetLocaleInfoEx(
+                LOCALE_NAME_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPWSTR>(&measurement_system),
+                sizeof(measurement_system) / sizeof(wchar_t))
             == 0)
         {
             return MeasurementFormat::Metric;
         }
 
-        switch (measurement_system)
-        {
-            case 1:
-                return MeasurementFormat::Imperial;
-            case 0:
-            default:
-                return MeasurementFormat::Metric;
-        }
+        return measurement_system == 1 ? MeasurementFormat::Imperial : MeasurementFormat::Metric;
     }
 
     uint8_t GetLocaleDateFormat()
     {
         // Retrieve short date format, eg "MM/dd/yyyy"
-        wchar_t dateFormat[20];
+        wchar_t dateFormat[80];
         if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, static_cast<int>(std::size(dateFormat)))
             == 0)
         {
@@ -705,8 +677,8 @@ namespace Platform
         // in our date formats.
         // https://msdn.microsoft.com/en-us/library/windows/desktop/dd317787(v=vs.85).aspx
         //
-        wchar_t first[sizeof(dateFormat)];
-        wchar_t second[sizeof(dateFormat)];
+        wchar_t first[std::size(dateFormat)];
+        wchar_t second[std::size(dateFormat)];
         if (swscanf_s(
                 dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, static_cast<uint32_t>(std::size(first)), second,
                 static_cast<uint32_t>(std::size(second)))
@@ -715,17 +687,17 @@ namespace Platform
             return DATE_FORMAT_DAY_MONTH_YEAR;
         }
 
-        if (wcsncmp(L"d", first, 1) == 0)
+        if (first[0] == L'd')
         {
             return DATE_FORMAT_DAY_MONTH_YEAR;
         }
-        if (wcsncmp(L"M", first, 1) == 0)
+        if (first[0] == L'M')
         {
             return DATE_FORMAT_MONTH_DAY_YEAR;
         }
-        if (wcsncmp(L"y", first, 1) == 0)
+        if (first[0] == L'y')
         {
-            if (wcsncmp(L"d", second, 1) == 0)
+            if (second[0] == 'd')
             {
                 return DATE_FORMAT_YEAR_DAY_MONTH;
             }
@@ -742,21 +714,18 @@ namespace Platform
     {
         UINT fahrenheit;
 
-        // GetLocaleInfo will set fahrenheit to 1 if the locale on this computer
+        // GetLocaleInfoEx will set fahrenheit to 1 if the locale on this computer
         // uses the United States measurement system or 0 otherwise.
-        if (GetLocaleInfo(
-                LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPSTR>(&fahrenheit),
-                sizeof(fahrenheit))
+        if (GetLocaleInfoEx(
+                LOCALE_NAME_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPWSTR>(&fahrenheit),
+                sizeof(fahrenheit) / sizeof(wchar_t))
             == 0)
         {
             // Assume celsius by default if function call fails
             return TemperatureUnit::Celsius;
         }
 
-        if (fahrenheit)
-            return TemperatureUnit::Fahrenheit;
-
-        return TemperatureUnit::Celsius;
+        return fahrenheit == 1 ? TemperatureUnit::Fahrenheit : TemperatureUnit::Celsius;
     }
 
     bool ProcessIsElevated()
