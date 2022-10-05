@@ -63,8 +63,8 @@ static void PaintFacility(
         PaintAddImageAsParent(session, imageId.WithIndexOffset(4), offset, { 28, 2, 29 }, { 2, 28, height });
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /* 0x00762D44 */

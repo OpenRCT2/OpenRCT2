@@ -222,14 +222,14 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session& sessi
 
     for (; numVerticalTiles > 0; --numVerticalTiles)
     {
-        tile_element_paint_setup(session, mapTile);
+        TileElementPaintSetup(session, mapTile);
         EntityPaintSetup(session, mapTile);
 
         const auto loc1 = mapTile + adjacentTiles[0];
         EntityPaintSetup(session, loc1);
 
         const auto loc2 = mapTile + adjacentTiles[1];
-        tile_element_paint_setup(session, loc2);
+        TileElementPaintSetup(session, loc2);
         EntityPaintSetup(session, loc2);
 
         const auto loc3 = mapTile + adjacentTiles[2];

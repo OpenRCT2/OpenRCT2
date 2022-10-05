@@ -50,8 +50,8 @@ static void PaintShop(
         PaintAddImageAsParent(session, imageFlags.WithIndex(imageIndex), offset, bb);
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_shop(int32_t trackType)

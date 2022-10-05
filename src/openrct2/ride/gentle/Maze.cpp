@@ -66,7 +66,7 @@ static void MazePaintSetup(
 
     wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session.TrackColours[SCHEME_3]);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
     int32_t baseImageId = 0;
     switch (ride.track_colour[0].supports)
@@ -178,10 +178,10 @@ static void MazePaintSetup(
         PaintAddImageAsParent(
             session, ImageId(baseImageId + SprMazeOffsetColumnCentre), { 14, 14, height }, { 2, 2, 8 }, { 15, 15, height + 2 });
 
-        paint_util_set_segment_support_height(session, SEGMENT_C4, height + 12, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C4, height + 12, 0x20);
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /**

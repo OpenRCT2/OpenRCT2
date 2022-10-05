@@ -201,8 +201,8 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, supportsImageTemplate);
 
     height += isExit ? 40 : 56;
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height, 0x20);
 }
 
 static void PaintParkEntranceScrollingText(
@@ -328,8 +328,8 @@ static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t
     }
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, supportsImageTemplate);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 80, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
 }
 
 static void PaintHeightMarkers(paint_session& session, const EntranceElement& entranceEl, int32_t height)

@@ -52,8 +52,8 @@ namespace HybridRC
         }
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void TrackStation(
@@ -85,8 +85,8 @@ namespace HybridRC
         track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 10, trackElement);
 
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void Track25DegUp(
@@ -114,8 +114,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void Track60DegUp(
@@ -168,8 +168,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 104, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
     }
 
     static void TrackFlatTo25DegUp(
@@ -197,8 +197,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void Track25DegUpTo60DegUp(
@@ -278,8 +278,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 72, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
     }
 
     static void Track60DegUpTo25DegUp(
@@ -360,8 +360,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 72, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
     }
 
     static void Track25DegUpToFlat(
@@ -389,8 +389,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 40, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
     static void Track25DegDown(
@@ -464,9 +464,9 @@ namespace HybridRC
                     session, direction, GetTrackColour(session).WithIndex(imageIds[direction]), { 0, 0, height },
                     { boundBoxLengths[direction].x, boundBoxLengths[direction].y, boundBoxLengths[direction].z },
                     { boundBoxOffsets[direction].x, boundBoxOffsets[direction].y, boundBoxOffsets[direction].z });
-                paint_util_set_vertical_tunnel(session, height + 32);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetVerticalTunnel(session, height + 32);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 break;
@@ -515,9 +515,9 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
-                paint_util_set_vertical_tunnel(session, height + 56);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetVerticalTunnel(session, height + 56);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 break;
@@ -561,14 +561,14 @@ namespace HybridRC
         switch (direction)
         {
             case 1:
-                paint_util_push_tunnel_right(session, height + 48, TUNNEL_SQUARE_8);
+                PaintUtilPushTunnelRight(session, height + 48, TUNNEL_SQUARE_8);
                 break;
             case 2:
-                paint_util_push_tunnel_left(session, height + 48, TUNNEL_SQUARE_8);
+                PaintUtilPushTunnelLeft(session, height + 48, TUNNEL_SQUARE_8);
                 break;
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 80, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
     }
 
     static void Track60DegDownTo90DegDown(
@@ -605,8 +605,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height + 48, TUNNEL_SQUARE_8);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 80, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
                 break;
             case 1:
                 break;
@@ -651,11 +651,11 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -685,10 +685,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -721,14 +720,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -779,13 +778,13 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction + 1) & 3), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction + 1) & 3), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -815,12 +814,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, (direction + 1) & 3),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -850,18 +849,18 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction + 1) & 3), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction + 1) & 3), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -891,12 +890,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, (direction + 1) & 3),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -929,14 +928,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -987,8 +986,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -1018,8 +1017,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -1049,8 +1048,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -1068,8 +1067,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -1095,8 +1094,8 @@ namespace HybridRC
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -1139,8 +1138,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -1170,8 +1169,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -1201,8 +1200,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -1220,8 +1219,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -1247,8 +1246,8 @@ namespace HybridRC
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -1299,10 +1298,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1344,8 +1342,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1386,8 +1384,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1413,8 +1411,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -1449,8 +1447,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1491,8 +1489,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1533,8 +1531,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1560,8 +1558,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
     }
@@ -1596,8 +1594,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1638,8 +1636,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1680,8 +1678,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1707,8 +1705,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
     }
@@ -1743,8 +1741,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1785,8 +1783,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1827,8 +1825,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1854,8 +1852,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
@@ -1890,8 +1888,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1932,8 +1930,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1974,8 +1972,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2001,8 +1999,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
     }
@@ -2037,7 +2035,7 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2078,7 +2076,7 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2119,7 +2117,7 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2145,11 +2143,11 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
         }
 
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackDiag25DegDownToFlat(
@@ -2182,8 +2180,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2224,8 +2222,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2266,8 +2264,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2293,8 +2291,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
@@ -2329,8 +2327,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 104, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2371,8 +2369,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 104, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2413,8 +2411,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 104, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2440,8 +2438,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 104, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
         }
     }
@@ -2476,8 +2474,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2518,8 +2516,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2560,8 +2558,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2587,8 +2585,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -2623,8 +2621,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2665,8 +2663,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2707,8 +2705,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2734,8 +2732,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -2770,8 +2768,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 104, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2812,8 +2810,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 104, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2854,8 +2852,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 104, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2881,8 +2879,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 104, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
         }
     }
@@ -2917,8 +2915,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2959,8 +2957,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3001,8 +2999,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3028,8 +3026,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -3064,8 +3062,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3106,8 +3104,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3148,8 +3146,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3175,8 +3173,8 @@ namespace HybridRC
                             break;
                     }
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -3216,8 +3214,8 @@ namespace HybridRC
         }
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void TrackFlatToRightBank(
@@ -3255,8 +3253,8 @@ namespace HybridRC
         }
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void TrackLeftBankToflat(
@@ -3315,8 +3313,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void TrackRightBankTo25DegUp(
@@ -3361,8 +3359,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void Track25DegUpToLeftBank(
@@ -3407,8 +3405,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 40, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
     static void Track25DegUpToRightBank(
@@ -3453,8 +3451,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 40, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
     static void TrackLeftBankTo25DegDown(
@@ -3520,8 +3518,8 @@ namespace HybridRC
         }
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void TrackRightbank(
@@ -3547,8 +3545,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3579,8 +3577,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3607,8 +3605,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -3620,8 +3618,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -3642,8 +3640,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3670,8 +3668,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3702,8 +3700,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -3715,8 +3713,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -3737,8 +3735,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3769,8 +3767,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3797,8 +3795,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -3810,8 +3808,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -3832,8 +3830,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3860,8 +3858,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3892,8 +3890,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -3905,8 +3903,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -3927,8 +3925,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -3959,8 +3957,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -3987,8 +3985,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4000,8 +3998,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
@@ -4022,8 +4020,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -4050,8 +4048,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4082,8 +4080,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4095,8 +4093,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
@@ -4117,8 +4115,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -4149,8 +4147,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4177,8 +4175,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4190,8 +4188,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
     }
@@ -4212,8 +4210,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -4240,8 +4238,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4272,8 +4270,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4285,8 +4283,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
         }
     }
@@ -4307,7 +4305,7 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 1:
                 switch (direction)
@@ -4338,7 +4336,7 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 2:
                 switch (direction)
@@ -4365,7 +4363,7 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 3:
                 switch (direction)
@@ -4377,11 +4375,11 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
         }
 
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackDiagRightBankTo25DegDown(
@@ -4400,7 +4398,7 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 1:
                 switch (direction)
@@ -4427,7 +4425,7 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 2:
                 switch (direction)
@@ -4458,7 +4456,7 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 3:
                 switch (direction)
@@ -4470,11 +4468,11 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
         }
 
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackDiag25DegDownToLeftBank(
@@ -4493,8 +4491,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -4525,8 +4523,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4553,8 +4551,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4566,8 +4564,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
@@ -4588,8 +4586,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -4616,8 +4614,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4648,8 +4646,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4661,8 +4659,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
@@ -4683,8 +4681,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -4715,8 +4713,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4743,8 +4741,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4756,8 +4754,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -4778,8 +4776,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -4806,8 +4804,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4838,8 +4836,8 @@ namespace HybridRC
                         wooden_b_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4851,8 +4849,8 @@ namespace HybridRC
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -4901,11 +4899,11 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -4935,10 +4933,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -4977,14 +4974,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -5041,13 +5038,13 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction + 1) & 3), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction + 1) & 3), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5077,12 +5074,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, (direction + 1) & 3),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5115,18 +5112,18 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
                         (direction + 1) & 3),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction + 1) & 3), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction + 1) & 3), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -5156,12 +5153,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, (direction + 1) & 3),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -5200,14 +5197,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -5264,8 +5261,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -5298,8 +5295,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5329,8 +5326,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5348,8 +5345,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -5378,8 +5375,8 @@ namespace HybridRC
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -5428,8 +5425,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -5462,8 +5459,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5493,8 +5490,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5512,8 +5509,8 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -5544,8 +5541,8 @@ namespace HybridRC
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -5604,11 +5601,11 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5626,10 +5623,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5662,14 +5658,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -5712,11 +5708,11 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5734,10 +5730,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5770,14 +5765,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -5836,13 +5831,13 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -5872,12 +5867,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -5907,18 +5902,18 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
                         direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 4:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -5948,12 +5943,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -5986,14 +5981,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -6036,13 +6031,13 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -6072,12 +6067,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -6107,18 +6102,18 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
                         direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 4:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -6148,12 +6143,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -6186,14 +6181,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -6258,8 +6253,8 @@ namespace HybridRC
                 break;
         }
         track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 104, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
     }
 
     static void TrackRightQuarterTurn1Tile60DegUp(
@@ -6307,8 +6302,8 @@ namespace HybridRC
         }
         track_paint_util_right_quarter_turn_1_tile_tunnel(
             session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 104, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
     }
 
     static void TrackLeftQuarterTurn1Tile60DegDown(
@@ -6361,9 +6356,9 @@ namespace HybridRC
                             { 0, 0, height }, { 2, 20, 63 }, { 24, 6, height + 8 });
                         break;
                 }
-                paint_util_set_vertical_tunnel(session, height + 96);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 96, 0x20);
+                PaintUtilSetVerticalTunnel(session, height + 96);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
                 break;
             case 1:
                 break;
@@ -6406,9 +6401,9 @@ namespace HybridRC
                             { 0, 0, height }, { 2, 20, 63 }, { 4, 6, height + 8 });
                         break;
                 }
-                paint_util_set_vertical_tunnel(session, height + 96);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 96, 0x20);
+                PaintUtilSetVerticalTunnel(session, height + 96);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
                 break;
             case 1:
                 break;
@@ -6468,8 +6463,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void Track25DegUpToRightBanked25DegUp(
@@ -6511,8 +6506,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackLeftBanked25DegUpTo25DegUp(
@@ -6554,8 +6549,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackRightBanked25DegUpTo25DegUp(
@@ -6597,8 +6592,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackLeftBanked25DegDownTo25DegDown(
@@ -6671,8 +6666,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void TrackRightBankedFlatToRightBanked25DegUp(
@@ -6717,8 +6712,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void TrackLeftBanked25DegUpToLeftBankedFlat(
@@ -6763,8 +6758,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 40, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
     static void TrackRightBanked25DegUpToRightBankedFlat(
@@ -6809,8 +6804,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 40, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
     static void TrackLeftBankedFlatToLeftBanked25DegDown(
@@ -6877,8 +6872,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void Track25DegUpRightBanked(
@@ -6917,8 +6912,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void Track25DegDownLeftBanked(
@@ -6974,8 +6969,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void TrackFlatToRightBanked25DegUp(
@@ -7017,8 +7012,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void TrackLeftBanked25DegUpToFlat(
@@ -7060,8 +7055,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 40, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
     static void TrackRightBanked25DegUpToFlat(
@@ -7103,8 +7098,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 40, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
 
     static void TrackFlatToLeftBanked25DegDown(
@@ -7181,11 +7176,11 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -7203,10 +7198,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -7251,14 +7245,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -7309,11 +7303,11 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -7331,10 +7325,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -7379,14 +7372,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -7453,13 +7446,13 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -7497,12 +7490,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -7540,18 +7533,18 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
                         direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 4:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -7589,12 +7582,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -7639,14 +7632,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -7697,13 +7690,13 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 1:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -7741,12 +7734,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -7784,18 +7777,18 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
                         direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 4:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -7833,12 +7826,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -7883,14 +7876,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
         }
     }
@@ -7949,8 +7942,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -7980,12 +7973,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -8015,12 +8008,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -8053,14 +8046,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -8103,8 +8096,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -8134,12 +8127,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -8169,12 +8162,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -8207,14 +8200,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -8263,8 +8256,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -8282,7 +8275,7 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -8312,10 +8305,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -8354,14 +8346,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -8400,14 +8392,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -8425,7 +8417,7 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -8455,10 +8447,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 7:
                 switch (direction)
@@ -8498,8 +8489,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -8548,8 +8539,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -8567,7 +8558,7 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -8597,10 +8588,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -8639,14 +8629,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_FLAT);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
                 switch (direction)
@@ -8685,14 +8675,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -8710,7 +8700,7 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -8740,10 +8730,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 7:
                 switch (direction)
@@ -8783,8 +8772,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -8859,13 +8848,13 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -8895,12 +8884,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -8933,18 +8922,18 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_B4 | SEGMENT_C0 | SEGMENT_C8 | SEGMENT_D0,
                         direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -8974,12 +8963,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -9018,14 +9007,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 7:
                 switch (direction)
@@ -9064,19 +9053,19 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 8:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 9:
                 switch (direction)
@@ -9106,12 +9095,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 10:
                 switch (direction)
@@ -9144,18 +9133,18 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4,
                         direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 11:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 12:
                 switch (direction)
@@ -9185,12 +9174,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 13:
                 switch (direction)
@@ -9230,8 +9219,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -9280,13 +9269,13 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -9316,12 +9305,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -9354,18 +9343,18 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4,
                         direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 4:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 5:
                 switch (direction)
@@ -9395,12 +9384,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 6:
                 switch (direction)
@@ -9439,14 +9428,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_FLAT);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 7:
                 switch (direction)
@@ -9485,19 +9474,19 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 8:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 9:
                 switch (direction)
@@ -9527,12 +9516,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 10:
                 switch (direction)
@@ -9565,18 +9554,18 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_B4 | SEGMENT_C0 | SEGMENT_C8 | SEGMENT_D0,
                         direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 11:
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 12:
                 switch (direction)
@@ -9606,12 +9595,12 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 13:
                 switch (direction)
@@ -9651,8 +9640,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
     }
@@ -9730,8 +9719,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -9770,8 +9759,8 @@ namespace HybridRC
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -9812,15 +9801,15 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_INVERTED_9);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_INVERTED_9);
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
@@ -9872,8 +9861,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 32, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -9912,8 +9901,8 @@ namespace HybridRC
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -9955,14 +9944,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_INVERTED_9);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_INVERTED_9);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
@@ -10023,9 +10012,9 @@ namespace HybridRC
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 40, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -10057,13 +10046,13 @@ namespace HybridRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -10104,19 +10093,19 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
         }
     }
@@ -10162,9 +10151,9 @@ namespace HybridRC
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 40, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -10197,12 +10186,12 @@ namespace HybridRC
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -10243,19 +10232,19 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
         }
     }
@@ -10315,9 +10304,9 @@ namespace HybridRC
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 88, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -10353,9 +10342,9 @@ namespace HybridRC
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -10394,13 +10383,13 @@ namespace HybridRC
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -10441,19 +10430,19 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
         }
     }
@@ -10499,9 +10488,9 @@ namespace HybridRC
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 88, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -10537,9 +10526,9 @@ namespace HybridRC
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 72, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -10579,12 +10568,12 @@ namespace HybridRC
                 }
 
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -10625,19 +10614,19 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(
+                PaintUtilSetSegmentSupportHeight(
                     session,
-                    paint_util_rotate_segments(
+                    PaintUtilRotateSegments(
                         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 40, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
         }
     }
@@ -10698,8 +10687,8 @@ namespace HybridRC
                             { 0, 0, height }, { 32, 1, 48 }, { 0, 32, height + 8 });
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 88, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 88, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -10738,8 +10727,8 @@ namespace HybridRC
                         break;
                 }
                 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -10782,8 +10771,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_0);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
         }
     }
@@ -10804,8 +10793,8 @@ namespace HybridRC
             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void TrackOnRidePhoto(
@@ -10820,8 +10809,8 @@ namespace HybridRC
         track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 48, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
 
     static void TrackFlatTo60DegUpLongBase(
@@ -10860,8 +10849,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -10889,8 +10878,8 @@ namespace HybridRC
                 }
                 wooden_a_supports_paint_setup(
                     session, direction & 1, 54 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -10918,8 +10907,8 @@ namespace HybridRC
                 }
                 wooden_a_supports_paint_setup(
                     session, direction & 1, 58 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -10950,14 +10939,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height + 24, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height + 24, TUNNEL_SQUARE_8);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height + 24, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height + 24, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 80, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
                 break;
         }
     }
@@ -10998,8 +10987,8 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_7);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 80, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
                 break;
             case 1:
                 switch (direction)
@@ -11027,8 +11016,8 @@ namespace HybridRC
                 }
                 wooden_a_supports_paint_setup(
                     session, direction & 1, 70 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 80, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -11056,8 +11045,8 @@ namespace HybridRC
                 }
                 wooden_a_supports_paint_setup(
                     session, direction & 1, 74 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 56, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -11088,14 +11077,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_FLAT);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 40, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
         }
     }
@@ -11123,8 +11112,8 @@ namespace HybridRC
             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void Trackbooster(
@@ -11136,8 +11125,8 @@ namespace HybridRC
             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 32, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     static void Trackpowered_lift(
@@ -11156,8 +11145,8 @@ namespace HybridRC
         {
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
-        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(session, height + 56, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
 
     static void TrackLeftBankToLeftQuarterTurn3Tile25DegUp(
@@ -11201,11 +11190,11 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -11223,10 +11212,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -11259,14 +11247,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
     }
@@ -11316,11 +11304,11 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -11338,10 +11326,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -11378,14 +11365,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
     }
@@ -11432,11 +11419,11 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -11454,10 +11441,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -11497,14 +11483,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
     }
@@ -11547,11 +11533,11 @@ namespace HybridRC
                 {
                     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
             case 1:
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 2:
                 switch (direction)
@@ -11569,10 +11555,9 @@ namespace HybridRC
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
-                paint_util_set_segment_support_height(
-                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
-                    0);
-                paint_util_set_general_support_height(session, height + 48, 0x20);
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
             case 3:
                 switch (direction)
@@ -11608,14 +11593,14 @@ namespace HybridRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
-                paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + 64, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
                 break;
         }
     }

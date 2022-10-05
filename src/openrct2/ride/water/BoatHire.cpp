@@ -55,9 +55,9 @@ static void paint_boat_hire_track_flat(
         PaintAddImageAsParent(session, imageId, offset, { 32, 1, 3 }, { 0, 28, height });
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 16, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
 }
 
 /** rct2: 0x008B0E50 */
@@ -69,19 +69,19 @@ static void paint_boat_hire_station(
 
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
             session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
             session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008B0E80 */
@@ -123,9 +123,9 @@ static void paint_boat_hire_track_left_quarter_turn_1_tile(
             break;
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C8, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 16, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C8, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
 }
 
 /** rct2: 0x008B0E90 */

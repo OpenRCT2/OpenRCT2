@@ -254,8 +254,8 @@ static void classic_wooden_rc_track_flat_to_left_bank(
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classic_wooden_rc_track_flat_to_right_bank(
@@ -287,8 +287,8 @@ static void classic_wooden_rc_track_flat_to_right_bank(
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classic_wooden_rc_track_left_bank_to_flat(
@@ -333,8 +333,8 @@ static void classic_wooden_rc_track_left_bank(
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][0], height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classic_wooden_rc_track_right_bank(
@@ -380,8 +380,8 @@ static void classic_wooden_rc_track_left_bank_to_25_deg_up(
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 static void classic_wooden_rc_track_right_bank_to_25_deg_up(
@@ -421,8 +421,8 @@ static void classic_wooden_rc_track_right_bank_to_25_deg_up(
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 static void classic_wooden_rc_track_25_deg_up_to_left_bank(
@@ -462,8 +462,8 @@ static void classic_wooden_rc_track_25_deg_up_to_left_bank(
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 static void classic_wooden_rc_track_25_deg_up_to_right_bank(
@@ -503,8 +503,8 @@ static void classic_wooden_rc_track_25_deg_up_to_right_bank(
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 static void classic_wooden_rc_track_left_bank_to_25_deg_down(
@@ -699,9 +699,8 @@ static void classic_wooden_rc_track_banked_right_quarter_turn_5(
         wooden_a_supports_paint_setup(
             session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classic_wooden_rc_track_banked_left_quarter_turn_5(
@@ -820,9 +819,8 @@ static void classic_wooden_rc_track_right_quarter_turn_3_bank(
             session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classic_wooden_rc_track_left_quarter_turn_3_bank(
@@ -960,9 +958,8 @@ static void classic_wooden_rc_track_left_eighth_bank_to_diag(
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][0], height);
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classic_wooden_rc_track_right_eighth_bank_to_diag(
@@ -1100,9 +1097,8 @@ static void classic_wooden_rc_track_right_eighth_bank_to_diag(
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][0], height);
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classic_wooden_rc_track_left_eighth_bank_to_orthogonal(
@@ -1215,8 +1211,8 @@ static void classic_wooden_rc_track_diag_flat_to_left_bank(
 
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][0], height);
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classic_wooden_rc_track_diag_flat_to_right_bank(
@@ -1313,8 +1309,8 @@ static void classic_wooden_rc_track_diag_flat_to_right_bank(
 
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][0], height);
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classic_wooden_rc_track_diag_left_bank_to_flat(
@@ -1426,8 +1422,8 @@ static void classic_wooden_rc_track_diag_left_bank(
 
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][0], height);
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void classic_wooden_rc_track_diag_right_bank(
@@ -1531,8 +1527,8 @@ static void classic_wooden_rc_track_diag_left_bank_to_25_deg_up(
 
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][0], height);
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 static void classic_wooden_rc_track_diag_right_bank_to_25_deg_up(
@@ -1629,8 +1625,8 @@ static void classic_wooden_rc_track_diag_right_bank_to_25_deg_up(
 
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][0], height);
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 static void classic_wooden_rc_track_diag_25_deg_up_to_left_bank(
@@ -1727,8 +1723,8 @@ static void classic_wooden_rc_track_diag_25_deg_up_to_left_bank(
 
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][0], height);
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 static void classic_wooden_rc_track_diag_25_deg_up_to_right_bank(
@@ -1825,8 +1821,8 @@ static void classic_wooden_rc_track_diag_25_deg_up_to_right_bank(
 
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][0], height);
     wooden_rc_track_paint_bb<true>(session, &imageIds[direction][trackSequence][1], height);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 static void classic_wooden_rc_track_diag_left_bank_to_25_deg_down(

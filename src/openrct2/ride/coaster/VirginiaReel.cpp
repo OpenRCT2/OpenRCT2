@@ -236,18 +236,18 @@ static void paint_virginia_reel_track_flat(
     if (direction & 1)
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 27, 32, 2 }, { 2, 0, height });
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
-        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00811274 */
@@ -282,24 +282,24 @@ static void paint_virginia_reel_track_25_deg_up(
     {
         case 0:
             wooden_a_supports_paint_setup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_7);
             break;
         case 1:
             wooden_a_supports_paint_setup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
             break;
         case 2:
             wooden_a_supports_paint_setup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
             break;
         case 3:
             wooden_a_supports_paint_setup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_7);
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x00811294 */
@@ -321,32 +321,32 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
 
             wooden_a_supports_paint_setup(session, 0, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 27, 32, 2 }, { 2, 0, height });
             session.WoodenSupportsPrependTo = ps;
 
             wooden_a_supports_paint_setup(session, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
             break;
         case 2:
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
             session.WoodenSupportsPrependTo = ps;
 
             wooden_a_supports_paint_setup(session, 0, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
             break;
         case 3:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 27, 32, 2 }, { 2, 0, height });
 
             wooden_a_supports_paint_setup(session, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x00811294 */
@@ -381,24 +381,24 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(
     {
         case 0:
             wooden_a_supports_paint_setup(session, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
             wooden_a_supports_paint_setup(session, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_14);
             break;
         case 2:
             wooden_a_supports_paint_setup(session, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_14);
             break;
         case 3:
             wooden_a_supports_paint_setup(session, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008112A4 */
@@ -440,7 +440,7 @@ static void paint_virginia_reel_station(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_VIRGINIA_REEL_FLAT_SW_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 0, height });
 
-        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else if (direction == 1 || direction == 3)
     {
@@ -450,14 +450,14 @@ static void paint_virginia_reel_station(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_VIRGINIA_REEL_FLAT_NW_SE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 32, 2 }, { 0, 0, height });
 
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     track_paint_util_draw_station(session, ride, direction, height, trackElement);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static constexpr const uint8_t virginia_reel_left_quarter_turn_supports[] = {
@@ -480,18 +480,18 @@ static void paint_virginia_reel_track_left_quarter_turn_3_tiles(
     switch (trackSequence)
     {
         case 2:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
             break;
         case 0:
         case 3:
             wooden_a_supports_paint_setup(
                 session, virginia_reel_left_quarter_turn_supports[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static constexpr const uint8_t virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[] = {
@@ -524,24 +524,24 @@ static void paint_virginia_reel_track_left_quarter_turn_1_tile(
     {
         case 0:
             wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
             wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
             break;
         case 3:
             wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00811334 */

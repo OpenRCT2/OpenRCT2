@@ -60,10 +60,10 @@ static void paint_lift_base(
 
         paint_lift_cage(session, -1, session.TrackColours[SCHEME_TRACK], height + 64, session.CurrentRotation);
 
-        paint_util_set_vertical_tunnel(session, height + 96);
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetVerticalTunnel(session, height + 96);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-        paint_util_set_general_support_height(session, height + 96, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
 
         return;
     }
@@ -105,9 +105,9 @@ static void paint_lift_base(
             blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
             break;
     }
-    paint_util_set_segment_support_height(session, blockedSegments, 0xFFFF, 0);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0076C6DC */
@@ -122,10 +122,10 @@ static void paint_lift_tower_section(
 
     paint_lift_cage(session, -1, session.TrackColours[SCHEME_TRACK], height, session.CurrentRotation);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-    paint_util_set_vertical_tunnel(session, height + 32);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetVerticalTunnel(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /**
