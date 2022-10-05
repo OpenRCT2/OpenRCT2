@@ -82,23 +82,23 @@ GameActions::Result FootpathRemoveAction::Execute() const
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_interrupt_peeps(_loc);
-        footpath_remove_litter(_loc);
+        FootpathInterruptPeeps(_loc);
+        FootpathRemoveLitter(_loc);
     }
 
     TileElement* footpathElement = GetFootpathElement();
     if (footpathElement != nullptr)
     {
-        footpath_queue_chain_reset();
+        FootpathQueueChainReset();
         auto bannerRes = RemoveBannersAtElement(_loc, footpathElement);
         if (bannerRes.Error == GameActions::Status::Ok)
         {
             res.Cost += bannerRes.Cost;
         }
-        footpath_remove_edges_at(_loc, footpathElement);
+        FootpathRemoveEdgesAt(_loc, footpathElement);
         map_invalidate_tile_full(_loc);
         tile_element_remove(footpathElement);
-        footpath_update_queue_chains();
+        FootpathUpdateQueueChains();
 
         // Remove the spawn point (if there is one in the current tile)
         gPeepSpawns.erase(
@@ -125,7 +125,7 @@ TileElement* FootpathRemoveAction::GetFootpathElement() const
 {
     bool getGhostPath = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
-    TileElement* tileElement = map_get_footpath_element(_loc);
+    TileElement* tileElement = MapGetFootpathElement(_loc);
     TileElement* footpathElement = nullptr;
     if (tileElement != nullptr)
     {

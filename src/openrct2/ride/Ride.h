@@ -1057,7 +1057,7 @@ bool track_block_get_previous_from_zero(
 void ride_get_start_of_track(CoordsXYE* output);
 
 void window_ride_construction_update_active_elements();
-money32 ride_entrance_exit_place_ghost(
+money32 RideEntranceExitPlaceGhost(
     Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
 
 ResultWithMessage ride_are_all_possible_entrances_and_exits_built(Ride* ride);

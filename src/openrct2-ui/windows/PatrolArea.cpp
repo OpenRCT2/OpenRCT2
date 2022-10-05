@@ -280,7 +280,7 @@ private:
 
     std::optional<CoordsXY> GetBestCoordsFromPos(const ScreenCoordsXY& pos)
     {
-        auto coords = footpath_get_coordinates_from_pos(pos, nullptr, nullptr);
+        auto coords = FootpathGetCoordinatesFromPos(pos, nullptr, nullptr);
         return coords.IsNull() ? std::nullopt : std::make_optional(coords);
     }
 };

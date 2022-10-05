@@ -545,7 +545,7 @@ namespace Editor
         {
             int32_t direction = direction_reverse(parkEntrance.direction);
 
-            switch (footpath_is_connected_to_map_edge(parkEntrance, direction, 0))
+            switch (FootpathIsConnectedToMapEdge(parkEntrance, direction, 0))
             {
                 case FOOTPATH_SEARCH_NOT_FOUND:
                     return { false, STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH };
@@ -554,7 +554,7 @@ namespace Editor
                     return { false, STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX };
                 case FOOTPATH_SEARCH_SUCCESS:
                     // Run the search again and unown the path
-                    footpath_is_connected_to_map_edge(parkEntrance, direction, (1 << 5));
+                    FootpathIsConnectedToMapEdge(parkEntrance, direction, (1 << 5));
                     break;
             }
         }

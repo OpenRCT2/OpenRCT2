@@ -3363,7 +3363,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
                 continue;
             }
 
-            pathsByDir[i] = map_get_footpath_element(testLoc);
+            pathsByDir[i] = MapGetFootpathElement(testLoc);
 
             if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsSloped()
                 && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
@@ -3374,7 +3374,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             // Sloped path on the level below
             if (pathsByDir[i] == nullptr)
             {
-                pathsByDir[i] = map_get_footpath_element({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
+                pathsByDir[i] = MapGetFootpathElement({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
 
                 if (pathsByDir[i] != nullptr
                     && (!(pathsByDir[i])->AsPath()->IsSloped()
@@ -3453,7 +3453,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
         auto ride = get_ride(_currentRideIndex);
         if (ride != nullptr)
         {
-            _currentTrackPrice = ride_entrance_exit_place_ghost(
+            _currentTrackPrice = RideEntranceExitPlaceGhost(
                 ride, entranceOrExitCoords, entranceOrExitCoords.direction, gRideEntranceExitPlaceType, stationNum);
         }
         window_ride_construction_update_active_elements();

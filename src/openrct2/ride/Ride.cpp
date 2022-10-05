@@ -2639,7 +2639,7 @@ static ResultWithMessage ride_check_for_entrance_exit(RideId rideIndex)
 }
 
 /**
- * Calls footpath_chain_ride_queue for all entrances of the ride
+ * Calls FootpathChainRideQueue for all entrances of the ride
  *  rct2: 0x006B5952
  */
 void Ride::ChainQueues() const
@@ -2664,8 +2664,7 @@ void Ride::ChainQueues() const
                     continue;
 
                 int32_t direction = tileElement->GetDirection();
-                footpath_chain_ride_queue(
-                    id, GetStationIndex(&station), mapLocation, tileElement, direction_reverse(direction));
+                FootpathChainRideQueue(id, GetStationIndex(&station), mapLocation, tileElement, direction_reverse(direction));
             } while (!(tileElement++)->IsLastForTile());
         }
     }
@@ -3010,7 +3009,7 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
             if (tileElement->GetBaseZ() != entranceExitMapPos.z)
                 continue;
 
-            maze_entrance_hedge_removal({ entranceExitMapPos, tileElement });
+            MazeEntranceHedgeRemoval({ entranceExitMapPos, tileElement });
         } while (!(tileElement++)->IsLastForTile());
     }
 }

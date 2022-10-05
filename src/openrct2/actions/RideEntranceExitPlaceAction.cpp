@@ -164,7 +164,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     auto z = station.GetBaseZ();
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_remove_litter({ _loc, z });
+        FootpathRemoveLitter({ _loc, z });
         wall_remove_at_z({ _loc, z });
     }
 
@@ -205,15 +205,15 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
         map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, { _loc, z });
     }
 
-    footpath_queue_chain_reset();
+    FootpathQueueChainReset();
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        maze_entrance_hedge_removal({ _loc, entranceElement->as<TileElement>() });
+        MazeEntranceHedgeRemoval({ _loc, entranceElement->as<TileElement>() });
     }
 
-    footpath_connect_edges(_loc, entranceElement->as<TileElement>(), GetFlags());
-    footpath_update_queue_chains();
+    FootpathConnectEdges(_loc, entranceElement->as<TileElement>(), GetFlags());
+    FootpathUpdateQueueChains();
 
     map_invalidate_tile_full(_loc);
 

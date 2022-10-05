@@ -157,7 +157,7 @@ GameActions::Result PlaceParkEntranceAction::Execute() const
 
         if (!entranceElement->IsGhost())
         {
-            footpath_connect_edges(entranceLoc, entranceElement->as<TileElement>(), GAME_COMMAND_FLAG_APPLY);
+            FootpathConnectEdges(entranceLoc, entranceElement->as<TileElement>(), GAME_COMMAND_FLAG_APPLY);
         }
 
         update_park_fences(entranceLoc);

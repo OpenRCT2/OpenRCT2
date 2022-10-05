@@ -450,7 +450,7 @@ void game_fix_save_vars()
     fix_invalid_vehicle_sprite_sizes();
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
-    fix_park_entrance_locations();
+    ParkEntranceFixLocations();
 
     UpdateConsolidatedPatrolAreas();
 }
