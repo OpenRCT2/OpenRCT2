@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -452,7 +452,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, mini_golf_current_animation);
         COMPARE_FIELD(Vehicle, mini_golf_flags);
         COMPARE_FIELD(Vehicle, ride_subtype);
-        COMPARE_FIELD(Vehicle, colours_extended);
         COMPARE_FIELD(Vehicle, seat_rotation);
         COMPARE_FIELD(Vehicle, target_seat_rotation);
         COMPARE_FIELD(Vehicle, BoatLocation.x);

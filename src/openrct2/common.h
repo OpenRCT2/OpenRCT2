@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -108,6 +108,11 @@ constexpr money32 ToMoney32FromGBP(double money) noexcept
     return money * 10;
 }
 
+constexpr money64 ToMoney64FromGBP(double money) noexcept
+{
+    return money * 10;
+}
+
 #define MONEY16_UNDEFINED static_cast<money16>(static_cast<uint16_t>(0xFFFF))
 #define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
 #define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))
@@ -132,8 +137,7 @@ constexpr money16 ToMoney16(money64 value)
     return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : static_cast<money16>(value);
 }
 
-using EMPTY_ARGS_VOID_POINTER = void();
-using rct_string_id = uint16_t;
+using StringId = uint16_t;
 
 #define SafeFree(x)                                                                                                            \
     do                                                                                                                         \

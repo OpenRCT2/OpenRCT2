@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -371,6 +371,22 @@ TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
     return nullptr;
 }
 
+TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type)
+{
+    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
+    if (tileElement == nullptr)
+        return nullptr;
+    do
+    {
+        if (tileElement->GetType() != type)
+            continue;
+        if (tileElement->base_height >= loc.baseZ && tileElement->base_height <= loc.clearanceZ)
+            return tileElement;
+    } while (!(tileElement++)->IsLastForTile());
+
+    return nullptr;
+}
+
 void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
 {
     if (!map_is_location_valid(tilePos.ToCoordsXY()))
@@ -422,25 +438,7 @@ BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t pos
 void map_init(const TileCoordsXY& size)
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
-
-    std::vector<TileElement> tileElements;
-    tileElements.resize(numTiles);
-    for (int32_t i = 0; i < numTiles; i++)
-    {
-        auto* element = &tileElements[i];
-        element->ClearAs(TileElementType::Surface);
-        element->SetLastForTile(true);
-        element->base_height = 14;
-        element->clearance_height = 14;
-        element->AsSurface()->SetWaterHeight(0);
-        element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-        element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-        element->AsSurface()->SetParkFences(0);
-        element->AsSurface()->SetSurfaceStyle(0);
-        element->AsSurface()->SetEdgeStyle(0);
-    }
-    SetTileElements(std::move(tileElements));
+    SetTileElements(std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
     gGrassSceneryTileLoopPosition = 0;
     gWidePathTileLoopPosition = {};
@@ -463,9 +461,9 @@ void map_count_remaining_land_rights()
     gLandRemainingOwnershipSales = 0;
     gLandRemainingConstructionSales = 0;
 
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < gMapSize.y; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < gMapSize.x; x++)
         {
             auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             // Surface elements are sometimes hacked out to save some space for other map elements
@@ -545,7 +543,7 @@ int16_t tile_element_height(const CoordsXY& loc)
 
     uint8_t xl, yl; // coordinates across this tile
 
-    uint8_t TILE_SIZE = 31;
+    uint8_t TILE_SIZE = 32;
 
     xl = loc.x & 0x1f;
     yl = loc.y & 0x1f;
@@ -587,14 +585,13 @@ int16_t tile_element_height(const CoordsXY& loc)
     switch (slope)
     {
         case TILE_ELEMENT_SLOPE_NE_SIDE_UP:
-            height += xl / 2 + 1;
+            height += xl / 2;
             break;
         case TILE_ELEMENT_SLOPE_SE_SIDE_UP:
             height += (TILE_SIZE - yl) / 2;
             break;
         case TILE_ELEMENT_SLOPE_NW_SIDE_UP:
             height += yl / 2;
-            height++;
             break;
         case TILE_ELEMENT_SLOPE_SW_SIDE_UP:
             height += (TILE_SIZE - xl) / 2;
@@ -613,7 +610,7 @@ int16_t tile_element_height(const CoordsXY& loc)
                 break;
             case TILE_ELEMENT_SLOPE_S_CORNER_DN:
                 quad_extra = xl + yl;
-                quad = xl + yl - TILE_SIZE - 1;
+                quad = xl + yl - TILE_SIZE;
                 break;
             case TILE_ELEMENT_SLOPE_E_CORNER_DN:
                 quad_extra = TILE_SIZE - xl + yl;
@@ -621,14 +618,13 @@ int16_t tile_element_height(const CoordsXY& loc)
                 break;
             case TILE_ELEMENT_SLOPE_N_CORNER_DN:
                 quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);
-                quad = TILE_SIZE - yl - xl - 1;
+                quad = TILE_SIZE - yl - xl;
                 break;
         }
 
         if (extra_height)
         {
             height += quad_extra / 2;
-            height++;
             return height;
         }
         // This tile is essentially at the next height level
@@ -646,20 +642,13 @@ int16_t tile_element_height(const CoordsXY& loc)
         switch (slope)
         {
             case TILE_ELEMENT_SLOPE_W_E_VALLEY:
-                if (xl + yl <= TILE_SIZE + 1)
-                {
-                    return height;
-                }
-                quad = TILE_SIZE - xl - yl;
+                quad = std::abs(xl - yl);
                 break;
             case TILE_ELEMENT_SLOPE_N_S_VALLEY:
-                quad = xl - yl;
+                quad = std::abs(xl + yl - TILE_SIZE);
                 break;
         }
-        if (quad > 0)
-        {
-            height += quad / 2;
-        }
+        height += quad / 2;
     }
 
     return height;
@@ -824,7 +813,7 @@ bool map_is_location_owned(const CoordsXYZ& loc)
 
             if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
             {
-                if (loc.z < surfaceElement->GetBaseZ() || loc.z - LAND_HEIGHT_STEP > surfaceElement->GetBaseZ())
+                if (loc.z < surfaceElement->GetBaseZ() || loc.z >= surfaceElement->GetBaseZ() + ConstructionRightsClearanceBig)
                     return true;
             }
         }
@@ -1364,14 +1353,14 @@ void map_remove_provisional_elements()
         footpath_provisional_remove();
         gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
     }
-    if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
+    if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
     {
         ride_remove_provisional_track_piece();
         ride_entrance_exit_remove_ghost();
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.
-    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WC_TRACK_DESIGN_PLACE) != nullptr)
+    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WindowClass::TrackDesignPlace) != nullptr)
     {
         auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL);
         context_broadcast_intent(&intent);
@@ -1389,14 +1378,14 @@ void map_restore_provisional_elements()
             gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
             gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
     }
-    if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
+    if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
     {
         ride_restore_provisional_track_piece();
         ride_entrance_exit_place_provisional_ghost();
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.
-    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WC_TRACK_DESIGN_PLACE) != nullptr)
+    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WindowClass::TrackDesignPlace) != nullptr)
     {
         auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL);
         context_broadcast_intent(&intent);
@@ -2276,7 +2265,7 @@ uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos)
         {
             destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
             // Do not own construction rights if too high/below surface
-            if (tileElement->base_height - 3 > tilePos.z || tileElement->base_height < tilePos.z)
+            if (tileElement->base_height - ConstructionRightsClearanceSmall > tilePos.z || tileElement->base_height < tilePos.z)
             {
                 destOwnership = OWNERSHIP_UNOWNED;
                 break;

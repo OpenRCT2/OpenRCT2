@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../Version.h"
 #include "../actions/ClimateSetAction.h"
 #include "../actions/ParkSetParameterAction.h"
+#include "../actions/RideFreezeRatingAction.h"
 #include "../actions/RideSetPriceAction.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/ScenarioSetSettingAction.h"
@@ -59,6 +60,7 @@
 #include "Viewport.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdarg>
 #include <cstdlib>
@@ -166,7 +168,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     for (int32_t i = 0; i < static_cast<uint8_t>(RideMode::Count); i++)
                     {
                         char mode_name[128] = { 0 };
-                        rct_string_id mode_string_id = RideModeNames[i];
+                        StringId mode_string_id = RideModeNames[i];
                         format_string(mode_name, 128, mode_string_id, nullptr);
                         console.WriteFormatLine("%02d - %s", i, mode_name);
                     }
@@ -271,7 +273,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        for (int32_t i = 0; i < ride->num_vehicles; ++i)
+                        for (int32_t i = 0; i < ride->NumTrains; ++i)
                         {
                             for (Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
                                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
@@ -298,7 +300,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
+                    auto rideIndex = RideId::FromUnderlying(ride_index);
+                    auto ride = get_ride(rideIndex);
                     if (excitement <= 0)
                     {
                         console.WriteFormatLine("Excitement value must be strictly positive");
@@ -309,7 +312,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        ride->excitement = excitement;
+                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Excitement, excitement);
+                        GameActions::Execute(&rideAction);
                     }
                 }
             }
@@ -329,7 +333,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
+                    auto rideIndex = RideId::FromUnderlying(ride_index);
+                    auto ride = get_ride(rideIndex);
                     if (intensity <= 0)
                     {
                         console.WriteFormatLine("Intensity value must be strictly positive");
@@ -340,7 +345,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        ride->intensity = intensity;
+                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Intensity, intensity);
+                        GameActions::Execute(&rideAction);
                     }
                 }
             }
@@ -360,7 +366,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
+                    auto rideIndex = RideId::FromUnderlying(ride_index);
+                    auto ride = get_ride(rideIndex);
                     if (nausea <= 0)
                     {
                         console.WriteFormatLine("Nausea value must be strictly positive");
@@ -371,7 +378,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        ride->nausea = nausea;
+                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Nausea, nausea);
+                        GameActions::Execute(&rideAction);
                     }
                 }
             }
@@ -467,7 +475,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                 for (int32_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
                 {
                     char costume_name[128] = { 0 };
-                    rct_string_id costume = StaffCostumeNames[i];
+                    StringId costume = StaffCostumeNames[i];
                     format_string(costume_name, 128, STR_DROPDOWN_MENU_LABEL, &costume);
                     // That's a terrible hack here. Costume names include inline sprites
                     // that don't work well with the console, so manually skip past them.
@@ -754,7 +762,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 
         if (argv[0] == "money" && invalidArguments(&invalidArgs, double_valid[0]))
         {
-            money32 money = ToMoney32FromGBP(double_val[0]);
+            money32 money = ToMoney64FromGBP(double_val[0]);
             if (gCash != money)
             {
                 auto setCheatAction = SetCheatAction(CheatType::SetMoney, money);
@@ -788,7 +796,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             auto scenarioSetSetting = ScenarioSetSettingAction(
                 ScenarioSetSetting::InitialLoan,
                 std::clamp<money64>(
-                    ToMoney32FromGBP(int_val[0]) - ToMoney32FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan));
+                    ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set current_loan command failed, likely due to permissions.");
@@ -1148,7 +1156,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             }
             else if (newRotation != currentRotation && mainWindow != nullptr)
             {
-                window_rotate_camera(mainWindow, newRotation - currentRotation);
+                window_rotate_camera(*mainWindow, newRotation - currentRotation);
             }
             console.Execute("get current_rotation");
         }
@@ -1227,13 +1235,12 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         {
             // Automatically research the ride so it's supported by the game.
             rct_ride_entry* rideEntry;
-            int32_t rideType;
 
             rideEntry = get_ride_entry(groupIndex);
 
             for (int32_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
             {
-                rideType = rideEntry->ride_type[j];
+                auto rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
                 {
                     ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
@@ -1266,25 +1273,42 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
     return 0;
 }
 
+constexpr std::array _objectTypeNames = {
+    "Rides",
+    "Small Scenery",
+    "Large Scenery",
+    "Walls",
+    "Banners",
+    "Paths",
+    "Path Additions",
+    "Scenery groups",
+    "Park entrances",
+    "Water",
+    "ScenarioText",
+    "Terrain Surface",
+    "Terrain Edges",
+    "Stations",
+    "Music",
+    "Footpath Surface",
+    "Footpath Railings",
+    "Audio",
+};
+static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
+
 static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    const utf8* object_type_names[] = {
-        "Rides", "Small scenery",  "Large scenery",  "Walls",          "Banners",
-        "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water",
-    };
-
     for (auto objectType : ObjectTypes)
     {
         int32_t entryGroupIndex = 0;
         for (; entryGroupIndex < object_entry_group_counts[EnumValue(objectType)]; entryGroupIndex++)
         {
-            if (object_entry_get_chunk(objectType, entryGroupIndex) == nullptr)
+            if (object_entry_get_object(objectType, entryGroupIndex) == nullptr)
             {
                 break;
             }
         }
         console.WriteFormatLine(
-            "%s: %d/%d", object_type_names[EnumValue(objectType)], entryGroupIndex,
+            "%s: %d/%d", _objectTypeNames[EnumValue(objectType)], entryGroupIndex,
             object_entry_group_counts[EnumValue(objectType)]);
     }
 
@@ -1307,7 +1331,7 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             {
                 // Only this window should be open for safety reasons
                 window_close_all();
-                context_open_window(WC_EDITOR_OBJECT_SELECTION);
+                context_open_window(WindowClass::EditorObjectSelection);
             }
         }
         else if (argv[0] == "inventions_list" && invalidArguments(&invalidTitle, !title))
@@ -1318,12 +1342,12 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             }
             else
             {
-                context_open_window(WC_EDITOR_INVENTION_LIST);
+                context_open_window(WindowClass::EditorInventionList);
             }
         }
         else if (argv[0] == "scenario_options" && invalidArguments(&invalidTitle, !title))
         {
-            context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
+            context_open_window(WindowClass::EditorScenarioOptions);
         }
         else if (argv[0] == "objective_options" && invalidArguments(&invalidTitle, !title))
         {
@@ -1333,16 +1357,16 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             }
             else
             {
-                context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
+                context_open_window(WindowClass::EditorObjectiveOptions);
             }
         }
         else if (argv[0] == "options")
         {
-            context_open_window(WC_OPTIONS);
+            context_open_window(WindowClass::Options);
         }
         else if (argv[0] == "themes")
         {
-            context_open_window(WC_THEMES);
+            context_open_window(WindowClass::Themes);
         }
         else if (invalidTitle)
         {
@@ -1463,7 +1487,7 @@ static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe
     }
 
     date_set(year, month, day);
-    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+    window_invalidate_by_class(WindowClass::BottomToolbar);
 
     return 1;
 }
@@ -2146,8 +2170,5 @@ void InteractiveConsole::WriteFormatLine(const char* format, ...)
     va_start(list, format);
     auto buffer = String::Format_VA(format, list);
     va_end(list);
-
-    auto s = std::string(buffer);
-    std::free(buffer);
-    WriteLine(s);
+    WriteLine(buffer);
 }

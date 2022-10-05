@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,7 +45,7 @@ GameActions::Result WaterSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
 
-    rct_string_id errorMsg = CheckParameters();
+    StringId errorMsg = CheckParameters();
     if (errorMsg != STR_NONE)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, errorMsg);
@@ -131,7 +131,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
     return res;
 }
 
-rct_string_id WaterSetHeightAction::CheckParameters() const
+StringId WaterSetHeightAction::CheckParameters() const
 {
     auto mapSizeMax = GetMapSizeMaxXY();
     if (_coords.x > mapSizeMax.x || _coords.y > mapSizeMax.y)

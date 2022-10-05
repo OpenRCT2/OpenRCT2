@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -855,7 +855,7 @@ namespace OpenRCT2
                 {
                     auto* mainWindow = window_get_main();
                     if (mainWindow != nullptr)
-                        window_scroll_to_location(mainWindow, result.Position);
+                        window_scroll_to_location(*mainWindow, result.Position);
                 }
 
                 replayQueue.erase(replayQueue.begin());

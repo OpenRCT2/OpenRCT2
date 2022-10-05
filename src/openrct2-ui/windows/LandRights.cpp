@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_LAND_RIGHTS;
+static constexpr const StringId WINDOW_TITLE = STR_LAND_RIGHTS;
 static constexpr const int32_t WH = 94;
 static constexpr const int32_t WW = 98;
 
@@ -59,15 +59,15 @@ public:
     {
         widgets = window_land_rights_widgets;
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        WindowInitScrollWidgets(*this);
+        window_push_others_below(*this);
         _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
         pressed_widgets = (1ULL << WIDX_BUY_LAND_RIGHTS);
 
         gLandToolSize = 1;
 
         show_gridlines();
-        tool_set(this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
+        tool_set(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
         input_set_flag(INPUT_FLAG_6, true);
 
         show_land_rights();
@@ -90,7 +90,7 @@ public:
             tool_cancel();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -103,7 +103,7 @@ public:
             case WIDX_BUY_LAND_RIGHTS:
                 if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
                 {
-                    tool_set(this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
+                    tool_set(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
                     _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
                     show_land_rights();
                     Invalidate();
@@ -112,7 +112,7 @@ public:
             case WIDX_BUY_CONSTRUCTION_RIGHTS:
                 if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
                 {
-                    tool_set(this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
+                    tool_set(*this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
                     _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
                     show_construction_rights();
                     Invalidate();
@@ -121,7 +121,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -142,7 +142,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (text.empty())
             return;
@@ -234,7 +234,7 @@ public:
         }
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         map_invalidate_selection_rect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -246,7 +246,7 @@ public:
             if (_landRightsCost != MONEY32_UNDEFINED)
             {
                 _landRightsCost = MONEY32_UNDEFINED;
-                window_invalidate_by_class(WC_CLEAR_SCENERY);
+                window_invalidate_by_class(WindowClass::ClearScenery);
             }
             return;
         }
@@ -316,7 +316,7 @@ public:
         _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY32_UNDEFINED;
     }
 
-    void OnToolAbort(rct_widgetindex widgetIndex) override
+    void OnToolAbort(WidgetIndex widgetIndex) override
     {
         hide_gridlines();
         if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
@@ -329,7 +329,7 @@ public:
         }
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
         {
@@ -353,7 +353,7 @@ public:
         }
     }
 
-    void OnToolDrag(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
         {
@@ -393,7 +393,7 @@ private:
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
-        if (gCurrentToolWidget.window_classification != WC_LAND_RIGHTS)
+        if (gCurrentToolWidget.window_classification != WindowClass::LandRights)
             return false;
         return true;
     }
@@ -401,5 +401,6 @@ private:
 
 rct_window* WindowLandRightsOpen()
 {
-    return WindowFocusOrCreate<LandRightsWindow>(WC_LAND_RIGHTS, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    return WindowFocusOrCreate<LandRightsWindow>(
+        WindowClass::LandRights, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 }

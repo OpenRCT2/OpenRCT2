@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -102,8 +102,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::NoFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
     auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
-    auto canBuild = MapCanConstructWithClearAt(
-        { _loc, z, clear_z }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags());
+    auto canBuild = MapCanConstructWithClearAt({ _loc, z, clear_z }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = errorTitle;
@@ -124,6 +123,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     auto res = GameActions::Result();
     res.Position = { _loc.ToTileCentre(), z };
     res.Expenditure = ExpenditureType::RideConstruction;
+    res.Cost += canBuild.Cost;
     return res;
 }
 
@@ -170,7 +170,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
 
     auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, z, clear_z }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY);
+        { _loc, z, clear_z }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY);
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = errorTitle;
@@ -180,6 +180,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     auto res = GameActions::Result();
     res.Position = { _loc.ToTileCentre(), z };
     res.Expenditure = ExpenditureType::RideConstruction;
+    res.Cost += canBuild.Cost;
 
     auto* entranceElement = TileElementInsert<EntranceElement>(CoordsXYZ{ _loc, z }, 0b1111);
     Guard::Assert(entranceElement != nullptr);
@@ -235,7 +236,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
     }
     int16_t baseZ = loc.z;
     int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
-    auto canBuild = MapCanConstructWithClearAt({ loc, baseZ, clearZ }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, 0);
+    auto canBuild = MapCanConstructWithClearAt({ loc, baseZ, clearZ }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, 0);
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = errorTitle;
@@ -255,5 +256,6 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
     auto res = GameActions::Result();
     res.Position = { loc.ToTileCentre(), tile_element_height(loc) };
     res.Expenditure = ExpenditureType::RideConstruction;
+    res.Cost += canBuild.Cost;
     return res;
 }

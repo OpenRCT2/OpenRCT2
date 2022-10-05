@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,7 +47,7 @@
 #include <iterator>
 
 // clang-format off
-const rct_string_id StaffCostumeNames[] = {
+const StringId StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_PANDA,
         STR_STAFF_OPTION_COSTUME_TIGER,
         STR_STAFF_OPTION_COSTUME_ELEPHANT,
@@ -862,6 +862,21 @@ bool Staff::DoMiscPathFinding()
     return false;
 }
 
+bool Staff::IsMechanicHeadingToFixRideBlockingPath()
+{
+    if (!IsMechanic())
+        return false;
+
+    auto tileCoords = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
+    auto trackElement = MapGetFirstTileElementWithBaseHeightBetween<TrackElement>(
+        { tileCoords, tileCoords.z + PATH_HEIGHT_STEP });
+    if (trackElement == nullptr)
+        return false;
+
+    auto ride = get_ride(trackElement->GetRideIndex());
+    return ride->id == CurrentRide && ride->breakdown_reason == BREAKDOWN_SAFETY_CUT_OUT;
+}
+
 /**
  *
  *  rct2: 0x006C086D
@@ -1323,6 +1338,9 @@ void Staff::UpdateHeadingToInspect()
         if (!CheckForPath())
             return;
 
+        if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+            return;
+
         uint8_t pathingResult;
         TileElement* rideEntranceExitElement;
         PerformNextAction(pathingResult, rideEntranceExitElement);
@@ -1426,6 +1444,9 @@ void Staff::UpdateAnswering()
         }
 
         if (!CheckForPath())
+            return;
+
+        if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
         uint8_t pathingResult;
@@ -1758,6 +1779,9 @@ void Staff::UpdateStaff(uint32_t stepsToTake)
 void Staff::UpdatePatrolling()
 {
     if (!CheckForPath())
+        return;
+
+    if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
         return;
 
     uint8_t pathingResult;

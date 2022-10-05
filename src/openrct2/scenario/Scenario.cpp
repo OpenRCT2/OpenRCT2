@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -58,7 +58,7 @@
 
 #include <algorithm>
 
-const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
+const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
 
     STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS,
@@ -120,7 +120,7 @@ void scenario_reset()
         utf8 normalisedName[64];
         ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gScenarioName.c_str());
 
-        rct_string_id localisedStringIds[3];
+        StringId localisedStringIds[3];
         if (language_get_localised_scenario_strings(normalisedName, localisedStringIds))
         {
             if (localisedStringIds[0] != STR_NONE)
@@ -189,7 +189,7 @@ void scenario_reset()
 static void scenario_end()
 {
     game_reset_speed();
-    window_close_by_class(WC_DROPDOWN);
+    window_close_by_class(WindowClass::Dropdown);
     window_close_all_except_flags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
     context_open_window_view(WV_PARK_OBJECTIVE);
 }
@@ -440,8 +440,8 @@ bool scenario_create_ducks()
     constexpr int32_t SquareRadiusSize = SquareCentre * 32;
 
     CoordsXY centrePos;
-    centrePos.x = SquareRadiusSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
-    centrePos.y = SquareRadiusSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
+    centrePos.x = SquareRadiusSize + (scenario_rand_max(gMapSize.x - SquareCentre) * 32);
+    centrePos.y = SquareRadiusSize + (scenario_rand_max(gMapSize.y - SquareCentre) * 32);
 
     Guard::Assert(map_is_location_valid(centrePos));
 
@@ -538,7 +538,7 @@ uint32_t scenario_rand_max(uint32_t max)
  * Prepare rides, for the finish five rollercoasters objective.
  *  rct2: 0x006788F7
  */
-static bool scenario_prepare_rides_for_save()
+static ResultWithMessage scenario_prepare_rides_for_save()
 {
     int32_t isFiveCoasterObjective = gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
     uint8_t rcs = 0;
@@ -563,8 +563,7 @@ static bool scenario_prepare_rides_for_save()
 
     if (isFiveCoasterObjective && rcs < 5)
     {
-        gGameCommandErrorText = STR_NOT_ENOUGH_ROLLER_COASTERS;
-        return false;
+        return { false, STR_NOT_ENOUGH_ROLLER_COASTERS };
     }
 
     bool markTrackAsIndestructible;
@@ -591,19 +590,20 @@ static bool scenario_prepare_rides_for_save()
         }
     } while (tile_element_iterator_next(&it));
 
-    return true;
+    return { true };
 }
 
 /**
  *
  *  rct2: 0x006726C7
  */
-bool scenario_prepare_for_save()
+ResultWithMessage scenario_prepare_for_save()
 {
     // This can return false if the goal is 'Finish 5 roller coaster' and there are too few.
-    if (!scenario_prepare_rides_for_save())
+    const auto prepareRidesResult = scenario_prepare_rides_for_save();
+    if (!prepareRidesResult.Successful)
     {
-        return false;
+        return { false, prepareRidesResult.Message };
     }
 
     if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
@@ -611,7 +611,7 @@ bool scenario_prepare_for_save()
 
     scenario_reset();
 
-    return true;
+    return { true };
 }
 
 ObjectiveStatus Objective::CheckGuestsBy() const

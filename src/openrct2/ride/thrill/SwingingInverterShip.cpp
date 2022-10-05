@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"
@@ -34,20 +35,12 @@ static constexpr const uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] 
     33,
 };
 
-struct swinging_inverter_ship_bound_box
-{
-    int16_t length_x;
-    int16_t length_y;
-    int16_t offset_x;
-    int16_t offset_y;
-};
-
 /** rct2: 0x01428020 */
-static constexpr const swinging_inverter_ship_bound_box swinging_inverter_ship_bounds[] = {
-    { 32, 16, 0, 8 },
-    { 16, 32, 8, 0 },
-    { 32, 16, 0, 8 },
-    { 16, 32, 8, 0 },
+static constexpr const BoundBoxXY SwingingInverterShipBounds[] = {
+    { { 0, 8 }, { 32, 16 } },
+    { { 8, 0 }, { 16, 32 } },
+    { { 0, 8 }, { 32, 16 } },
+    { { 8, 0 }, { 16, 32 } },
 };
 
 enum
@@ -72,10 +65,9 @@ static void PaintSwingingInverterShipStructure(
     if (rideEntry == nullptr)
         return;
 
-    const auto& boundBox = swinging_inverter_ship_bounds[direction];
+    const auto& boundBox = SwingingInverterShipBounds[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height);
-    CoordsXYZ bbLength(boundBox.length_x, boundBox.length_y, 127);
-    CoordsXYZ bbOffset(boundBox.offset_x, boundBox.offset_y, height);
+    BoundBoxXYZ bb = { { boundBox.offset, height }, { boundBox.length, 127 } };
 
     Vehicle* vehicle = nullptr;
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
@@ -109,23 +101,23 @@ static void PaintSwingingInverterShipStructure(
 
     auto vehicleImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        vehicleImageTemplate = ImageId::FromUInt32(imageFlags);
+        vehicleImageTemplate = imageFlags;
     }
-    auto frameImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto frameImageTemplate = session.TrackColours[SCHEME_TRACK];
     auto vehicleImageId = vehicleImageTemplate.WithIndex(vehicleImageIndex);
     auto frameImageId = frameImageTemplate.WithIndex(SwingingInverterShipFrameSprites[direction]);
 
     if (direction & 2)
     {
-        PaintAddImageAsParent(session, vehicleImageId, offset, bbLength, bbOffset);
-        PaintAddImageAsChild(session, frameImageId, offset, bbLength, bbOffset);
+        PaintAddImageAsParent(session, vehicleImageId, offset, bb);
+        PaintAddImageAsChild(session, frameImageId, offset, bb);
     }
     else
     {
-        PaintAddImageAsParent(session, frameImageId, offset, bbLength, bbOffset);
-        PaintAddImageAsChild(session, vehicleImageId, offset, bbLength, bbOffset);
+        PaintAddImageAsParent(session, frameImageId, offset, bb);
+        PaintAddImageAsChild(session, vehicleImageId, offset, bb);
     }
 
     session.CurrentlyDrawnEntity = nullptr;
@@ -137,7 +129,7 @@ static void PaintSwingingInverterShip(
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
-    uint32_t imageId;
+    ImageId imageId;
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -156,25 +148,25 @@ static void PaintSwingingInverterShip(
 
         if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
         {
-            imageId = SPR_STATION_BASE_D | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_BASE_D);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
             switch (direction)
             {
                 case 0:
-                    imageId = SPR_STATION_PLATFORM_SW_NE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_PLATFORM_SW_NE);
                     PaintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
                     break;
                 case 1:
-                    imageId = SPR_STATION_PLATFORM_NW_SE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_PLATFORM_NW_SE);
                     PaintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
                     break;
                 case 2:
-                    imageId = SPR_STATION_PLATFORM_SW_NE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_PLATFORM_SW_NE);
                     PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 32, 8, 1 }, { -2, 0, height });
                     break;
                 case 3:
-                    imageId = SPR_STATION_PLATFORM_NW_SE | session.TrackColours[SCHEME_TRACK];
+                    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_PLATFORM_NW_SE);
                     PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 8, 32, 1 }, { 0, -2, height });
                     break;
             }

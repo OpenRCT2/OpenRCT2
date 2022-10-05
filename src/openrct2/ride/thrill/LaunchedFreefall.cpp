@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,56 +31,59 @@ enum
  */
 void vehicle_visual_launched_freefall(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* vehicleEntry)
+    const CarEntry* carEntry)
 {
-    auto imageFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    auto imageFlags = ImageId(0, vehicle->colours.Body, vehicle->colours.Trim);
     if (vehicle->IsGhost())
     {
-        imageFlags = CONSTRUCTION_MARKER;
+        imageFlags = ConstructionMarker;
     }
 
     // Draw back:
-    int32_t baseImage_id = vehicleEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
-    auto image_id = (baseImage_id + 2) | imageFlags;
+    int32_t baseImage_id = carEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
+    auto image_id = imageFlags.WithIndex(baseImage_id + 2);
     PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 2, 2, 41 }, { -11, -11, z + 1 });
 
     // Draw front:
-    image_id = (baseImage_id + 1) | imageFlags;
+    image_id = imageFlags.WithIndex(baseImage_id + 1);
     PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
 
     // Draw peeps:
     if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {
-        baseImage_id = vehicleEntry->base_image_id + 9;
+        baseImage_id = carEntry->base_image_id + 9;
         if ((vehicle->restraints_position / 64) == 3)
         {
             baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints
         }
         auto directionOffset = OpenRCT2::Entity::Yaw::YawTo4(imageDirection);
-        image_id = (baseImage_id + (((directionOffset + 0) & 3) * 3))
-            | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
+        image_id = ImageId(
+            baseImage_id + (((directionOffset + 0) & 3) * 3), vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
         PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
         if (vehicle->num_peeps > 2)
         {
-            image_id = (baseImage_id + (((directionOffset + 1) & 3) * 3))
-                | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
+            image_id = ImageId(
+                baseImage_id + (((directionOffset + 1) & 3) * 3), vehicle->peep_tshirt_colours[2],
+                vehicle->peep_tshirt_colours[3]);
             PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
         }
         if (vehicle->num_peeps > 4)
         {
-            image_id = (baseImage_id + (((directionOffset + 2) & 3) * 3))
-                | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
+            image_id = ImageId(
+                baseImage_id + (((directionOffset + 2) & 3) * 3), vehicle->peep_tshirt_colours[4],
+                vehicle->peep_tshirt_colours[5]);
             PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
         }
         if (vehicle->num_peeps > 6)
         {
-            image_id = (baseImage_id + (((directionOffset + 3) & 3) * 3))
-                | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
+            image_id = ImageId(
+                baseImage_id + (((directionOffset + 3) & 3) * 3), vehicle->peep_tshirt_colours[6],
+                vehicle->peep_tshirt_colours[7]);
             PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
         }
     }
 
-    assert(vehicleEntry->effect_visual == 1);
+    assert(carEntry->effect_visual == 1);
 }
 
 /** rct2: 0x006FD1F8 */
@@ -105,15 +108,15 @@ static void paint_launched_freefall_base(
 
     if (trackSequence == 0)
     {
-        uint32_t imageId = SPR_LAUNCHED_FREEFALL_TOWER_BASE | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_BASE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 8, 8, height + 3 });
 
         height += 32;
-        imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
 
         height += 32;
-        imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
 
         paint_util_set_vertical_tunnel(session, height + 32);
@@ -167,13 +170,13 @@ static void paint_launched_freefall_tower_section(
         return;
     }
 
-    uint32_t imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
-        imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
     }
 

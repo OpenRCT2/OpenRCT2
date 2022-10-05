@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,7 +31,7 @@ struct rct_object_entry;
  */
 struct rct_window
 {
-    rct_window_event_list* event_handlers{};
+    WindowEventList* event_handlers{};
     rct_viewport* viewport{};
     uint64_t disabled_widgets{};
     uint64_t pressed_widgets{};
@@ -85,14 +85,13 @@ struct rct_window
     union
     {
         uint16_t ride_colour;
-        ResearchItem* research_item;
         const scenario_index_entry* highlighted_scenario;
     };
     int16_t selected_tab{};
     int16_t var_4AE{};
     EntityId viewport_target_sprite{ EntityId::GetNull() };
     ScreenCoordsXY savedViewPos{};
-    rct_windowclass classification{};
+    WindowClass classification{};
     colour_t colours[6]{};
     VisibilityCache visibility{};
     EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
@@ -103,7 +102,10 @@ struct rct_window
     void RemoveViewport();
 
     rct_window() = default;
+    rct_window(rct_window&) = delete;
     virtual ~rct_window() = default;
+
+    rct_window& operator=(const rct_window&) = delete;
 
     virtual bool IsLegacy()
     {
@@ -132,23 +134,23 @@ struct rct_window
     virtual void OnDraw(rct_drawpixelinfo& dpi)
     {
     }
-    virtual void OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi)
+    virtual void OnDrawWidget(WidgetIndex widgetIndex, rct_drawpixelinfo& dpi)
     {
     }
-    virtual OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback)
+    virtual OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback)
     {
         return { fallback, {} };
     }
-    virtual void OnMouseDown(rct_widgetindex widgetIndex)
+    virtual void OnMouseDown(WidgetIndex widgetIndex)
     {
     }
-    virtual void OnMouseUp(rct_widgetindex widgetIndex)
+    virtual void OnMouseUp(WidgetIndex widgetIndex)
     {
     }
-    virtual void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex)
+    virtual void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex)
     {
     }
-    virtual void OnTextInput(rct_widgetindex widgetIndex, std::string_view text)
+    virtual void OnTextInput(WidgetIndex widgetIndex, std::string_view text)
     {
     }
     virtual ScreenSize OnScrollGetSize(int32_t scrollIndex)
@@ -167,19 +169,19 @@ struct rct_window
     virtual void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi)
     {
     }
-    virtual void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    virtual void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
     }
-    virtual void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    virtual void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
     }
-    virtual void OnToolDrag(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    virtual void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
     }
-    virtual void OnToolUp(rct_widgetindex, const ScreenCoordsXY&)
+    virtual void OnToolUp(WidgetIndex, const ScreenCoordsXY&)
     {
     }
-    virtual void OnToolAbort(rct_widgetindex widgetIndex)
+    virtual void OnToolAbort(WidgetIndex widgetIndex)
     {
     }
     virtual void OnViewportRotate()
@@ -188,7 +190,7 @@ struct rct_window
     virtual void OnMoved(const ScreenCoordsXY&)
     {
     }
-    virtual CursorID OnCursor(rct_widgetindex, const ScreenCoordsXY&, CursorID);
+    virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,9 @@
 #include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
 #include "../world/Map.h"
+#include "VehicleColour.h"
+
+#include <memory>
 
 struct Ride;
 
@@ -104,7 +107,7 @@ struct TrackDesign
     RideMode ride_mode;
     uint8_t track_flags;
     uint8_t colour_scheme;
-    std::array<rct_vehicle_colour, RCT2::Limits::MaxTrainsPerRide> vehicle_colours;
+    std::array<VehicleColour, RCT2::Limits::MaxTrainsPerRide> vehicle_colours;
     uint8_t entrance_style;
     uint8_t total_air_time;
     uint8_t depart_flags;
@@ -134,7 +137,6 @@ struct TrackDesign
     ObjectEntryDescriptor vehicle_object;
     uint8_t space_required_x;
     uint8_t space_required_y;
-    uint8_t vehicle_additional_colour[RCT2::Limits::MaxTrainsPerRide];
     uint8_t lift_hill_speed;
     uint8_t num_circuits;
 
@@ -146,14 +148,14 @@ struct TrackDesign
     std::string name;
 
 public:
-    rct_string_id CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
-    rct_string_id CreateTrackDesignScenery(TrackDesignState& tds);
+    StringId CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
+    StringId CreateTrackDesignScenery(TrackDesignState& tds);
     void Serialise(DataSerialiser& stream);
 
 private:
     uint8_t _saveDirection;
-    rct_string_id CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
-    rct_string_id CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
+    StringId CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
+    StringId CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
     CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 

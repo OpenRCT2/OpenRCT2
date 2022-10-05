@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -88,8 +88,9 @@ namespace RCT2
             td->colour_scheme = td6.version_and_colour_scheme & 0x3;
             for (auto i = 0; i < Limits::MaxTrainsPerRide; ++i)
             {
-                td->vehicle_colours[i] = td6.vehicle_colours[i];
-                td->vehicle_additional_colour[i] = td6.vehicle_additional_colour[i];
+                td->vehicle_colours[i].Body = td6.vehicle_colours[i].body_colour;
+                td->vehicle_colours[i].Trim = td6.vehicle_colours[i].trim_colour;
+                td->vehicle_colours[i].Tertiary = td6.vehicle_additional_colour[i];
             }
             td->entrance_style = td6.entrance_style;
             td->total_air_time = td6.total_air_time;

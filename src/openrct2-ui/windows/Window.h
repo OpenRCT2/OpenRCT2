@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -74,6 +74,7 @@ rct_window* WindowViewportOpen();
 rct_window* WindowWaterOpen();
 rct_window* WindowViewClippingOpen();
 rct_window* WindowTransparencyOpen();
+rct_window* WindowAssetPacksOpen();
 
 // WC_FINANCES
 rct_window* WindowFinancesOpen();
@@ -102,14 +103,14 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep);
 rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor);
 rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking);
 
-rct_window* WindowErrorOpen(rct_string_id title, rct_string_id message, const class Formatter& formatter);
+rct_window* WindowErrorOpen(StringId title, StringId message, const class Formatter& formatter);
 rct_window* WindowErrorOpen(std::string_view title, std::string_view message);
 struct TrackDesign;
 rct_window* WindowLoadsaveOpen(
     int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
     TrackDesign* trackDesign);
-rct_window* WindowTrackPlaceOpen(const struct track_design_file_ref* tdFileRef);
-rct_window* WindowTrackManageOpen(struct track_design_file_ref* tdFileRef);
+rct_window* WindowTrackPlaceOpen(const struct TrackDesignFileRef* tdFileRef);
+rct_window* WindowTrackManageOpen(struct TrackDesignFileRef* tdFileRef);
 
 void TrackPlaceClearProvisionalTemporarily();
 void TrackPlaceRestoreProvisional();
@@ -118,8 +119,8 @@ rct_window* WindowMapOpen();
 void WindowMapReset();
 
 rct_window* WindowResearchOpen();
-void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex);
-void WindowResearchFundingPagePaint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex);
+void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingPagePaint(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex baseWidgetIndex);
 
 rct_window* WindowNewRideOpen();
 rct_window* WindowNewRideOpenResearch();
@@ -149,13 +150,13 @@ rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose);
 rct_window* WindowNetworkStatusOpenPassword();
 void WindowNetworkStatusClose();
 
-void WindowTextInputKey(rct_window* w, char keychar);
+void WindowTextInputKey(rct_window* w, uint32_t keycode);
 void WindowTextInputOpen(
-    rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    const Formatter& descriptionArgs, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength);
+    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    StringId existing_text, uintptr_t existing_args, int32_t maxLength);
 void WindowTextInputRawOpen(
-    rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    const Formatter& descriptionArgs, const_utf8string existing_text, int32_t maxLength);
+    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    const_utf8string existing_text, int32_t maxLength);
 
 void WindowTextInputOpen(
     std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
@@ -195,7 +196,7 @@ rct_window* WindowEditorObjectSelectionOpen();
 
 void WindowTooltipReset(const ScreenCoordsXY& screenCoords);
 void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords);
-void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 void WindowTooltipClose();
 
 rct_window* WindowSceneryScatterOpen();

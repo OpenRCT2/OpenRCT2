@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -79,17 +79,6 @@ public:
 
     explicit ObjectLoadException(std::vector<ObjectEntryDescriptor>&& missingObjects)
         : MissingObjects(std::move(missingObjects))
-    {
-    }
-};
-
-class UnsupportedRCTCFlagException : public std::exception
-{
-public:
-    uint8_t const Flag;
-
-    explicit UnsupportedRCTCFlagException(uint8_t flag)
-        : Flag(flag)
     {
     }
 };

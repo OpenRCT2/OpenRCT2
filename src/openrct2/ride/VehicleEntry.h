@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,8 +42,8 @@ enum : uint32_t
     CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES = 1
         << 11, // Instead of the default 32 rotation frames. Only used for boat hire and works only for non sloped sprites.
     CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1
-        << 12, // Setting this will cause the game to set vehicleEntry->num_vertical_frames to
-               // vehicleEntry->num_vertical_frames_override, rather than determining it itself.
+        << 12, // Setting this will cause the game to set carEntry->num_vertical_frames to
+               // carEntry->num_vertical_frames_override, rather than determining it itself.
     CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET = 1
         << 13, // Used together with HAS_INVERTED_SPRITE_SET and RECALCULATE_SPRITE_BOUNDS and includes the inverted sprites
                // into the function that recalculates the sprite bounds.
@@ -118,6 +118,14 @@ enum class SpriteGroupType : uint8_t
     Slopes25Banked22,
     Slopes25Banked45,
     Slopes12Banked45,
+    Slopes25Banked67,
+    Slopes25Banked90,
+    Slopes25InlineTwists,
+    Slopes42Banked22,
+    Slopes42Banked45,
+    Slopes42Banked67,
+    Slopes42Banked90,
+    Slopes60Banked22,
     Corkscrews,
     RestraintAnimation,
     CurvedLiftHill,
@@ -125,11 +133,13 @@ enum class SpriteGroupType : uint8_t
 };
 
 static const std::string SpriteGroupNames[] = {
-    "slopeFlat",        "slopes12",         "slopes25",         "slopes42",           "slopes60",
-    "slopes75",         "slopes90",         "slopesLoop",       "slopeInverted",      "slopes8",
-    "slopes16",         "slopes50",         "flatBanked22",     "flatBanked45",       "flatBanked67",
-    "flatBanked90",     "inlineTwists",     "slopes12Banked22", "slopes8Banked22",    "slopes25Banked22",
-    "slopes25Banked45", "slopes12Banked45", "corkscrews",       "restraintAnimation", "curvedLiftHill",
+    "slopeFlat",        "slopes12",           "slopes25",         "slopes42",         "slopes60",
+    "slopes75",         "slopes90",           "slopesLoop",       "slopeInverted",    "slopes8",
+    "slopes16",         "slopes50",           "flatBanked22",     "flatBanked45",     "flatBanked67",
+    "flatBanked90",     "inlineTwists",       "slopes12Banked22", "slopes8Banked22",  "slopes25Banked22",
+    "slopes25Banked45", "slopes12Banked45",   "slopes25Banked67", "slopes25Banked90", "slopes25InlineTwists",
+    "slopes42Banked22", "slopes42Banked45",   "slopes42Banked67", "slopes42Banked90", "slopes60Banked22",
+    "corkscrews",       "restraintAnimation", "curvedLiftHill",
 };
 static_assert(std::size(SpriteGroupNames) == EnumValue(SpriteGroupType::Count));
 

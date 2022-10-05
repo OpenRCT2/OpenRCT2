@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "ObjectFactory.h"
 
 #include "../OpenRCT2.h"
+#include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
@@ -42,6 +43,7 @@
 #include "WaterObject.h"
 
 #include <algorithm>
+#include <memory>
 #include <unordered_map>
 
 struct IFileDataRetriever
@@ -501,7 +503,10 @@ namespace ObjectFactory
     std::unique_ptr<Object> CreateObjectFromJson(
         IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable)
     {
-        Guard::Assert(jRoot.is_object(), "ObjectFactory::CreateObjectFromJson expects parameter jRoot to be object");
+        if (!jRoot.is_object())
+        {
+            throw std::runtime_error("Object JSON root was not an object");
+        }
 
         log_verbose("CreateObjectFromJson(...)");
 
@@ -511,6 +516,10 @@ namespace ObjectFactory
         if (objectType != ObjectType::None)
         {
             auto id = Json::GetString(jRoot["id"]);
+
+            // HACK Disguise RCT Classic audio as RCT2 audio so asset packs override correctly
+            if (id == OpenRCT2::Audio::AudioObjectIdentifiers::Rct2cBase)
+                id = OpenRCT2::Audio::AudioObjectIdentifiers::Rct2Base;
 
             ObjectEntryDescriptor descriptor;
             auto originalId = Json::GetString(jRoot["originalId"]);

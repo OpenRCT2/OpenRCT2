@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -352,26 +352,26 @@ namespace OpenRCT2::Title
 
         void CloseParkSpecificWindows()
         {
-            window_close_by_class(WC_CONSTRUCT_RIDE);
-            window_close_by_class(WC_DEMOLISH_RIDE_PROMPT);
-            window_close_by_class(WC_EDITOR_INVENTION_LIST_DRAG);
-            window_close_by_class(WC_EDITOR_INVENTION_LIST);
-            window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
-            window_close_by_class(WC_EDITOR_OBJECTIVE_OPTIONS);
-            window_close_by_class(WC_EDITOR_SCENARIO_OPTIONS);
-            window_close_by_class(WC_FINANCES);
-            window_close_by_class(WC_FIRE_PROMPT);
-            window_close_by_class(WC_GUEST_LIST);
-            window_close_by_class(WC_INSTALL_TRACK);
-            window_close_by_class(WC_PEEP);
-            window_close_by_class(WC_RIDE);
-            window_close_by_class(WC_RIDE_CONSTRUCTION);
-            window_close_by_class(WC_RIDE_LIST);
-            window_close_by_class(WC_SCENERY);
-            window_close_by_class(WC_STAFF);
-            window_close_by_class(WC_TRACK_DELETE_PROMPT);
-            window_close_by_class(WC_TRACK_DESIGN_LIST);
-            window_close_by_class(WC_TRACK_DESIGN_PLACE);
+            window_close_by_class(WindowClass::ConstructRide);
+            window_close_by_class(WindowClass::DemolishRidePrompt);
+            window_close_by_class(WindowClass::EditorInventionListDrag);
+            window_close_by_class(WindowClass::EditorInventionList);
+            window_close_by_class(WindowClass::EditorObjectSelection);
+            window_close_by_class(WindowClass::EditorObjectiveOptions);
+            window_close_by_class(WindowClass::EditorScenarioOptions);
+            window_close_by_class(WindowClass::Finances);
+            window_close_by_class(WindowClass::FirePrompt);
+            window_close_by_class(WindowClass::GuestList);
+            window_close_by_class(WindowClass::InstallTrack);
+            window_close_by_class(WindowClass::Peep);
+            window_close_by_class(WindowClass::Ride);
+            window_close_by_class(WindowClass::RideConstruction);
+            window_close_by_class(WindowClass::RideList);
+            window_close_by_class(WindowClass::Scenery);
+            window_close_by_class(WindowClass::Staff);
+            window_close_by_class(WindowClass::TrackDeletePrompt);
+            window_close_by_class(WindowClass::TrackDesignList);
+            window_close_by_class(WindowClass::TrackDesignPlace);
         }
 
         void PrepareParkForPlayback()

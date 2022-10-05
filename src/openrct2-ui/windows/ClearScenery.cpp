@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,7 +30,7 @@ enum WindowClearSceneryWidgetIdx
     WIDX_FOOTPATH
 };
 // clang-format on
-static constexpr const rct_string_id WINDOW_TITLE = STR_CLEAR_SCENERY;
+static constexpr const StringId WINDOW_TITLE = STR_CLEAR_SCENERY;
 static constexpr const int32_t WW = 98;
 static constexpr const int32_t WH = 94;
 
@@ -65,8 +65,8 @@ public:
     {
         widgets = window_clear_scenery_widgets;
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        WindowInitScrollWidgets(*this);
+        window_push_others_below(*this);
 
         gLandToolSize = 2;
         gClearSceneryCost = MONEY64_UNDEFINED;
@@ -84,7 +84,7 @@ public:
             tool_cancel();
     }
 
-    void OnMouseUp(const rct_widgetindex widgetIndex) override
+    void OnMouseUp(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -114,7 +114,7 @@ public:
         }
     }
 
-    void OnMouseDown(const rct_widgetindex widgetIndex) override
+    void OnMouseDown(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -135,7 +135,7 @@ public:
         }
     }
 
-    void OnTextInput(const rct_widgetindex widgetIndex, const std::string_view text) override
+    void OnTextInput(const WidgetIndex widgetIndex, const std::string_view text) override
     {
         if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
@@ -199,12 +199,12 @@ public:
 
 rct_window* WindowClearSceneryOpen()
 {
-    auto* w = static_cast<CleanSceneryWindow*>(window_bring_to_front_by_class(WC_CLEAR_SCENERY));
+    auto* w = static_cast<CleanSceneryWindow*>(window_bring_to_front_by_class(WindowClass::ClearScenery));
 
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<CleanSceneryWindow>(WC_CLEAR_SCENERY, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    w = WindowCreate<CleanSceneryWindow>(WindowClass::ClearScenery, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 
     if (w != nullptr)
         return w;

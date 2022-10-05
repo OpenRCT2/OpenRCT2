@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
+#include "../actions/MazeSetTrackAction.h"
 #include "../actions/TrackPlaceAction.h"
 #include "../audio/audio.h"
 #include "../entity/Staff.h"
@@ -34,11 +35,6 @@ bool gDisableErrorWindowSound = false;
 
 RideConstructionState _rideConstructionState2;
 
-// This variable is updated separately from ride->num_stations because the latter
-// is unreliable if currently in station construction mode
-bool _stationConstructed;
-bool _deferClose;
-
 /**
  *
  *  rct2: 0x006CA162
@@ -53,11 +49,13 @@ money32 place_provisional_track_piece(
     ride_construction_remove_ghosts();
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-            | GAME_COMMAND_FLAG_GHOST; // 105
-        auto result = maze_set_track(CoordsXYZD{ trackPos, 0 }, flags, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
-        if (result == MONEY32_UNDEFINED)
-            return result;
+        int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
+        auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
+        gameAction.SetFlags(flags);
+        auto result = GameActions::Execute(&gameAction);
+
+        if (result.Error != GameActions::Status::Ok)
+            return MONEY32_UNDEFINED;
 
         _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
@@ -74,7 +72,7 @@ money32 place_provisional_track_piece(
             virtual_floor_set_height(trackPos.z);
         }
 
-        return result;
+        return result.Cost;
     }
 
     auto trackPlaceAction = TrackPlaceAction(
@@ -392,114 +390,6 @@ bool window_ride_construction_update_state(
     return false;
 }
 
-void window_ride_construction_do_entrance_exit_check()
-{
-    auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    auto ride = get_ride(_currentRideIndex);
-    if (w == nullptr || ride == nullptr)
-    {
-        return;
-    }
-
-    if (_rideConstructionState == RideConstructionState::State0)
-    {
-        w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-        if (w != nullptr)
-        {
-            if (!ride_are_all_possible_entrances_and_exits_built(ride))
-            {
-                window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
-            }
-            else
-            {
-                _deferClose = true;
-            }
-        }
-    }
-}
-
-void window_ride_construction_do_station_check()
-{
-    auto ride = get_ride(_currentRideIndex);
-    if (ride != nullptr)
-    {
-        _stationConstructed = ride->num_stations != 0;
-    }
-}
-
-void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type)
-{
-    if (gGotoStartPlacementMode)
-    {
-        _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
-        _rideConstructionState = RideConstructionState::Front;
-        _currentTrackSelectionFlags = 0;
-        _currentTrackPieceDirection = piecePos.direction & 3;
-        auto savedCurrentTrackCurve = _currentTrackCurve;
-        int32_t savedPreviousTrackSlopeEnd = _previousTrackSlopeEnd;
-        int32_t savedCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
-        int32_t savedPreviousTrackBankEnd = _previousTrackBankEnd;
-        int32_t savedCurrentTrackBankEnd = _currentTrackBankEnd;
-        int32_t savedCurrentTrackAlternative = _currentTrackAlternative;
-        int32_t savedCurrentTrackLiftHill = _currentTrackLiftHill;
-        ride_construction_set_default_next_piece();
-        window_ride_construction_update_active_elements();
-        auto ride = get_ride(_currentRideIndex);
-        if (!ride_try_get_origin_element(ride, nullptr))
-        {
-            ride_initialise_construction_window(ride);
-            _currentTrackPieceDirection = piecePos.direction & 3;
-            if (!(savedCurrentTrackCurve & RideConstructionSpecialPieceSelected))
-            {
-                _currentTrackCurve = savedCurrentTrackCurve;
-                _previousTrackSlopeEnd = savedPreviousTrackSlopeEnd;
-                _currentTrackSlopeEnd = savedCurrentTrackSlopeEnd;
-                _previousTrackBankEnd = savedPreviousTrackBankEnd;
-                _currentTrackBankEnd = savedCurrentTrackBankEnd;
-                _currentTrackAlternative = savedCurrentTrackAlternative;
-                _currentTrackLiftHill = savedCurrentTrackLiftHill;
-                window_ride_construction_update_active_elements();
-            }
-        }
-    }
-    else
-    {
-        if (_rideConstructionState2 == RideConstructionState::Selected
-            || _rideConstructionState2 == RideConstructionState::Front)
-        {
-            if (type == TrackElemType::MiddleStation || type == TrackElemType::BeginStation)
-            {
-                type = TrackElemType::EndStation;
-            }
-        }
-        if (_rideConstructionState2 == RideConstructionState::Back)
-        {
-            if (type == TrackElemType::MiddleStation)
-            {
-                type = TrackElemType::BeginStation;
-            }
-        }
-        if (network_get_mode() == NETWORK_MODE_CLIENT)
-        {
-            // rideConstructionState needs to be set again to the proper value, this only affects the client
-            _rideConstructionState = RideConstructionState::Selected;
-        }
-        _currentTrackBegin = piecePos;
-        _currentTrackPieceDirection = piecePos.direction;
-        _currentTrackPieceType = type;
-        _currentTrackSelectionFlags = 0;
-        if (_rideConstructionState2 == RideConstructionState::Front)
-        {
-            ride_select_next_section();
-        }
-        else if (_rideConstructionState2 == RideConstructionState::Back)
-        {
-            ride_select_previous_section();
-        }
-        window_ride_construction_update_active_elements();
-    }
-}
-
 /**
  *
  *  rct2: 0x006C84CE
@@ -516,10 +406,10 @@ void window_ride_construction_update_active_elements()
  */
 bool scenery_tool_is_active()
 {
-    int32_t toolWindowClassification = gCurrentToolWidget.window_classification;
-    rct_widgetindex toolWidgetIndex = gCurrentToolWidget.widget_index;
+    auto toolWindowClassification = gCurrentToolWidget.window_classification;
+    WidgetIndex toolWidgetIndex = gCurrentToolWidget.widget_index;
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-        if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == WC_TOP_TOOLBAR__WIDX_SCENERY)
+        if (toolWindowClassification == WindowClass::TopToolbar && toolWidgetIndex == WC_TOP_TOOLBAR__WIDX_SCENERY)
             return true;
 
     return false;

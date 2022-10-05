@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,148 +19,148 @@
 
 enum
 {
-    SPR_CAR_RIDE_FLAT_SW_NE = 28773,
-    SPR_CAR_RIDE_FLAT_NW_SE = 28774,
-    SPR_CAR_RIDE_LOG_BUMPS_SW_NE = 28775,
-    SPR_CAR_RIDE_LOG_BUMPS_NW_SE = 28776,
-    SPR_CAR_RIDE_25_DEG_UP_SW_NE = 28777,
-    SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_SW_NE = 28778,
-    SPR_CAR_RIDE_25_DEG_UP_NE_SW = 28779,
-    SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_NE_SW = 28780,
-    SPR_CAR_RIDE_DEG_UP_TO_FLAT_NE_SW = 28781,
-    SPR_CAR_RIDE_DEG_UP_TO_FLAT_SW_NE = 28782,
-    SPR_CAR_RIDE_25_DEG_UP_NW_SE = 28783,
-    SPR_CAR_RIDE_25_DEG_UP_SE_NW = 28784,
-    SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_NW_SE = 28785,
-    SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_SE_NW = 28786,
-    SPR_CAR_RIDE_DEG_UP_TO_FLAT_SE_NW = 28787,
-    SPR_CAR_RIDE_DEG_UP_TO_FLAT_NW_SE = 28788,
-    SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_SW_NE = 28789,
-    SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_NW_SE = 28790,
-    SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_NE_SW = 28791,
-    SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_SE_NW = 28792,
-    SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_FRONT_NW_SE = 28793,
-    SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_FRONT_NE_SW = 28794,
-    SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_SW_NE = 28795,
-    SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_NW_SE = 28796,
-    SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_NE_SW = 28797,
-    SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_SE_NW = 28798,
-    SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_FRONT_NW_SE = 28799,
-    SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_FRONT_NE_SW = 28800,
-    SPR_CAR_RIDE_60_DEG_UP_SW_NE = 28801,
-    SPR_CAR_RIDE_60_DEG_UP_NW_SE = 28802,
-    SPR_CAR_RIDE_60_DEG_UP_NE_SW = 28803,
-    SPR_CAR_RIDE_60_DEG_UP_SE_NW = 28804,
-    SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SW_NW = 28805,
-    SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NW_NE = 28806,
-    SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NE_SE = 28807,
-    SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SE_SW = 28808,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_0 = 28809,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_1 = 28810,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_2 = 28811,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NW_SW_PART_0 = 28812,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NW_SW_PART_1 = 28813,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NW_SW_PART_2 = 28814,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NE_NW_PART_0 = 28815,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NE_NW_PART_1 = 28816,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NE_NW_PART_2 = 28817,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SE_NE_PART_0 = 28818,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SE_NE_PART_1 = 28819,
-    SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SE_NE_PART_2 = 28820,
+    SprCarRideFlatSwNe = 28773,
+    SprCarRideFlatNwSe = 28774,
+    SprCarRideLogBumpsSwNe = 28775,
+    SprCarRideLogBumpsNwSe = 28776,
+    SprCarRide25DegUpSwNe = 28777,
+    SprCarRideFlatTo25DegUpSwNe = 28778,
+    SprCarRide25DegUpNeSw = 28779,
+    SprCarRideFlatTo25DegUpNeSw = 28780,
+    SprCarRideDegUpToFlatNeSw = 28781,
+    SprCarRideDegUpToFlatSwNe = 28782,
+    SprCarRide25DegUpNwSe = 28783,
+    SprCarRide25DegUpSeNw = 28784,
+    SprCarRideFlatTo25DegUpNwSe = 28785,
+    SprCarRideFlatTo25DegUpSeNw = 28786,
+    SprCarRideDegUpToFlatSeNw = 28787,
+    SprCarRideDegUpToFlatNwSe = 28788,
+    SprCarRide25DegUpTo60DegUpSwNe = 28789,
+    SprCarRide25DegUpTo60DegUpNwSe = 28790,
+    SprCarRide25DegUpTo60DegUpNeSw = 28791,
+    SprCarRide25DegUpTo60DegUpSeNw = 28792,
+    SprCarRide25DegUpTo60DegUpFrontNwSe = 28793,
+    SprCarRide25DegUpTo60DegUpFrontNeSw = 28794,
+    SprCarRide60DegUpTo25DegUpSwNe = 28795,
+    SprCarRide60DegUpTo25DegUpNwSe = 28796,
+    SprCarRide60DegUpTo25DegUpNeSw = 28797,
+    SprCarRide60DegUpTo25DegUpSeNw = 28798,
+    SprCarRide60DegUpTo25DegUpFrontNwSe = 28799,
+    SprCarRide60DegUpTo25DegUpFrontNeSw = 28800,
+    SprCarRide60DegUpSwNe = 28801,
+    SprCarRide60DegUpNwSe = 28802,
+    SprCarRide60DegUpNeSw = 28803,
+    SprCarRide60DegUpSeNw = 28804,
+    SprCarRideQuarterTurn1TileSwNw = 28805,
+    SprCarRideQuarterTurn1TileNwNe = 28806,
+    SprCarRideQuarterTurn1TileNeSe = 28807,
+    SprCarRideQuarterTurn1TileSeSw = 28808,
+    SprCarRideQuarterTurn3TilesSwSePart0 = 28809,
+    SprCarRideQuarterTurn3TilesSwSePart1 = 28810,
+    SprCarRideQuarterTurn3TilesSwSePart2 = 28811,
+    SprCarRideQuarterTurn3TilesNwSwPart0 = 28812,
+    SprCarRideQuarterTurn3TilesNwSwPart1 = 28813,
+    SprCarRideQuarterTurn3TilesNwSwPart2 = 28814,
+    SprCarRideQuarterTurn3TilesNeNwPart0 = 28815,
+    SprCarRideQuarterTurn3TilesNeNwPart1 = 28816,
+    SprCarRideQuarterTurn3TilesNeNwPart2 = 28817,
+    SprCarRideQuarterTurn3TilesSeNePart0 = 28818,
+    SprCarRideQuarterTurn3TilesSeNePart1 = 28819,
+    SprCarRideQuarterTurn3TilesSeNePart2 = 28820,
 };
 
-static constexpr const uint32_t car_ride_track_pieces_flat[4] = {
-    SPR_CAR_RIDE_FLAT_SW_NE,
-    SPR_CAR_RIDE_FLAT_NW_SE,
-    SPR_CAR_RIDE_FLAT_SW_NE,
-    SPR_CAR_RIDE_FLAT_NW_SE,
+static constexpr const uint32_t CarRideTrackPiecesFlat[4] = {
+    SprCarRideFlatSwNe,
+    SprCarRideFlatNwSe,
+    SprCarRideFlatSwNe,
+    SprCarRideFlatNwSe,
 };
 
-static constexpr const uint32_t car_ride_track_pieces_log_bumps[4] = {
-    SPR_CAR_RIDE_LOG_BUMPS_SW_NE,
-    SPR_CAR_RIDE_LOG_BUMPS_NW_SE,
-    SPR_CAR_RIDE_LOG_BUMPS_SW_NE,
-    SPR_CAR_RIDE_LOG_BUMPS_NW_SE,
+static constexpr const uint32_t CarRideTrackPiecesLogBumps[4] = {
+    SprCarRideLogBumpsSwNe,
+    SprCarRideLogBumpsNwSe,
+    SprCarRideLogBumpsSwNe,
+    SprCarRideLogBumpsNwSe,
 };
 
-static constexpr const uint32_t car_ride_track_pieces_25_deg_up[4] = {
-    SPR_CAR_RIDE_25_DEG_UP_SW_NE,
-    SPR_CAR_RIDE_25_DEG_UP_NW_SE,
-    SPR_CAR_RIDE_25_DEG_UP_NE_SW,
-    SPR_CAR_RIDE_25_DEG_UP_SE_NW,
+static constexpr const uint32_t CarRideTrackPieces25DegUp[4] = {
+    SprCarRide25DegUpSwNe,
+    SprCarRide25DegUpNwSe,
+    SprCarRide25DegUpNeSw,
+    SprCarRide25DegUpSeNw,
 };
 
-static constexpr const uint32_t car_ride_track_pieces_flat_to_25_deg_up[4] = {
-    SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_SW_NE,
-    SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_NW_SE,
-    SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_NE_SW,
-    SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_SE_NW,
+static constexpr const uint32_t CarRideTrackPiecesFlatTo25DegUp[4] = {
+    SprCarRideFlatTo25DegUpSwNe,
+    SprCarRideFlatTo25DegUpNwSe,
+    SprCarRideFlatTo25DegUpNeSw,
+    SprCarRideFlatTo25DegUpSeNw,
 };
 
-static constexpr const uint32_t car_ride_track_pieces_25_deg_up_to_flat[4] = {
-    SPR_CAR_RIDE_DEG_UP_TO_FLAT_SW_NE,
-    SPR_CAR_RIDE_DEG_UP_TO_FLAT_NW_SE,
-    SPR_CAR_RIDE_DEG_UP_TO_FLAT_NE_SW,
-    SPR_CAR_RIDE_DEG_UP_TO_FLAT_SE_NW,
+static constexpr const uint32_t CarRideTrackPieces25DegUpToFlat[4] = {
+    SprCarRideDegUpToFlatSwNe,
+    SprCarRideDegUpToFlatNwSe,
+    SprCarRideDegUpToFlatNeSw,
+    SprCarRideDegUpToFlatSeNw,
 };
 
-static constexpr const uint32_t car_ride_track_pieces_60_deg_up[4] = {
-    SPR_CAR_RIDE_60_DEG_UP_SW_NE,
-    SPR_CAR_RIDE_60_DEG_UP_NW_SE,
-    SPR_CAR_RIDE_60_DEG_UP_NE_SW,
-    SPR_CAR_RIDE_60_DEG_UP_SE_NW,
+static constexpr const uint32_t CarRideTrackPieces60DegUp[4] = {
+    SprCarRide60DegUpSwNe,
+    SprCarRide60DegUpNwSe,
+    SprCarRide60DegUpNeSw,
+    SprCarRide60DegUpSeNw,
 };
 
-static constexpr const uint32_t car_ride_track_pieces_25_deg_up_to_60_deg_up[4][2] = {
-    { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_SW_NE, 0 },
-    { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_NW_SE, SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_FRONT_NW_SE },
-    { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_NE_SW, SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_FRONT_NE_SW },
-    { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_SE_NW, 0 },
+static constexpr const uint32_t CarRideTrackPieces25DegUpTo60DegUp[4][2] = {
+    { SprCarRide25DegUpTo60DegUpSwNe, 0 },
+    { SprCarRide25DegUpTo60DegUpNwSe, SprCarRide25DegUpTo60DegUpFrontNwSe },
+    { SprCarRide25DegUpTo60DegUpNeSw, SprCarRide25DegUpTo60DegUpFrontNeSw },
+    { SprCarRide25DegUpTo60DegUpSeNw, 0 },
 };
 
-static constexpr const uint32_t car_ride_track_pieces_60_deg_up_to_25_deg_up[4][2] = {
-    { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_SW_NE, 0 },
-    { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_NW_SE, SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_FRONT_NW_SE },
-    { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_NE_SW, SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_FRONT_NE_SW },
-    { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_SE_NW, 0 },
+static constexpr const uint32_t CarRideTrackPieces60DegUpTo25DegUp[4][2] = {
+    { SprCarRide60DegUpTo25DegUpSwNe, 0 },
+    { SprCarRide60DegUpTo25DegUpNwSe, SprCarRide60DegUpTo25DegUpFrontNwSe },
+    { SprCarRide60DegUpTo25DegUpNeSw, SprCarRide60DegUpTo25DegUpFrontNeSw },
+    { SprCarRide60DegUpTo25DegUpSeNw, 0 },
 };
 
-static constexpr const uint32_t car_ride_track_pieces_left_quarter_turn_1_tile[4] = {
-    SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SW_NW,
-    SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NW_NE,
-    SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NE_SE,
-    SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SE_SW,
+static constexpr const uint32_t CarRideTrackPiecesLeftQuarterTurn1Tile[4] = {
+    SprCarRideQuarterTurn1TileSwNw,
+    SprCarRideQuarterTurn1TileNwNe,
+    SprCarRideQuarterTurn1TileNeSe,
+    SprCarRideQuarterTurn1TileSeSw,
 };
 
-static constexpr const uint32_t car_ride_track_pieces_quarter_turn_3_tiles[4][3] = {
+static constexpr const uint32_t CarRideTrackPiecesQuarterTurn3Tiles[4][3] = {
     {
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_0,
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_1,
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_2,
+        SprCarRideQuarterTurn3TilesSwSePart0,
+        SprCarRideQuarterTurn3TilesSwSePart1,
+        SprCarRideQuarterTurn3TilesSwSePart2,
     },
     {
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NW_SW_PART_0,
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NW_SW_PART_1,
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NW_SW_PART_2,
+        SprCarRideQuarterTurn3TilesNwSwPart0,
+        SprCarRideQuarterTurn3TilesNwSwPart1,
+        SprCarRideQuarterTurn3TilesNwSwPart2,
     },
     {
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NE_NW_PART_0,
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NE_NW_PART_1,
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NE_NW_PART_2,
+        SprCarRideQuarterTurn3TilesNeNwPart0,
+        SprCarRideQuarterTurn3TilesNeNwPart1,
+        SprCarRideQuarterTurn3TilesNeNwPart2,
     },
     {
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SE_NE_PART_0,
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SE_NE_PART_1,
-        SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SE_NE_PART_2,
+        SprCarRideQuarterTurn3TilesSeNePart0,
+        SprCarRideQuarterTurn3TilesSeNePart1,
+        SprCarRideQuarterTurn3TilesSeNePart2,
     },
 };
 
 /** rct2: 0x006F72C8 */
-static void paint_car_ride_track_flat(
+static void PaintCarRideTrackFlat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesFlat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -187,11 +187,11 @@ static void paint_car_ride_track_flat(
 }
 
 /** rct2: 0x006F72D8 */
-static void paint_car_ride_track_25_deg_up(
+static void PaintCarRideTrack25DegUp(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_25_deg_up[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces25DegUp[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -225,11 +225,11 @@ static void paint_car_ride_track_25_deg_up(
 }
 
 /** rct2: 0x006F72E8 */
-static void paint_car_ride_track_flat_to_25_deg_up(
+static void PaintCarRideTrackFlatTo25DegUp(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_flat_to_25_deg_up[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesFlatTo25DegUp[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -263,11 +263,11 @@ static void paint_car_ride_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x006F72F8 */
-static void paint_car_ride_track_25_deg_up_to_flat(
+static void PaintCarRideTrack25DegUpToFlat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_25_deg_up_to_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces25DegUpToFlat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -301,48 +301,48 @@ static void paint_car_ride_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x006F7308 */
-static void paint_car_ride_track_25_deg_down(
+static void PaintCarRideTrack25DegDown(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_car_ride_track_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintCarRideTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x006F7318 */
-static void paint_car_ride_track_flat_to_25_deg_down(
+static void PaintCarRideTrackFlatTo25DegDown(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_car_ride_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintCarRideTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x006F7328 */
-static void paint_car_ride_track_25_deg_down_to_flat(
+static void PaintCarRideTrack25DegDownToFlat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_car_ride_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintCarRideTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x006F7338, 0x006F7348, 0x006F7358 */
-static void paint_car_ride_station(
+static void PaintCarRideStation(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction == 0 || direction == 2)
     {
-        imageId = SPR_STATION_BASE_B_SW_NE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
     }
     else if (direction == 1 || direction == 3)
     {
-        imageId = SPR_STATION_BASE_B_NW_SE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
     }
 
-    imageId = car_ride_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesFlat[direction]);
     if (direction == 0 || direction == 2)
     {
         PaintAddImageAsChild(session, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 0, height });
@@ -379,14 +379,13 @@ static void paint_car_ride_station(
 }
 
 /** rct2: 0x006F7378 */
-static void paint_car_ride_track_right_quarter_turn_3_tiles(
+static void PaintCarRideTrackRightQuarterTurn3Tiles(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_3_tiles_paint(
-        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
-        car_ride_track_pieces_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
-        defaultRightQuarterTurn3TilesBoundLengths, nullptr);
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], CarRideTrackPiecesQuarterTurn3Tiles,
+        defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)
@@ -416,20 +415,20 @@ static void paint_car_ride_track_right_quarter_turn_3_tiles(
 }
 
 /** rct2: 0x006F7368 */
-static void paint_car_ride_track_left_quarter_turn_3_tiles(
+static void PaintCarRideTrackLeftQuarterTurn3Tiles(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    paint_car_ride_track_right_quarter_turn_3_tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    PaintCarRideTrackRightQuarterTurn3Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
 /** rct2: 0x006F7388 */
-static void paint_car_ride_track_left_quarter_turn_1_tile(
+static void PaintCarRideTrackLeftQuarterTurn1Tile(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_left_quarter_turn_1_tile[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesLeftQuarterTurn1Tile[direction]);
 
     switch (direction)
     {
@@ -456,19 +455,19 @@ static void paint_car_ride_track_left_quarter_turn_1_tile(
 }
 
 /** rct2: 0x006F7398 */
-static void paint_car_ride_track_right_quarter_turn_1_tile(
+static void PaintCarRideTrackRightQuarterTurn1Tile(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_car_ride_track_left_quarter_turn_1_tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintCarRideTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 /** rct2: 0x006F73A8 */
-static void paint_car_ride_track_spinning_tunnel(
+static void PaintCarRideTrackSpinningTunnel(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesFlat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -497,11 +496,11 @@ static void paint_car_ride_track_spinning_tunnel(
 }
 
 /** rct2: 0x006F73B8 */
-static void paint_car_ride_track_60_deg_up(
+static void PaintCarRideTrack60DegUp(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_60_deg_up[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces60DegUp[direction]);
 
     switch (direction)
     {
@@ -546,11 +545,11 @@ static void paint_car_ride_track_60_deg_up(
 }
 
 /** rct2: 0x006F73C8 */
-static void paint_car_ride_track_25_deg_up_to_60_deg_up(
+static void PaintCarRideTrack25DegUpTo60DegUp(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces25DegUpTo60DegUp[direction][0]);
 
     if (direction == 0 || direction == 2)
     {
@@ -561,9 +560,9 @@ static void paint_car_ride_track_25_deg_up_to_60_deg_up(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
     }
 
-    if (car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][1] != 0)
+    if (CarRideTrackPieces25DegUpTo60DegUp[direction][1] != 0)
     {
-        imageId = car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][1] | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces25DegUpTo60DegUp[direction][1]);
 
         if (direction == 0 || direction == 2)
         {
@@ -602,11 +601,11 @@ static void paint_car_ride_track_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x006F73D8 */
-static void paint_car_ride_track_60_deg_up_to_25_deg_up(
+static void PaintCarRideTrack60DegUpTo25DegUp(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces60DegUpTo25DegUp[direction][0]);
 
     if (direction == 0 || direction == 2)
     {
@@ -617,9 +616,9 @@ static void paint_car_ride_track_60_deg_up_to_25_deg_up(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
     }
 
-    if (car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][1] != 0)
+    if (CarRideTrackPieces60DegUpTo25DegUp[direction][1] != 0)
     {
-        imageId = car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][1] | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces60DegUpTo25DegUp[direction][1]);
 
         if (direction == 0 || direction == 2)
         {
@@ -658,35 +657,35 @@ static void paint_car_ride_track_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x006F73E8 */
-static void paint_car_ride_track_60_deg_down(
+static void PaintCarRideTrack60DegDown(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_car_ride_track_60_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintCarRideTrack60DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x006F73F8 */
-static void paint_car_ride_track_25_deg_down_to_60_deg_down(
+static void PaintCarRideTrack25DegDownTo60DegDown(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_car_ride_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintCarRideTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x006F7408 */
-static void paint_car_ride_track_60_deg_down_to_25_deg_down(
+static void PaintCarRideTrack60DegDownTo25DegDown(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_car_ride_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintCarRideTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x006F7418 */
-static void paint_car_ride_track_log_bumps(
+static void PaintCarRideTrackLogBumps(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = car_ride_track_pieces_log_bumps[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesLogBumps[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -715,59 +714,59 @@ static void paint_car_ride_track_log_bumps(
 /**
  * rct2: 0x006F7000
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCarRide(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return paint_car_ride_track_flat;
+            return PaintCarRideTrackFlat;
 
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_car_ride_station;
+            return PaintCarRideStation;
 
         case TrackElemType::Up25:
-            return paint_car_ride_track_25_deg_up;
+            return PaintCarRideTrack25DegUp;
         case TrackElemType::Up60:
-            return paint_car_ride_track_60_deg_up;
+            return PaintCarRideTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return paint_car_ride_track_flat_to_25_deg_up;
+            return PaintCarRideTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return paint_car_ride_track_25_deg_up_to_60_deg_up;
+            return PaintCarRideTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return paint_car_ride_track_60_deg_up_to_25_deg_up;
+            return PaintCarRideTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return paint_car_ride_track_25_deg_up_to_flat;
+            return PaintCarRideTrack25DegUpToFlat;
 
         case TrackElemType::Down25:
-            return paint_car_ride_track_25_deg_down;
+            return PaintCarRideTrack25DegDown;
         case TrackElemType::Down60:
-            return paint_car_ride_track_60_deg_down;
+            return PaintCarRideTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return paint_car_ride_track_flat_to_25_deg_down;
+            return PaintCarRideTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return paint_car_ride_track_25_deg_down_to_60_deg_down;
+            return PaintCarRideTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return paint_car_ride_track_60_deg_down_to_25_deg_down;
+            return PaintCarRideTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return paint_car_ride_track_25_deg_down_to_flat;
+            return PaintCarRideTrack25DegDownToFlat;
 
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return paint_car_ride_track_left_quarter_turn_3_tiles;
+            return PaintCarRideTrackLeftQuarterTurn3Tiles;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return paint_car_ride_track_right_quarter_turn_3_tiles;
+            return PaintCarRideTrackRightQuarterTurn3Tiles;
 
         case TrackElemType::LeftQuarterTurn1Tile:
-            return paint_car_ride_track_left_quarter_turn_1_tile;
+            return PaintCarRideTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
-            return paint_car_ride_track_right_quarter_turn_1_tile;
+            return PaintCarRideTrackRightQuarterTurn1Tile;
 
         case TrackElemType::Rapids:
-            return paint_car_ride_track_log_bumps;
+            return PaintCarRideTrackLogBumps;
 
         case TrackElemType::SpinningTunnel:
-            return paint_car_ride_track_spinning_tunnel;
+            return PaintCarRideTrackSpinningTunnel;
     }
 
     return nullptr;

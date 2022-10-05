@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../ride/RideTypes.h"
 #include "AudioMixer.h"
 
+#include <memory>
 #include <vector>
 
 class AudioObject;
@@ -136,6 +137,7 @@ namespace OpenRCT2::Audio
     {
         constexpr std::string_view Rct1Title = "rct1.audio.title";
         constexpr std::string_view Rct2Base = "rct2.audio.base";
+        constexpr std::string_view Rct2cBase = "rct2.audio.base.rctc";
         constexpr std::string_view Rct2Title = "rct2.audio.title";
         constexpr std::string_view Rct2Circus = "rct2.audio.circus";
     } // namespace AudioObjectIdentifiers

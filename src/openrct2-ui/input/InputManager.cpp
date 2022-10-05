@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -115,7 +115,7 @@ void InputManager::HandleViewScrolling()
     auto mainWindow = window_get_main();
     if (mainWindow != nullptr && (_viewScroll.x != 0 || _viewScroll.y != 0))
     {
-        window_unfollow_sprite(mainWindow);
+        window_unfollow_sprite(*mainWindow);
     }
     InputScrollViewport(_viewScroll);
 
@@ -197,7 +197,7 @@ void InputManager::Process(const InputEvent& e)
 
         if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
-            auto w = window_find_by_class(WC_TEXTINPUT);
+            auto w = window_find_by_class(WindowClass::Textinput);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -386,7 +386,7 @@ bool InputManager::HasTextInputFocus() const
     if (gUsingWidgetTextBox || gChatOpen)
         return true;
 
-    auto w = window_find_by_class(WC_TEXTINPUT);
+    auto w = window_find_by_class(WindowClass::Textinput);
     if (w != nullptr)
         return true;
 

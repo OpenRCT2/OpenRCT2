@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,19 +29,19 @@ namespace OpenRCT2::Scripting
     class ScWidget
     {
     protected:
-        rct_windowclass _class{};
+        WindowClass _class{};
         rct_windownumber _number{};
-        rct_widgetindex _widgetIndex{};
+        WidgetIndex _widgetIndex{};
 
     public:
-        ScWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : _class(c)
             , _number(n)
             , _widgetIndex(widgetIndex)
         {
         }
 
-        static DukValue ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex);
+        static DukValue ToDukValue(duk_context* ctx, rct_window* w, WidgetIndex widgetIndex);
 
     private:
         std::shared_ptr<ScWindow> window_get() const;
@@ -291,12 +291,30 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        std::string tooltip_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                return OpenRCT2::Ui::Windows::GetWidgetTooltip(w, _widgetIndex);
+            }
+            return {};
+        }
+        void tooltip_set(const std::string& value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                OpenRCT2::Ui::Windows::SetWidgetTooltip(w, _widgetIndex, value);
+            }
+        }
+
         bool isDisabled_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsDisabled(w, _widgetIndex);
+                return WidgetIsDisabled(*w, _widgetIndex);
             }
             return false;
         }
@@ -305,19 +323,19 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetDisabled(w, _widgetIndex, value);
+                WidgetSetDisabled(*w, _widgetIndex, value);
 
                 auto widget = GetWidget();
                 if (widget != nullptr)
                 {
                     if (widget->type == WindowWidgetType::DropdownMenu)
                     {
-                        WidgetSetDisabled(w, _widgetIndex + 1, value);
+                        WidgetSetDisabled(*w, _widgetIndex + 1, value);
                     }
                     else if (widget->type == WindowWidgetType::Spinner)
                     {
-                        WidgetSetDisabled(w, _widgetIndex + 1, value);
-                        WidgetSetDisabled(w, _widgetIndex + 2, value);
+                        WidgetSetDisabled(*w, _widgetIndex + 1, value);
+                        WidgetSetDisabled(*w, _widgetIndex + 2, value);
                     }
                 }
             }
@@ -328,7 +346,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsVisible(w, _widgetIndex);
+                return WidgetIsVisible(*w, _widgetIndex);
             }
             return false;
         }
@@ -337,19 +355,19 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetVisible(w, _widgetIndex, value);
+                WidgetSetVisible(*w, _widgetIndex, value);
 
                 auto widget = GetWidget();
                 if (widget != nullptr)
                 {
                     if (widget->type == WindowWidgetType::DropdownMenu)
                     {
-                        WidgetSetVisible(w, _widgetIndex + 1, value);
+                        WidgetSetVisible(*w, _widgetIndex + 1, value);
                     }
                     else if (widget->type == WindowWidgetType::Spinner)
                     {
-                        WidgetSetVisible(w, _widgetIndex + 1, value);
-                        WidgetSetVisible(w, _widgetIndex + 2, value);
+                        WidgetSetVisible(*w, _widgetIndex + 1, value);
+                        WidgetSetVisible(*w, _widgetIndex + 2, value);
                     }
                 }
             }
@@ -384,7 +402,7 @@ namespace OpenRCT2::Scripting
     protected:
         rct_window* GetWindow() const
         {
-            if (_class == WC_MAIN_WINDOW)
+            if (_class == WindowClass::MainWindow)
                 return window_get_main();
 
             return window_find_by_number(_class, _number);
@@ -405,7 +423,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return w->classification == WC_CUSTOM;
+                return w->classification == WindowClass::Custom;
             }
             return false;
         }
@@ -419,7 +437,7 @@ namespace OpenRCT2::Scripting
     class ScButtonWidget : public ScWidget
     {
     public:
-        ScButtonWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScButtonWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -460,7 +478,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsPressed(w, _widgetIndex);
+                return WidgetIsPressed(*w, _widgetIndex);
             }
             return false;
         }
@@ -469,7 +487,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetCheckboxValue(w, _widgetIndex, value ? 1 : 0);
+                WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
                 Invalidate();
             }
         }
@@ -497,7 +515,7 @@ namespace OpenRCT2::Scripting
     class ScCheckBoxWidget : public ScWidget
     {
     public:
-        ScCheckBoxWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScCheckBoxWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -514,7 +532,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsPressed(w, _widgetIndex);
+                return WidgetIsPressed(*w, _widgetIndex);
             }
             return false;
         }
@@ -523,7 +541,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetCheckboxValue(w, _widgetIndex, value ? 1 : 0);
+                WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
                 Invalidate();
             }
         }
@@ -532,7 +550,7 @@ namespace OpenRCT2::Scripting
     class ScColourPickerWidget : public ScWidget
     {
     public:
-        ScColourPickerWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScColourPickerWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -567,7 +585,7 @@ namespace OpenRCT2::Scripting
     class ScDropdownWidget : public ScWidget
     {
     public:
-        ScDropdownWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScDropdownWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -622,7 +640,7 @@ namespace OpenRCT2::Scripting
     class ScGroupBoxWidget : public ScWidget
     {
     public:
-        ScGroupBoxWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScGroupBoxWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -637,7 +655,7 @@ namespace OpenRCT2::Scripting
     class ScLabelWidget : public ScWidget
     {
     public:
-        ScLabelWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScLabelWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -679,7 +697,7 @@ namespace OpenRCT2::Scripting
     class ScListViewWidget : public ScWidget
     {
     public:
-        ScListViewWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScListViewWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -870,7 +888,7 @@ namespace OpenRCT2::Scripting
     class ScSpinnerWidget : public ScWidget
     {
     public:
-        ScSpinnerWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScSpinnerWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -885,7 +903,7 @@ namespace OpenRCT2::Scripting
     class ScTextBoxWidget : public ScWidget
     {
     public:
-        ScTextBoxWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScTextBoxWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -920,7 +938,7 @@ namespace OpenRCT2::Scripting
     class ScViewportWidget : public ScWidget
     {
     public:
-        ScViewportWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+        ScViewportWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -947,7 +965,7 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    inline DukValue ScWidget::ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex)
+    inline DukValue ScWidget::ToDukValue(duk_context* ctx, rct_window* w, WidgetIndex widgetIndex)
     {
         const auto& widget = w->widgets[widgetIndex];
         auto c = w->classification;

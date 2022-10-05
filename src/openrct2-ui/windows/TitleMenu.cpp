@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,14 +55,14 @@ static rct_widget window_title_menu_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowTitleMenuMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowTitleMenuMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void WindowTitleMenuDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void WindowTitleMenuCursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
+static void WindowTitleMenuMouseup(rct_window *w, WidgetIndex widgetIndex);
+static void WindowTitleMenuMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowTitleMenuDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowTitleMenuCursor(rct_window *w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
 static void WindowTitleMenuInvalidate(rct_window *w);
 static void WindowTitleMenuPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_title_menu_events([](auto& events)
+static WindowEventList window_title_menu_events([](auto& events)
 {
     events.mouse_up = &WindowTitleMenuMouseup;
     events.mouse_down = &WindowTitleMenuMousedown;
@@ -83,7 +83,7 @@ rct_window* WindowTitleMenuOpen()
 
     const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
     window = WindowCreate(
-        ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &window_title_menu_events, WC_TITLE_MENU,
+        ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &window_title_menu_events, WindowClass::TitleMenu,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
     window->widgets = window_title_menu_widgets;
@@ -92,7 +92,7 @@ rct_window* WindowTitleMenuOpen()
     window->widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
 #endif
 
-    rct_widgetindex i = 0;
+    WidgetIndex i = 0;
     int32_t x = 0;
     for (rct_widget* widget = window->widgets; widget != &window->widgets[WIDX_NEW_VERSION]; widget++)
     {
@@ -110,7 +110,7 @@ rct_window* WindowTitleMenuOpen()
     window->windowPos.x = (context_get_width() - window->width) / 2;
     window->colours[1] = TRANSLUCENT(COLOUR_LIGHT_ORANGE);
 
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     return window;
 }
@@ -123,50 +123,50 @@ static void WindowTitleMenuScenarioselectCallback(const utf8* path)
     game_notify_map_changed();
 }
 
-static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleMenuMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     rct_window* windowToOpen = nullptr;
 
     switch (widgetIndex)
     {
         case WIDX_START_NEW_GAME:
-            windowToOpen = window_find_by_class(WC_SCENARIO_SELECT);
+            windowToOpen = window_find_by_class(WindowClass::ScenarioSelect);
             if (windowToOpen != nullptr)
             {
-                window_bring_to_front(windowToOpen);
+                window_bring_to_front(*windowToOpen);
             }
             else
             {
-                window_close_by_class(WC_LOADSAVE);
-                window_close_by_class(WC_SERVER_LIST);
+                window_close_by_class(WindowClass::Loadsave);
+                window_close_by_class(WindowClass::ServerList);
                 WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback, false);
             }
             break;
         case WIDX_CONTINUE_SAVED_GAME:
-            windowToOpen = window_find_by_class(WC_LOADSAVE);
+            windowToOpen = window_find_by_class(WindowClass::Loadsave);
             if (windowToOpen != nullptr)
             {
-                window_bring_to_front(windowToOpen);
+                window_bring_to_front(*windowToOpen);
             }
             else
             {
-                window_close_by_class(WC_SCENARIO_SELECT);
-                window_close_by_class(WC_SERVER_LIST);
+                window_close_by_class(WindowClass::ScenarioSelect);
+                window_close_by_class(WindowClass::ServerList);
                 auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
                 GameActions::Execute(&loadOrQuitAction);
             }
             break;
         case WIDX_MULTIPLAYER:
-            windowToOpen = window_find_by_class(WC_SERVER_LIST);
+            windowToOpen = window_find_by_class(WindowClass::ServerList);
             if (windowToOpen != nullptr)
             {
-                window_bring_to_front(windowToOpen);
+                window_bring_to_front(*windowToOpen);
             }
             else
             {
-                window_close_by_class(WC_SCENARIO_SELECT);
-                window_close_by_class(WC_LOADSAVE);
-                context_open_window(WC_SERVER_LIST);
+                window_close_by_class(WindowClass::ScenarioSelect);
+                window_close_by_class(WindowClass::Loadsave);
+                context_open_window(WindowClass::ServerList);
             }
             break;
         case WIDX_NEW_VERSION:
@@ -175,7 +175,7 @@ static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
     }
 }
 
-static void WindowTitleMenuMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowTitleMenuMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex == WIDX_GAME_TOOLS)
     {
@@ -243,7 +243,7 @@ static void InvokeCustomToolboxMenuItem(size_t index)
 #endif
 }
 
-static void WindowTitleMenuDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowTitleMenuDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex == WIDX_GAME_TOOLS)
     {
@@ -277,7 +277,7 @@ static void WindowTitleMenuDropdown(rct_window* w, rct_widgetindex widgetIndex, 
 }
 
 static void WindowTitleMenuCursor(
-    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
+    rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
     gTooltipTimeout = 2000;
 }
@@ -296,5 +296,5 @@ static void WindowTitleMenuInvalidate(rct_window* w)
 static void WindowTitleMenuPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     gfx_filter_rect(dpi, _filterRect, FilterPaletteID::Palette51);
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 }

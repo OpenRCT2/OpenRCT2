@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,10 +42,10 @@ GameActions::Result LoadOrQuitAction::Execute() const
     {
         case LoadOrQuitModes::OpenSavePrompt:
             gSavePromptMode = _savePromptMode;
-            context_open_window(WC_SAVE_PROMPT);
+            context_open_window(WindowClass::SavePrompt);
             break;
         case LoadOrQuitModes::CloseSavePrompt:
-            window_close_by_class(WC_SAVE_PROMPT);
+            window_close_by_class(WindowClass::SavePrompt);
             break;
         default:
             game_load_or_quit_no_save_prompt();

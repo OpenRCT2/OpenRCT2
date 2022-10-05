@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/sprites.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
+static constexpr const StringId WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
 static constexpr const int32_t WH = 300;
 static constexpr const int32_t WW = 400;
 
@@ -30,7 +30,7 @@ enum
 struct NotificationDef
 {
     uint8_t category;
-    rct_string_id caption;
+    StringId caption;
     size_t config_offset;
 };
 
@@ -99,7 +99,7 @@ public:
         colours[2] = COLOUR_LIGHT_BLUE;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -227,9 +227,9 @@ private:
 
     void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
     {
-        rct_widgetindex widgetIndex = WIDX_FIRST_TAB + p;
+        WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
 
-        if (!WidgetIsDisabled(this, widgetIndex))
+        if (!WidgetIsDisabled(*this, widgetIndex))
         {
             if (page == p)
             {
@@ -273,5 +273,5 @@ private:
 
 rct_window* WindowNewsOptionsOpen()
 {
-    return WindowFocusOrCreate<NewsOptionsWindow>(WC_NOTIFICATION_OPTIONS, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
 }

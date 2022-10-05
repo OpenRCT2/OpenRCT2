@@ -107,7 +107,7 @@ declare global {
      * The direction is between 0 and 3.
      */
     interface CoordsXYZD extends CoordsXYZ {
-        direction: number;
+        direction: Direction;
     }
 
     /**
@@ -884,7 +884,7 @@ declare global {
         readonly imageId: number;
         readonly spriteNumImages: number;
     }
-     
+
     /**
      * Represents the sprite groups of a vehicle
      */
@@ -915,7 +915,7 @@ declare global {
         readonly restraintAnimation?: SpriteGroup;
         readonly curvedLiftHill?: SpriteGroup;
     }
-     
+
     /**
      * Represents a defined vehicle within a Ride object definition.
      */
@@ -1244,6 +1244,17 @@ declare global {
          * Gets a list of the elements that make up the track segment.
          */
         readonly elements: TrackSegmentElement[];
+
+        /**
+         * Gets a length of the subpositions list for this track segment.
+         */
+        getSubpositionLength(subpositionType: number, direction: Direction): number;
+
+        /**
+         * Gets all of the subpositions for this track segment. These subpositions are used for the
+         * pathing of vehicles when moving along the track.
+         */
+        getSubpositions(subpositionType: number, direction: Direction): TrackSubposition[];
     }
 
     enum TrackSlope {
@@ -1263,7 +1274,17 @@ declare global {
         UpsideDown = 15
     }
 
-    interface TrackSegmentElement extends CoordsXYZ {
+    interface TrackSegmentElement extends Readonly<CoordsXYZ> {
+    }
+
+    /**
+     * A single subposition on a track piece. These subpositions are used for the pathing of vehicles
+     * when moving along the track.
+     */
+    interface TrackSubposition extends Readonly<CoordsXYZ> {
+        readonly yaw: number;
+        readonly pitch: TrackSlope;
+        readonly roll: TrackBanking;
     }
 
     interface TrackIterator {
@@ -1466,6 +1487,12 @@ declare global {
          * The currently projected remaining distance the car will travel.
          */
         readonly remainingDistance: number;
+
+        /**
+         * The type of subposition coordinates that this vehicle is using to find its
+         * position on the track.
+         */
+        readonly subposition: number;
 
         /**
          * List of guest IDs ordered by seat.
@@ -2381,7 +2408,7 @@ declare global {
     interface ScenarioFile {
         id: number;
         category: "beginner" | "challenging" | "expert" | "real" | "other" | "dlc" | "build_your_own";
-        sourceGame: "rct1" | "rct1_aa" | "rct1_ll" | "rct2" | "rct2_ww" | "rct2_tt" | "real" | "other";
+        sourceGame: "rct1" | "rct1_aa" | "rct1_ll" | "rct2" | "rct2_ww" | "rct2_tt" | "real" | "extras" | "other";
         path: string;
         internalName: string;
         name: string;
@@ -2639,20 +2666,29 @@ declare global {
     }
 
     interface Window {
-        classification: number;
-        number: number;
+        readonly classification: number;
+        readonly number: number;
         x: number;
         y: number;
+        /**
+         * The window is resizable (by the user) if and only if minWidth !== maxWidth or minHeight !== maxHeight.
+         * In that case, the window displays a small widget in the lower right corner that the user can use to resize the window by clicking and dragging.
+         * 
+         * When writing to width (or height), if the window is resizable, the new value will be clamped to fit the corresponding min/max values.
+         * Otherwise, if the window is not resizable, both the width (or height) and the corresponding min/max values are set to the new value.
+         * 
+         * For the default min/max values, see {@link WindowDesc}.
+         */
         width: number;
         height: number;
         minWidth: number;
         maxWidth: number;
         minHeight: number;
         maxHeight: number;
-        isSticky: boolean;
+        readonly isSticky: boolean;
         colours: number[];
         title: string;
-        widgets: Widget[];
+        readonly widgets: Widget[];
         tabIndex: number;
 
         close(): void;
@@ -2668,6 +2704,14 @@ declare global {
         height: number;
         title: string;
         id?: number;
+        /**
+         * See {@link Window} for information about the behaviour of min/max width/height after window creation.
+         * 
+         * Behaviour during window creation:
+         * If at least one of the parameters min/max width/height is present, the window is considered to be resizable.
+         * In that case, the min values default to zero (if unspecified) and the max values default to 0xFFFF (if unspecified).
+         * Otherwise, the min/max width values default to width and the min/max height values default to height.
+         */
         minWidth?: number;
         minHeight?: number;
         maxWidth?: number;

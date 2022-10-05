@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,8 +44,8 @@ struct openrct2_timeofday
 };
 
 extern const int16_t days_in_month[MONTH_COUNT];
-extern const rct_string_id DateFormatStringIds[];
-extern const rct_string_id DateFormatStringFormatIds[];
+extern const StringId DateFormatStringIds[];
+extern const StringId DateFormatStringFormatIds[];
 
 extern uint16_t gDateMonthTicks;
 extern int32_t gDateMonthsElapsed;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack3x3),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_crooked_house),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionCrookedHouse),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
                      RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
                      RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION | 
@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(RatingsMultipliers, { 15, 8, 0 }),
     SET_FIELD(UpkeepCosts, { 30, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 32.50_GBP, 1.00_GBP, 1, }),
-    SET_FIELD(DefaultPrices, { 10, 0 }),
+    SET_FIELD(DefaultPrices, { 6, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 22),
@@ -51,5 +51,6 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     )),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "crooked_house"),
 };
 // clang-format on

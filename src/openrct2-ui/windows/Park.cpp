@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,6 +23,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/ParkSetNameAction.h>
+#include <openrct2/actions/SetParkEntranceFeeAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
@@ -34,7 +35,7 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WH = 224;
 
 // clang-format off
@@ -162,7 +163,7 @@ static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
 };
 
 struct WindowParkAward {
-    rct_string_id text;
+    StringId text;
     uint32_t sprite;
 };
 
@@ -177,7 +178,7 @@ static constexpr const WindowParkAward _parkAwards[] = {
     { STR_AWARD_BEST_STAFF,                 SPR_AWARD_BEST_STAFF },
     { STR_AWARD_BEST_FOOD,                  SPR_AWARD_BEST_FOOD },
     { STR_AWARD_WORST_FOOD,                 SPR_AWARD_WORST_FOOD },
-    { STR_AWARD_BEST_RESTROOMS,             SPR_AWARD_BEST_RESTROOMS },
+    { STR_AWARD_BEST_TOILETS,               SPR_AWARD_BEST_TOILETS },
     { STR_AWARD_MOST_DISAPPOINTING,         SPR_AWARD_MOST_DISAPPOINTING },
     { STR_AWARD_BEST_WATER_RIDES,           SPR_AWARD_BEST_WATER_RIDES },
     { STR_AWARD_BEST_CUSTOM_DESIGNED_RIDES, SPR_AWARD_BEST_CUSTOM_DESIGNED_RIDES },
@@ -213,7 +214,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex idx) override
+    void OnMouseUp(WidgetIndex idx) override
     {
         switch (idx)
         {
@@ -269,7 +270,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex idx) override
+    void OnMouseDown(WidgetIndex idx) override
     {
         switch (page)
         {
@@ -282,7 +283,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         switch (page)
         {
@@ -320,7 +321,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         switch (page)
         {
@@ -402,17 +403,17 @@ private:
         auto parkName = park.Name.c_str();
 
         auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(parkName);
     }
 
 #pragma region Entrance page
-    void OnMouseUpEntrance(rct_widgetindex widgetIndex)
+    void OnMouseUpEntrance(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_BUY_LAND_RIGHTS:
-                context_open_window(WC_LAND_RIGHTS);
+                context_open_window(WindowClass::LandRights);
                 break;
             case WIDX_LOCATE:
                 ScrollToViewport();
@@ -436,11 +437,11 @@ private:
     void OnResizeEntrance()
     {
         flags |= WF_RESIZABLE;
-        window_set_resize(this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
+        window_set_resize(*this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
         InitViewport();
     }
 
-    void OnMouseDownEntrance(rct_widgetindex widgetIndex)
+    void OnMouseDownEntrance(WidgetIndex widgetIndex)
     {
         if (widgetIndex == WIDX_OPEN_OR_CLOSE)
         {
@@ -465,7 +466,7 @@ private:
         }
     }
 
-    void OnDropdownEntrance(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OnDropdownEntrance(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (widgetIndex == WIDX_OPEN_OR_CLOSE)
         {
@@ -486,10 +487,10 @@ private:
     void OnUpdateEntrance()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_1);
+        widget_invalidate(*this, WIDX_TAB_1);
     }
 
-    void OnTextInputEntrance(rct_widgetindex widgetIndex, std::string_view text)
+    void OnTextInputEntrance(WidgetIndex widgetIndex, std::string_view text)
     {
         if (widgetIndex == WIDX_RENAME && !text.empty())
         {
@@ -511,14 +512,14 @@ private:
             auto parkName = park.Name.c_str();
 
             auto ft = Formatter::Common();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(parkName);
         }
         widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
         widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2
-            + WidgetIsPressed(this, WIDX_CLOSE_LIGHT);
+            + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
         widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2
-            + WidgetIsPressed(this, WIDX_OPEN_LIGHT);
+            + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
 
         // Only allow closing of park for guest / rating objective
         if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
@@ -592,14 +593,14 @@ private:
         // Draw viewport
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
                 gfx_draw_sprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
         }
 
         // Draw park closed / open label
         auto ft = Formatter();
-        ft.Add<rct_string_id>(park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
+        ft.Add<StringId>(park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
         auto* labelWidget = &widgets[WIDX_STATUS];
         DrawTextEllipsised(
@@ -644,7 +645,7 @@ private:
                 viewport_create(
                     this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                     viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
-                flags |= (1 << 2);
+                flags |= WF_NO_SCROLLING;
                 Invalidate();
             }
         }
@@ -659,13 +660,13 @@ private:
 #pragma region Rating page
     void OnResizeRating()
     {
-        window_set_resize(this, 255, 182, 255, 182);
+        window_set_resize(*this, 255, 182, 255, 182);
     }
 
     void OnUpdateRating()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_2);
     }
 
     void OnPrepareDrawRating()
@@ -731,14 +732,14 @@ private:
 #pragma region Guests page
     void OnResizeGuests()
     {
-        window_set_resize(this, 255, 182, 255, 182);
+        window_set_resize(*this, 255, 182, 255, 182);
     }
 
     void OnUpdateGuests()
     {
         frame_no++;
         _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
-        widget_invalidate(this, WIDX_TAB_3);
+        widget_invalidate(*this, WIDX_TAB_3);
     }
 
     void OnPrepareDrawGuests()
@@ -817,23 +818,25 @@ private:
 #pragma region Price page
     void OnResizePrice()
     {
-        window_set_resize(this, 230, 124, 230, 124);
+        window_set_resize(*this, 230, 124, 230, 124);
     }
 
-    void OnMouseDownPrice(rct_widgetindex widgetIndex)
+    void OnMouseDownPrice(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_INCREASE_PRICE:
             {
                 const auto newFee = std::min(MAX_ENTRANCE_FEE, gParkEntranceFee + 1.00_GBP);
-                park_set_entrance_fee(newFee);
+                auto gameAction = SetParkEntranceFeeAction(static_cast<money16>(newFee));
+                GameActions::Execute(&gameAction);
                 break;
             }
             case WIDX_DECREASE_PRICE:
             {
                 const auto newFee = std::max(0.00_GBP, gParkEntranceFee - 1.00_GBP);
-                park_set_entrance_fee(newFee);
+                auto gameAction = SetParkEntranceFeeAction(static_cast<money16>(newFee));
+                GameActions::Execute(&gameAction);
                 break;
             }
         }
@@ -842,7 +845,7 @@ private:
     void OnUpdatePrice()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_4);
+        widget_invalidate(*this, WIDX_TAB_4);
     }
 
     void OnPrepareDrawPrice()
@@ -908,20 +911,20 @@ private:
 #pragma region Stats page
     void OnResizeStats()
     {
-        window_set_resize(this, 230, 119, 230, 119);
+        window_set_resize(*this, 230, 119, 230, 119);
     }
 
     void OnUpdateStats()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_5);
+        widget_invalidate(*this, WIDX_TAB_5);
 
         // Invalidate ride count if changed
         const auto rideCount = ride_get_count();
         if (_numberOfRides != rideCount)
         {
             _numberOfRides = rideCount;
-            widget_invalidate(this, WIDX_PAGE_BACKGROUND);
+            widget_invalidate(*this, WIDX_PAGE_BACKGROUND);
         }
 
         // Invalidate number of staff if changed
@@ -929,7 +932,7 @@ private:
         if (_numberOfStaff != staffCount)
         {
             _numberOfStaff = staffCount;
-            widget_invalidate(this, WIDX_PAGE_BACKGROUND);
+            widget_invalidate(*this, WIDX_PAGE_BACKGROUND);
         }
     }
 
@@ -1001,13 +1004,14 @@ private:
 #pragma endregion
 
 #pragma region Objective page
-    void OnMouseUpObjective(rct_widgetindex widgetIndex)
+    void OnMouseUpObjective(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_ENTER_NAME:
                 WindowTextInputOpen(
-                    this, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0, 32);
+                    this, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0,
+                    ParkNameMaxLength);
                 break;
         }
     }
@@ -1016,19 +1020,19 @@ private:
     {
 #ifndef NO_TTF
         if (gCurrentTTFFontSet != nullptr)
-            window_set_resize(this, 230, 270, 230, 270);
+            window_set_resize(*this, 230, 270, 230, 270);
         else
 #endif
-            window_set_resize(this, 230, 226, 230, 226);
+            window_set_resize(*this, 230, 226, 230, 226);
     }
 
     void OnUpdateObjective()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_6);
+        widget_invalidate(*this, WIDX_TAB_6);
     }
 
-    void OnTextInputObjective(rct_widgetindex widgetIndex, std::string_view text)
+    void OnTextInputObjective(WidgetIndex widgetIndex, std::string_view text)
     {
         if (widgetIndex == WIDX_ENTER_NAME && !text.empty())
         {
@@ -1066,7 +1070,7 @@ private:
         auto screenCoords = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 7 };
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(gScenarioDetails.c_str());
         screenCoords.y += DrawTextWrapped(&dpi, screenCoords, 222, STR_BLACK_STRING, ft);
         screenCoords.y += 5;
@@ -1079,13 +1083,13 @@ private:
         ft = Formatter();
         if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
         {
-            rct_string_id rideTypeString = STR_NONE;
+            StringId rideTypeString = STR_NONE;
             auto rideTypeId = gScenarioObjective.RideId;
             if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
             {
                 rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
             }
-            ft.Add<rct_string_id>(rideTypeString);
+            ft.Add<StringId>(rideTypeString);
         }
         else
         {
@@ -1122,13 +1126,13 @@ private:
 #pragma region Awards page
     void OnResizeAwards()
     {
-        window_set_resize(this, 230, 182, 230, 182);
+        window_set_resize(*this, 230, 182, 230, 182);
     }
 
     void OnUpdateAwards()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_7);
+        widget_invalidate(*this, WIDX_TAB_7);
     }
 
     void OnPrepareDrawAwards()
@@ -1218,7 +1222,7 @@ private:
     void DrawTabImages(rct_drawpixelinfo& dpi)
     {
         // Entrance tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_1))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_1))
         {
             gfx_draw_sprite(
                 &dpi, ImageId(SPR_TAB_PARK_ENTRANCE),
@@ -1226,7 +1230,7 @@ private:
         }
 
         // Rating tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_2))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_2))
         {
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_RATING)
@@ -1241,7 +1245,7 @@ private:
         }
 
         // Guests tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_3))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_3))
         {
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_GUESTS)
@@ -1257,7 +1261,7 @@ private:
         }
 
         // Price tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_4))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_4))
         {
             ImageId spriteIdx(SPR_TAB_ADMISSION_0);
             if (page == WINDOW_PARK_PAGE_PRICE)
@@ -1266,7 +1270,7 @@ private:
         }
 
         // Statistics tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_5))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_5))
         {
             ImageId spriteIdx(SPR_TAB_STATS_0);
             if (page == WINDOW_PARK_PAGE_STATS)
@@ -1275,7 +1279,7 @@ private:
         }
 
         // Objective tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_6))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_6))
         {
             ImageId spriteIdx(SPR_TAB_OBJECTIVE_0);
             if (page == WINDOW_PARK_PAGE_OBJECTIVE)
@@ -1284,7 +1288,7 @@ private:
         }
 
         // Awards tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_7))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_7))
         {
             gfx_draw_sprite(
                 &dpi, ImageId(SPR_TAB_AWARDS), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_7].left, widgets[WIDX_TAB_7].top });
@@ -1294,7 +1298,7 @@ private:
 
 static ParkWindow* ParkWindowOpen(uint8_t page)
 {
-    auto* wnd = WindowFocusOrCreate<ParkWindow>(WC_PARK_INFORMATION, 230, 174 + 9, WF_10);
+    auto* wnd = WindowFocusOrCreate<ParkWindow>(WindowClass::ParkInformation, 230, 174 + 9, WF_10);
     if (wnd != nullptr && page != WINDOW_PARK_PAGE_ENTRANCE)
     {
         wnd->OnMouseUp(WIDX_TAB_1 + page);

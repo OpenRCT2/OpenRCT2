@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,5 +50,5 @@ private:
     bool ride_is_valid_lift_hill_speed(Ride* ride) const;
     bool ride_is_valid_num_circuits() const;
     bool ride_is_valid_operation_option(Ride* ride) const;
-    rct_string_id GetOperationErrorMessage(Ride* ride) const;
+    StringId GetOperationErrorMessage(Ride* ride) const;
 };

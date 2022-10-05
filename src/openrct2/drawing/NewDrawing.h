@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,7 @@ struct rct_drawpixelinfo;
 struct GamePalette;
 enum class DrawingEngine : int32_t;
 
-extern rct_string_id DrawingEngineStringIds[3];
+extern StringId DrawingEngineStringIds[3];
 
 DrawingEngine drawing_engine_get_type();
 bool drawing_engine_requires_new_window(DrawingEngine srcEngine, DrawingEngine dstEngine);

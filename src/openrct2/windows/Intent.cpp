@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,9 +13,19 @@
 
 #include <utility>
 
-Intent::Intent(rct_windowclass windowclass)
+Intent::Intent(WindowClass windowClass)
+    : _Class(windowClass)
 {
-    this->_Class = windowclass;
+}
+
+Intent::Intent(WindowDetail windowDetail)
+    : _WindowDetail(windowDetail)
+{
+}
+
+Intent::Intent(IntentAction intentAction)
+    : _Action(intentAction)
+{
 }
 
 Intent* Intent::putExtra(uint32_t key, uint32_t value)
@@ -73,9 +83,19 @@ Intent* Intent::putExtra(uint32_t key, close_callback value)
     return this;
 }
 
-rct_windowclass Intent::GetWindowClass() const
+WindowClass Intent::GetWindowClass() const
 {
     return this->_Class;
+}
+
+WindowDetail Intent::GetWindowDetail() const
+{
+    return this->_WindowDetail;
+}
+
+IntentAction Intent::GetAction() const
+{
+    return this->_Action;
 }
 
 void* Intent::GetPointerExtra(uint32_t key) const

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -102,7 +102,7 @@ static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
     {
         int32_t dx = ride->time_limit * 32;
         int32_t dh = (dx >> 8) & 0xFF;
-        for (size_t i = 0; i < ride->num_vehicles; i++)
+        for (size_t i = 0; i < ride->NumTrains; i++)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
             if (vehicle == nullptr)
@@ -123,7 +123,7 @@ static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
     else
     {
         // Check if all vehicles are ready to go
-        for (size_t i = 0; i < ride->num_vehicles; i++)
+        for (size_t i = 0; i < ride->NumTrains; i++)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
             if (vehicle == nullptr)
@@ -199,7 +199,7 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
     {
         int32_t numLaps = ride->NumLaps;
 
-        for (size_t i = 0; i < ride->num_vehicles; i++)
+        for (size_t i = 0; i < ride->NumTrains; i++)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
             if (vehicle == nullptr)
@@ -235,7 +235,7 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
     else
     {
         // Check if all vehicles are ready to go
-        for (size_t i = 0; i < ride->num_vehicles; i++)
+        for (size_t i = 0; i < ride->NumTrains; i++)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
             if (vehicle == nullptr)
@@ -272,7 +272,7 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
  */
 static void ride_race_init_vehicle_speeds(Ride* ride)
 {
-    for (size_t i = 0; i < ride->num_vehicles; i++)
+    for (size_t i = 0; i < ride->NumTrains; i++)
     {
         Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
         if (vehicle == nullptr)

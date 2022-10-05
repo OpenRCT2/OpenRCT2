@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "openrct2/localisation/Formatting.h"
 
 #include <gtest/gtest.h>
+#include <memory>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
@@ -291,8 +292,8 @@ TEST_F(FormattingTests, monthyear)
 
 TEST_F(FormattingTests, two_level_format)
 {
-    constexpr rct_string_id strDefault = STR_RIDE_NAME_DEFAULT;
-    constexpr rct_string_id strBoatHire = STR_RIDE_NAME_BOAT_HIRE;
+    constexpr StringId strDefault = STR_RIDE_NAME_DEFAULT;
+    constexpr StringId strBoatHire = STR_RIDE_NAME_BOAT_HIRE;
     auto actual = FormatString("Queuing for {STRINGID}", strDefault, strBoatHire, 2);
     ASSERT_EQ("Queuing for Boat Hire 2", actual);
 }
@@ -306,8 +307,8 @@ TEST_F(FormattingTests, any_string_int_string)
 
 TEST_F(FormattingTests, any_two_level_format)
 {
-    constexpr rct_string_id strDefault = STR_RIDE_NAME_DEFAULT;
-    constexpr rct_string_id strBoatHire = STR_RIDE_NAME_BOAT_HIRE;
+    constexpr StringId strDefault = STR_RIDE_NAME_DEFAULT;
+    constexpr StringId strBoatHire = STR_RIDE_NAME_BOAT_HIRE;
     auto actual = FormatStringAny("Queuing for {STRINGID}", { strDefault, strBoatHire, 2 });
     ASSERT_EQ("Queuing for Boat Hire 2", actual);
 }
@@ -330,8 +331,8 @@ TEST_F(FormattingTests, to_fixed_buffer)
 TEST_F(FormattingTests, using_legacy_buffer_args)
 {
     auto ft = Formatter();
-    ft.Add<rct_string_id>(STR_RIDE_NAME_DEFAULT);
-    ft.Add<rct_string_id>(STR_RIDE_NAME_BOAT_HIRE);
+    ft.Add<StringId>(STR_RIDE_NAME_DEFAULT);
+    ft.Add<StringId>(STR_RIDE_NAME_BOAT_HIRE);
     ft.Add<uint16_t>(2);
 
     char buffer[32]{};

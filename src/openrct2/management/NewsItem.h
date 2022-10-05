@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -292,8 +292,8 @@ namespace News
 
     std::optional<CoordsXYZ> GetSubjectLocation(News::ItemType type, int32_t subject);
 
-    News::Item* AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc, const Formatter& formatter);
-    News::Item* AddItemToQueue(News::ItemType type, rct_string_id string_id, EntityId assoc, const Formatter& formatter);
+    News::Item* AddItemToQueue(News::ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter);
+    News::Item* AddItemToQueue(News::ItemType type, StringId string_id, EntityId assoc, const Formatter& formatter);
     News::Item* AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc);
 
     bool CheckIfItemRequiresAssoc(News::ItemType type);

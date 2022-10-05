@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -79,11 +79,11 @@ using ShopItemIndex = ShopItem;
 
 struct ShopItemStrings
 {
-    rct_string_id PriceLabel; // Balloon price:
-    rct_string_id Singular;   // Balloon
-    rct_string_id Plural;     // Balloons
-    rct_string_id Indefinite; // a Balloon
-    rct_string_id Display;    // "Diamond Heights" Balloon
+    StringId PriceLabel; // Balloon price:
+    StringId Singular;   // Balloon
+    StringId Plural;     // Balloons
+    StringId Indefinite; // a Balloon
+    StringId Display;    // "Diamond Heights" Balloon
 };
 
 struct ShopItemDescriptor
@@ -111,6 +111,7 @@ struct ShopItemDescriptor
     bool IsFoodOrDrink() const;
     bool IsSouvenir() const;
     bool IsPhoto() const;
+    bool IsRecolourable() const;
 };
 
 uint64_t ShopItemsGetAllFoods();
@@ -124,6 +125,7 @@ enum
     SHOP_ITEM_FLAG_IS_SOUVENIR = (1 << 2),
     SHOP_ITEM_FLAG_IS_PHOTO = (1 << 3),
     SHOP_ITEM_FLAG_IS_CONTAINER = (1 << 4),
+    SHOP_ITEM_FLAG_IS_RECOLOURABLE = (1 << 5),
 };
 
 extern uint64_t gSamePriceThroughoutPark;

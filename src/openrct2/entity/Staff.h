@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -94,6 +94,7 @@ private:
     bool DoMechanicPathFinding();
     bool DoEntertainerPathFinding();
     bool DoMiscPathFinding();
+    bool IsMechanicHeadingToFixRideBlockingPath();
 
     Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
@@ -141,7 +142,7 @@ enum class EntertainerCostume : uint8_t
     Count
 };
 
-extern const rct_string_id StaffCostumeNames[static_cast<uint8_t>(EntertainerCostume::Count)];
+extern const StringId StaffCostumeNames[static_cast<uint8_t>(EntertainerCostume::Count)];
 
 extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;

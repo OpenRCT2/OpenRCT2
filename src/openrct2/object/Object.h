@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../core/String.hpp"
 #include "../util/Util.h"
 #include "ImageTable.h"
+#include "ObjectAsset.h"
 #include "StringTable.h"
 
 #include <array>
@@ -26,6 +27,7 @@
 using ObjectEntryIndex = uint16_t;
 constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 struct ObjectRepositoryItem;
+using ride_type_t = uint16_t;
 
 // First 0xF of rct_object_entry->flags
 enum class ObjectType : uint8_t
@@ -158,21 +160,13 @@ struct rct_object_entry
 };
 assert_struct_size(rct_object_entry, 0x10);
 
-struct rct_object_entry_group
-{
-    void** chunks;
-    rct_object_entry* entries;
-};
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_object_entry_group, 8);
-#endif
+#pragma pack(pop)
 
 struct rct_ride_filters
 {
     uint8_t category[2];
-    uint8_t ride_type;
+    ride_type_t ride_type;
 };
-assert_struct_size(rct_ride_filters, 3);
 
 struct rct_object_filters
 {
@@ -181,8 +175,6 @@ struct rct_object_filters
         rct_ride_filters ride;
     };
 };
-assert_struct_size(rct_object_filters, 3);
-#pragma pack(pop)
 
 enum class ObjectGeneration : uint8_t
 {
@@ -232,30 +224,6 @@ enum class ObjectError : uint32_t
     BadStringTable,
     BadImageTable,
     UnexpectedEOF,
-};
-
-class ObjectAsset
-{
-private:
-    std::string _zipPath;
-    std::string _path;
-
-public:
-    ObjectAsset() = default;
-    ObjectAsset(std::string_view path)
-        : _path(path)
-    {
-    }
-    ObjectAsset(std::string_view zipPath, std::string_view path)
-        : _zipPath(zipPath)
-        , _path(path)
-    {
-    }
-
-    [[nodiscard]] bool IsAvailable() const;
-    [[nodiscard]] uint64_t GetSize() const;
-    [[nodiscard]] std::vector<uint8_t> GetData() const;
-    [[nodiscard]] std::unique_ptr<OpenRCT2::IStream> GetStream() const;
 };
 
 struct IReadObjectContext
@@ -311,8 +279,6 @@ protected:
      * @note root is deliberately left non-const: json_t behaviour changes when const
      */
     void PopulateTablesFromJson(IReadObjectContext* context, json_t& root);
-
-    static rct_object_entry ParseObjectEntry(const std::string& s);
 
     std::string GetOverrideString(uint8_t index) const;
     std::string GetString(ObjectStringID index) const;
@@ -421,8 +387,6 @@ extern int32_t object_entry_group_encoding[];
 
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
-
-const rct_object_entry* object_list_find(rct_object_entry* entry);
 
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
 

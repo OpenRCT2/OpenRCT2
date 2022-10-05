@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -194,8 +194,7 @@ GameActions::Result TrackPlaceAction::Query() const
             if ((_origin.z & 0x0F) != 8)
             {
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
-                    STR_CONSTRUCTION_ERR_UNKNOWN);
+                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_INVALID_HEIGHT);
             }
         }
         else
@@ -203,8 +202,7 @@ GameActions::Result TrackPlaceAction::Query() const
             if ((_origin.z & 0x0F) != 0)
             {
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
-                    STR_CONSTRUCTION_ERR_UNKNOWN);
+                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_INVALID_HEIGHT);
             }
         }
     }
@@ -252,7 +250,7 @@ GameActions::Result TrackPlaceAction::Query() const
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
         auto canBuild = MapCanConstructWithClearAt(
-            { mapLoc, baseZ, clearanceZ }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), crossingMode);
+            { mapLoc, baseZ, clearanceZ }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -347,10 +345,12 @@ GameActions::Result TrackPlaceAction::Query() const
         int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
         if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0)
         {
-            if (!track_add_station_element({ mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign))
+            const auto addElementResult = track_add_station_element(
+                { mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign);
+            if (!addElementResult.Successful)
             {
                 return GameActions::Result(
-                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText);
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, addElementResult.Message);
             }
         }
 
@@ -468,8 +468,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
         auto canBuild = MapCanConstructWithClearAt(
-            mapLocWithClearance, &map_place_non_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
-            crossingMode);
+            mapLocWithClearance, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY, crossingMode);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -545,9 +544,16 @@ GameActions::Result TrackPlaceAction::Execute() const
                     ride->num_block_brakes++;
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
+                    // change the current mode to its circuit blocked equivalent
                     RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
-                    if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
-                        newMode = RideMode::PoweredLaunchBlockSectioned;
+                    if (ride->mode == RideMode::PoweredLaunch)
+                    {
+                        if (ride->GetRideTypeDescriptor().SupportsRideMode(RideMode::PoweredLaunchBlockSectioned)
+                            || gCheatsShowAllOperatingModes)
+                            newMode = RideMode::PoweredLaunchBlockSectioned;
+                        else
+                            newMode = RideMode::PoweredLaunch;
+                    }
 
                     auto rideSetSetting = RideSetSettingAction(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
                     GameActions::ExecuteNested(&rideSetSetting);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,7 @@ public:
     /**
      * Appends the given string to the current string.
      */
-    void Append(const utf8* text);
+    void Append(std::string_view text);
 
     /**
      * Appends the given string of the given length to the current string. Essentially used to ignore null terminators or copy

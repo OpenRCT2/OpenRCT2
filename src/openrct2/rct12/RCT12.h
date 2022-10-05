@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -798,8 +798,8 @@ assert_struct_size(RCT12RideMeasurement, 0x4B0C);
 struct RCT12Banner
 {
     RCT12ObjectEntryIndex type;
-    uint8_t flags;            // 0x01
-    rct_string_id string_idx; // 0x02
+    uint8_t flags;       // 0x01
+    StringId string_idx; // 0x02
     union
     {
         uint8_t colour;     // 0x04
@@ -844,6 +844,13 @@ struct RCT12ResearchItem
 };
 assert_struct_size(RCT12ResearchItem, 5);
 
+struct RCT12VehicleColour
+{
+    uint8_t body_colour;
+    uint8_t trim_colour;
+};
+assert_struct_size(RCT12VehicleColour, 2);
+
 #pragma pack(pop)
 
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
@@ -854,6 +861,7 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
 track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType);
 RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType);
 std::string_view GetStationIdentifierFromStyle(uint8_t style);
+uint8_t GetStationStyleFromIdentifier(u8string_view identifier);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
 void RCT12AddDefaultObjects(ObjectList& objectList);
 void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const RCT12::EntryList& entryList);

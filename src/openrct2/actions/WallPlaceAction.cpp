@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -348,7 +348,7 @@ GameActions::Result WallPlaceAction::Execute() const
         banner->type = 0; // Banner must be deleted after this point in an early return
         banner->position = TileCoordsXY(_loc);
 
-        RideId rideIndex = banner_get_closest_ride_index(targetLoc);
+        RideId rideIndex = BannerGetClosestRideIndex(targetLoc);
         if (!rideIndex.IsNull())
         {
             banner->ride_index = rideIndex;
@@ -521,7 +521,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
             if (_edge == direction)
             {
                 auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
             continue;
@@ -532,12 +532,12 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
         switch (elementType)
         {
             case TileElementType::Entrance:
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 return res;
             case TileElementType::Path:
                 if (tileElement->AsPath()->GetEdges() & (1 << _edge))
                 {
-                    map_obstruction_set_error_text(tileElement, res);
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;
@@ -556,7 +556,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                 if (!(tile.flags & (1 << direction)))
                 {
-                    map_obstruction_set_error_text(tileElement, res);
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;
@@ -566,7 +566,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                 if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
                 {
-                    map_obstruction_set_error_text(tileElement, res);
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;
@@ -586,7 +586,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
 }
 
 bool WallPlaceAction::TrackIsAllowedWallEdges(
-    uint8_t rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction)
+    ride_type_t rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction)
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_NO_WALLS))
     {

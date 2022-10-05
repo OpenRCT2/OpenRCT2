@@ -11,14 +11,14 @@ body:
 - type: input
   attributes:
     label: Operating System
-    placeholder: Windows 10, 64-bit
+    placeholder: e.g. Windows 10, 64-bit
   validations:
     required: true
 
 - type: input
   attributes:
     label: OpenRCT2 build
-    placeholder: OpenRCT2, v0.3.4.1 (d76611e on develop) provided by GitHub
+    placeholder: e.g. OpenRCT2, v0.3.4.1 (d76611e on develop) provided by GitHub
     description: You can see the version by running `openrct2 --version` or copy it from the About window. Open the "Disk and game options" menu (floppy disk on the top toolbar), choose "About 'OpenRCT2'" and click the copy button next to the version information.
   validations:
     required: true
@@ -47,11 +47,11 @@ body:
   attributes:
     label: Steps to reproduce
     description: We highly suggest including a screenshot and a bug report log (System tray->Report bug).
-    placeholder: Tell us the steps required to trigger your bug.
-    value: |
-      1. 
-      2. 
-      3. 
+    placeholder: |
+      Tell us the steps required to trigger your bug. Example:
+      1. Open the attached park file
+      2. Click on the park entrance
+      3. The game crashes
   validations:
     required: true
 

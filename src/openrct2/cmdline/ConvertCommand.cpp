@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -118,7 +118,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
 
         // HACK remove the main window so it saves the park with the
         //      correct initial view
-        window_close_by_class(WC_MAIN_WINDOW);
+        window_close_by_class(WindowClass::MainWindow);
 
         exporter->Export(destinationPath);
     }

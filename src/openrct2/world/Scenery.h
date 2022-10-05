@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,7 +26,7 @@ struct LargeSceneryText;
 
 struct SceneryEntryBase
 {
-    rct_string_id name;
+    StringId name;
     uint32_t image;
 };
 
@@ -189,7 +189,7 @@ struct LargeSceneryText
 
 struct rct_scenery_group_entry
 {
-    rct_string_id name;
+    StringId name;
     uint32_t image;
     std::vector<ScenerySelection> SceneryEntries;
     uint8_t priority;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -186,7 +186,7 @@ namespace OpenRCT2::Audio
                 auto* ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
                 delete ptr;
                 ctx->hidden.unknown.data1 = nullptr;
-                delete ctx;
+                SDL_free(ctx);
                 return 0;
             };
             return rw;

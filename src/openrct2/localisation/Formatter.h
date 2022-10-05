@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -93,7 +93,7 @@ public:
             std::is_same_v<typename std::remove_cv_t<TSpecified>, money64> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, RideId> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, EntityId> ||
-            std::is_same_v<typename std::remove_cv_t<TSpecified>, rct_string_id> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, StringId> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, uint16_t> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, uint32_t> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, utf8*> ||
@@ -126,6 +126,6 @@ public:
 
 struct OpenRCT2String
 {
-    rct_string_id str;
+    StringId str;
     Formatter args;
 };

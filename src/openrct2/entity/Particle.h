@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include "../ride/VehicleColour.h"
 #include "EntityBase.h"
 
 class DataSerialiser;
 struct CoordsXYZ;
 struct paint_session;
+struct VehicleColour;
 
 struct VehicleCrashParticle : EntityBase
 {
@@ -29,7 +29,7 @@ struct VehicleCrashParticle : EntityBase
     int32_t acceleration_x;
     int32_t acceleration_y;
     int32_t acceleration_z;
-    static void Create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos);
+    static void Create(VehicleColour& colours, const CoordsXYZ& vehiclePos);
     void Update();
     void Serialise(DataSerialiser& stream);
     void Paint(paint_session& session, int32_t imageDirection) const;

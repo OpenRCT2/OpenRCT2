@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,7 +44,7 @@ public:
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
-    static uint8_t ParseRideType(const std::string& s);
+    static ride_type_t ParseRideType(const std::string& s);
 
 private:
     void ReadLegacyCar(IReadObjectContext* context, OpenRCT2::IStream* stream, CarEntry* car);
@@ -55,10 +55,10 @@ private:
     vehicle_colour_preset_list ReadJsonCarColours(json_t& jCarColours);
     std::vector<VehicleColour> ReadJsonColourConfiguration(json_t& jColourConfig);
 
-    static uint8_t CalculateNumVerticalFrames(const CarEntry* vehicleEntry);
-    static uint8_t CalculateNumHorizontalFrames(const CarEntry* vehicleEntry);
+    static uint8_t CalculateNumVerticalFrames(const CarEntry* carEntry);
+    static uint8_t CalculateNumHorizontalFrames(const CarEntry* carEntry);
 
-    static bool IsRideTypeShopOrFacility(uint8_t rideType);
+    static bool IsRideTypeShopOrFacility(ride_type_t rideType);
     static uint8_t ParseRideCategory(const std::string& s);
     static ShopItem ParseShopItem(const std::string& s);
     static colour_t ParseColour(const std::string& s);

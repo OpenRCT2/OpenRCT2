@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,12 +35,7 @@ enum class RideConstructionState : uint8_t
     MazeFill
 };
 
-extern bool gGotoStartPlacementMode;
-
 extern money32 _currentTrackPrice;
-
-extern uint16_t _numCurrentPossibleRideConfigurations;
-extern uint16_t _numCurrentPossibleSpecialTrackPieces;
 
 extern uint32_t _currentTrackCurve;
 extern RideConstructionState _rideConstructionState;
@@ -91,7 +86,7 @@ void ride_construction_set_default_next_piece();
 void ride_select_next_section();
 void ride_select_previous_section();
 
-bool ride_modify(CoordsXYE* input);
+bool ride_modify(const CoordsXYE& input);
 
 CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenCoordsXY& screenCoords);
 

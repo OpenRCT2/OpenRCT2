@@ -338,7 +338,6 @@ STR_0950    :Hent spil
 STR_0951    :Afslut spil
 STR_0952    :Afslut spil
 STR_0953    :Hent Landskab
-STR_0954    :
 STR_0955    :Vælg sæde rotation for denne banesektion
 STR_0956    :-180°
 STR_0957    :-135°
@@ -386,10 +385,10 @@ STR_0998    :Ikke flere stationer tilladt for denne forlystelse
 STR_0999    :Kræver en station platform
 STR_1000    :Banen er ikke en komplet bane
 STR_1001    :Banen passer ikke til denne type vogn
-STR_1002    :Kan ikke åbne {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Kan ikke teste {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Kan ikke lukke {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Kan ikke begynde konstruktion af {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Kan ikke åbne {STRINGID}…
+STR_1003    :Kan ikke teste {STRINGID}…
+STR_1004    :Kan ikke lukke {STRINGID}…
+STR_1005    :Kan ikke begynde konstruktion af {STRINGID}…
 STR_1006    :Skal først lukkes
 STR_1007    :Kan ikke lave nok vogne
 STR_1008    :Åben, test eller luk forlystelse/attraktion
@@ -1952,8 +1951,6 @@ STR_2738    :Titelskærms musik:
 STR_2739    :Ingen
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat ikke fundet
-STR_2743    :Kopier ‘data/css17.dat’ fra din RCT1 installation til ‘data/css50.dat’ i din RCT2 installation, eller vær sikker på at stien til RCT1, i fanen Diverse er korrekt.
 STR_2749    :Mit nye scenarie
 # New strings used in the cheats window previously these were ???
 STR_2750    :Flyt alle enheder til toppen
@@ -2226,7 +2223,6 @@ STR_3174    :Dette objekt kræves af et andet objekt
 STR_3175    :Dette objekt er altid påkrævet
 STR_3176    :Kan ikke vælge dette objekt
 STR_3177    :Kan ikke fravælge dette objekt
-STR_3178    :Mindst et stiobjekt skal vælges
 STR_3179    :Mindst et forlystelse/attraktion objekt skal vælges
 STR_3180    :Ugyldigt udvalg af objekter
 STR_3181    :Objekt valg - {STRINGID}
@@ -2259,7 +2255,7 @@ STR_3208    :Banedesign Manager
 STR_3209    :Tilbage til tidligere skridt:
 STR_3210    :Videre til næste skridt:
 STR_3211    :Kortstørrelse:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan ikke reducere kortstørrelsen yderligere
 STR_3214    :Kan ikke forøge kortstørrelsen yderligere
 STR_3215    :For tæt på kanten af kortet
@@ -2554,8 +2550,6 @@ STR_5250    :Titelskærm Afslut knap
 STR_5251    :Titelskærm indstillings knap
 STR_5252    :Titelskærm Scenarie vælger
 STR_5253    :Park Information
-STR_5254    :Opret
-STR_5255    :Opret en ny titel sekvens fra bunden af
 STR_5256    :Opret et nyt tema som der kan ændres i
 STR_5257    :Opret et nyt tema, baseret på det nuværende
 STR_5258    :Slet nuværende tema
@@ -2650,75 +2644,10 @@ STR_5373    :Navn {STRINGID}
 STR_5374    :Dato {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Gemte
-STR_5378    :Script
-STR_5379    :Skip til næste ventekommando
-STR_5380    :Start afspilning af titelsekvens
-STR_5381    :Stop afspilning af titelsekvens
-STR_5382    :Genstart af titelsekvens
-STR_5383    :Opret en ny titelsekvens baseret på den nuværende
-STR_5384    :Slet nuværende titelsekvens
-STR_5385    :Omdøb nuværende titelsekvens
-STR_5386    :Indsæt en ny kommando
-STR_5387    :Rediger valgte kommando
-STR_5388    :Slet valgte kommando
-STR_5389    :spring til den valgte kommando i titelsekvensen
-STR_5390    :Flyt valgte kommando ned
-STR_5391    :Flyt valgte kommando op
-STR_5392    :Tilføj en gemning til den valgte sekvens
-STR_5393    :Fjern en gemning fra den valgte sekvens
-STR_5394    :Omdøb det valgte gemte spil
-STR_5395    :Hent det valgte gemte i spillet
-STR_5396    :Genindlæs titelsekvens, hvis der er lavet ændringer uden for spillet
-STR_5397    :Kan kun bruges på titelskærmen
-STR_5398    :Kan ikke redigere titelsekvensen imens den afspilles
-STR_5399    :Tryk på stop for at fortsætte redigeringen
-STR_5400    :Kan ikke ændre denne titel sekvens
-STR_5401    :Opret en ny titelsekvens at lave ændringer i
-STR_5402    :Kunne ikke indlæse titelsekvens
-STR_5403    :Der er muligvis ingen ‘hent’ eller ‘vent’ kommando eller det gemte spil er ugyldigt
 STR_5404    :Navn eksisterer allerede
-STR_5405    :Angiv en navn for denne gemning
-STR_5406    :Angiv et navn til titelsekvensen
-STR_5407    :Tilføj
-STR_5408    :Fjern
-STR_5409    :Indsæt
-STR_5410    :Rediger
-STR_5411    :Genindlæs
-STR_5412    :Skip til
-STR_5413    :Hent
-STR_5415    :Hent{MOVE_X}{87}{STRING}
-STR_5416    :Hent{MOVE_X}{87}Ingen gemt valgt
-STR_5417    :Lokation
-STR_5418    :Lokation{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Roter
-STR_5420    :Roter{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoom
-STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
-STR_5423    :Vent
-STR_5424    :Vent{MOVE_X}{87}{UINT16}
-STR_5425    :Genstart
-STR_5426    :Slut
-STR_5427    :Koordinater:
-STR_5428    :Mod uret rotation:
-STR_5429    :Zoom niveau:
-STR_5430    :Millisekunder der skal ventes:
-STR_5431    :Gemte der skal hentes:
-STR_5432    :Kommando:
-STR_5433    :Titelsekvens
-STR_5434    :Kommando redigering
-STR_5435    :Omdøb gemte
-STR_5436    :Rediger Titelsekvens…
-STR_5437    :Ingen gemninger valgt
-STR_5438    :Kan ikke lave ændringer med kommando redigering åben
-STR_5439    :Der kræves en ventekommando med mindst 4 sekunder med en genstart kommando
 STR_5440    :Minimer fuldskærm ved tab af fokus
 STR_5441    :Identificer forlystelser Efter skinne type{NEWLINE}Så køretøjer kan skiftes{NEWLINE}bagefter (RCT1 opførsel)
 STR_5442    :Tving parkvurdering:
-STR_5443    :Hastighed{MOVE_X}{87}{STRINGID}
-STR_5444    :Hastighed:
-STR_5445    :Hastighed
-STR_5446    :Hent
 STR_5447    :Type {STRINGID}
 STR_5448    :Forlystelse / Vogn {STRINGID}
 STR_5449    :Reducer spil hastighed
@@ -2833,8 +2762,6 @@ STR_5560    :Sæt inspektions interval til ‘hvert 10. minut’ på alle forlys
 STR_5561    :Kan ikke indlæse sprog
 STR_5562    :ADVARSEL!
 STR_5563    :Denne funktion er i øjeblikket ustabil, vær ekstra forsigtig.
-STR_5564    :Indsæt beskadiget element
-STR_5565    :Indsætter et beskadiget kort element på dette felt. Dette vil dække elementet oven på det beskadiget element.
 STR_5566    :Kode:
 STR_5567    :Offentliggør
 STR_5568    :Kode påkrævet
@@ -3076,7 +3003,6 @@ STR_5844    :Forbliv forbundet til multiplayer serveren{NEWLINE}selv hvis der op
 STR_5845    :Tilføj en knap til{NEWLINE}fejlfinding i værktøjslinjen.{NEWLINE}Aktiver tastatur genveje til udviklingskonsollen
 STR_5846    :Sæt hvor tit OpenRCT2 gemmer automatisk
 STR_5847    :Vælg park sekvens for titelskærmen.{NEWLINE}Titel sekvens fra RCT1/2 kræver importerede scenarier for at fungere
-STR_5848    :Opret og administrer brugerdefinerede titel sekvenser
 STR_5849    :Placer automatisk{NEWLINE}nyansatte medarbejdere
 STR_5851    :Sæt standard vedligeholdelses interval{NEWLINE}på nybyggede forlystelser
 STR_5853    :Slå lydeffekter til/fra
@@ -3276,7 +3202,6 @@ STR_6047    :Glatte felter
 STR_6048    :Højdekort fejl
 STR_6049    :Fejl ved indlæsning af PNG
 STR_6050    :Fejl ved indlæsning af bitmap
-STR_6051    :Bredden og højden skal matche
 STR_6052    :Højdekortet er for stort, og vil blive beskåret
 STR_6053    :Højdekortet kan ikke normaliseres
 STR_6054    :kun 24-bit bitmaps er supporteret
@@ -3375,7 +3300,6 @@ STR_6154    :Af sikkerhedsmæssige årsager anbefales det ikke at køre OpenRCT2
 STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en, eller konfigurer fra kommando linjen.
 STR_6156    :Navn er reserveret
 STR_6157    :Konsol
-STR_6158    :Kan ikke hente denne fil…{NEWLINE}ikke kompatibel RCTC version: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Tilgængelige køretøjer: {BLACK}{STRING}
 STR_6161    :Skift gitterlinjer Visning til/fra
 STR_6162    :Snurrende Vild Mus
@@ -3390,23 +3314,8 @@ STR_6170    :Interface Tilretninger
 STR_6171    :Søg
 STR_6172    :Søg
 STR_6173    :Angiv navn til at søge efter:
-STR_6174    :Hent Gemt
-STR_6175    :Hent Scenarie
-STR_6176    :Scenarie der skal hentes:
-STR_6177    :Hent{MOVE_X}{87}Ingen scenarie valgt
-STR_6178    :Hent{MOVE_X}{87}{RED}Manglende scenarie
-STR_6179    :Vælg
-STR_6180    :Ingen scenarie valgt
-STR_6181    :{RED}Manglende scenarie
-STR_6182    :Følg{MOVE_X}{87}{STRING}
-STR_6183    :Følg{MOVE_X}{87}Ingen sprite valgt
-STR_6184    :Følg Sprite
-STR_6185    :Vælg Sprite
-STR_6186    :Ingen sprite valgt
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Opkast
 STR_6189    :And
-STR_6190    :Du kan ikke vælge en sprite, mens titelskærmen er aktiv.
 STR_6191    :Overflade
 STR_6192    :Væg
 STR_6193    :{COMMA16} gæst
@@ -3519,7 +3428,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulérer
 STR_6324    :Simulér
 STR_6325    :Simulér forlystelse/attraktion
-STR_6326    :Kan ikke simulére {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Kan ikke simulére {STRINGID}…
 STR_6327    :Transparent baggrund for gigantisk Skærmbillede
 STR_6328    :Med denne indstilling aktiveret, vil gigantisk skærmbillede have transparent baggrund i stedet for en standard sort baggrund.
 STR_6329    :{STRING}{STRINGID}
@@ -3528,7 +3437,6 @@ STR_6331    :Anbring ænder
 STR_6332    :Fjern ænder
 STR_6333    :Forøg skalerings faktor
 STR_6334    :Reducer skalerings faktor
-STR_6335    :Felt Undersøger: Indsæt korrupt element
 STR_6336    :Felt Undersøger: Kopier element
 STR_6337    :Felt Undersøger: Indsæt element
 STR_6338    :Felt Undersøger: Slet element
@@ -4134,23 +4042,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tag
-
-[TTPIRF03]
-STR_NAME    :Tag
-
-[TTPIRF04]
-STR_NAME    :Tag
-
 [TTPIRF05]
-STR_NAME    :Tag
-
-[TTPIRF07]
-STR_NAME    :Tag
-
-[TTPIRF08]
 STR_NAME    :Tag
 
 [TTRFWD01]
@@ -4176,15 +4068,6 @@ STR_NAME    :Tag
 
 [TTRFWD08]
 STR_NAME    :Tag
-
-[TTRFGL01]
-STR_NAME    :Glas tag
-
-[TTRFGL02]
-STR_NAME    :Glas tag
-
-[TTRFGL03]
-STR_NAME    :Glas tag
 
 [ACWW33]
 STR_NAME    :Træ stolpe væg

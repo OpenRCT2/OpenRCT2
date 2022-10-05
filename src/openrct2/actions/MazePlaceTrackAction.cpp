@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
+#include "../ride/gentle/Maze.h"
 #include "../world/ConstructionClearance.h"
 
 using namespace OpenRCT2::TrackMetaData;
@@ -45,7 +46,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     if ((_loc.z & 0xF) != 0)
     {
         res.Error = GameActions::Status::Unknown;
-        res.ErrorMessage = STR_CONSTRUCTION_ERR_UNKNOWN;
+        res.ErrorMessage = STR_INVALID_HEIGHT;
         return res;
     }
 
@@ -89,7 +90,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     }
 
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags());
+        { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -119,9 +120,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
         return res;
     }
 
-    const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-    money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
-    res.Cost = canBuild.Cost + price;
+    res.Cost = MazeCalculateCost(canBuild.Cost, *ride, _loc);
 
     return res;
 }
@@ -153,7 +152,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
 
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
+        { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
         GetFlags() | GAME_COMMAND_FLAG_APPLY);
     if (canBuild.Error != GameActions::Status::Ok)
     {
@@ -161,9 +160,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
         return canBuild;
     }
 
-    const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-    money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
-    res.Cost = canBuild.Cost + price;
+    res.Cost = MazeCalculateCost(canBuild.Cost, *ride, _loc);
 
     auto startLoc = _loc.ToTileStart();
 

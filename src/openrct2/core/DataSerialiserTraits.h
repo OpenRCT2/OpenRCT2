@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -773,22 +773,24 @@ template<> struct DataSerializerTraits_t<TrackDesignSceneryElement>
     }
 };
 
-template<> struct DataSerializerTraits_t<rct_vehicle_colour>
+template<> struct DataSerializerTraits_t<VehicleColour>
 {
-    static void encode(OpenRCT2::IStream* stream, const rct_vehicle_colour& val)
+    static void encode(OpenRCT2::IStream* stream, const VehicleColour& val)
     {
-        stream->Write(&val.body_colour);
-        stream->Write(&val.trim_colour);
+        stream->Write(&val.Body);
+        stream->Write(&val.Trim);
+        stream->Write(&val.Tertiary);
     }
-    static void decode(OpenRCT2::IStream* stream, rct_vehicle_colour& val)
+    static void decode(OpenRCT2::IStream* stream, VehicleColour& val)
     {
-        stream->Read(&val.body_colour);
-        stream->Read(&val.trim_colour);
+        stream->Read(&val.Body);
+        stream->Read(&val.Trim);
+        stream->Read(&val.Tertiary);
     }
-    static void log(OpenRCT2::IStream* stream, const rct_vehicle_colour& val)
+    static void log(OpenRCT2::IStream* stream, const VehicleColour& val)
     {
         char msg[128] = {};
-        snprintf(msg, sizeof(msg), "rct_vehicle_colour(body_colour = %d, trim_colour = %d)", val.body_colour, val.trim_colour);
+        snprintf(msg, sizeof(msg), "VehicleColour(Body = %d, Trim = %d, Tertiary = %d)", val.Body, val.Trim, val.Tertiary);
         stream->Write(msg, strlen(msg));
     }
 };

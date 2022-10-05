@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,7 +33,7 @@
 #include <iterator>
 #include <vector>
 
-bool _gSceneryGroupPartialSelectError;
+std::optional<StringId> _gSceneryGroupPartialSelectError;
 std::vector<uint8_t> _objectSelectionFlags;
 int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::Count)];
@@ -44,6 +44,19 @@ static void setup_track_manager_objects();
 static void window_editor_object_selection_select_default_objects();
 static void SelectDesignerObjects();
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
+
+/**
+ * Master objects are objects that are not
+ * optional / required dependants of an
+ * object.
+ */
+static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, StringId message)
+{
+    if (!isMasterObject)
+        reset_selected_object_count_and_size();
+
+    return { false, message };
+}
 
 /**
  *
@@ -90,7 +103,7 @@ static void setup_track_designer_objects()
         {
             *selectionFlags |= ObjectSelectionFlags::Flag6;
 
-            for (uint8_t rideType : item->RideInfo.RideType)
+            for (auto rideType : item->RideInfo.RideType)
             {
                 if (rideType != RIDE_TYPE_NULL)
                 {
@@ -485,29 +498,15 @@ void finish_object_selection()
 }
 
 /**
- * Master objects are objects that are not
- * optional / required dependants of an
- * object.
- */
-static void set_object_selection_error(uint8_t is_master_object, rct_string_id error_msg)
-{
-    gGameCommandErrorText = error_msg;
-    if (!is_master_object)
-    {
-        reset_selected_object_count_and_size();
-    }
-}
-
-/**
  *
  *  rct2: 0x006AB54F
  */
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item)
+ResultWithMessage window_editor_object_selection_select_object(
+    uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item)
 {
     if (item == nullptr)
     {
-        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND);
-        return false;
+        return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND);
     }
 
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
@@ -527,19 +526,17 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
     {
         if (!(*selectionFlags & ObjectSelectionFlags::Selected))
         {
-            return true;
+            return { true };
         }
 
         if (*selectionFlags & ObjectSelectionFlags::InUse)
         {
-            set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_CURRENTLY_IN_USE);
-            return false;
+            return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_CURRENTLY_IN_USE);
         }
 
         if (*selectionFlags & ObjectSelectionFlags::AlwaysRequired)
         {
-            set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_ALWAYS_REQUIRED);
-            return false;
+            return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_ALWAYS_REQUIRED);
         }
 
         ObjectType objectType = item->Type;
@@ -553,7 +550,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
 
         _numSelectedObjectsForType[EnumValue(objectType)]--;
         *selectionFlags &= ~ObjectSelectionFlags::Selected;
-        return true;
+        return { true };
     }
 
     if (isMasterObject == 0)
@@ -566,7 +563,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
 
     if (*selectionFlags & ObjectSelectionFlags::Selected)
     {
-        return true;
+        return { true };
     }
 
     ObjectType objectType = item->Type;
@@ -574,17 +571,17 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
 
     if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
     {
-        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
-        return false;
+        return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
     }
 
     if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
     {
         for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
         {
-            if (!window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry))
+            const auto selectionResult = window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry);
+            if (!selectionResult.Successful)
             {
-                _gSceneryGroupPartialSelectError = true;
+                _gSceneryGroupPartialSelectError = selectionResult.Message;
             }
         }
     }
@@ -600,23 +597,21 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
         object_create_identifier_name(objectName, 64, &item->ObjectEntry);
         auto ft = Formatter::Common();
         ft.Add<const char*>(objectName);
-        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
-        return false;
+        return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
     }
 
     if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
     {
-        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
-        return false;
+        return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
     }
 
     _numSelectedObjectsForType[EnumValue(objectType)]++;
 
     *selectionFlags |= ObjectSelectionFlags::Selected;
-    return true;
+    return { true };
 }
 
-bool window_editor_object_selection_select_object(
+ResultWithMessage window_editor_object_selection_select_object(
     uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& descriptor)
 {
     auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();

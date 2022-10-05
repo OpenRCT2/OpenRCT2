@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -376,6 +376,6 @@ void Duck::Paint(paint_session& session, int32_t imageDirection) const
     uint32_t imageId = GetFrameImage(imageDirection);
     if (imageId != 0)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+        PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
     }
 }

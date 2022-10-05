@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -122,10 +122,8 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
 {
     _drawingContext = new X8DrawingContext(this);
     _bitsDPI.DrawingEngine = this;
-#ifdef __ENABLE_LIGHTFX__
     lightfx_set_available(true);
     _lastLightFXenabled = (gConfigGeneral.enable_light_fx != 0);
-#endif
 }
 
 X8DrawingEngine::~X8DrawingEngine()
@@ -190,13 +188,11 @@ void X8DrawingEngine::BeginDraw()
 {
     if (gIntroState == IntroState::None)
     {
-#ifdef __ENABLE_LIGHTFX__
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
         if (_lastLightFXenabled != (gConfigGeneral.enable_light_fx != 0))
         {
             Resize(_width, _height);
         }
-#endif
         _weatherDrawer.Restore(&_bitsDPI);
     }
 }
@@ -342,12 +338,10 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
 
     ConfigureDirtyGrid();
 
-#ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
         lightfx_update_buffers(dpi);
     }
-#endif
 }
 
 void X8DrawingEngine::OnDrawDirtyBlock(
@@ -714,17 +708,18 @@ void X8DrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const S
     gfx_draw_line_software(dpi, line, colour);
 }
 
-void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
+void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, const ImageId& imageId, int32_t x, int32_t y)
 {
     gfx_draw_sprite_software(dpi, imageId, { x, y });
 }
 
-void X8DrawingContext::DrawSpriteRawMasked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, ImageId maskImage, ImageId colourImage)
+void X8DrawingContext::DrawSpriteRawMasked(
+    rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId& maskImage, const ImageId& colourImage)
 {
     gfx_draw_sprite_raw_masked_software(dpi, { x, y }, maskImage, colourImage);
 }
 
-void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, ImageId image, int32_t x, int32_t y, uint8_t colour)
+void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId& image, int32_t x, int32_t y, uint8_t colour)
 {
     uint8_t palette[256];
     std::fill_n(palette, sizeof(palette), colour);

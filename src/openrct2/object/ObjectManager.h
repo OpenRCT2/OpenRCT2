@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../object/Object.h"
 
+#include <memory>
 #include <vector>
 
 struct IObjectRepository;
@@ -43,7 +44,7 @@ struct IObjectManager
     virtual void ResetObjects() abstract;
 
     virtual std::vector<const ObjectRepositoryItem*> GetPackableObjects() abstract;
-    virtual const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) abstract;
+    virtual const std::vector<ObjectEntryIndex>& GetAllRideEntries(ride_type_t rideType) abstract;
 };
 
 [[nodiscard]] std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository);
@@ -54,4 +55,4 @@ struct IObjectManager
 Object* object_manager_load_object(const rct_object_entry* entry);
 void object_manager_unload_objects(const std::vector<ObjectEntryDescriptor>& entries);
 void object_manager_unload_all_objects();
-[[nodiscard]] rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame);
+[[nodiscard]] StringId object_manager_get_source_game_string(const ObjectSourceGame sourceGame);

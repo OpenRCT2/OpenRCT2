@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,7 @@ namespace OpenRCT2::Ui
     class DummyUiContext final : public IUiContext
     {
     private:
-        IWindowManager* const _windowManager = CreateDummyWindowManager();
+        std::unique_ptr<IWindowManager> const _windowManager = CreateDummyWindowManager();
 
     public:
         void Initialise() override
@@ -89,6 +89,10 @@ namespace OpenRCT2::Ui
 
         void ShowMessageBox(const std::string& /*message*/) override
         {
+        }
+        int32_t ShowMessageBox(const std::string&, const std::string&, const std::vector<std::string>&) override
+        {
+            return -1;
         }
         bool HasMenuSupport() override
         {
@@ -190,7 +194,7 @@ namespace OpenRCT2::Ui
         // In-game UI
         IWindowManager* GetWindowManager() override
         {
-            return _windowManager;
+            return _windowManager.get();
         }
 
         // Clipboard
@@ -202,11 +206,6 @@ namespace OpenRCT2::Ui
         ITitleSequencePlayer* GetTitleSequencePlayer() override
         {
             return nullptr;
-        }
-
-        ~DummyUiContext()
-        {
-            delete _windowManager;
         }
 
         bool HasFilePicker() const override

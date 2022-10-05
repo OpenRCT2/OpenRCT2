@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../core/Console.hpp"
 #include "../core/FileStream.h"
 #include "../core/IStream.hpp"
+#include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
@@ -91,6 +92,7 @@ namespace RCT2
         S6Data _s6{};
         uint8_t _gameVersion = 0;
         bool _isSV7 = false;
+        bool _isScenario = false;
         OpenRCT2::BitSet<Limits::MaxRidesInPark> _isFlatRide{};
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
@@ -165,11 +167,6 @@ namespace RCT2
                 }
             }
 
-            if (_s6.header.classic_flag == 0xf)
-            {
-                throw UnsupportedRCTCFlagException(_s6.header.classic_flag);
-            }
-
             // Read packed objects
             // TODO try to contain this more and not store objects until later
             for (uint16_t i = 0; i < _s6.header.num_packed_objects; i++)
@@ -189,7 +186,7 @@ namespace RCT2
             {
                 chunkReader.ReadChunk(&_s6.elapsed_months, 16);
                 chunkReader.ReadChunk(&_s6.tile_elements, sizeof(_s6.tile_elements));
-                chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 2560076);
+                ReadChunk6(chunkReader, 76);
                 chunkReader.ReadChunk(&_s6.guests_in_park, 4);
                 chunkReader.ReadChunk(&_s6.last_guests_in_park, 8);
                 chunkReader.ReadChunk(&_s6.park_rating, 2);
@@ -202,12 +199,29 @@ namespace RCT2
             {
                 chunkReader.ReadChunk(&_s6.elapsed_months, 16);
                 chunkReader.ReadChunk(&_s6.tile_elements, sizeof(_s6.tile_elements));
-                chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 3048816);
+                ReadChunk6(chunkReader, 488816);
             }
 
+            _isScenario = isScenario;
             _s6Path = path;
 
             return ParkLoadResult(GetRequiredObjects());
+        }
+
+        void ReadChunk6(SawyerChunkReader& chunkReader, uint32_t sizeWithoutEntities)
+        {
+            uint32_t entitiesSize = GetMaxEntities() * sizeof(Entity);
+            size_t bufferSize = sizeWithoutEntities + entitiesSize;
+            std::vector<uint8_t> buffer(bufferSize);
+            chunkReader.ReadChunk(buffer.data(), buffer.size());
+            auto stream = OpenRCT2::MemoryStream(buffer.data(), buffer.size());
+
+            uint32_t preEntitiesSize = sizeof(_s6.next_free_tile_element_pointer_index);
+            uint32_t postEntitiesSize = sizeWithoutEntities - preEntitiesSize;
+
+            stream.Read(&_s6.next_free_tile_element_pointer_index, preEntitiesSize);
+            stream.Read(&_s6.sprites, entitiesSize);
+            stream.Read(&_s6.sprite_lists_head, postEntitiesSize);
         }
 
         bool GetDetails(scenario_index_entry* dst) override
@@ -500,6 +514,7 @@ namespace RCT2
             park.Name = GetUserString(_s6.park_name);
 
             FixLandOwnership();
+            FixAyersRockScenario();
 
             research_determine_first_of_type();
             UpdateConsolidatedPatrolAreas();
@@ -527,6 +542,9 @@ namespace RCT2
 
         void FixLandOwnership() const
         {
+            // Checking _s6.scenario_filename is generally more reliable as it survives renaming.
+            // However, some WW/TT scenarios have this incorrectly set to "Six Flags Magic Mountain.SC6",
+            // so for those cases (as well as for SFMM proper, we’ll have to check the filename.
             if (String::Equals(_s6.scenario_filename, "Europe - European Cultural Festival.SC6"))
             {
                 // This scenario breaks pathfinding. Create passages between the worlds. (List is grouped by neighbouring
@@ -542,7 +560,67 @@ namespace RCT2
                     OWNERSHIP_OWNED);
                 // clang-format on
             }
-            else if (String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6"))
+            else if (String::Equals(_s6.scenario_filename, "Six Flags Holland.SC6"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 112, 33 }, { 112, 34 },
+                        { 113, 117 }, { 114, 117 }, { 115, 117 }, { 116, 117 }, { 117, 117 }, { 114, 118 }, { 115, 118 }, { 116, 118 }, { 117, 118 },
+                    },
+                    OWNERSHIP_AVAILABLE, true);
+                // clang-format on
+            }
+            else if (String::Equals(_s6.scenario_filename, "North America - Grand Canyon.SC6"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 128, 90 },
+                        { 135, 91 }, { 136, 91 },
+                        { 129, 90 }, { 130, 90 }, { 131, 90 }, { 132, 90 }, 
+                        { 137, 92 }, { 138, 92 }, { 139, 92 }, { 140, 92 },
+                        { 125, 88 }, { 126, 89 }, { 127, 91 }, { 127, 92 }, { 127, 93 },
+                        {  47, 85 }, {  48, 85 },
+                        {  32, 97 },
+                    },
+                    OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE, true);
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        {  98, 64 }, {  98, 65 }, {  98, 66 },
+                        {  96, 84 },
+                    },
+                    OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, true);
+                // clang-format on
+            }
+            else if (
+                String::Equals(gScenarioFileName, "Six Flags Magic Mountain.SC6", true)
+                || String::Equals(gScenarioFileName, "six flags magic mountain.sea", true))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 104, 190 }, { 105, 190 }, { 108, 197 }, 
+                        { 75, 167 }, 
+                        { 61, 92 }, { 61, 93 }, { 61, 94 }, { 61, 95 }, { 62, 90 }, { 62, 91 }, { 62, 92 }, { 62, 93 }, { 62, 94 },
+                        { 92, 57 }, { 93, 57 },
+                        { 89, 40 }, { 89, 41 }, { 89, 42 }, { 90, 42 }, 
+                        { 168, 20 }, { 169, 20 },
+                    },
+                    OWNERSHIP_AVAILABLE, true);
+                // clang-format on
+            }
+            else if (String::Equals(_s6.scenario_filename, "Great Wall of China Tourism Enhancement.SC6"))
+            {
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 127, 31 },
+                    },
+                    OWNERSHIP_OWNED);
+            }
+            else if (
+                String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6", true)
+                || String::Equals(gScenarioFileName, "n america - extreme hawaiian island.sea", true))
             {
                 FixLandOwnershipTilesWithOwnership(
                     {
@@ -568,6 +646,60 @@ namespace RCT2
                         { 88, 110 },
                     },
                     OWNERSHIP_AVAILABLE, true);
+            }
+        }
+
+        void FixAyersRockScenario() const
+        {
+            if (!_isScenario || !String::Equals(_s6.scenario_filename, "Australasia - Ayers Rock.SC6"))
+                return;
+
+            TileCoordsXY tilesToUncovered[] = {
+                { 123, 59 }, { 123, 60 }, { 123, 61 }, { 118, 69 }, { 118, 70 }, { 118, 71 },
+                { 118, 72 }, { 118, 73 }, { 112, 79 }, { 112, 80 }, { 112, 81 }, { 112, 82 },
+            };
+            for (const auto& tile : tilesToUncovered)
+            {
+                auto* tileElement = map_get_first_element_at(tile);
+                if (tileElement == nullptr)
+                    continue;
+
+                do
+                {
+                    if (tileElement->GetType() != TileElementType::Track)
+                        continue;
+
+                    auto* trackElement = tileElement->AsTrack();
+                    if (trackElement->GetTrackType() != TrackElemType::FlatCovered)
+                        continue;
+
+                    trackElement->SetTrackType(TrackElemType::Flat);
+                } while (!(tileElement++)->IsLastForTile());
+            }
+
+            TileCoordsXY tilesToCovered[] = {
+                { 123, 83 },
+                { 123, 84 },
+                { 123, 85 },
+                { 123, 86 },
+            };
+            for (const auto& tile : tilesToCovered)
+            {
+                auto* tileElement = map_get_first_element_at(tile);
+                if (tileElement == nullptr)
+                    continue;
+
+                do
+                {
+                    if (tileElement->GetType() != TileElementType::Track)
+                        continue;
+
+                    auto* trackElement = tileElement->AsTrack();
+                    if (trackElement->GetTrackType() != TrackElemType::Flat)
+                        continue;
+
+                    trackElement->SetTrackType(TrackElemType::FlatCovered);
+                } while (!(tileElement++)->IsLastForTile());
             }
         }
 
@@ -753,9 +885,9 @@ namespace RCT2
             dst->depart_flags = src->depart_flags;
 
             dst->num_stations = src->num_stations;
-            dst->num_vehicles = src->num_vehicles;
+            dst->NumTrains = src->NumTrains;
             dst->num_cars_per_train = src->num_cars_per_train;
-            dst->proposed_num_vehicles = src->proposed_num_vehicles;
+            dst->ProposedNumTrains = src->ProposedNumTrains;
             dst->proposed_num_cars_per_train = src->proposed_num_cars_per_train;
             dst->max_trains = src->max_trains;
             dst->MinCarsPerTrain = src->GetMinCarsPerTrain();
@@ -1111,8 +1243,9 @@ namespace RCT2
         {
             // The number of riders might have overflown or underflown. Re-calculate the value.
             uint16_t numRiders = 0;
-            for (const auto& sprite : _s6.sprites)
+            for (int32_t i = 0; i < GetMaxEntities(); i++)
             {
+                const auto& sprite = _s6.sprites[i];
                 if (sprite.unknown.sprite_identifier == RCT12SpriteIdentifier::Peep)
                 {
                     if (sprite.peep.current_ride == static_cast<RCT12RideId>(rideIndex.ToUnderlying())
@@ -1535,10 +1668,15 @@ namespace RCT2
 
         void ImportEntities()
         {
-            for (int32_t i = 0; i < Limits::MaxEntities; i++)
+            for (int32_t i = 0; i < GetMaxEntities(); i++)
             {
                 ImportEntity(_s6.sprites[i].unknown);
             }
+        }
+
+        uint16_t GetMaxEntities()
+        {
+            return (_s6.header.classic_flag == 0xf) ? Limits::MaxEntitiesRCTCExtended : Limits::MaxEntities;
         }
 
         template<typename OpenRCT2_T> void ImportEntity(const RCT12SpriteBase& src);
@@ -1690,7 +1828,7 @@ namespace RCT2
 
         void ImportEntity(const RCT12SpriteBase& src);
 
-        std::string GetUserString(rct_string_id stringId)
+        std::string GetUserString(StringId stringId)
         {
             const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
             auto originalStringView = std::string_view(
@@ -1815,7 +1953,9 @@ namespace RCT2
         dst->acceleration = src->acceleration;
         dst->ride = RideId::FromUnderlying(src->ride);
         dst->vehicle_type = src->vehicle_type;
-        dst->colours = src->colours;
+        dst->colours.Body = src->colours.body_colour;
+        dst->colours.Trim = src->colours.trim_colour;
+        dst->colours.Tertiary = src->colours_extended;
         dst->track_progress = src->track_progress;
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         if (src->boat_location.IsNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
@@ -1902,7 +2042,6 @@ namespace RCT2
         dst->mini_golf_current_animation = MiniGolfAnimation(src->mini_golf_current_animation);
         dst->mini_golf_flags = src->mini_golf_flags;
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->ride_subtype);
-        dst->colours_extended = src->colours_extended;
         dst->seat_rotation = src->seat_rotation;
         dst->target_seat_rotation = src->target_seat_rotation;
         dst->IsCrashedVehicle = src->flags & RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
@@ -2178,7 +2317,7 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectR
     return std::make_unique<RCT2::S6Importer>(objectRepository);
 }
 
-static void show_error(uint8_t errorType, rct_string_id errorStringId)
+static void show_error(uint8_t errorType, StringId errorStringId)
 {
     if (errorType == ERROR_TYPE_GENERIC)
     {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,8 +29,7 @@ static constexpr uint16_t MAX_OBJECT_CACHED_STRINGS = 0x5000 - BASE_OBJECT_STRIN
 LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env)
     : _env(env)
 {
-    for (rct_string_id stringId = BASE_OBJECT_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= BASE_OBJECT_STRING_ID;
-         stringId--)
+    for (StringId stringId = BASE_OBJECT_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= BASE_OBJECT_STRING_ID; stringId--)
     {
         _availableObjectStringIds.push(stringId);
     }
@@ -39,7 +38,7 @@ LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironm
 // Define implementation here to avoid including LanguagePack.h in header
 LocalisationService::~LocalisationService() = default;
 
-const char* LocalisationService::GetString(rct_string_id id) const
+const char* LocalisationService::GetString(StringId id) const
 {
     const char* result = nullptr;
     if (id == STR_EMPTY)
@@ -82,6 +81,15 @@ std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
     return languagePath;
 }
 
+std::string_view LocalisationService::GetCurrentLanguageLocale() const
+{
+    if (_currentLanguage >= 0 && static_cast<size_t>(_currentLanguage) < std::size(LanguagesDescriptors))
+    {
+        return LanguagesDescriptors[_currentLanguage].locale;
+    }
+    return {};
+}
+
 void LocalisationService::OpenLanguage(int32_t id)
 {
     CloseLanguages();
@@ -117,7 +125,7 @@ void LocalisationService::CloseLanguages()
     _currentLanguage = LANGUAGE_UNDEFINED;
 }
 
-std::tuple<rct_string_id, rct_string_id, rct_string_id> LocalisationService::GetLocalisedScenarioStrings(
+std::tuple<StringId, StringId, StringId> LocalisationService::GetLocalisedScenarioStrings(
     const std::string& scenarioFilename) const
 {
     auto result0 = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename.c_str(), 0);
@@ -126,7 +134,7 @@ std::tuple<rct_string_id, rct_string_id, rct_string_id> LocalisationService::Get
     return std::make_tuple(result0, result1, result2);
 }
 
-rct_string_id LocalisationService::GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const
+StringId LocalisationService::GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const
 {
     if (_languageCurrent == nullptr)
     {
@@ -135,7 +143,7 @@ rct_string_id LocalisationService::GetObjectOverrideStringId(std::string_view le
     return _languageCurrent->GetObjectOverrideStringId(legacyIdentifier, index);
 }
 
-rct_string_id LocalisationService::AllocateObjectString(const std::string& target)
+StringId LocalisationService::AllocateObjectString(const std::string& target)
 {
     if (_availableObjectStringIds.empty())
     {
@@ -155,7 +163,7 @@ rct_string_id LocalisationService::AllocateObjectString(const std::string& targe
     return stringId;
 }
 
-void LocalisationService::FreeObjectString(rct_string_id stringId)
+void LocalisationService::FreeObjectString(StringId stringId)
 {
     if (stringId != STR_EMPTY)
     {

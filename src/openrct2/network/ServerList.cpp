@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -148,6 +148,33 @@ void ServerList::AddRange(const std::vector<ServerListEntry>& entries)
 {
     _serverEntries.insert(_serverEntries.end(), entries.begin(), entries.end());
     Sort();
+}
+
+void ServerList::AddOrUpdateRange(const std::vector<ServerListEntry>& entries)
+{
+    for (auto& existsEntry : _serverEntries)
+    {
+        auto match = std::find_if(
+            entries.begin(), entries.end(), [&](const ServerListEntry& entry) { return existsEntry.Address == entry.Address; });
+        if (match != entries.end())
+        {
+            // Keep favourites
+            auto fav = existsEntry.Favourite;
+
+            existsEntry = *match;
+            existsEntry.Favourite = fav;
+        }
+    }
+
+    std::vector<ServerListEntry> newServers;
+    std::copy_if(entries.begin(), entries.end(), std::back_inserter(newServers), [this](const ServerListEntry& entry) {
+        return std::find_if(
+                   _serverEntries.begin(), _serverEntries.end(),
+                   [&](const ServerListEntry& existsEntry) { return existsEntry.Address == entry.Address; })
+            == _serverEntries.end();
+    });
+
+    AddRange(newServers);
 }
 
 void ServerList::Clear() noexcept

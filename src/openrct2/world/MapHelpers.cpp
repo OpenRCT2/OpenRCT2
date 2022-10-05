@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -198,9 +198,9 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
  * This does not change the base height, unless all corners have been raised.
  * @returns 0 if no edits were made, 1 otherwise
  */
-int32_t tile_smooth(int32_t x, int32_t y)
+int32_t tile_smooth(const TileCoordsXY& tileCoords)
 {
-    auto* const surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+    auto* const surfaceElement = map_get_surface_element_at(tileCoords.ToCoordsXY());
     if (surfaceElement == nullptr)
         return 0;
 
@@ -241,7 +241,8 @@ int32_t tile_smooth(int32_t x, int32_t y)
                 continue;
 
             // Get neighbour height. If the element is not valid (outside of map) assume the same height
-            auto* neighbourSurfaceElement = map_get_surface_element_at(TileCoordsXY{ x + x_offset, y + y_offset }.ToCoordsXY());
+            auto* neighbourSurfaceElement = map_get_surface_element_at(
+                (tileCoords + TileCoordsXY{ x_offset, y_offset }).ToCoordsXY());
             neighbourHeightOffset.baseheight[index] = neighbourSurfaceElement != nullptr ? neighbourSurfaceElement->base_height
                                                                                          : surfaceElement->base_height;
 

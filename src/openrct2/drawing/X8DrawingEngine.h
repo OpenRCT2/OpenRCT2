@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,8 @@
 #include "../common.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
+
+#include <memory>
 
 namespace OpenRCT2
 {
@@ -76,9 +78,7 @@ namespace OpenRCT2
 
             rct_drawpixelinfo _bitsDPI = {};
 
-#ifdef __ENABLE_LIGHTFX__
             bool _lastLightFXenabled = false;
-#endif
 
             X8WeatherDrawer _weatherDrawer;
             X8DrawingContext* _drawingContext;
@@ -120,7 +120,6 @@ namespace OpenRCT2
 
         private:
             void ConfigureDirtyGrid();
-            static void ResetWindowVisbilities();
             void DrawAllDirtyBlocks();
             uint32_t GetNumDirtyRows(const uint32_t x, const uint32_t y, const uint32_t columns);
             void DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows);
@@ -143,10 +142,10 @@ namespace OpenRCT2
                 rct_drawpixelinfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right,
                 int32_t bottom) override;
             void DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line) override;
-            void DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y) override;
+            void DrawSprite(rct_drawpixelinfo* dpi, const ImageId& imageId, int32_t x, int32_t y) override;
             void DrawSpriteRawMasked(
-                rct_drawpixelinfo* dpi, int32_t x, int32_t y, ImageId maskImage, ImageId colourImage) override;
-            void DrawSpriteSolid(rct_drawpixelinfo* dpi, ImageId image, int32_t x, int32_t y, uint8_t colour) override;
+                rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId& maskImage, const ImageId& colourImage) override;
+            void DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId& image, int32_t x, int32_t y, uint8_t colour) override;
             void DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
             void DrawBitmap(
                 rct_drawpixelinfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x,

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,6 +75,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::trackLocation_get, &ScVehicle::trackLocation_set, "trackLocation");
         dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");
         dukglue_register_property(ctx, &ScVehicle::remainingDistance_get, nullptr, "remainingDistance");
+        dukglue_register_property(ctx, &ScVehicle::subposition_get, nullptr, "subposition");
         dukglue_register_property(
             ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
         dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
@@ -337,11 +338,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            VehicleColour colours;
-            colours.Body = vehicle->colours.body_colour;
-            colours.Trim = vehicle->colours.trim_colour;
-            colours.Tertiary = vehicle->colours_extended;
-            return ToDuk<VehicleColour>(ctx, colours);
+            return ToDuk<VehicleColour>(ctx, vehicle->colours);
         }
         return ToDuk(ctx, nullptr);
     }
@@ -351,10 +348,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            auto colours = FromDuk<VehicleColour>(value);
-            vehicle->colours.body_colour = colours.Body;
-            vehicle->colours.trim_colour = colours.Trim;
-            vehicle->colours_extended = colours.Tertiary;
+            vehicle->colours = FromDuk<VehicleColour>(value);
         }
     }
 
@@ -391,6 +385,12 @@ namespace OpenRCT2::Scripting
     {
         auto vehicle = GetVehicle();
         return vehicle != nullptr ? vehicle->remaining_distance : 0;
+    }
+
+    uint8_t ScVehicle::subposition_get() const
+    {
+        auto vehicle = GetVehicle();
+        return vehicle != nullptr ? static_cast<uint8_t>(vehicle->TrackSubposition) : 0;
     }
 
     uint8_t ScVehicle::poweredAcceleration_get() const

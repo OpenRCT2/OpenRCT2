@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -141,7 +141,7 @@ thread_local uint8_t gOtherPalette[256] = {
 };
 
 // Originally 0x9ABE04
-uint8_t text_palette[0x8] = {
+uint8_t gTextPalette[0x8] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
@@ -805,13 +805,11 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
         uint8_t g = colours[1];
         uint8_t b = colours[0];
 
-#ifdef __ENABLE_LIGHTFX__
         if (lightfx_is_available())
         {
             lightfx_apply_palette_filter(i, &r, &g, &b);
         }
         else
-#endif
         {
             float night = gDayNightCycle;
             if (night >= 0 && gClimateLightningFlash == 0)

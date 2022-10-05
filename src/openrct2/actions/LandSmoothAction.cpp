@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -608,8 +608,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
         }
         default:
             log_error("Invalid map selection %u", _selectionType);
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, std::get<rct_string_id>(res.ErrorTitle), STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, std::get<StringId>(res.ErrorTitle), STR_NONE);
     } // switch selectionType
 
     // Raise / lower the land tool selection area

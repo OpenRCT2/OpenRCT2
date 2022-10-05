@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,7 +36,7 @@ namespace OpenRCT2::Localisation
         bool _useTrueTypeFont{};
         std::unique_ptr<ILanguagePack> _languageFallback;
         std::unique_ptr<ILanguagePack> _languageCurrent;
-        std::stack<rct_string_id> _availableObjectStringIds;
+        std::stack<StringId> _availableObjectStringIds;
         std::vector<std::string> _objectStrings;
 
     public:
@@ -44,6 +44,7 @@ namespace OpenRCT2::Localisation
         {
             return _currentLanguage;
         }
+        std::string_view GetCurrentLanguageLocale() const;
         bool UseTrueTypeFont() const
         {
             return _useTrueTypeFont;
@@ -56,16 +57,15 @@ namespace OpenRCT2::Localisation
         LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env);
         ~LocalisationService();
 
-        const char* GetString(rct_string_id id) const;
-        std::tuple<rct_string_id, rct_string_id, rct_string_id> GetLocalisedScenarioStrings(
-            const std::string& scenarioFilename) const;
-        rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const;
+        const char* GetString(StringId id) const;
+        std::tuple<StringId, StringId, StringId> GetLocalisedScenarioStrings(const std::string& scenarioFilename) const;
+        StringId GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const;
         std::string GetLanguagePath(uint32_t languageId) const;
 
         void OpenLanguage(int32_t id);
         void CloseLanguages();
-        rct_string_id AllocateObjectString(const std::string& target);
-        void FreeObjectString(rct_string_id stringId);
+        StringId AllocateObjectString(const std::string& target);
+        void FreeObjectString(StringId stringId);
     };
 } // namespace OpenRCT2::Localisation
 

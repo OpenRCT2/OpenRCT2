@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../config/Config.h"
 #include "../core/File.h"
 #include "../core/FileStream.h"
@@ -34,6 +35,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <memory>
 #include <vector>
 
 namespace OpenRCT2::Audio
@@ -97,11 +99,30 @@ namespace OpenRCT2::Audio
     void LoadAudioObjects()
     {
         auto& objManager = GetContext()->GetObjectManager();
-        auto* baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2Base);
-        if (baseAudio != nullptr)
+
+        Object* baseAudio{};
+
+        // We have a different audio object for RCT Classic
+        auto env = GetContext()->GetPlatformEnvironment();
+        if (env->IsUsingClassic())
         {
-            _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
+            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2cBase);
+            if (baseAudio != nullptr)
+            {
+                _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
+            }
         }
+
+        if (baseAudio == nullptr)
+        {
+            // Fallback to vanilla RCT2 audio object
+            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2Base);
+            if (baseAudio != nullptr)
+            {
+                _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
+            }
+        }
+
         objManager.LoadObject(AudioObjectIdentifiers::Rct2Circus);
     }
 
@@ -370,7 +391,7 @@ namespace OpenRCT2::Audio
             Pause();
         }
 
-        window_invalidate_by_class(WC_OPTIONS);
+        window_invalidate_by_class(WindowClass::Options);
     }
 
     void Pause()

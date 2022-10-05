@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
@@ -35,7 +36,7 @@ static int8_t TopSpinSeatPositionOffset[] = {
 
 static void PaintTopSpinRiders(
     paint_session& session, const Vehicle& vehicle, ImageIndex seatImageIndex, const CoordsXYZ& seatCoords,
-    const CoordsXYZ& bbLength, const CoordsXYZ& bbOffset)
+    const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level >= ZoomLevel{ 2 })
         return;
@@ -48,7 +49,7 @@ static void PaintTopSpinRiders(
             auto imageIndex = seatImageIndex + ((i + 1) * 76);
             auto imageId = ImageId(
                 imageIndex, vehicle.peep_tshirt_colours[peepIndex], vehicle.peep_tshirt_colours[peepIndex + 1]);
-            PaintAddImageAsChild(session, imageId, seatCoords, bbLength, bbOffset);
+            PaintAddImageAsChild(session, imageId, seatCoords, bb);
         }
         else
         {
@@ -59,25 +60,25 @@ static void PaintTopSpinRiders(
 
 static void PaintTopSpinSeat(
     paint_session& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle* vehicle, Direction direction,
-    uint32_t armRotation, uint32_t seatRotation, const CoordsXYZ& offset, const CoordsXYZ& bbLength, const CoordsXYZ& bbOffset)
+    uint32_t armRotation, uint32_t seatRotation, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (armRotation >= std::size(TopSpinSeatHeightOffset))
         return;
 
-    const auto& vehicleEntry = rideEntry.Cars[0];
+    const auto& carEntry = rideEntry.Cars[0];
 
     ImageIndex seatImageIndex;
     if (vehicle != nullptr && vehicle->restraints_position >= 64)
     {
         // Open Restraints
-        seatImageIndex = vehicleEntry.base_image_id + 64;
+        seatImageIndex = carEntry.base_image_id + 64;
         seatImageIndex += (vehicle->restraints_position - 64) >> 6;
         seatImageIndex += direction * 3;
     }
     else
     {
         // Var_20 Rotation of seats
-        seatImageIndex = vehicleEntry.base_image_id;
+        seatImageIndex = carEntry.base_image_id;
         seatImageIndex += direction * 16;
         seatImageIndex += seatRotation;
     }
@@ -102,15 +103,15 @@ static void PaintTopSpinSeat(
 
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        imageTemplate = imageFlags;
     }
 
-    PaintAddImageAsChild(session, imageTemplate.WithIndex(seatImageIndex), seatCoords, bbLength, bbOffset);
+    PaintAddImageAsChild(session, imageTemplate.WithIndex(seatImageIndex), seatCoords, bb);
     if (vehicle != nullptr)
     {
-        PaintTopSpinRiders(session, *vehicle, seatImageIndex, seatCoords, bbLength, bbOffset);
+        PaintTopSpinRiders(session, *vehicle, seatImageIndex, seatCoords, bb);
     }
 }
 
@@ -122,7 +123,7 @@ static void PaintTopSpinVehicle(
     if (rideEntry == nullptr)
         return;
 
-    const auto& vehicleEntry = rideEntry->Cars[0];
+    const auto& carEntry = rideEntry->Cars[0];
 
     height += 3;
     uint8_t seatRotation = 0;
@@ -146,36 +147,35 @@ static void PaintTopSpinVehicle(
     }
 
     CoordsXYZ offset = { al, cl, height };
-    CoordsXYZ bbLength = { 24, 24, 90 };
-    CoordsXYZ bbOffset = { al + 16, cl + 16, height };
+    BoundBoxXYZ bb = { { al + 16, cl + 16, height }, { 24, 24, 90 } };
 
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto supportImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].supports);
     auto armImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].additional);
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        supportImageTemplate = ImageId::FromUInt32(imageFlags);
+        supportImageTemplate = imageFlags;
         armImageTemplate = supportImageTemplate;
     }
 
     // Left back bottom support
-    auto imageIndex = vehicleEntry.base_image_id + 572 + ((direction & 1) << 1);
-    PaintAddImageAsParent(session, supportImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
+    auto imageIndex = carEntry.base_image_id + 572 + ((direction & 1) << 1);
+    PaintAddImageAsParent(session, supportImageTemplate.WithIndex(imageIndex), offset, bb);
 
     // Left hand arm
-    imageIndex = vehicleEntry.base_image_id + 380 + armImageOffset + ((direction & 1) * 48);
-    PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
+    imageIndex = carEntry.base_image_id + 380 + armImageOffset + ((direction & 1) * 48);
+    PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bb);
 
     // Seat
-    PaintTopSpinSeat(session, ride, *rideEntry, vehicle, direction, armRotation, seatRotation, offset, bbLength, bbOffset);
+    PaintTopSpinSeat(session, ride, *rideEntry, vehicle, direction, armRotation, seatRotation, offset, bb);
 
     // Right hand arm
-    imageIndex = vehicleEntry.base_image_id + 476 + armImageOffset + ((direction & 1) * 48);
-    PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
+    imageIndex = carEntry.base_image_id + 476 + armImageOffset + ((direction & 1) * 48);
+    PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bb);
 
     // Right back bottom support
-    imageIndex = vehicleEntry.base_image_id + 573 + ((direction & 1) << 1);
-    PaintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
+    imageIndex = carEntry.base_image_id + 573 + ((direction & 1) << 1);
+    PaintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;

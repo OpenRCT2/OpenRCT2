@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,6 +49,7 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scripting/ScriptEngine.h"
+#include "../ui/UiContext.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Map.h"
@@ -456,7 +457,7 @@ namespace OpenRCT2
 
         void ReadWriteGeneralChunk(OrcaStream& os)
         {
-            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this](OrcaStream::ChunkStream& cs) {
+            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this, &os](OrcaStream::ChunkStream& cs) {
                 // Only GAME_PAUSED_NORMAL from gGamePaused is relevant.
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -507,6 +508,11 @@ namespace OpenRCT2
                 cs.ReadWrite(gWidePathTileLoopPosition);
 
                 ReadWriteRideRatingCalculationData(cs, gRideRatingUpdateState);
+
+                if (os.GetHeader().TargetVersion >= 14)
+                {
+                    cs.ReadWrite(gIsAutosave);
+                }
             });
             if (!found)
             {
@@ -926,6 +932,10 @@ namespace OpenRCT2
                     {
                         gNewsItems[offset + i] = archived[i];
                     }
+
+                    // Still need to set the correct type to properly terminate the queue
+                    if (archived.size() < News::MaxItemsArchive)
+                        gNewsItems[offset + archived.size()].Type = News::ItemType::Null;
                 }
                 else
                 {
@@ -1020,9 +1030,9 @@ namespace OpenRCT2
 
         void UpdateTrackElementsRideType()
         {
-            for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+            for (int32_t y = 0; y < gMapSize.y; y++)
             {
-                for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+                for (int32_t x = 0; x < gMapSize.x; x++)
                 {
                     TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
@@ -1215,9 +1225,9 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.overall_view.y);
 
                     // Vehicles
-                    cs.ReadWrite(ride.num_vehicles);
+                    cs.ReadWrite(ride.NumTrains);
                     cs.ReadWrite(ride.num_cars_per_train);
-                    cs.ReadWrite(ride.proposed_num_vehicles);
+                    cs.ReadWrite(ride.ProposedNumTrains);
                     cs.ReadWrite(ride.proposed_num_cars_per_train);
                     cs.ReadWrite(ride.max_trains);
                     if (version < 0x5)
@@ -1838,8 +1848,8 @@ namespace OpenRCT2
         cs.ReadWrite(entity.acceleration);
         cs.ReadWrite(entity.ride);
         cs.ReadWrite(entity.vehicle_type);
-        cs.ReadWrite(entity.colours.body_colour);
-        cs.ReadWrite(entity.colours.trim_colour);
+        cs.ReadWrite(entity.colours.Body);
+        cs.ReadWrite(entity.colours.Trim);
         cs.ReadWrite(entity.track_progress);
         cs.ReadWrite(entity.BoatLocation);
         cs.ReadWrite(entity.TrackTypeAndDirection);
@@ -1901,7 +1911,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.mini_golf_current_animation);
         cs.ReadWrite(entity.mini_golf_flags);
         cs.ReadWrite(entity.ride_subtype);
-        cs.ReadWrite(entity.colours_extended);
+        cs.ReadWrite(entity.colours.Tertiary);
         cs.ReadWrite(entity.seat_rotation);
         cs.ReadWrite(entity.target_seat_rotation);
         cs.ReadWrite(entity.IsCrashedVehicle);
@@ -2281,7 +2291,8 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         log_verbose("saving game");
     }
 
-    if (!(flags & S6_SAVE_FLAG_AUTOMATIC))
+    gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
+    if (!gIsAutosave)
     {
         window_close_construction_windows();
     }
@@ -2312,6 +2323,31 @@ int32_t scenario_save(u8string_view path, int32_t flags)
     catch (const std::exception& e)
     {
         log_error(e.what());
+
+        Formatter ft;
+        ft.Add<const char*>(e.what());
+        context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
+        gfx_invalidate_screen();
+
+        auto ctx = OpenRCT2::GetContext();
+        auto uictx = ctx->GetUiContext();
+
+        std::string title = "Error while saving";
+        std::string message
+            = "There was an error while saving scenario.\nhttps://github.com/OpenRCT2/OpenRCT2/issues/17664\nWe would like to "
+              "collect more information about this issue, if this did not happen due to missing permissions, lack of space, "
+              "etc. please consider submitting a bug report. To collect information we would like to trigger an assert.";
+
+        std::string report_bug_button = "Report bug, trigger an assert, potentially terminating the game";
+        std::string skip_button = "Skip reporting, let me continue";
+
+        std::vector<std::string> buttons{ std::move(report_bug_button), std::move(skip_button) };
+        int choice = uictx->ShowMessageBox(title, message, buttons);
+
+        if (choice == 0)
+        {
+            Guard::Assert(false, "Error while saving: %s", e.what());
+        }
     }
 
     gfx_invalidate_screen();
@@ -2372,6 +2408,7 @@ public:
     void Import() override
     {
         _parkFile->Import();
+        research_determine_first_of_type();
         game_fix_save_vars();
     }
 

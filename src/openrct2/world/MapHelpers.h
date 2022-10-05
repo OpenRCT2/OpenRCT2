@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "Location.hpp"
 
 enum
 {
@@ -20,4 +21,4 @@ enum
 };
 
 int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b);
-int32_t tile_smooth(int32_t x, int32_t y);
+int32_t tile_smooth(const TileCoordsXY& tileCoords);

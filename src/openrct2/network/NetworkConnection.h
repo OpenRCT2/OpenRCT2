@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,7 +59,7 @@ public:
 
     const utf8* GetLastDisconnectReason() const noexcept;
     void SetLastDisconnectReason(std::string_view src);
-    void SetLastDisconnectReason(const rct_string_id string_id, void* args = nullptr);
+    void SetLastDisconnectReason(const StringId string_id, void* args = nullptr);
 
 private:
     std::deque<NetworkPacket> _outboundPackets;

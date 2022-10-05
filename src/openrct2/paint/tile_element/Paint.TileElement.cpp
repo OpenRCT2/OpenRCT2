@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -104,7 +104,7 @@ static void blank_tiles_paint(paint_session& session, int32_t x, int32_t y)
     session.SpritePosition.x = x;
     session.SpritePosition.y = y;
     session.InteractionType = ViewportInteractionItem::None;
-    PaintAddImageAsParent(session, SPR_BLANK_TILE, { 0, 0, 16 }, { 32, 32, -1 });
+    PaintAddImageAsParent(session, ImageId(SPR_BLANK_TILE), { 0, 0, 16 }, { 32, 32, -1 });
 }
 
 bool gShowSupportSegmentHeights = false;
@@ -172,7 +172,8 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     {
         uint8_t arrowRotation = (rotation + (gMapSelectArrowDirection & 3)) & 3;
 
-        uint32_t imageId = arrowRotation + (gMapSelectArrowDirection & 0xFC) + 0x20900C27;
+        uint32_t imageIndex = arrowRotation + (gMapSelectArrowDirection & 0xFC) + PEEP_SPAWN_ARROW_0;
+        ImageId imageId = ImageId(imageIndex, COLOUR_YELLOW);
         int32_t arrowZ = gMapSelectArrowPosition.z;
 
         session.SpritePosition.x = coords.x;
@@ -314,12 +315,13 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
         for (int32_t sx = 0; sx < 3; sx++)
         {
             uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].height;
-            int32_t imageColourFlats = 0b101111 << 19 | IMAGE_TYPE_TRANSPARENT;
+            auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::PaletteDarken3);
             if (segmentHeight == 0xFFFF)
             {
                 segmentHeight = session.Support.height;
                 // white: 0b101101
-                imageColourFlats = 0b111011 << 19 | IMAGE_TYPE_TRANSPARENT;
+                imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1)
+                                       .WithTransparency(FilterPaletteID::PaletteTranslucentBordeauxRedHighlight);
             }
 
             // Only draw supports below the clipping height.
@@ -329,7 +331,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
             int32_t xOffset = sy * 10;
             int32_t yOffset = -22 + sx * 10;
             paint_struct* ps = PaintAddImageAsParent(
-                session, 5504 | imageColourFlats, { xOffset, yOffset, segmentHeight }, { 10, 10, 1 },
+                session, imageColourFlats, { xOffset, yOffset, segmentHeight }, { 10, 10, 1 },
                 { xOffset + 1, yOffset + 16, segmentHeight });
             if (ps != nullptr)
             {

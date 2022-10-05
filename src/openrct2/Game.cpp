@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -80,14 +80,13 @@ float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 bool gInMapInitCode = false;
 std::string gCurrentLoadedPath;
+bool gIsAutosave = false;
+bool gIsAutosaveLoaded = false;
 
 bool gLoadKeepWindowsOpen = false;
 
 uint32_t gCurrentTicks;
 uint32_t gCurrentRealTimeTicks;
-
-rct_string_id gGameCommandErrorTitle;
-rct_string_id gGameCommandErrorText;
 
 #ifdef ENABLE_SCRIPTING
 static bool _mapChangedExpected;
@@ -98,7 +97,7 @@ using namespace OpenRCT2;
 void game_reset_speed()
 {
     gGameSpeed = 1;
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
 }
 
 void game_increase_game_speed()
@@ -106,7 +105,7 @@ void game_increase_game_speed()
     gGameSpeed = std::min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
     if (gGameSpeed == 5)
         gGameSpeed = 8;
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
 }
 
 void game_reduce_game_speed()
@@ -114,7 +113,7 @@ void game_reduce_game_speed()
     gGameSpeed = std::max(1, gGameSpeed - 1);
     if (gGameSpeed == 7)
         gGameSpeed = 4;
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
 }
 
 /**
@@ -123,9 +122,9 @@ void game_reduce_game_speed()
  */
 void game_create_windows()
 {
-    context_open_window(WC_MAIN_WINDOW);
-    context_open_window(WC_TOP_TOOLBAR);
-    context_open_window(WC_BOTTOM_TOOLBAR);
+    context_open_window(WindowClass::MainWindow);
+    context_open_window(WindowClass::TopToolbar);
+    context_open_window(WindowClass::BottomToolbar);
     window_resize_gui(context_get_width(), context_get_height());
 }
 
@@ -207,7 +206,7 @@ void update_palette_effects()
         uint32_t shade = 0;
         if (gConfigGeneral.render_weather_gloom)
         {
-            auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
+            auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
@@ -303,7 +302,7 @@ void update_palette_effects()
 void pause_toggle()
 {
     gGamePaused ^= GAME_PAUSED_NORMAL;
-    window_invalidate_by_class(WC_TOP_TOOLBAR);
+    window_invalidate_by_class(WindowClass::TopToolbar);
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
         OpenRCT2::Audio::StopAll();
@@ -326,7 +325,7 @@ bool game_is_not_paused()
  */
 static void load_landscape()
 {
-    auto intent = Intent(WC_LOADSAVE);
+    auto intent = Intent(WindowClass::Loadsave);
     intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
     context_open_intent(&intent);
 }
@@ -442,10 +441,10 @@ void game_fix_save_vars()
     ResearchFix();
 
     // Fix banner list pointing to NULL map elements
-    banner_reset_broken_index();
+    BannerResetBrokenIndex();
 
     // Fix banners which share their index
-    fix_duplicated_banners();
+    BannerFixDuplicates();
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
@@ -471,7 +470,7 @@ void game_load_init()
     else
     {
         auto* mainWindow = window_get_main();
-        window_unfollow_sprite(mainWindow);
+        window_unfollow_sprite(*mainWindow);
     }
 
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
@@ -564,7 +563,7 @@ void reset_all_sprite_quadrant_placements()
 
 void save_game()
 {
-    if (!gFirstTimeSaving)
+    if (!gFirstTimeSaving && !gIsAutosaveLoaded)
     {
         const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
         save_game_with_name(savePath);
@@ -594,19 +593,20 @@ void save_game_cmd(u8string_view name /* = {} */)
 void save_game_with_name(u8string_view name)
 {
     log_verbose("Saving to %s", u8string(name).c_str());
-    if (scenario_save(name, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0)))
+    if (scenario_save(name, gConfigGeneral.save_plugin_data ? 1 : 0))
     {
         log_verbose("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
+        gIsAutosaveLoaded = false;
         gScreenAge = 0;
     }
 }
 
-void* create_save_game_as_intent()
+std::unique_ptr<Intent> create_save_game_as_intent()
 {
     auto name = Path::GetFileNameWithoutExtension(gScenarioSavePath);
 
-    Intent* intent = new Intent(WC_LOADSAVE);
+    auto intent = std::make_unique<Intent>(WindowClass::Loadsave);
     intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
     intent->putExtra(INTENT_EXTRA_PATH, name);
 
@@ -615,9 +615,8 @@ void* create_save_game_as_intent()
 
 void save_game_as()
 {
-    auto* intent = static_cast<Intent*>(create_save_game_as_intent());
-    context_open_intent(intent);
-    delete intent;
+    auto intent = create_save_game_as_intent();
+    context_open_intent(intent.get());
 }
 
 static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processLandscapeFolder)
@@ -726,10 +725,12 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
     {
         game_notify_map_change();
         game_unload_scripts();
-        window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+        window_close_by_class(WindowClass::EditorObjectSelection);
         context_load_park_from_file(path);
         game_load_scripts();
         game_notify_map_changed();
+        gIsAutosaveLoaded = gIsAutosave;
+        gFirstTimeSaving = false;
     }
 }
 
@@ -752,7 +753,7 @@ void game_load_or_quit_no_save_prompt()
             }
             else
             {
-                auto intent = Intent(WC_LOADSAVE);
+                auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
                 intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(game_load_or_quit_no_save_prompt_callback));
                 context_open_intent(&intent);

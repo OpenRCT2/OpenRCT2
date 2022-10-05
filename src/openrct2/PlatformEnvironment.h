@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,6 +51,7 @@ namespace OpenRCT2
         REPLAY,      // Contains recorded replays.
         LOG_DESYNCS, // Contains desync reports.
         CRASH,       // Contains crash dumps.
+        ASSET_PACK,  // Contains asset packs.
     };
 
     enum class PATHID
@@ -83,6 +84,7 @@ namespace OpenRCT2
         virtual u8string GetFilePath(PATHID pathid) const abstract;
         virtual u8string FindFile(DIRBASE base, DIRID did, u8string_view fileName) const abstract;
         virtual void SetBasePath(DIRBASE base, u8string_view path) abstract;
+        virtual bool IsUsingClassic() const abstract;
     };
 
     [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DIRBASE_VALUES basePaths);

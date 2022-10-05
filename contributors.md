@@ -9,6 +9,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Hielke Morsink (Broxzier)
 * Tulio Paschoalin Leao (tupaschoal)
 * Olivier Wervers (Oli414)
+* Rik Smeets (rik-smeets)
 
 ## Former development team members
 * Lewis Fox (LRFLEW)
@@ -97,6 +98,7 @@ The following people are not part of the development team, but have been contrib
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
 * Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
 * Karst van Galen Last (AuraSpecs) - Misc.
+* (8street) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
@@ -192,6 +194,9 @@ The following people are not part of the development team, but have been contrib
 * Lawrence De Mol (lawrencedemol)
 * Erik Wouters (EWouters)
 * Hoby R. (hobyr)
+* Huu Kim Nguyen (CoderUndefined)
+* Henry Cheng (jazzysoggy)
+* Dan Stevens (MajeureX)
 
 ## Toolchain
 * (Balletie) - macOS

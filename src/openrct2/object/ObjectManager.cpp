@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
+#include "../ride/RideAudio.h"
 #include "../util/Util.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
@@ -243,6 +244,7 @@ public:
         // We will need to replay the title music if the title music object got reloaded
         OpenRCT2::Audio::StopTitleMusic();
         OpenRCT2::Audio::PlayTitleMusic();
+        OpenRCT2::RideAudio::StopAllChannels();
     }
 
     std::vector<const ObjectRepositoryItem*> GetPackableObjects() override
@@ -260,7 +262,7 @@ public:
         return objects;
     }
 
-    static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)
+    static StringId GetObjectSourceGameString(const ObjectSourceGame sourceGame)
     {
         switch (sourceGame)
         {
@@ -283,7 +285,7 @@ public:
         }
     }
 
-    const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) override
+    const std::vector<ObjectEntryIndex>& GetAllRideEntries(ride_type_t rideType) override
     {
         if (rideType >= RIDE_TYPE_COUNT)
         {
@@ -490,7 +492,7 @@ private:
 
         // HACK Scenery window will lose its tabs after changing the scenery group indexing
         //      for now just close it, but it will be better to later tell it to invalidate the tabs
-        window_close_by_class(WC_SCENERY);
+        window_close_by_class(WindowClass::Scenery);
     }
 
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
@@ -771,7 +773,7 @@ void object_manager_unload_all_objects()
     objectManager.UnloadAllTransient();
 }
 
-rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame)
+StringId object_manager_get_source_game_string(const ObjectSourceGame sourceGame)
 {
     return ObjectManager::GetObjectSourceGameString(sourceGame);
 }

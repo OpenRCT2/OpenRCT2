@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -348,7 +348,7 @@ static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenD
                     continue;
                 RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                 auto ride = get_ride(rideIndex);
-                if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+                if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
                 {
                     *outRideIndex = rideIndex;
                     return PATH_SEARCH_SHOP_ENTRANCE;
@@ -766,7 +766,7 @@ static void peep_pathfind_heuristic_search(
                  * tile. */
                 rideIndex = tileElement->AsTrack()->GetRideIndex();
                 auto ride = get_ride(rideIndex);
-                if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+                if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
                     continue;
 
                 found = true;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -164,7 +164,7 @@ namespace Graph
             {
                 // Draw month text
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
+                ft.Add<StringId>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
                     dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
                     { FontSpriteBase::SMALL, TextAlignment::CENTRE });

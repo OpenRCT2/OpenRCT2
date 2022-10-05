@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RECENT_MESSAGES;
+static constexpr const StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
 static constexpr const int32_t WH = 300;
 static constexpr const int32_t WW = 400;
 
@@ -57,17 +57,17 @@ public:
     void OnOpen() override
     {
         widgets = window_news_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         _pressedNewsItemIndex = -1;
 
         int32_t w = 0, h = 0;
         rct_widget* widget = &widgets[WIDX_SCROLL];
         window_get_scroll_size(this, 0, &w, &h);
         scrolls[0].v_top = std::max(0, h - (widget->height() - 1));
-        WidgetScrollUpdateThumbs(this, WIDX_SCROLL);
+        WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -75,7 +75,7 @@ public:
                 Close();
                 break;
             case WIDX_SETTINGS:
-                context_open_window(WC_NOTIFICATION_OPTIONS);
+                context_open_window(WindowClass::NotificationOptions);
                 break;
         }
     }
@@ -114,7 +114,7 @@ public:
             auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
             if (subjectLoc.has_value() && (_mainWindow = window_get_main()) != nullptr)
             {
-                window_scroll_to_location(_mainWindow, subjectLoc.value());
+                window_scroll_to_location(*_mainWindow, subjectLoc.value());
             }
         }
     }
@@ -197,8 +197,8 @@ public:
             // Date text
             {
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
-                ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
+                ft.Add<StringId>(DateDayNames[newsItem.Day - 1]);
+                ft.Add<StringId>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
                 DrawTextBasic(&dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontSpriteBase::SMALL });
             }
             // Item text
@@ -311,5 +311,5 @@ public:
 
 rct_window* WindowNewsOpen()
 {
-    return WindowFocusOrCreate<NewsWindow>(WC_RECENT_NEWS, WW, WH, 0);
+    return WindowFocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
 }

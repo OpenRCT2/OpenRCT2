@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,7 +75,7 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
 using TrackComputeFunction = int32_t (*)(const int16_t);
 struct TrackElementDescriptor
 {
-    rct_string_id Description;
+    StringId Description;
     rct_track_coordinates Coordinates;
 
     rct_preview_track* Block;

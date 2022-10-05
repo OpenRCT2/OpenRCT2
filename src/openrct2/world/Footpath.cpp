@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -130,20 +130,6 @@ TileElement* map_get_footpath_element(const CoordsXYZ& coords)
     return nullptr;
 }
 
-money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags)
-{
-    auto action = FootpathRemoveAction(footpathLoc);
-    action.SetFlags(flags);
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        auto res = GameActions::Execute(&action);
-        return res.Cost;
-    }
-    auto res = GameActions::Query(&action);
-    return res.Cost;
-}
-
 /**
  *
  *  rct2: 0x006A76FF
@@ -216,10 +202,9 @@ void footpath_provisional_remove()
     {
         gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
 
-        footpath_remove(
-            gProvisionalFootpath.Position,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                | GAME_COMMAND_FLAG_GHOST);
+        auto action = FootpathRemoveAction(gProvisionalFootpath.Position);
+        action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+        GameActions::Execute(&action);
     }
 }
 
@@ -2038,7 +2023,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
 
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
 {
-    auto pathElement = map_get_path_element_at(position);
+    auto pathElement = MapGetFirstTileElementWithBaseHeightBetween<PathElement>({ position, position.z + PATH_HEIGHT_STEP });
     return pathElement != nullptr && pathElement->IsBlockedByVehicle();
 }
 

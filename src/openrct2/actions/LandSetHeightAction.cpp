@@ -52,7 +52,7 @@ GameActions::Result LandSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, STR_NONE);
     }
 
-    rct_string_id errorTitle = CheckParameters();
+    StringId errorTitle = CheckParameters();
     if (errorTitle != STR_NONE)
     {
         return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_NONE);
@@ -76,7 +76,7 @@ GameActions::Result LandSetHeightAction::Query() const
             if (tileElement != nullptr)
             {
                 auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
         }
@@ -110,7 +110,7 @@ GameActions::Result LandSetHeightAction::Query() const
     if (tileElement != nullptr)
     {
         auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
-        map_obstruction_set_error_text(tileElement, res);
+        MapGetObstructionErrorText(tileElement, res);
         return res;
     }
 
@@ -168,7 +168,7 @@ GameActions::Result LandSetHeightAction::Execute() const
     return res;
 }
 
-rct_string_id LandSetHeightAction::CheckParameters() const
+StringId LandSetHeightAction::CheckParameters() const
 {
     if (!LocationValid(_coords))
     {
@@ -261,7 +261,7 @@ void LandSetHeightAction::SmallSceneryRemoval() const
     } while (!(tileElement++)->IsLastForTile());
 }
 
-rct_string_id LandSetHeightAction::CheckRideSupports() const
+StringId LandSetHeightAction::CheckRideSupports() const
 {
     for (auto* trackElement : TileElementsView<TrackElement>(_coords))
     {

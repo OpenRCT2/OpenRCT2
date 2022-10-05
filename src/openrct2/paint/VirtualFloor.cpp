@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -363,9 +363,9 @@ void virtual_floor_paint(paint_session& session)
         }
     }
 
-    uint32_t remap_base = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_DARK_PURPLE);
-    uint32_t remap_edge = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_WHITE);
-    uint32_t remap_lit = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_DARK_BROWN);
+    const ImageId remap_base = ImageId(0, COLOUR_DARK_PURPLE);
+    const ImageId remap_edge = ImageId(0, COLOUR_WHITE);
+    const ImageId remap_lit = ImageId(0, COLOUR_DARK_BROWN);
 
     // Edges which are internal to objects (i.e., the tile on both sides
     //  is occupied/lit) are not rendered to provide visual clarity.
@@ -375,35 +375,31 @@ void virtual_floor_paint(paint_session& session)
     const auto virtualFloorOffset = CoordsXYZ{ 0, 0, _virtualFloorHeight };
     if (paintEdges & EDGE_NE)
     {
+        const auto baseImg = !(occupiedEdges & EDGE_NE) ? ((litEdges & EDGE_NE) ? remap_lit : remap_base) : remap_edge;
         PaintAddImageAsParent(
-            session,
-            SPR_G2_SELECTION_EDGE_NE
-                | (!(occupiedEdges & EDGE_NE) ? ((litEdges & EDGE_NE) ? remap_lit : remap_base) : remap_edge),
-            virtualFloorOffset, { 0, 0, 1 }, { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NE) ? -2 : 0) });
+            session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_NE), virtualFloorOffset, { 0, 0, 1 },
+            { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NE) ? -2 : 0) });
     }
     if (paintEdges & EDGE_SE)
     {
+        const auto baseImg = !(occupiedEdges & EDGE_SE) ? ((litEdges & EDGE_SE) ? remap_lit : remap_base) : remap_edge;
         PaintAddImageAsParent(
-            session,
-            SPR_G2_SELECTION_EDGE_SE
-                | (!(occupiedEdges & EDGE_SE) ? ((litEdges & EDGE_SE) ? remap_lit : remap_base) : remap_edge),
-            virtualFloorOffset, { 1, 1, 1 }, { 16, 27, _virtualFloorHeight + ((dullEdges & EDGE_SE) ? -2 : 0) });
+            session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_SE), virtualFloorOffset, { 1, 1, 1 },
+            { 16, 27, _virtualFloorHeight + ((dullEdges & EDGE_SE) ? -2 : 0) });
     }
     if (paintEdges & EDGE_SW)
     {
+        const auto baseImg = !(occupiedEdges & EDGE_SW) ? ((litEdges & EDGE_SW) ? remap_lit : remap_base) : remap_edge;
         PaintAddImageAsParent(
-            session,
-            SPR_G2_SELECTION_EDGE_SW
-                | (!(occupiedEdges & EDGE_SW) ? ((litEdges & EDGE_SW) ? remap_lit : remap_base) : remap_edge),
-            virtualFloorOffset, { 1, 1, 1 }, { 27, 16, _virtualFloorHeight + ((dullEdges & EDGE_SW) ? -2 : 0) });
+            session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_SW), virtualFloorOffset, { 1, 1, 1 },
+            { 27, 16, _virtualFloorHeight + ((dullEdges & EDGE_SW) ? -2 : 0) });
     }
     if (paintEdges & EDGE_NW)
     {
+        const auto baseImg = !(occupiedEdges & EDGE_NW) ? ((litEdges & EDGE_NW) ? remap_lit : remap_base) : remap_edge;
         PaintAddImageAsParent(
-            session,
-            SPR_G2_SELECTION_EDGE_NW
-                | (!(occupiedEdges & EDGE_NW) ? ((litEdges & EDGE_NW) ? remap_lit : remap_base) : remap_edge),
-            virtualFloorOffset, { 0, 0, 1 }, { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) });
+            session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_NW), virtualFloorOffset, { 0, 0, 1 },
+            { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) });
     }
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Glassy)
@@ -411,8 +407,7 @@ void virtual_floor_paint(paint_session& session)
 
     if (!weAreOccupied && !weAreLit && weAreAboveGround && weAreOwned)
     {
-        int32_t imageColourFlats = SPR_G2_SURFACE_GLASSY_RECOLOURABLE | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
-            | EnumValue(FilterPaletteID::PaletteWater) << 19;
+        auto imageColourFlats = ImageId(SPR_G2_SURFACE_GLASSY_RECOLOURABLE, FilterPaletteID::PaletteWater).WithBlended(true);
         PaintAddImageAsParent(session, imageColourFlats, virtualFloorOffset, { 30, 30, 0 }, { 2, 2, _virtualFloorHeight - 3 });
     }
 }

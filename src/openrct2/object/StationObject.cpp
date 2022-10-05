@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,7 +54,7 @@ void StationObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t h
     auto tcolour0 = colour0;
 
     auto imageId = ImageId(BaseImageId);
-    auto tImageId = ImageId(BaseImageId + 16).WithTransparancy(tcolour0);
+    auto tImageId = ImageId(BaseImageId + 16).WithTransparency(tcolour0);
     if (Flags & STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR)
     {
         imageId = imageId.WithPrimary(colour0);

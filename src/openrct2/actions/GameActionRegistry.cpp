@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,6 +55,7 @@
 #include "RideDemolishAction.h"
 #include "RideEntranceExitPlaceAction.h"
 #include "RideEntranceExitRemoveAction.h"
+#include "RideFreezeRatingAction.h"
 #include "RideSetAppearanceAction.h"
 #include "RideSetColourSchemeAction.h"
 #include "RideSetNameAction.h"
@@ -159,6 +160,7 @@ namespace GameActions
         REGISTER_ACTION(RideSetNameAction);
         REGISTER_ACTION(RideSetPriceAction);
         REGISTER_ACTION(RideSetStatusAction);
+        REGISTER_ACTION(RideFreezeRatingAction);
         REGISTER_ACTION(RideSetAppearanceAction);
         REGISTER_ACTION(RideSetVehicleAction);
         REGISTER_ACTION(RideSetSettingAction);

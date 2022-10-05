@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ enum
 
 void ColourSchemeUpdate(rct_window* window);
 void ColourSchemeUpdateAll();
-void ColourSchemeUpdateByClass(rct_window* window, rct_windowclass classification);
+void ColourSchemeUpdateByClass(rct_window* window, WindowClass classification);
 
 void ThemeManagerInitialise();
 void ThemeManagerLoadAvailableThemes();
@@ -35,8 +35,8 @@ size_t ThemeManagerGetAvailableThemeIndex();
 void ThemeManagerSetActiveAvailableTheme(size_t index);
 size_t ThemeGetIndexForName(const utf8* name);
 
-colour_t ThemeGetColour(rct_windowclass wc, uint8_t index);
-void ThemeSetColour(rct_windowclass wc, uint8_t index, colour_t colour);
+colour_t ThemeGetColour(WindowClass wc, uint8_t index);
+void ThemeSetColour(WindowClass wc, uint8_t index, colour_t colour);
 uint8_t ThemeGetFlags();
 void ThemeSetFlags(uint8_t flags);
 void ThemeSave();
@@ -44,5 +44,5 @@ void ThemeRename(const utf8* name);
 void ThemeDuplicate(const utf8* name);
 void ThemeDelete();
 
-uint8_t ThemeDescGetNumColours(rct_windowclass wc);
-rct_string_id ThemeDescGetName(rct_windowclass wc);
+uint8_t ThemeDescGetNumColours(WindowClass wc);
+StringId ThemeDescGetName(WindowClass wc);

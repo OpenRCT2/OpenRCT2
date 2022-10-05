@@ -340,7 +340,6 @@ STR_0950    :Wczytaj grę
 STR_0951    :Wyjdź z gry
 STR_0952    :Wyjdź z gry
 STR_0953    :Wczytaj krajobraz
-STR_0954    :
 STR_0955    :Ustaw kąt obrotu siedzeń w tej sekcji toru
 STR_0956    :-180°
 STR_0957    :-135°
@@ -388,10 +387,10 @@ STR_0998    :Nie można utworzyć więcej stacji dla tej atrakcji
 STR_0999    :Wymaga platformy ze stacją
 STR_1000    :Tor nie jest obwodem zamkniętym
 STR_1001    :Tor nieodpowiedni dla tego typu kolejki
-STR_1002    :Nie można otworzyć {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Nie można testować {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Nie można zamknąć {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Nie można rozpocząć konstrukcji {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Nie można otworzyć {STRINGID}…
+STR_1003    :Nie można testować {STRINGID}…
+STR_1004    :Nie można zamknąć {STRINGID}…
+STR_1005    :Nie można rozpocząć konstrukcji {STRINGID}…
 STR_1006    :Atrakcja musi najpierw zostać zamknięta
 STR_1007    :Nie można utworzyć wystarczająco wagonów
 STR_1008    :Otwórz, zamknij lub testuj atrakcję
@@ -753,14 +752,14 @@ STR_1363    :Za wysoko na wsporniki!
 STR_1364    :Wsporniki nie mogą być już bardziej wydłużone!
 STR_1365    :Beczka (lewa)
 STR_1366    :Beczka (Prawa)
-STR_1367    :Pół pętla
+STR_1367    :Mała półpętla
 STR_1368    :Korkociąg (lewy)
 STR_1369    :Korkociąg (prawy)
 STR_1370    :Beczółka (lewa)
 STR_1371    :Beczółka (prawa)
 STR_1372    :Wyrzutnia
-STR_1373    :Duża pół pętla (lewa)
-STR_1374    :Duża pół pętla (prawa)
+STR_1373    :Duża półpętla (lewa)
+STR_1374    :Duża półpętla (prawa)
 STR_1375    :Górny transfer
 STR_1376    :Dolny transfer
 STR_1377    :Ślimak (w prawo)
@@ -1954,8 +1953,6 @@ STR_2738    :Muzyka tytułowa:
 STR_2739    :Brak
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :Nie znaleziono css50.dat
-STR_2743    :Przekopiuj data/css17.dat z folderu RCT1 do data/css50.dat folderu instalacji RCT2.
 STR_2749    :Mój nowy scenariusz
 # Nowe treści używane  w oknie cheatów
 STR_2750    :Przenieś wszystkie do góry
@@ -2260,7 +2257,7 @@ STR_3208    :Menedżer tworzenia tras
 STR_3209    :Powrót do poprzedniego kroku:
 STR_3210    :Do następnego kroku:
 STR_3211    :Rozmiar mapy:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Nie można bardziej zmniejszyć mapy
 STR_3214    :Nie można bardziej zwiększyć mapy
 STR_3215    :Za blisko do krawędzi mapy
@@ -2555,8 +2552,6 @@ STR_5250    :Tytuł przycisku wyjścia
 STR_5251    :Tytuł przycisku opcji
 STR_5252    :Tytuł wyboru scenariusza
 STR_5253    :Informacje o parku
-STR_5254    :Stwórz
-STR_5255    :Utwórz nową sekwencję tytułów od podstaw
 STR_5256    :Stwórz nowy motyw aby wprowadzić zmiany do
 STR_5257    :Stwórz nowy motyw na podstawie bieżącego
 STR_5258    :Usuń bieżący motyw
@@ -2651,75 +2646,10 @@ STR_5373    :Nazwa {STRINGID}
 STR_5374    :Data {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Zapisy
-STR_5378    :Skrypt
-STR_5379    :Skocz do następnej komendy czekania
-STR_5380    :Zacznij odtwarzać sekwencję tytułową
-STR_5381    :Przestań odtwarzać sekwencję tytułową
-STR_5382    :Zrestartuj sekwencję tytułową
-STR_5383    :Stwórz nową sekwencję tytułową, na podstawie obecnej
-STR_5384    :Usuń obecną sekwencję tytułową
-STR_5385    :Zmień nazwę obecnej sekwencji tytułowej
-STR_5386    :Wstaw nową komendę
-STR_5387    :Edytuj wybraną komendę
-STR_5388    :Usuń wybraną komendę
-STR_5389    :Skocz do wybranej komendy w sekwencji tytułowej
-STR_5390    :Przesuń wybraną komendę w dół
-STR_5391    :Przesuń wybraną komendę w górę
-STR_5392    :Dodaj zapis do tytułowej sekwencji
-STR_5393    :Usuń wybrany zapis z sekwencji tytułowej
-STR_5394    :Zmień nazwę wybranego zapisu
-STR_5395    :Załaduj wybrany zapis w grze
-STR_5396    :Odśwież tytułową sekwencję, jeśli zmiany zaszły poza grą
-STR_5397    :Może być użyte tylko na ekranie tytułowym
-STR_5398    :Nie można edytować sekwencji tytułowej, gdy jest uruchomiona
-STR_5399    :Wciśnij przycisk stop, aby kontynuować edycję
-STR_5400    :Nie można zmienić tej tytułowej sekwencji
-STR_5401    :Utwórz nowy tytuł, aby wprowadzić zmiany
-STR_5402    :Nieudało się załadować tytułowej sekwencji
-STR_5403    :Może nie być komendy Załaduj lub Czekaj, lub zapis może być nieprawidłowy
 STR_5404    :Nazwa już istnieje
-STR_5405    :Wpisz nazwę zapisu
-STR_5406    :Wpisz nazwę tytułowej sekwencji
-STR_5407    :Dodaj
-STR_5408    :Usuń
-STR_5409    :Wstaw
-STR_5410    :Edytuj
-STR_5411    :Odśwież
-STR_5412    :Skocz do
-STR_5413    :Załaduj
-STR_5415    :Załaduj{MOVE_X}{87}{STRING}
-STR_5416    :Załaduj{MOVE_X}{87}Nie wybrano zapisu
-STR_5417    :Lokalizacja
-STR_5418    :Lokalizacja{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Obróć
-STR_5420    :Obróć{MOVE_X}{87}{COMMA16}
-STR_5421    :Powiększ
-STR_5422    :Powiększ{MOVE_X}{87}{COMMA16}
-STR_5423    :Czekaj
-STR_5424    :Czekaj{MOVE_X}{87}{UINT16}
-STR_5425    :Restart
-STR_5426    :Koniec
-STR_5427    :Pozycja:
-STR_5428    :Odwrotnie do wskazówek zegara:
-STR_5429    :Poziom przybliżenia:
-STR_5430    :Pozostało milisekund:
-STR_5431    :Zapis do załadowania:
-STR_5432    :Komenda:
-STR_5433    :Tytułowe sekwencje
-STR_5434    :Edytor komand
-STR_5435    :Zmień nazwę zapisu
-STR_5436    :Edytuj sekwencje tytułowe…
-STR_5437    :Nie wybrano zapisu
-STR_5438    :Nie można dokonać zmian dopóki edytor komend jest uruchomiony
-STR_5439    :Przynajmniej 4 sekundowa komenda oczekiwania jest wymagana przy użyciu komendy restartu
 STR_5440    :Zmniejsz utratę ostrości przy pełnym ekranie
 STR_5441    :Identyfikuj rodzaj przejażdżki po trasie{NEWLINE}dzięki czemu mogą zostać zmienione wagoniki{NEWLINE} (zaszłość z RCT1)
 STR_5442    :Wymuś ocenę parku:
-STR_5443    :Prędkość{MOVE_X}{87}{STRINGID}
-STR_5444    :Prędkość:
-STR_5445    :Prędkość
-STR_5446    :Pobierz
 STR_5447    :Typ {STRINGID}
 STR_5448    :Atrakcja {STRINGID}
 STR_5449    :Zmniejsz prędkość gry
@@ -3075,7 +3005,6 @@ STR_5844    :Pozostań podłączony do gry wieloosobowej{NEWLINE}nawet w przypad
 STR_5845    :Dodaje przełącznik trybu debugowania{NEWLINE}do paska narzędzi.{NEWLINE}Włącza skrót klawiaturowy do konsoli developerskiej
 STR_5846    :Ustaw częstotliwość zapisy gry OpenRCT2
 STR_5847    :Wybierz sekwencje parków na ekran tytułowy.{NEWLINE}Sekwencje tytułowe z RCT1/2 wymagają zaimportowanych odpowiednich scenariuszy
-STR_5848    :Twórz i zarządzaj sekwencjami tytułowymi
 STR_5849    :Automatycznie rozlokuj{NEWLINE}nowo zatrudniony personel
 STR_5851    :Ustaw domyślną częstotliwość inspekcji{NEWLINE}na nowych atrakcjach
 STR_5853    :Przełącznik włączania/wyłączania efektów dźwiękowych
@@ -3275,7 +3204,6 @@ STR_6047    :Gładkie warstwa
 STR_6048    :Błąd mapy wysokościowej
 STR_6049    :Błąd odczytu PNG
 STR_6050    :Błąd odczytu bitmapy
-STR_6051    :Szerokość i wysokość muszą pasować
 STR_6052    :Mapa wysokości jest za wysoka i zostanie ucięta
 STR_6053    :Mapa wysokości musi być znormalizowana
 STR_6054    :Tylko 24-bitowe mapy wysokości są obsługiwane
@@ -3374,7 +3302,6 @@ STR_6154    :Z uwagi na bezpieczeństwo, nie zaleca się uruchamiania OpenRCT2 z
 STR_6155    :KDialog ani Zenity nie jest zainstalowane. Zainstaluj, lub skonfiguruj z poziomu konsoli.
 STR_6156    :Nazwa jest zastrzeżona
 STR_6157    :Konsola
-STR_6158    :Nie udało załadować się tego pliku…{NEWLINE}Niekompatybilna werjsa RCTC: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Dostępne pojazdy: {BLACK}{STRING}
 STR_6161    :Przełącz widok siatki
 STR_6162    :Spinning Wild Mouse
@@ -3389,23 +3316,8 @@ STR_6170    :Zmiany w interfejsie
 STR_6171    :Szukaj
 STR_6172    :Szukaj
 STR_6173    :Wpisz nazwę której szukasz:
-STR_6174    :Wczytaj zapisany plik
-STR_6175    :Załaduj scenariusz
-STR_6176    :Scenariusz do załadowania:
-STR_6177    :Załaduj{MOVE_X}{87}Nie wybrano scenariusza
-STR_6178    :Załaduj{MOVE_X}{87}{RED}Brakuje scenariusza
-STR_6179    :Wybierz
-STR_6180    :Nie wybrano scenariusza
-STR_6181    :{RED}Brakuje scenariusza
-STR_6182    :Śledź{MOVE_X}{87}{STRING}
-STR_6183    :Śledź{MOVE_X}{87}Brak wybranego sprite’a
-STR_6184    :Śledź sprite’a
-STR_6185    :Wybierz sprite’a
-STR_6186    :Brak wybranego sprite’ad
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Wymiociny
 STR_6189    :Kaczka
-STR_6190    :Nie możesz wybrać sprite’a, gdy aktywny jest główny ekran tytułowy.
 STR_6191    :Powierzchnia
 STR_6192    :Ściana
 STR_6193    :{COMMA16} gość
@@ -3518,7 +3430,7 @@ STR_6322    :{WINDOW_COLOUR_2}Identyfikator sprite’a: {BLACK}{INT32}
 STR_6323    :Symulowanie
 STR_6324    :Symuluj
 STR_6325    :Symuluj atrakcję
-STR_6326    :Nie można symulować {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Nie można symulować {STRINGID}…
 STR_6327    :Przezroczyste tło dla ogromnych zrzutów z ekranu
 STR_6328    :Ogromy zrzut z ekranu będzie miał przezroczyste tło zamiast domyślnego czarnego.
 STR_6329    :{STRING}{STRINGID}
@@ -3688,6 +3600,22 @@ STR_6494    :Grupuj po typie atrakcji
 STR_6495    :Grupuj po typie atrakcji zamiast wyświetlić każdą osobno.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Kliknij na kafelkę, żeby zobaczyć jej elementy.{NEWLINE}Ctrl + kliknięcie na element kafelki, żeby pokazać od razu.
+STR_6498    :Włącz w celu zachowania kwadratowej mapy.
+STR_6499    :Typ pojazdu nie jest obsługiwany przez format projektu toru
+STR_6500    :Elementy toru nieobsługiwane przez format projektu toru
+STR_6501    :Losowy kolor
+STR_6506    :Duży pół korkociąg (lewy)
+STR_6507    :Duży pół korkociąg (prawy)
+STR_6508    :Średnia półpętla (lewa)
+STR_6509    :Średnia półpętla (prawa)
+STR_6510    :Beczółka Zero G (lewa)
+STR_6511    :Beczółka Zero G (prawa)
+STR_6512    :Duża Beczółka Zero G (lewa)
+STR_6513    :Duża Beczółka Zero G (prawa)
+STR_6502    :Wprowadź wartość pomiędzy {COMMA16} a {COMMA16}
+STR_6503    :Musi być wybrany przynajmniej jeden obiekt stacji
+STR_6504    :Należy wybrać co najmniej jeden element powierzchni terenu
+STR_6505    :Należy wybrać co najmniej jeden element krawędzi terenu
 
 
 #############
@@ -4137,22 +4065,7 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[TTPIRF02]
-STR_NAME    :Roof
-
-[TTPIRF03]
-STR_NAME    :Roof
-
-[TTPIRF04]
-STR_NAME    :Roof
-
 [TTPIRF05]
-STR_NAME    :Roof
-
-[TTPIRF07]
-STR_NAME    :Roof
-
-[TTPIRF08]
 STR_NAME    :Roof
 
 [TTRFWD01]
@@ -4178,15 +4091,6 @@ STR_NAME    :Roof
 
 [TTRFWD08]
 STR_NAME    :Roof
-
-[TTRFGL01]
-STR_NAME    :Glass Roof
-
-[TTRFGL02]
-STR_NAME    :Glass Roof
-
-[TTRFGL03]
-STR_NAME    :Glass Roof
 
 [ACWW33]
 STR_NAME    :Wooden Post Wall

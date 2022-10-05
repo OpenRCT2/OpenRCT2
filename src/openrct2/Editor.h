@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,8 @@
 #include "common.h"
 #include "object/Object.h"
 
+struct ResultWithMessage;
+
 namespace Editor
 {
     void Load();
@@ -20,8 +22,8 @@ namespace Editor
     void LoadTrackManager();
     bool LoadLandscape(const utf8* path);
 
-    std::pair<bool, rct_string_id> CheckPark();
-    std::pair<ObjectType, rct_string_id> CheckObjectSelection();
+    ResultWithMessage CheckPark();
+    std::pair<ObjectType, StringId> CheckObjectSelection();
 
     void OpenWindowsForCurrentStep();
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -199,7 +199,7 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
     log_verbose("gfx_load_g1(...)");
     try
     {
-        auto path = Path::Combine(env.GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), u8"g1.dat");
+        auto path = env.FindFile(DIRBASE::RCT2, DIRID::DATA, u8"g1.dat");
         auto fs = FileStream(path, FILE_MODE_OPEN);
         _g1.header = fs.ReadValue<rct_g1_header>();
 
@@ -281,6 +281,22 @@ bool gfx_load_g2()
 
         // Read element data
         _g2.data = fs.ReadArray<uint8_t>(_g2.header.total_size);
+
+        if (_g2.header.num_entries != G2_SPRITE_COUNT)
+        {
+            std::string errorMessage = "Mismatched g2.dat size.\nExpected: " + std::to_string(G2_SPRITE_COUNT) + "\nActual: "
+                + std::to_string(_g2.header.num_entries) + "\ng2.dat may be installed improperly.\nPath to g2.dat: " + path;
+
+            log_error(errorMessage.c_str());
+
+            if (!gOpenRCT2Headless)
+            {
+                auto uiContext = GetContext()->GetUiContext();
+                uiContext->ShowMessageBox(errorMessage);
+                uiContext->ShowMessageBox("Warning: You may experience graphical glitches if you continue. It's recommended "
+                                          "that you update g2.dat if you're seeing this message");
+            }
+        }
 
         // Fix entry data offsets
         for (uint32_t i = 0; i < _g2.header.num_entries; i++)
@@ -428,7 +444,7 @@ static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId im
     return paletteMap;
 }
 
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& spriteCoords)
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, const ImageId& imageId, const ScreenCoordsXY& spriteCoords)
 {
     if (imageId.HasValue())
     {
@@ -451,7 +467,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
  * y (dx)
  */
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    rct_drawpixelinfo* dpi, const ImageId& imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     int32_t x = coords.x;
     int32_t y = coords.y;
@@ -623,7 +639,7 @@ void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs&
  *  rct2: 0x00681DE2
  */
 void FASTCALL gfx_draw_sprite_raw_masked_software(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, ImageId maskImage, ImageId colourImage)
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId& maskImage, const ImageId& colourImage)
 {
     int32_t left, top, right, bottom, width, height;
     auto imgMask = gfx_get_g1_element(maskImage);
@@ -676,7 +692,7 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
     mask_fn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
-const rct_g1_element* gfx_get_g1_element(ImageId imageId)
+const rct_g1_element* gfx_get_g1_element(const ImageId& imageId)
 {
     return gfx_get_g1_element(imageId.GetIndex());
 }

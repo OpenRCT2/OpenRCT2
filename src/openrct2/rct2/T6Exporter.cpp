@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,7 +55,11 @@ namespace RCT2
         tempStream.WriteValue<uint32_t>(_trackDesign->flags);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->ride_mode));
         tempStream.WriteValue<uint8_t>((_trackDesign->colour_scheme & 0x3) | (2 << 2));
-        tempStream.WriteArray(_trackDesign->vehicle_colours.data(), Limits::MaxVehicleColours);
+        for (auto& colour : _trackDesign->vehicle_colours)
+        {
+            tempStream.WriteValue<uint8_t>(colour.Body);
+            tempStream.WriteValue<uint8_t>(colour.Trim);
+        }
         tempStream.WriteValue<uint8_t>(0);
         tempStream.WriteValue<uint8_t>(_trackDesign->entrance_style);
         tempStream.WriteValue<uint8_t>(_trackDesign->total_air_time);
@@ -86,7 +90,10 @@ namespace RCT2
         tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(rct_object_entry));
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
-        tempStream.WriteArray(_trackDesign->vehicle_additional_colour, Limits::MaxTrainsPerRide);
+        for (auto& colour : _trackDesign->vehicle_colours)
+        {
+            tempStream.WriteValue<uint8_t>(colour.Tertiary);
+        }
         tempStream.WriteValue<uint8_t>(_trackDesign->lift_hill_speed | (_trackDesign->num_circuits << 5));
 
         if (_trackDesign->type == RIDE_TYPE_MAZE)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,7 +44,7 @@ enum class DisplayType {
 
 #pragma region Widgets
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
 static constexpr const int32_t WW = 180;
 static constexpr const int32_t WH = 155;
 
@@ -80,13 +80,13 @@ public:
         OnClose();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         // mouseup appears to be used for buttons, checkboxes
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 break;
             case WIDX_CLIP_CHECKBOX_ENABLE:
             {
@@ -114,7 +114,7 @@ public:
                 break;
             case WIDX_CLIP_SELECTOR:
                 // Activate the selection tool
-                tool_set(this, WIDX_BACKGROUND, Tool::Crosshair);
+                tool_set(*this, WIDX_BACKGROUND, Tool::Crosshair);
                 _toolActive = true;
                 _dragging = false;
 
@@ -138,7 +138,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         rct_window* mainWindow;
 
@@ -188,10 +188,10 @@ public:
             gClipSelectionB = _previousClipSelectionB;
         }
 
-        widget_invalidate(this, WIDX_CLIP_HEIGHT_SLIDER);
+        widget_invalidate(*this, WIDX_CLIP_HEIGHT_SLIDER);
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (_dragging)
         {
@@ -210,7 +210,7 @@ public:
         }
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         int32_t direction;
         auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
@@ -221,7 +221,7 @@ public:
         }
     }
 
-    void OnToolDrag(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (!_dragging)
         {
@@ -243,7 +243,7 @@ public:
         }
     }
 
-    void OnToolUp(rct_widgetindex, const ScreenCoordsXY&) override
+    void OnToolUp(WidgetIndex, const ScreenCoordsXY&) override
     {
         gClipSelectionA = gMapSelectPositionA;
         gClipSelectionB = gMapSelectPositionB;
@@ -254,12 +254,12 @@ public:
 
     void OnPrepareDraw() override
     {
-        WidgetScrollUpdateThumbs(this, WIDX_CLIP_HEIGHT_SLIDER);
+        WidgetScrollUpdateThumbs(*this, WIDX_CLIP_HEIGHT_SLIDER);
 
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            WidgetSetCheckboxValue(this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+            WidgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
         }
 
         if (IsActive())
@@ -274,7 +274,7 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         // Clip height value
         auto screenCoords = this->windowPos + ScreenCoordsXY{ 8, this->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
@@ -345,14 +345,14 @@ public:
     {
         this->widgets = window_view_clipping_widgets;
         this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         _clipHeightDisplayType = DisplayType::DisplayUnits;
 
         // Initialise the clip height slider from the current clip height value.
         this->SetClipHeight(gClipHeight);
 
-        window_push_others_below(this);
+        window_push_others_below(*this);
 
         // Get the main viewport to set the view clipping flag.
         rct_window* mainWindow = window_get_main();
@@ -390,7 +390,7 @@ private:
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
-        if (gCurrentToolWidget.window_classification != WC_VIEW_CLIPPING)
+        if (gCurrentToolWidget.window_classification != WindowClass::ViewClipping)
             return false;
         return _toolActive;
     }
@@ -398,10 +398,10 @@ private:
 
 rct_window* WindowViewClippingOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_VIEW_CLIPPING);
+    auto* window = window_bring_to_front_by_class(WindowClass::ViewClipping);
     if (window == nullptr)
     {
-        window = WindowCreate<ViewClippingWindow>(WC_VIEW_CLIPPING, ScreenCoordsXY(32, 32), WW, WH);
+        window = WindowCreate<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), WW, WH);
     }
     return window;
 }

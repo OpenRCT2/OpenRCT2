@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ using namespace OpenRCT2;
 
 static constexpr const int32_t WW = 400;
 static constexpr const int32_t WH = 352;
-static constexpr const rct_string_id WINDOW_TITLE = STR_ABOUT;
+static constexpr const StringId WINDOW_TITLE = STR_ABOUT;
 static constexpr const int32_t TABHEIGHT = 50;
 
 // clang-format off
@@ -94,11 +94,11 @@ public:
     {
         widgets = _windowAboutOpenRCT2Widgets;
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         SetPage(WINDOW_ABOUT_PAGE_OPENRCT2);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -113,7 +113,7 @@ public:
                 OpenRCT2::GetContext()->GetUiContext()->OpenURL("https://discord.gg/ZXZd8D8");
                 break;
             case WIDX_CHANGELOG:
-                context_open_window(WC_CHANGELOG);
+                context_open_window(WindowClass::Changelog);
                 break;
             case WIDX_NEW_VERSION:
                 context_open_window_view(WV_NEW_VERSION_INFO);
@@ -138,13 +138,13 @@ public:
         // Draw tab names
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
+            ft.Add<StringId>(STR_TITLE_SEQUENCE_OPENRCT2);
             DrawTextWrapped(
                 &dpi, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
         }
         {
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RCT2);
+            ft.Add<StringId>(STR_TITLE_SEQUENCE_RCT2);
             DrawTextWrapped(
                 &dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
         }
@@ -171,7 +171,7 @@ private:
         widgets = _windowAboutPageWidgets[p];
 
         pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         Invalidate();
     }
 
@@ -249,5 +249,5 @@ private:
  */
 rct_window* WindowAboutOpen()
 {
-    return WindowFocusOrCreate<AboutWindow>(WC_ABOUT, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<AboutWindow>(WindowClass::About, WW, WH, WF_CENTRE_SCREEN);
 }

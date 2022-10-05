@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,14 +24,14 @@ const int16_t days_in_month[MONTH_COUNT] = {
     31, 30, 31, 30, 31, 31, 30, 31,
 };
 
-const rct_string_id DateFormatStringIds[] = {
+const StringId DateFormatStringIds[] = {
     STR_DATE_FORMAT_DAY_MONTH_YEAR,
     STR_DATE_FORMAT_MONTH_DAY_YEAR,
     STR_DATE_FORMAT_YEAR_MONTH_DAY,
     STR_DATE_FORMAT_YEAR_DAY_MONTH,
 };
 
-const rct_string_id DateFormatStringFormatIds[] = {
+const StringId DateFormatStringFormatIds[] = {
     STR_DATE_FORMAT_DMY,
     STR_DATE_FORMAT_MDY,
     STR_DATE_FORMAT_YMD,

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include <SDL.h>
 #include <cmath>
+#include <memory>
 #include <openrct2/Game.h>
 #include <openrct2/common.h>
 #include <openrct2/config/Config.h>
@@ -37,9 +38,7 @@ private:
     SDL_Texture* _scaledScreenTexture = nullptr;
     SDL_PixelFormat* _screenTextureFormat = nullptr;
     uint32_t _paletteHWMapped[256] = { 0 };
-#ifdef __ENABLE_LIGHTFX__
     uint32_t _lightPaletteHWMapped[256] = { 0 };
-#endif
 
     // Steam overlay checking
     uint32_t _pixelBeforeOverlay = 0;
@@ -164,7 +163,6 @@ public:
                 _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
             }
 
-#ifdef __ENABLE_LIGHTFX__
             if (gConfigGeneral.enable_light_fx)
             {
                 auto& lightPalette = lightfx_get_palette();
@@ -174,7 +172,6 @@ public:
                     _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.Red, src.Green, src.Blue, src.Alpha);
                 }
             }
-#endif
         }
     }
 
@@ -207,7 +204,6 @@ protected:
 private:
     void Display()
     {
-#ifdef __ENABLE_LIGHTFX__
         if (gConfigGeneral.enable_light_fx)
         {
             void* pixels;
@@ -219,7 +215,6 @@ private:
             }
         }
         else
-#endif
         {
             CopyBitsToTexture(
                 _screenTexture, _bits, static_cast<int32_t>(_width), static_cast<int32_t>(_height), _paletteHWMapped);

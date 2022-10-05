@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,25 +41,6 @@ namespace String
             return std::string();
 
         return std::string(str);
-    }
-
-    std::string StdFormat_VA(const utf8* format, va_list args)
-    {
-        auto buffer = Format_VA(format, args);
-        auto returnValue = ToStd(buffer);
-        Memory::Free(buffer);
-        return returnValue;
-    }
-
-    std::string StdFormat(const utf8* format, ...)
-    {
-        va_list args;
-        va_start(args, format);
-        const utf8* buffer = Format_VA(format, args);
-        va_end(args);
-        std::string returnValue = ToStd(buffer);
-        Memory::Free(buffer);
-        return returnValue;
     }
 
     std::string ToUtf8(std::wstring_view src)
@@ -261,6 +242,26 @@ namespace String
         return false;
     }
 
+    bool Contains(std::string_view haystack, std::string_view needle, bool ignoreCase)
+    {
+        if (needle.size() > haystack.size())
+            return false;
+
+        if (!ignoreCase)
+            return haystack.find(needle) != std::string_view::npos;
+
+        auto end = haystack.size() - needle.size();
+        for (size_t start = 0; start <= end; start++)
+        {
+            auto sub = haystack.substr(start, needle.size());
+            if (Equals(sub, needle, ignoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     size_t IndexOf(const utf8* str, utf8 match, size_t startIndex)
     {
         const utf8* ch = str + startIndex;
@@ -343,66 +344,38 @@ namespace String
         return buffer;
     }
 
-    utf8* Format(const utf8* format, ...)
+    u8string StdFormat(const utf8* format, ...)
     {
         va_list args;
         va_start(args, format);
-        utf8* result = Format_VA(format, args);
+        auto result = Format_VA(format, args);
         va_end(args);
         return result;
     }
 
-    utf8* Format_VA(const utf8* format, va_list args)
+    u8string Format_VA(const utf8* format, va_list args)
     {
-        va_list args1, args2;
-        va_copy(args1, args);
-        va_copy(args2, args);
+        // When passing no buffer and a size of 0, vsnprintf returns the numbers of chars it would have writte, excluding the
+        // null terminator.
+        va_list copy;
+        va_copy(copy, args);
+        auto len = vsnprintf(nullptr, 0, format, copy);
+        va_end(copy);
 
-        // Try to format to a initial buffer, enlarge if not big enough
-        size_t bufferSize = 4096;
-        utf8* buffer = Memory::Allocate<utf8>(bufferSize);
-
-        // Start with initial buffer
-        int32_t len = vsnprintf(buffer, bufferSize, format, args);
-        if (len < 0)
+        if (len >= 0)
         {
-            Memory::Free(buffer);
-            va_end(args1);
-            va_end(args2);
+            // The length returned by vsnprintf does not include the null terminator, but this byte is accounted for when
+            // writing to a buffer, so we need to allocate one additional byte to fit the entire string in.
+            len++;
+            auto buffer = static_cast<utf8*>(alloca(len));
 
-            // An error occurred...
-            return nullptr;
+            len = vsnprintf(buffer, len, format, args);
+
+            return u8string(buffer, buffer + len);
         }
 
-        size_t requiredSize = static_cast<size_t>(len) + 1;
-        if (requiredSize > bufferSize)
-        {
-            // Try again with bigger buffer
-            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
-            len = vsnprintf(buffer, bufferSize, format, args);
-            if (len < 0)
-            {
-                Memory::Free(buffer);
-                va_end(args1);
-                va_end(args2);
-
-                // An error occurred...
-                return nullptr;
-            }
-        }
-        else
-        {
-            // Reduce buffer size to only what was required
-            bufferSize = requiredSize;
-            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
-        }
-
-        // Ensure buffer is terminated
-        buffer[bufferSize - 1] = '\0';
-
-        va_end(args1);
-        va_end(args2);
-        return buffer;
+        log_warning("Encoding error occured");
+        return u8string{};
     }
 
     utf8* AppendFormat(utf8* buffer, size_t bufferSize, const utf8* format, ...)

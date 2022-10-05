@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,7 +36,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
+static constexpr const StringId WINDOW_TITLE = STR_STRING;
 static constexpr const int32_t WH = 124;
 static constexpr const int32_t WW = 200;
 constexpr int16_t TRACK_MINI_PREVIEW_WIDTH = 168;
@@ -78,10 +78,10 @@ public:
     void OnOpen() override
     {
         widgets = window_track_place_widgets;
-        WindowInitScrollWidgets(this);
-        tool_set(this, WIDX_PRICE, Tool::Crosshair);
+        WindowInitScrollWidgets(*this);
+        tool_set(*this, WIDX_PRICE, Tool::Crosshair);
         input_set_flag(INPUT_FLAG_6, true);
-        window_push_others_right(this);
+        window_push_others_right(*this);
         show_gridlines();
         _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
         _placementCost = MONEY32_UNDEFINED;
@@ -102,7 +102,7 @@ public:
         _trackDesign = nullptr;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -126,7 +126,7 @@ public:
             case WIDX_SELECT_DIFFERENT_DESIGN:
                 Close();
 
-                auto intent = Intent(WC_TRACK_DESIGN_LIST);
+                auto intent = Intent(WindowClass::TrackDesignList);
                 intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
                 intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
                 context_open_intent(&intent);
@@ -137,11 +137,11 @@ public:
     void OnUpdate() override
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
-            if (gCurrentToolWidget.window_classification != WC_TRACK_DESIGN_PLACE)
+            if (gCurrentToolWidget.window_classification != WindowClass::TrackDesignPlace)
                 Close();
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         TrackDesignState tds{};
         int16_t mapZ;
@@ -200,13 +200,13 @@ public:
         if (cost != _placementCost)
         {
             _placementCost = cost;
-            widget_invalidate(this, WIDX_PRICE);
+            widget_invalidate(*this, WIDX_PRICE);
         }
 
         TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), GetOrAllocateRide(PreviewRideId), trackLoc);
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         ClearProvisional();
         map_invalidate_map_selection_tiles();
@@ -233,22 +233,22 @@ public:
                     auto getRide = get_ride(rideId);
                     if (getRide != nullptr)
                     {
-                        window_close_by_class(WC_ERROR);
+                        window_close_by_class(WindowClass::Error);
                         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackLoc);
 
                         _currentRideIndex = rideId;
                         if (track_design_are_entrance_and_exit_placed())
                         {
-                            auto intent = Intent(WC_RIDE);
+                            auto intent = Intent(WindowClass::Ride);
                             intent.putExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                             context_open_intent(&intent);
-                            auto wnd = window_find_by_class(WC_TRACK_DESIGN_PLACE);
-                            window_close(wnd);
+                            auto wnd = window_find_by_class(WindowClass::TrackDesignPlace);
+                            window_close(*wnd);
                         }
                         else
                         {
                             ride_initialise_construction_window(getRide);
-                            auto wnd = window_find_by_class(WC_RIDE_CONSTRUCTION);
+                            auto wnd = window_find_by_class(WindowClass::RideConstruction);
                             window_event_mouse_up_call(wnd, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                         }
                     }
@@ -269,7 +269,7 @@ public:
         windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
     }
 
-    void OnToolAbort(rct_widgetindex widgetIndex) override
+    void OnToolAbort(WidgetIndex widgetIndex) override
     {
         ClearProvisional();
     }
@@ -288,7 +288,7 @@ public:
     {
         auto ft = Formatter::Common();
         ft.Add<char*>(_trackDesign->name.c_str());
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         // Draw mini tile preview
         rct_drawpixelinfo clippedDpi;
@@ -611,9 +611,9 @@ private:
     }
 };
 
-rct_window* WindowTrackPlaceOpen(const track_design_file_ref* tdFileRef)
+rct_window* WindowTrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
 {
-    std::unique_ptr<TrackDesign> openTrackDesign = TrackDesignImport(tdFileRef->path);
+    std::unique_ptr<TrackDesign> openTrackDesign = TrackDesignImport(tdFileRef->path.c_str());
 
     if (openTrackDesign == nullptr)
     {
@@ -622,7 +622,7 @@ rct_window* WindowTrackPlaceOpen(const track_design_file_ref* tdFileRef)
 
     window_close_construction_windows();
 
-    auto* window = WindowFocusOrCreate<TrackDesignPlaceWindow>(WC_TRACK_DESIGN_PLACE, WW, WH, 0);
+    auto* window = WindowFocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
     if (window != nullptr)
     {
         window->Init(std::move(openTrackDesign));
@@ -632,7 +632,7 @@ rct_window* WindowTrackPlaceOpen(const track_design_file_ref* tdFileRef)
 
 void TrackPlaceClearProvisionalTemporarily()
 {
-    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WC_TRACK_DESIGN_PLACE));
+    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WindowClass::TrackDesignPlace));
     if (trackPlaceWnd != nullptr)
     {
         trackPlaceWnd->ClearProvisionalTemporarily();
@@ -641,7 +641,7 @@ void TrackPlaceClearProvisionalTemporarily()
 
 void TrackPlaceRestoreProvisional()
 {
-    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WC_TRACK_DESIGN_PLACE));
+    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WindowClass::TrackDesignPlace));
     if (trackPlaceWnd != nullptr)
     {
         trackPlaceWnd->RestoreProvisional();

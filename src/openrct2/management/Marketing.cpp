@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -85,7 +85,7 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
-            ft.Add<rct_string_id>(GetShopItemDescriptor(campaign.ShopItemType).Naming.Plural);
+            ft.Add<StringId>(GetShopItemDescriptor(campaign.ShopItemType).Naming.Plural);
         }
 
         News::AddItemToQueue(News::ItemType::Money, MarketingCampaignNames[campaign.Type][2], 0, ft);
@@ -128,7 +128,7 @@ void marketing_update()
         }
     }
 
-    window_invalidate_by_class(WC_FINANCES);
+    window_invalidate_by_class(WindowClass::Finances);
 }
 
 void marketing_set_guest_campaign(Guest* peep, int32_t campaignType)

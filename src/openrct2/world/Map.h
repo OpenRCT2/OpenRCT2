@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,10 @@ constexpr const int32_t LAND_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr const int32_t WATER_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr const int32_t MINIMUM_LAND_HEIGHT_BIG = MINIMUM_LAND_HEIGHT * COORDS_Z_STEP;
 constexpr const TileCoordsXY DEFAULT_MAP_SIZE = { 150, 150 };
+// How high construction has to be off the ground when the player owns construction rights, in tile coords.
+constexpr const uint8_t ConstructionRightsClearanceSmall = 3;
+// Same as previous, but in big coords.
+constexpr const uint8_t ConstructionRightsClearanceBig = 3 * COORDS_Z_STEP;
 
 #define MAP_MINIMUM_X_Y (-MAXIMUM_MAP_SIZE_TECHNICAL)
 
@@ -160,6 +164,7 @@ void map_strip_ghost_flag_from_elements();
 TileElement* map_get_first_element_at(const CoordsXY& tilePos);
 TileElement* map_get_first_element_at(const TileCoordsXY& tilePos);
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n);
+TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type);
 void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements);
 int32_t map_height_from_slope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
 BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t direction);
@@ -192,6 +197,12 @@ void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
 bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
 TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
+
+template<typename T = TileElement> T* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc)
+{
+    auto* element = MapGetFirstTileElementWithBaseHeightBetween(loc, T::ElementType);
+    return element != nullptr ? element->template as<T>() : nullptr;
+}
 
 template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
 {

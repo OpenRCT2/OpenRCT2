@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,9 +18,9 @@
 
 #include <string>
 
-std::string format_string(rct_string_id format, const void* args);
-void format_string(char* dest, size_t size, rct_string_id format, const void* args);
-void format_string_to_upper(char* dest, size_t size, rct_string_id format, const void* args);
+std::string format_string(StringId format, const void* args);
+void format_string(char* dest, size_t size, StringId format, const void* args);
+void format_string_to_upper(char* dest, size_t size, StringId format, const void* args);
 void generate_string_file();
 
 /**
@@ -41,7 +41,7 @@ size_t get_string_size(const utf8* text);
 money32 string_to_money(const char* string_to_monetise);
 void money_to_string(money32 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
 
-bool is_user_string_id(rct_string_id stringId);
+bool is_user_string_id(StringId stringId);
 
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
@@ -58,12 +58,12 @@ extern const char* real_names[1024];
 extern thread_local char gCommonStringFormatBuffer[512];
 extern bool gDebugStringFormatting;
 
-extern const rct_string_id SpeedNames[5];
-extern const rct_string_id ObjectiveNames[12];
-extern const rct_string_id ResearchFundingLevelNames[4];
-extern const rct_string_id MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
-extern const rct_string_id RideInspectionIntervalNames[];
-extern const rct_string_id PeepThoughts[174];
-extern const rct_string_id DateDayNames[31];
-extern const rct_string_id DateGameMonthNames[MONTH_COUNT];
-extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
+extern const StringId SpeedNames[5];
+extern const StringId ObjectiveNames[12];
+extern const StringId ResearchFundingLevelNames[4];
+extern const StringId MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
+extern const StringId RideInspectionIntervalNames[];
+extern const StringId PeepThoughts[174];
+extern const StringId DateDayNames[31];
+extern const StringId DateGameMonthNames[MONTH_COUNT];
+extern const StringId DateGameShortMonthNames[MONTH_COUNT];

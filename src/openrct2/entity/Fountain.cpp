@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -426,7 +426,7 @@ void JumpingFountain::Paint(paint_session& session, int32_t imageDirection) cons
 
     uint32_t baseImageId = (FountainType == JumpingFountainType::Snow) ? JumpingFountainSnowBaseImage
                                                                        : JumpingFountainWaterBaseImage;
-    uint32_t imageId = baseImageId + imageDirection * 16 + frame;
+    auto imageId = ImageId(baseImageId + imageDirection * 16 + frame);
     constexpr std::array antiClockWiseBoundingBoxes = {
         CoordsXY{ -COORDS_XY_STEP, -3 },
         CoordsXY{ 0, -3 },

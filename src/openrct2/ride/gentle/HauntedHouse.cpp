@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"
@@ -17,13 +18,7 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-struct haunted_house_bound_box
-{
-    CoordsXY offset;
-    CoordsXY length;
-};
-
-static constexpr haunted_house_bound_box haunted_house_data[] = {
+static constexpr BoundBoxXY HauntedHouseData[] = {
     { { 6, 0 }, { 42, 24 } }, { { 0, 0 }, { 0, 0 } },   { { -16, -16 }, { 32, 32 } },
     { { 0, 0 }, { 0, 0 } },   { { 0, 6 }, { 24, 42 } }, { { 0, 0 }, { 0, 0 } },
 };
@@ -45,8 +40,8 @@ static void PaintHauntedHouseStructure(
         frameNum = vehicle->Pitch;
     }
 
-    const auto& boundBox = haunted_house_data[part];
-    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
+    const auto& boundBox = HauntedHouseData[part];
+    auto imageTemplate = session.TrackColours[SCHEME_MISC];
     auto baseImageIndex = rideEntry->Cars[0].base_image_id;
     auto imageIndex = baseImageIndex + direction;
     PaintAddImageAsParent(
@@ -58,7 +53,7 @@ static void PaintHauntedHouseStructure(
         imageIndex = baseImageIndex + 3 + ((direction & 3) * 18) + frameNum;
         PaintAddImageAsChild(
             session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height },
-            { boundBox.length.x, boundBox.length.y, 127 }, { boundBox.offset.x, boundBox.offset.y, height });
+            { { boundBox.offset, height }, { boundBox.length, 127 } });
     }
 
     session.CurrentlyDrawnEntity = nullptr;
@@ -122,7 +117,7 @@ static void PaintHauntedHouse(
     paint_util_set_general_support_height(session, height + 128, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionHauntedHouse(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

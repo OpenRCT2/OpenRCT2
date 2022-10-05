@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@ enum
 #pragma pack(push, 1)
 struct rct_water_type
 {
-    rct_string_id string_idx; // 0x00
+    StringId string_idx;      // 0x00
     uint32_t image_id;        // 0x02
     uint32_t palette_index_1; // 0x06
     uint32_t palette_index_2; // 0x0A

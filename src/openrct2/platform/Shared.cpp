@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -94,10 +94,21 @@ namespace Platform
         return outTime;
     }
 
+    bool IsRCT2Path(std::string_view path)
+    {
+        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
+        return File::Exists(combinedPath);
+    }
+
+    bool IsRCTClassicPath(std::string_view path)
+    {
+        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Assets", u8"g1.dat"));
+        return File::Exists(combinedPath);
+    }
+
     bool OriginalGameDataExists(std::string_view path)
     {
-        std::string combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
-        return File::Exists(combinedPath);
+        return IsRCT2Path(path) || IsRCTClassicPath(path);
     }
 
     std::string SanitiseFilename(std::string_view originalName)

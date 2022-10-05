@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,7 +45,7 @@ using namespace OpenRCT2::Ui;
 
 #pragma region Shortcut Commands
 
-static void OpenWindow(rct_windowclass wc)
+static void OpenWindow(WindowClass wc)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
@@ -60,7 +60,7 @@ static void RotateCamera(int32_t direction)
         auto window = window_get_main();
         if (window != nullptr)
         {
-            window_rotate_camera(window, direction);
+            window_rotate_camera(*window, direction);
         }
     }
 }
@@ -84,8 +84,8 @@ static void ShortcutRotateConstructionObject()
         return;
 
     // Rotate scenery
-    rct_window* w = window_find_by_class(WC_SCENERY);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
+    rct_window* w = window_find_by_class(WindowClass::Scenery);
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
         && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
@@ -93,8 +93,8 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate construction track piece
-    w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
+    w = window_find_by_class(WindowClass::RideConstruction);
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
         && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
         // Check if building a maze...
@@ -106,8 +106,8 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate track design preview
-    w = window_find_by_class(WC_TRACK_DESIGN_LIST);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
+    w = window_find_by_class(WindowClass::TrackDesignList);
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
@@ -115,8 +115,8 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate track design placement
-    w = window_find_by_class(WC_TRACK_DESIGN_PLACE);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
+    w = window_find_by_class(WindowClass::TrackDesignPlace);
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
@@ -124,8 +124,8 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate park entrance
-    w = window_find_by_class(WC_MAP);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_MAP__WIDX_ROTATE_90)
+    w = window_find_by_class(WindowClass::Map);
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_MAP__WIDX_ROTATE_90)
         && w->widgets[WC_MAP__WIDX_ROTATE_90].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, WC_MAP__WIDX_ROTATE_90);
@@ -133,8 +133,8 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate selected element in tile inspector
-    w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
+    w = window_find_by_class(WindowClass::TileInspector);
+    if (w != nullptr && !WidgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
@@ -146,12 +146,12 @@ static void ShortcutRemoveTopBottomToolbarToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
-        if (window_find_by_class(WC_TITLE_LOGO) != nullptr)
+        if (window_find_by_class(WindowClass::TitleLogo) != nullptr)
         {
-            window_close(window_find_by_class(WC_TITLE_LOGO));
-            window_close(window_find_by_class(WC_TITLE_OPTIONS));
-            window_close(window_find_by_class(WC_TITLE_MENU));
-            window_close(window_find_by_class(WC_TITLE_EXIT));
+            window_close(*window_find_by_class(WindowClass::TitleLogo));
+            window_close(*window_find_by_class(WindowClass::TitleOptions));
+            window_close(*window_find_by_class(WindowClass::TitleMenu));
+            window_close(*window_find_by_class(WindowClass::TitleExit));
             title_set_hide_version_info(true);
         }
         else
@@ -161,22 +161,22 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     }
     else
     {
-        if (window_find_by_class(WC_TOP_TOOLBAR) != nullptr)
+        if (window_find_by_class(WindowClass::TopToolbar) != nullptr)
         {
-            window_close(window_find_by_class(WC_DROPDOWN));
-            window_close(window_find_by_class(WC_TOP_TOOLBAR));
-            window_close(window_find_by_class(WC_BOTTOM_TOOLBAR));
+            window_close(*window_find_by_class(WindowClass::Dropdown));
+            window_close(*window_find_by_class(WindowClass::TopToolbar));
+            window_close(*window_find_by_class(WindowClass::BottomToolbar));
         }
         else
         {
             if (gScreenFlags == 0)
             {
-                context_open_window(WC_TOP_TOOLBAR);
-                context_open_window(WC_BOTTOM_TOOLBAR);
+                context_open_window(WindowClass::TopToolbar);
+                context_open_window(WindowClass::BottomToolbar);
             }
             else
             {
-                context_open_window(WC_TOP_TOOLBAR);
+                context_open_window(WindowClass::TopToolbar);
                 context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
             }
         }
@@ -193,7 +193,7 @@ static void ShortcutAdjustLand()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
+            rct_window* window = window_find_by_class(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -212,7 +212,7 @@ static void ShortcutAdjustWater()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
+            rct_window* window = window_find_by_class(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -231,7 +231,7 @@ static void ShortcutBuildScenery()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
+            rct_window* window = window_find_by_class(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -250,7 +250,7 @@ static void ShortcutBuildPaths()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
+            rct_window* window = window_find_by_class(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -269,7 +269,7 @@ static void ShortcutBuildNewRide()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            context_open_window(WC_CONSTRUCT_RIDE);
+            context_open_window(WindowClass::ConstructRide);
         }
     }
 }
@@ -281,7 +281,7 @@ static void ShortcutShowFinancialInformation()
 
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-            context_open_window(WC_FINANCES);
+            context_open_window(WindowClass::Finances);
 }
 
 static void ShortcutShowResearchInformation()
@@ -302,7 +302,7 @@ static void ShortcutShowRidesList()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        context_open_window(WC_RIDE_LIST);
+        context_open_window(WindowClass::RideList);
     }
 }
 
@@ -313,7 +313,7 @@ static void ShortcutShowParkInformation()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        context_open_window(WC_PARK_INFORMATION);
+        context_open_window(WindowClass::ParkInformation);
     }
 }
 
@@ -324,7 +324,7 @@ static void ShortcutShowGuestList()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        context_open_window(WC_GUEST_LIST);
+        context_open_window(WindowClass::GuestList);
     }
 }
 
@@ -335,7 +335,7 @@ static void ShortcutShowStaffList()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        context_open_window(WC_STAFF_LIST);
+        context_open_window(WindowClass::StaffList);
     }
 }
 
@@ -345,7 +345,7 @@ static void ShortcutShowRecentMessages()
         return;
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
-        context_open_window(WC_RECENT_NEWS);
+        context_open_window(WindowClass::RecentNews);
 }
 
 static void ShortcutShowMap()
@@ -355,7 +355,7 @@ static void ShortcutShowMap()
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gEditorStep == EditorStep::LandscapeEditor)
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-            context_open_window(WC_MAP);
+            context_open_window(WindowClass::Map);
 }
 
 static void ShortcutReduceGameSpeed()
@@ -382,13 +382,13 @@ static void ShortcutOpenCheatWindow()
         return;
 
     // Check if window is already open
-    rct_window* window = window_find_by_class(WC_CHEATS);
+    rct_window* window = window_find_by_class(WindowClass::Cheats);
     if (window != nullptr)
     {
-        window_close(window);
+        window_close(*window);
         return;
     }
-    context_open_window(WC_CHEATS);
+    context_open_window(WindowClass::Cheats);
 }
 
 static void ShortcutOpenTransparencyWindow()
@@ -396,7 +396,7 @@ static void ShortcutOpenTransparencyWindow()
     if (gScreenFlags != SCREEN_FLAGS_PLAYING)
         return;
 
-    context_open_window(WC_TRANSPARENCY);
+    context_open_window(WindowClass::Transparency);
 }
 
 static void ShortcutClearScenery()
@@ -408,7 +408,7 @@ static void ShortcutClearScenery()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
+            rct_window* window = window_find_by_class(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -428,7 +428,7 @@ static void ShortcutQuickSaveGame()
     }
     else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        auto intent = Intent(WC_LOADSAVE);
+        auto intent = Intent(WindowClass::Loadsave);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
         intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
         context_open_intent(&intent);
@@ -450,10 +450,10 @@ static void ShortcutOpenSceneryPicker()
         || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && gEditorStep != EditorStep::LandscapeEditor))
         return;
 
-    rct_window* window_scenery = window_find_by_class(WC_SCENERY);
+    rct_window* window_scenery = window_find_by_class(WindowClass::Scenery);
     if (window_scenery == nullptr)
     {
-        rct_window* window_toolbar = window_find_by_class(WC_TOP_TOOLBAR);
+        rct_window* window_toolbar = window_find_by_class(WindowClass::TopToolbar);
         if (window_toolbar != nullptr)
         {
             window_toolbar->Invalidate();
@@ -461,8 +461,8 @@ static void ShortcutOpenSceneryPicker()
         }
     }
 
-    window_scenery = window_find_by_class(WC_SCENERY);
-    if (window_scenery != nullptr && !WidgetIsDisabled(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
+    window_scenery = window_find_by_class(WindowClass::Scenery);
+    if (window_scenery != nullptr && !WidgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
         && window_scenery->widgets[WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON].type != WindowWidgetType::Empty
         && !gWindowSceneryEyedropperEnabled)
     {
@@ -491,19 +491,19 @@ static void ShortcutScaleDown()
 }
 
 // Tile inspector shortcuts
-static void TileInspectorMouseUp(rct_widgetindex widgetIndex)
+static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 {
-    auto w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !WidgetIsDisabled(w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
+    auto w = window_find_by_class(WindowClass::TileInspector);
+    if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
     {
         window_event_mouse_up_call(w, widgetIndex);
     }
 }
 
-static void TileInspectorMouseDown(rct_widgetindex widgetIndex)
+static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 {
-    auto w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !WidgetIsDisabled(w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
+    auto w = window_find_by_class(WindowClass::TileInspector);
+    if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
     {
         window_event_mouse_down_call(w, widgetIndex);
     }
@@ -515,7 +515,7 @@ static void ShortcutToggleVisibility()
     if (windowTileInspectorSelectedIndex < 0)
         return;
 
-    rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
+    rct_window* w = window_find_by_class(WindowClass::TileInspector);
     if (w == nullptr)
         return;
 
@@ -530,7 +530,7 @@ static void ShortcutToggleVisibility()
 
 static void ShortcutIncreaseElementHeight()
 {
-    rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
+    rct_window* w = window_find_by_class(WindowClass::TileInspector);
     if (w != nullptr)
     {
         int action = -1;
@@ -563,7 +563,7 @@ static void ShortcutIncreaseElementHeight()
             case TileInspectorPage::Default:
                 break;
         }
-        if (action != -1 && !WidgetIsDisabled(w, action) && w->widgets[action].type != WindowWidgetType::Empty)
+        if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
             window_event_mouse_down_call(w, action);
         return;
     }
@@ -571,7 +571,7 @@ static void ShortcutIncreaseElementHeight()
 
 static void ShortcutDecreaseElementHeight()
 {
-    rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
+    rct_window* w = window_find_by_class(WindowClass::TileInspector);
     if (w != nullptr)
     {
         int action = -1;
@@ -604,7 +604,7 @@ static void ShortcutDecreaseElementHeight()
             case TileInspectorPage::Default:
                 break;
         }
-        if (action != -1 && !WidgetIsDisabled(w, action) && w->widgets[action].type != WindowWidgetType::Empty)
+        if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
             window_event_mouse_down_call(w, action);
         return;
     }
@@ -635,7 +635,7 @@ static void ShortcutConstructionTurnLeft()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
         window_footpath_keyboard_shortcut_turn_left();
@@ -650,7 +650,7 @@ static void ShortcutConstructionTurnRight()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
-    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
         window_footpath_keyboard_shortcut_turn_right();
@@ -666,7 +666,7 @@ static void ShortcutConstructionSlopeUp()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
         window_footpath_keyboard_shortcut_slope_up();
@@ -682,7 +682,7 @@ static void ShortcutConstructionBuildCurrent()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
         window_footpath_keyboard_shortcut_build_current();
@@ -698,7 +698,7 @@ static void ShortcutConstructionSlopeDown()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
         window_footpath_keyboard_shortcut_slope_down();
@@ -714,7 +714,7 @@ static void ShortcutConstructionDemolishCurrent()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    rct_window* window = window_find_by_class(WindowClass::Footpath);
     if (window != nullptr)
     {
         window_footpath_keyboard_shortcut_demolish_current();
@@ -759,10 +759,10 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::InterfaceCancelConstruction, STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE, "ESCAPE", []() {
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
-            auto window = window_find_by_class(WC_ERROR);
+            auto window = window_find_by_class(WindowClass::Error);
             if (window != nullptr)
             {
-                window_close(window);
+                window_close(*window);
             }
             else if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
             {
@@ -773,7 +773,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::InterfacePause, STR_SHORTCUT_PAUSE_GAME, "PAUSE", []() {
         if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            auto window = window_find_by_class(WC_TOP_TOOLBAR);
+            auto window = window_find_by_class(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -808,7 +808,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     });
     RegisterShortcut(ShortcutId::InterfaceSceneryPicker, STR_SHORTCUT_OPEN_SCENERY_PICKER, []() { ShortcutOpenSceneryPicker(); });
 
-    RegisterShortcut(ShortcutId::InterfaceShowOptions, STR_SHORTCUT_SHOW_OPTIONS, []() { context_open_window(WC_OPTIONS); });
+    RegisterShortcut(ShortcutId::InterfaceShowOptions, STR_SHORTCUT_SHOW_OPTIONS, []() { context_open_window(WindowClass::Options); });
     RegisterShortcut(ShortcutId::InterfaceOpenTransparencyOptions, STR_SHORTCUT_OPEN_TRANSPARENCY_OPTIONS, "CTRL+T", []() { ShortcutOpenTransparencyWindow(); });
     RegisterShortcut(ShortcutId::InterfaceOpenCheats, STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", []() { ShortcutOpenCheatWindow(); });
     RegisterShortcut(ShortcutId::InterfaceOpenMap, STR_SHORTCUT_SHOW_MAP, "TAB", []() { ShortcutShowMap(); });
@@ -828,13 +828,13 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::MultiplayerShow, STR_SHORTCUT_SHOW_MULTIPLAYER, []() {
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            OpenWindow(WC_MULTIPLAYER);
+            OpenWindow(WindowClass::Multiplayer);
         }
     });
     RegisterShortcut(ShortcutId::InterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
         if (gConfigInterface.toolbar_show_cheats)
         {
-            OpenWindow(WC_TILE_INSPECTOR);
+            OpenWindow(WindowClass::TileInspector);
         }
     });
 
@@ -864,7 +864,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::ViewToggleLandHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE, "8", []() { ToggleViewFlag(VIEWPORT_FLAG_LAND_HEIGHTS); });
     RegisterShortcut(ShortcutId::ViewToggleTrackHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE, "9", []() { ToggleViewFlag(VIEWPORT_FLAG_TRACK_HEIGHTS); });
     RegisterShortcut(ShortcutId::ViewToggleFootpathHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE, "0", []() { ToggleViewFlag(VIEWPORT_FLAG_PATH_HEIGHTS); });
-    RegisterShortcut(ShortcutId::ViewToggleCutAway, STR_SHORTCUT_VIEW_CLIPPING, []() { OpenWindow(WC_VIEW_CLIPPING); });
+    RegisterShortcut(ShortcutId::ViewToggleCutAway, STR_SHORTCUT_VIEW_CLIPPING, []() { OpenWindow(WindowClass::ViewClipping); });
     RegisterShortcut(ShortcutId::ViewToogleFootpathIssues, STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE, "I", []() { ToggleViewFlag(VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES); });
     RegisterShortcut(ShortcutId::ViewToggleGridlines, STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE, "7", []() { ToggleViewFlag(VIEWPORT_FLAG_GRIDLINES); });
 
@@ -906,14 +906,14 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::DebugTogglePaintDebugWindow, STR_SHORTCUT_DEBUG_PAINT_TOGGLE, []() {
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
-            auto window = window_find_by_class(WC_DEBUG_PAINT);
+            auto window = window_find_by_class(WindowClass::DebugPaint);
             if (window != nullptr)
             {
-                window_close(window);
+                window_close(*window);
             }
             else
             {
-                context_open_window(WC_DEBUG_PAINT);
+                context_open_window(WindowClass::DebugPaint);
             }
         }
     });

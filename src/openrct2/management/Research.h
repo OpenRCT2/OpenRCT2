@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -65,9 +65,9 @@ struct ResearchItem
     void SetNull();
     bool Exists() const;
     bool IsAlwaysResearched() const;
-    rct_string_id GetName() const;
-    rct_string_id GetCategoryInventionString() const;
-    rct_string_id GetCategoryName() const;
+    StringId GetName() const;
+    StringId GetCategoryInventionString() const;
+    StringId GetCategoryName() const;
 
     ResearchItem() = default;
     constexpr ResearchItem(uint32_t _rawValue, ResearchCategory _category, uint8_t _flags)
@@ -133,7 +133,7 @@ void research_finish_item(ResearchItem* researchItem);
 void research_insert(ResearchItem&& item, bool researched);
 void ResearchRemove(const ResearchItem& researchItem);
 
-bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
+bool research_insert_ride_entry(ride_type_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
 bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
 

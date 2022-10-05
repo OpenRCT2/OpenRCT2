@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -120,7 +120,7 @@ namespace OpenRCT2::Scripting
         if (gParkEntranceFee != value)
         {
             gParkEntranceFee = value;
-            window_invalidate_by_class(WC_PARK_INFORMATION);
+            window_invalidate_by_class(WindowClass::ParkInformation);
         }
     }
 
@@ -207,7 +207,7 @@ namespace OpenRCT2::Scripting
         if (gTotalAdmissions != value)
         {
             gTotalAdmissions = value;
-            window_invalidate_by_class(WC_PARK_INFORMATION);
+            window_invalidate_by_class(WindowClass::ParkInformation);
         }
     }
 
@@ -222,7 +222,7 @@ namespace OpenRCT2::Scripting
         if (gTotalIncomeFromAdmissions != value)
         {
             gTotalIncomeFromAdmissions = value;
-            window_invalidate_by_class(WC_PARK_INFORMATION);
+            window_invalidate_by_class(WindowClass::ParkInformation);
         }
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -120,6 +120,8 @@ namespace OpenRCT2
             virtual void TriggerResize() abstract;
 
             virtual void ShowMessageBox(const std::string& message) abstract;
+            virtual int32_t ShowMessageBox(
+                const std::string& title, const std::string& message, const std::vector<std::string>& options) abstract;
 
             virtual bool HasMenuSupport() abstract;
             // Creates a menu with a series of options, returns the index of the selected option

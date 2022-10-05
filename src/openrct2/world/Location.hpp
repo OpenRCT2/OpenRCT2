@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -486,6 +486,34 @@ struct TileCoordsXYZ : public TileCoordsXY
     {
         TileCoordsXY::SetNull();
         z = 0;
+    }
+};
+
+struct TileCoordsXYRangedZ : public TileCoordsXY
+{
+    int32_t baseZ{};
+    int32_t clearanceZ{};
+
+    constexpr TileCoordsXYRangedZ() = default;
+    constexpr TileCoordsXYRangedZ(int32_t _x, int32_t _y, int32_t _baseZ, int32_t _clearanceZ)
+        : TileCoordsXY(_x, _y)
+        , baseZ(_baseZ)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+
+    constexpr TileCoordsXYRangedZ(const TileCoordsXY& _c, int32_t _baseZ, int32_t _clearanceZ)
+        : TileCoordsXY(_c)
+        , baseZ(_baseZ)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+
+    constexpr TileCoordsXYRangedZ(const TileCoordsXYZ& _c, int32_t _clearanceZ)
+        : TileCoordsXY(_c)
+        , baseZ(_c.z)
+        , clearanceZ(_clearanceZ)
+    {
     }
 };
 

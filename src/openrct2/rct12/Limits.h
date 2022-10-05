@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,4 +44,6 @@ namespace RCT12::Limits
     constexpr uint16_t const MaxHelices = 31;
     constexpr const uint8_t MaxElementHeight = 255;
     constexpr const uint8_t CustomerHistorySize = 10;
+
+    constexpr const uint8_t MaxWaitingTime = 250;
 } // namespace RCT12::Limits

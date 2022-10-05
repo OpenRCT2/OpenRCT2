@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,10 +19,10 @@
 #pragma pack(push, 1)
 struct rct_entrance_type
 {
-    rct_string_id string_idx; // 0x00
-    uint32_t image_id;        // 0x02
-    uint8_t scrolling_mode;   // 0x06
-    uint8_t text_height;      // 0x07
+    StringId string_idx;    // 0x00
+    uint32_t image_id;      // 0x02
+    uint8_t scrolling_mode; // 0x06
+    uint8_t text_height;    // 0x07
 };
 assert_struct_size(rct_entrance_type, 8);
 #pragma pack(pop)
@@ -56,7 +56,6 @@ extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern StationIndex gRideEntranceExitGhostStationIndex;
 
 void park_entrance_remove_ghost();
-money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc);
 
 void reset_park_entrance();
 void maze_entrance_hedge_replacement(const CoordsXYE& entrance);

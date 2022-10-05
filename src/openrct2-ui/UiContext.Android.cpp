@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -88,9 +88,9 @@ namespace OpenRCT2::Ui
         }
     };
 
-    IPlatformUiContext* CreatePlatformUiContext()
+    std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext()
     {
-        return new AndroidContext();
+        return std::make_unique<AndroidContext>();
     }
 } // namespace OpenRCT2::Ui
 

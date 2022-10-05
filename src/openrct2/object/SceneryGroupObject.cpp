@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -113,7 +113,12 @@ void SceneryGroupObject::UpdateEntryIndexes()
             continue;
 
         auto entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject.get());
-        Guard::Assert(entryIndex != OBJECT_ENTRY_INDEX_NULL, GUARD_LINE);
+        if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
+        {
+            // Some parks have manually deleted objects from the save so they might not be loaded
+            // silently remove the object from the SceneryGroupObject
+            continue;
+        }
 
         auto sceneryType = GetSceneryType(ori->Type);
         if (sceneryType.has_value())

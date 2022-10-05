@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -444,7 +444,7 @@ uint8_t RCT12BannerElement::GetAllowedEdges() const
     return AllowedEdges & 0b00001111;
 }
 
-bool is_user_string_id(rct_string_id stringId)
+bool is_user_string_id(StringId stringId)
 {
     return stringId >= 0x8000 && stringId < 0x9000;
 }
@@ -741,6 +741,23 @@ std::string_view GetStationIdentifierFromStyle(uint8_t style)
         return _stationStyles[style];
     }
     return {};
+}
+
+uint8_t GetStationStyleFromIdentifier(u8string_view identifier)
+{
+    // Not supported in TD6, closest match.
+    if (identifier == "openrct2.station.noplatformnoentrance")
+        return RCT12_STATION_STYLE_INVISIBLE;
+
+    for (uint8_t i = RCT12_STATION_STYLE_PLAIN; i < std::size(_stationStyles); i++)
+    {
+        if (_stationStyles[i] == identifier)
+        {
+            return i;
+        }
+    }
+
+    return RCT12_STATION_STYLE_PLAIN;
 }
 
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)

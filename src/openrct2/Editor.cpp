@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "ParkImporter.h"
 #include "actions/LandBuyRightsAction.h"
 #include "actions/LandSetRightsAction.h"
+#include "actions/ResultWithMessage.h"
 #include "audio/audio.h"
 #include "core/Path.hpp"
 #include "entity/EntityList.h"
@@ -29,6 +30,7 @@
 #include "interface/Window_internal.h"
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
+#include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "object/DefaultObjects.h"
 #include "object/ObjectManager.h"
@@ -91,8 +93,8 @@ namespace Editor
 
     static rct_window* OpenEditorWindows()
     {
-        auto* main = context_open_window(WC_MAIN_WINDOW);
-        context_open_window(WC_TOP_TOOLBAR);
+        auto* main = context_open_window(WindowClass::MainWindow);
+        context_open_window(WindowClass::TopToolbar);
         context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
         return main;
     }
@@ -125,7 +127,7 @@ namespace Editor
     void ConvertSaveToScenario()
     {
         tool_cancel();
-        auto intent = Intent(WC_LOADSAVE);
+        auto intent = Intent(WindowClass::Loadsave);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
         intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(ConvertSaveToScenarioCallback));
         context_open_intent(&intent);
@@ -376,10 +378,10 @@ namespace Editor
 
             gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, 80);
+            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
-        climate_reset(gClimate);
+        ClimateReset(gClimate);
 
         News::InitQueue();
     }
@@ -398,12 +400,12 @@ namespace Editor
         switch (gEditorStep)
         {
             case EditorStep::ObjectSelection:
-                if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION) != nullptr)
+                if (window_find_by_class(WindowClass::EditorObjectSelection) != nullptr)
                 {
                     return;
                 }
 
-                if (window_find_by_class(WC_INSTALL_TRACK) != nullptr)
+                if (window_find_by_class(WindowClass::InstallTrack) != nullptr)
                 {
                     return;
                 }
@@ -413,31 +415,31 @@ namespace Editor
                     object_manager_unload_all_objects();
                 }
 
-                context_open_window(WC_EDITOR_OBJECT_SELECTION);
+                context_open_window(WindowClass::EditorObjectSelection);
                 break;
             case EditorStep::InventionsListSetUp:
-                if (window_find_by_class(WC_EDITOR_INVENTION_LIST) != nullptr)
+                if (window_find_by_class(WindowClass::EditorInventionList) != nullptr)
                 {
                     return;
                 }
 
-                context_open_window(WC_EDITOR_INVENTION_LIST);
+                context_open_window(WindowClass::EditorInventionList);
                 break;
             case EditorStep::OptionsSelection:
-                if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS) != nullptr)
+                if (window_find_by_class(WindowClass::EditorScenarioOptions) != nullptr)
                 {
                     return;
                 }
 
-                context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
+                context_open_window(WindowClass::EditorScenarioOptions);
                 break;
             case EditorStep::ObjectiveSelection:
-                if (window_find_by_class(WC_EDITOR_OBJECTIVE_OPTIONS) != nullptr)
+                if (window_find_by_class(WindowClass::EditorObjectiveOptions) != nullptr)
                 {
                     return;
                 }
 
-                context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
+                context_open_window(WindowClass::EditorObjectiveOptions);
                 break;
             case EditorStep::LandscapeEditor:
             case EditorStep::SaveScenario:
@@ -468,7 +470,7 @@ namespace Editor
      *
      *  rct2: 0x006AB9B8
      */
-    std::pair<ObjectType, rct_string_id> CheckObjectSelection()
+    std::pair<ObjectType, StringId> CheckObjectSelection()
     {
         bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
 
@@ -492,6 +494,19 @@ namespace Editor
         {
             return { ObjectType::Ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED };
         }
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::Station))
+        {
+            return { ObjectType::Station, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED };
+        }
+
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::TerrainSurface))
+        {
+            return { ObjectType::TerrainSurface, STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED };
+        }
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::TerrainEdge))
+        {
+            return { ObjectType::TerrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED };
+        }
 
         if (!isTrackDesignerManager)
         {
@@ -513,7 +528,7 @@ namespace Editor
      *
      *  rct2: 0x0066FEAC
      */
-    std::pair<bool, rct_string_id> CheckPark()
+    ResultWithMessage CheckPark()
     {
         int32_t parkSize = park_calculate_size();
         if (parkSize == 0)

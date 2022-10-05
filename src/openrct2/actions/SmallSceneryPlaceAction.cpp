@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -135,8 +135,8 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
     else
     {
-        loc2.x += SceneryQuadrantOffsets[quadrant & 3].x - 1;
-        loc2.y += SceneryQuadrantOffsets[quadrant & 3].y - 1;
+        loc2.x += SceneryQuadrantOffsets[quadrant & 3].x;
+        loc2.y += SceneryQuadrantOffsets[quadrant & 3].y;
     }
     landHeight = tile_element_height(loc2);
     waterHeight = tile_element_water_height(loc2);
@@ -259,7 +259,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
     const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
+        { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -329,8 +329,8 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     }
     else
     {
-        x2 += SceneryQuadrantOffsets[quadrant & 3].x - 1;
-        y2 += SceneryQuadrantOffsets[quadrant & 3].y - 1;
+        x2 += SceneryQuadrantOffsets[quadrant & 3].x;
+        y2 += SceneryQuadrantOffsets[quadrant & 3].y;
     }
     landHeight = tile_element_height({ x2, y2 });
     waterHeight = tile_element_water_height({ x2, y2 });
@@ -396,7 +396,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
     const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+        { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
         CREATE_CROSSING_MODE_NONE, isTree);
     if (canBuild.Error != GameActions::Status::Ok)
     {

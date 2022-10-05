@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
+#include "Boundbox.h"
 
 #include <mutex>
 #include <thread>
@@ -64,7 +65,7 @@ struct paint_struct
 
 struct paint_string_struct
 {
-    rct_string_id string_id;
+    StringId string_id;
     paint_string_struct* next;
     int32_t x;
     int32_t y;
@@ -197,7 +198,7 @@ struct PaintSessionCore
     uint32_t ViewFlags;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
-    uint32_t TrackColours[4];
+    ImageId TrackColours[4];
     support_height SupportSegments[9];
     support_height Support;
     uint16_t WaterHeight;
@@ -285,49 +286,45 @@ extern CoordsXY gClipSelectionA;
 extern CoordsXY gClipSelectionB;
 
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
-#define CONSTRUCTION_MARKER (COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP)
+constexpr const ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
+constexpr const ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
+
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
 extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
 
 paint_struct* PaintAddImageAsParent(
-    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
 paint_struct* PaintAddImageAsParent(
-    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsParent(
-    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
-paint_struct* PaintAddImageAsParent(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset);
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 [[nodiscard]] paint_struct* PaintAddImageAsOrphan(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+paint_struct* PaintAddImageAsChild(
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsChild(
-    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
-    const CoordsXYZ& boundBoxOffset);
-paint_struct* PaintAddImageAsChild(
-    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
-    const CoordsXYZ& boundBoxOffset);
+    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
 paint_struct* PaintAddImageAsChildRotated(
-    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize);
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    paint_session& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
 
 void paint_util_push_tunnel_rotated(paint_session& session, uint8_t direction, uint16_t height, uint8_t type);
 
-bool PaintAttachToPreviousAttach(paint_session& session, ImageId imageId, int32_t x, int32_t y);
-bool PaintAttachToPreviousPS(paint_session& session, ImageId image_id, int32_t x, int32_t y);
-bool PaintAttachToPreviousPS(paint_session& session, uint32_t image_id, int32_t x, int32_t y);
+bool PaintAttachToPreviousAttach(paint_session& session, const ImageId& imageId, int32_t x, int32_t y);
+bool PaintAttachToPreviousPS(paint_session& session, const ImageId& image_id, int32_t x, int32_t y);
 void PaintFloatingMoneyEffect(
-    paint_session& session, money64 amount, rct_string_id string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
+    paint_session& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);
 
 paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);

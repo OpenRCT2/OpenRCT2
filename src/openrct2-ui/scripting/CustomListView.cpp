@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -237,7 +237,7 @@ void CustomListView::SetScrollbars(ScrollbarType value, bool initialising)
             else
                 widget->content = 0;
         }
-        WindowInitScrollWidgets(ParentWindow);
+        WindowInitScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -255,7 +255,7 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(ParentWindow);
+        window_update_scroll_widgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -272,7 +272,7 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(ParentWindow);
+        window_update_scroll_widgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -283,7 +283,7 @@ void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialisi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(ParentWindow);
+        window_update_scroll_widgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -681,13 +681,13 @@ void CustomListView::PaintHeading(
     if (sortOrder == ColumnSortOrder::Ascending)
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_UP);
+        ft.Add<StringId>(STR_UP);
         DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
     else if (sortOrder == ColumnSortOrder::Descending)
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_DOWN);
+        ft.Add<StringId>(STR_DOWN);
         DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
 }
@@ -754,10 +754,10 @@ void CustomListView::PaintSeperator(
 void CustomListView::PaintCell(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
 {
-    rct_string_id stringId = isHighlighted ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
+    StringId stringId = isHighlighted ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
 
     auto ft = Formatter();
-    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<StringId>(STR_STRING);
     ft.Add<const char*>(text);
     DrawTextEllipsised(dpi, pos, size.width, stringId, ft, {});
 }

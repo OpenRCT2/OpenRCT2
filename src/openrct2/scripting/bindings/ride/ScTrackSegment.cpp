@@ -13,6 +13,7 @@
 
 #    include "../../../Context.h"
 #    include "../../../ride/TrackData.h"
+#    include "../../../ride/Vehicle.h"
 #    include "../../ScriptEngine.h"
 
 using namespace OpenRCT2::Scripting;
@@ -35,6 +36,8 @@ void ScTrackSegment::Register(duk_context* ctx)
     dukglue_register_property(ctx, &ScTrackSegment::endZ_get, nullptr, "endZ");
     dukglue_register_property(ctx, &ScTrackSegment::endDirection_get, nullptr, "endDirection");
     dukglue_register_property(ctx, &ScTrackSegment::length_get, nullptr, "length");
+    dukglue_register_method(ctx, &ScTrackSegment::getSubpositionLength, "getSubpositionLength");
+    dukglue_register_method(ctx, &ScTrackSegment::getSubpositions, "getSubpositions");
 }
 
 int32_t ScTrackSegment::type_get() const
@@ -139,6 +142,27 @@ DukValue ScTrackSegment::elements_get() const
     }
 
     return DukValue::take_from_stack(ctx);
+}
+
+uint16_t ScTrackSegment::getSubpositionLength(uint8_t trackSubposition, uint8_t direction) const
+{
+    return vehicle_get_move_info_size(static_cast<VehicleTrackSubposition>(trackSubposition), _type, direction);
+}
+
+std::vector<DukValue> ScTrackSegment::getSubpositions(uint8_t trackSubposition, uint8_t direction) const
+{
+    const auto ctx = GetContext()->GetScriptEngine().GetContext();
+    const uint16_t size = getSubpositionLength(trackSubposition, direction);
+    const uint16_t typeAndDirection = (_type << 2) | (direction & 3);
+
+    std::vector<DukValue> result;
+
+    for (auto idx = 0; idx < size; idx++)
+    {
+        result.push_back(ToDuk<rct_vehicle_info>(
+            ctx, gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->info[idx]));
+    }
+    return result;
 }
 
 #endif

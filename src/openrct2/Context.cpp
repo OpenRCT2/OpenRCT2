@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 #    include <emscripten.h>
 #endif // __EMSCRIPTEN__
 
+#include "AssetPackManager.h"
 #include "Context.h"
 #include "Editor.h"
 #include "FileClassifier.h"
@@ -107,6 +108,7 @@ namespace OpenRCT2
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
         std::unique_ptr<IReplayManager> _replayManager;
         std::unique_ptr<IGameStateSnapshots> _gameStateSnapshots;
+        std::unique_ptr<AssetPackManager> _assetPackManager;
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
@@ -264,6 +266,11 @@ namespace OpenRCT2
             return _gameStateSnapshots.get();
         }
 
+        AssetPackManager* GetAssetPackManager() override
+        {
+            return _assetPackManager.get();
+        }
+
         DrawingEngine GetDrawingEngineType() override
         {
             return _drawingEngineType;
@@ -317,7 +324,7 @@ namespace OpenRCT2
         void Quit() override
         {
             gSavePromptMode = PromptMode::Quit;
-            context_open_window(WC_SAVE_PROMPT);
+            context_open_window(WindowClass::SavePrompt);
         }
 
         bool Initialise() final override
@@ -383,6 +390,10 @@ namespace OpenRCT2
             _scenarioRepository = CreateScenarioRepository(_env);
             _replayManager = CreateReplayManager();
             _gameStateSnapshots = CreateGameStateSnapshots();
+            if (!gOpenRCT2Headless)
+            {
+                _assetPackManager = std::make_unique<AssetPackManager>();
+            }
 #ifdef __ENABLE_DISCORD__
             if (!gOpenRCT2Headless)
             {
@@ -428,6 +439,13 @@ namespace OpenRCT2
             //      of the object cache.
             _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
 
+            if (!gOpenRCT2Headless)
+            {
+                _assetPackManager->Scan();
+                _assetPackManager->LoadEnabledAssetPacks();
+                _assetPackManager->Reload();
+            }
+
             // TODO Like objects, this can take a while if there are a lot of track designs
             //      its also really something really we might want to do in the background
             //      as its not required until the player wants to place a new ride.
@@ -453,9 +471,7 @@ namespace OpenRCT2
                 {
                     return false;
                 }
-#ifdef __ENABLE_LIGHTFX__
                 lightfx_init();
-#endif
             }
 
             input_reset_place_obj_modifier();
@@ -543,6 +559,18 @@ namespace OpenRCT2
             const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override
         {
             log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
+
+            // Register the file for crash upload if it asserts while loading.
+            crash_register_additional_file("load_park", path);
+            // Deregister park file in case it was processed without hitting an assert.
+            struct foo
+            {
+                ~foo()
+                {
+                    crash_unregister_additional_file("load_park");
+                }
+            } f;
+
             try
             {
                 if (String::Equals(Path::GetExtension(path), ".sea", true))
@@ -684,6 +712,13 @@ namespace OpenRCT2
                     ft.Add<uint32_t>(result.TargetVersion);
                     windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
                 }
+                else if (HasObjectsThatUseFallbackImages())
+                {
+                    Console::Error::WriteLine("Park has objects which require RCT1 linked. Fallback images will be used.");
+                    auto windowManager = _uiContext->GetWindowManager();
+                    windowManager->ShowError(STR_PARK_USES_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter());
+                }
+
                 return true;
             }
             catch (const ObjectLoadException& e)
@@ -697,27 +732,13 @@ namespace OpenRCT2
                 }
                 // The path needs to be duplicated as it's a const here
                 // which the window function doesn't like
-                auto intent = Intent(WC_OBJECT_LOAD_ERROR);
+                auto intent = Intent(WindowClass::ObjectLoadError);
                 intent.putExtra(INTENT_EXTRA_PATH, path);
                 intent.putExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
                 intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
 
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->OpenIntent(&intent);
-            }
-            catch (const UnsupportedRCTCFlagException& e)
-            {
-                Console::Error::WriteLine("Unable to open park: unsupported RCT classic feature");
-
-                // If loading the SV6 or SV4 failed return to the title screen if requested.
-                if (loadTitleScreenFirstOnFail)
-                {
-                    title_load();
-                }
-                auto windowManager = _uiContext->GetWindowManager();
-                auto ft = Formatter();
-                ft.Add<uint16_t>(e.Flag);
-                windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE, ft);
             }
             catch (const UnsupportedRideTypeException&)
             {
@@ -767,6 +788,24 @@ namespace OpenRCT2
         }
 
     private:
+        bool HasObjectsThatUseFallbackImages()
+        {
+            for (auto objectType : ObjectTypes)
+            {
+                auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+                for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
+                {
+                    auto obj = _objectManager->GetLoadedObject(objectType, i);
+                    if (obj != nullptr)
+                    {
+                        if (obj->UsesFallbackImages())
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         std::string GetOrPromptRCT2Path()
         {
             auto result = std::string();
@@ -1444,13 +1483,13 @@ void context_set_cursor_trap(bool value)
     GetContext()->GetUiContext()->SetCursorTrap(value);
 }
 
-rct_window* context_open_window(rct_windowclass wc)
+rct_window* context_open_window(WindowClass wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenWindow(wc);
 }
 
-rct_window* context_open_window_view(rct_windowclass wc)
+rct_window* context_open_window_view(uint8_t wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenView(wc);
@@ -1474,13 +1513,13 @@ void context_broadcast_intent(Intent* intent)
     windowManager->BroadcastIntent(*intent);
 }
 
-void context_force_close_window_by_class(rct_windowclass windowClass)
+void context_force_close_window_by_class(WindowClass windowClass)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->ForceClose(windowClass);
 }
 
-rct_window* context_show_error(rct_string_id title, rct_string_id message, const Formatter& args)
+rct_window* context_show_error(StringId title, StringId message, const Formatter& args)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->ShowError(title, message, args);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -73,5 +73,6 @@ private:
  */
 rct_window* WindowMainOpen()
 {
-    return WindowCreate<MainWindow>(WC_MAIN_WINDOW, { 0, 0 }, context_get_width(), context_get_height(), WF_STICK_TO_BACK);
+    return WindowCreate<MainWindow>(
+        WindowClass::MainWindow, { 0, 0 }, context_get_width(), context_get_height(), WF_STICK_TO_BACK);
 }

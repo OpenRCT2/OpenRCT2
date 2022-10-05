@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,7 @@ using ride_type_t = uint16_t;
  */
 struct RideSelection
 {
-    uint8_t Type;
+    ride_type_t Type;
     ObjectEntryIndex EntryIndex;
 
     bool operator==(const RideSelection& other) const

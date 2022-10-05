@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -111,11 +111,11 @@ static void ride_remove_station(Ride* ride, const CoordsXYZ& location)
  *
  *  rct2: 0x006C4D89
  */
-bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign)
+ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
-        return false;
+        return { false };
 
     CoordsXY stationBackLoc = loc;
     CoordsXY stationFrontLoc = loc;
@@ -125,8 +125,7 @@ bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, 
     {
         if (ride->num_stations >= OpenRCT2::Limits::MaxStationsPerRide)
         {
-            gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
-            return false;
+            return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
         }
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
@@ -141,7 +140,7 @@ bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, 
             station.Length = 0;
             ride->num_stations++;
         }
-        return true;
+        return { true };
     }
 
     TileElement* stationElement;
@@ -195,14 +194,12 @@ bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, 
     // This _might_ cause issues if the track designs is bugged and actually has 5.
     if (stationBackLoc == stationFrontLoc && ride->num_stations >= OpenRCT2::Limits::MaxStationsPerRide && !fromTrackDesign)
     {
-        gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
-        return false;
+        return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
     }
 
     if (stationLength > MAX_STATION_PLATFORM_LENGTH)
     {
-        gGameCommandErrorText = STR_STATION_PLATFORM_TOO_LONG;
-        return false;
+        return { false, STR_STATION_PLATFORM_TOO_LONG };
     }
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -257,18 +254,18 @@ bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, 
             }
         } while (!finaliseStationDone);
     }
-    return true;
+    return { true };
 }
 
 /**
  *
  *  rct2: 0x006C494B
  */
-bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags)
+ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
-        return false;
+        return { false };
 
     CoordsXYZD removeLoc = loc;
     CoordsXYZD stationBackLoc = loc;
@@ -286,7 +283,7 @@ bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32
                 ride_remove_station(ride, loc);
             }
         }
-        return true;
+        return { true };
     }
 
     TileElement* stationElement;
@@ -335,11 +332,10 @@ bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32
         if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc)
             && ride->num_stations >= OpenRCT2::Limits::MaxStationsPerRide)
         {
-            gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
-            return false;
+            return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
         }
 
-        return true;
+        return { true };
     }
 
     currentLoc = stationFrontLoc;
@@ -405,7 +401,7 @@ bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32
         }
     } while (!finaliseStationDone);
 
-    return true;
+    return { true };
 }
 
 void track_circuit_iterator_begin(track_circuit_iterator* it, CoordsXYE first)

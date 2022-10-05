@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -89,7 +89,7 @@ void TitleScreen::StopPreviewingSequence()
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            window_unfollow_sprite(mainWindow);
+            window_unfollow_sprite(*mainWindow);
         }
         _previewingSequence = false;
         _currentSequence = title_get_config_sequence();
@@ -131,7 +131,7 @@ void TitleScreen::Load()
     OpenRCT2::Audio::StopAll();
     GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
     viewport_init_all();
-    context_open_window(WC_MAIN_WINDOW);
+    context_open_window(WindowClass::MainWindow);
     CreateWindows();
     TitleInitialise();
     OpenRCT2::Audio::PlayTitleMusic();
@@ -139,7 +139,7 @@ void TitleScreen::Load()
     if (gOpenRCT2ShowChangelog)
     {
         gOpenRCT2ShowChangelog = false;
-        context_open_window(WC_CHANGELOG);
+        context_open_window(WindowClass::Changelog);
     }
 
     if (_sequencePlayer != nullptr)
@@ -215,10 +215,10 @@ void TitleScreen::ChangePresetSequence(size_t preset)
  */
 void TitleScreen::CreateWindows()
 {
-    context_open_window(WC_TITLE_MENU);
-    context_open_window(WC_TITLE_EXIT);
-    context_open_window(WC_TITLE_OPTIONS);
-    context_open_window(WC_TITLE_LOGO);
+    context_open_window(WindowClass::TitleMenu);
+    context_open_window(WindowClass::TitleExit);
+    context_open_window(WindowClass::TitleOptions);
+    context_open_window(WindowClass::TitleLogo);
     window_resize_gui(context_get_width(), context_get_height());
     _hideVersionInfo = false;
 }

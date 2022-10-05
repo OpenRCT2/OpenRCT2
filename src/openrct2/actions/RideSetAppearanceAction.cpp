@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -79,6 +79,7 @@ GameActions::Result RideSetAppearanceAction::Query() const
             break;
         case RideSetAppearanceType::VehicleColourScheme:
         case RideSetAppearanceType::EntranceStyle:
+        case RideSetAppearanceType::SellingItemColourIsRandom:
             break;
         default:
             log_warning("Invalid game command, type %d not recognised", _type);
@@ -137,8 +138,11 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             ride->entrance_style = _value;
             gfx_invalidate_screen();
             break;
+        case RideSetAppearanceType::SellingItemColourIsRandom:
+            ride->SetLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
+            break;
     }
-    window_invalidate_by_number(WC_RIDE, _rideIndex.ToUnderlying());
+    window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
 
     auto res = GameActions::Result();
     if (!ride->overall_view.IsNull())

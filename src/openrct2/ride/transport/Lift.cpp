@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,14 +34,14 @@ static constexpr const uint32_t lift_cage_sprites[][2] = {
     { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },
 };
 
-static void paint_lift_cage(paint_session& session, int8_t index, uint32_t colourFlags, int32_t height, uint8_t rotation)
+static void paint_lift_cage(paint_session& session, int8_t index, ImageId colourFlags, int32_t height, uint8_t rotation)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
-    imageId = lift_cage_sprites[1 + index][0] | colourFlags;
+    imageId = colourFlags.WithIndex(lift_cage_sprites[1 + index][0]);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 2, 2, height });
 
-    imageId = lift_cage_sprites[1 + index][1] | colourFlags;
+    imageId = colourFlags.WithIndex(lift_cage_sprites[1 + index][1]);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 28, 28, height });
 }
 
@@ -70,7 +70,7 @@ static void paint_lift_base(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    uint32_t imageId = SPR_FLOOR_METAL_B | session.TrackColours[SCHEME_SUPPORTS];
+    auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL_B);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
 
     track_paint_util_paint_fences(

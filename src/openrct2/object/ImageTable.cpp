@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,6 +29,8 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+
+static thread_local std::map<u8string, std::unique_ptr<Object>> _objDataCache = {};
 
 struct ImageTable::RequiredImage
 {
@@ -294,12 +296,25 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
     IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range)
 {
     std::vector<std::unique_ptr<RequiredImage>> result;
-    auto objectPath = FindLegacyObject(name);
-    auto obj = ObjectFactory::CreateObjectFromLegacyFile(
-        context->GetObjectRepository(), objectPath.c_str(), !gOpenRCT2NoGraphics);
+    Object* obj;
+
+    auto cached = _objDataCache.find(name);
+    if (cached != _objDataCache.end())
+    {
+        obj = cached->second.get();
+    }
+    else
+    {
+        auto objectPath = FindLegacyObject(name);
+        auto tmp = ObjectFactory::CreateObjectFromLegacyFile(
+            context->GetObjectRepository(), objectPath.c_str(), !gOpenRCT2NoGraphics);
+        auto inserted = _objDataCache.insert({ name, std::move(tmp) });
+        obj = inserted.first->second.get();
+    }
+
     if (obj != nullptr)
     {
-        auto& imgTable = static_cast<const Object*>(obj.get())->GetImageTable();
+        auto& imgTable = static_cast<const Object*>(obj)->GetImageTable();
         auto numImages = static_cast<int32_t>(imgTable.GetCount());
         auto images = imgTable.GetImages();
         size_t placeHoldersAdded = 0;
@@ -326,7 +341,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
     }
     else
     {
-        std::string msg = "Unable to open '" + objectPath + "'";
+        std::string msg = "Unable to open '" + name + "'";
         context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
         for (size_t i = 0; i < range.size(); i++)
         {
@@ -587,6 +602,8 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
             }
         }
     }
+
+    _objDataCache.clear();
 
     return usesFallbackSprites;
 }

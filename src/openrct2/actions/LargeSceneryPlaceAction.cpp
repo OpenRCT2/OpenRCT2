@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -120,8 +120,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
         auto canBuild = MapCanConstructWithClearAt(
-            { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE,
-            isTree);
+            { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -233,7 +232,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         banner->type = 0;
         banner->position = TileCoordsXY(_loc);
 
-        RideId rideIndex = banner_get_closest_ride_index({ _loc, maxHeight });
+        RideId rideIndex = BannerGetClosestRideIndex({ _loc, maxHeight });
         if (!rideIndex.IsNull())
         {
             banner->ride_index = rideIndex;
@@ -257,8 +256,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
         auto canBuild = MapCanConstructWithClearAt(
-            { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE,
-            isTree);
+            { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             if (banner != nullptr)

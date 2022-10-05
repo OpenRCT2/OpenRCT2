@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@
 #include "SmallScenery.h"
 #include "Surface.h"
 
-static int32_t map_place_clear_func(
+static int32_t MapPlaceClearFunc(
     TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price, bool is_scenery)
 {
     if ((*tile_element)->GetType() != TileElementType::SmallScenery)
@@ -57,18 +57,18 @@ static int32_t map_place_clear_func(
  *
  *  rct2: 0x006E0D6E, 0x006B8D88
  */
-int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
+int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
 {
-    return map_place_clear_func(tile_element, coords, flags, price, /*is_scenery=*/true);
+    return MapPlaceClearFunc(tile_element, coords, flags, price, /*is_scenery=*/true);
 }
 
 /**
  *
  *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
  */
-int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
+int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
 {
-    return map_place_clear_func(tile_element, coords, flags, price, /*is_scenery=*/false);
+    return MapPlaceClearFunc(tile_element, coords, flags, price, /*is_scenery=*/false);
 }
 
 static bool MapLoc68BABCShouldContinue(
@@ -160,7 +160,7 @@ GameActions::Result MapCanConstructWithClearAt(
                         continue;
                     }
 
-                    map_obstruction_set_error_text(tileElement, res);
+                    MapGetObstructionErrorText(tileElement, res);
                     res.Error = GameActions::Status::NoClearance;
                     return res;
                 }
@@ -257,7 +257,7 @@ GameActions::Result MapCanConstructWithClearAt(
                     continue;
                 }
 
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 res.Error = GameActions::Status::NoClearance;
                 return res;
             }
@@ -278,7 +278,7 @@ GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl
  *
  *  rct2: 0x0068BB18
  */
-void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Result& res)
+void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& res)
 {
     Ride* ride;
 
@@ -306,8 +306,8 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
-            ft.Add<rct_string_id>(stringId);
+            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
+            ft.Add<StringId>(stringId);
             break;
         }
         case TileElementType::Entrance:
@@ -329,8 +329,8 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             auto* wallEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            rct_string_id stringId = wallEntry != nullptr ? wallEntry->name : static_cast<rct_string_id>(STR_EMPTY);
-            ft.Add<rct_string_id>(stringId);
+            StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(STR_EMPTY);
+            ft.Add<StringId>(stringId);
             break;
         }
         case TileElementType::LargeScenery:
@@ -338,8 +338,8 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
-            ft.Add<rct_string_id>(stringId);
+            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
+            ft.Add<StringId>(stringId);
             break;
         }
         case TileElementType::Banner:

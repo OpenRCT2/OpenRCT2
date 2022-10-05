@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -270,7 +270,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, FontSpriteBase fontSpriteBase
  * Draws text that is left aligned and vertically centred.
  */
 void gfx_draw_string_left_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, colour_t colour, const ScreenCoordsXY& coords)
+    rct_drawpixelinfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords)
 {
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
@@ -429,7 +429,7 @@ int32_t string_get_height_raw(std::string_view text, FontSpriteBase fontBase)
  * ticks    : ebp >> 16
  */
 void DrawNewsTicker(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, rct_string_id format, void* args,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, void* args,
     int32_t ticks)
 {
     int32_t numLines, lineHeight, lineY;
@@ -758,12 +758,13 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
         }
         case FormatToken::InlineSprite:
         {
-            auto g1 = gfx_get_g1_element(token.parameter & 0x7FFFF);
+            auto imageId = ImageId::FromUInt32(token.parameter);
+            auto g1 = gfx_get_g1_element(imageId.GetIndex());
             if (g1 != nullptr && g1->width <= 32 && g1->height <= 32)
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
                 {
-                    gfx_draw_sprite(dpi, token.parameter, { info->x, info->y }, 0);
+                    gfx_draw_sprite(dpi, imageId, { info->x, info->y });
                 }
                 info->x += g1->width;
             }
@@ -992,10 +993,10 @@ void ttf_draw_string(
         info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
     }
 
-    std::memcpy(info.palette, text_palette, sizeof(info.palette));
+    std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
     ttf_process_initial_colour(colour, &info);
     ttf_process_string(dpi, text, &info);
-    std::memcpy(text_palette, info.palette, sizeof(info.palette));
+    std::memcpy(gTextPalette, info.palette, sizeof(info.palette));
 
     dpi->lastStringPos = { info.x, info.y };
 }
@@ -1052,10 +1053,10 @@ void gfx_draw_string_with_y_offsets(
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 
-    std::memcpy(info.palette, text_palette, sizeof(info.palette));
+    std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
     ttf_process_initial_colour(colour, &info);
     ttf_process_string(dpi, text, &info);
-    std::memcpy(text_palette, info.palette, sizeof(info.palette));
+    std::memcpy(gTextPalette, info.palette, sizeof(info.palette));
 
     dpi->lastStringPos = { info.x, info.y };
 }

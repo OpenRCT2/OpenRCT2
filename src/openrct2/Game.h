@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,8 +12,10 @@
 #include "common.h"
 #include "core/String.hpp"
 
+#include <memory>
 #include <string>
 
+class Intent;
 struct ParkLoadResult;
 
 enum class GameCommand : int32_t
@@ -100,6 +102,7 @@ enum class GameCommand : int32_t
     SetDate,                  // GA
     Custom,                   // GA
     ChangeMapSize,
+    FreezeRideRating,
     Count,
 };
 
@@ -130,9 +133,6 @@ enum
     ERROR_TYPE_FILE_LOAD = 255
 };
 
-extern rct_string_id gGameCommandErrorTitle;
-extern rct_string_id gGameCommandErrorText;
-
 extern uint32_t gCurrentTicks;
 extern uint32_t gCurrentRealTimeTicks;
 
@@ -144,6 +144,8 @@ extern float gDayNightCycle;
 extern bool gInUpdateCode;
 extern bool gInMapInitCode;
 extern std::string gCurrentLoadedPath;
+extern bool gIsAutosave;
+extern bool gIsAutosaveLoaded;
 
 extern bool gLoadKeepWindowsOpen;
 
@@ -166,7 +168,7 @@ void pause_toggle();
 bool game_is_paused();
 bool game_is_not_paused();
 void save_game();
-void* create_save_game_as_intent();
+std::unique_ptr<Intent> create_save_game_as_intent();
 void save_game_as();
 void save_game_cmd(u8string_view name = {});
 void save_game_with_name(u8string_view name);

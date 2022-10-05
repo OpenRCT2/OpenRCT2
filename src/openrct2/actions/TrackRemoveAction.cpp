@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -206,10 +206,11 @@ GameActions::Result TrackRemoveAction::Query() const
         int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
-            if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
+            const auto removeElementResult = track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0);
+            if (!removeElementResult.Successful)
             {
                 return GameActions::Result(
-                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, removeElementResult.Message);
             }
         }
 
@@ -384,10 +385,11 @@ GameActions::Result TrackRemoveAction::Execute() const
         int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
-            if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
+            const auto removeElementResult = track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0);
+            if (!removeElementResult.Successful)
             {
                 return GameActions::Result(
-                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, removeElementResult.Message);
             }
         }
 
@@ -412,10 +414,12 @@ GameActions::Result TrackRemoveAction::Execute() const
             && !(ride->status == RideStatus::Simulating && tileElement->Flags & TILE_ELEMENT_FLAG_GHOST)
             && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
-            if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, GAME_COMMAND_FLAG_APPLY))
+            const auto removeElementResult = track_remove_station_element(
+                { mapLoc, _origin.direction }, rideIndex, GAME_COMMAND_FLAG_APPLY);
+            if (!removeElementResult.Successful)
             {
                 return GameActions::Result(
-                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, removeElementResult.Message);
             }
         }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,14 +50,14 @@ static void PaintRideEntranceExitScrollingText(
         return;
 
     auto ft = Formatter();
-    ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
+    ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
     if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         ride->FormatNameTo(ft);
     }
     else
     {
-        ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_CLOSED);
+        ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
     }
 
     char text[256];
@@ -79,7 +79,6 @@ static void PaintRideEntranceExitScrollingText(
 
 static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t height, const EntranceElement& entranceEl)
 {
-#ifdef __ENABLE_LIGHTFX__
     PROFILED_FUNCTION();
 
     if (lightfx_is_available())
@@ -105,7 +104,6 @@ static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t he
                 break;
         }
     }
-#endif
 }
 
 static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
@@ -142,7 +140,7 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
     ImageId glassImageTemplate;
     if (hasGlass)
     {
-        glassImageTemplate = ImageId().WithTransparancy(colourPrimary);
+        glassImageTemplate = ImageId().WithTransparency(colourPrimary);
     }
 
     if (entranceEl.IsGhost())
@@ -161,33 +159,33 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
     // Certain entrance styles have another 2 images to draw for coloured windows
 
     auto isExit = entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
-    auto lengthY = (direction & 1) ? 28 : 2;
-    auto lengthX = (direction & 1) ? 2 : 28;
-    auto lengthZ = isExit ? 35 : 51;
+    CoordsXYZ boundBoxLength = {
+        (direction & 1) ? 2 : 28,
+        (direction & 1) ? 28 : 2,
+        isExit ? 35 : 51,
+    };
 
     // Back
     ImageIndex imageIndex = isExit ? stationObj->BaseImageId + direction + 8 : stationObj->BaseImageId + direction;
     ImageIndex glassImageIndex = isExit ? stationObj->BaseImageId + direction + 24 : stationObj->BaseImageId + direction + 16;
-    PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { lengthX, lengthY, lengthZ }, { 2, 2, height });
+    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height }, boundBoxLength });
     if (hasGlass)
     {
         PaintAddImageAsChild(
-            session, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height }, { lengthX, lengthY, lengthZ },
-            { 2, 2, height });
+            session, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height }, { { 2, 2, height }, boundBoxLength });
     }
 
     // Front
     imageIndex += 4;
     PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { lengthX, lengthY, lengthZ },
-        { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height });
+        session, imageTemplate.WithIndex(imageIndex), { 0, 0, height },
+        { { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height }, boundBoxLength });
     if (hasGlass)
     {
         glassImageIndex += 4;
         PaintAddImageAsChild(
-            session, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height }, { lengthX, lengthY, lengthZ },
-            { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height });
+            session, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height },
+            { { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height }, boundBoxLength });
     }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -224,12 +222,12 @@ static void PaintParkEntranceScrollingText(
     {
         const auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto name = park.Name.c_str();
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(name);
     }
     else
     {
-        ft.Add<rct_string_id>(STR_BANNER_TEXT_CLOSED);
+        ft.Add<StringId>(STR_BANNER_TEXT_CLOSED);
         ft.Add<uint32_t>(0);
     }
 
@@ -248,19 +246,17 @@ static void PaintParkEntranceScrollingText(
     auto imageIndex = scrolling_text_setup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, COLOUR_BLACK);
     auto textHeight = height + entrance.GetTextHeight();
-    PaintAddImageAsChild(session, ImageId(imageIndex), { 0, 0, textHeight }, { 28, 28, 47 }, { 2, 2, textHeight });
+    PaintAddImageAsChild(session, imageIndex, { 0, 0, textHeight }, { { 2, 2, textHeight }, { 28, 28, 47 } });
 }
 
 static void PaintParkEntranceLightEffects(paint_session& session)
 {
-#ifdef __ENABLE_LIGHTFX__
     PROFILED_FUNCTION();
 
     if (lightfx_is_available())
     {
         lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, 0, 155, LightType::Lantern3);
     }
-#endif
 }
 
 static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
@@ -298,7 +294,7 @@ static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t
             {
                 auto imageIndex = (surfaceDescriptor->Image + 5 * (1 + (direction & 1)));
                 PaintAddImageAsParent(
-                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { 32, 28, 0 }, { 0, 2, height });
+                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 0, 2, height }, { 32, 28, 0 } });
             }
 
             // Entrance
@@ -306,7 +302,7 @@ static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t
             {
                 auto imageIndex = entrance->GetImage(sequence, direction);
                 PaintAddImageAsParent(
-                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { 28, 28, 47 }, { 2, 2, height + 32 });
+                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height + 32 }, { 28, 28, 47 } });
 
                 if (!entranceEl.IsGhost())
                     PaintParkEntranceScrollingText(session, *entrance, direction, height);
@@ -320,7 +316,7 @@ static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t
                 auto imageIndex = entrance->GetImage(sequence, direction);
                 auto y = ((direction / 2 + sequence / 2) & 1) ? 26 : 32;
                 PaintAddImageAsParent(
-                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { 26, y, 79 }, { 3, 3, height });
+                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 3, 3, height }, { 26, y, 79 } });
             }
             break;
     }
@@ -350,7 +346,7 @@ static void PaintHeightMarkers(paint_session& session, const EntranceElement& en
             baseImageIndex += get_height_marker_offset();
             baseImageIndex -= gMapBaseZ;
             auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
-            PaintAddImageAsParent(session, imageId, { 16, 16, height }, { 1, 1, 0 }, { 31, 31, heightMarkerBaseZ + 64 });
+            PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 31, 31, heightMarkerBaseZ + 64 }, { 1, 1, 0 } });
         }
     }
 }

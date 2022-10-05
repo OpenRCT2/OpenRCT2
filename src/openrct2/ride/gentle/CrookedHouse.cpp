@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../ride/Vehicle.h"
@@ -17,13 +18,7 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
-struct rct_crooked_house_bound_box
-{
-    CoordsXY offset;
-    CoordsXY length;
-};
-
-static constexpr const rct_crooked_house_bound_box crooked_house_data[] = {
+static constexpr const BoundBoxXY CrookedHouseData[] = {
     {
         { 6, 0 },
         { 42, 24 },
@@ -75,8 +70,8 @@ static void PaintCrookedHouseStructure(
         }
     }
 
-    const auto& boundBox = crooked_house_data[segment];
-    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
+    const auto& boundBox = CrookedHouseData[segment];
+    auto imageTemplate = session.TrackColours[SCHEME_MISC];
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsParent(
         session, imageTemplate.WithIndex(imageIndex), { x_offset, y_offset, height + 3 }, { boundBox.length, 127 },
@@ -142,7 +137,7 @@ static void PaintCrookedHouse(
     paint_util_set_general_support_height(session, height + 128, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

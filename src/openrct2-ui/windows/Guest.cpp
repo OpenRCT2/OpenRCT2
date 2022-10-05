@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/GuestSetFlagsAction.h>
+#include <openrct2/actions/GuestSetNameAction.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/Guest.h>
@@ -34,7 +35,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WH = 157;
 static constexpr const int32_t WW = 192;
 
@@ -199,7 +200,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widx) override
+    void OnMouseUp(WidgetIndex widx) override
     {
         switch (widx)
         {
@@ -224,14 +225,14 @@ public:
                 break;
         }
     }
-    void OnMouseDown(rct_widgetindex widx) override
+    void OnMouseDown(WidgetIndex widx) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnMouseDownOverview(widx);
         }
     }
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
@@ -282,28 +283,28 @@ public:
                 break;
         }
     }
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnToolUpdateOverview(widgetIndex, screenCoords);
         }
     }
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnToolDownOverview(widgetIndex, screenCoords);
         }
     }
-    void OnToolAbort(rct_widgetindex widgetIndex) override
+    void OnToolAbort(WidgetIndex widgetIndex) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
             OnToolAbortOverview(widgetIndex);
         }
     }
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (page == WINDOW_GUEST_OVERVIEW)
         {
@@ -411,14 +412,14 @@ private:
         // Ensure min size is large enough for all tabs to fit
         for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
         {
-            if (!WidgetIsDisabled(this, i))
+            if (!WidgetIsDisabled(*this, i))
             {
                 minWidth = std::max(minWidth, widgets[i].right + 3);
             }
         }
         maxWidth = std::max(minWidth, maxWidth);
 
-        window_set_resize(this, minWidth, minHeight, maxWidth, maxHeight);
+        window_set_resize(*this, minWidth, minHeight, maxWidth, maxHeight);
     }
 
     void OnPrepareDrawCommon()
@@ -461,13 +462,13 @@ private:
 
         if (peep->CanBePickedUp())
         {
-            if (WidgetIsDisabled(this, WIDX_PICKUP))
+            if (WidgetIsDisabled(*this, WIDX_PICKUP))
                 Invalidate();
         }
         else
         {
             newDisabledWidgets = (1ULL << WIDX_PICKUP);
-            if (!WidgetIsDisabled(this, WIDX_PICKUP))
+            if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                 Invalidate();
         }
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -520,7 +521,7 @@ private:
 
     void OverviewTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_1))
+        if (WidgetIsDisabled(*this, WIDX_TAB_1))
             return;
 
         const auto& widget = widgets[WIDX_TAB_1];
@@ -586,7 +587,7 @@ private:
         DisableWidgets();
         OnPrepareDraw();
 
-        widget_invalidate(this, WIDX_MARQUEE);
+        widget_invalidate(*this, WIDX_MARQUEE);
 
         OnResizeCommon();
 
@@ -605,7 +606,7 @@ private:
         OnViewportRotate();
     }
 
-    void OnMouseUpOverview(rct_widgetindex widgetIndex)
+    void OnMouseUpOverview(WidgetIndex widgetIndex)
     {
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -629,10 +630,10 @@ private:
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
+                    rct_window* wind = window_find_by_number(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
-                        tool_set(wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
+                        tool_set(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
                     }
                 });
                 GameActions::Execute(&pickupAction);
@@ -656,7 +657,7 @@ private:
         }
     }
 
-    void OnMouseDownOverview(rct_widgetindex widgetIndex)
+    void OnMouseDownOverview(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -666,7 +667,7 @@ private:
         }
     }
 
-    void OnDropdownOverview(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OnDropdownOverview(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -697,7 +698,7 @@ private:
     void GuestFollow()
     {
         rct_window* main = window_get_main();
-        window_follow_sprite(main, EntityId::FromUnderlying(number));
+        window_follow_sprite(*main, EntityId::FromUnderlying(number));
     }
 
     void OnViewportRotateOverview()
@@ -756,7 +757,7 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
                 gfx_draw_sprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
@@ -859,8 +860,8 @@ private:
         newAnimationFrame %= 24;
         _guestAnimationFrame = newAnimationFrame;
 
-        widget_invalidate(this, WIDX_TAB_1);
-        widget_invalidate(this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_1);
+        widget_invalidate(*this, WIDX_TAB_2);
 
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -870,7 +871,7 @@ private:
         if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
         {
             peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
-            widget_invalidate(this, WIDX_ACTION_LBL);
+            widget_invalidate(*this, WIDX_ACTION_LBL);
         }
 
         _marqueePosition += 2;
@@ -895,7 +896,7 @@ private:
         }
     }
 
-    void OnTextInputOverview(rct_widgetindex widgetIndex, std::string_view text)
+    void OnTextInputOverview(WidgetIndex widgetIndex, std::string_view text)
     {
         if (widgetIndex != WIDX_RENAME)
             return;
@@ -903,10 +904,11 @@ private:
         if (text.empty())
             return;
         std::string sText(text);
-        guest_set_name(EntityId::FromUnderlying(number), sText.c_str());
+        auto gameAction = GuestSetNameAction(EntityId::FromUnderlying(number), sText);
+        GameActions::Execute(&gameAction);
     }
 
-    void OnToolUpdateOverview(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void OnToolUpdateOverview(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -950,7 +952,7 @@ private:
         gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
     }
 
-    void OnToolDownOverview(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void OnToolDownOverview(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -974,7 +976,7 @@ private:
         GameActions::Execute(&pickupAction);
     }
 
-    void OnToolAbortOverview(rct_widgetindex widgetIndex)
+    void OnToolAbortOverview(WidgetIndex widgetIndex)
     {
         if (widgetIndex != WIDX_PICKUP)
             return;
@@ -990,7 +992,7 @@ private:
 #pragma region Stats
     void StatsTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_2))
+        if (WidgetIsDisabled(*this, WIDX_TAB_2))
             return;
 
         const auto& widget = widgets[WIDX_TAB_2];
@@ -1190,7 +1192,7 @@ private:
 
         // Nausea tolerance
         {
-            static constexpr const rct_string_id _nauseaTolerances[] = {
+            static constexpr const StringId _nauseaTolerances[] = {
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_NONE,
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_LOW,
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_AVERAGE,
@@ -1199,7 +1201,7 @@ private:
             screenCoords.y += LIST_ROW_HEIGHT;
             auto nausea_tolerance = EnumValue(peep->NauseaTolerance) & 0x3;
             auto ft = Formatter();
-            ft.Add<rct_string_id>(_nauseaTolerances[nausea_tolerance]);
+            ft.Add<StringId>(_nauseaTolerances[nausea_tolerance]);
             DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_NAUSEA_TOLERANCE, ft);
         }
     }
@@ -1209,7 +1211,7 @@ private:
 #pragma region Rides
     void RidesTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_3))
+        if (WidgetIsDisabled(*this, WIDX_TAB_3))
             return;
 
         const auto& widget = widgets[WIDX_TAB_3];
@@ -1229,8 +1231,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_3);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_3);
 
         const auto guest = GetGuest();
         if (guest == nullptr)
@@ -1291,7 +1293,7 @@ private:
         if (index >= no_list_items)
             return;
 
-        auto intent = Intent(WC_RIDE);
+        auto intent = Intent(WindowClass::Ride);
         intent.putExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
         context_open_intent(&intent);
     }
@@ -1348,7 +1350,7 @@ private:
         }
         else
         {
-            ft.Add<rct_string_id>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
+            ft.Add<StringId>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
         }
 
         DrawTextEllipsised(&dpi, screenCoords, width - 14, STR_FAVOURITE_RIDE, ft);
@@ -1362,7 +1364,7 @@ private:
         for (int32_t listIndex = 0; listIndex < no_list_items; listIndex++)
         {
             auto y = listIndex * 10;
-            rct_string_id stringId = STR_BLACK_STRING;
+            StringId stringId = STR_BLACK_STRING;
             if (listIndex == selected_list_item)
             {
                 gfx_filter_rect(&dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
@@ -1384,7 +1386,7 @@ private:
 #pragma region Finance
     void FinanceTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_4))
+        if (WidgetIsDisabled(*this, WIDX_TAB_4))
             return;
 
         const auto& widget = widgets[WIDX_TAB_4];
@@ -1404,8 +1406,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_4);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_4);
     }
 
     void OnDrawFinance(rct_drawpixelinfo& dpi)
@@ -1522,7 +1524,7 @@ private:
 #pragma region Thoughts
     void ThoughtsTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_5))
+        if (WidgetIsDisabled(*this, WIDX_TAB_5))
             return;
 
         const auto& widget = widgets[WIDX_TAB_5];
@@ -1542,8 +1544,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_5);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_5);
 
         auto peep = GetGuest();
         if (peep == nullptr)
@@ -1604,7 +1606,7 @@ private:
 #pragma region Inventory
     void InventoryTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_6))
+        if (WidgetIsDisabled(*this, WIDX_TAB_6))
             return;
 
         const auto& widget = widgets[WIDX_TAB_6];
@@ -1617,8 +1619,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_6);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_6);
 
         auto peep = GetGuest();
         if (peep == nullptr)
@@ -1632,7 +1634,7 @@ private:
         }
     }
 
-    std::pair<rct_string_id, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
+    std::pair<StringId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
     {
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto parkName = park.Name.c_str();
@@ -1640,8 +1642,8 @@ private:
         // Default arguments
         auto ft = Formatter();
         ft.Add<uint32_t>(GetShopItemDescriptor(item).Image);
-        ft.Add<rct_string_id>(GetShopItemDescriptor(item).Naming.Display);
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(GetShopItemDescriptor(item).Naming.Display);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(parkName);
 
         // Special overrides
@@ -1672,8 +1674,8 @@ private:
                     case VOUCHER_TYPE_PARK_ENTRY_FREE:
                         ft.Rewind();
                         ft.Increment(6);
-                        ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
-                        ft.Add<rct_string_id>(STR_STRING);
+                        ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
+                        ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                         break;
                     case VOUCHER_TYPE_RIDE_FREE:
@@ -1682,22 +1684,22 @@ private:
                         {
                             ft.Rewind();
                             ft.Increment(6);
-                            ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
+                            ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
                             invRide->FormatNameTo(ft);
                         }
                         break;
                     case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
                         ft.Rewind();
                         ft.Increment(6);
-                        ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
-                        ft.Add<rct_string_id>(STR_STRING);
+                        ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
+                        ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                         break;
                     case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
                         ft.Rewind();
                         ft.Increment(6);
-                        ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                        ft.Add<rct_string_id>(GetShopItemDescriptor(guest.VoucherShopItem).Naming.Singular);
+                        ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
+                        ft.Add<StringId>(GetShopItemDescriptor(guest.VoucherShopItem).Naming.Singular);
                         break;
                 }
                 break;
@@ -1793,7 +1795,7 @@ private:
 #pragma region Debug
     void DebugTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_7))
+        if (WidgetIsDisabled(*this, WIDX_TAB_7))
             return;
 
         const auto& widget = widgets[WIDX_TAB_7];
@@ -1922,14 +1924,15 @@ rct_window* WindowGuestOpen(Peep* peep)
         return WindowStaffOpen(peep);
     }
 
-    auto* window = static_cast<GuestWindow*>(window_bring_to_front_by_number(WC_PEEP, peep->sprite_index.ToUnderlying()));
+    auto* window = static_cast<GuestWindow*>(
+        window_bring_to_front_by_number(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
     if (window == nullptr)
     {
         int32_t windowWidth = 192;
         if (gConfigGeneral.debugging_tools)
             windowWidth += TabWidth;
 
-        window = WindowCreate<GuestWindow>(WC_PEEP, windowWidth, 157, WF_RESIZABLE);
+        window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
         if (window == nullptr)
         {
             return nullptr;

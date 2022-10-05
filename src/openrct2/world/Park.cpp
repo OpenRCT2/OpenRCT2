@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -137,9 +137,6 @@ void update_park_fences(const CoordsXY& coords)
 
         if (fenceRequired)
         {
-            // As map_is_location_in_park sets the error text
-            // will require to back it up.
-            rct_string_id previous_error = gGameCommandErrorText;
             if (map_is_location_in_park({ coords.x - COORDS_XY_STEP, coords.y }))
             {
                 newFences |= 0x8;
@@ -159,8 +156,6 @@ void update_park_fences(const CoordsXY& coords)
             {
                 newFences |= 0x1;
             }
-
-            gGameCommandErrorText = previous_error;
         }
     }
 
@@ -269,6 +264,7 @@ void Park::Initialise()
     gParkRating = 0;
     _guestGenerationProbability = 0;
     gTotalRideValueForMoney = 0;
+    _suggestedGuestMaximum = 0;
     gResearchLastItem = std::nullopt;
     gMarketingCampaigns.clear();
 
@@ -327,7 +323,7 @@ void Park::Update(const Date& date)
         _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
         _guestGenerationProbability = CalculateGuestGenerationProbability();
 
-        window_invalidate_by_class(WC_FINANCES);
+        window_invalidate_by_class(WindowClass::Finances);
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         context_broadcast_intent(&intent);
     }
@@ -336,7 +332,7 @@ void Park::Update(const Date& date)
     if (gCurrentTicks % 4096 == 0)
     {
         gParkSize = CalculateParkSize();
-        window_invalidate_by_class(WC_PARK_INFORMATION);
+        window_invalidate_by_class(WindowClass::ParkInformation);
     }
 
     GenerateGuests();
@@ -361,7 +357,7 @@ uint32_t Park::CalculateParkSize() const
     if (tiles != gParkSize)
     {
         gParkSize = tiles;
-        window_invalidate_by_class(WC_PARK_INFORMATION);
+        window_invalidate_by_class(WindowClass::ParkInformation);
     }
 
     return tiles;
@@ -383,7 +379,7 @@ int32_t Park::CalculateParkRating() const
     // Guests
     {
         // -150 to +3 based on a range of guests from 0 to 2000
-        result -= 150 - (std::min<int16_t>(2000, gNumGuestsInPark) / 13);
+        result -= 150 - (std::min<int32_t>(2000, gNumGuestsInPark) / 13);
 
         // Find the number of happy peeps and the number of peeps who can't find the park exit
         uint32_t happyGuestCount = 0;
@@ -463,8 +459,8 @@ int32_t Park::CalculateParkRating() const
             result += 100 - averageExcitement - averageIntensity;
         }
 
-        totalRideExcitement = std::min<int16_t>(1000, totalRideExcitement);
-        totalRideIntensity = std::min<int16_t>(1000, totalRideIntensity);
+        totalRideExcitement = std::min<int32_t>(1000, totalRideExcitement);
+        totalRideIntensity = std::min<int32_t>(1000, totalRideIntensity);
         result -= 200 - ((totalRideExcitement + totalRideIntensity) / 10);
     }
 
@@ -553,8 +549,8 @@ money16 Park::CalculateTotalRideValueForMoney() const
 uint32_t Park::CalculateSuggestedMaxGuests() const
 {
     uint32_t suggestedMaxGuests = 0;
+    uint32_t difficultGenerationBonus = 0;
 
-    // TODO combine the two ride loops
     for (auto& ride : GetRideManager())
     {
         if (ride.status != RideStatus::Open)
@@ -566,18 +562,10 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
 
         // Add guest score for ride type
         suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue;
-    }
 
-    // If difficult guest generation, extra guests are available for good rides
-    if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
-    {
-        suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
-        for (auto& ride : GetRideManager())
+        // If difficult guest generation, extra guests are available for good rides
+        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
         {
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-                continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-                continue;
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
                 continue;
             if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
@@ -590,8 +578,14 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
                 continue;
 
             // Bonus guests for good ride
-            suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue * 2;
+            difficultGenerationBonus += ride.GetRideTypeDescriptor().BonusValue * 2;
         }
+    }
+
+    if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+    {
+        suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
+        suggestedMaxGuests += difficultGenerationBonus;
     }
 
     suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 65535);
@@ -780,8 +774,8 @@ void Park::UpdateHistories()
     // Invalidate relevant windows
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
     context_broadcast_intent(&intent);
-    window_invalidate_by_class(WC_PARK_INFORMATION);
-    window_invalidate_by_class(WC_FINANCES);
+    window_invalidate_by_class(WindowClass::ParkInformation);
+    window_invalidate_by_class(WindowClass::Finances);
 }
 
 int32_t park_is_open()
@@ -795,7 +789,7 @@ uint32_t park_calculate_size()
     if (tiles != gParkSize)
     {
         gParkSize = tiles;
-        window_invalidate_by_class(WC_PARK_INFORMATION);
+        window_invalidate_by_class(WindowClass::ParkInformation);
     }
     return tiles;
 }

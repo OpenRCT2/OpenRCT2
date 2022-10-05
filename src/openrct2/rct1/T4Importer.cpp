@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -168,48 +168,47 @@ namespace RCT1
                     td4Base.vehicle_type);
                 if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
                 {
-                    td->vehicle_colours[i].body_colour = RCT1::GetColour(td4Base.vehicle_colours[i].body_colour);
+                    td->vehicle_colours[i].Body = RCT1::GetColour(td4Base.vehicle_colours[i].body_colour);
                 }
                 else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
                 {
-                    td->vehicle_colours[i].body_colour = RCT1::GetColour(td4Base.vehicle_colours[i].trim_colour);
+                    td->vehicle_colours[i].Body = RCT1::GetColour(td4Base.vehicle_colours[i].trim_colour);
                 }
                 else
                 {
-                    td->vehicle_colours[i].body_colour = colourSchemeCopyDescriptor.colour1;
+                    td->vehicle_colours[i].Body = colourSchemeCopyDescriptor.colour1;
                 }
 
                 if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
                 {
-                    td->vehicle_colours[i].trim_colour = RCT1::GetColour(td4Base.vehicle_colours[i].body_colour);
+                    td->vehicle_colours[i].Trim = RCT1::GetColour(td4Base.vehicle_colours[i].body_colour);
                 }
                 else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
                 {
-                    td->vehicle_colours[i].trim_colour = RCT1::GetColour(td4Base.vehicle_colours[i].trim_colour);
+                    td->vehicle_colours[i].Trim = RCT1::GetColour(td4Base.vehicle_colours[i].trim_colour);
                 }
                 else
                 {
-                    td->vehicle_colours[i].trim_colour = colourSchemeCopyDescriptor.colour2;
+                    td->vehicle_colours[i].Trim = colourSchemeCopyDescriptor.colour2;
                 }
 
                 if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
                 {
-                    td->vehicle_additional_colour[i] = RCT1::GetColour(td4Base.vehicle_colours[i].body_colour);
+                    td->vehicle_colours[i].Tertiary = RCT1::GetColour(td4Base.vehicle_colours[i].body_colour);
                 }
                 else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
                 {
-                    td->vehicle_additional_colour[i] = RCT1::GetColour(td4Base.vehicle_colours[i].trim_colour);
+                    td->vehicle_colours[i].Tertiary = RCT1::GetColour(td4Base.vehicle_colours[i].trim_colour);
                 }
                 else
                 {
-                    td->vehicle_additional_colour[i] = colourSchemeCopyDescriptor.colour3;
+                    td->vehicle_colours[i].Tertiary = colourSchemeCopyDescriptor.colour3;
                 }
             }
             // Set remaining vehicles to same colour as first vehicle
             for (size_t i = Limits::MaxTrainsPerRide; i < std::size(td->vehicle_colours); i++)
             {
                 td->vehicle_colours[i] = td->vehicle_colours[0];
-                td->vehicle_additional_colour[i] = td->vehicle_additional_colour[0];
             }
 
             td->depart_flags = td4Base.depart_flags;

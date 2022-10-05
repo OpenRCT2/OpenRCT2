@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,7 +28,7 @@ using namespace OpenRCT2;
 
 struct rct_draw_scroll_text
 {
-    rct_string_id string_id;
+    StringId string_id;
     uint8_t string_args[32];
     colour_t colour;
     uint16_t position;
@@ -134,7 +134,7 @@ static uint8_t* font_sprite_get_codepoint_bitmap(int32_t codepoint)
 }
 
 static int32_t scrolling_text_get_matching_or_oldest(
-    rct_string_id stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
+    StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     uint32_t oldestId = 0xFFFFFFFF;
     int32_t scrollIndex = -1;
@@ -1446,8 +1446,8 @@ void scrolling_text_invalidate()
     }
 }
 
-int32_t scrolling_text_setup(
-    paint_session& session, rct_string_id stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
+ImageId scrolling_text_setup(
+    paint_session& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
 
@@ -1456,13 +1456,13 @@ int32_t scrolling_text_setup(
     rct_drawpixelinfo* dpi = &session.DPI;
 
     if (dpi->zoom_level > ZoomLevel{ 0 })
-        return SPR_SCROLLING_TEXT_DEFAULT;
+        return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
 
     _drawSCrollNextIndex++;
     ft.Rewind();
     int32_t scrollIndex = scrolling_text_get_matching_or_oldest(stringId, ft, scroll, scrollingMode, colour);
     if (scrollIndex >= SPR_SCROLLING_TEXT_START)
-        return scrollIndex;
+        return ImageId(scrollIndex);
 
     // Setup scrolling text
     auto scrollText = &_drawScrollTextList[scrollIndex];
@@ -1491,7 +1491,7 @@ int32_t scrolling_text_setup(
 
     uint32_t imageId = SPR_SCROLLING_TEXT_START + scrollIndex;
     drawing_engine_invalidate_image(imageId);
-    return imageId;
+    return ImageId(imageId);
 }
 
 static void scrolling_text_set_bitmap_for_sprite(

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,6 +87,8 @@ namespace Platform
     bool ProcessIsElevated();
     float GetDefaultScale();
 
+    bool IsRCT2Path(std::string_view path);
+    bool IsRCTClassicPath(std::string_view path);
     bool OriginalGameDataExists(std::string_view path);
 
     std::string GetUsername();

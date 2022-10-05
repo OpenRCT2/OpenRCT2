@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,7 +18,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
 static constexpr const int32_t WH = 100;
 static constexpr const int32_t WW = 400;
 
@@ -53,13 +53,13 @@ public:
     {
         widgets = window_custom_currency_widgets;
         hold_down_widgets = (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         colours[0] = COLOUR_LIGHT_BROWN;
         colours[1] = COLOUR_LIGHT_BROWN;
         colours[2] = COLOUR_LIGHT_BROWN;
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         auto* widget = &widgets[widgetIndex - 1];
 
@@ -112,7 +112,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -125,7 +125,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (dropdownIndex == -1)
             return;
@@ -150,7 +150,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (text.empty())
             return;
@@ -216,7 +216,7 @@ public:
         auto drawPos = windowPos
             + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
                               window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top };
-        rct_string_id stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
+        StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
             ? STR_PREFIX
             : STR_SUFFIX;
         DrawTextBasic(&dpi, drawPos, stringId, {}, { colours[1] });
@@ -225,5 +225,5 @@ public:
 
 rct_window* CustomCurrencyWindowOpen()
 {
-    return WindowFocusOrCreate<CustomCurrencyWindow>(WC_CUSTOM_CURRENCY_CONFIG, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, WW, WH, WF_CENTRE_SCREEN);
 }

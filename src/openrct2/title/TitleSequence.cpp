@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -501,16 +501,14 @@ namespace OpenRCT2::Title
 
     static std::string LegacyScriptWrite(const TitleSequence& seq)
     {
-        utf8 buffer[128];
         auto sb = StringBuilder(128);
-
         sb.Append("# SCRIPT FOR ");
         sb.Append(seq.Name.c_str());
         sb.Append("\n");
         for (const auto& seqCommand : seq.Commands)
         {
             std::visit(
-                [&buffer, &seq, &sb](auto&& command) {
+                [&seq, &sb](auto&& command) {
                     using T = std::decay_t<decltype(command)>;
                     if constexpr (std::is_same_v<T, LoadParkCommand>)
                     {
@@ -538,34 +536,28 @@ namespace OpenRCT2::Title
                     }
                     else if constexpr (std::is_same_v<T, SetLocationCommand>)
                     {
-                        String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command.Location.X, command.Location.Y);
-                        sb.Append(buffer);
+                        sb.Append(String::StdFormat("LOCATION %u %u", command.Location.X, command.Location.Y));
                     }
                     else if constexpr (std::is_same_v<T, RotateViewCommand>)
                     {
-                        String::Format(buffer, sizeof(buffer), "ROTATE %u", command.Rotations);
-                        sb.Append(buffer);
+                        sb.Append(String::StdFormat("ROTATE %u", command.Rotations));
                     }
                     else if constexpr (std::is_same_v<T, SetZoomCommand>)
                     {
-                        String::Format(buffer, sizeof(buffer), "ZOOM %u", command.Zoom);
-                        sb.Append(buffer);
+                        sb.Append(String::StdFormat("ZOOM %u", command.Zoom));
                     }
                     else if constexpr (std::is_same_v<T, FollowEntityCommand>)
                     {
-                        String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command.Follow.SpriteIndex);
-                        sb.Append(buffer);
+                        sb.Append(String::StdFormat("FOLLOW %u ", command.Follow.SpriteIndex));
                         sb.Append(command.Follow.SpriteName);
                     }
                     else if constexpr (std::is_same_v<T, SetSpeedCommand>)
                     {
-                        String::Format(buffer, sizeof(buffer), "SPEED %u", command.Speed);
-                        sb.Append(buffer);
+                        sb.Append(String::StdFormat("SPEED %u", command.Speed));
                     }
                     else if constexpr (std::is_same_v<T, WaitCommand>)
                     {
-                        String::Format(buffer, sizeof(buffer), "WAIT %u", command.Milliseconds);
-                        sb.Append(buffer);
+                        sb.Append(String::StdFormat("WAIT %u", command.Milliseconds));
                     }
                     else if constexpr (std::is_same_v<T, RestartCommand>)
                     {

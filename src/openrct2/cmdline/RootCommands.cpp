@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -144,6 +144,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineSubCommand("benchspritesort", CommandLine::BenchSpriteSortCommands  ),
     DefineSubCommand("benchsimulate",   CommandLine::BenchUpdateCommands      ),
     DefineSubCommand("simulate",        CommandLine::SimulateCommands         ),
+    DefineSubCommand("parkinfo",        CommandLine::ParkInfoCommands         ),
     CommandTableEnd
 };
 
@@ -211,12 +212,12 @@ exitcode_t CommandLine::HandleCommandDefault()
 
     if (!_rct1DataPath.empty())
     {
-        gCustomRCT1DataPath = _rct1DataPath;
+        gCustomRCT1DataPath = Path::GetAbsolute(_rct1DataPath);
     }
 
     if (!_rct2DataPath.empty())
     {
-        gCustomRCT2DataPath = _rct2DataPath;
+        gCustomRCT2DataPath = Path::GetAbsolute(_rct2DataPath);
     }
 
     if (!_password.empty())
@@ -458,6 +459,13 @@ static void PrintVersion()
     Console::WriteLine();
     Console::WriteFormat("Minimum park file version: %d", OpenRCT2::PARK_FILE_MIN_VERSION);
     Console::WriteLine();
+#ifdef USE_BREAKPAD
+    Console::WriteFormat("With breakpad support enabled");
+    Console::WriteLine();
+#else
+    Console::WriteFormat("Breakpad support disabled");
+    Console::WriteLine();
+#endif
 }
 
 static void PrintLaunchInformation()

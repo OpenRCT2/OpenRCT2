@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,7 +47,7 @@ enum
 #pragma pack(push, 1)
 struct rct_footpath_entry
 {
-    rct_string_id string_idx;             // 0x00
+    StringId string_idx;                  // 0x00
     uint32_t image;                       // 0x02
     uint32_t bridge_image;                // 0x06
     RailingEntrySupportType support_type; // 0x0A
@@ -82,7 +82,7 @@ assert_struct_size(rct_footpath_entry, 13);
 
 struct PathSurfaceDescriptor
 {
-    rct_string_id Name;
+    StringId Name;
     uint32_t Image;
     uint32_t PreviewImage;
     uint8_t Flags;
@@ -95,7 +95,7 @@ struct PathSurfaceDescriptor
 
 struct PathRailingsDescriptor
 {
-    rct_string_id Name;
+    StringId Name;
     uint32_t PreviewImage;
     uint32_t BridgeImage;
     uint32_t RailingsImage;
@@ -233,7 +233,6 @@ extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];
 
 TileElement* map_get_footpath_element(const CoordsXYZ& coords);
 void footpath_interrupt_peeps(const CoordsXYZ& footpathPos);
-money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags);
 money32 footpath_provisional_set(
     ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
     PathConstructFlags constructFlags);

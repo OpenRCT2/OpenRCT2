@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/ride/Construction.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
@@ -27,7 +28,7 @@
 #include <openrct2/windows/Intent.h>
 #include <vector>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_DESIGN;
+static constexpr const StringId WINDOW_TITLE = STR_SELECT_DESIGN;
 static constexpr const int32_t WH = 441;
 static constexpr const int32_t WW = 600;
 static constexpr const int32_t DEBUG_PATH_HEIGHT = 12;
@@ -71,7 +72,7 @@ RideSelection _window_track_list_item;
 class TrackListWindow final : public Window
 {
 private:
-    std::vector<track_design_file_ref> _trackDesigns;
+    std::vector<TrackDesignFileRef> _trackDesigns;
     utf8 _filterString[USER_STRING_MAX_LENGTH];
     std::vector<uint16_t> _filteredTrackIds;
     uint16_t _loadedTrackDesignIndex;
@@ -132,10 +133,10 @@ private:
         }
 
         uint16_t trackDesignIndex = _filteredTrackIds[listIndex];
-        track_design_file_ref* tdRef = &_trackDesigns[trackDesignIndex];
+        TrackDesignFileRef* tdRef = &_trackDesigns[trackDesignIndex];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            auto intent = Intent(WC_MANAGE_TRACK_DESIGN);
+            auto intent = Intent(WindowClass::ManageTrackDesign);
             intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
             context_open_intent(&intent);
         }
@@ -147,7 +148,7 @@ private:
                 context_show_error(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
             }
 
-            auto intent = Intent(WC_TRACK_DESIGN_PLACE);
+            auto intent = Intent(WindowClass::TrackDesignPlace);
             intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
             context_open_intent(&intent);
         }
@@ -186,9 +187,9 @@ private:
         FilterList();
     }
 
-    bool LoadDesignPreview(utf8* path)
+    bool LoadDesignPreview(const u8string& path)
     {
-        _loadedTrackDesign = TrackDesignImport(path);
+        _loadedTrackDesign = TrackDesignImport(path.c_str());
         if (_loadedTrackDesign != nullptr)
         {
             TrackDesignDrawPreview(_loadedTrackDesign.get(), _trackDesignPreviewPixels.data());
@@ -213,7 +214,7 @@ public:
             widgets[WIDX_BACK].type = WindowWidgetType::TableHeader;
         }
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         track_list.track_list_being_updated = false;
         track_list.reload_track_designs = false;
         // Start with first track highlighted
@@ -223,7 +224,7 @@ public:
             selected_list_item = 1;
         }
         gTrackDesignSceneryToggle = false;
-        window_push_others_right(this);
+        window_push_others_right(*this);
         _currentTrackPieceDirection = 2;
         _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
@@ -239,11 +240,6 @@ public:
         _trackDesignPreviewPixels.shrink_to_fit();
 
         // Dispose track list
-        for (auto& trackDesign : _trackDesigns)
-        {
-            free(trackDesign.name);
-            free(trackDesign.path);
-        }
         _trackDesigns.clear();
 
         // If gScreenAge is zero, we're already in the process
@@ -253,13 +249,13 @@ public:
         // try to load the track manager again, and an infinite loop will result.
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && gScreenAge != 0)
         {
-            window_close_by_number(WC_MANAGE_TRACK_DESIGN, number);
-            window_close_by_number(WC_TRACK_DELETE_PROMPT, number);
+            window_close_by_number(WindowClass::ManageTrackDesign, number);
+            window_close_by_number(WindowClass::TrackDeletePrompt, number);
             Editor::LoadTrackManager();
         }
     }
 
-    void OnMouseUp(const rct_widgetindex widgetIndex) override
+    void OnMouseUp(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -280,12 +276,12 @@ public:
                 Close();
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
                 {
-                    context_open_window(WC_CONSTRUCT_RIDE);
+                    context_open_window(WindowClass::ConstructRide);
                 }
                 break;
             case WIDX_FILTER_STRING:
-                window_start_textbox(this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this
-                                                                                                           // out
+                window_start_textbox(
+                    *this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this out
                 break;
             case WIDX_FILTER_CLEAR:
                 // Keep the highlighted item selected
@@ -347,7 +343,7 @@ public:
         }
     }
 
-    void OnTextInput(const rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(const WidgetIndex widgetIndex, std::string_view text) override
     {
         if (widgetIndex != WIDX_FILTER_STRING || text.empty())
             return;
@@ -366,7 +362,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        rct_string_id stringId = STR_NONE;
+        StringId stringId = STR_NONE;
         rct_ride_entry* entry = get_ride_entry(_window_track_list_item.EntryIndex);
 
         if (entry != nullptr)
@@ -375,7 +371,7 @@ public:
             stringId = rideName.Name;
         }
 
-        Formatter::Common().Add<rct_string_id>(stringId);
+        Formatter::Common().Add<StringId>(stringId);
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
             window_track_list_widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
@@ -426,7 +422,7 @@ public:
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
             window_update_textbox_caret();
-            widget_invalidate(this, WIDX_FILTER_STRING); // TODO Check this
+            widget_invalidate(*this, WIDX_FILTER_STRING); // TODO Check this
         }
 
         if (track_list.reload_track_designs)
@@ -462,14 +458,14 @@ public:
         // Track preview
         auto& tdWidget = widgets[WIDX_TRACK_PREVIEW];
         int32_t colour = ColourMapA[colours[0]].darkest;
-        utf8* path = _trackDesigns[trackIndex].path;
+        u8string path = _trackDesigns[trackIndex].path;
 
         // Show track file path (in debug mode)
         if (gConfigGeneral.debugging_tools)
         {
             utf8 pathBuffer[MAX_PATH];
             const utf8* pathPtr = pathBuffer;
-            shorten_path(pathBuffer, sizeof(pathBuffer), path, width, FontSpriteBase::MEDIUM);
+            shorten_path(pathBuffer, sizeof(pathBuffer), path.c_str(), width, FontSpriteBase::MEDIUM);
             auto ft = Formatter();
             ft.Add<utf8*>(pathPtr);
             DrawTextBasic(
@@ -533,7 +529,7 @@ public:
 
         // Track design name
         auto ft = Formatter();
-        ft.Add<utf8*>(_trackDesigns[trackIndex].name);
+        ft.Add<const utf8*>(_trackDesigns[trackIndex].name.c_str());
         DrawTextEllipsised(&dpi, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, { TextAlignment::CENTRE });
 
         // Information
@@ -585,7 +581,7 @@ public:
 
                 // Ride length
                 ft = Formatter();
-                ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
+                ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
                 ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
                 DrawTextEllipsised(&dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
                 screenPos.y += LIST_ROW_HEIGHT;
@@ -688,7 +684,7 @@ public:
         else
         {
             // Build custom track item
-            rct_string_id stringId;
+            StringId stringId;
             if (listIndex == static_cast<size_t>(selected_list_item))
             {
                 // Highlight
@@ -703,7 +699,7 @@ public:
             }
 
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_BUILD_CUSTOM_DESIGN);
+            ft.Add<StringId>(STR_BUILD_CUSTOM_DESIGN);
             DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
             screenCoords.y += SCROLLABLE_ROW_HEIGHT;
             listIndex++;
@@ -713,7 +709,7 @@ public:
         {
             if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi.y && screenCoords.y < dpi.y + dpi.height)
             {
-                rct_string_id stringId;
+                StringId stringId;
                 if (listIndex == static_cast<size_t>(selected_list_item))
                 {
                     // Highlight
@@ -729,8 +725,8 @@ public:
 
                 // Draw track name
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(STR_TRACK_LIST_NAME_FORMAT);
-                ft.Add<utf8*>(_trackDesigns[i].name);
+                ft.Add<StringId>(STR_TRACK_LIST_NAME_FORMAT);
+                ft.Add<const utf8*>(_trackDesigns[i].name.c_str());
                 DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
             }
 
@@ -761,7 +757,7 @@ rct_window* WindowTrackListOpen(const RideSelection item)
     {
         screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
     }
-    auto* w = WindowCreate<TrackListWindow>(WC_TRACK_DESIGN_LIST, WW, WH, 0);
+    auto* w = WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0);
     w->SetRideSelection(item);
     return w;
 }

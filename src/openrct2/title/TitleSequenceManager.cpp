@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@ namespace TitleSequenceManager
     {
         const utf8* ConfigId;
         const utf8* Filename;
-        rct_string_id StringId;
+        ::StringId StringId;
     };
 
     static constexpr PredefinedSequence PredefinedSequences[] = {
@@ -235,7 +235,7 @@ namespace TitleSequenceManager
 
         if (item.PredefinedIndex != PREDEFINED_INDEX_CUSTOM)
         {
-            rct_string_id stringId = PredefinedSequences[item.PredefinedIndex].StringId;
+            StringId stringId = PredefinedSequences[item.PredefinedIndex].StringId;
             item.Name = language_get_string(stringId);
         }
         else if (IsNameReserved(item.Name))

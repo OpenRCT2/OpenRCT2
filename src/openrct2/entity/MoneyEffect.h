@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,7 +30,7 @@ struct MoneyEffect : EntityBase
     static void CreateAt(money64 value, const CoordsXYZ& effectPos, bool vertical);
     static void Create(money64 value, const CoordsXYZ& loc);
     void Update();
-    std::pair<rct_string_id, money64> GetStringId() const;
+    std::pair<StringId, money64> GetStringId() const;
     void Serialise(DataSerialiser& stream);
     void Paint(paint_session& session, int32_t imageDirection) const;
 };

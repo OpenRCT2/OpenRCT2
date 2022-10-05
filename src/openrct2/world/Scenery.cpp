@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,10 +59,10 @@ static std::vector<ScenerySelection> _restrictedScenery;
 
 // rct2: 0x009A3E74
 const CoordsXY SceneryQuadrantOffsets[] = {
-    { 7, 7 },
-    { 7, 23 },
-    { 23, 23 },
-    { 23, 7 },
+    { 8, 8 },
+    { 8, 24 },
+    { 24, 24 },
+    { 24, 8 },
 };
 
 LargeSceneryText::LargeSceneryText(const rct_large_scenery_text& original)

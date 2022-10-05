@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,23 +16,23 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
-static uint32_t SubmarineVehicleGetBaseImageId(const Vehicle* vehicle, const CarEntry* vehicleEntry, int32_t imageDirection)
+static uint32_t SubmarineVehicleGetBaseImageId(const Vehicle* vehicle, const CarEntry* carEntry, int32_t imageDirection)
 {
     uint32_t result = imageDirection;
     if (vehicle->restraints_position >= 64)
     {
-        if ((vehicleEntry->GroupEnabled(SpriteGroupType::RestraintAnimation)) && !(imageDirection & 3))
+        if ((carEntry->GroupEnabled(SpriteGroupType::RestraintAnimation)) && !(imageDirection & 3))
         {
             auto restraintFrame = ((vehicle->restraints_position - 64) / 64) * 4;
-            result = (vehicleEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
-                    * vehicleEntry->base_num_frames
-                + vehicleEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
+            result = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
+                    * carEntry->base_num_frames
+                + carEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
         }
     }
     else
     {
-        result = (vehicleEntry->SpriteByYaw(imageDirection, SpriteGroupType::SlopeFlat) * vehicleEntry->base_num_frames)
-            + vehicleEntry->GroupImageId(SpriteGroupType::SlopeFlat) + vehicle->SwingSprite;
+        result = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::SlopeFlat) * carEntry->base_num_frames)
+            + carEntry->GroupImageId(SpriteGroupType::SlopeFlat) + vehicle->SwingSprite;
     }
     return result;
 }
@@ -43,26 +43,24 @@ static uint32_t SubmarineVehicleGetBaseImageId(const Vehicle* vehicle, const Car
  */
 void vehicle_visual_submarine(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* vehicleEntry)
+    const CarEntry* carEntry)
 {
-    auto baseImageId = SubmarineVehicleGetBaseImageId(vehicle, vehicleEntry, imageDirection);
-    auto imageId0 = ImageId(
-        baseImageId + 0, vehicle->colours.body_colour, vehicle->colours.trim_colour, vehicle->colours_extended);
-    auto imageId1 = ImageId(
-        baseImageId + 1, vehicle->colours.body_colour, vehicle->colours.trim_colour, vehicle->colours_extended);
+    auto baseImageId = SubmarineVehicleGetBaseImageId(vehicle, carEntry, imageDirection);
+    auto imageId0 = ImageId(baseImageId + 0, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
+    auto imageId1 = ImageId(baseImageId + 1, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
     if (vehicle->IsGhost())
     {
         imageId0 = ImageId(baseImageId + 0).WithRemap(FilterPaletteID::Palette44);
         imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::Palette44);
     }
 
-    const auto& bb = VehicleBoundboxes[vehicleEntry->draw_order][OpenRCT2::Entity::Yaw::YawTo16(imageDirection)];
+    const auto& bb = VehicleBoundboxes[carEntry->draw_order][OpenRCT2::Entity::Yaw::YawTo16(imageDirection)];
     PaintAddImageAsParent(
         session, imageId0, { 0, 0, z }, { bb.length_x, bb.length_y, bb.length_z },
         { bb.offset_x, bb.offset_y, bb.offset_z + z });
     PaintAddImageAsParent(
         session, imageId1, { 0, 0, z }, { bb.length_x, bb.length_y, 2 }, { bb.offset_x, bb.offset_y, bb.offset_z + z - 10 });
-    assert(vehicleEntry->effect_visual == 1);
+    assert(carEntry->effect_visual == 1);
 }
 
 static void submarine_ride_paint_track_station(
@@ -71,11 +69,11 @@ static void submarine_ride_paint_track_station(
 {
     const auto* stationObj = ride.GetStationObject();
     int32_t heightLower = height - 16;
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction & 1)
     {
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 20, 32, 3 }, { 6, 0, heightLower });
 
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
@@ -84,7 +82,7 @@ static void submarine_ride_paint_track_station(
     }
     else
     {
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 32, 20, 3 }, { 0, 6, heightLower });
 
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
@@ -101,17 +99,17 @@ static void submarine_ride_paint_track_flat(
     const TrackElement& trackElement)
 {
     int32_t heightLower = height - 16;
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction & 1)
     {
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 20, 32, 3 }, { 6, 0, heightLower });
         paint_util_push_tunnel_right(session, heightLower, TUNNEL_0);
     }
     else
     {
-        imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 32, 20, 3 }, { 0, 6, heightLower });
         paint_util_push_tunnel_left(session, heightLower, TUNNEL_0);
     }

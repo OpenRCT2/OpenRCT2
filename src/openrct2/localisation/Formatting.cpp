@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -280,7 +280,7 @@ namespace OpenRCT2
         return sz != nullptr ? sz : std::string_view();
     }
 
-    void FormatRealName(FormatBuffer& ss, rct_string_id id)
+    void FormatRealName(FormatBuffer& ss, StringId id)
     {
         if (IsRealNameStringId(id))
         {
@@ -438,7 +438,7 @@ namespace OpenRCT2
 
     template<typename T> static void FormatMinutesSeconds(FormatBuffer& ss, T value)
     {
-        static constexpr const rct_string_id Formats[][2] = {
+        static constexpr const StringId Formats[][2] = {
             { STR_DURATION_SEC, STR_DURATION_SECS },
             { STR_DURATION_MIN_SEC, STR_DURATION_MIN_SECS },
             { STR_DURATION_MINS_SEC, STR_DURATION_MINS_SECS },
@@ -460,7 +460,7 @@ namespace OpenRCT2
 
     template<typename T> static void FormatHoursMinutes(FormatBuffer& ss, T value)
     {
-        static constexpr const rct_string_id Formats[][2] = {
+        static constexpr const StringId Formats[][2] = {
             { STR_REALTIME_MIN, STR_REALTIME_MINS },
             { STR_REALTIME_HOUR_MIN, STR_REALTIME_HOUR_MINS },
             { STR_REALTIME_HOURS_MIN, STR_REALTIME_HOURS_MINS },
@@ -622,12 +622,12 @@ namespace OpenRCT2
     template void FormatArgument(FormatBuffer&, FormatToken, const char*);
     template void FormatArgument(FormatBuffer&, FormatToken, std::string_view);
 
-    bool IsRealNameStringId(rct_string_id id)
+    bool IsRealNameStringId(StringId id)
     {
         return id >= REAL_NAME_START && id <= REAL_NAME_END;
     }
 
-    FmtString GetFmtStringById(rct_string_id id)
+    FmtString GetFmtStringById(StringId id)
     {
         auto fmtc = language_get_string(id);
         return FmtString(fmtc);
@@ -682,12 +682,12 @@ namespace OpenRCT2
     {
         for (const auto& token : fmt)
         {
-            if (token.kind == FormatToken::StringId)
+            if (token.kind == FormatToken::StringById)
             {
                 if (argIndex < args.size())
                 {
                     const auto& arg = args[argIndex++];
-                    std::optional<rct_string_id> stringId;
+                    std::optional<StringId> stringId;
                     if (auto value16 = std::get_if<uint16_t>(&arg))
                     {
                         stringId = *value16;
@@ -782,9 +782,9 @@ namespace OpenRCT2
                 case FormatToken::Comma1dp16:
                     anyArgs.push_back(ReadFromArgs<int16_t>(args));
                     break;
-                case FormatToken::StringId:
+                case FormatToken::StringById:
                 {
-                    auto stringId = ReadFromArgs<rct_string_id>(args);
+                    auto stringId = ReadFromArgs<StringId>(args);
                     anyArgs.push_back(stringId);
                     BuildAnyArgListFromLegacyArgBuffer(GetFmtStringById(stringId), anyArgs, args);
                     break;
@@ -807,7 +807,7 @@ namespace OpenRCT2
         }
     }
 
-    size_t FormatStringLegacy(char* buffer, size_t bufferLen, rct_string_id id, const void* args)
+    size_t FormatStringLegacy(char* buffer, size_t bufferLen, StringId id, const void* args)
     {
         thread_local std::vector<FormatArg_t> anyArgs;
         anyArgs.clear();
@@ -833,7 +833,7 @@ namespace OpenRCT2
 
 } // namespace OpenRCT2
 
-void format_string(utf8* dest, size_t size, rct_string_id format, const void* args)
+void format_string(utf8* dest, size_t size, StringId format, const void* args)
 {
     OpenRCT2::FormatStringLegacy(dest, size, format, args);
 }

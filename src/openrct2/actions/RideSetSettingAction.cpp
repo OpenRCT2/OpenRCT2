@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -236,7 +236,7 @@ GameActions::Result RideSetSettingAction::Execute() const
         auto location = ride->overall_view.ToTileCentre();
         res.Position = { location, tile_element_height(location) };
     }
-    window_invalidate_by_number(WC_RIDE, _rideIndex.ToUnderlying());
+    window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
     return res;
 }
 
@@ -273,7 +273,7 @@ bool RideSetSettingAction::ride_is_valid_operation_option(Ride* ride) const
     return _value >= minValue && _value <= maxValue;
 }
 
-rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
+StringId RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
 {
     switch (ride->mode)
     {
