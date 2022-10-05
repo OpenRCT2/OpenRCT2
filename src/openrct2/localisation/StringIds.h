@@ -3915,6 +3915,8 @@ enum : uint16_t
     STR_RELOAD_ASSET_PACKS_TIP = 6525,
     STR_BASE_GRAPHICS_MUSIC_SOUND = 6526,
 
+    STR_COMPETITIONS = 6527,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

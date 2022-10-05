@@ -48,6 +48,7 @@ namespace OpenRCT2::Scripting
         { "other", SCENARIO_CATEGORY_OTHER },
         { "dlc", SCENARIO_CATEGORY_DLC },
         { "build_your_own", SCENARIO_CATEGORY_BUILD_YOUR_OWN },
+        { "competitions", SCENARIO_CATEGORY_COMPETITIONS },
     });
 
     static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
