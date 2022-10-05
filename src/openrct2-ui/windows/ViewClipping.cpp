@@ -68,8 +68,8 @@ class ViewClippingWindow final : public Window
 {
 private:
     CoordsXY _selectionStart;
-    CoordsXY _previousClipSelectionA = { 0, 0 };
-    CoordsXY _previousClipSelectionB = gMapSize.ToCoordsXY();
+    CoordsXY _previousClipSelectionA;
+    CoordsXY _previousClipSelectionB;
     bool _toolActive{ false };
     bool _dragging{ false };
     static inline DisplayType _clipHeightDisplayType;
@@ -122,7 +122,7 @@ public:
                 _previousClipSelectionA = gClipSelectionA;
                 _previousClipSelectionB = gClipSelectionB;
                 gClipSelectionA = { 0, 0 };
-                gClipSelectionB = gMapSize.ToCoordsXY();
+                gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
                 gfx_invalidate_screen();
                 break;
             case WIDX_CLIP_CLEAR:
@@ -342,7 +342,11 @@ public:
     }
 
     void OnOpen() override
-    {
+    {   
+        if(_previousClipSelectionA == NULL || _previousClipSelectionB == NULL) {
+            _previousClipSelectionA = { 0, 0 };
+            _previousClipSelectionB = gMapSize.ToCoordsXY();
+        }
         this->widgets = window_view_clipping_widgets;
         this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
         WindowInitScrollWidgets(this);
