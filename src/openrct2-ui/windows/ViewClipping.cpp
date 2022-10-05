@@ -342,13 +342,13 @@ public:
     }
 
     void OnOpen() override
-    {   
+    {
         if (_previousClipSelectionA == NULL || _previousClipSelectionB == NULL) 
         {
             _previousClipSelectionA = { 0, 0 };
             _previousClipSelectionB = gMapSize.ToCoordsXY();
         }
-        
+
         this->widgets = window_view_clipping_widgets;
         this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
         WindowInitScrollWidgets(this);
