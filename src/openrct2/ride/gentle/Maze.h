@@ -11,4 +11,4 @@
 
 #include "../RideData.h"
 
-money64 MazeCalculateCost(money32 constructionCost, const Ride& ride, const CoordsXYZ& _loc);
+money64 MazeCalculateCost(money32 constructionCost, const Ride& ride, const CoordsXYZ& loc);

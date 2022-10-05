@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -352,7 +352,7 @@ void ride_clear_blocked_tiles(Ride* ride)
                     continue;
 
                 // Unblock footpath element that is at same position
-                auto* footpathElement = map_get_footpath_element(
+                auto* footpathElement = MapGetFootpathElement(
                     TileCoordsXYZ{ tilePos, trackElement->base_height }.ToCoordsXYZ());
 
                 if (footpathElement == nullptr)
@@ -534,7 +534,7 @@ void ride_construction_remove_ghosts()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
-        ride_entrance_exit_remove_ghost();
+        RideEntranceExitRemoveGhost();
         _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
     }
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
@@ -1572,10 +1572,10 @@ void Ride::ValidateStations()
             // remove the ride entrance and clean up if necessary
             if (shouldRemove)
             {
-                footpath_queue_chain_reset();
-                maze_entrance_hedge_replacement({ location, tileElement });
-                footpath_remove_edges_at(location, tileElement);
-                footpath_update_queue_chains();
+                FootpathQueueChainReset();
+                MazeEntranceHedgeReplacement({ location, tileElement });
+                FootpathRemoveEdgesAt(location, tileElement);
+                FootpathUpdateQueueChains();
                 map_invalidate_tile_full(location);
                 tile_element_remove(tileElement);
                 tileElement--;

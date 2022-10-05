@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -164,6 +164,7 @@ void map_strip_ghost_flag_from_elements();
 TileElement* map_get_first_element_at(const CoordsXY& tilePos);
 TileElement* map_get_first_element_at(const TileCoordsXY& tilePos);
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n);
+TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type);
 void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements);
 int32_t map_height_from_slope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
 BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t direction);
@@ -197,6 +198,12 @@ void map_invalidate_selection_rect();
 bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
 TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
 
+template<typename T = TileElement> T* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc)
+{
+    auto* element = MapGetFirstTileElementWithBaseHeightBetween(loc, T::ElementType);
+    return element != nullptr ? element->template as<T>() : nullptr;
+}
+
 template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
 {
     auto* element = tile_element_insert(loc, occupiedQuadrants, T::ElementType);
@@ -220,7 +227,7 @@ void tile_element_iterator_restart_for_tile(tile_element_iterator* it);
 void map_update_tiles();
 int32_t map_get_highest_z(const CoordsXY& loc);
 
-bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved);
+bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved);
 
 void map_remove_out_of_range_elements();
 void map_extend_boundary_surface_x();

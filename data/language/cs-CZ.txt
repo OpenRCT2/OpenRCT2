@@ -3299,7 +3299,6 @@ STR_6154    :Z bezpečnostních důvodů se nedoporučuje spouštět OpenRCT2 v 
 STR_6155    :Není nainstalován KDialog ani Zenity. Jeden z nich prosím nainstalujte, nebo konfigurujte z příkazové řádky.
 STR_6156    :Tento název je rezervován a nelze jej použít.
 STR_6157    :Konzole
-STR_6158    :Tento soubor nelze načíst…{NEWLINE}Nekompatibilní verze RCTC: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Dostupné vozy: {BLACK}{STRING} 
 STR_6161    :Přepnout vykreslování mřížky
 STR_6162    :Točící se divoká myš

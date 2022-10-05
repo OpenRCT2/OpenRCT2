@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -198,7 +198,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
                         surfaceElement->SetSurfaceStyle(_surfaceStyle);
 
                         map_invalidate_tile_full(coords);
-                        footpath_remove_litter({ coords, tile_element_height(coords) });
+                        FootpathRemoveLitter({ coords, tile_element_height(coords) });
                     }
                 }
             }

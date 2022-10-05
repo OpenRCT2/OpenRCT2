@@ -111,6 +111,7 @@
     <ClInclude Include="actions\RideDemolishAction.h" />
     <ClInclude Include="actions\RideEntranceExitPlaceAction.h" />
     <ClInclude Include="actions\RideEntranceExitRemoveAction.h" />
+    <ClInclude Include="actions\RideFreezeRatingAction.h" />
     <ClInclude Include="actions\RideSetAppearanceAction.h" />
     <ClInclude Include="actions\RideSetColourSchemeAction.h" />
     <ClInclude Include="actions\RideSetNameAction.h" />
@@ -145,6 +146,8 @@
     <ClInclude Include="actions\WaterLowerAction.h" />
     <ClInclude Include="actions\WaterRaiseAction.h" />
     <ClInclude Include="actions\WaterSetHeightAction.h" />
+    <ClInclude Include="AssetPack.h" />
+    <ClInclude Include="AssetPackManager.h" />
     <ClInclude Include="audio\audio.h" />
     <ClInclude Include="audio\AudioChannel.h" />
     <ClInclude Include="audio\AudioContext.h" />
@@ -299,11 +302,13 @@
     <ClInclude Include="object\LargeSceneryObject.h" />
     <ClInclude Include="object\MusicObject.h" />
     <ClInclude Include="object\Object.h" />
+    <ClInclude Include="object\ObjectAsset.h" />
     <ClInclude Include="object\ObjectFactory.h" />
     <ClInclude Include="object\ObjectLimits.h" />
     <ClInclude Include="object\ObjectList.h" />
     <ClInclude Include="object\ObjectManager.h" />
     <ClInclude Include="object\ObjectRepository.h" />
+    <ClInclude Include="object\ResourceTable.h" />
     <ClInclude Include="object\RideObject.h" />
     <ClInclude Include="object\SceneryGroupObject.h" />
     <ClInclude Include="object\SceneryObject.h" />
@@ -606,6 +611,7 @@
     <ClCompile Include="actions\RideDemolishAction.cpp" />
     <ClCompile Include="actions\RideEntranceExitPlaceAction.cpp" />
     <ClCompile Include="actions\RideEntranceExitRemoveAction.cpp" />
+    <ClCompile Include="actions\RideFreezeRatingAction.cpp" />
     <ClCompile Include="actions\RideSetAppearanceAction.cpp" />
     <ClCompile Include="actions\RideSetColourSchemeAction.cpp" />
     <ClCompile Include="actions\RideSetNameAction.cpp" />
@@ -640,6 +646,8 @@
     <ClCompile Include="actions\WaterLowerAction.cpp" />
     <ClCompile Include="actions\WaterRaiseAction.cpp" />
     <ClCompile Include="actions\WaterSetHeightAction.cpp" />
+    <ClCompile Include="AssetPack.cpp" />
+    <ClCompile Include="AssetPackManager.cpp" />
     <ClCompile Include="audio\Audio.cpp" />
     <ClCompile Include="audio\DummyAudioContext.cpp" />
     <ClCompile Include="Cheats.cpp" />
@@ -789,6 +797,7 @@
     <ClCompile Include="object\ObjectList.cpp" />
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />
+    <ClCompile Include="object\ResourceTable.cpp" />
     <ClCompile Include="object\RideObject.cpp" />
     <ClCompile Include="object\SceneryGroupObject.cpp" />
     <ClCompile Include="object\SceneryObject.cpp" />

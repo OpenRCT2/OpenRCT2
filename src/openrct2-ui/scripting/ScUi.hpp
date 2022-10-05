@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -58,6 +58,7 @@ namespace OpenRCT2::Scripting
         { "rct2_ww", ScenarioSource::RCT2_WW },
         { "rct2_tt", ScenarioSource::RCT2_TT },
         { "real", ScenarioSource::Real },
+        { "extras", ScenarioSource::Extras },
         { "other", ScenarioSource::Other },
     });
 

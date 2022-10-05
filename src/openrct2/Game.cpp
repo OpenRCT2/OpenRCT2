@@ -80,6 +80,8 @@ float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 bool gInMapInitCode = false;
 std::string gCurrentLoadedPath;
+bool gIsAutosave = false;
+bool gIsAutosaveLoaded = false;
 
 bool gLoadKeepWindowsOpen = false;
 
@@ -204,7 +206,7 @@ void update_palette_effects()
         uint32_t shade = 0;
         if (gConfigGeneral.render_weather_gloom)
         {
-            auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
+            auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
@@ -439,16 +441,16 @@ void game_fix_save_vars()
     ResearchFix();
 
     // Fix banner list pointing to NULL map elements
-    banner_reset_broken_index();
+    BannerResetBrokenIndex();
 
     // Fix banners which share their index
-    fix_duplicated_banners();
+    BannerFixDuplicates();
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
-    fix_park_entrance_locations();
+    ParkEntranceFixLocations();
 
     UpdateConsolidatedPatrolAreas();
 }
@@ -561,7 +563,7 @@ void reset_all_sprite_quadrant_placements()
 
 void save_game()
 {
-    if (!gFirstTimeSaving)
+    if (!gFirstTimeSaving && !gIsAutosaveLoaded)
     {
         const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
         save_game_with_name(savePath);
@@ -591,10 +593,11 @@ void save_game_cmd(u8string_view name /* = {} */)
 void save_game_with_name(u8string_view name)
 {
     log_verbose("Saving to %s", u8string(name).c_str());
-    if (scenario_save(name, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0)))
+    if (scenario_save(name, gConfigGeneral.save_plugin_data ? 1 : 0))
     {
         log_verbose("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
+        gIsAutosaveLoaded = false;
         gScreenAge = 0;
     }
 }
@@ -726,6 +729,8 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
         context_load_park_from_file(path);
         game_load_scripts();
         game_notify_map_changed();
+        gIsAutosaveLoaded = gIsAutosave;
+        gFirstTimeSaving = false;
     }
 }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -155,9 +155,9 @@ namespace RCT1
         uint16_t vehicles[Limits::MaxTrainsPerRide];             // 0x05E
         uint8_t depart_flags;                                    // 0x076
         uint8_t num_stations;                                    // 0x077
-        uint8_t num_trains;                                      // 0x078
+        uint8_t NumTrains;                                       // 0x078
         uint8_t num_cars_per_train;                              // 0x079
-        uint8_t proposed_num_vehicles;                           // 0x07A
+        uint8_t ProposedNumTrains;                               // 0x07A
         uint8_t proposed_num_cars_per_train;                     // 0x07B
         uint8_t max_trains;                                      // 0x07C
         uint8_t min_max_cars_per_train;                          // 0x07D

@@ -3301,7 +3301,6 @@ STR_6154    :Aus Sicherheitsgründen wird nicht empfohlen, OpenRCT2 mit erweiter
 STR_6155    :Weder KDialog noch Zenity sind installiert. Bitte installieren Sie eins oder konfigurieren Sie es über die Kommandozeile.
 STR_6156    :Name ist reserviert
 STR_6157    :Konsole
-STR_6158    :Laden der Datei fehlgeschlagen…{NEWLINE}Inkompatible RCTC-Version: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Verfügbare Fahrzeuge: {BLACK}{STRING} 
 STR_6161    :Gitternetzlinien ein-/ausblenden
 STR_6162    :Rotierende Wilde Maus
@@ -3617,7 +3616,11 @@ STR_6511    :Null-G-Rolle (rechts)
 STR_6512    :Große Null-G-Rolle (l.)
 STR_6513    :Große Null-G-Rolle (r.)
 STR_6514    :Ungültige Höhe!
-
+STR_6515    :{BLACK}RCT1 nicht verknüpft - Es werden Fallback-Bilder verwendet.
+STR_6516    :Eines oder mehrere der hinzugefügten Objekte benötigen eine Verknüpfung mit RCT1 für eine korrekte Anzeige. Es werden Fallback-Bilder verwendet.
+STR_6517    :Eines oder mehrere Objekte in diesem Park benötigen eine Verknüpfung mit RCT1 für eine korrekte Anzeige. Es werden Fallback-Bilder verwendet.
+STR_6518    :{BLACK}Zeigen Sie auf ein Szenario, um seine Beschreibung und sein Ziel zu sehen. Klicken Sie, um das Spiel zu beginnen.
+STR_6519    :Extras
 
 
 #############
@@ -4093,15 +4096,6 @@ STR_NAME    :Dach
 
 [TTRFWD08]
 STR_NAME    :Dach
-
-[TTRFGL01]
-STR_NAME    :Glasdach
-
-[TTRFGL02]
-STR_NAME    :Glasdach
-
-[TTRFGL03]
-STR_NAME    :Glasdach
 
 [ACWW33]
 STR_NAME    :Holzpfostenwand

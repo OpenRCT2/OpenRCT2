@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -207,9 +207,9 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
 void ClearAction::ResetClearLargeSceneryFlag()
 {
     // TODO: Improve efficiency of this
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < gMapSize.y; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < gMapSize.x; x++)
         {
             auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
             do

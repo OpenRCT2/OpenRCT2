@@ -3296,7 +3296,6 @@ STR_6154    :高い権限でOpenRCT2を実行することは推奨されませ�
 STR_6155    :KDialogやZenityがインストールしませんでした。どれかがインストールして下さい又は、コマンドラインから設定して下さい。
 STR_6156    :その名が残しました。
 STR_6157    :コンソール
-STR_6158    :ファイルのロードことが失敗しました…{NEWLINE}互換性なしのRCTCバージョン: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}可能な車両: {BLACK}{STRING}
 STR_6161    :地形グリッドの切り替え
 STR_6162    :スピニング・ワイルド・マウス
@@ -3938,15 +3937,6 @@ STR_NAME    :屋根
 
 [TTRFWD08]
 STR_NAME    :屋根
-
-[TTRFGL01]
-STR_NAME    :ガラス屋根
-
-[TTRFGL02]
-STR_NAME    :ガラス屋根
-
-[TTRFGL03]
-STR_NAME    :ガラス屋根
 
 [ACWW33]
 STR_NAME    :木製のポスト壁

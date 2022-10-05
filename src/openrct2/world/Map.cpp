@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -371,6 +371,22 @@ TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
     return nullptr;
 }
 
+TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type)
+{
+    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
+    if (tileElement == nullptr)
+        return nullptr;
+    do
+    {
+        if (tileElement->GetType() != type)
+            continue;
+        if (tileElement->base_height >= loc.baseZ && tileElement->base_height <= loc.clearanceZ)
+            return tileElement;
+    } while (!(tileElement++)->IsLastForTile());
+
+    return nullptr;
+}
+
 void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
 {
     if (!map_is_location_valid(tilePos.ToCoordsXY()))
@@ -445,9 +461,9 @@ void map_count_remaining_land_rights()
     gLandRemainingOwnershipSales = 0;
     gLandRemainingConstructionSales = 0;
 
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < gMapSize.y; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < gMapSize.x; x++)
         {
             auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             // Surface elements are sometimes hacked out to save some space for other map elements
@@ -715,7 +731,7 @@ void map_update_path_wide_flags()
     auto y = gWidePathTileLoopPosition.y;
     for (int32_t i = 0; i < 128; i++)
     {
-        footpath_update_path_wide_flags({ x, y });
+        FootpathUpdatePathWideFlags({ x, y });
 
         // Next x, y tile
         x += COORDS_XY_STEP;
@@ -1103,8 +1119,8 @@ void map_remove_all_rides()
                     break;
                 [[fallthrough]];
             case TileElementType::Track:
-                footpath_queue_chain_reset();
-                footpath_remove_edges_at(TileCoordsXY{ it.x, it.y }.ToCoordsXY(), it.element);
+                FootpathQueueChainReset();
+                FootpathRemoveEdgesAt(TileCoordsXY{ it.x, it.y }.ToCoordsXY(), it.element);
                 tile_element_remove(it.element);
                 tile_element_iterator_restart_for_tile(&it);
                 break;
@@ -1334,13 +1350,13 @@ void map_remove_provisional_elements()
 
     if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
-        footpath_provisional_remove();
+        FootpathProvisionalRemove();
         gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
     }
     if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
     {
         ride_remove_provisional_track_piece();
-        ride_entrance_exit_remove_ghost();
+        RideEntranceExitRemoveGhost();
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.
@@ -1358,14 +1374,14 @@ void map_restore_provisional_elements()
     if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
         gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
-        footpath_provisional_set(
+        FootpathProvisionalSet(
             gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
             gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
     }
     if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
     {
         ride_restore_provisional_track_piece();
-        ride_entrance_exit_place_provisional_ghost();
+        RideEntranceExitPlaceProvisionalGhost();
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.

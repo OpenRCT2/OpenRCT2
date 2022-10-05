@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@ void vehicle_visual_default(
 void vehicle_visual_roto_drop(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry);
-void vehicle_visual_observation_tower(
+void VehicleVisualObservationTower(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry);
 void vehicle_visual_river_rapids(
@@ -56,5 +56,5 @@ void vehicle_visual_submarine(
     const CarEntry* carEntry);
 void vehicle_visual_mini_golf_player(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
-void vehicle_visual_mini_golf_ball(
+void VehicleVisualMiniGolfBall(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);

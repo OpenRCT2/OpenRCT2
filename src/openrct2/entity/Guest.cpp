@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1468,7 +1468,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     bool hasVoucher = false;
 
-    bool isRainingAndUmbrella = shopItem == ShopItem::Umbrella && climate_is_raining();
+    bool isRainingAndUmbrella = shopItem == ShopItem::Umbrella && ClimateIsRaining();
 
     if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) && (VoucherShopItem == shopItem))
     {
@@ -1496,7 +1496,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     if ((shopItem == ShopItem::Balloon || shopItem == ShopItem::IceCream || shopItem == ShopItem::Candyfloss
          || shopItem == ShopItem::Sunglasses)
-        && climate_is_raining())
+        && ClimateIsRaining())
     {
         return false;
     }
@@ -2047,7 +2047,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                     }
                 }
 
-                if (climate_is_raining() && !ShouldRideWhileRaining(*ride))
+                if (ClimateIsRaining() && !ShouldRideWhileRaining(*ride))
                 {
                     if (peepAtRide)
                     {
@@ -2376,7 +2376,7 @@ void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 
 void Guest::ReadMap()
 {
-    if (IsActionInterruptable())
+    if (IsActionInterruptable() && !IsOnLevelCrossing())
     {
         Action = PeepActionType::ReadMap;
         ActionFrame = 0;
@@ -2533,7 +2533,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
             return false;
 
-        for (int32_t i = 0; i < ride->num_vehicles; ++i)
+        for (int32_t i = 0; i < ride->NumTrains; ++i)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
             if (vehicle == nullptr)
@@ -2923,6 +2923,11 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
             for (auto* tileElement : TileElementsView({ x, y }))
             {
                 Ride* ride;
+
+                if (tileElement->IsGhost())
+                {
+                    continue;
+                }
 
                 switch (tileElement->GetType())
                 {
@@ -3931,7 +3936,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     {
         vehicle->mini_golf_flags &= ~MiniGolfFlag::Flag5;
 
-        for (size_t i = 0; i < ride->num_vehicles; ++i)
+        for (size_t i = 0; i < ride->NumTrains; ++i)
         {
             Vehicle* train = GetEntity<Vehicle>(ride->vehicles[i]);
             if (train == nullptr)
@@ -4812,7 +4817,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (IsActionInterruptable())
     {
-        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !climate_is_raining() && (scenario_rand() & 0xFFFF) <= 2427)
+        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsRaining() && (scenario_rand() & 0xFFFF) <= 2427)
         {
             Action = PeepActionType::Jump;
             ActionFrame = 0;
@@ -5205,48 +5210,33 @@ void Guest::UpdateWalking()
     if (!CheckForPath())
         return;
 
-    if (PeepFlags & PEEP_FLAGS_WAVING)
+    if (!IsOnLevelCrossing())
     {
-        if (IsActionInterruptable())
+        if (PeepFlags & PEEP_FLAGS_WAVING && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
-            {
-                Action = PeepActionType::Wave2;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
+            Action = PeepActionType::Wave2;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
 
-                UpdateCurrentActionSpriteType();
-            }
+            UpdateCurrentActionSpriteType();
         }
-    }
 
-    if (PeepFlags & PEEP_FLAGS_PHOTO)
-    {
-        if (IsActionInterruptable())
+        if (PeepFlags & PEEP_FLAGS_PHOTO && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
-            {
-                Action = PeepActionType::TakePhoto;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
+            Action = PeepActionType::TakePhoto;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
 
-                UpdateCurrentActionSpriteType();
-            }
+            UpdateCurrentActionSpriteType();
         }
-    }
 
-    if (PeepFlags & PEEP_FLAGS_PAINTING)
-    {
-        if (IsActionInterruptable())
+        if (PeepFlags & PEEP_FLAGS_PAINTING && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
-            {
-                Action = PeepActionType::DrawPicture;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
+            Action = PeepActionType::DrawPicture;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
 
-                UpdateCurrentActionSpriteType();
-            }
+            UpdateCurrentActionSpriteType();
         }
     }
 
@@ -5299,16 +5289,10 @@ void Guest::UpdateWalking()
         }
     }
 
-    // Check if vehicle is blocking the destination tile
-    auto curPos = TileCoordsXYZ(GetLocation());
-    auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
-    if (curPos.x != dstPos.x || curPos.y != dstPos.y)
+    if (PathIsBlockedByVehicle())
     {
-        if (footpath_is_blocked_by_vehicle(dstPos))
-        {
-            // Wait for vehicle to pass
-            return;
-        }
+        // Wait for vehicle to pass
+        return;
     }
 
     uint8_t pathingResult;
@@ -5412,7 +5396,7 @@ void Guest::UpdateWalking()
 
     RideId ride_to_view;
     uint8_t ride_seat_to_view;
-    if (!peep_find_ride_to_look_at(this, chosen_edge, &ride_to_view, &ride_seat_to_view))
+    if (IsOnLevelCrossing() || !peep_find_ride_to_look_at(this, chosen_edge, &ride_to_view, &ride_seat_to_view))
         return;
 
     // Check if there is a peep watching (and if there is place for us)
@@ -6712,7 +6696,7 @@ void Guest::UpdateSpriteType()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (climate_is_raining() && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
+    if (ClimateIsRaining() && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
         if (map_is_location_valid(loc.ToTileStart()))

@@ -410,7 +410,7 @@ public:
                 hide_construction_rights();
                 break;
             case WIDX_BUILD_PARK_ENTRANCE:
-                park_entrance_remove_ghost();
+                ParkEntranceRemoveGhost();
                 Invalidate();
                 hide_gridlines();
                 hide_land_rights();
@@ -492,7 +492,7 @@ public:
         CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
         if (parkEntrancePosition.IsNull())
         {
-            park_entrance_remove_ghost();
+            ParkEntranceRemoveGhost();
             return;
         }
 
@@ -514,7 +514,7 @@ public:
             return;
         }
 
-        park_entrance_remove_ghost();
+        ParkEntranceRemoveGhost();
 
         auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
         gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
@@ -529,7 +529,7 @@ public:
 
     void PlaceParkEntranceToolDown(const ScreenCoordsXY& screenCoords)
     {
-        park_entrance_remove_ghost();
+        ParkEntranceRemoveGhost();
 
         CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
         if (!parkEntrancePosition.IsNull())
@@ -550,7 +550,7 @@ public:
         map_invalidate_selection_rect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-        auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
+        auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
         if (mapCoords.IsNull())
             return;
 
@@ -578,7 +578,7 @@ public:
         // Verify footpath exists at location, and retrieve coordinates
         TileElement* tileElement;
         int32_t direction;
-        auto mapCoords = footpath_get_coordinates_from_pos(screenCoords, &direction, &tileElement);
+        auto mapCoords = FootpathGetCoordinatesFromPos(screenCoords, &direction, &tileElement);
         if (mapCoords.IsNull())
             return;
 

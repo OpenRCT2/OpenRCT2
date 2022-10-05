@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,17 +26,12 @@
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
+#include "../Boundbox.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
-struct boundbox
-{
-    CoordsXY offset;
-    CoordsXY length;
-};
-
 // clang-format off
-static constexpr const boundbox LargeSceneryBoundBoxes[] = {
+static constexpr const BoundBoxXY LargeSceneryBoundBoxes[] = {
     { { 3, 3 }, { 26, 26 } },
     { { 17, 17 }, { 12, 12 } },
     { { 17, 3 }, { 12, 12 } },
@@ -79,13 +74,13 @@ static void PaintLargeScenerySupports(
     int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
     if (tile.flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
     {
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, clearanceHeight, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, clearanceHeight, 0x20);
     }
     else
     {
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     }
-    paint_util_set_general_support_height(session, clearanceHeight, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, clearanceHeight, 0x20);
 }
 
 static std::string_view LargeSceneryCalculateDisplayText(const LargeSceneryText& text, std::string_view s, bool height)
@@ -397,8 +392,8 @@ void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t heigh
         flags = Numerics::rol16(flags, direction);
         bbIndex = (flags & 0xF) | (flags >> 12);
     }
-    const CoordsXYZ bbOffset = { LargeSceneryBoundBoxes[bbIndex].offset, height };
-    const CoordsXYZ bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
+    const CoordsXYZ& bbOffset = { LargeSceneryBoundBoxes[bbIndex].offset, height };
+    const CoordsXYZ& bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
 
     auto imageIndex = sceneryEntry->image + 4 + (sequenceNum << 2) + direction;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, bbLength, bbOffset);

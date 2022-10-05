@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -185,13 +185,13 @@ static int32_t guest_surface_path_finding(Peep& peep)
     auto pathPos = CoordsXYRangedZ{ peep.NextLoc, peep.NextLoc.z, peep.NextLoc.z + PATH_CLEARANCE };
     Direction randDirection = scenario_rand() & 3;
 
-    if (!fence_in_the_way(pathPos, randDirection))
+    if (!WallInTheWay(pathPos, randDirection))
     {
         pathPos.x += CoordsDirectionDelta[randDirection].x;
         pathPos.y += CoordsDirectionDelta[randDirection].y;
         Direction backwardsDirection = direction_reverse(randDirection);
 
-        if (!fence_in_the_way(pathPos, backwardsDirection))
+        if (!WallInTheWay(pathPos, backwardsDirection))
         {
             if (!map_surface_is_blocked(pathPos))
             {
@@ -210,13 +210,13 @@ static int32_t guest_surface_path_finding(Peep& peep)
 
     pathPos.x = peep.NextLoc.x;
     pathPos.y = peep.NextLoc.y;
-    if (!fence_in_the_way(pathPos, randDirection))
+    if (!WallInTheWay(pathPos, randDirection))
     {
         pathPos.x += CoordsDirectionDelta[randDirection].x;
         pathPos.y += CoordsDirectionDelta[randDirection].y;
         Direction backwardsDirection = direction_reverse(randDirection);
 
-        if (!fence_in_the_way(pathPos, backwardsDirection))
+        if (!WallInTheWay(pathPos, backwardsDirection))
         {
             if (!map_surface_is_blocked(pathPos))
             {
@@ -230,13 +230,13 @@ static int32_t guest_surface_path_finding(Peep& peep)
 
     pathPos.x = peep.NextLoc.x;
     pathPos.y = peep.NextLoc.y;
-    if (!fence_in_the_way(pathPos, randDirection))
+    if (!WallInTheWay(pathPos, randDirection))
     {
         pathPos.x += CoordsDirectionDelta[randDirection].x;
         pathPos.y += CoordsDirectionDelta[randDirection].y;
         Direction backwardsDirection = direction_reverse(randDirection);
 
-        if (!fence_in_the_way(pathPos, backwardsDirection))
+        if (!WallInTheWay(pathPos, backwardsDirection))
         {
             if (!map_surface_is_blocked(pathPos))
             {

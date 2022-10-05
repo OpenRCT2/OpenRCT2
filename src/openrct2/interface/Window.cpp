@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1574,11 +1574,12 @@ void window_event_viewport_rotate_call(rct_window* w)
             w->event_handlers->viewport_rotate(w);
 }
 
-void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType)
+void window_event_scroll_select_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->unknown_15 != nullptr)
-            w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
+    if (w->event_handlers == nullptr)
+        w->OnScrollSelect(scrollIndex, scrollAreaType);
+    else if (w->event_handlers->scroll_select != nullptr)
+        w->event_handlers->scroll_select(w, scrollIndex, scrollAreaType);
 }
 
 OpenRCT2String window_event_tooltip_call(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback)

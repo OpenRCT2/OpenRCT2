@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -146,7 +146,6 @@ rct_window* WindowServerListOpen()
 
     safe_strcpy(_playerName, gConfigNetwork.player_name.c_str(), sizeof(_playerName));
 
-    _serverList.ReadAndAddFavourites();
     window->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
     ServerListFetchServersBegin();
@@ -581,7 +580,8 @@ static void ServerListFetchServersCheck(rct_window* w)
             try
             {
                 auto [entries, statusText] = _fetchFuture.get();
-                _serverList.AddRange(entries);
+                _serverList.AddOrUpdateRange(entries);
+                _serverList.WriteFavourites(); // Update favourites in case favourited server info changes
                 _numPlayersOnline = _serverList.GetTotalPlayerCount();
                 _statusText = STR_X_PLAYERS_ONLINE;
                 if (statusText != STR_NONE)

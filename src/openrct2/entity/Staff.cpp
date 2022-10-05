@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -591,10 +591,10 @@ Direction Staff::DirectionSurface(Direction initialDirection) const
 
         direction &= 3;
 
-        if (fence_in_the_way({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction))
+        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction))
             continue;
 
-        if (fence_in_the_way({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction_reverse(direction)))
+        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction_reverse(direction)))
             continue;
 
         CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[direction];
@@ -860,6 +860,21 @@ bool Staff::DoMiscPathFinding()
     SetDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
 
     return false;
+}
+
+bool Staff::IsMechanicHeadingToFixRideBlockingPath()
+{
+    if (!IsMechanic())
+        return false;
+
+    auto tileCoords = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
+    auto trackElement = MapGetFirstTileElementWithBaseHeightBetween<TrackElement>(
+        { tileCoords, tileCoords.z + PATH_HEIGHT_STEP });
+    if (trackElement == nullptr)
+        return false;
+
+    auto ride = get_ride(trackElement->GetRideIndex());
+    return ride->id == CurrentRide && ride->breakdown_reason == BREAKDOWN_SAFETY_CUT_OUT;
 }
 
 /**
@@ -1323,6 +1338,9 @@ void Staff::UpdateHeadingToInspect()
         if (!CheckForPath())
             return;
 
+        if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+            return;
+
         uint8_t pathingResult;
         TileElement* rideEntranceExitElement;
         PerformNextAction(pathingResult, rideEntranceExitElement);
@@ -1426,6 +1444,9 @@ void Staff::UpdateAnswering()
         }
 
         if (!CheckForPath())
+            return;
+
+        if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
         uint8_t pathingResult;
@@ -1758,6 +1779,9 @@ void Staff::UpdateStaff(uint32_t stepsToTake)
 void Staff::UpdatePatrolling()
 {
     if (!CheckForPath())
+        return;
+
+    if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
         return;
 
     uint8_t pathingResult;

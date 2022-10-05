@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -95,7 +95,7 @@ static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t in
 
 /**
  * This is a small hack function to keep calling the ride rating processor until
- * the given ride's ratings have been calculated. What ever is currently being
+ * the given ride's ratings have been calculated. Whatever is currently being
  * processed will be overwritten.
  * Only purpose of this function currently is for testing.
  */
@@ -124,8 +124,8 @@ void ride_ratings_update_all()
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
-    // NOTE: Until the new save format only one ride can be updated at once.
-    // The SV6 format can store only a single state.
+    // NOTE: With the new save format more than one ride can be updated at once, but this has not yet been implemented.
+    // The SV6 format could store only a single state.
     ride_ratings_update_state(gRideRatingUpdateState);
 }
 
@@ -911,7 +911,7 @@ static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, Ride* ride)
     // various variables set on the ride itself.
 
     // https://gist.github.com/kevinburke/e19b803cd2769d96c540
-    upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerTrain * ride->num_vehicles;
+    upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerTrain * ride->NumTrains;
     upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerCar * ride->num_cars_per_train;
 
     // slight upkeep boosts for some rides - 5 for mini railway, 10 for log
@@ -1456,10 +1456,9 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     // Count surrounding scenery items
     int32_t numSceneryItems = 0;
     auto tileLocation = TileCoordsXY(location);
-    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, MAXIMUM_MAP_SIZE_TECHNICAL - 1); yy++)
+    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, gMapSize.y - 1); yy++)
     {
-        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
-             xx++)
+        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, gMapSize.x - 1); xx++)
         {
             // Count scenery items on this tile
             TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy });
@@ -2580,7 +2579,7 @@ void ride_ratings_calculate_go_karts(Ride* ride, RideRatingUpdateState& state)
     ride_ratings_set(&ratings, RIDE_RATING(1, 42), RIDE_RATING(1, 73), RIDE_RATING(0, 40));
     ride_ratings_apply_length(&ratings, ride, 700, 32768);
 
-    if (ride->mode == RideMode::Race && ride->num_vehicles >= 4)
+    if (ride->mode == RideMode::Race && ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(1, 40), RIDE_RATING(0, 50), 0);
 
@@ -2684,14 +2683,14 @@ void ride_ratings_calculate_dodgems(Ride* ride, RideRatingUpdateState& state)
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 35));
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
 
     ride_ratings_add(&ratings, ride->operation_option, ride->operation_option / 2, 0);
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
@@ -3844,14 +3843,14 @@ void ride_ratings_calculate_flying_saucers(Ride* ride, RideRatingUpdateState& st
         /* .nausea =     */ RIDE_RATING(0, 39),
     };
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
 
     ride_ratings_add(&ratings, ride->time_limit, ride->time_limit / 2, 0);
 
-    if (ride->num_vehicles >= 4)
+    if (ride->NumTrains >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), 0, 0);
     }
@@ -4350,6 +4349,44 @@ void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride, RideRatingUp
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
+void ride_ratings_calculate_classic_mini_roller_coaster(Ride* ride, RideRatingUpdateState& state)
+{
+    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+        return;
+
+    ride->unreliability_factor = 13;
+    set_unreliability_factor(ride);
+
+    RatingTuple ratings;
+    ride_ratings_set(&ratings, RIDE_RATING(2, 40), RIDE_RATING(2, 80), RIDE_RATING(1, 90));
+    ride_ratings_apply_length(&ratings, ride, 6000, 764);
+    ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
+    ride_ratings_apply_train_length(&ratings, ride, 187245);
+    ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+    ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+    ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+    ride_ratings_apply_gforces(&ratings, ride, 20480, 23831, 49648);
+    ride_ratings_apply_turns(&ratings, ride, 26749, 34767, 45749);
+    ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+    ride_ratings_apply_sheltered_ratings(&ratings, ride, 25700, 30583, 35108);
+    ride_ratings_apply_proximity(state, &ratings, 20130);
+    ride_ratings_apply_scenery(&ratings, ride, 9760);
+    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 6, 2, 2, 2);
+    ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
+    ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
+
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 20480, 23831, 49648);
+    ride_ratings_apply_intensity_penalty(&ratings);
+    ride_ratings_apply_adjustments(ride, &ratings);
+
+    ride->ratings = ratings;
+
+    ride->upkeep_cost = ride_compute_upkeep(state, ride);
+    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
+}
+
 void ride_ratings_calculate_hybrid_coaster(Ride* ride, RideRatingUpdateState& state)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
@@ -4464,6 +4501,46 @@ void ride_ratings_calculate_alpine_coaster(Ride* ride, RideRatingUpdateState& st
     ride_ratings_apply_scenery(&ratings, ride, 11155);
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x50000, 2, 2, 2);
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
+    ride_ratings_apply_intensity_penalty(&ratings);
+    ride_ratings_apply_adjustments(ride, &ratings);
+
+    ride->ratings = ratings;
+
+    ride->upkeep_cost = ride_compute_upkeep(state, ride);
+    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
+}
+
+void ride_ratings_calculate_classic_wooden_roller_coaster(Ride* ride, RideRatingUpdateState& state)
+{
+    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+        return;
+
+    ride->unreliability_factor = 19;
+    set_unreliability_factor(ride);
+
+    RatingTuple ratings;
+    ride_ratings_set(&ratings, RIDE_RATING(2, 80), RIDE_RATING(2, 60), RIDE_RATING(2, 00));
+    ride_ratings_apply_length(&ratings, ride, 6000, 873);
+    ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
+    ride_ratings_apply_train_length(&ratings, ride, 187245);
+    ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+    ride_ratings_apply_average_speed(&ratings, ride, 364088, 655360);
+    ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+    ride_ratings_apply_gforces(&ratings, ride, 40960, 34555, 49648);
+    ride_ratings_apply_turns(&ratings, ride, 26749, 43458, 45749);
+    ride_ratings_apply_drops(&ratings, ride, 40777, 46811, 49152);
+    ride_ratings_apply_sheltered_ratings(&ratings, ride, 16705, 30583, 35108);
+    ride_ratings_apply_proximity(state, &ratings, 22367);
+    ride_ratings_apply_scenery(&ratings, ride, 11155);
+    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 12, 2, 1, 2);
+    ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 1, 2);
+    ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 10), 2, 1, 2);
+    ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 1, 2);
+    ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 2);
+
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 40960, 34555, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 

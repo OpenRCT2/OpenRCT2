@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -298,6 +298,8 @@ public:
             widgets = targetWidgets;
             WindowInitScrollWidgets(*this);
         }
+
+        disabled_widgets = 0;
 
         for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
             SetWidgetPressed(WIDX_TAB_1 + i, false);

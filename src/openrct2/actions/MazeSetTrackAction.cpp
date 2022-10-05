@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -166,7 +166,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
     uint32_t flags = GetFlags();
     if (!(flags & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_remove_litter(_loc);
+        FootpathRemoveLitter(_loc);
         wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -768,7 +768,7 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
             *output = it.current;
             return 1;
         }
-        //#2081: prevent an infinite loop
+        // #2081: prevent an infinite loop
         moveSlowIt = !moveSlowIt;
         if (moveSlowIt)
         {
@@ -880,7 +880,7 @@ bool Ride::CanHaveMultipleCircuits() const
     }
 
     // Must have no more than one vehicle and one station
-    if (num_vehicles > 1 || num_stations > 1)
+    if (NumTrains > 1 || num_stations > 1)
         return false;
 
     return true;
@@ -1402,7 +1402,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     int32_t availableBreakdownProblems, totalProbability, randomProbability, problemBits, breakdownProblem;
 
     // Brake failure is more likely when it's raining
-    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = climate_is_raining() ? 20 : 3;
+    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = ClimateIsRaining() ? 20 : 3;
 
     if (!ride->CanBreakDown())
         return -1;
@@ -1440,7 +1440,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     // However if this is the case, brake failure should be taken out the equation, otherwise block brake
     // rides have a lower probability to break down due to a random implementation reason.
     if (ride->IsBlockSectioned())
-        if (ride->num_vehicles != 1)
+        if (ride->NumTrains != 1)
             return -1;
 
     // If brakes failure is disabled, also take it out of the equation (see above comment why)
@@ -1468,10 +1468,10 @@ bool Ride::CanBreakDown() const
 static void choose_random_train_to_breakdown_safe(Ride* ride)
 {
     // Prevent integer division by zero in case of hacked ride.
-    if (ride->num_vehicles == 0)
+    if (ride->NumTrains == 0)
         return;
 
-    ride->broken_vehicle = scenario_rand() % ride->num_vehicles;
+    ride->broken_vehicle = scenario_rand() % ride->NumTrains;
 
     // Prevent crash caused by accessing SPRITE_INDEX_NULL on hacked rides.
     // This should probably be cleaned up on import instead.
@@ -2043,7 +2043,7 @@ void ride_measurements_update()
             else
             {
                 // For each vehicle
-                for (int32_t j = 0; j < ride.num_vehicles; j++)
+                for (int32_t j = 0; j < ride.NumTrains; j++)
                 {
                     auto vehicleSpriteIdx = ride.vehicles[j];
                     auto vehicle = GetEntity<Vehicle>(vehicleSpriteIdx);
@@ -2639,7 +2639,7 @@ static ResultWithMessage ride_check_for_entrance_exit(RideId rideIndex)
 }
 
 /**
- * Calls footpath_chain_ride_queue for all entrances of the ride
+ * Calls FootpathChainRideQueue for all entrances of the ride
  *  rct2: 0x006B5952
  */
 void Ride::ChainQueues() const
@@ -2664,8 +2664,7 @@ void Ride::ChainQueues() const
                     continue;
 
                 int32_t direction = tileElement->GetDirection();
-                footpath_chain_ride_queue(
-                    id, GetStationIndex(&station), mapLocation, tileElement, direction_reverse(direction));
+                FootpathChainRideQueue(id, GetStationIndex(&station), mapLocation, tileElement, direction_reverse(direction));
             } while (!(tileElement++)->IsLastForTile());
         }
     }
@@ -3010,7 +3009,7 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
             if (tileElement->GetBaseZ() != entranceExitMapPos.z)
                 continue;
 
-            maze_entrance_hedge_removal({ entranceExitMapPos, tileElement });
+            MazeEntranceHedgeRemoval({ entranceExitMapPos, tileElement });
         } while (!(tileElement++)->IsLastForTile());
     }
 }
@@ -3350,7 +3349,7 @@ static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, 
     int32_t remainingDistance = 0;
     bool allTrainsCreated = true;
 
-    for (int32_t vehicleIndex = 0; vehicleIndex < ride->num_vehicles; vehicleIndex++)
+    for (int32_t vehicleIndex = 0; vehicleIndex < ride->NumTrains; vehicleIndex++)
     {
         if (ride->IsBlockSectioned())
         {
@@ -3474,7 +3473,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
     }
 
     // Check if there are enough free sprite slots for all the vehicles
-    int32_t totalCars = num_vehicles * num_cars_per_train;
+    int32_t totalCars = NumTrains * num_cars_per_train;
     if (totalCars > count_free_misc_sprite_slots())
     {
         return { false, STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES };
@@ -3527,7 +3526,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
         }
         else
         {
-            for (int32_t i = 0; i < num_vehicles; i++)
+            for (int32_t i = 0; i < NumTrains; i++)
             {
                 Vehicle* vehicle = GetEntity<Vehicle>(vehicles[i]);
                 if (vehicle == nullptr)
@@ -3558,7 +3557,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
  */
 void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
 {
-    for (int32_t i = 0; i < num_vehicles; i++)
+    for (int32_t i = 0; i < NumTrains; i++)
     {
         auto train = GetEntity<Vehicle>(vehicles[i]);
         if (train == nullptr)
@@ -4729,7 +4728,7 @@ void invalidate_test_results(Ride* ride)
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        for (int32_t i = 0; i < ride->num_vehicles; i++)
+        for (int32_t i = 0; i < ride->NumTrains; i++)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
             if (vehicle != nullptr)
@@ -4757,7 +4756,7 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor)
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        for (int32_t i = 0; i < ride->num_vehicles; i++)
+        for (int32_t i = 0; i < ride->NumTrains; i++)
         {
             for (Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
@@ -5115,7 +5114,7 @@ void Ride::UpdateMaxVehicles()
         return;
     }
     CarEntry* carEntry;
-    uint8_t numCarsPerTrain, numVehicles;
+    uint8_t numCarsPerTrain, numTrains;
     int32_t maxNumTrains;
 
     if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
@@ -5245,13 +5244,13 @@ void Ride::UpdateMaxVehicles()
     {
         maxNumTrains = OpenRCT2::Limits::MaxTrainsPerRide;
     }
-    numVehicles = std::min(proposed_num_vehicles, static_cast<uint8_t>(maxNumTrains));
+    numTrains = std::min(ProposedNumTrains, static_cast<uint8_t>(maxNumTrains));
 
     // Refresh new current num vehicles / num cars per vehicle
-    if (numVehicles != num_vehicles || numCarsPerTrain != num_cars_per_train)
+    if (numTrains != NumTrains || numCarsPerTrain != num_cars_per_train)
     {
         num_cars_per_train = numCarsPerTrain;
-        num_vehicles = numVehicles;
+        NumTrains = numTrains;
         window_invalidate_by_number(WindowClass::Ride, id.ToUnderlying());
     }
 }
@@ -5271,9 +5270,9 @@ void Ride::SetRideEntry(ObjectEntryIndex entryIndex)
     GameActions::Execute(&rideSetVehicleAction);
 }
 
-void Ride::SetNumVehicles(int32_t numVehicles)
+void Ride::SetNumTrains(int32_t numTrains)
 {
-    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::NumTrains, numVehicles);
+    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::NumTrains, numTrains);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
@@ -5696,9 +5695,9 @@ void determine_ride_entrance_and_exit_locations()
             // Search the map to find it. Skip the outer ring of invisible tiles.
             bool alreadyFoundEntrance = false;
             bool alreadyFoundExit = false;
-            for (int32_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
+            for (int32_t y = 1; y < gMapSize.y - 1; y++)
             {
-                for (int32_t x = 1; x < MAXIMUM_MAP_SIZE_TECHNICAL - 1; x++)
+                for (int32_t x = 1; x < gMapSize.x - 1; x++)
                 {
                     TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
 
@@ -5860,9 +5859,9 @@ void Ride::IncreaseNumShelteredSections()
 
 void Ride::UpdateRideTypeForAllPieces()
 {
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < gMapSize.y; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < gMapSize.x; x++)
         {
             auto* tileElement = map_get_first_element_at(TileCoordsXY(x, y));
             if (tileElement == nullptr)

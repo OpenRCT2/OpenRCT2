@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -231,31 +231,31 @@ extern const CoordsXY DirectionOffsets[NumOrthogonalDirections];
 extern const CoordsXY BinUseOffsets[NumOrthogonalDirections];
 extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];
 
-TileElement* map_get_footpath_element(const CoordsXYZ& coords);
-void footpath_interrupt_peeps(const CoordsXYZ& footpathPos);
-money32 footpath_provisional_set(
+TileElement* MapGetFootpathElement(const CoordsXYZ& coords);
+void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
+money32 FootpathProvisionalSet(
     ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
     PathConstructFlags constructFlags);
-void footpath_provisional_remove();
-void footpath_provisional_update();
-CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
-CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
-void footpath_remove_litter(const CoordsXYZ& footpathPos);
-void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
-void footpath_update_queue_chains();
-bool fence_in_the_way(const CoordsXYRangedZ& fencePos, int32_t direction);
-void footpath_chain_ride_queue(
+void FootpathProvisionalRemove();
+void FootpathProvisionalUpdate();
+CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
+CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
+void FootpathRemoveLitter(const CoordsXYZ& footpathPos);
+void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
+void FootpathUpdateQueueChains();
+bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction);
+void FootpathChainRideQueue(
     RideId rideIndex, StationIndex entranceIndex, const CoordsXY& footpathPos, TileElement* tileElement, int32_t direction);
-void footpath_update_path_wide_flags(const CoordsXY& footpathPos);
-bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
+void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos);
+bool FootpathIsBlockedByVehicle(const TileCoordsXYZ& position);
 
-int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);
-void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement);
+int32_t FootpathIsConnectedToMapEdge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);
+void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement);
 
 bool FootpathSelectDefault();
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex);
 const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex);
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);
 
-void footpath_queue_chain_reset();
-void footpath_queue_chain_push(RideId rideIndex);
+void FootpathQueueChainReset();
+void FootpathQueueChainPush(RideId rideIndex);

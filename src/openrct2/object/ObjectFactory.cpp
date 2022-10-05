@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "ObjectFactory.h"
 
 #include "../OpenRCT2.h"
+#include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
@@ -515,6 +516,10 @@ namespace ObjectFactory
         if (objectType != ObjectType::None)
         {
             auto id = Json::GetString(jRoot["id"]);
+
+            // HACK Disguise RCT Classic audio as RCT2 audio so asset packs override correctly
+            if (id == OpenRCT2::Audio::AudioObjectIdentifiers::Rct2cBase)
+                id = OpenRCT2::Audio::AudioObjectIdentifiers::Rct2Base;
 
             ObjectEntryDescriptor descriptor;
             auto originalId = Json::GetString(jRoot["originalId"]);

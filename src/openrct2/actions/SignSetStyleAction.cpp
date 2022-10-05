@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -48,7 +48,7 @@ GameActions::Result SignSetStyleAction::Query() const
 
     if (_isLarge)
     {
-        TileElement* tileElement = banner_get_tile_element(_bannerIndex);
+        TileElement* tileElement = BannerGetTileElement(_bannerIndex);
         if (tileElement == nullptr)
         {
             log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
@@ -62,7 +62,7 @@ GameActions::Result SignSetStyleAction::Query() const
     }
     else
     {
-        WallElement* wallElement = banner_get_scrolling_wall_tile_element(_bannerIndex);
+        WallElement* wallElement = BannerGetScrollingWallTileElement(_bannerIndex);
 
         if (wallElement == nullptr)
         {
@@ -87,7 +87,7 @@ GameActions::Result SignSetStyleAction::Execute() const
 
     if (_isLarge)
     {
-        TileElement* tileElement = banner_get_tile_element(_bannerIndex);
+        TileElement* tileElement = BannerGetTileElement(_bannerIndex);
         if (!map_large_scenery_sign_set_colour(
                 { coords, tileElement->GetBaseZ(), tileElement->GetDirection() },
                 tileElement->AsLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
@@ -97,7 +97,7 @@ GameActions::Result SignSetStyleAction::Execute() const
     }
     else
     {
-        WallElement* wallElement = banner_get_scrolling_wall_tile_element(_bannerIndex);
+        WallElement* wallElement = BannerGetScrollingWallTileElement(_bannerIndex);
 
         wallElement->SetPrimaryColour(_mainColour);
         wallElement->SetSecondaryColour(_textColour);

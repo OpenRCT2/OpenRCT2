@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -136,6 +136,8 @@ public:
                 return WindowWaterOpen();
             case WindowClass::Transparency:
                 return WindowTransparencyOpen();
+            case WindowClass::AssetPacks:
+                return WindowAssetPacksOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -455,7 +457,7 @@ public:
 
                 auto ride = vehicle->GetRide();
                 auto viewVehicleIndex = w->ride.view - 1;
-                if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
+                if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->NumTrains)
                     return;
 
                 if (vehicle->sprite_index != ride->vehicles[viewVehicleIndex])

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -73,7 +73,7 @@ bool finance_check_money_required(uint32_t flags)
  * @param cost.
  * @param flags game command flags.
  */
-bool finance_check_affordability(money32 cost, uint32_t flags)
+bool finance_check_affordability(money64 cost, uint32_t flags)
 {
     return !finance_check_money_required(flags) || cost <= 0 || cost <= gCash;
 }
@@ -84,10 +84,10 @@ bool finance_check_affordability(money32 cost, uint32_t flags)
  * @param amount (eax)
  * @param type passed via global var 0x0141F56C (RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE), our type is that var/4.
  */
-void finance_payment(money32 amount, ExpenditureType type)
+void finance_payment(money64 amount, ExpenditureType type)
 {
     // overflow check
-    gCash = add_clamp_money32(gCash, -amount);
+    gCash = add_clamp_money64(gCash, -amount);
 
     gExpenditureTable[0][static_cast<int32_t>(type)] -= amount;
     if (dword_988E60[static_cast<int32_t>(type)] & 1)

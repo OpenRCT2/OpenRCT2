@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,7 @@ static constexpr const int32_t TabHeight = 34;
 static constexpr const int32_t WidgetsStart = 17;
 static constexpr const int32_t TabsStart = WidgetsStart;
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
-constexpr const uint8_t NumTabs = 8;
+constexpr const uint8_t NumTabs = 9;
 
 // clang-format off
 enum class ListItemType : uint8_t
@@ -76,6 +76,7 @@ enum {
     WIDX_TAB6,
     WIDX_TAB7,
     WIDX_TAB8,
+    WIDX_TAB9,
     WIDX_SCENARIOLIST
 };
 
@@ -90,6 +91,7 @@ static rct_widget window_scenarioselect_widgets[] = {
     MakeRemapWidget({  3, TabsStart + (TabHeight * 5) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 6
     MakeRemapWidget({  3, TabsStart + (TabHeight * 6) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 7
     MakeRemapWidget({  3, TabsStart + (TabHeight * 7) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 8
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 8) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 9
     MakeWidget     ({  TabWidth + 3, WidgetsStart + 1 }, { WW - SidebarWidth, 276 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
     WIDGETS_END,
 };
@@ -102,6 +104,7 @@ static constexpr const StringId ScenarioOriginStringIds[] = {
     STR_SCENARIO_CATEGORY_RCT2_WW,
     STR_SCENARIO_CATEGORY_RCT2_TT,
     STR_SCENARIO_CATEGORY_REAL_PARKS,
+    STR_SCENARIO_CATEGORY_EXTRAS_PARKS,
     STR_SCENARIO_CATEGORY_OTHER_PARKS,
 };
 
@@ -264,7 +267,7 @@ static void WindowScenarioselectMouseup(rct_window* w, WidgetIndex widgetIndex)
 
 static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
-    if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8)
+    if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB9)
     {
         w->selected_tab = widgetIndex - 4;
         w->highlighted_scenario = nullptr;
@@ -405,7 +408,7 @@ static void WindowScenarioselectInvalidate(rct_window* w)
 {
     w->pressed_widgets &= ~(
         (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4)
-        | (1ULL << WIDX_TAB5) | (1ULL << WIDX_TAB6) | (1ULL << WIDX_TAB7) | (1ULL << WIDX_TAB8));
+        | (1ULL << WIDX_TAB5) | (1ULL << WIDX_TAB6) | (1ULL << WIDX_TAB7) | (1ULL << WIDX_TAB8) | (1ULL << WIDX_TAB9));
 
     w->pressed_widgets |= 1LL << (w->selected_tab + WIDX_TAB1);
 

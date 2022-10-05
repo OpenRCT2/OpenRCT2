@@ -9,6 +9,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Hielke Morsink (Broxzier)
 * Tulio Paschoalin Leao (tupaschoal)
 * Olivier Wervers (Oli414)
+* Rik Smeets (rik-smeets)
 
 ## Former development team members
 * Lewis Fox (LRFLEW)
@@ -56,7 +57,7 @@ The following people are not part of the development team, but have been contrib
 * Inseok Lee (dlunch) - Load save files from command line
 * Jørn Lomax (jvlomax) - Configuration parser
 * Alexander Overvoorde (Overv) - OpenGL improvements, Steam overlay detection, various bugfixes.
-* (eezstreet) - Add finances button to toolbar
+* (eezstreet) - Add finances button to toolbar, various bugfixes.
 * Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
 * Joe Minor Jr (wolfreak99) - Various cheats, bugfixes, new About and Changelog windows.
 * Thomas den Hollander (ThomasdenH) - Dithering in sprite importer, invert viewport dragging, park rating cheats misc.

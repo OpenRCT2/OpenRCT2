@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1224,7 +1224,7 @@ private:
                 }
                 gfx_draw_sprite(&dpi, imageId, { 47, spriteTop });
 
-                auto glassImageId = ImageId(wallEntry->image + 6).WithTransparancy(gWindowSceneryPrimaryColour);
+                auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(gWindowSceneryPrimaryColour);
                 gfx_draw_sprite(&dpi, glassImageId, { 47, spriteTop });
             }
             else
@@ -1280,7 +1280,7 @@ private:
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
             {
                 imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation)
-                              .WithTransparancy(gWindowSceneryPrimaryColour);
+                              .WithTransparency(gWindowSceneryPrimaryColour);
                 gfx_draw_sprite(&dpi, imageId, { 32, spriteTop });
             }
 

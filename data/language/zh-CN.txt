@@ -3304,7 +3304,6 @@ STR_6154    :因为安全原因，不推荐提高权限来运行OpenRCT2.
 STR_6155    :KDialog和Zenity库均没有安装. 请至少安装其一，或者在命令行配置它们.
 STR_6156    :名称已被使用
 STR_6157    :控制台
-STR_6158    :不能读取此文件…{NEWLINE}不兼容的RCT版本: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}可用车辆: {BLACK}{STRING}
 STR_6161    :网格显示切换
 STR_6162    :旋转野鼠
@@ -4095,15 +4094,6 @@ STR_NAME    :屋顶
 
 [TTRFWD08]
 STR_NAME    :屋顶
-
-[TTRFGL01]
-STR_NAME    :玻璃屋顶
-
-[TTRFGL02]
-STR_NAME    :玻璃屋顶
-
-[TTRFGL03]
-STR_NAME    :玻璃屋顶
 
 [ACWW33]
 STR_NAME    :木柱墙

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -2691,7 +2691,7 @@ private:
             tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
 
             // Draw this map tile
-            tile_element_paint_setup(*session, coords, true);
+            TileElementPaintSetup(*session, coords, true);
 
             // Restore map elements
             map_set_tile_element(centreTileCoords, backupTileElementArrays[0]);
@@ -2723,11 +2723,25 @@ static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
         auto& rideEntries = objManager.GetAllRideEntries(rideType);
+        // If there are no vehicles for this ride type, enable all the track pieces.
+        if (rideEntries.size() == 0)
+        {
+            disabledPieces.reset();
+        }
+
         for (auto rideEntryIndex : rideEntries)
         {
             const auto* currentRideEntry = get_ride_entry(rideEntryIndex);
             if (currentRideEntry == nullptr)
                 continue;
+
+            // Non-default vehicle visuals do not use this system, so we have to assume it supports all the track pieces.
+            if (currentRideEntry->Cars[0].PaintStyle != VEHICLE_VISUAL_DEFAULT || rideType == RIDE_TYPE_CHAIRLIFT
+                || (currentRideEntry->Cars[0].flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+            {
+                disabledPieces.reset();
+                break;
+            }
 
             // Any pieces that this ride entry supports must be taken out of the array.
             auto supportedPieces = ride_entry_get_supported_track_pieces(currentRideEntry);
@@ -3349,7 +3363,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
                 continue;
             }
 
-            pathsByDir[i] = map_get_footpath_element(testLoc);
+            pathsByDir[i] = MapGetFootpathElement(testLoc);
 
             if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsSloped()
                 && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
@@ -3360,7 +3374,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             // Sloped path on the level below
             if (pathsByDir[i] == nullptr)
             {
-                pathsByDir[i] = map_get_footpath_element({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
+                pathsByDir[i] = MapGetFootpathElement({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
 
                 if (pathsByDir[i] != nullptr
                     && (!(pathsByDir[i])->AsPath()->IsSloped()
@@ -3439,7 +3453,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
         auto ride = get_ride(_currentRideIndex);
         if (ride != nullptr)
         {
-            _currentTrackPrice = ride_entrance_exit_place_ghost(
+            _currentTrackPrice = RideEntranceExitPlaceGhost(
                 ride, entranceOrExitCoords, entranceOrExitCoords.direction, gRideEntranceExitPlaceType, stationNum);
         }
         window_ride_construction_update_active_elements();

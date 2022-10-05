@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -287,7 +287,7 @@ namespace ScenarioSources
     };
 
     // Other parks
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesOtherParks[] =
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesExtrasParks[] =
     {
         { SC_FORT_ANACHRONISM,                          "Fort Anachronism",                                 SCENARIO_CATEGORY_DLC            },
         { SC_PCPLAYER,                                  "PC Player",                                        SCENARIO_CATEGORY_DLC            },
@@ -327,7 +327,7 @@ namespace ScenarioSources
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2WW),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2TT),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRealParks),
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesOtherParks),
+        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesExtrasParks),
     };
     // clang-format on
 

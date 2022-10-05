@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,6 +30,7 @@
 #include "interface/Window_internal.h"
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
+#include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "object/DefaultObjects.h"
 #include "object/ObjectManager.h"
@@ -377,10 +378,10 @@ namespace Editor
 
             gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, 80);
+            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
-        climate_reset(gClimate);
+        ClimateReset(gClimate);
 
         News::InitQueue();
     }
@@ -544,7 +545,7 @@ namespace Editor
         {
             int32_t direction = direction_reverse(parkEntrance.direction);
 
-            switch (footpath_is_connected_to_map_edge(parkEntrance, direction, 0))
+            switch (FootpathIsConnectedToMapEdge(parkEntrance, direction, 0))
             {
                 case FOOTPATH_SEARCH_NOT_FOUND:
                     return { false, STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH };
@@ -553,7 +554,7 @@ namespace Editor
                     return { false, STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX };
                 case FOOTPATH_SEARCH_SUCCESS:
                     // Run the search again and unown the path
-                    footpath_is_connected_to_map_edge(parkEntrance, direction, (1 << 5));
+                    FootpathIsConnectedToMapEdge(parkEntrance, direction, (1 << 5));
                     break;
             }
         }

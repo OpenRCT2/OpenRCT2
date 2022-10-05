@@ -3311,7 +3311,6 @@ STR_6154    :Per motivi di sicurezza si sconsiglia l’esecuzione di OpenRCT2 co
 STR_6155    :Né KDialog né Zenity sono installati. Installarne uno o configurare attraverso la linea di comando.
 STR_6156    :Il nome è riservato
 STR_6157    :Console
-STR_6158    :Impossibile caricare questo file…{NEWLINE}Versione di RCTC incompatibile: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Veicoli disponibili: {BLACK}{STRING}
 STR_6161    :Mostra/nascondi griglia
 STR_6162    :Topo tutto matto rotante
@@ -4101,15 +4100,6 @@ STR_NAME    :Tetto
 
 [TTRFWD08]
 STR_NAME    :Tetto
-
-[TTRFGL01]
-STR_NAME    :Tetto di vetro
-
-[TTRFGL02]
-STR_NAME    :Tetto di vetro
-
-[TTRFGL03]
-STR_NAME    :Tetto di vetro
 
 [ACWW33]
 STR_NAME    :Muro di pali di legno

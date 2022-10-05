@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../Version.h"
 #include "../actions/ClimateSetAction.h"
 #include "../actions/ParkSetParameterAction.h"
+#include "../actions/RideFreezeRatingAction.h"
 #include "../actions/RideSetPriceAction.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/ScenarioSetSettingAction.h"
@@ -272,7 +273,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        for (int32_t i = 0; i < ride->num_vehicles; ++i)
+                        for (int32_t i = 0; i < ride->NumTrains; ++i)
                         {
                             for (Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
                                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
@@ -299,7 +300,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
+                    auto rideIndex = RideId::FromUnderlying(ride_index);
+                    auto ride = get_ride(rideIndex);
                     if (excitement <= 0)
                     {
                         console.WriteFormatLine("Excitement value must be strictly positive");
@@ -310,7 +312,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        ride->excitement = excitement;
+                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Excitement, excitement);
+                        GameActions::Execute(&rideAction);
                     }
                 }
             }
@@ -330,7 +333,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
+                    auto rideIndex = RideId::FromUnderlying(ride_index);
+                    auto ride = get_ride(rideIndex);
                     if (intensity <= 0)
                     {
                         console.WriteFormatLine("Intensity value must be strictly positive");
@@ -341,7 +345,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        ride->intensity = intensity;
+                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Intensity, intensity);
+                        GameActions::Execute(&rideAction);
                     }
                 }
             }
@@ -361,7 +366,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
+                    auto rideIndex = RideId::FromUnderlying(ride_index);
+                    auto ride = get_ride(rideIndex);
                     if (nausea <= 0)
                     {
                         console.WriteFormatLine("Nausea value must be strictly positive");
@@ -372,7 +378,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        ride->nausea = nausea;
+                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Nausea, nausea);
+                        GameActions::Execute(&rideAction);
                     }
                 }
             }
@@ -755,7 +762,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 
         if (argv[0] == "money" && invalidArguments(&invalidArgs, double_valid[0]))
         {
-            money32 money = ToMoney32FromGBP(double_val[0]);
+            money32 money = ToMoney64FromGBP(double_val[0]);
             if (gCash != money)
             {
                 auto setCheatAction = SetCheatAction(CheatType::SetMoney, money);
@@ -789,7 +796,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             auto scenarioSetSetting = ScenarioSetSettingAction(
                 ScenarioSetSetting::InitialLoan,
                 std::clamp<money64>(
-                    ToMoney32FromGBP(int_val[0]) - ToMoney32FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan));
+                    ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set current_loan command failed, likely due to permissions.");

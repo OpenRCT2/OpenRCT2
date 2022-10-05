@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -250,7 +250,7 @@ GameActions::Result TrackPlaceAction::Query() const
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
         auto canBuild = MapCanConstructWithClearAt(
-            { mapLoc, baseZ, clearanceZ }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), crossingMode);
+            { mapLoc, baseZ, clearanceZ }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -261,7 +261,7 @@ GameActions::Result TrackPlaceAction::Query() const
         // When building a level crossing, remove any pre-existing path furniture.
         if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH)
         {
-            auto footpathElement = map_get_footpath_element(mapLoc);
+            auto footpathElement = MapGetFootpathElement(mapLoc);
             if (footpathElement != nullptr && footpathElement->AsPath()->HasAddition())
             {
                 footpathElement->AsPath()->SetAddition(0);
@@ -468,8 +468,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
         auto canBuild = MapCanConstructWithClearAt(
-            mapLocWithClearance, &map_place_non_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
-            crossingMode);
+            mapLocWithClearance, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY, crossingMode);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -479,7 +478,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
         {
-            footpath_remove_litter(mapLoc);
+            FootpathRemoveLitter(mapLoc);
             if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
             {
                 wall_remove_at(mapLocWithClearance);
@@ -697,7 +696,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (!gCheatsDisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_connect_edges(mapLoc, tileElement, GetFlags());
+            FootpathConnectEdges(mapLoc, tileElement, GetFlags());
         }
         map_invalidate_tile_full(mapLoc);
     }

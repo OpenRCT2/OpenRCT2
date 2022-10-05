@@ -151,7 +151,7 @@ STR_0564    :Esta montaña rusa, construida en madera, es rápida, bruta, ruidos
 STR_0565    :Una montaña rusa de madera con suaves caídas y giros, donde los vagones se mantienen en la vía mediante ruedas laterales de fricción y la gravedad.
 STR_0566    :Los vagones individuales giran en un tramo de vía en estrecho zig-zag con curvas y caídas bruscas.
 STR_0567    :Los pasajeros, sentados en sillas suspendidas a ambos lados de la vía son colgados cabeza abajo mientras sufren bruscas zambullidas y varias inversiones.
-STR_0569    :Montados bajo la vía con un arnes especial, los visitantes experimentan la sensación de volar mientras caen en picado por el aire.
+STR_0569    :Montados bajo la vía con un arnés especial, los visitantes experimentan la sensación de volar mientras caen en picado por el aire.
 STR_0571    :Vagones circulares giran mientras recorren sobre la zigzagueante vía de madera.
 STR_0572    :Botes de gran capacidad viajan por un amplio canal, los cuales son impulsados por una cinta transportadora para después caer y hacer grandes salpicaduras.
 STR_0573    :Vagones con forma de helicópteros corren por una vía de acero controlados por los pedales de los pasajeros.
@@ -1097,7 +1097,7 @@ STR_1707    :Muchos empleados en el parque.
 STR_1708    :Establecer zona de patrulla para este empleado
 STR_1709    :Despedir empleado
 STR_1710    :Sí
-STR_1711    :{WINDOW_COLOUR_1}¿Estas seguro de despedir a {STRINGID}?
+STR_1711    :{WINDOW_COLOUR_1}¿Estás seguro de despedir a {STRINGID}?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Limpiar senderos
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Regar plantas
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Vaciar papeleras
@@ -1929,7 +1929,7 @@ STR_2704    :Cada 30 minutos
 STR_2705    :Cada hora
 STR_2706    :Nunca
 STR_2707    :Usar explorador de archivos del sistema
-STR_2708    :{WINDOW_COLOUR_1}¿Estas seguro de sobrescribir {STRINGID}?
+STR_2708    :{WINDOW_COLOUR_1}¿Estás seguro de sobrescribir {STRINGID}?
 STR_2709    :Sobrescribir
 STR_2710    :Ingresar nombre para este archivo:
 STR_2718    :(arriba)
@@ -2399,7 +2399,7 @@ STR_3351    :Nuevo nombre de diseño de vía:
 STR_3352    :No se puede renombrar el diseño de vía…
 STR_3353    :El nuevo nombre contiene caracteres inválidos
 STR_3354    :Otro archivo ya tiene este nombre o se encuentra protegido contra escritura
-STR_3355    :El archivo esta bloqueado o protegido contra escritura
+STR_3355    :El archivo está bloqueado o protegido contra escritura
 STR_3356    :Borrar Archivo
 STR_3357    :{WINDOW_COLOUR_2}¿Estás seguro de borrar permanentemente {STRING} ?
 STR_3358    :No se puede eliminar el diseño da vía…
@@ -3151,7 +3151,7 @@ STR_5988    :No hay más terrenos en venta.
 STR_5989    :No hay más derechos de construcción en venta.
 STR_5990    :No hay más terrenos o derechos de construcción en venta.
 STR_5991    :No se puede pegar el elemento…
-STR_5992    :El limite de elementos del mapa ha sido alcanzado
+STR_5992    :El límite de elementos del mapa ha sido alcanzado
 STR_5993    :Copiar elemento seleccionado
 STR_5994    :Pegar elemento copiado
 STR_5995    :Acelerador
@@ -3308,7 +3308,6 @@ STR_6154    :Por razones de seguridad, No es recomendable iniciar OpenRCT2 con p
 STR_6155    :Ni KDialog ni Zenity están instalados. Instale uno o configure uno desde la línea de comando.
 STR_6156    :El nombre está reservado
 STR_6157    :Consola
-STR_6158    :No se pudo cargar este archivo…{NEWLINE}Versión RCT incompatible: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Vehículos Disponibles: {BLACK}{STRING}
 STR_6161    :Alternar líneas de cuadrícula
 STR_6162    :Ratón Giratorio Salvaje
@@ -3472,7 +3471,7 @@ STR_6358    :Página {UINT16}
 STR_6359    :{POP16}{POP16}Página {UINT16}
 STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Habilitar efectos de luz en atracciones (experimental)
-STR_6362    :Si está activado, vehículos para las atracciones con vias estarán iluminados de noche.
+STR_6362    :Si está activado, vehículos para las atracciones con vías estarán iluminados de noche.
 STR_6363    :Copiar texto al portapapeles
 STR_6364    :{RED}{COMMA16} persona ha muerto en un accidente a bordo de {STRINGID}
 STR_6365    :Fallecimientos en la atracción
@@ -3493,7 +3492,7 @@ STR_6379    :Se recibieron datos no válidos
 STR_6380    :¡Actualización disponible!
 STR_6381    :¡Únete al Discord de OpenRCT2!
 STR_6382    :¡Nueva versión estable de OpenRCT2 disponible: {STRING}!
-STR_6383    :Abrir pagina de descargas
+STR_6383    :Abrir página de descargas
 STR_6384    :Nieve
 STR_6385    :Fuertes nevadas
 STR_6386    :Tormenta de nieve
@@ -3508,7 +3507,7 @@ STR_6394    :Objetivo
 STR_6395    :Mantenimiento
 STR_6396    :Deshabilitar protector y ahorro de energía del monitor.
 STR_6397    :Si está activado, el salvapantallas y otras funciones de ahorro de energía estarán inhabilitadas mientras OpenRCT2 esté abierto.
-STR_6398    :El archivo contiene atracciones incompatibles. Por favor actualiza a una versión mas nueva de OpenRCT2.
+STR_6398    :El archivo contiene atracciones incompatibles. Por favor actualiza a una versión más nueva de OpenRCT2.
 STR_6399    :OpenRCT2 necesita archivos del juego original RollerCoaster Tycoon 2 para funcionar. Por favor establece la variable ‘game_path’ en config.ini apuntando al directorio donde instalaste RollerCoaster Tycoon 2, y reinicia OpenRCT2.
 STR_6400    :He descargado el instalador sin conexión de GOG, pero no está instalado.
 STR_6401    :Ya instalé RollerCoaster Tycoon 2
@@ -3578,8 +3577,8 @@ STR_6465    :Intensidad: {COMMA2DP32}
 STR_6466    :Náusea
 STR_6467    :Náusea: {COMMA2DP32}
 STR_6468    :Todavía no disponible
-STR_6469    :Ajustar la zona de patrulla mas pequeña
-STR_6470    :Ajustar la zona de patrulla mas grande
+STR_6469    :Ajustar la zona de patrulla más pequeña
+STR_6470    :Ajustar la zona de patrulla más grande
 STR_6471    :Vegetación transparente
 STR_6472    :Vehículos transparentes
 STR_6473    :Soportes transparentes
@@ -3600,16 +3599,16 @@ STR_6487    :Alternar empleados invisibles
 STR_6488    :{RED}Los visitantes se quejan de la longitud de las colas en tu parque.{NEWLINE}Considera acortar las colas problemáticas o aumentar el rendimiento de las atracciones.
 STR_6489    :{RED}ERROR: Versión de parque incompatible
 STR_6490    :{RED}ADVERTENCIA: Versión de parque no del todo compatible
-STR_6491    :Este parque fue guardado en una versión mas reciente de OpenRCT2. Este parque es de la versión {INT32} y requiere al menos {INT32}.
-STR_6492    :Este parque fue guardado en una versión mas antigua de OpenRCT2 y no puede abrirse con esta versión de OpenRCT2. Este parque es la versión {INT32}.
-STR_6493    :Este parque fue guardado en una versión mas reciente de OpenRCT2, algunos datos podrían perderse. Este parque es de la versión {INT32} y requiere al menos {INT32}.
+STR_6491    :Este parque fue guardado en una versión más reciente de OpenRCT2. Este parque es de la versión {INT32} y requiere al menos {INT32}.
+STR_6492    :Este parque fue guardado en una versión más antigua de OpenRCT2 y no puede abrirse con esta versión de OpenRCT2. Este parque es la versión {INT32}.
+STR_6493    :Este parque fue guardado en una versión más reciente de OpenRCT2, algunos datos podrían perderse. Este parque es de la versión {INT32} y requiere al menos {INT32}.
 STR_6494    :Agrupar por tipo de atracción
 STR_6495    :Agrupar las atracciones por tipo en vez de mostrar cada vehículo por separado.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Haz click en una casilla para mostrar sus elementos.{NEWLINE}Ctrl + click un elemento para seleccionarlo directamente.
 STR_6498    :Activa para mantener el mapa con forma cuadrada.
-STR_6499    :Tipo de vehiculo no compatible con el formato de diseño de la via
-STR_6500    :Elementos no compatibles con el formato de diseño de la via
+STR_6499    :Tipo de vehículo no compatible con el formato de diseño de la vía
+STR_6500    :Elementos no compatibles con el formato de diseño de la vía
 STR_6501    :Color aleatorio
 STR_6502    :Introduce un valor entre {COMMA16} y {COMMA16}
 STR_6503    :Al menos un objeto de estación debe estar seleccionado
@@ -3624,6 +3623,11 @@ STR_6511    :Giro de Gravedad Cero (der)
 STR_6512    :Giro de Gravedad Cero grande (izq)
 STR_6513    :Giro de Gravedad Cero grande (der)
 STR_6514    :¡Altura no válida!
+STR_6515    :{BLACK}RCT1 no ha sido enlazado - se utilizarán imágenes alternativas.
+STR_6516    :Uno o más objetos añadidos requieren haber enlazado RTC1 para su correcta visualización. Se utilizarán imágenes alternativas.
+STR_6517    :Uno o más objetos de este parque requieren haber enlazado RTC1 para su correcta visualización. Se utilizarán imágenes alternativas.
+STR_6518    :{BLACK}Posa el ratón sobre un escenario para ver su descripción y objetivos. Haz click para empezar a jugar.
+STR_6519    :Extras
 
 ##############
 # Escenarios #
@@ -4099,15 +4103,6 @@ STR_NAME    :Techo
 [TTRFWD08]
 STR_NAME    :Techo
 
-[TTRFGL01]
-STR_NAME    :Techo de vidrio
-
-[TTRFGL02]
-STR_NAME    :Techo de vidrio
-
-[TTRFGL03]
-STR_NAME    :Techo de vidrio
-
 [ACWW33]
 STR_NAME    :Pared de Madera
 
@@ -4167,7 +4162,7 @@ STR_DTLS    :Construye tu propio diseño de un parque Six Flags. Ya sea incluyen
 <Bumbly Bazaar>
 STR_SCNR    :Bazar Ruidoso
 STR_PARK    :Bazar Ruidoso
-STR_DTLS    :Comenzando desde un pequeño mercado, tu desafío es aumentar los ingresos de los negocios y puestos mediante la construcción de atracciones y montañas rusas para atraer a mas clientes.
+STR_DTLS    :Comenzando desde un pequeño mercado, tu desafío es aumentar los ingresos de los negocios y puestos mediante la construcción de atracciones y montañas rusas para atraer a más clientes.
 
 <Crazy Castle>
 STR_SCNR    :Castillo Loco
@@ -4419,4 +4414,4 @@ STR_DTLS    :Este antiguo parque temático ha visto tiempos mejores. Ayuda al pr
 <Panda World>
 STR_SCNR    :Mundo Panda
 STR_PARK    :Mundo Panda
-STR_DTLS    :Añade mas atracciones y consigue más visitantes en este parque pandatemático.
+STR_DTLS    :Añade más atracciones y consigue más visitantes en este parque pandatemático.

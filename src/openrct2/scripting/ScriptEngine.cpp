@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1310,6 +1310,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "ridedemolish", GameCommand::DemolishRide },
     { "rideentranceexitplace", GameCommand::PlaceRideEntranceOrExit },
     { "rideentranceexitremove", GameCommand::RemoveRideEntranceOrExit },
+    { "ridefreezerating", GameCommand::FreezeRideRating },
     { "ridesetappearance", GameCommand::SetRideAppearance },
     { "ridesetcolourscheme", GameCommand::SetColourScheme },
     { "ridesetname", GameCommand::SetRideName },

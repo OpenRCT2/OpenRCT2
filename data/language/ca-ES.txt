@@ -3309,7 +3309,6 @@ STR_6154    :Per motius de seguretat, no es recomana executar l’OpenRCT2 amb p
 STR_6155    :Ni el KDialog ni el Zenity estan instal·lats. Si us plau, instal·leu-ne un o configureu-los des de la línia d’ordres.
 STR_6156    :El nom està reservat.
 STR_6157    :Consola
-STR_6158    :Aquest fitxer no s’ha pogut carregar…{NEWLINE}Versió RCTC incompatible: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
 STR_6161    :Mostra les línies de la quadrícula
 STR_6162    :«Wild Mouse» giratori
@@ -3629,6 +3628,11 @@ STR_6511    :Volta de gravetat zero (a la dreta)
 STR_6512    :Volta de gravetat zero gran (a l’esquerra)
 STR_6513    :Volta de gravetat zero gran (a la dreta)
 STR_6514    :Altura no vàlida!
+STR_6515    :{BLACK}No s’ha enllaçat el RCT1. S’empraran imatges alternatives.
+STR_6516    :Un o més objectes que s’han afegit necessiten l’enllaç al RCT1 per a veure’ls correctament. Es faran servir imatges alternatives.
+STR_6517    :Un o més objectes d’aquest parc necessiten l’enllaç al RCT1 per a veure’ls correctament. Es faran servir imatges alternatives.
+STR_6518    :{BLACK}Situeu el ratolí damunt d’un escenari per a veure la seva descripció i els seus objectius. Feu clic per a començar a jugar.
+STR_6519    :Extres
 
 #############
 # Scenarios #
@@ -4102,15 +4106,6 @@ STR_NAME    :Sostre
 
 [TTRFWD08]
 STR_NAME    :Sostre
-
-[TTRFGL01]
-STR_NAME    :Sostre de vidre
-
-[TTRFGL02]
-STR_NAME    :Sostre de vidre
-
-[TTRFGL03]
-STR_NAME    :Sostre de vidre
 
 [ACWW33]
 STR_NAME    :Paret de pals de fusta

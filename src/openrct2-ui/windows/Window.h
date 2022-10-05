@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -74,6 +74,7 @@ rct_window* WindowViewportOpen();
 rct_window* WindowWaterOpen();
 rct_window* WindowViewClippingOpen();
 rct_window* WindowTransparencyOpen();
+rct_window* WindowAssetPacksOpen();
 
 // WC_FINANCES
 rct_window* WindowFinancesOpen();
@@ -149,7 +150,7 @@ rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose);
 rct_window* WindowNetworkStatusOpenPassword();
 void WindowNetworkStatusClose();
 
-void WindowTextInputKey(rct_window* w, char keychar);
+void WindowTextInputKey(rct_window* w, uint32_t keycode);
 void WindowTextInputOpen(
     rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     StringId existing_text, uintptr_t existing_args, int32_t maxLength);

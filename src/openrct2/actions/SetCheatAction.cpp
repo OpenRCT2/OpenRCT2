@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -198,7 +198,7 @@ GameActions::Result SetCheatAction::Execute() const
             break;
         case CheatType::ForceWeather:
             // Todo - make sure this is safe
-            climate_force_weather(WeatherType{ static_cast<uint8_t>(_param1) });
+            ClimateForceWeather(WeatherType{ static_cast<uint8_t>(_param1) });
             break;
         case CheatType::FreezeWeather:
             gCheatsFreezeWeather = _param1 != 0;
@@ -357,9 +357,9 @@ ParametersRange SetCheatAction::GetParameterRange(CheatType cheatType) const
 
 void SetCheatAction::SetGrassLength(int32_t length) const
 {
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < gMapSize.y; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < gMapSize.x; x++)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement == nullptr)
@@ -517,7 +517,7 @@ void SetCheatAction::SetScenarioNoMoney(bool enabled) const
     window_invalidate_by_class(WindowClass::Cheats);
 }
 
-void SetCheatAction::SetMoney(money32 amount) const
+void SetCheatAction::SetMoney(money64 amount) const
 {
     gCash = amount;
 
@@ -525,9 +525,9 @@ void SetCheatAction::SetMoney(money32 amount) const
     window_invalidate_by_class(WindowClass::BottomToolbar);
 }
 
-void SetCheatAction::AddMoney(money32 amount) const
+void SetCheatAction::AddMoney(money64 amount) const
 {
-    gCash = add_clamp_money32(gCash, amount);
+    gCash = add_clamp_money64(gCash, amount);
 
     window_invalidate_by_class(WindowClass::Finances);
     window_invalidate_by_class(WindowClass::BottomToolbar);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -903,9 +903,9 @@ namespace RCT1
                 dst->vehicles[i] = EntityId::GetNull();
             }
 
-            dst->num_vehicles = src->num_trains;
+            dst->NumTrains = src->NumTrains;
             dst->num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
-            dst->proposed_num_vehicles = src->num_trains;
+            dst->ProposedNumTrains = src->NumTrains;
             dst->max_trains = src->max_trains;
             dst->proposed_num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
             dst->special_track_elements = src->special_track_elements;
@@ -2544,11 +2544,11 @@ namespace RCT1
                     exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
 
                     // Trigger footpath update
-                    footpath_queue_chain_reset();
-                    footpath_connect_edges(
+                    FootpathQueueChainReset();
+                    FootpathConnectEdges(
                         entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
                         GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-                    footpath_update_queue_chains();
+                    FootpathUpdateQueueChains();
                 }
             }
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -228,7 +228,7 @@ rct_window* WindowFootpathOpen()
  */
 static void WindowFootpathClose(rct_window* w)
 {
-    footpath_provisional_update();
+    FootpathProvisionalUpdate();
     viewport_set_visibility(0);
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -261,7 +261,7 @@ static void WindowFootpathMouseup(rct_window* w, WidgetIndex widgetIndex)
 
             _window_footpath_cost = MONEY32_UNDEFINED;
             tool_cancel();
-            footpath_provisional_update();
+            FootpathProvisionalUpdate();
             map_invalidate_map_selection_tiles();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
@@ -278,7 +278,7 @@ static void WindowFootpathMouseup(rct_window* w, WidgetIndex widgetIndex)
 
             _window_footpath_cost = MONEY32_UNDEFINED;
             tool_cancel();
-            footpath_provisional_update();
+            FootpathProvisionalUpdate();
             map_invalidate_map_selection_tiles();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
@@ -376,7 +376,7 @@ static void WindowFootpathDropdown(rct_window* w, WidgetIndex widgetIndex, int32
         return;
     }
 
-    footpath_provisional_update();
+    FootpathProvisionalUpdate();
     _window_footpath_cost = MONEY32_UNDEFINED;
     w->Invalidate();
 }
@@ -451,7 +451,7 @@ static void WindowFootpathUpdateProvisionalPathForBridgeMode(rct_window* w)
     // Recheck area for construction. Set by ride_construction window
     if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_2)
     {
-        footpath_provisional_remove();
+        FootpathProvisionalRemove();
         gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_2;
     }
 
@@ -466,7 +466,7 @@ static void WindowFootpathUpdateProvisionalPathForBridgeMode(rct_window* w)
         FootpathGetNextPathInfo(&type, footpathLoc, &slope);
         auto pathConstructFlags = FootpathCreateConstructFlags(type);
 
-        _window_footpath_cost = footpath_provisional_set(type, railings, footpathLoc, slope, pathConstructFlags);
+        _window_footpath_cost = FootpathProvisionalSet(type, railings, footpathLoc, slope, pathConstructFlags);
         widget_invalidate(*w, WIDX_CONSTRUCT);
     }
 
@@ -824,7 +824,7 @@ static void WindowFootpathShowRailingsTypesDialog(rct_window* w, rct_widget* wid
  */
 static void WindowFootpathMousedownDirection(int32_t direction)
 {
-    footpath_provisional_update();
+    FootpathProvisionalUpdate();
     _footpathConstructDirection = (direction - get_current_rotation()) & 3;
     _window_footpath_cost = MONEY32_UNDEFINED;
     WindowFootpathSetEnabledAndPressedWidgets();
@@ -836,7 +836,7 @@ static void WindowFootpathMousedownDirection(int32_t direction)
  */
 static void WindowFootpathMousedownSlope(int32_t slope)
 {
-    footpath_provisional_update();
+    FootpathProvisionalUpdate();
     gFootpathConstructSlope = slope;
     _window_footpath_cost = MONEY32_UNDEFINED;
     WindowFootpathSetEnabledAndPressedWidgets();
@@ -857,7 +857,7 @@ static void WindowFootpathSetProvisionalPathAtPoint(const ScreenCoordsXY& screen
     if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
     {
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
     }
     else
     {
@@ -874,7 +874,7 @@ static void WindowFootpathSetProvisionalPathAtPoint(const ScreenCoordsXY& screen
         gMapSelectPositionA = info.Loc;
         gMapSelectPositionB = info.Loc;
 
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
 
         // Set provisional path
         int32_t slope = 0;
@@ -914,7 +914,7 @@ static void WindowFootpathSetProvisionalPathAtPoint(const ScreenCoordsXY& screen
 
         auto pathType = gFootpathSelection.GetSelectedSurface();
         auto constructFlags = FootpathCreateConstructFlags(pathType);
-        _window_footpath_cost = footpath_provisional_set(
+        _window_footpath_cost = FootpathProvisionalSet(
             pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
         window_invalidate_by_class(WindowClass::Footpath);
     }
@@ -933,7 +933,7 @@ static void WindowFootpathSetSelectionStartBridgeAtPoint(const ScreenCoordsXY& s
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
+    auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
     if (mapCoords.IsNull())
     {
         return;
@@ -975,7 +975,7 @@ static void WindowFootpathPlacePathAtPoint(const ScreenCoordsXY& screenCoords)
         return;
     }
 
-    footpath_provisional_update();
+    FootpathProvisionalUpdate();
 
     const auto info = get_map_coordinates_from_pos(
         screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
@@ -1041,7 +1041,7 @@ static void WindowFootpathStartBridgeAtPoint(const ScreenCoordsXY& screenCoords)
     int32_t z, direction;
     TileElement* tileElement;
 
-    auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
+    auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
     if (mapCoords.IsNull())
     {
         return;
@@ -1096,7 +1096,7 @@ static void WindowFootpathStartBridgeAtPoint(const ScreenCoordsXY& screenCoords)
 static void WindowFootpathConstruct()
 {
     _window_footpath_cost = MONEY32_UNDEFINED;
-    footpath_provisional_update();
+    FootpathProvisionalUpdate();
 
     ObjectEntryIndex type;
     int32_t slope;
@@ -1252,7 +1252,7 @@ static void WindowFootpathRemove()
     TileElement* tileElement;
 
     _window_footpath_cost = MONEY32_UNDEFINED;
-    footpath_provisional_update();
+    FootpathProvisionalUpdate();
 
     tileElement = FootpathGetTileElementToRemove();
     if (tileElement != nullptr)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -278,7 +278,7 @@ void Park::Initialise()
     gParkEntranceFee = 10.00_GBP;
 
     gPeepSpawns.clear();
-    reset_park_entrance();
+    ParkEntranceReset();
 
     gResearchPriorities = EnumsToFlags(
         ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,
@@ -379,7 +379,7 @@ int32_t Park::CalculateParkRating() const
     // Guests
     {
         // -150 to +3 based on a range of guests from 0 to 2000
-        result -= 150 - (std::min<int16_t>(2000, gNumGuestsInPark) / 13);
+        result -= 150 - (std::min<int32_t>(2000, gNumGuestsInPark) / 13);
 
         // Find the number of happy peeps and the number of peeps who can't find the park exit
         uint32_t happyGuestCount = 0;
@@ -459,8 +459,8 @@ int32_t Park::CalculateParkRating() const
             result += 100 - averageExcitement - averageIntensity;
         }
 
-        totalRideExcitement = std::min<int16_t>(1000, totalRideExcitement);
-        totalRideIntensity = std::min<int16_t>(1000, totalRideIntensity);
+        totalRideExcitement = std::min<int32_t>(1000, totalRideExcitement);
+        totalRideIntensity = std::min<int32_t>(1000, totalRideIntensity);
         result -= 200 - ((totalRideExcitement + totalRideIntensity) / 10);
     }
 

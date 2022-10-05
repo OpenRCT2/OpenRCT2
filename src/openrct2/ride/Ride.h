@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -128,9 +128,9 @@ struct Ride
     EntityId vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
-    uint8_t num_vehicles;
+    uint8_t NumTrains;
     uint8_t num_cars_per_train;
-    uint8_t proposed_num_vehicles;
+    uint8_t ProposedNumTrains;
     uint8_t proposed_num_cars_per_train;
     uint8_t max_trains;
     uint8_t MinCarsPerTrain;
@@ -319,7 +319,7 @@ public:
     void SetToDefaultInspectionInterval();
     void SetRideEntry(ObjectEntryIndex entryIndex);
 
-    void SetNumVehicles(int32_t numVehicles);
+    void SetNumTrains(int32_t numTrains);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
     void UpdateMaxVehicles();
     void UpdateNumberOfCircuits();
@@ -1057,7 +1057,7 @@ bool track_block_get_previous_from_zero(
 void ride_get_start_of_track(CoordsXYE* output);
 
 void window_ride_construction_update_active_elements();
-money32 ride_entrance_exit_place_ghost(
+money32 RideEntranceExitPlaceGhost(
     Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
 
 ResultWithMessage ride_are_all_possible_entrances_and_exits_built(Ride* ride);

@@ -3300,7 +3300,6 @@ STR_6154    :Af sikkerhedsmæssige årsager anbefales det ikke at køre OpenRCT2
 STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en, eller konfigurer fra kommando linjen.
 STR_6156    :Navn er reserveret
 STR_6157    :Konsol
-STR_6158    :Kan ikke hente denne fil…{NEWLINE}ikke kompatibel RCTC version: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Tilgængelige køretøjer: {BLACK}{STRING}
 STR_6161    :Skift gitterlinjer Visning til/fra
 STR_6162    :Snurrende Vild Mus
@@ -4069,15 +4068,6 @@ STR_NAME    :Tag
 
 [TTRFWD08]
 STR_NAME    :Tag
-
-[TTRFGL01]
-STR_NAME    :Glas tag
-
-[TTRFGL02]
-STR_NAME    :Glas tag
-
-[TTRFGL03]
-STR_NAME    :Glas tag
 
 [ACWW33]
 STR_NAME    :Træ stolpe væg

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <stdexcept>
 
 static size_t decode_chunk_rle(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
 static size_t decode_chunk_rle_with_size(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length, size_t dstSize);
@@ -152,6 +153,9 @@ size_t sawyercoding_encode_td6(const uint8_t* src, uint8_t* dst, size_t length)
 /* Based off of rct2: 0x006770C1 */
 int32_t sawyercoding_validate_track_checksum(const uint8_t* src, size_t length)
 {
+    if (length < 4)
+        return 0;
+
     uint32_t file_checksum = *(reinterpret_cast<const uint32_t*>(&src[length - 4]));
 
     uint32_t checksum = 0;
@@ -384,6 +388,11 @@ static void encode_chunk_rotate(uint8_t* buffer, size_t length)
 
 int32_t sawyercoding_detect_file_type(const uint8_t* src, size_t length)
 {
+    if (length < 4)
+    {
+        throw std::length_error("Stream is (nearly) empty!");
+    }
+
     size_t i;
 
     // Currently can't detect TD4, as the checksum is the same as SC4 (need alternative method)

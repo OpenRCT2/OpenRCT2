@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -81,6 +81,7 @@ class NetworkBase;
 
 namespace OpenRCT2
 {
+    class AssetPackManager;
     class GameState;
 
     struct IPlatformEnvironment;
@@ -136,6 +137,7 @@ namespace OpenRCT2
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;
+        virtual AssetPackManager* GetAssetPackManager() abstract;
         virtual IGameStateSnapshots* GetGameStateSnapshots() abstract;
         virtual DrawingEngine GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
