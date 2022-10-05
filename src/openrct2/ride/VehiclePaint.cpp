@@ -3611,7 +3611,7 @@ static void vehicle_visual_splash1_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29014 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_1_NE_0 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { 0, 0, 0 }, { 0, 0, z });
 }
@@ -3634,7 +3634,7 @@ static void vehicle_visual_splash2_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29046 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_3_NE_0 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { 0, 0, 0 }, { 0, 0, z });
 }
@@ -3657,7 +3657,7 @@ static void vehicle_visual_splash3_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29014 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_1_NE_0 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { 0, 0, 0 }, { 0, 0, z });
 }
@@ -3685,7 +3685,7 @@ static void vehicle_visual_splash4_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29078 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_5_NE_0 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z });
 }
@@ -3717,7 +3717,7 @@ static void vehicle_visual_splash5_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29078 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_5_NE_0 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z });
 }
@@ -3765,7 +3765,8 @@ void Vehicle::Paint(paint_session& session, int32_t imageDirection) const
 
     if (IsCrashedVehicle)
     {
-        PaintAddImageAsParent(session, ImageId(22965 + animation_frame), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
+        PaintAddImageAsParent(
+            session, ImageId(SPR_WATER_PARTICLES_DENSE_0 + animation_frame), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
         return;
     }
 
