@@ -56,7 +56,7 @@ static const wchar_t* _wszCommitSha1Short = WSZ("");
 static const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 static std::map<std::wstring, std::wstring> _uploadFiles;
 
-#    define BACKTRACE_TOKEN L"0ca992e20aca116b5e090fd2eaff6e7b5c8225f778fd8f4e77cb077d70329324"
+#    define BACKTRACE_TOKEN L"9d89dffbeb1c81deb554c848513c0fc57a3b91a35271ce44639b6748cf7b76f3"
 
 using namespace OpenRCT2;
 
