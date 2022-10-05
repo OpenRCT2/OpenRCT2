@@ -2067,23 +2067,23 @@ void track_paint_util_onride_photo_small_paint(
     {
         case 0:
             PaintAddImageAsParent(session, imageId, { 26, 0, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 26, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 26, 28, height - 3 }, { 1, 1, 19 });
             PaintAddImageAsParent(session, flashImageId, { 6, 0, height }, { 1, 1, 19 });
             break;
         case 1:
             PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 31, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 28, 6, height - 3 }, { 1, 1, 19 });
             PaintAddImageAsParent(session, flashImageId, { 0, 26, height }, { 1, 1, 19 });
             break;
         case 2:
             PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 6, 31, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, flashImageId, { 26, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 6, 28, height - 3 }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 26, 28, height - 3 }, { 1, 1, 19 });
             break;
         case 3:
             PaintAddImageAsParent(session, imageId, { 0, 26, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 31, 26, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, flashImageId, { 31, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 28, 26, height - 3 }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 28, 6, height - 3 }, { 1, 1, 19 });
             break;
     }
 }
@@ -2105,23 +2105,23 @@ void track_paint_util_onride_photo_paint(
     {
         case 0:
             PaintAddImageAsParent(session, imageId, { 26, 0, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 26, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 26, 28, height - 3 }, { 1, 1, 19 });
             PaintAddImageAsParent(session, flashImageId, { 6, 0, height }, { 1, 1, 19 });
             break;
         case 1:
             PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 31, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 28, 6, height - 3 }, { 1, 1, 19 });
             PaintAddImageAsParent(session, flashImageId, { 0, 26, height }, { 1, 1, 19 });
             break;
         case 2:
             PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 6, 31, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, flashImageId, { 26, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 6, 28, height - 3 }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 26, 28, height - 3 }, { 1, 1, 19 });
             break;
         case 3:
             PaintAddImageAsParent(session, imageId, { 0, 26, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 31, 26, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, flashImageId, { 31, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 28, 26, height - 3 }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 28, 6, height - 3 }, { 1, 1, 19 });
             break;
     }
 }
