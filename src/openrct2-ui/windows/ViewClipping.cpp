@@ -343,7 +343,8 @@ public:
 
     void OnOpen() override
     {   
-        if(_previousClipSelectionA == NULL || _previousClipSelectionB == NULL) {
+        if(_previousClipSelectionA == NULL || _previousClipSelectionB == NULL) 
+        {
             _previousClipSelectionA = { 0, 0 };
             _previousClipSelectionB = gMapSize.ToCoordsXY();
         }
