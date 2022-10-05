@@ -1,6 +1,7 @@
 0.4.3 (in development)
 ------------------------------------------------------------------------
 - Fix: [#14312] Research ride type message incorrect.
+- Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
 
 0.4.2 (2022-10-05)
 ------------------------------------------------------------------------
