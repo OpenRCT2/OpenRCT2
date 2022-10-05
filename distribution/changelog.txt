@@ -1,4 +1,4 @@
-0.4.2 (in development)
+0.4.2 (2022-10-05)
 ------------------------------------------------------------------------
 - Feature: [#6326] Ability to load .SV6 files from RCT Classic that have more than 9601 guests.
 - Feature: [#6570, #10860, #17929] Fully support RollerCoaster Tycoon Classic as a RCT2 base install path.
