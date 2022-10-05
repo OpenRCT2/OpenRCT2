@@ -1666,7 +1666,7 @@ void Peep::SwitchNextActionSpriteType()
  */
 static void peep_return_to_centre_of_tile(Peep* peep)
 {
-    peep->PeepDirection = direction_reverse(peep->PeepDirection);
+    peep->PeepDirection = DirectionReverse(peep->PeepDirection);
     auto destination = peep->GetLocation().ToTileCentre();
     peep->SetDestination(destination, 5);
 }
@@ -1811,7 +1811,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         uint8_t entranceDirection = tile_element->GetDirection();
         if (entranceDirection != guest->PeepDirection)
         {
-            if (direction_reverse(entranceDirection) != guest->PeepDirection)
+            if (DirectionReverse(entranceDirection) != guest->PeepDirection)
             {
                 peep_return_to_centre_of_tile(guest);
                 return true;
@@ -1904,7 +1904,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                         break;
                     }
 
-                    if (direction_reverse(slopeDirection) != entranceDirection)
+                    if (DirectionReverse(slopeDirection) != entranceDirection)
                         continue;
 
                     if (z - 2 != nextTileElement->base_height)
@@ -2180,7 +2180,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
 
             if ((tile_element->AsPath()->HasQueueBanner())
                 && (tile_element->AsPath()->GetQueueBannerDirection()
-                    == direction_reverse(guest->PeepDirection)) // Ride sign is facing the direction the peep is walking
+                    == DirectionReverse(guest->PeepDirection)) // Ride sign is facing the direction the peep is walking
             )
             {
                 /* Peep is approaching the entrance of a ride queue.

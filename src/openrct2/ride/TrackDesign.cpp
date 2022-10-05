@@ -890,7 +890,7 @@ static void TrackDesignMirrorRide(TrackDesign* td6)
         entrance.y = -entrance.y;
         if (entrance.direction & 1)
         {
-            entrance.direction = direction_reverse(entrance.direction);
+            entrance.direction = DirectionReverse(entrance.direction);
         }
     }
 }
@@ -914,7 +914,7 @@ static void TrackDesignMirrorMaze(TrackDesign* td6)
         {
             if (maze.direction & 1)
             {
-                maze.direction = direction_reverse(maze.direction);
+                maze.direction = DirectionReverse(maze.direction);
             }
             continue;
         }

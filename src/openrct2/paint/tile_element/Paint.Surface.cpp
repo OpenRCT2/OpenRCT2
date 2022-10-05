@@ -1156,7 +1156,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
             {
                 PaintAddImageAsParent(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE_SIMPLE), { 0, 0, spawn.z }, { 32, 32, 16 });
 
-                const int32_t offset = (direction_reverse(spawn.direction) + rotation) & 3;
+                const int32_t offset = (DirectionReverse(spawn.direction) + rotation) & 3;
                 const auto image_id = ImageId(PEEP_SPAWN_ARROW_0 + offset, COLOUR_LIGHT_BLUE);
                 PaintAddImageAsParent(session, image_id, { 0, 0, spawn.z }, { 32, 32, 19 });
             }

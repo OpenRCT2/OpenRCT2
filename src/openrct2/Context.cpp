@@ -650,7 +650,7 @@ namespace OpenRCT2
                 gCurrentLoadedPath = path;
                 gFirstTimeSaving = true;
                 game_fix_save_vars();
-                AutoCreateMapAnimations();
+                MapAnimationAutoCreate();
                 EntityTweener::Get().Reset();
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = AUTOSAVE_PAUSE;

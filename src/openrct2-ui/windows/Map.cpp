@@ -569,7 +569,7 @@ public:
         gMapSelectPositionA = mapCoords;
         gMapSelectPositionB = mapCoords;
         gMapSelectArrowPosition = CoordsXYZ{ mapCoords, mapZ };
-        gMapSelectArrowDirection = direction_reverse(direction);
+        gMapSelectArrowDirection = DirectionReverse(direction);
         map_invalidate_selection_rect();
     }
 

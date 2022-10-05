@@ -787,7 +787,7 @@ namespace OpenRCT2::TileInspector
             uint8_t originDirection = trackElement->GetDirection();
             CoordsXY offsets = { trackBlock->x, trackBlock->y };
             CoordsXY coords = { originX, originY };
-            coords += offsets.Rotate(direction_reverse(originDirection));
+            coords += offsets.Rotate(DirectionReverse(originDirection));
 
             originX = static_cast<int16_t>(coords.x);
             originY = static_cast<int16_t>(coords.y);
@@ -870,7 +870,7 @@ namespace OpenRCT2::TileInspector
             uint8_t originDirection = trackElement->GetDirection();
             CoordsXY offsets = { trackBlock->x, trackBlock->y };
             CoordsXY coords = { originX, originY };
-            coords += offsets.Rotate(direction_reverse(originDirection));
+            coords += offsets.Rotate(DirectionReverse(originDirection));
 
             originX = static_cast<int16_t>(coords.x);
             originY = static_cast<int16_t>(coords.y);

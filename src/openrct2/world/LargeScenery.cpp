@@ -88,7 +88,7 @@ ObjectEntryIndex LargeSceneryElement::GetEntryIndex() const
 
 LargeSceneryEntry* LargeSceneryElement::GetEntry() const
 {
-    return get_large_scenery_entry(GetEntryIndex());
+    return GetLargeSceneryEntry(GetEntryIndex());
 }
 
 const LargeSceneryObject* LargeSceneryElement::GetObject() const
@@ -111,7 +111,7 @@ void LargeSceneryElement::SetSequenceIndex(uint8_t sequence)
     SequenceIndex = sequence;
 }
 
-LargeSceneryEntry* get_large_scenery_entry(ObjectEntryIndex entryIndex)
+LargeSceneryEntry* GetLargeSceneryEntry(ObjectEntryIndex entryIndex)
 {
     LargeSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();

@@ -3351,7 +3351,7 @@ void Guest::UpdateBuying()
 
         auto destination = CoordsXY{ 16, 16 } + NextLoc;
         SetDestination(destination);
-        PeepDirection = direction_reverse(PeepDirection);
+        PeepDirection = DirectionReverse(PeepDirection);
 
         SetState(PeepState::Walking);
         return;
@@ -4136,7 +4136,7 @@ void Guest::UpdateRideLeaveVehicle()
         CoordsXYZD platformLocation;
         platformLocation.z = station.GetBaseZ();
 
-        platformLocation.direction = direction_reverse(exitLocation.direction);
+        platformLocation.direction = DirectionReverse(exitLocation.direction);
 
         if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
         {
@@ -4187,7 +4187,7 @@ void Guest::UpdateRideLeaveVehicle()
                     specialDirection &= 3;
 
                     if (vehicle->TrackSubposition == VehicleTrackSubposition::GoKartsRightLane)
-                        specialDirection = direction_reverse(specialDirection);
+                        specialDirection = DirectionReverse(specialDirection);
                 }
             }
 
@@ -4530,7 +4530,7 @@ void Guest::UpdateRideApproachExitWaypoints()
     Var37 |= 3;
 
     auto targetLoc = ride->GetStation(CurrentRideStation).Exit.ToCoordsXYZD().ToTileCentre();
-    uint8_t exit_direction = direction_reverse(targetLoc.direction);
+    uint8_t exit_direction = DirectionReverse(targetLoc.direction);
 
     int16_t x_shift = DirectionOffsets[exit_direction].x;
     int16_t y_shift = DirectionOffsets[exit_direction].y;
@@ -4763,8 +4763,8 @@ void Guest::UpdateRideLeaveSpiralSlide()
 
     auto targetLoc = ride->GetStation(CurrentRideStation).Exit.ToCoordsXYZD().ToTileCentre();
 
-    int16_t xShift = DirectionOffsets[direction_reverse(targetLoc.direction)].x;
-    int16_t yShift = DirectionOffsets[direction_reverse(targetLoc.direction)].y;
+    int16_t xShift = DirectionOffsets[DirectionReverse(targetLoc.direction)].x;
+    int16_t yShift = DirectionOffsets[DirectionReverse(targetLoc.direction)].y;
 
     int16_t shiftMultiplier = 20;
 
@@ -4841,7 +4841,7 @@ void Guest::UpdateRideMazePathfinding()
     // Var37 is 3, 7, 11 or 15
     uint8_t hedges[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
     uint8_t openCount = 0;
-    uint8_t mazeReverseLastEdge = direction_reverse(MazeLastEdge);
+    uint8_t mazeReverseLastEdge = DirectionReverse(MazeLastEdge);
     for (uint8_t i = 0; i < 4; ++i)
     {
         if (!(mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][i])) && i != mazeReverseLastEdge)
@@ -6300,7 +6300,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         }
         if (tileElement->GetType() != TileElementType::Wall)
             continue;
-        if (direction_reverse(tileElement->GetDirection()) != edge)
+        if (DirectionReverse(tileElement->GetDirection()) != edge)
             continue;
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6419,7 +6419,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         }
         if (tileElement->GetType() != TileElementType::Wall)
             continue;
-        if (direction_reverse(tileElement->GetDirection()) != edge)
+        if (DirectionReverse(tileElement->GetDirection()) != edge)
             continue;
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6535,7 +6535,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         }
         if (tileElement->GetType() != TileElementType::Wall)
             continue;
-        if (direction_reverse(tileElement->GetDirection()) != edge)
+        if (DirectionReverse(tileElement->GetDirection()) != edge)
             continue;
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))

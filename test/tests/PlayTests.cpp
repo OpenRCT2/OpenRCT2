@@ -58,7 +58,7 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     scenery_set_default_placement_configuration();
     load_palette();
     EntityTweener::Get().Reset();
-    AutoCreateMapAnimations();
+    MapAnimationAutoCreate();
     fix_invalid_vehicle_sprite_sizes();
 
     gGameSpeed = 1;

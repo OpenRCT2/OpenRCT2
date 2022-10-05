@@ -2733,7 +2733,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         importer->Import();
 
         EntityTweener::Get().Reset();
-        AutoCreateMapAnimations();
+        MapAnimationAutoCreate();
 
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;

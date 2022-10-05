@@ -671,7 +671,7 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
     // Subtract the current sequence's offset
     const auto* trackBlock = &ted.Block[trackEl->GetSequenceIndex()];
     CoordsXY trackBlockOffset = { trackBlock->x, trackBlock->y };
-    coords += trackBlockOffset.Rotate(direction_reverse(direction));
+    coords += trackBlockOffset.Rotate(DirectionReverse(direction));
     coords.z -= trackBlock->z;
 
     return CoordsXYZD(coords, direction);

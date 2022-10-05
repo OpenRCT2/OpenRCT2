@@ -445,7 +445,7 @@ void map_init(const TileCoordsXY& size)
     gMapSize = size;
     gMapBaseZ = 7;
     map_remove_out_of_range_elements();
-    AutoCreateMapAnimations();
+    MapAnimationAutoCreate();
 
     auto intent = Intent(INTENT_ACTION_MAP);
     context_broadcast_intent(&intent);
@@ -696,7 +696,7 @@ bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection)
                 if (loc.z == tileElement->base_height + 2)
                     return true;
             }
-            else if (direction_reverse(slopeDirection) == faceDirection && loc.z == tileElement->base_height)
+            else if (DirectionReverse(slopeDirection) == faceDirection && loc.z == tileElement->base_height)
             {
                 return true;
             }

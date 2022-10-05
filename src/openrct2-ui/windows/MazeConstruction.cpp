@@ -348,7 +348,7 @@ private:
         RideId rideIndex = gRideEntranceExitPlaceRideIndex;
 
         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-            entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex,
+            entranceOrExitCoords, DirectionReverse(entranceOrExitCoords.direction), rideIndex,
             gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {

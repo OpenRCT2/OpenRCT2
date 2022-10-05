@@ -2552,7 +2552,7 @@ private:
             return;
 
         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-            entranceOrExitCoords, direction_reverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
+            entranceOrExitCoords, DirectionReverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
             gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
@@ -2877,7 +2877,7 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
     auto ride = get_ride(_currentRideIndex);
     if (ride != nullptr)
     {
-        auto trackDirection = direction_reverse(_currentTrackPieceDirection);
+        auto trackDirection = DirectionReverse(_currentTrackPieceDirection);
         auto trackPos = _currentTrackBegin;
         if (!(trackDirection & 4))
         {
@@ -3133,7 +3133,7 @@ void UpdateGhostTrackAndArrow()
             if (direction >= 4)
                 direction += 4;
             if (_rideConstructionState == RideConstructionState::Back)
-                direction = direction_reverse(direction);
+                direction = DirectionReverse(direction);
             gMapSelectArrowPosition = trackPos;
             gMapSelectArrowDirection = direction;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3378,7 +3378,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
                 if (pathsByDir[i] != nullptr
                     && (!(pathsByDir[i])->AsPath()->IsSloped()
-                        || (pathsByDir[i])->AsPath()->GetSlopeDirection() != direction_reverse(i)))
+                        || (pathsByDir[i])->AsPath()->GetSlopeDirection() != DirectionReverse(i)))
                 {
                     pathsByDir[i] = nullptr;
                 }
@@ -3442,10 +3442,10 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
     gMapSelectPositionA = entranceOrExitCoords;
     gMapSelectPositionB = entranceOrExitCoords;
     gMapSelectArrowPosition = entranceOrExitCoords;
-    gMapSelectArrowDirection = direction_reverse(entranceOrExitCoords.direction);
+    gMapSelectArrowDirection = DirectionReverse(entranceOrExitCoords.direction);
     map_invalidate_selection_rect();
 
-    entranceOrExitCoords.direction = direction_reverse(gRideEntranceExitPlaceDirection);
+    entranceOrExitCoords.direction = DirectionReverse(gRideEntranceExitPlaceDirection);
     StationIndex stationNum = gRideEntranceExitPlaceStationIndex;
     if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
         || entranceOrExitCoords != gRideEntranceExitGhostPosition || stationNum != gRideEntranceExitGhostStationIndex)

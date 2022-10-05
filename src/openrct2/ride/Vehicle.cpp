@@ -2753,7 +2753,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
 
     // Other search direction.
     location = station.GetStart();
-    direction = direction_reverse(direction) & 3;
+    direction = DirectionReverse(direction) & 3;
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
@@ -6854,7 +6854,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
     {
         door->SetAnimationIsBackwards(isBackwards);
         door->SetAnimationFrame(1);
-        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, doorLocation);
+        MapAnimationCreate(MAP_ANIMATION_TYPE_WALL_DOOR, doorLocation);
         play_scenery_door_open_sound(trackLocation, door);
     }
 
@@ -6961,7 +6961,7 @@ static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement
 {
     tileElement->AsTrack()->SetPhotoTimeout();
 
-    map_animation_create(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { loc, tileElement->GetBaseZ() });
+    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { loc, tileElement->GetBaseZ() });
 }
 
 /**
@@ -6976,7 +6976,7 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
     auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;
-    direction = direction_reverse(direction);
+    direction = DirectionReverse(direction);
 
     AnimateSceneryDoor<true>({ wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());
 }

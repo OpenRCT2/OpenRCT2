@@ -48,7 +48,7 @@ static bool DoesAnimationExist(int32_t type, const CoordsXYZ& location)
     return false;
 }
 
-void map_animation_create(int32_t type, const CoordsXYZ& loc)
+void MapAnimationCreate(int32_t type, const CoordsXYZ& loc)
 {
     if (!DoesAnimationExist(type, loc))
     {
@@ -68,7 +68,7 @@ void map_animation_create(int32_t type, const CoordsXYZ& loc)
  *
  *  rct2: 0x0068AFAD
  */
-void map_animation_invalidate_all()
+void MapAnimationInvalidateAll()
 {
     PROFILED_FUNCTION();
 
@@ -91,7 +91,7 @@ void map_animation_invalidate_all()
  *
  *  rct2: 0x00666670
  */
-static bool map_animation_invalidate_ride_entrance(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateRideEntrance(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     auto tileElement = map_get_first_element_at(loc);
@@ -126,7 +126,7 @@ static bool map_animation_invalidate_ride_entrance(const CoordsXYZ& loc)
  *
  *  rct2: 0x006A7BD4
  */
-static bool map_animation_invalidate_queue_banner(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateQueueBanner(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -160,7 +160,7 @@ static bool map_animation_invalidate_queue_banner(const CoordsXYZ& loc)
  *
  *  rct2: 0x006E32C9
  */
-static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
 
@@ -224,7 +224,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
  *
  *  rct2: 0x00666C63
  */
-static bool map_animation_invalidate_park_entrance(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateParkEntrance(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -254,7 +254,7 @@ static bool map_animation_invalidate_park_entrance(const CoordsXYZ& loc)
  *
  *  rct2: 0x006CE29E
  */
-static bool map_animation_invalidate_track_waterfall(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateTrackWaterfall(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -283,7 +283,7 @@ static bool map_animation_invalidate_track_waterfall(const CoordsXYZ& loc)
  *
  *  rct2: 0x006CE2F3
  */
-static bool map_animation_invalidate_track_rapids(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateTrackRapids(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -312,7 +312,7 @@ static bool map_animation_invalidate_track_rapids(const CoordsXYZ& loc)
  *
  *  rct2: 0x006CE39D
  */
-static bool map_animation_invalidate_track_onridephoto(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateTrackOnRidePhoto(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -351,7 +351,7 @@ static bool map_animation_invalidate_track_onridephoto(const CoordsXYZ& loc)
  *
  *  rct2: 0x006CE348
  */
-static bool map_animation_invalidate_track_whirlpool(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateTrackWhirlpool(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -380,7 +380,7 @@ static bool map_animation_invalidate_track_whirlpool(const CoordsXYZ& loc)
  *
  *  rct2: 0x006CE3FA
  */
-static bool map_animation_invalidate_track_spinningtunnel(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateTrackSpinningTunnel(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -409,7 +409,7 @@ static bool map_animation_invalidate_track_spinningtunnel(const CoordsXYZ& loc)
  *
  *  rct2: 0x0068DF8F
  */
-static bool map_animation_invalidate_remove([[maybe_unused]] const CoordsXYZ& loc)
+static bool MapAnimationInvalidateRemove([[maybe_unused]] const CoordsXYZ& loc)
 {
     return true;
 }
@@ -418,7 +418,7 @@ static bool map_animation_invalidate_remove([[maybe_unused]] const CoordsXYZ& lo
  *
  *  rct2: 0x006BA2BB
  */
-static bool map_animation_invalidate_banner(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateBanner(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -443,7 +443,7 @@ static bool map_animation_invalidate_banner(const CoordsXYZ& loc)
  *
  *  rct2: 0x006B94EB
  */
-static bool map_animation_invalidate_large_scenery(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateLargeScenery(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -474,7 +474,7 @@ static bool map_animation_invalidate_large_scenery(const CoordsXYZ& loc)
  *
  *  rct2: 0x006E5B50
  */
-static bool map_animation_invalidate_wall_door(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -538,7 +538,7 @@ static bool map_animation_invalidate_wall_door(const CoordsXYZ& loc)
  *
  *  rct2: 0x006E5EE4
  */
-static bool map_animation_invalidate_wall(const CoordsXYZ& loc)
+static bool MapAnimationInvalidateWall(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
@@ -572,20 +572,11 @@ static bool map_animation_invalidate_wall(const CoordsXYZ& loc)
  *  rct2: 0x009819DC
  */
 static constexpr const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
-    map_animation_invalidate_ride_entrance,
-    map_animation_invalidate_queue_banner,
-    map_animation_invalidate_small_scenery,
-    map_animation_invalidate_park_entrance,
-    map_animation_invalidate_track_waterfall,
-    map_animation_invalidate_track_rapids,
-    map_animation_invalidate_track_onridephoto,
-    map_animation_invalidate_track_whirlpool,
-    map_animation_invalidate_track_spinningtunnel,
-    map_animation_invalidate_remove,
-    map_animation_invalidate_banner,
-    map_animation_invalidate_large_scenery,
-    map_animation_invalidate_wall_door,
-    map_animation_invalidate_wall,
+    MapAnimationInvalidateRideEntrance,     MapAnimationInvalidateQueueBanner,    MapAnimationInvalidateSmallScenery,
+    MapAnimationInvalidateParkEntrance,     MapAnimationInvalidateTrackWaterfall, MapAnimationInvalidateTrackRapids,
+    MapAnimationInvalidateTrackOnRidePhoto, MapAnimationInvalidateTrackWhirlpool, MapAnimationInvalidateTrackSpinningTunnel,
+    MapAnimationInvalidateRemove,           MapAnimationInvalidateBanner,         MapAnimationInvalidateLargeScenery,
+    MapAnimationInvalidateWallDoor,         MapAnimationInvalidateWall,
 };
 
 /**
@@ -610,7 +601,7 @@ static void ClearMapAnimations()
     _mapAnimations.clear();
 }
 
-void AutoCreateMapAnimations()
+void MapAnimationAutoCreate()
 {
     ClearMapAnimations();
 
@@ -623,7 +614,7 @@ void AutoCreateMapAnimations()
         switch (el->GetType())
         {
             case TileElementType::Banner:
-                map_animation_create(MAP_ANIMATION_TYPE_BANNER, loc);
+                MapAnimationCreate(MAP_ANIMATION_TYPE_BANNER, loc);
                 break;
             case TileElementType::Wall:
             {
@@ -632,7 +623,7 @@ void AutoCreateMapAnimations()
                 if (entry != nullptr
                     && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE))
                 {
-                    map_animation_create(MAP_ANIMATION_TYPE_WALL, loc);
+                    MapAnimationCreate(MAP_ANIMATION_TYPE_WALL, loc);
                 }
                 break;
             }
@@ -642,7 +633,7 @@ void AutoCreateMapAnimations()
                 auto* sceneryEntry = sceneryEl->GetEntry();
                 if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
                 {
-                    map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, loc);
+                    MapAnimationCreate(MAP_ANIMATION_TYPE_SMALL_SCENERY, loc);
                 }
                 break;
             }
@@ -652,7 +643,7 @@ void AutoCreateMapAnimations()
                 auto entry = sceneryEl->GetEntry();
                 if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
                 {
-                    map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, loc);
+                    MapAnimationCreate(MAP_ANIMATION_TYPE_LARGE_SCENERY, loc);
                 }
                 break;
             }
@@ -661,7 +652,7 @@ void AutoCreateMapAnimations()
                 auto path = el->AsPath();
                 if (path->HasQueueBanner())
                 {
-                    map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, loc);
+                    MapAnimationCreate(MAP_ANIMATION_TYPE_QUEUE_BANNER, loc);
                 }
                 break;
             }
@@ -673,11 +664,11 @@ void AutoCreateMapAnimations()
                     case ENTRANCE_TYPE_PARK_ENTRANCE:
                         if (entrance->GetSequenceIndex() == 0)
                         {
-                            map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, loc);
+                            MapAnimationCreate(MAP_ANIMATION_TYPE_PARK_ENTRANCE, loc);
                         }
                         break;
                     case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                        map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, loc);
+                        MapAnimationCreate(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, loc);
                         break;
                 }
                 break;
@@ -688,16 +679,16 @@ void AutoCreateMapAnimations()
                 switch (track->GetTrackType())
                 {
                     case TrackElemType::Waterfall:
-                        map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, loc);
+                        MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WATERFALL, loc);
                         break;
                     case TrackElemType::Rapids:
-                        map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, loc);
+                        MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_RAPIDS, loc);
                         break;
                     case TrackElemType::Whirlpool:
-                        map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, loc);
+                        MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, loc);
                         break;
                     case TrackElemType::SpinningTunnel:
-                        map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, loc);
+                        MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, loc);
                         break;
                 }
                 break;

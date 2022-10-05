@@ -38,7 +38,7 @@ static void PaintBannerScrollingText(
     PROFILED_FUNCTION();
 
     // If text on hidden direction or ghost
-    direction = direction_reverse(direction) - 1;
+    direction = DirectionReverse(direction) - 1;
     if (direction >= 2 || (bannerElement.IsGhost()))
         return;
 

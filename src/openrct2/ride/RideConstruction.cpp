@@ -259,14 +259,14 @@ void Ride::RemovePeeps()
         auto location = GetStation(stationIndex).Exit.ToCoordsXYZD();
         if (!location.IsNull())
         {
-            auto direction = direction_reverse(location.direction);
+            auto direction = DirectionReverse(location.direction);
             exitPosition = location;
             exitPosition.x += (DirectionOffsets[direction].x * 20) + COORDS_XY_HALF_TILE;
             exitPosition.y += (DirectionOffsets[direction].y * 20) + COORDS_XY_HALF_TILE;
             exitPosition.z += 2;
 
             // Reverse direction
-            exitPosition.direction = direction_reverse(exitPosition.direction);
+            exitPosition.direction = DirectionReverse(exitPosition.direction);
 
             exitPosition.direction *= 8;
         }
@@ -401,7 +401,7 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
 
     CoordsXY offsets = { trackBlock[sequence].x, trackBlock[sequence].y };
     CoordsXY newCoords = location;
-    newCoords += offsets.Rotate(direction_reverse(mapDirection));
+    newCoords += offsets.Rotate(DirectionReverse(mapDirection));
 
     auto retCoordsXYZ = CoordsXYZ{ newCoords.x, newCoords.y, location.z - trackBlock[sequence].z };
 
@@ -689,7 +689,7 @@ void ride_construction_set_default_next_piece()
                 && ((slope != TRACK_SLOPE_DOWN_25 && slope != TRACK_SLOPE_DOWN_60) || gCheatsEnableChainLiftOnAllTrack);
             break;
         case RideConstructionState::Back:
-            direction = direction_reverse(_currentTrackPieceDirection);
+            direction = DirectionReverse(_currentTrackPieceDirection);
             if (!track_block_get_next_from_zero(_currentTrackBegin, ride, direction, &xyElement, &z, &direction, false))
             {
                 ride_construction_reset_current_piece();
@@ -1306,7 +1306,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                 if (trackElement->GetTrackType() == TrackElemType::Maze)
                 {
                     // if it's a maze, it can place the entrance and exit immediately
-                    entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
+                    entranceExitCoords.direction = DirectionReverse(entranceExitCoords.direction);
                     gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
                     return entranceExitCoords;
                 }
@@ -1316,13 +1316,13 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                 gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
 
                 // get the ride entrance's side relative to the TrackElement
-                Direction direction = (direction_reverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
+                Direction direction = (DirectionReverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
                 const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
                 if (ted.SequenceProperties[trackElement->GetSequenceIndex()] & (1 << direction))
                 {
                     // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from
                     // the station
-                    entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
+                    entranceExitCoords.direction = DirectionReverse(entranceExitCoords.direction);
                     gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
                     return entranceExitCoords;
                 }
@@ -1533,7 +1533,7 @@ void Ride::ValidateStations()
                     uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
                     // determine where the ride entrance is relative to the station track
-                    Direction direction = (tileElement->GetDirection() - direction_reverse(trackElement->GetDirection())) & 3;
+                    Direction direction = (tileElement->GetDirection() - DirectionReverse(trackElement->GetDirection())) & 3;
 
                     // if the ride entrance is not on a valid side, remove it
                     ted = &GetTrackElementDescriptor(trackType);
@@ -1614,7 +1614,7 @@ bool ride_select_forwards_from_back()
         ride_construction_invalidate_current_track();
 
         int32_t z = _currentTrackBegin.z;
-        int32_t direction = direction_reverse(_currentTrackPieceDirection);
+        int32_t direction = DirectionReverse(_currentTrackPieceDirection);
         CoordsXYE next_track;
         if (track_block_get_next_from_zero(_currentTrackBegin, ride, direction, &next_track, &z, &direction, false))
         {

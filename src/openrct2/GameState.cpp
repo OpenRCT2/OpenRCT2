@@ -173,7 +173,7 @@ void GameState::Tick()
 
             // Update the animation list. Note this does not
             // increment the map animation.
-            map_animation_invalidate_all();
+            MapAnimationInvalidateAll();
 
             // Post-tick network update
             network_process_pending();
@@ -354,7 +354,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     News::UpdateCurrentItem();
     report_time(LogicTimePart::News);
 
-    map_animation_invalidate_all();
+    MapAnimationInvalidateAll();
     report_time(LogicTimePart::MapAnimation);
     vehicle_sounds_update();
     peep_update_crowd_noise();
