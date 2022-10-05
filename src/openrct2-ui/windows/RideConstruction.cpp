@@ -2691,7 +2691,7 @@ private:
             tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
 
             // Draw this map tile
-            tile_element_paint_setup(*session, coords, true);
+            TileElementPaintSetup(*session, coords, true);
 
             // Restore map elements
             map_set_tile_element(centreTileCoords, backupTileElementArrays[0]);

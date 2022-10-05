@@ -192,9 +192,9 @@ static void PaintGhostTrainTrackFlat(
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00770BFC */
@@ -216,22 +216,22 @@ static void PaintGhostTrainTrack25DegUp(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
             break;
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x00770C0C */
@@ -264,22 +264,22 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height, doorImage);
+            PaintUtilPushTunnelLeft(session, height, doorImage);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height, TUNNEL_2);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_2);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height, TUNNEL_2);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_2);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height, doorImage);
+            PaintUtilPushTunnelRight(session, height, doorImage);
             break;
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 static void PaintGhostTrainTrack25DegUpToFlatShared(
@@ -297,9 +297,9 @@ static void PaintGhostTrainTrack25DegUpToFlatShared(
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x00770C1C */
@@ -312,16 +312,16 @@ static void PaintGhostTrainTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_0);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height + 8, DoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
+            PaintUtilPushTunnelRight(session, height + 8, DoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height + 8, DoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
+            PaintUtilPushTunnelLeft(session, height + 8, DoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_0);
             break;
     }
 }
@@ -344,16 +344,16 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
     switch ((direction + 2) % 4)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_0);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height + 8, DoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
+            PaintUtilPushTunnelRight(session, height + 8, DoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height + 8, DoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
+            PaintUtilPushTunnelLeft(session, height + 8, DoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_0);
             break;
     }
 }
@@ -401,8 +401,8 @@ static void PaintGhostTrainStation(
 
     track_paint_util_draw_station(session, ride, direction, height, trackElement);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00770C9C */
@@ -441,9 +441,9 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
             blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8;
             break;
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00770CAC */
@@ -478,8 +478,8 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
     track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, tunnelStartImage, 0, tunnelEndImage);
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00770CBC */
@@ -506,8 +506,8 @@ static void PaintGhostTrainTrackSpinningTunnel(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00770CDC */
@@ -527,9 +527,9 @@ static void PaintGhostTrainTrackBrakes(
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /**

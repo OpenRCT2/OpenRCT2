@@ -69,37 +69,37 @@ static void SetSupportHeights(
 {
     height += sceneryEntry.height;
 
-    paint_util_set_general_support_height(session, ceil2(height, 8), 0x20);
+    PaintUtilSetGeneralSupportHeight(session, ceil2(height, 8), 0x20);
     if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP))
     {
         if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
         {
-            paint_util_set_segment_support_height(session, SEGMENT_C4, height, 0x20);
+            PaintUtilSetSegmentSupportHeight(session, SEGMENT_C4, height, 0x20);
             if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
             {
-                paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, height, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~SEGMENT_C4, height, 0x20);
             }
         }
         else if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
             auto direction = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) % 4;
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), height, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), height, 0x20);
         }
     }
     else if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG27 | SMALL_SCENERY_FLAG_FULL_TILE))
     {
-        paint_util_set_segment_support_height(session, SEGMENT_C4, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C4, 0xFFFF, 0);
         if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
-            paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
         }
     }
     else if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
     {
         auto direction = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) % 4;
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
     }
 }
 

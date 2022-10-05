@@ -56,8 +56,8 @@ static void paint_flying_saucers(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height,
         FlyingSaucersFenceSprites, session.CurrentRotation);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /**

@@ -188,7 +188,7 @@ static void PaintSwingingShip(
         }
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
 
     if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
@@ -306,7 +306,7 @@ static void PaintSwingingShip(
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 112, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 112, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_swinging_ship(int32_t trackType)

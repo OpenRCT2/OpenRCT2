@@ -56,10 +56,10 @@ void paint_util_push_tunnel_rotated(paint_session& session, uint8_t direction, u
 {
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, type);
+        PaintUtilPushTunnelRight(session, height, type);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, type);
+        PaintUtilPushTunnelLeft(session, height, type);
     }
 }

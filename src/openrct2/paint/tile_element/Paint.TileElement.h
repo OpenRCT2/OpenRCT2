@@ -86,16 +86,16 @@ extern const CoordsXY BannerBoundBoxes[][2];
 
 extern const uint8_t PathSlopeToLandSlope[4];
 
-void paint_util_push_tunnel_left(paint_session& session, uint16_t height, uint8_t type);
-void paint_util_push_tunnel_right(paint_session& session, uint16_t height, uint8_t type);
-void paint_util_set_vertical_tunnel(paint_session& session, uint16_t height);
+void PaintUtilPushTunnelLeft(paint_session& session, uint16_t height, uint8_t type);
+void PaintUtilPushTunnelRight(paint_session& session, uint16_t height, uint8_t type);
+void PaintUtilSetVerticalTunnel(paint_session& session, uint16_t height);
 
-void paint_util_set_general_support_height(paint_session& session, int16_t height, uint8_t slope);
-void paint_util_force_set_general_support_height(paint_session& session, int16_t height, uint8_t slope);
-void paint_util_set_segment_support_height(paint_session& session, int32_t segments, uint16_t height, uint8_t slope);
-uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation);
+void PaintUtilSetGeneralSupportHeight(paint_session& session, int16_t height, uint8_t slope);
+void PaintUtilForceSetGeneralSupportHeight(paint_session& session, int16_t height, uint8_t slope);
+void PaintUtilSetSegmentSupportHeight(paint_session& session, int32_t segments, uint16_t height, uint8_t slope);
+uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation);
 
-void tile_element_paint_setup(paint_session& session, const CoordsXY& mapCoords, bool isTrackPiecePreview = false);
+void TileElementPaintSetup(paint_session& session, const CoordsXY& mapCoords, bool isTrackPiecePreview = false);
 
 void PaintEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceElement);
 void PaintBanner(paint_session& session, uint8_t direction, int32_t height, const BannerElement& bannerElement);

@@ -6221,7 +6221,7 @@ static void block_brakes_open_previous_section(Ride& ride, const CoordsXYZ& vehi
         location.z = trackBeginEnd.begin_z;
         tileElement = trackBeginEnd.begin_element;
 
-        //#2081: prevent infinite loop
+        // #2081: prevent infinite loop
         counter = !counter;
         if (counter)
         {
