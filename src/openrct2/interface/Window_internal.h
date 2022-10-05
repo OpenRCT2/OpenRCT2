@@ -157,6 +157,9 @@ struct rct_window
     {
         return {};
     }
+    virtual void OnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType)
+    {
+    }
     virtual void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
     }

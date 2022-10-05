@@ -628,7 +628,7 @@ static WindowEventList window_ride_graphs_events([](auto& events) {
     events.mouse_down = &WindowRideGraphsMousedown;
     events.update = &WindowRideGraphsUpdate;
     events.get_scroll_size = &WindowRideGraphsScrollgetheight;
-    events.unknown_15 = &WindowRideGraphs15;
+    events.scroll_select = &WindowRideGraphs15;
     events.tooltip = &WindowRideGraphsTooltip;
     events.invalidate = &WindowRideGraphsInvalidate;
     events.paint = &WindowRideGraphsPaint;
