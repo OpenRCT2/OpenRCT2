@@ -1334,7 +1334,7 @@ void map_update_tiles()
                 if (surfaceElement != nullptr)
                 {
                     surfaceElement->UpdateGrassLength(mapPos);
-                    scenery_update_tile(mapPos);
+                    SceneryUpdateTile(mapPos);
                 }
             }
         }

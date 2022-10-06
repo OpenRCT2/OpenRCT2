@@ -81,7 +81,7 @@ void PaintBanner(paint_session& session, uint8_t direction, int32_t height, cons
         return;
     }
 
-    auto* bannerEntry = get_banner_entry(banner->type);
+    auto* bannerEntry = GetBannerEntry(banner->type);
     if (bannerEntry == nullptr)
     {
         return;

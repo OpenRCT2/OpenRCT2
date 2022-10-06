@@ -215,7 +215,7 @@ GameActions::Result WallPlaceAction::Query() const
         }
     }
 
-    auto* wallEntry = get_wall_entry(_wallType);
+    auto* wallEntry = GetWallEntry(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -305,7 +305,7 @@ GameActions::Result WallPlaceAction::Execute() const
     }
     auto targetLoc = CoordsXYZ(_loc, targetHeight);
 
-    auto* wallEntry = get_wall_entry(_wallType);
+    auto* wallEntry = GetWallEntry(_wallType);
 
     if (wallEntry == nullptr)
     {

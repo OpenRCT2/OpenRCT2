@@ -273,17 +273,17 @@ extern const CoordsXY SceneryQuadrantOffsets[];
 
 extern money64 gClearSceneryCost;
 
-void init_scenery();
-void scenery_update_tile(const CoordsXY& sceneryPos);
-void scenery_set_default_placement_configuration();
-void scenery_remove_ghost_tool_placement();
+void SceneryInit();
+void SceneryUpdateTile(const CoordsXY& sceneryPos);
+void ScenerySetDefaultPlacementConfiguration();
+void SceneryRemoveGhostToolPlacement();
 
-WallSceneryEntry* get_wall_entry(ObjectEntryIndex entryIndex);
-BannerSceneryEntry* get_banner_entry(ObjectEntryIndex entryIndex);
-PathBitEntry* get_footpath_item_entry(ObjectEntryIndex entryIndex);
-rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex);
+WallSceneryEntry* GetWallEntry(ObjectEntryIndex entryIndex);
+BannerSceneryEntry* GetBannerEntry(ObjectEntryIndex entryIndex);
+PathBitEntry* GetFootpathItemEntry(ObjectEntryIndex entryIndex);
+rct_scenery_group_entry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex);
 
-int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry);
+int32_t WallEntryGetDoorSound(const WallSceneryEntry* wallEntry);
 
 bool IsSceneryAvailableToBuild(const ScenerySelection& item);
 

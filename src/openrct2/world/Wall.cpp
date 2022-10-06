@@ -140,7 +140,7 @@ uint16_t WallElement::GetEntryIndex() const
 
 WallSceneryEntry* WallElement::GetEntry() const
 {
-    return get_wall_entry(entryIndex);
+    return GetWallEntry(entryIndex);
 }
 
 void WallElement::SetEntryIndex(uint16_t newIndex)

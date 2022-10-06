@@ -106,7 +106,7 @@ void scenario_reset()
     gScenarioRand.seed(s);
 
     research_reset_current_item();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
     News::InitQueue();
 
     auto& park = GetContext()->GetGameState()->GetPark();

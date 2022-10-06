@@ -456,7 +456,7 @@ namespace Editor
         windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
 
         reset_all_sprite_quadrant_placements();
-        scenery_set_default_placement_configuration();
+        ScenerySetDefaultPlacementConfiguration();
 
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
 

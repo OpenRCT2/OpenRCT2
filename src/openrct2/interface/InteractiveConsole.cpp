@@ -1260,7 +1260,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             research_reset_current_item();
             gSilentResearch = false;
         }
-        scenery_set_default_placement_configuration();
+        ScenerySetDefaultPlacementConfiguration();
 
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
         context_broadcast_intent(&intent);

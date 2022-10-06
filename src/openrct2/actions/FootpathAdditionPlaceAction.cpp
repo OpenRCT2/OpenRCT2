@@ -93,7 +93,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
 
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        auto* pathBitEntry = GetFootpathItemEntry(_pathItemType - 1);
         if (pathBitEntry == nullptr)
         {
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -163,7 +163,7 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
 
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        auto* pathBitEntry = GetFootpathItemEntry(_pathItemType - 1);
         if (pathBitEntry == nullptr)
         {
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -191,7 +191,7 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     pathElement->SetIsBroken(false);
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        auto* pathBitEntry = GetFootpathItemEntry(_pathItemType - 1);
         if (pathBitEntry != nullptr && pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
         {
             pathElement->SetAdditionStatus(255);

@@ -55,7 +55,7 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     ResetEntitySpatialIndices();
 
     reset_all_sprite_quadrant_placements();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
     load_palette();
     EntityTweener::Get().Reset();
     MapAnimationAutoCreate();

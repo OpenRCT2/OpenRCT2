@@ -1027,7 +1027,7 @@ uint32_t staff_get_available_entertainer_costumes()
     {
         if (scenery_group_is_invented(i))
         {
-            const auto sgEntry = get_scenery_group_entry(i);
+            const auto sgEntry = GetSceneryGroupEntry(i);
             entertainerCostumes |= sgEntry->entertainer_costumes;
         }
     }

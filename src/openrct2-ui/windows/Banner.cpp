@@ -274,7 +274,7 @@ public:
         rct_widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
         colourBtn->type = WindowWidgetType::Empty;
 
-        auto* bannerEntry = get_banner_entry(banner->type);
+        auto* bannerEntry = GetBannerEntry(banner->type);
         if (bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
         {
             colourBtn->type = WindowWidgetType::ColourBtn;
