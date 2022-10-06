@@ -101,10 +101,9 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
   - Desktop development with C++
 
 ### macOS:
-- Xcode Command Line Tools
+- Xcode Command Line Tools (Xcode is not supported for compiling)
 - [Homebrew](https://brew.sh)
 - CMake (available through Homebrew)
-
 
 ### Linux:
 - sdl2 (only for UI client)
@@ -148,7 +147,7 @@ msbuild openrct2.proj /t:PublishPortable
 
 ### macOS:
 #### CMake:
-The recommended way of building OpenRCT2 for macOS is with CMake. CMake can build either a self-contained application bundles which include all the necessary game files and dependencies, or it can build a command line version that links against system installed dependencies. CMake will retrieve the dependences from [Dependencies](https://github.com/OpenRCT2/Dependencies/) automatically. You can build the macOS app using CMake using the following commands:
+CMake can build either a self-contained application bundle, which includes all the necessary game files and dependencies, or it can build a command line version that links against system installed dependencies. CMake will retrieve the dependencies from [Dependencies](https://github.com/OpenRCT2/Dependencies/) automatically. You can build the macOS app using CMake using the following commands:
 ```
 mkdir build
 cd build
