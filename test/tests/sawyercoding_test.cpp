@@ -38,7 +38,8 @@ protected:
         chdr_in.encoding = encoding_type;
         chdr_in.length = sizeof(randomdata);
         uint8_t* encodedDataBuffer = new uint8_t[BUFFER_SIZE];
-        size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (const uint8_t*)randomdata, chdr_in);
+        size_t encodedDataSize = sawyercoding_write_chunk_buffer(
+            encodedDataBuffer, reinterpret_cast<const uint8_t*>(randomdata), chdr_in);
         ASSERT_GT(encodedDataSize, sizeof(sawyercoding_chunk_header));
 
         // Decode
