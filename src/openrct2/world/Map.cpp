@@ -1419,7 +1419,7 @@ void map_remove_out_of_range_elements()
                 if (surfaceElement != nullptr)
                 {
                     surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-                    update_park_fences_around_tile({ x, y });
+                    ParkUpdateFencesAroundTile({ x, y });
                 }
                 clear_elements_at({ x, y });
             }
@@ -1483,7 +1483,7 @@ void map_extend_boundary_surface_y()
             map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }
 
-        update_park_fences({ x << 5, y << 5 });
+        ParkUpdateFences({ x << 5, y << 5 });
     }
 }
 
@@ -1501,7 +1501,7 @@ void map_extend_boundary_surface_x()
         {
             map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }
-        update_park_fences({ x << 5, y << 5 });
+        ParkUpdateFences({ x << 5, y << 5 });
     }
 }
 
@@ -2292,7 +2292,7 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
                 continue;
 
             surfaceElement->SetOwnership(ownership);
-            update_park_fences_around_tile({ (*tile).x * 32, (*tile).y * 32 });
+            ParkUpdateFencesAroundTile({ (*tile).x * 32, (*tile).y * 32 });
         }
     }
 }

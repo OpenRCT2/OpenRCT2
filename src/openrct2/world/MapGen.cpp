@@ -213,7 +213,7 @@ void MapGenGenerate(mapgen_settings* settings)
     delete[] _height;
 
     // Set the tile slopes so that there are no cliffs
-    while (map_smooth(1, 1, mapSize.x - 1, mapSize.y - 1))
+    while (MapSmooth(1, 1, mapSize.x - 1, mapSize.y - 1))
     {
     }
 
@@ -880,7 +880,7 @@ void MapGenGenerateFromHeightmap(mapgen_settings* settings)
                 for (uint32_t x = 0; x < _heightMapData.width; x++)
                 {
                     auto tileCoords = MapgenHeightmapCoordToTileCoordsXY(x, y);
-                    numTilesChanged += tile_smooth(tileCoords);
+                    numTilesChanged += TileSmooth(tileCoords);
                 }
             }
 

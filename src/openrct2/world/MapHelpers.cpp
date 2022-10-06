@@ -14,7 +14,7 @@
 
 #include <algorithm>
 
-static uint8_t getBaseHeightOrZero(int32_t x, int32_t y)
+static uint8_t GetBaseHeightOrZero(int32_t x, int32_t y)
 {
     auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
     return surfaceElement != nullptr ? surfaceElement->base_height : 0;
@@ -23,7 +23,7 @@ static uint8_t getBaseHeightOrZero(int32_t x, int32_t y)
 /**
  * Not perfect, this still leaves some particular tiles unsmoothed.
  */
-int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
+int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b)
 {
     int32_t i, x, y, count, doubleCorner, raisedLand = 0;
     uint8_t highest, cornerHeights[4];
@@ -38,10 +38,10 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
 
             // Raise to edge height - 2
             highest = surfaceElement->base_height;
-            highest = std::max(highest, getBaseHeightOrZero(x - 1, y + 0));
-            highest = std::max(highest, getBaseHeightOrZero(x + 1, y + 0));
-            highest = std::max(highest, getBaseHeightOrZero(x + 0, y - 1));
-            highest = std::max(highest, getBaseHeightOrZero(x + 0, y + 1));
+            highest = std::max(highest, GetBaseHeightOrZero(x - 1, y + 0));
+            highest = std::max(highest, GetBaseHeightOrZero(x + 1, y + 0));
+            highest = std::max(highest, GetBaseHeightOrZero(x + 0, y - 1));
+            highest = std::max(highest, GetBaseHeightOrZero(x + 0, y + 1));
             if (surfaceElement->base_height < highest - 2)
             {
                 raisedLand = 1;
@@ -50,10 +50,10 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
 
             // Check corners
             doubleCorner = -1;
-            cornerHeights[0] = getBaseHeightOrZero(x - 1, y - 1);
-            cornerHeights[1] = getBaseHeightOrZero(x + 1, y - 1);
-            cornerHeights[2] = getBaseHeightOrZero(x + 1, y + 1);
-            cornerHeights[3] = getBaseHeightOrZero(x - 1, y + 1);
+            cornerHeights[0] = GetBaseHeightOrZero(x - 1, y - 1);
+            cornerHeights[1] = GetBaseHeightOrZero(x + 1, y - 1);
+            cornerHeights[2] = GetBaseHeightOrZero(x + 1, y + 1);
+            cornerHeights[3] = GetBaseHeightOrZero(x - 1, y + 1);
             highest = surfaceElement->base_height;
             for (i = 0; i < 4; i++)
                 highest = std::max(highest, cornerHeights[i]);
@@ -75,16 +75,16 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
                         {
                             default:
                             case 0:
-                                highestOnLowestSide = std::max(getBaseHeightOrZero(x + 1, y), getBaseHeightOrZero(x, y + 1));
+                                highestOnLowestSide = std::max(GetBaseHeightOrZero(x + 1, y), GetBaseHeightOrZero(x, y + 1));
                                 break;
                             case 1:
-                                highestOnLowestSide = std::max(getBaseHeightOrZero(x - 1, y), getBaseHeightOrZero(x, y + 1));
+                                highestOnLowestSide = std::max(GetBaseHeightOrZero(x - 1, y), GetBaseHeightOrZero(x, y + 1));
                                 break;
                             case 2:
-                                highestOnLowestSide = std::max(getBaseHeightOrZero(x - 1, y), getBaseHeightOrZero(x, y - 1));
+                                highestOnLowestSide = std::max(GetBaseHeightOrZero(x - 1, y), GetBaseHeightOrZero(x, y - 1));
                                 break;
                             case 3:
-                                highestOnLowestSide = std::max(getBaseHeightOrZero(x + 1, y), getBaseHeightOrZero(x, y - 1));
+                                highestOnLowestSide = std::max(GetBaseHeightOrZero(x + 1, y), GetBaseHeightOrZero(x, y - 1));
                                 break;
                         }
 
@@ -198,7 +198,7 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
  * This does not change the base height, unless all corners have been raised.
  * @returns 0 if no edits were made, 1 otherwise
  */
-int32_t tile_smooth(const TileCoordsXY& tileCoords)
+int32_t TileSmooth(const TileCoordsXY& tileCoords)
 {
     auto* const surfaceElement = map_get_surface_element_at(tileCoords.ToCoordsXY());
     if (surfaceElement == nullptr)

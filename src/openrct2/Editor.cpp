@@ -530,7 +530,7 @@ namespace Editor
      */
     ResultWithMessage CheckPark()
     {
-        int32_t parkSize = park_calculate_size();
+        int32_t parkSize = ParkCalculateSize();
         if (parkSize == 0)
         {
             return { false, STR_PARK_MUST_OWN_SOME_LAND };

@@ -524,7 +524,7 @@ namespace OpenRCT2::TileInspector
             if (!showFences)
                 surfaceelement->SetParkFences(0);
             else
-                update_park_fences(loc);
+                ParkUpdateFences(loc);
 
             map_invalidate_tile_full(loc);
 

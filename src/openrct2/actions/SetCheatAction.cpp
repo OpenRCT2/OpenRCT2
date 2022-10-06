@@ -207,13 +207,13 @@ GameActions::Result SetCheatAction::Execute() const
             gCheatsNeverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
-            ParkSetOpen(!park_is_open());
+            ParkSetOpen(!ParkIsOpen());
             break;
         case CheatType::HaveFun:
             gScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
             break;
         case CheatType::SetForcedParkRating:
-            set_forced_park_rating(_param1);
+            ParkSetForcedRating(_param1);
             break;
         case CheatType::AllowArbitraryRideTypeChanges:
             gCheatsAllowArbitraryRideTypeChanges = _param1 != 0;
@@ -705,7 +705,7 @@ void SetCheatAction::OwnAllLand() const
             if (destOwnership != OWNERSHIP_UNOWNED)
             {
                 surfaceElement->SetOwnership(destOwnership);
-                update_park_fences_around_tile(coords);
+                ParkUpdateFencesAroundTile(coords);
                 map_invalidate_tile({ coords, baseZ, baseZ + 16 });
             }
         }
@@ -718,7 +718,7 @@ void SetCheatAction::OwnAllLand() const
         if (surfaceElement != nullptr)
         {
             surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-            update_park_fences_around_tile(spawn);
+            ParkUpdateFencesAroundTile(spawn);
             uint16_t baseZ = surfaceElement->GetBaseZ();
             map_invalidate_tile({ spawn, baseZ, baseZ + 16 });
         }

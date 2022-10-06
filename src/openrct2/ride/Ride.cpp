@@ -5397,7 +5397,7 @@ money16 ride_get_price(const Ride* ride)
         return 0;
     if (ride->IsRide())
     {
-        if (!park_ride_prices_unlocked())
+        if (!ParkRidePricesUnlocked())
         {
             return 0;
         }

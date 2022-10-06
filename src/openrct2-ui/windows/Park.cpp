@@ -426,10 +426,10 @@ private:
                 break;
             }
             case WIDX_CLOSE_LIGHT:
-                park_set_open(false);
+                ParkSetOpen(false);
                 break;
             case WIDX_OPEN_LIGHT:
-                park_set_open(true);
+                ParkSetOpen(true);
                 break;
         }
     }
@@ -453,7 +453,7 @@ private:
             WindowDropdownShowText(
                 { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
 
-            if (park_is_open())
+            if (ParkIsOpen())
             {
                 gDropdownDefaultIndex = 0;
                 Dropdown::SetChecked(1, true);
@@ -475,11 +475,11 @@ private:
 
             if (dropdownIndex != 0)
             {
-                park_set_open(true);
+                ParkSetOpen(true);
             }
             else
             {
-                park_set_open(false);
+                ParkSetOpen(false);
             }
         }
     }
@@ -515,10 +515,10 @@ private:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(parkName);
         }
-        widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
-        widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2
+        widgets[WIDX_OPEN_OR_CLOSE].image = ParkIsOpen() ? SPR_OPEN : SPR_CLOSED;
+        widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !ParkIsOpen() * 2
             + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
-        widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2
+        widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + ParkIsOpen() * 2
             + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
 
         // Only allow closing of park for guest / rating objective
@@ -600,7 +600,7 @@ private:
 
         // Draw park closed / open label
         auto ft = Formatter();
-        ft.Add<StringId>(park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
+        ft.Add<StringId>(ParkIsOpen() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
         auto* labelWidget = &widgets[WIDX_STATUS];
         DrawTextEllipsised(
@@ -864,14 +864,14 @@ private:
         widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
         widgets[WIDX_PRICE].tooltip = STR_NONE;
 
-        if (!park_entry_price_unlocked())
+        if (!ParkEntranceFeeUnlocked())
         {
             widgets[WIDX_PRICE_LABEL].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
             widgets[WIDX_PRICE].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
         }
 
         // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-        if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
+        if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
         {
             widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
             widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
@@ -899,7 +899,7 @@ private:
         ft.Add<money64>(gTotalIncomeFromAdmissions);
         DrawTextBasic(&dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
-        money64 parkEntranceFee = park_get_entrance_fee();
+        money64 parkEntranceFee = ParkGetEntranceFee();
         auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
         screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_PRICE].left + 1, widgets[WIDX_PRICE].top + 1 };
         ft = Formatter();
