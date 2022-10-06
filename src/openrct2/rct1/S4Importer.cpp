@@ -2229,7 +2229,7 @@ namespace RCT1
 
                     if (rideEntry != nullptr)
                     {
-                        auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        auto rideType = rideEntry->GetFirstNonNullRideType();
                         dst->entryIndex = entryIndex;
                         dst->baseRideType = rideType;
                         dst->type = Research::EntryType::Ride;
@@ -2248,7 +2248,7 @@ namespace RCT1
 
                     if (rideEntry != nullptr)
                     {
-                        auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        auto rideType = rideEntry->GetFirstNonNullRideType();
                         dst->entryIndex = entryIndex;
                         dst->baseRideType = rideType;
                         dst->type = Research::EntryType::Ride;

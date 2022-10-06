@@ -751,7 +751,7 @@ namespace RCT2
                 ObjectEntryIndex originalRideType = src->type;
                 if (rideEntry != nullptr)
                 {
-                    originalRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                    originalRideType = rideEntry->GetFirstNonNullRideType();
                 }
                 const auto isFlatRide = GetRideTypeDescriptor(originalRideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE);
                 _isFlatRide.set(static_cast<size_t>(index), isFlatRide);

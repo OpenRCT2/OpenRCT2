@@ -989,7 +989,9 @@ void WindowNewRideFocus(RideSelection rideItem)
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(rideItem.EntryIndex);
-    auto rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
+    if (rideEntry == nullptr)
+        return;
 
+    auto rideTypeIndex = rideEntry->GetFirstNonNullRideType();
     w->SetPage(GetRideTypeDescriptor(rideTypeIndex).Category);
 }
