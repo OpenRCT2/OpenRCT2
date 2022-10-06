@@ -181,7 +181,7 @@ struct rct_window
     virtual void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
     }
-    virtual void OnToolUp(WidgetIndex, const ScreenCoordsXY&)
+    virtual void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&)
     {
     }
     virtual void OnToolAbort(WidgetIndex widgetIndex)
