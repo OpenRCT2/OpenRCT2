@@ -57,7 +57,7 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
     MakeWidget({  2, 21}, {138, 11}, WindowWidgetType::FlatBtn,     WindowColour::Primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
 
     MakeWidget({142,  0}, {356, 34}, WindowWidgetType::ImgBtn,      WindowColour::Tertiary                                                    ), // Middle outset panel
-    MakeWidget({144,  2}, {352, 30}, WindowWidgetType::Placeholder, WindowColour::Tertiary                                                    ), // Middle inset panel
+    MakeWidget({144,  2}, {352, 30}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary                                                    ), // Middle inset panel
     MakeWidget({147,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
     MakeWidget({469,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
 
@@ -291,7 +291,7 @@ static void WindowGameBottomToolbarInvalidate(rct_window* w)
         else
         {
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Placeholder;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 0;
@@ -302,7 +302,7 @@ static void WindowGameBottomToolbarInvalidate(rct_window* w)
     {
         News::Item* newsItem = News::GetItem(0);
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Placeholder;
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
