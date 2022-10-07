@@ -49,9 +49,21 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
     if (gCheatsDisableLittering)
         return;
 
-    auto offsetLitterPos = litterPos
-        + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
-                    CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
+    CoordsXYZD offsetLitterPos;
+
+    if (type == Type::Poop || type == Type::PoopAlt)
+    {
+        offsetLitterPos = litterPos
+            - CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
+                        CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
+    }
+    else
+    {
+        offsetLitterPos = litterPos
+            + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
+                        CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
+    }
+
 
     if (!IsLocationLitterable(offsetLitterPos))
         return;
@@ -168,6 +180,8 @@ static constexpr const LitterSprite _litterSprites[] = {
     { SPR_LITTER_EMPTY_DRINK_CART, 0x3 },
     { SPR_LITTER_EMPTY_JUICE_CUP, 0x3 },
     { SPR_LITTER_EMPTY_BOWL_BLUE, 0x3 },
+    { SPR_G2_LITTER_POOP, 0x1 },
+    { SPR_G2_LITTER_POOP_ALT, 0x1 },
 };
 
 void Litter::Paint(PaintSession& session, int32_t imageDirection) const

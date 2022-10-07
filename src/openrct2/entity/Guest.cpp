@@ -767,17 +767,25 @@ void Guest::Loc68F9F3()
         Toilet--;
     }
 
-    if (State == PeepState::Walking && NauseaTarget >= 128)
+    if (State == PeepState::Walking && IsActionInterruptable())
     {
-        if ((ScenarioRand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
+        bool update = false;
+        if (NauseaTarget >= 128 && ((ScenarioRand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2)))
         {
-            if (IsActionInterruptable())
-            {
-                Action = PeepActionType::ThrowUp;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
-                UpdateCurrentActionSpriteType();
-            }
+            update = true;
+            Action = PeepActionType::ThrowUp;
+        }
+        else if ((Toilet > 220) && ((ScenarioRand() & 0xFF) <= static_cast<uint8_t>((Toilet - 220) * 4)))
+        {
+            update = true;
+            Action = PeepActionType::Poop;
+        }
+
+        if (update)
+        {
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
+            UpdateCurrentActionSpriteType();
         }
     }
 }

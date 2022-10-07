@@ -32,6 +32,8 @@ struct Litter : EntityBase
         EmptyDrinkCarton,
         EmptyJuiceCup,
         EmptyBowlBlue,
+        Poop,
+        PoopAlt,
     };
 
     static constexpr auto cEntityType = EntityType::Litter;

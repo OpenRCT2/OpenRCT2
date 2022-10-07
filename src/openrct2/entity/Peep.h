@@ -147,6 +147,7 @@ enum class PeepActionType : uint8_t
     DrawPicture = 28,
     BeingWatched = 29,
     WithdrawMoney = 30,
+    Poop = 31,
 
     Idle = 254,
     Walking = 255,
@@ -191,6 +192,7 @@ enum class PeepActionSpriteType : uint8_t
     DrawPicture = 34,
     BeingWatched = 35,
     WithdrawMoney = 36,
+    Poop = 37,
 
     Invalid = 255
 };
