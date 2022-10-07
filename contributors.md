@@ -197,6 +197,7 @@ The following people are not part of the development team, but have been contrib
 * Huu Kim Nguyen (CoderUndefined)
 * Henry Cheng (jazzysoggy)
 * Dan Stevens (MajeureX)
+* 73 (733737)
 
 ## Toolchain
 * (Balletie) - macOS
