@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -208,7 +208,7 @@ void research_finish_item(ResearchItem* researchItem)
             if (!RideTypeIsValid(base_ride_type))
             {
                 log_warning("Invalid ride type: %d", base_ride_type);
-                base_ride_type = ride_entry_get_first_non_null_ride_type(rideEntry);
+                base_ride_type = rideEntry->GetFirstNonNullRideType();
             }
 
             StringId availabilityString;
@@ -1028,7 +1028,8 @@ void research_determine_first_of_type()
     for (auto& researchItem : gResearchItemsUninvented)
     {
         // The next research item is (sometimes?) also present in gResearchItemsUninvented
-        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == gResearchNextItem.value())
+        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull()
+            && researchItem.baseRideType == gResearchNextItem.value().baseRideType)
         {
             // Copy the "first of type" flag.
             researchItem.flags = gResearchNextItem->flags;

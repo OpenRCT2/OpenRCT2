@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -326,7 +326,7 @@ ImageIndex RideObject::GetPreviewImage(ride_type_t type)
 void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 {
     // Find the first non-null ride type, to be used when checking the ride group and determining the category.
-    uint8_t firstRideType = ride_entry_get_first_non_null_ride_type(&_legacyType);
+    auto firstRideType = _legacyType.GetFirstNonNullRideType();
     uint8_t category = GetRideTypeDescriptor(firstRideType).Category;
 
     for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)

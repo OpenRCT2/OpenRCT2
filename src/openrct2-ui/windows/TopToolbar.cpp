@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1128,7 +1128,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
         case ViewportInteractionItem::LargeScenery:
         {
             auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
-            auto* sceneryEntry = get_large_scenery_entry(entryIndex);
+            auto* sceneryEntry = GetLargeSceneryEntry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 WindowScenerySetSelectedItem(
@@ -1573,7 +1573,7 @@ static void Sub6E1F34LargeScenery(
     auto screenPos = sourceScreenPos;
     uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
 
-    auto* sceneryEntry = get_large_scenery_entry(sceneryIndex);
+    auto* sceneryEntry = GetLargeSceneryEntry(sceneryIndex);
     if (sceneryEntry)
     {
         int16_t maxClearZ = 0;
@@ -1692,7 +1692,7 @@ static void Sub6E1F34Banner(
 
     if (info.Element->AsPath()->IsSloped())
     {
-        if (rotation != direction_reverse(info.Element->AsPath()->GetSlopeDirection()))
+        if (rotation != DirectionReverse(info.Element->AsPath()->GetSlopeDirection()))
         {
             z += (2 * COORDS_Z_STEP);
         }
@@ -2817,7 +2817,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
                 return;
             }
 
-            auto* sceneryEntry = get_large_scenery_entry(selection.EntryIndex);
+            auto* sceneryEntry = GetLargeSceneryEntry(selection.EntryIndex);
             gMapSelectionTiles.clear();
 
             for (rct_large_scenery_tile* tile = sceneryEntry->tiles;

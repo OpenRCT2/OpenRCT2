@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -152,7 +152,7 @@ GameActions::Result BannerPlaceAction::Execute() const
     bannerElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
     map_invalidate_tile_full(_loc);
-    map_animation_create(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
+    MapAnimationCreate(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
 
     res.Cost = bannerEntry->price;
     return res;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -787,7 +787,7 @@ namespace OpenRCT2::TileInspector
             uint8_t originDirection = trackElement->GetDirection();
             CoordsXY offsets = { trackBlock->x, trackBlock->y };
             CoordsXY coords = { originX, originY };
-            coords += offsets.Rotate(direction_reverse(originDirection));
+            coords += offsets.Rotate(DirectionReverse(originDirection));
 
             originX = static_cast<int16_t>(coords.x);
             originY = static_cast<int16_t>(coords.y);
@@ -870,7 +870,7 @@ namespace OpenRCT2::TileInspector
             uint8_t originDirection = trackElement->GetDirection();
             CoordsXY offsets = { trackBlock->x, trackBlock->y };
             CoordsXY coords = { originX, originY };
-            coords += offsets.Rotate(direction_reverse(originDirection));
+            coords += offsets.Rotate(DirectionReverse(originDirection));
 
             originX = static_cast<int16_t>(coords.x);
             originY = static_cast<int16_t>(coords.y);

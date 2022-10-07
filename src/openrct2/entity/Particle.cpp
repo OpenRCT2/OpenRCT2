@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -162,8 +162,8 @@ void VehicleCrashParticle::Paint(paint_session& session, int32_t imageDirection)
     }
 
     uint32_t imageId = _VehicleCrashParticleSprites[crashed_sprite_base] + frame / 256;
-    imageId = imageId | (colour[0] << 19) | (colour[1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    auto image = ImageId(imageId, colour[0], colour[1]);
+    PaintAddImageAsParent(session, image, { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**
@@ -209,7 +209,7 @@ void CrashSplashParticle::Paint(paint_session& session, int32_t imageDirection) 
 
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22927 + (frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**
@@ -268,7 +268,7 @@ void SteamParticle::Paint(paint_session& session, int32_t imageDirection) const
 
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22637 + (frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**
@@ -313,7 +313,7 @@ void ExplosionCloud::Paint(paint_session& session, int32_t imageDirection) const
     PROFILED_FUNCTION();
 
     uint32_t imageId = 22878 + (frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**
@@ -359,5 +359,5 @@ void ExplosionFlare::Paint(paint_session& session, int32_t imageDirection) const
 
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22896 + (frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }

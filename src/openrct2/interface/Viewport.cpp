@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1091,7 +1091,7 @@ void viewport_paint(
 
 static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
 {
-    auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
+    auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
     if (paletteId != FilterPaletteID::PaletteNull)
     {
         // Only scale width if zoomed in more than 1:1

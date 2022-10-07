@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -989,7 +989,9 @@ void WindowNewRideFocus(RideSelection rideItem)
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(rideItem.EntryIndex);
-    auto rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
+    if (rideEntry == nullptr)
+        return;
 
+    auto rideTypeIndex = rideEntry->GetFirstNonNullRideType();
     w->SetPage(GetRideTypeDescriptor(rideTypeIndex).Category);
 }

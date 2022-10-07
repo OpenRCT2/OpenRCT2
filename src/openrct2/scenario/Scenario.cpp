@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,7 +61,7 @@
 const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
 
-    STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS,
+    STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS, STR_COMPETITIONS,
 };
 
 SCENARIO_CATEGORY gScenarioCategory;

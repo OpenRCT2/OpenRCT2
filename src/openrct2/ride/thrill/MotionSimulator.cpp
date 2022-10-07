@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Ride.h"
@@ -65,9 +66,9 @@ static void PaintMotionSimulatorVehicle(
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        imageTemplate = imageFlags;
     }
     auto simulatorImageId = imageTemplate.WithIndex(imageIndex);
     auto stairsImageId = imageTemplate.WithIndex(SPR_MOTION_SIMULATOR_STAIRS_R0 + direction);
@@ -75,24 +76,24 @@ static void PaintMotionSimulatorVehicle(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, simulatorImageId, offset, { 20, 20, 44 }, offset);
-            PaintAddImageAsChild(session, stairsImageId, offset, { 20, 20, 44 }, offset);
+            PaintAddImageAsParent(session, simulatorImageId, offset, { offset, { 20, 20, 44 } });
+            PaintAddImageAsChild(session, stairsImageId, offset, { offset, { 20, 20, 44 } });
             PaintAddImageAsParent(session, stairsRailImageId, offset, { 20, 2, 44 }, { offset.x, offset.y + 32, offset.z });
             break;
         case 1:
-            PaintAddImageAsParent(session, simulatorImageId, offset, { 20, 20, 44 }, offset);
-            PaintAddImageAsChild(session, stairsImageId, offset, { 20, 20, 44 }, offset);
+            PaintAddImageAsParent(session, simulatorImageId, offset, { offset, { 20, 20, 44 } });
+            PaintAddImageAsChild(session, stairsImageId, offset, { offset, { 20, 20, 44 } });
             PaintAddImageAsParent(session, stairsRailImageId, offset, { 2, 20, 44 }, { offset.x + 34, offset.y, offset.z });
             break;
         case 2:
             PaintAddImageAsParent(session, stairsRailImageId, offset, { 20, 2, 44 }, { offset.x, offset.y - 10, offset.z });
             PaintAddImageAsParent(session, stairsImageId, offset, { 20, 20, 44 }, { offset.x, offset.y + 5, offset.z });
-            PaintAddImageAsChild(session, simulatorImageId, offset, { 20, 20, 44 }, { offset.x, offset.y + 5, offset.z });
+            PaintAddImageAsChild(session, simulatorImageId, offset, { { offset.x, offset.y + 5, offset.z }, { 20, 20, 44 } });
             break;
         case 3:
             PaintAddImageAsParent(session, stairsRailImageId, offset, { 2, 20, 44 }, { offset.x - 10, offset.y, offset.z });
             PaintAddImageAsParent(session, stairsImageId, offset, { 20, 20, 44 }, { offset.x + 5, offset.y, offset.z });
-            PaintAddImageAsChild(session, simulatorImageId, offset, { 20, 20, 44 }, { offset.x + 5, offset.y, offset.z });
+            PaintAddImageAsChild(session, simulatorImageId, offset, { { offset.x + 5, offset.y, offset.z }, { 20, 20, 44 } });
             break;
     }
 
@@ -131,8 +132,8 @@ static void PaintMotionSimulator(
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 128, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
 }
 
 /**

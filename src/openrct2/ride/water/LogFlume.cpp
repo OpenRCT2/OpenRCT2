@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -164,8 +164,8 @@ static void paint_log_flume_track_flat(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = LogFlumeTrackFlatImageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = LogFlumeTrackFlatImageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
@@ -176,25 +176,25 @@ static void paint_log_flume_track_flat(
     }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void paint_log_flume_track_station(
     paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = LogFlumeTrackFlatImageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
 
     if (direction & 1)
     {
-        imageId = SPR_STATION_BASE_B_NW_SE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
     }
     else
     {
-        imageId = SPR_STATION_BASE_B_SW_NE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
     }
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
@@ -214,8 +214,8 @@ static void paint_log_flume_track_station(
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void paint_log_flume_track_25_deg_up(
@@ -229,8 +229,8 @@ static void paint_log_flume_track_25_deg_up(
         { SPR_LOG_FLUME_25_DEG_UP_SE_NW, SPR_LOG_FLUME_25_DEG_UP_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 50 }, { 0, 27, height });
@@ -248,9 +248,9 @@ static void paint_log_flume_track_25_deg_up(
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 static void paint_log_flume_track_flat_to_25_deg_up(
@@ -264,8 +264,8 @@ static void paint_log_flume_track_flat_to_25_deg_up(
         { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_SE_NW, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height });
@@ -283,9 +283,9 @@ static void paint_log_flume_track_flat_to_25_deg_up(
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 static void paint_log_flume_track_25_deg_up_to_flat(
@@ -299,8 +299,8 @@ static void paint_log_flume_track_25_deg_up_to_flat(
         { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_SE_NW, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
@@ -318,9 +318,9 @@ static void paint_log_flume_track_25_deg_up_to_flat(
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 static void paint_log_flume_track_25_deg_down(
@@ -334,8 +334,8 @@ static void paint_log_flume_track_25_deg_down(
         { SPR_LOG_FLUME_25_DEG_DOWN_SE_NW, SPR_LOG_FLUME_25_DEG_UP_FRONT_NW_SE },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 50 }, { 0, 27, height });
@@ -353,9 +353,9 @@ static void paint_log_flume_track_25_deg_down(
     {
         paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 static void paint_log_flume_track_flat_to_25_deg_down(
@@ -369,8 +369,8 @@ static void paint_log_flume_track_flat_to_25_deg_down(
         { SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_SE_NW, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
@@ -388,9 +388,9 @@ static void paint_log_flume_track_flat_to_25_deg_down(
     {
         paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 static void paint_log_flume_track_25_deg_down_to_flat(
@@ -404,8 +404,8 @@ static void paint_log_flume_track_25_deg_down_to_flat(
         { SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_SE_NW, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height });
@@ -423,9 +423,9 @@ static void paint_log_flume_track_25_deg_down_to_flat(
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 static void paint_log_flume_track_s_bend_left(
@@ -459,8 +459,8 @@ static void paint_log_flume_track_s_bend_left(
         },
     };
 
-    uint32_t imageId = imageIds[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -470,8 +470,8 @@ static void paint_log_flume_track_s_bend_left(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
@@ -484,10 +484,9 @@ static void paint_log_flume_track_s_bend_left(
                     session, METAL_SUPPORTS_BOXED, 5 + (direction & 1), (direction & 1), height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             break;
         case 2:
@@ -501,10 +500,9 @@ static void paint_log_flume_track_s_bend_left(
                     session, METAL_SUPPORTS_BOXED, 5 + (direction & 1), (direction & 1), height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             break;
         case 3:
@@ -512,8 +510,8 @@ static void paint_log_flume_track_s_bend_left(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
     }
 
@@ -532,7 +530,7 @@ static void paint_log_flume_track_s_bend_left(
         }
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void paint_log_flume_track_s_bend_right(
@@ -566,8 +564,8 @@ static void paint_log_flume_track_s_bend_right(
         },
     };
 
-    uint32_t imageId = imageIds[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -577,8 +575,8 @@ static void paint_log_flume_track_s_bend_right(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
@@ -590,10 +588,9 @@ static void paint_log_flume_track_s_bend_right(
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_BOXED, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             break;
         case 2:
@@ -606,10 +603,9 @@ static void paint_log_flume_track_s_bend_right(
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_BOXED, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             break;
         case 3:
@@ -617,8 +613,8 @@ static void paint_log_flume_track_s_bend_right(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
     }
 
@@ -637,7 +633,7 @@ static void paint_log_flume_track_s_bend_right(
         }
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void paint_log_flume_track_left_quarter_turn_3_tiles(
@@ -703,20 +699,20 @@ static void paint_log_flume_track_left_quarter_turn_3_tiles(
     switch (trackSequence)
     {
         case 0:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
         case 2:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
         case 3:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void paint_log_flume_track_right_quarter_turn_3_tiles(
@@ -782,28 +778,27 @@ static void paint_log_flume_track_right_quarter_turn_3_tiles(
     switch (trackSequence)
     {
         case 0:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
         case 2:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 3:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void paint_log_flume_track_on_ride_photo(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = SPR_STATION_BASE_D | IMAGE_TYPE_REMAP;
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
+    PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
 
     if (direction & 1)
     {
@@ -816,17 +811,17 @@ static void paint_log_flume_track_on_ride_photo(
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 8, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    imageId = LogFlumeTrackFlatImageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 3 });
 
-    imageId = LogFlumeTrackFlatImageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 21 }, { 0, 27, height + 5 });
 
     track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 static void paint_log_flume_track_reverser(
@@ -840,8 +835,8 @@ static void paint_log_flume_track_reverser(
         { SPR_LOG_FLUME_REVERSER_SE_NW, SPR_LOG_FLUME_REVERSER_FRONT_SE_NW },
     };
 
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
@@ -849,9 +844,9 @@ static void paint_log_flume_track_reverser(
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int32_t trackType)

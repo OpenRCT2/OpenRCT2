@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -294,25 +294,26 @@ namespace ScenarioSources
         { SC_PCGW,                                      "PC Gaming World",                                  SCENARIO_CATEGORY_DLC            },
         { SC_GAMEPLAY,                                  "gameplay",                                         SCENARIO_CATEGORY_DLC            },
         { SC_UNIDENTIFIED,                              "Panda World",                                      SCENARIO_CATEGORY_DLC            },
-        { SC_UNIDENTIFIED,                              "Competition Land 1",                               SCENARIO_CATEGORY_DLC            },
-        { SC_UNIDENTIFIED,                              "Competition Land 2",                               SCENARIO_CATEGORY_DLC            },
-        { SC_STEEL_TWISTER_COMPETITION,                 "Steel Twister Roller Coaster Competition",         SCENARIO_CATEGORY_DLC            },
-        { SC_GO_KARTS_COMPETITION,                      "Go Karts Competition",                             SCENARIO_CATEGORY_DLC            },
-        { SC_STEEL_CORKSCREW_COMPETITION,               "Steel Corkscrew Roller Coaster Competition",       SCENARIO_CATEGORY_DLC            },
-        { SC_MINE_TRAIN_COMPETITION,                    "Mine Train Roller Coaster Competition",            SCENARIO_CATEGORY_DLC            },
-        { SC_STEEL_ROLLER_COASTER_COMPETITION,          "Steel Roller Coaster Competition",                 SCENARIO_CATEGORY_DLC            },
-        { SC_BOBSLED_COMPETITION,                       "Bobsled Roller Coaster Competition",               SCENARIO_CATEGORY_DLC            },
-        { SC_INVERTED_ROLLER_COASTER_COMPETITION,       "Inverted Roller Coaster Competition",              SCENARIO_CATEGORY_DLC            },
-        { SC_SUSPENDED_ROLLER_COASTER_COMPETITION,      "Suspended Roller Coaster Competition",             SCENARIO_CATEGORY_DLC            },
-        { SC_STAND_UP_STEEL_ROLLER_COASTER_COMPETITION, "Stand-Up Steel Roller Coaster Competition",        SCENARIO_CATEGORY_DLC            },
-        { SC_WOODEN_ROLLER_COASTER_COMPETITION,         "Wooden Roller Coaster Competition",                SCENARIO_CATEGORY_DLC            },
-        { SC_STEEL_MINI_ROLLER_COASTER_COMPETITION,     "Steel Mini Roller Coaster Competition",            SCENARIO_CATEGORY_DLC            },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags Belgium",                 SCENARIO_CATEGORY_BUILD_YOUR_OWN },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags Great Adventure",         SCENARIO_CATEGORY_BUILD_YOUR_OWN },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags Holland",                 SCENARIO_CATEGORY_BUILD_YOUR_OWN },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags Magic Mountain",          SCENARIO_CATEGORY_BUILD_YOUR_OWN },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags Park",                    SCENARIO_CATEGORY_BUILD_YOUR_OWN },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags over Texas",              SCENARIO_CATEGORY_BUILD_YOUR_OWN },
+        { SC_UNIDENTIFIED,                              "Competition Land 1",                               SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_UNIDENTIFIED,                              "Competition Land 2",                               SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_BOBSLED_COMPETITION,                       "Bobsled Roller Coaster Competition",               SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_GO_KARTS_COMPETITION,                      "Go Karts Competition",                             SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_INVERTED_ROLLER_COASTER_COMPETITION,       "Inverted Roller Coaster Competition",              SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_MINE_TRAIN_COMPETITION,                    "Mine Train Roller Coaster Competition",            SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_STAND_UP_STEEL_ROLLER_COASTER_COMPETITION, "Stand-Up Steel Roller Coaster Competition",        SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_STEEL_CORKSCREW_COMPETITION,               "Steel Corkscrew Roller Coaster Competition",       SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_STEEL_MINI_ROLLER_COASTER_COMPETITION,     "Steel Mini Roller Coaster Competition",            SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_STEEL_ROLLER_COASTER_COMPETITION,          "Steel Roller Coaster Competition",                 SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_STEEL_TWISTER_COMPETITION,                 "Steel Twister Roller Coaster Competition",         SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_SUSPENDED_ROLLER_COASTER_COMPETITION,      "Suspended Roller Coaster Competition",             SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_WOODEN_ROLLER_COASTER_COMPETITION,         "Wooden Roller Coaster Competition",                SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_UNIDENTIFIED,                              "Tycoon Park",                                      SCENARIO_CATEGORY_OTHER          },
     };
 
     #define DEFINE_SCENARIO_TITLE_DESC_GROUP(x) { std::size(x), x }

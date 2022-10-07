@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -72,7 +72,7 @@ GameActions::Result SignSetNameAction::Execute() const
     else
     {
         // If empty name take closest ride name.
-        RideId rideIndex = banner_get_closest_ride_index({ banner->position.ToCoordsXY(), 16 });
+        RideId rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
         if (rideIndex.IsNull())
         {
             banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;

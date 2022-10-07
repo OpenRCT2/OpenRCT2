@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -890,7 +890,7 @@ static void TrackDesignMirrorRide(TrackDesign* td6)
         entrance.y = -entrance.y;
         if (entrance.direction & 1)
         {
-            entrance.direction = direction_reverse(entrance.direction);
+            entrance.direction = DirectionReverse(entrance.direction);
         }
     }
 }
@@ -914,7 +914,7 @@ static void TrackDesignMirrorMaze(TrackDesign* td6)
         {
             if (maze.direction & 1)
             {
-                maze.direction = direction_reverse(maze.direction);
+                maze.direction = DirectionReverse(maze.direction);
             }
             continue;
         }
@@ -1259,8 +1259,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE)
                 {
-                    footpath_queue_chain_reset();
-                    footpath_remove_edges_at(mapCoord, reinterpret_cast<TileElement*>(pathElement));
+                    FootpathQueueChainReset();
+                    FootpathRemoveEdgesAt(mapCoord, reinterpret_cast<TileElement*>(pathElement));
                 }
 
                 flags = GAME_COMMAND_FLAG_APPLY;
@@ -1280,8 +1280,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE)
                 {
-                    footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
-                    footpath_update_queue_chains();
+                    FootpathConnectEdges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
+                    FootpathUpdateQueueChains();
                 }
 
                 return GameActions::Result();

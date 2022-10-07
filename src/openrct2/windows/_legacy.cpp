@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -330,7 +330,7 @@ bool window_ride_construction_update_state(
 
         CoordsXY offsets = { trackCoordinates.x, trackCoordinates.y };
         CoordsXY coords = { x, y };
-        coords += offsets.Rotate(direction_reverse(trackDirection));
+        coords += offsets.Rotate(DirectionReverse(trackDirection));
         x = static_cast<uint16_t>(coords.x);
         y = static_cast<uint16_t>(coords.y);
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -278,7 +278,7 @@ void Park::Initialise()
     gParkEntranceFee = 10.00_GBP;
 
     gPeepSpawns.clear();
-    reset_park_entrance();
+    ParkEntranceReset();
 
     gResearchPriorities = EnumsToFlags(
         ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,
@@ -707,7 +707,7 @@ Guest* Park::GenerateGuest()
     const auto spawn = get_random_peep_spawn();
     if (spawn != nullptr)
     {
-        auto direction = direction_reverse(spawn->direction);
+        auto direction = DirectionReverse(spawn->direction);
         peep = Guest::Generate({ spawn->x, spawn->y, spawn->z });
         if (peep != nullptr)
         {

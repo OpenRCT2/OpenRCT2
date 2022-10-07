@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,7 @@ static void PaintBannerScrollingText(
     PROFILED_FUNCTION();
 
     // If text on hidden direction or ghost
-    direction = direction_reverse(direction) - 1;
+    direction = DirectionReverse(direction) - 1;
     if (direction >= 2 || (bannerElement.IsGhost()))
         return;
 

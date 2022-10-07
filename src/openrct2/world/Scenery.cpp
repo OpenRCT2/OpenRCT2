@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -405,7 +405,7 @@ static SceneryEntryBase* GetSceneryEntry(const ScenerySelection& item)
         case SCENERY_TYPE_WALL:
             return get_wall_entry(item.EntryIndex);
         case SCENERY_TYPE_LARGE:
-            return get_large_scenery_entry(item.EntryIndex);
+            return GetLargeSceneryEntry(item.EntryIndex);
         case SCENERY_TYPE_BANNER:
             return get_banner_entry(item.EntryIndex);
         default:

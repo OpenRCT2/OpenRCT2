@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -751,7 +751,7 @@ namespace RCT2
                 ObjectEntryIndex originalRideType = src->type;
                 if (rideEntry != nullptr)
                 {
-                    originalRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                    originalRideType = rideEntry->GetFirstNonNullRideType();
                 }
                 const auto isFlatRide = GetRideTypeDescriptor(originalRideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE);
                 _isFlatRide.set(static_cast<size_t>(index), isFlatRide);
@@ -2337,7 +2337,7 @@ void load_from_sv6(const char* path)
         objectMgr.LoadObjects(result.RequiredObjects);
         s6Importer->Import();
         game_fix_save_vars();
-        AutoCreateMapAnimations();
+        MapAnimationAutoCreate();
         EntityTweener::Get().Reset();
         gScreenAge = 0;
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
@@ -2377,7 +2377,7 @@ void load_from_sc6(const char* path)
         objManager.LoadObjects(result.RequiredObjects);
         s6Importer->Import();
         game_fix_save_vars();
-        AutoCreateMapAnimations();
+        MapAnimationAutoCreate();
         EntityTweener::Get().Reset();
         return;
     }

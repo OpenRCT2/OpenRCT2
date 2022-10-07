@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -124,7 +124,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
     {
-        imageId = ImageId(_legacyType.image + 4).WithTransparancy(COLOUR_BORDEAUX_RED);
+        imageId = ImageId(_legacyType.image + 4).WithTransparency(COLOUR_BORDEAUX_RED);
         gfx_draw_sprite(dpi, imageId, screenCoords);
     }
 

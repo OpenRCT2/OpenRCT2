@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -628,7 +628,7 @@ static WindowEventList window_ride_graphs_events([](auto& events) {
     events.mouse_down = &WindowRideGraphsMousedown;
     events.update = &WindowRideGraphsUpdate;
     events.get_scroll_size = &WindowRideGraphsScrollgetheight;
-    events.unknown_15 = &WindowRideGraphs15;
+    events.scroll_select = &WindowRideGraphs15;
     events.tooltip = &WindowRideGraphsTooltip;
     events.invalidate = &WindowRideGraphsInvalidate;
     events.paint = &WindowRideGraphsPaint;
@@ -4112,8 +4112,8 @@ static void WindowRideMaintenancePaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Locate mechanic button image
     rct_widget* widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-    gfx_draw_sprite(
-        dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, screenCoords, 0);
+    auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
+    gfx_draw_sprite(dpi, image, screenCoords);
 
     // Inspection label
     widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
@@ -4969,7 +4969,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Glass
                 if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
                 {
-                    auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparancy(trackColour.main);
+                    auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparency(trackColour.main);
                     gfx_draw_sprite(&clippedDpi, glassImageId, { 34, 20 });
                 }
             }

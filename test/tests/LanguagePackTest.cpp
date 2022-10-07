@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,7 +57,7 @@ TEST_F(LanguagePackTest, language_pack_simple)
 
 TEST_F(LanguagePackTest, language_pack_multibyte)
 {
-    auto lang = LanguagePackFactory::FromText(0, (const utf8*)LanguageZhTW);
+    auto lang = LanguagePackFactory::FromText(0, reinterpret_cast<const utf8*>(LanguageZhTW));
     ASSERT_EQ(lang->GetId(), 0);
     ASSERT_EQ(lang->GetCount(), 4U);
     ASSERT_STREQ(lang->GetString(2), u8"懸吊式雲霄飛車");

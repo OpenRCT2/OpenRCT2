@@ -4084,15 +4084,6 @@ STR_NAME    :Katto
 [TTRFWD08]
 STR_NAME    :Katto
 
-[TTRFGL01]
-STR_NAME    :Lasikatto
-
-[TTRFGL02]
-STR_NAME    :Lasikatto
-
-[TTRFGL03]
-STR_NAME    :Lasikatto
-
 [ACWW33]
 STR_NAME    :Puinen tolppaseinä
 

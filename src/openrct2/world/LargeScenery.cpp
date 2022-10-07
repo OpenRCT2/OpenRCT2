@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -88,7 +88,7 @@ ObjectEntryIndex LargeSceneryElement::GetEntryIndex() const
 
 LargeSceneryEntry* LargeSceneryElement::GetEntry() const
 {
-    return get_large_scenery_entry(GetEntryIndex());
+    return GetLargeSceneryEntry(GetEntryIndex());
 }
 
 const LargeSceneryObject* LargeSceneryElement::GetObject() const
@@ -111,7 +111,7 @@ void LargeSceneryElement::SetSequenceIndex(uint8_t sequence)
     SequenceIndex = sequence;
 }
 
-LargeSceneryEntry* get_large_scenery_entry(ObjectEntryIndex entryIndex)
+LargeSceneryEntry* GetLargeSceneryEntry(ObjectEntryIndex entryIndex)
 {
     LargeSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();

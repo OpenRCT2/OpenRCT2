@@ -4411,15 +4411,6 @@ STR_NAME    :Toit
 [TTRFWD08]
 STR_NAME    :Toit
 
-[TTRFGL01]
-STR_NAME    :Toit en verre
-
-[TTRFGL02]
-STR_NAME    :Toit en verre
-
-[TTRFGL03]
-STR_NAME    :Toit en verre
-
 [ACWW33]
 STR_NAME    :Tableau d’affichage en bois
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -102,8 +102,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::NoFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
     auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
-    auto canBuild = MapCanConstructWithClearAt(
-        { _loc, z, clear_z }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags());
+    auto canBuild = MapCanConstructWithClearAt({ _loc, z, clear_z }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = errorTitle;
@@ -165,13 +164,13 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     auto z = station.GetBaseZ();
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_remove_litter({ _loc, z });
+        FootpathRemoveLitter({ _loc, z });
         wall_remove_at_z({ _loc, z });
     }
 
     auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, z, clear_z }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY);
+        { _loc, z, clear_z }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY);
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = errorTitle;
@@ -203,18 +202,18 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
         station.LastPeepInQueue = EntityId::GetNull();
         station.QueueLength = 0;
 
-        map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, { _loc, z });
+        MapAnimationCreate(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, { _loc, z });
     }
 
-    footpath_queue_chain_reset();
+    FootpathQueueChainReset();
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        maze_entrance_hedge_removal({ _loc, entranceElement->as<TileElement>() });
+        MazeEntranceHedgeRemoval({ _loc, entranceElement->as<TileElement>() });
     }
 
-    footpath_connect_edges(_loc, entranceElement->as<TileElement>(), GetFlags());
-    footpath_update_queue_chains();
+    FootpathConnectEdges(_loc, entranceElement->as<TileElement>(), GetFlags());
+    FootpathUpdateQueueChains();
 
     map_invalidate_tile_full(_loc);
 
@@ -237,7 +236,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
     }
     int16_t baseZ = loc.z;
     int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
-    auto canBuild = MapCanConstructWithClearAt({ loc, baseZ, clearZ }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, 0);
+    auto canBuild = MapCanConstructWithClearAt({ loc, baseZ, clearZ }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, 0);
     if (canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = errorTitle;

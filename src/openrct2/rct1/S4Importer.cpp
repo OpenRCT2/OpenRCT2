@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -2229,7 +2229,7 @@ namespace RCT1
 
                     if (rideEntry != nullptr)
                     {
-                        auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        auto rideType = rideEntry->GetFirstNonNullRideType();
                         dst->entryIndex = entryIndex;
                         dst->baseRideType = rideType;
                         dst->type = Research::EntryType::Ride;
@@ -2248,7 +2248,7 @@ namespace RCT1
 
                     if (rideEntry != nullptr)
                     {
-                        auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        auto rideType = rideEntry->GetFirstNonNullRideType();
                         dst->entryIndex = entryIndex;
                         dst->baseRideType = rideType;
                         dst->type = Research::EntryType::Ride;
@@ -2544,11 +2544,11 @@ namespace RCT1
                     exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
 
                     // Trigger footpath update
-                    footpath_queue_chain_reset();
-                    footpath_connect_edges(
+                    FootpathQueueChainReset();
+                    FootpathConnectEdges(
                         entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
                         GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-                    footpath_update_queue_chains();
+                    FootpathUpdateQueueChains();
                 }
             }
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -85,7 +85,7 @@ void WallObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t heig
 
     if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
     {
-        auto glassImageId = imageId.WithTransparancy(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
+        auto glassImageId = imageId.WithTransparency(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
         gfx_draw_sprite(dpi, glassImageId, screenCoords);
     }
     else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)

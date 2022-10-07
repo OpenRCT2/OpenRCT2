@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -3906,6 +3906,16 @@ enum : uint16_t
     STR_SCENARIO_HOVER_HINT = 6518,
 
     STR_SCENARIO_CATEGORY_EXTRAS_PARKS = 6519,
+
+    STR_ASSET_PACKS = 6520,
+    STR_LOW_PRIORITY = 6521,
+    STR_HIGH_PRIORITY = 6522,
+    STR_DECREASE_PRIOTITY_TIP = 6523,
+    STR_INCREASE_PRIOTITY_TIP = 6524,
+    STR_RELOAD_ASSET_PACKS_TIP = 6525,
+    STR_BASE_GRAPHICS_MUSIC_SOUND = 6526,
+
+    STR_COMPETITIONS = 6527,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

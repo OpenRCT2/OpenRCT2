@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -210,6 +210,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_PATH_TO_RCT1_TEXT,
     WIDX_PATH_TO_RCT1_BUTTON,
     WIDX_PATH_TO_RCT1_CLEAR,
+    WIDX_ASSET_PACKS,
 };
 
 static constexpr const StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
@@ -395,6 +396,7 @@ static rct_widget window_options_advanced_widgets[] = {
     MakeWidget        ({ 23, 169}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
     MakeWidget        ({ 24, 184}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
     MakeWidget        ({289, 184}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
+    MakeWidget        ({ 24, 200}, {140, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_ASSET_PACKS,                           STR_NONE                                     ), // Asset packs
     WIDGETS_END,
 };
 
@@ -1940,6 +1942,9 @@ private:
                 }
                 Invalidate();
                 break;
+            case WIDX_ASSET_PACKS:
+                context_open_window(WindowClass::AssetPacks);
+                break;
         }
     }
 
@@ -2110,10 +2115,11 @@ private:
             uint8_t window_colour = NOT_TRANSLUCENT(colours[widget->colour]);
 
             // Draw greyed out (light border bottom right shadow)
-            gfx_draw_sprite_solid(dpi, spriteIndex, screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
+            gfx_draw_sprite_solid(
+                dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
 
             // Draw greyed out (dark)
-            gfx_draw_sprite_solid(dpi, spriteIndex, screenCoords, ColourMapA[window_colour].mid_light);
+            gfx_draw_sprite_solid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
         }
     }
 

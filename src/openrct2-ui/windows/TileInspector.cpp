@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1320,7 +1320,7 @@ public:
                     {
                         // TODO: Make this work with Left/Right park entrance parts
                         ft = Formatter();
-                        ft.Add<StringId>(park_entrance_get_index({ _toolMap, tileElement->GetBaseZ() }));
+                        ft.Add<StringId>(ParkEntranceGetIndex({ _toolMap, tileElement->GetBaseZ() }));
                         DrawTextBasic(
                             &dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, ft,
                             { colours[1] });
@@ -1459,7 +1459,7 @@ public:
                         { colours[1] });
 
                     // Banner info
-                    auto* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
+                    auto* largeSceneryEntry = GetLargeSceneryEntry(largeSceneryType);
                     if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         auto banner = sceneryElement->GetBanner();

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,7 @@
 
 // Set to 255 on all tracked ride entries
 static uint8_t constexpr NoFlatRideCars = 0xFF;
+static ride_type_t constexpr RIDE_TYPE_NULL = 0xFF;
 
 struct RideNaming
 {
@@ -85,6 +86,17 @@ struct rct_ride_entry
     const CarEntry* GetDefaultCar() const
     {
         return GetCar(DefaultCar);
+    }
+
+    ride_type_t GetFirstNonNullRideType() const
+    {
+        for (const auto& currentRideType : ride_type)
+        {
+            if (currentRideType != RIDE_TYPE_NULL)
+                return currentRideType;
+        }
+
+        return RIDE_TYPE_NULL;
     }
 };
 

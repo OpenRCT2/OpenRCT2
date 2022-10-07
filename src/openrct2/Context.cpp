@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 #    include <emscripten.h>
 #endif // __EMSCRIPTEN__
 
+#include "AssetPackManager.h"
 #include "Context.h"
 #include "Editor.h"
 #include "FileClassifier.h"
@@ -107,6 +108,7 @@ namespace OpenRCT2
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
         std::unique_ptr<IReplayManager> _replayManager;
         std::unique_ptr<IGameStateSnapshots> _gameStateSnapshots;
+        std::unique_ptr<AssetPackManager> _assetPackManager;
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
@@ -264,6 +266,11 @@ namespace OpenRCT2
             return _gameStateSnapshots.get();
         }
 
+        AssetPackManager* GetAssetPackManager() override
+        {
+            return _assetPackManager.get();
+        }
+
         DrawingEngine GetDrawingEngineType() override
         {
             return _drawingEngineType;
@@ -383,6 +390,10 @@ namespace OpenRCT2
             _scenarioRepository = CreateScenarioRepository(_env);
             _replayManager = CreateReplayManager();
             _gameStateSnapshots = CreateGameStateSnapshots();
+            if (!gOpenRCT2Headless)
+            {
+                _assetPackManager = std::make_unique<AssetPackManager>();
+            }
 #ifdef __ENABLE_DISCORD__
             if (!gOpenRCT2Headless)
             {
@@ -427,6 +438,13 @@ namespace OpenRCT2
             //      still open the game window and draw a progress screen for the creation
             //      of the object cache.
             _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
+
+            if (!gOpenRCT2Headless)
+            {
+                _assetPackManager->Scan();
+                _assetPackManager->LoadEnabledAssetPacks();
+                _assetPackManager->Reload();
+            }
 
             // TODO Like objects, this can take a while if there are a lot of track designs
             //      its also really something really we might want to do in the background
@@ -632,7 +650,7 @@ namespace OpenRCT2
                 gCurrentLoadedPath = path;
                 gFirstTimeSaving = true;
                 game_fix_save_vars();
-                AutoCreateMapAnimations();
+                MapAnimationAutoCreate();
                 EntityTweener::Get().Reset();
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = AUTOSAVE_PAUSE;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -325,12 +325,18 @@ bool Peep::PathIsBlockedByVehicle()
 {
     auto curPos = TileCoordsXYZ(GetLocation());
     auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
-    if ((curPos.x != dstPos.x || curPos.y != dstPos.y) && footpath_is_blocked_by_vehicle(dstPos))
+    if ((curPos.x != dstPos.x || curPos.y != dstPos.y) && FootpathIsBlockedByVehicle(dstPos))
     {
         return true;
     }
 
     return false;
+}
+
+bool Peep::IsOnLevelCrossing()
+{
+    auto trackElement = map_get_track_element_at(GetLocation());
+    return trackElement != nullptr;
 }
 
 PeepActionSpriteType Peep::GetActionSpriteType()
@@ -1660,7 +1666,7 @@ void Peep::SwitchNextActionSpriteType()
  */
 static void peep_return_to_centre_of_tile(Peep* peep)
 {
-    peep->PeepDirection = direction_reverse(peep->PeepDirection);
+    peep->PeepDirection = DirectionReverse(peep->PeepDirection);
     auto destination = peep->GetLocation().ToTileCentre();
     peep->SetDestination(destination, 5);
 }
@@ -1805,7 +1811,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         uint8_t entranceDirection = tile_element->GetDirection();
         if (entranceDirection != guest->PeepDirection)
         {
-            if (direction_reverse(entranceDirection) != guest->PeepDirection)
+            if (DirectionReverse(entranceDirection) != guest->PeepDirection)
             {
                 peep_return_to_centre_of_tile(guest);
                 return true;
@@ -1898,7 +1904,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                         break;
                     }
 
-                    if (direction_reverse(slopeDirection) != entranceDirection)
+                    if (DirectionReverse(slopeDirection) != entranceDirection)
                         continue;
 
                     if (z - 2 != nextTileElement->base_height)
@@ -2174,7 +2180,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
 
             if ((tile_element->AsPath()->HasQueueBanner())
                 && (tile_element->AsPath()->GetQueueBannerDirection()
-                    == direction_reverse(guest->PeepDirection)) // Ride sign is facing the direction the peep is walking
+                    == DirectionReverse(guest->PeepDirection)) // Ride sign is facing the direction the peep is walking
             )
             {
                 /* Peep is approaching the entrance of a ride queue.
@@ -2798,7 +2804,7 @@ void Peep::Paint(paint_session& session, int32_t imageDirection) const
     // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
     uint32_t baseImageId = (imageDirection >> 3) + GetPeepAnimation(SpriteType, actionSpriteType).base_image + imageOffset * 4;
-    uint32_t imageId = baseImageId | TshirtColour << 19 | TrousersColour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    auto imageId = ImageId(baseImageId, TshirtColour, TrousersColour);
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
 
     auto* guest = As<Guest>();
@@ -2806,21 +2812,21 @@ void Peep::Paint(paint_session& session, int32_t imageDirection) const
     {
         if (baseImageId >= 10717 && baseImageId < 10749)
         {
-            imageId = (baseImageId + 32) | guest->HatColour << 19 | IMAGE_TYPE_REMAP;
+            imageId = ImageId(baseImageId + 32, guest->HatColour);
             PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
             return;
         }
 
         if (baseImageId >= 10781 && baseImageId < 10813)
         {
-            imageId = (baseImageId + 32) | guest->BalloonColour << 19 | IMAGE_TYPE_REMAP;
+            imageId = ImageId(baseImageId + 32, guest->BalloonColour);
             PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
             return;
         }
 
         if (baseImageId >= 11197 && baseImageId < 11229)
         {
-            imageId = (baseImageId + 32) | guest->UmbrellaColour << 19 | IMAGE_TYPE_REMAP;
+            imageId = ImageId(baseImageId + 32, guest->UmbrellaColour);
             PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
             return;
         }

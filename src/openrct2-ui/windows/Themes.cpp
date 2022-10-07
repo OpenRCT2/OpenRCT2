@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -200,6 +200,7 @@ static WindowClass window_themes_tab_6_classes[] = {
     WindowClass::Options,
     WindowClass::KeyboardShortcutList,
     WindowClass::ChangeKeyboardShortcut,
+    WindowClass::AssetPacks,
     WindowClass::Loadsave,
     WindowClass::About,
     WindowClass::Changelog,
@@ -810,12 +811,10 @@ public:
                     DrawTextBasic(&dpi, { 2, screenCoords.y + 4 }, ThemeDescGetName(wc), {}, { colours[1] });
 
                     uint8_t colour = ThemeGetColour(wc, j);
-                    uint32_t image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | SPR_PALETTE_BTN;
-                    if (i == _colour_index_1 && j == _colour_index_2)
-                    {
-                        image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | SPR_PALETTE_BTN_PRESSED;
-                    }
-                    gfx_draw_sprite(&dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y }, 0);
+                    const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
+                    auto image = ImageId(
+                        isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour & ~COLOUR_FLAG_TRANSLUCENT);
+                    gfx_draw_sprite(&dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
 
                     ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
                     ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
@@ -876,10 +875,9 @@ public:
             if (_selected_tab == i)
                 sprite_idx += frame_no / window_themes_tab_animation_divisor[_selected_tab];
             gfx_draw_sprite(
-                dpi, sprite_idx,
+                dpi, ImageId(sprite_idx),
                 windowPos
-                    + ScreenCoordsXY{ widgets[WIDX_THEMES_SETTINGS_TAB + i].left, widgets[WIDX_THEMES_SETTINGS_TAB + i].top },
-                0);
+                    + ScreenCoordsXY{ widgets[WIDX_THEMES_SETTINGS_TAB + i].left, widgets[WIDX_THEMES_SETTINGS_TAB + i].top });
         }
     }
 };
