@@ -180,7 +180,7 @@ STR_0602    :I treni dell’ottovolante sono spinti fuori dalla stazione tramite
 STR_0603    :Un ottovolante in legno con i binari in acciaio, in grado di avere ripide discese e inversioni.
 STR_0604    :I visitatori viaggiano lungo un sottile tracciato da monorotaia, attraverso strette inversioni e cambi di direzione.
 STR_0605    :I visitatori scendono lungo una rotaia piena di curve, frenando per controllare la velocità del loro vagone
-STR_0606    :Un ottovolante di legno vecchio stile con un percorso veloce e turbolento, con molto air-time, G laterali, progettata per farti sentire 'fuori controllo'
+STR_0606    :Un ottovolante di legno vecchio stile con un percorso veloce e turbolento, con molto air-time, G laterali, progettato per farti sentire “fuori controllo”
 STR_0767    :Visitatore {INT32}
 STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
@@ -755,7 +755,7 @@ STR_1363    :Troppo in alto per i supporti!
 STR_1364    :I supporti del tracciato non possono essere ulteriormente estesi!
 STR_1365    :Curva in-linea (Sx)
 STR_1366    :Curva in-linea (Dx)
-STR_1367    :Mezzo giro morte Piccolo
+STR_1367    :Mezzo giro della morte piccolo
 STR_1368    :Mezzo avvitamento (Sx)
 STR_1369    :Mezzo avvitamento (Dx)
 STR_1370    :Avvitamento (Sx)
@@ -2585,17 +2585,17 @@ STR_5278    :Modalità sandbox
 STR_5279    :Disattiva modalità sandbox
 STR_5280    :Permetti la modifica delle impostazioni del terreno tramite la finestra Mappa e altre opzioni che sono solitamente non disponibili nella modifica Scenario
 STR_5281    :Feature
-STR_5282    :RCT1 Ride Open/Close Lights
-STR_5283    :RCT1 Park Open/Close Lights
-STR_5284    :RCT1 Selezione Font Scenario
-STR_5287    :L’attrazione è già partita
-STR_5288    :Corsa chiusa
-STR_5289    :Nessun guasto per questa attrazione
+STR_5282    :Semaforo apertura attrazione di RCT1
+STR_5283    :Semaforo apertura parco di RCT1
+STR_5284    :Font di RCT1 nella selezione scenario
+STR_5287    :L’attrazione è già guasta
+STR_5288    :Attrazione chiusa
+STR_5289    :Nessun guasto disponibile per questa attrazione
 STR_5290    :Ripara corsa
-STR_5291    :non puoi forzare un guasto
+STR_5291    :Non è possibile forzare un guasto
 STR_5292    :Forza un guasto
 STR_5293    :Chiudi attrazione
-STR_5294    :Testa attrazione
+STR_5294    :Prova attrazione
 STR_5295    :Apri attrazione
 STR_5296    :Chiudi parco
 STR_5297    :Apri parco
@@ -2992,8 +2992,8 @@ STR_5824    :Disattiva l’effetto fulmine{NEWLINE}durante i temporali
 STR_5825    :Mantiene il cursorse del mouse all’interno della finestra
 STR_5826    :Inverte la direzione di scorrimento{NEWLINE}quando si mantiene premuto il tasto destro.
 STR_5827    :Imposta lo schema colore dell’interfaccia
-STR_5828    :Cambia quale formato di misurazione è usato per le distanze, la velocità…
-STR_5829    :Cambia la moneta in uso. Soltanto visuale, non effettua una vera conversione
+STR_5828    :Cambia l’unità di misura usata per le distanze, la velocità…
+STR_5829    :Cambia la moneta in uso. Ha soltanto un effetto visuale, non effettua una vera conversione
 STR_5830    :Cambia la lingua utilizzata
 STR_5831    :Cambia il formato della{NEWLINE}temperatura visualizzata
 STR_5832    :Mostra l’altezza in unità generiche invece del formato impostato in “Distanze e velocità”
@@ -3626,6 +3626,12 @@ STR_6511    :Zero G Roll (Dx)
 STR_6512    :Zero G Roll Grande (Sx)
 STR_6513    :Zero G Roll Grande (Dx)
 STR_6514    :Altezza non valida!
+STR_6515    :{BLACK}RCT1 non collegato - saranno usate immagini di ripiego.
+STR_6516    :Uno o più oggetti aggiunti necessitano che RCT1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
+STR_6517    :Uno o più oggetti di questo parco necessitano che RCT1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
+STR_6518    :{BLACK}Passa il cursore sopra a uno scenario per visualizzare la sua descrizione e il suo obiettivo. Fai clic per iniziare a giocare.
+STR_6519    :Extra
+
 
 #############
 # Scenarios #
