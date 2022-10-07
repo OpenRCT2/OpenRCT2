@@ -17,6 +17,7 @@
 - Fix: [#18094] Underground shops & facilities don't show when adjacent to non-underground path (original bug).
 - Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
 - Fix: [#18134] Underground on-ride photo section partially clips through adjacent terrain edge.
+- Fix: [#18245] Guests stopping dead in their tracks at railway crossings.
 - Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
 - Fix: [#18354] Overwrite alert does not show when save name has different casing on Windows.
 - Fix: [#18379] Tunnel entrances for underground Mini Golf Hole E are not rendered correctly.
