@@ -426,7 +426,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 18 }, { 0, 27, height });
             wooden_a_supports_paint_setup(session, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
-			
+
             PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_14);
             break;
 
