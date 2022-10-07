@@ -4,7 +4,7 @@
 - Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
 - Fix: [#18134] Underground on-ride photo section partially clips through adjacent terrain edge.
 - Improved: [#18192, #18214] Tycoon Park has been added Extras tab, Competition scenarios have received their own section.
-- Change: [#18230] Make the large flat to steep peieces available on the corkscrew roller coaster without cheats.
+- Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 
 0.4.2 (2022-10-05)
 ------------------------------------------------------------------------
