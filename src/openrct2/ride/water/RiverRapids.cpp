@@ -575,7 +575,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
 
         case 1:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 28, 11 }, { 0, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 25, 25, 5 }, { 0, 0, height });
 
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 30, 7 }, { 27, 1, height });
