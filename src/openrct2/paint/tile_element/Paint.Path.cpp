@@ -1134,7 +1134,7 @@ void PathPaintBoxSupport(
     }
 
     auto supportType = byte_98D8A4[edges] == 0 ? 0 : 1;
-    path_a_supports_paint_setup(session, supportType, ax, height, imageTemplate, pathPaintInfo, nullptr);
+    PathASupportsPaintSetup(session, supportType, ax, height, imageTemplate, pathPaintInfo, nullptr);
 
     height += 32;
     if (pathElement.IsSloped())
@@ -1291,7 +1291,7 @@ void PathPaintPoleSupport(
             {
                 imageTemplate = ImageId().WithPrimary(supportColour);
             }
-            path_b_supports_paint_setup(session, supports[i], ax, height, imageTemplate, pathPaintInfo);
+            PathBSupportsPaintSetup(session, supports[i], ax, height, imageTemplate, pathPaintInfo);
         }
     }
 
