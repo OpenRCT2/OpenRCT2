@@ -42,7 +42,7 @@ static void paint_flying_saucers(
 
     int32_t edges = edges_4x4[relativeTrackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 

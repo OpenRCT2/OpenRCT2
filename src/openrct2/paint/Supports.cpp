@@ -445,18 +445,6 @@ static constexpr const uint16_t word_97B3C4[] = {
 
 // clang-format on
 
-bool wooden_a_supports_paint_setup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
-{
-    return wooden_a_supports_paint_setup(session, supportType, special, height, ImageId::FromUInt32(imageColourFlags));
-}
-
-bool wooden_b_supports_paint_setup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
-{
-    return wooden_a_supports_paint_setup(session, supportType, special, height, ImageId::FromUInt32(imageColourFlags));
-}
-
 /**
  * Adds paint structs for wooden supports.
  *  rct2: 0x006629BC
@@ -467,7 +455,7 @@ bool wooden_b_supports_paint_setup(
  * @param[out] underground (Carry flag) true if underground.
  * @returns (al) true if any supports have been drawn, otherwise false.
  */
-bool wooden_a_supports_paint_setup(
+bool WoodenASupportsPaintSetup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
@@ -628,7 +616,7 @@ bool wooden_a_supports_paint_setup(
  *
  * @return (al) whether supports have been drawn
  */
-bool wooden_b_supports_paint_setup(
+bool WoodenBSupportsPaintSetup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
