@@ -16,7 +16,6 @@
 #include "../rct1/RCT1.h"
 #include "../rct1/Tables.h"
 #include "../rct12/SawyerChunkReader.h"
-#include "../rct12/SawyerEncoding.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
