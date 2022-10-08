@@ -575,7 +575,6 @@ class Formatter;
 ImageId scrolling_text_setup(
     struct paint_session& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour);
 
-rct_size16 FASTCALL gfx_get_sprite_size(uint32_t image_id);
 size_t g1_calculate_data_size(const rct_g1_element* g1);
 
 void mask_scalar(

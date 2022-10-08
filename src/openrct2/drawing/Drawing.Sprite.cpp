@@ -815,18 +815,6 @@ bool is_csg_loaded()
     return _csgLoaded;
 }
 
-rct_size16 FASTCALL gfx_get_sprite_size(uint32_t image_id)
-{
-    const rct_g1_element* g1 = gfx_get_g1_element(image_id & 0X7FFFF);
-    rct_size16 size = {};
-    if (g1 != nullptr)
-    {
-        size.width = g1->width;
-        size.height = g1->height;
-    }
-    return size;
-}
-
 size_t g1_calculate_data_size(const rct_g1_element* g1)
 {
     if (g1->flags & G1_FLAG_PALETTE)
