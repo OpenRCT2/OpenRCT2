@@ -828,7 +828,7 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
     else
     {
         CodepointView codepoints(text);
-        std::optional<size_t> ttfRunIndex;
+        std::optional<size_t> ttfRunIndex{};
         for (auto it = codepoints.begin(); it != codepoints.end(); it++)
         {
             auto codepoint = *it;
