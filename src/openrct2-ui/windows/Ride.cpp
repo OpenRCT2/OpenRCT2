@@ -1114,7 +1114,7 @@ public:
             }
         }
 
-        ride.view = 1 + windowRide->num_vehicles + stationIndex.ToUnderlying();
+        ride.view = 1 + windowRide->NumTrains + stationIndex.ToUnderlying();
         WindowRideInitViewport();
     }
 
@@ -1209,7 +1209,7 @@ public:
 
         std::optional<Focus> newFocus;
 
-        if (viewSelectionIndex >= 0 && viewSelectionIndex < windowRide->num_vehicles
+        if (viewSelectionIndex >= 0 && viewSelectionIndex < windowRide->NumTrains
             && windowRide->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
         {
             auto vehId = windowRide->vehicles[viewSelectionIndex];
@@ -1232,8 +1232,8 @@ public:
             }
         }
         else if (
-            viewSelectionIndex >= windowRide->num_vehicles
-            && viewSelectionIndex < (windowRide->num_vehicles + windowRide->num_stations))
+            viewSelectionIndex >= windowRide->NumTrains
+            && viewSelectionIndex < (windowRide->NumTrains + windowRide->num_stations))
         {
             auto stationIndex = GetStationIndexFromViewSelection();
             if (stationIndex)
@@ -1365,7 +1365,7 @@ private:
         if (windowRide == nullptr)
             return std::nullopt;
 
-        int32_t viewSelectionIndex = ride.view - 1 - windowRide->num_vehicles;
+        int32_t viewSelectionIndex = ride.view - 1 - windowRide->NumTrains;
         if (viewSelectionIndex < 0)
         {
             return std::nullopt;
@@ -1526,7 +1526,7 @@ private:
         if (!windowRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
         {
             numItems += windowRide->num_stations;
-            numItems += windowRide->num_vehicles;
+            numItems += windowRide->NumTrains;
         }
 
         WindowDropdownShowTextCustomWidth(
@@ -1542,7 +1542,7 @@ private:
 
         // Vehicles
         int32_t name = GetRideComponentName(rtd.NameConvention.vehicle).number;
-        for (int32_t i = 1; i <= windowRide->num_vehicles; i++)
+        for (int32_t i = 1; i <= windowRide->NumTrains; i++)
         {
             gDropdownItems[currentItem].Format = STR_DROPDOWN_MENU_LABEL;
             gDropdownItems[currentItem].Args = name | (currentItem << 16);
@@ -1561,7 +1561,7 @@ private:
         // Set highlighted item
         if (!(windowRide->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
         {
-            for (int32_t i = 0; i < windowRide->num_vehicles; i++)
+            for (int32_t i = 0; i < windowRide->NumTrains; i++)
             {
                 // The +1 is to skip 'Overall view'
                 Dropdown::SetDisabled(i + 1, true);
@@ -1744,7 +1744,7 @@ private:
             { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);
         gDropdownDefaultIndex = 0;
         if (!windowRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || ride.view == 0
-            || ride.view > windowRide->num_vehicles)
+            || ride.view > windowRide->NumTrains)
         {
             // Disable if we're a flat ride, 'overall view' is selected or a station is selected
             Dropdown::SetDisabled(1, true);
@@ -1760,7 +1760,7 @@ private:
             {
                 if (ride.view > 0)
                 {
-                    if (ride.view <= windowRide->num_vehicles)
+                    if (ride.view <= windowRide->NumTrains)
                     {
                         Vehicle* vehicle = GetEntity<Vehicle>(windowRide->vehicles[ride.view - 1]);
                         if (vehicle != nullptr)
@@ -1913,10 +1913,10 @@ private:
                     auto windowRide = get_ride(rideId);
                     if (windowRide != nullptr)
                     {
-                        if (dropdownIndex != 0 && dropdownIndex <= windowRide->num_vehicles
+                        if (dropdownIndex != 0 && dropdownIndex <= windowRide->NumTrains
                             && !(windowRide->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
                         {
-                            dropdownIndex = windowRide->num_vehicles + 1;
+                            dropdownIndex = windowRide->NumTrains + 1;
                         }
                         if (dropdownIndex >= gDropdownNumItems)
                         {
@@ -2016,7 +2016,7 @@ private:
                 if (ride.view == 0)
                     return;
 
-                if (ride.view <= windowRide->num_vehicles)
+                if (ride.view <= windowRide->NumTrains)
                 {
                     Vehicle* vehicle = GetEntity<Vehicle>(windowRide->vehicles[ride.view - 1]);
                     if (vehicle == nullptr
@@ -2326,7 +2326,7 @@ private:
         auto windowRide = get_ride(rideId);
         if (ride.view == 0)
             return WindowRideGetStatusOverallView(ft);
-        if (windowRide != nullptr && ride.view <= windowRide->num_vehicles)
+        if (windowRide != nullptr && ride.view <= windowRide->NumTrains)
             return WindowRideGetStatusVehicle(ft);
         if (windowRide != nullptr && windowRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
             return WindowRideGetStatusOverallView(ft);
@@ -2360,10 +2360,10 @@ private:
         auto ft = Formatter();
         if (ride.view != 0)
         {
-            if (ride.view > windowRide->num_vehicles)
+            if (ride.view > windowRide->NumTrains)
             {
                 ft.Add<StringId>(GetRideComponentName(windowRide->GetRideTypeDescriptor().NameConvention.station).number);
-                ft.Add<uint16_t>(ride.view - windowRide->num_vehicles);
+                ft.Add<uint16_t>(ride.view - windowRide->NumTrains);
             }
             else
             {
@@ -2506,12 +2506,12 @@ private:
                 WindowRideShowVehicleTypeDropdown(&widgets[widgetIndex]);
                 break;
             case WIDX_VEHICLE_TRAINS_INCREASE:
-                if (windowRide->num_vehicles < OpenRCT2::Limits::MaxTrainsPerRide)
-                    windowRide->SetNumVehicles(windowRide->num_vehicles + 1);
+                if (windowRide->NumTrains < OpenRCT2::Limits::MaxTrainsPerRide)
+                    windowRide->SetNumTrains(windowRide->NumTrains + 1);
                 break;
             case WIDX_VEHICLE_TRAINS_DECREASE:
-                if (windowRide->num_vehicles > 1)
-                    windowRide->SetNumVehicles(windowRide->num_vehicles - 1);
+                if (windowRide->NumTrains > 1)
+                    windowRide->SetNumTrains(windowRide->NumTrains - 1);
                 break;
             case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
                 if (windowRide->num_cars_per_train < OpenRCT2::Limits::MaxCarsPerTrain)
@@ -2677,12 +2677,12 @@ private:
         ft.Add<uint16_t>(carsPerTrain);
         RideComponentType vehicleType = windowRide->GetRideTypeDescriptor().NameConvention.vehicle;
         stringId = GetRideComponentName(vehicleType).count;
-        if (windowRide->num_vehicles > 1)
+        if (windowRide->NumTrains > 1)
         {
             stringId = GetRideComponentName(vehicleType).count_plural;
         }
         ft.Add<StringId>(stringId);
-        ft.Add<uint16_t>(windowRide->num_vehicles);
+        ft.Add<uint16_t>(windowRide->NumTrains);
 
         ft.Increment(8);
 
@@ -2792,7 +2792,7 @@ private:
         gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, PALETTE_INDEX_12);
 
         rct_widget* widget = &window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
-        int32_t startX = std::max(2, (widget->width() - ((windowRide->num_vehicles - 1) * 36)) / 2 - 25);
+        int32_t startX = std::max(2, (widget->width() - ((windowRide->NumTrains - 1) * 36)) / 2 - 25);
         int32_t startY = widget->height() - 4;
 
         CarEntry* carEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(
@@ -2800,7 +2800,7 @@ private:
         startY += carEntry->tab_height;
 
         // For each train
-        for (int32_t i = 0; i < windowRide->num_vehicles; i++)
+        for (int32_t i = 0; i < windowRide->NumTrains; i++)
         {
             VehicleDrawInfo trainCarImages[OpenRCT2::Limits::MaxCarsPerTrain];
             VehicleDrawInfo* nextSpriteToDraw = trainCarImages;
@@ -3381,7 +3381,7 @@ private:
 
         // Leave if another vehicle arrives at station
         if (windowRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION)
-            && windowRide->num_vehicles > 1 && !windowRide->IsBlockSectioned())
+            && windowRide->NumTrains > 1 && !windowRide->IsBlockSectioned())
         {
             window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WindowWidgetType::Checkbox;
             window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip
@@ -3725,7 +3725,7 @@ private:
                     {
                         if (i == BREAKDOWN_BRAKES_FAILURE && windowRide->IsBlockSectioned())
                         {
-                            if (windowRide->num_vehicles != 1)
+                            if (windowRide->NumTrains != 1)
                                 continue;
                         }
                         gDropdownItems[num_items].Format = STR_DROPDOWN_MENU_LABEL;
@@ -3754,7 +3754,7 @@ private:
                             {
                                 if (i == BREAKDOWN_BRAKES_FAILURE && windowRide->IsBlockSectioned())
                                 {
-                                    if (windowRide->num_vehicles != 1)
+                                    if (windowRide->NumTrains != 1)
                                         continue;
                                 }
                                 if (i == breakdownReason)
@@ -3810,7 +3810,7 @@ private:
                         case BREAKDOWN_SAFETY_CUT_OUT:
                             if (!(windowRide->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
                                 break;
-                            for (int32_t i = 0; i < windowRide->num_vehicles; ++i)
+                            for (int32_t i = 0; i < windowRide->NumTrains; ++i)
                             {
                                 for (vehicle = GetEntity<Vehicle>(windowRide->vehicles[i]); vehicle != nullptr;
                                      vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
@@ -3869,7 +3869,7 @@ private:
                         {
                             if (i == BREAKDOWN_BRAKES_FAILURE && windowRide->IsBlockSectioned())
                             {
-                                if (windowRide->num_vehicles != 1)
+                                if (windowRide->NumTrains != 1)
                                     continue;
                             }
                             if (num_items == dropdownIndex)
@@ -3967,8 +3967,8 @@ private:
         // Locate mechanic button image
         rct_widget* widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
-        gfx_draw_sprite(
-            dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, screenCoords, 0);
+        auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
+        gfx_draw_sprite(dpi, image, screenCoords);
 
         // Inspection label
         widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
@@ -4294,7 +4294,7 @@ private:
                 Dropdown::SetChecked(windowRide->colour_scheme_type & 3, true);
                 break;
             case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
-                numItems = windowRide->num_vehicles;
+                numItems = windowRide->NumTrains;
                 if ((windowRide->colour_scheme_type & 3) != VEHICLE_COLOUR_SCHEME_PER_TRAIN)
                     numItems = windowRide->num_cars_per_train;
 
@@ -4668,7 +4668,7 @@ private:
 
             // Vehicle colour scheme type
             if (!windowRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL)
-                && (windowRide->num_cars_per_train | windowRide->num_vehicles) > 1)
+                && (windowRide->num_cars_per_train | windowRide->NumTrains) > 1)
             {
                 window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WindowWidgetType::DropdownMenu;
                 window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WindowWidgetType::Button;
@@ -4830,7 +4830,7 @@ private:
                     // Glass
                     if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
                     {
-                        auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparancy(trackColour.main);
+                        auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparency(trackColour.main);
                         gfx_draw_sprite(&clippedDpi, glassImageId, { 34, 20 });
                     }
                 }
@@ -7132,7 +7132,7 @@ rct_window* WindowRideMainOpen(Ride* windowRide)
         w->ride.var_482 = -1;
         w->ride.view = 0;
     }
-    else if (w->ride.view >= (1 + windowRide->num_vehicles + windowRide->num_stations))
+    else if (w->ride.view >= (1 + windowRide->NumTrains + windowRide->num_stations))
     {
         w->ride.view = 0;
     }
