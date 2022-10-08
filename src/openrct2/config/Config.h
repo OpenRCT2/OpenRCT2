@@ -89,7 +89,6 @@ struct GeneralConfiguration
     // Miscellaneous
     bool play_intro;
     int32_t window_snap_proximity;
-    bool allow_loading_with_incorrect_checksum;
     bool save_plugin_data;
     bool debugging_tools;
     int32_t autosave_frequency;

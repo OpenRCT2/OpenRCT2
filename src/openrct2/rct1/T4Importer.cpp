@@ -53,12 +53,6 @@ namespace RCT1
 
         bool LoadFromStream(OpenRCT2::IStream* stream) override
         {
-            auto checksumType = SawyerEncoding::ValidateTrackChecksum(stream);
-            if (!gConfigGeneral.allow_loading_with_incorrect_checksum && checksumType == RCT12TrackDesignVersion::unknown)
-            {
-                throw IOException("Invalid checksum.");
-            }
-
             auto chunkReader = SawyerChunkReader(stream);
             auto data = chunkReader.ReadChunkTrack();
             _stream.WriteArray<const uint8_t>(reinterpret_cast<const uint8_t*>(data->GetData()), data->GetLength());

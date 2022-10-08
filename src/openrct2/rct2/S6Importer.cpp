@@ -141,12 +141,6 @@ namespace RCT2
             OpenRCT2::IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck = false,
             const utf8* path = String::Empty) override
         {
-            if (isScenario && !gConfigGeneral.allow_loading_with_incorrect_checksum
-                && !SawyerEncoding::ValidateChecksum(stream))
-            {
-                throw IOException("Invalid checksum.");
-            }
-
             auto chunkReader = SawyerChunkReader(stream);
             chunkReader.ReadChunk(&_s6.header, sizeof(_s6.header));
 
