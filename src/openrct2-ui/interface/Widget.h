@@ -9,7 +9,8 @@
 
 #pragma once
 
+#include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/interface/Widget.h>
 
-uint32_t GetColourButtonImage(colour_t colour);
+ImageId GetColourButtonImage(colour_t colour);
 rct_widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex);
