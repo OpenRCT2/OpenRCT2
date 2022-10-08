@@ -503,7 +503,7 @@ struct text_draw_info
 static void ttf_draw_character_sprite(rct_drawpixelinfo* dpi, int32_t codepoint, text_draw_info* info)
 {
     int32_t characterWidth = font_sprite_get_codepoint_width(info->font_sprite_base, codepoint);
-    int32_t sprite = font_sprite_get_codepoint_sprite(info->font_sprite_base, codepoint);
+    auto sprite = font_sprite_get_codepoint_sprite(info->font_sprite_base, codepoint);
 
     if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
     {
