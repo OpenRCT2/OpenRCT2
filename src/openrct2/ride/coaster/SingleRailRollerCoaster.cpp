@@ -61,8 +61,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -84,8 +83,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -162,8 +160,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -195,8 +192,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -247,8 +243,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -278,8 +273,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -330,8 +324,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -361,8 +354,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -421,8 +413,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -458,8 +449,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -518,8 +508,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -555,8 +544,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -607,8 +595,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -638,8 +625,7 @@ namespace SingleRailRC
             }
             if (track_paint_util_should_paint_supports(session.MapPosition))
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -784,7 +770,7 @@ namespace SingleRailRC
                 }
                 if (track_paint_util_should_paint_supports(session.MapPosition))
                 {
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 if (direction == 0 || direction == 3)
@@ -930,8 +916,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1003,8 +988,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -1063,8 +1047,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1209,8 +1192,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -1269,8 +1251,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1360,7 +1341,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 3)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -1368,7 +1349,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 7)),
                             { 0, 0, height }, { 16, 18, 3 }, { 0, 16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -1376,7 +1357,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 11)),
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -1384,7 +1365,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 15)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -1432,8 +1413,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1523,7 +1503,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 19)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -1531,7 +1511,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 23)),
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -1539,7 +1519,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 27)),
                             { 0, 0, height }, { 16, 18, 3 }, { 0, 16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -1547,7 +1527,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 31)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -1676,7 +1656,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_a_supports_paint_setup(
+                            MetalASupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1684,15 +1664,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_a_supports_paint_setup(
+                            MetalASupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_a_supports_paint_setup(
+                            MetalASupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_a_supports_paint_setup(
+                            MetalASupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1702,7 +1682,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_a_supports_paint_setup(
+                            MetalASupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1710,15 +1690,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_a_supports_paint_setup(
+                            MetalASupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_a_supports_paint_setup(
+                            MetalASupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_a_supports_paint_setup(
+                            MetalASupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1832,7 +1812,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1841,15 +1821,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1859,7 +1839,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1867,15 +1847,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1989,7 +1969,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1998,15 +1978,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2016,7 +1996,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2024,15 +2004,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2146,7 +2126,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 0, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2155,15 +2135,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 0, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2173,7 +2153,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2181,15 +2161,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2303,7 +2283,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2312,15 +2292,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2330,7 +2310,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2338,15 +2318,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2457,7 +2437,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2466,15 +2446,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2484,7 +2464,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2492,15 +2472,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2615,7 +2595,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2624,15 +2604,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2642,7 +2622,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2650,15 +2630,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2772,7 +2752,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2781,15 +2761,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 9)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2799,7 +2779,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2807,15 +2787,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 9)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2929,7 +2909,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2938,15 +2918,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2956,7 +2936,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2964,15 +2944,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 1)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -3086,7 +3066,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -3095,15 +3075,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 5)),
                                 { -16, -16, height }, { 16, 16, 3 }, { 0, 0, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -3113,7 +3093,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -3121,15 +3101,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 5)),
                                 { -16, -16, height }, { 16, 16, 3 }, { 0, 0, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -3243,7 +3223,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -3252,15 +3232,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 11)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -3270,7 +3250,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -3278,15 +3258,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 11)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -3400,7 +3380,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -3409,15 +3389,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 7)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -3427,7 +3407,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -3435,15 +3415,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 7)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -3557,7 +3537,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -3566,15 +3546,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 3)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -3584,7 +3564,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -3592,15 +3572,15 @@ namespace SingleRailRC
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 3)),
                                 { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -3653,7 +3633,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -3702,7 +3682,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -3765,7 +3745,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3821,7 +3801,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3877,7 +3857,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3933,7 +3913,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -4009,7 +3989,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -4084,7 +4064,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4093,15 +4073,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 2)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4172,7 +4152,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4181,15 +4161,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 6)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4260,7 +4240,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4269,15 +4249,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 9)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4348,7 +4328,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4357,15 +4337,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 4)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4436,7 +4416,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4445,15 +4425,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 12)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4524,7 +4504,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4533,15 +4513,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 16)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4612,7 +4592,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4621,15 +4601,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 22)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4700,7 +4680,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4709,15 +4689,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 26)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4785,7 +4765,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4794,15 +4774,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 29)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4871,7 +4851,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4880,15 +4860,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 24)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4960,7 +4940,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4969,15 +4949,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 19)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5048,7 +5028,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5057,15 +5037,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 14)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5131,7 +5111,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5140,15 +5120,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 31)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5214,7 +5194,7 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5223,15 +5203,15 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 33)),
                             { -16, -16, height }, { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5280,8 +5260,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5357,8 +5336,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -5421,8 +5399,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5571,8 +5548,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -5631,8 +5607,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5722,7 +5697,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 3)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5730,7 +5705,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 7)),
                             { 0, 0, height }, { 16, 18, 0 }, { 0, 16, height + 27 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5738,7 +5713,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 11)),
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -5746,7 +5721,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 15)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5794,8 +5769,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5885,7 +5859,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 19)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5893,7 +5867,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 23)),
                             { 0, 0, height }, { 16, 16, 3 }, { 0, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5901,7 +5875,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 27)),
                             { 0, 0, height }, { 16, 18, 0 }, { 0, 16, height + 27 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -5909,7 +5883,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 31)),
                             { 0, 0, height }, { 16, 16, 3 }, { 16, 16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5973,8 +5947,7 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -6017,8 +5990,7 @@ namespace SingleRailRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -6069,8 +6041,7 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -6093,7 +6064,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 9)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -6101,7 +6072,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 11)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6109,7 +6080,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 13)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -6117,7 +6088,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 15)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6187,8 +6158,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -6333,8 +6303,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -6385,8 +6354,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -6531,8 +6499,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -6838,7 +6805,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -6890,7 +6857,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -6942,7 +6909,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -6994,7 +6961,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7070,7 +7037,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7118,7 +7085,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7166,7 +7133,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7214,7 +7181,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7290,7 +7257,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7338,7 +7305,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7404,7 +7371,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7456,7 +7423,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7508,7 +7475,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7560,7 +7527,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7641,8 +7608,7 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -7689,8 +7655,7 @@ namespace SingleRailRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -7745,8 +7710,7 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -7770,7 +7734,7 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 9)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -7779,7 +7743,7 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 11)),
                             { 6, 0, height }, { 1, 32, 34 }, { 27, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7788,7 +7752,7 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 13)),
                             { 6, 0, height }, { 1, 32, 34 }, { 27, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -7797,7 +7761,7 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex(
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 15)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7871,8 +7835,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -8033,8 +7996,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -8089,8 +8051,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -8251,8 +8212,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -8319,8 +8279,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8337,7 +8296,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -8345,7 +8304,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -8388,7 +8347,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -8396,7 +8355,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -8435,8 +8394,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 1:
@@ -8487,8 +8445,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8505,7 +8462,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { 32, 26, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -8513,7 +8470,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { 32, 26, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -8556,7 +8513,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { 32, 26, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -8564,7 +8521,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { 32, 26, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -8603,8 +8560,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 1:
@@ -8659,8 +8615,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8737,8 +8692,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height + 8 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -8785,8 +8739,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -8868,8 +8821,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -8920,8 +8872,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8998,8 +8949,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -9046,8 +8996,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -9129,8 +9078,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height + 8 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -9207,8 +9155,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -9358,8 +9305,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height + 8 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -9406,8 +9352,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -9562,8 +9507,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -9613,8 +9557,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -9740,7 +9683,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 26)),
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height + 8 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -9752,7 +9695,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -9760,7 +9703,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 37)),
                             { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -9768,7 +9711,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -9818,8 +9761,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -9954,7 +9896,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -9962,7 +9904,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 37)),
                             { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -9970,7 +9912,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -9978,7 +9920,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 26)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height + 8 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10038,7 +9980,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 1)),
                             { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 28 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -10050,7 +9992,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 7)),
                             { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 28 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -10062,7 +10004,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 13)),
                             { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 28 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -10074,7 +10016,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 19)),
                             { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 28 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10217,7 +10159,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 25)),
                             { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 28 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -10229,7 +10171,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 31)),
                             { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 28 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -10241,7 +10183,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 37)),
                             { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 28 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -10253,7 +10195,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 43)),
                             { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 28 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10426,8 +10368,7 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 7 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -10444,7 +10385,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 1)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -10452,7 +10393,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 5)),
                             { 0, 14, height }, { 3, 20, 63 }, { 28, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -10460,7 +10401,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 9)),
                             { 0, 6, height }, { 3, 20, 63 }, { 28, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -10468,7 +10409,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 13)),
                             { 0, 6, height }, { 32, 20, 3 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10577,7 +10518,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -10594,10 +10535,8 @@ namespace SingleRailRC
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT + 0)),
                     { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 3 });
@@ -10605,10 +10544,8 @@ namespace SingleRailRC
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT + 1)),
                     { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 3 });
@@ -10616,10 +10553,8 @@ namespace SingleRailRC
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT + 0)),
                     { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 3 });
@@ -10627,10 +10562,8 @@ namespace SingleRailRC
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT + 1)),
                     { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height + 3 });
@@ -10678,7 +10611,7 @@ namespace SingleRailRC
                 }
                 if (track_paint_util_should_paint_supports(session.MapPosition))
                 {
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 if (direction == 0 || direction == 3)
@@ -10719,7 +10652,7 @@ namespace SingleRailRC
                 }
                 if (track_paint_util_should_paint_supports(session.MapPosition))
                 {
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10756,7 +10689,7 @@ namespace SingleRailRC
                 }
                 if (track_paint_util_should_paint_supports(session.MapPosition))
                 {
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10793,7 +10726,7 @@ namespace SingleRailRC
                 }
                 if (track_paint_util_should_paint_supports(session.MapPosition))
                 {
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 switch (direction)
@@ -10847,7 +10780,7 @@ namespace SingleRailRC
                 }
                 if (track_paint_util_should_paint_supports(session.MapPosition))
                 {
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 if (direction == 0 || direction == 3)
@@ -10888,7 +10821,7 @@ namespace SingleRailRC
                 }
                 if (track_paint_util_should_paint_supports(session.MapPosition))
                 {
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10925,7 +10858,7 @@ namespace SingleRailRC
                 }
                 if (track_paint_util_should_paint_supports(session.MapPosition))
                 {
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10962,7 +10895,7 @@ namespace SingleRailRC
                 }
                 if (track_paint_util_should_paint_supports(session.MapPosition))
                 {
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 switch (direction)
@@ -11018,7 +10951,7 @@ namespace SingleRailRC
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -11061,8 +10994,7 @@ namespace SingleRailRC
                         break;
                 }
 
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11136,7 +11068,7 @@ namespace SingleRailRC
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES, 4, 0, height + 33, session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
@@ -11187,8 +11119,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height + 4 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -11261,7 +11192,7 @@ namespace SingleRailRC
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES, 4, 0, height + 33, session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
@@ -11327,8 +11258,7 @@ namespace SingleRailRC
                         break;
                 }
 
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11347,7 +11277,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 1)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 34, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -11355,7 +11285,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 6)),
                             { 0, 0, height }, { 26, 1, 32 }, { 0, 29, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -11363,7 +11293,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 11)),
                             { 0, 0, height }, { 20, 20, 3 }, { 0, 6, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -11371,7 +11301,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 16)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -11430,7 +11360,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 3)),
                             { 0, 0, height }, { 28, 28, 0 }, { 2, 2, height + 50 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -11438,7 +11368,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 8)),
                             { 0, 0, height }, { 28, 28, 0 }, { 2, 2, height + 50 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -11446,7 +11376,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 13)),
                             { 0, 0, height }, { 24, 28, 0 }, { 2, 2, height + 50 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -11454,7 +11384,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 18)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -11544,8 +11474,7 @@ namespace SingleRailRC
                         break;
                 }
 
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11564,7 +11493,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 21)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -11572,7 +11501,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 26)),
                             { 0, 0, height }, { 20, 20, 3 }, { 0, 6, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -11580,7 +11509,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 31)),
                             { 0, 0, height }, { 26, 1, 32 }, { 0, 29, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -11588,7 +11517,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 36)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 34, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -11647,7 +11576,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 23)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -11655,7 +11584,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 28)),
                             { 0, 0, height }, { 24, 28, 0 }, { 2, 2, height + 50 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -11663,7 +11592,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 33)),
                             { 0, 0, height }, { 28, 28, 0 }, { 2, 2, height + 50 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -11671,7 +11600,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 38)),
                             { 0, 0, height }, { 28, 28, 0 }, { 2, 2, height + 50 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -11790,8 +11719,7 @@ namespace SingleRailRC
                         break;
                 }
 
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11845,7 +11773,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 2)),
                             { 0, 0, height }, { 32, 32, 0 }, { 0, 0, height + 2 });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -11853,7 +11781,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 7)),
                             { 0, 0, height }, { 1, 32, 96 }, { 29, 0, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -11861,7 +11789,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 12)),
                             { 0, 0, height }, { 1, 32, 96 }, { 31, 0, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -11869,7 +11797,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 17)),
                             { 0, 0, height }, { 32, 32, 0 }, { 0, 0, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -11988,8 +11916,7 @@ namespace SingleRailRC
                         break;
                 }
 
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -12043,7 +11970,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 22)),
                             { 0, 0, height }, { 32, 32, 0 }, { 0, 0, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -12051,7 +11978,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 27)),
                             { 0, 0, height }, { 0, 32, 96 }, { 30, 0, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -12059,7 +11986,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 32)),
                             { 0, 0, height }, { 0, 32, 96 }, { 29, 0, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -12067,7 +11994,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 37)),
                             { 0, 0, height }, { 32, 32, 0 }, { 0, 0, height + 2 });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12183,7 +12110,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 1)),
                             { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height + 28 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -12195,7 +12122,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 5)),
                             { 0, 0, height }, { 32, 1, 32 }, { 0, 31, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -12203,7 +12130,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 8)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -12211,7 +12138,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 12)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12309,7 +12236,7 @@ namespace SingleRailRC
                     PaintUtilRotateSegments(
                         SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES, 4, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
@@ -12330,7 +12257,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 16)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -12338,7 +12265,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 20)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -12350,7 +12277,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 25)),
                             { 0, 0, height }, { 32, 1, 32 }, { 0, 31, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -12362,7 +12289,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 29)),
                             { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height + 28 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12459,7 +12386,7 @@ namespace SingleRailRC
                     PaintUtilRotateSegments(
                         SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES, 4, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
@@ -12518,8 +12445,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -12616,7 +12542,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 4)),
                             { 0, 0, height }, { 26, 0, 20 }, { 0, 26, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -12624,7 +12550,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 8)),
                             { 0, 0, height }, { 26, 0, 20 }, { 0, 26, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -12636,7 +12562,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 14)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height + 40 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -12644,7 +12570,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 19)),
                             { 0, 0, height }, { 32, 10, 20 }, { 0, 18, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12700,8 +12626,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -12799,7 +12724,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 24)),
                             { 0, 0, height }, { 32, 10, 20 }, { 0, 18, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -12811,7 +12736,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 30)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height + 40 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -12819,7 +12744,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 34)),
                             { 0, 0, height }, { 26, 0, 20 }, { 0, 26, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -12827,7 +12752,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 39)),
                             { 0, 0, height }, { 26, 0, 20 }, { 0, 26, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13013,8 +12938,7 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -13057,7 +12981,7 @@ namespace SingleRailRC
                             { 6, 0, height }, { 20, 32, 3 }, { 0, 6, height - 6 });
                         break;
                 }
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
@@ -13113,8 +13037,7 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -13157,7 +13080,7 @@ namespace SingleRailRC
                             { 6, 0, height }, { 20, 32, 3 }, { 0, 6, height - 6 });
                         break;
                 }
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
@@ -13209,7 +13132,7 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 }, { 0, 6, height - 6 });
                         break;
                 }
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
@@ -13257,8 +13180,7 @@ namespace SingleRailRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -13309,7 +13231,7 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 }, { 0, 6, height - 6 });
                         break;
                 }
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
@@ -13357,8 +13279,7 @@ namespace SingleRailRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -13409,8 +13330,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -13427,7 +13347,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 1)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -13435,7 +13355,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 8)),
                             { 0, 0, height }, { 32, 20, 9 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -13443,7 +13363,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 15)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -13451,7 +13371,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 22)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13502,7 +13422,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 3)),
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -13510,7 +13430,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 10)),
                             { 0, 0, height }, { 32, 16, 0 }, { 0, 0, height + 200 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -13518,7 +13438,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 17)),
                             { 0, 0, height }, { 32, 16, 0 }, { 0, 16, height + 200 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -13526,7 +13446,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 24)),
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13680,8 +13600,7 @@ namespace SingleRailRC
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -13698,7 +13617,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 29)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -13706,7 +13625,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 36)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -13714,7 +13633,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 43)),
                             { 0, 0, height }, { 32, 20, 9 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -13722,7 +13641,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 50)),
                             { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 4, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13773,7 +13692,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 31)),
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 8, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -13781,7 +13700,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 38)),
                             { 0, 0, height }, { 32, 16, 0 }, { 0, 16, height + 200 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 7, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -13789,7 +13708,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 45)),
                             { 0, 0, height }, { 32, 16, 0 }, { 0, 0, height + 200 });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 5, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -13797,7 +13716,7 @@ namespace SingleRailRC
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 52)),
                             { 0, 0, height }, { 32, 16, 3 }, { 0, 0, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 6, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13944,7 +13863,7 @@ namespace SingleRailRC
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 0)),
                         { 0, 0, height }, { 32, 27, 4 }, { 0, 2, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -13956,7 +13875,7 @@ namespace SingleRailRC
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 1)),
                         { 0, 0, height }, { 32, 2, 43 }, { 0, 4, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -13968,7 +13887,7 @@ namespace SingleRailRC
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 3)),
                         { 0, 0, height }, { 32, 2, 43 }, { 0, 4, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -13976,7 +13895,7 @@ namespace SingleRailRC
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 5)),
                         { 0, 0, height }, { 32, 27, 4 }, { 0, 2, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -13990,7 +13909,7 @@ namespace SingleRailRC
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 0)),
                         { 0, 0, height }, { 32, 27, 4 }, { 0, 2, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -14002,7 +13921,7 @@ namespace SingleRailRC
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 1)),
                         { 0, 0, height }, { 32, 2, 43 }, { 0, 4, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -14014,7 +13933,7 @@ namespace SingleRailRC
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 3)),
                         { 0, 0, height }, { 32, 2, 43 }, { 0, 4, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -14022,7 +13941,7 @@ namespace SingleRailRC
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 5)),
                         { 0, 0, height }, { 32, 27, 4 }, { 0, 2, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -14081,7 +14000,7 @@ namespace SingleRailRC
                         { 0, 0, height }, { 32, 27, 4 }, { 0, 2, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         else
         {
@@ -14120,7 +14039,7 @@ namespace SingleRailRC
                         { 0, 0, height }, { 32, 27, 4 }, { 0, 2, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -14254,7 +14173,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -14263,15 +14182,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 13)),
                                 { -16, -16, height }, { 32, 32, 4 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -14281,7 +14200,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -14290,15 +14209,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 13)),
                                 { -16, -16, height }, { 32, 32, 4 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -14415,7 +14334,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -14424,15 +14343,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 17)),
                                 { -16, -16, height }, { 32, 32, 4 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -14442,7 +14361,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -14451,15 +14370,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 17)),
                                 { -16, -16, height }, { 32, 32, 4 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -14576,7 +14495,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -14585,15 +14504,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 19)),
                                 { -16, -16, height }, { 32, 32, 4 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -14603,7 +14522,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -14612,15 +14531,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 19)),
                                 { -16, -16, height }, { 32, 32, 4 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -14737,7 +14656,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -14746,15 +14665,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 15)),
                                 { -16, -16, height }, { 32, 32, 4 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -14764,7 +14683,7 @@ namespace SingleRailRC
                     switch (direction)
                     {
                         case 0:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 1, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -14773,15 +14692,15 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex(
                                     (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 15)),
                                 { -16, -16, height }, { 32, 32, 4 }, { -16, -16, height });
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 2, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
-                            metal_b_supports_paint_setup(
+                            MetalBSupportsPaintSetup(
                                 session, METAL_SUPPORTS_TUBES, 3, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }

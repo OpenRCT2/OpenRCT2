@@ -116,7 +116,7 @@ static void submarine_ride_paint_track_flat(
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(
+        MetalASupportsPaintSetup(
             session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, heightLower,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -138,8 +138,7 @@ static void submarine_ride_paint_track_left_quarter_turn_3_tiles(
     switch (trackSequence)
     {
         case 0:
-            metal_a_supports_paint_setup(
-                session, METAL_SUPPORTS_STICK, 4, -1, height - 16, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -1, height - 16, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
             break;
@@ -148,8 +147,7 @@ static void submarine_ride_paint_track_left_quarter_turn_3_tiles(
                 session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
             break;
         case 3:
-            metal_a_supports_paint_setup(
-                session, METAL_SUPPORTS_STICK, 4, -1, height - 16, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -1, height - 16, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
             break;

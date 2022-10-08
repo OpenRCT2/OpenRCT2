@@ -68,12 +68,12 @@ static void mini_suspended_rc_track_flat(
         {
             case 0:
             case 2:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
             case 3:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
@@ -176,19 +176,19 @@ static void mini_suspended_rc_track_25_deg_up(
         switch (direction)
         {
             case 0:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK, 6, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK_ALT, 8, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK, 7, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK_ALT, 5, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
@@ -270,19 +270,19 @@ static void mini_suspended_rc_track_flat_to_25_deg_up(
         switch (direction)
         {
             case 0:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK, 6, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK_ALT, 8, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK, 7, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK_ALT, 5, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
@@ -364,19 +364,19 @@ static void mini_suspended_rc_track_25_deg_up_to_flat(
         switch (direction)
         {
             case 0:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK, 6, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK_ALT, 8, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK, 7, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_FORK_ALT, 5, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
@@ -456,12 +456,12 @@ static void mini_suspended_rc_track_left_quarter_turn_5(
             {
                 case 0:
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -598,12 +598,12 @@ static void mini_suspended_rc_track_left_quarter_turn_5(
             {
                 case 0:
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -669,12 +669,12 @@ static void mini_suspended_rc_track_s_bend_left(
             {
                 case 0:
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -717,11 +717,11 @@ static void mini_suspended_rc_track_s_bend_left(
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 5, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 6, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -760,11 +760,11 @@ static void mini_suspended_rc_track_s_bend_left(
             switch (direction)
             {
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 5, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 6, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -802,12 +802,12 @@ static void mini_suspended_rc_track_s_bend_left(
             {
                 case 0:
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -864,12 +864,12 @@ static void mini_suspended_rc_track_s_bend_right(
             {
                 case 0:
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -912,11 +912,11 @@ static void mini_suspended_rc_track_s_bend_right(
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 8, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 7, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -955,11 +955,11 @@ static void mini_suspended_rc_track_s_bend_right(
             switch (direction)
             {
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 8, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 7, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -997,12 +997,12 @@ static void mini_suspended_rc_track_s_bend_right(
             {
                 case 0:
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1060,12 +1060,12 @@ static void mini_suspended_rc_track_left_quarter_turn_3(
             {
                 case 0:
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1139,12 +1139,12 @@ static void mini_suspended_rc_track_left_quarter_turn_3(
             {
                 case 0:
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1210,12 +1210,12 @@ static void mini_suspended_rc_track_left_eighth_to_diag(
             {
                 case 0:
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1323,19 +1323,19 @@ static void mini_suspended_rc_track_left_eighth_to_diag(
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 3, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 1, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 0, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 2, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1383,12 +1383,12 @@ static void mini_suspended_rc_track_right_eighth_to_diag(
             {
                 case 0:
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1496,19 +1496,19 @@ static void mini_suspended_rc_track_right_eighth_to_diag(
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 1, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 0, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 2, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 3, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1653,19 +1653,19 @@ static void mini_suspended_rc_track_diag_flat(
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 1, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 0, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 2, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 3, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1792,19 +1792,19 @@ static void mini_suspended_rc_track_diag_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 1, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 0, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 2, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 3, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1931,19 +1931,19 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 1, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 0, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 2, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 3, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2070,19 +2070,19 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
             switch (direction)
             {
                 case 0:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2209,19 +2209,19 @@ static void mini_suspended_rc_track_diag_25_deg_down(
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 1, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 0, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 2, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 3, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2345,19 +2345,19 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2484,19 +2484,19 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 1, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 0, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK, 2, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_FORK_ALT, 3, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
