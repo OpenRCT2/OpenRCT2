@@ -248,7 +248,7 @@ namespace Editor
      */
     static bool LoadLandscapeFromSV4(const char* path)
     {
-        load_from_sv4(path);
+        GetContext()->LoadParkFromFile(path);
         ClearMapForEditing(true);
 
         gEditorStep = EditorStep::LandscapeEditor;
@@ -262,7 +262,7 @@ namespace Editor
 
     static bool LoadLandscapeFromSC4(const char* path)
     {
-        load_from_sc4(path);
+        GetContext()->LoadParkFromFile(path);
         ClearMapForEditing(false);
 
         gEditorStep = EditorStep::LandscapeEditor;
