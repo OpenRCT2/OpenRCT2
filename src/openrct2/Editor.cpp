@@ -140,7 +140,7 @@ namespace Editor
             return;
         }
 
-        if (!context_load_park_from_file(path))
+        if (!GetContext()->LoadParkFromFile(path))
         {
             return;
         }

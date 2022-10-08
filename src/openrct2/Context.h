@@ -221,7 +221,6 @@ void context_update_map_tooltip();
 void context_handle_input();
 void context_input_handle_keyboard(bool isTitle);
 void context_quit();
-bool context_load_park_from_file(const utf8* path);
 bool context_load_park_from_stream(void* stream);
 bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize);
 u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc);

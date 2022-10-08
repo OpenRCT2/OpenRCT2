@@ -1360,11 +1360,6 @@ void context_init()
     GetContext()->GetUiContext()->GetWindowManager()->Init();
 }
 
-bool context_load_park_from_file(const utf8* path)
-{
-    return GetContext()->LoadParkFromFile(path);
-}
-
 bool context_load_park_from_stream(void* stream)
 {
     return GetContext()->LoadParkFromStream(static_cast<IStream*>(stream), "");
