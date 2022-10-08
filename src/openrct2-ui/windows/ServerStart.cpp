@@ -293,7 +293,7 @@ private:
         if (result == MODAL_RESULT_OK)
         {
             game_notify_map_change();
-            context_load_park_from_file(path);
+            GetContext()->LoadParkFromFile(path);
             network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
         }
     }

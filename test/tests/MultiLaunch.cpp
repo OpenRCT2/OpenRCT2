@@ -41,7 +41,7 @@ TEST(MultiLaunchTest, all)
         bool initialised = context->Initialise();
         ASSERT_TRUE(initialised);
 
-        load_from_sv6(path.c_str());
+        GetContext()->LoadParkFromFile(path);
         game_load_init();
 
         // Check ride count to check load was successful

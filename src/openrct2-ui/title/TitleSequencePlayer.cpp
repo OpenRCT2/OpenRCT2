@@ -289,7 +289,7 @@ namespace OpenRCT2::Title
                 {
                     gLoadKeepWindowsOpen = true;
                     CloseParkSpecificWindows();
-                    context_load_park_from_file(path);
+                    GetContext()->LoadParkFromFile(path);
                 }
                 else
                 {

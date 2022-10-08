@@ -1517,7 +1517,7 @@ static int32_t cc_load_park([[maybe_unused]] InteractiveConsole& console, [[mayb
     {
         savePath += ".park";
     }
-    if (context_load_park_from_file(savePath.c_str()))
+    if (OpenRCT2::GetContext()->LoadParkFromFile(savePath))
     {
         console.WriteFormatLine("Park %s was loaded successfully", savePath.c_str());
     }

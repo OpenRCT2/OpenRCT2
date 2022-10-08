@@ -726,7 +726,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
         game_notify_map_change();
         game_unload_scripts();
         window_close_by_class(WindowClass::EditorObjectSelection);
-        context_load_park_from_file(path);
+        GetContext()->LoadParkFromFile(path);
         game_load_scripts();
         game_notify_map_changed();
         gIsAutosaveLoaded = gIsAutosave;
