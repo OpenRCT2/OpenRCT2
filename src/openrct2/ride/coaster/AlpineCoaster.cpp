@@ -86,7 +86,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -120,7 +120,7 @@ namespace AlpineRC
             { 32, 28, 2 }, { 0, 2, height });
         track_paint_util_draw_station_metal_supports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS]);
         track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 4, 7);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
@@ -197,11 +197,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -278,11 +278,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -359,11 +359,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -430,7 +430,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -565,7 +565,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -773,7 +773,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -937,7 +937,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2186,7 +2186,7 @@ namespace AlpineRC
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -2233,7 +2233,7 @@ namespace AlpineRC
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -2300,11 +2300,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2358,11 +2358,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2416,11 +2416,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2474,11 +2474,11 @@ namespace AlpineRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2550,7 +2550,7 @@ namespace AlpineRC
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -3756,7 +3756,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3899,7 +3899,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -4111,7 +4111,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -4275,7 +4275,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -4455,7 +4455,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -4553,7 +4553,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -4672,7 +4672,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -4872,7 +4872,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5084,7 +5084,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5238,7 +5238,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5400,7 +5400,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
@@ -5612,7 +5612,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
@@ -5665,7 +5665,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
@@ -5877,7 +5877,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
@@ -5956,7 +5956,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
@@ -6314,7 +6314,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
@@ -6366,7 +6366,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
@@ -6734,7 +6734,7 @@ namespace AlpineRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
@@ -6795,7 +6795,7 @@ namespace AlpineRC
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -6844,7 +6844,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -6946,7 +6946,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7044,7 +7044,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7146,7 +7146,7 @@ namespace AlpineRC
                     session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);

@@ -86,7 +86,7 @@ static void multi_dimension_rc_track_flat(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
@@ -116,7 +116,7 @@ static void multi_dimension_rc_track_flat(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 }
@@ -173,7 +173,7 @@ static void multi_dimension_rc_track_station(
         track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
     }
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -249,11 +249,11 @@ static void multi_dimension_rc_track_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
@@ -311,11 +311,11 @@ static void multi_dimension_rc_track_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
     }
@@ -358,11 +358,11 @@ static void multi_dimension_rc_track_60_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
@@ -394,11 +394,11 @@ static void multi_dimension_rc_track_60_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -477,11 +477,11 @@ static void multi_dimension_rc_track_flat_to_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -539,11 +539,11 @@ static void multi_dimension_rc_track_flat_to_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
@@ -592,11 +592,11 @@ static void multi_dimension_rc_track_25_deg_up_to_60_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
@@ -634,11 +634,11 @@ static void multi_dimension_rc_track_25_deg_up_to_60_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -689,11 +689,11 @@ static void multi_dimension_rc_track_60_deg_up_to_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
@@ -757,11 +757,11 @@ static void multi_dimension_rc_track_60_deg_up_to_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
     }
@@ -838,11 +838,11 @@ static void multi_dimension_rc_track_25_deg_up_to_flat(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
@@ -900,11 +900,11 @@ static void multi_dimension_rc_track_25_deg_up_to_flat(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
@@ -995,7 +995,7 @@ static void multi_dimension_rc_track_left_quarter_turn_5(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -1174,7 +1174,7 @@ static void multi_dimension_rc_track_left_quarter_turn_5(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -1370,7 +1370,7 @@ static void multi_dimension_rc_track_flat_to_left_bank(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
@@ -1410,7 +1410,7 @@ static void multi_dimension_rc_track_flat_to_left_bank(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 }
@@ -1456,7 +1456,7 @@ static void multi_dimension_rc_track_flat_to_right_bank(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
@@ -1496,7 +1496,7 @@ static void multi_dimension_rc_track_flat_to_right_bank(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 }
@@ -1542,7 +1542,7 @@ static void multi_dimension_rc_track_left_bank_to_flat(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
@@ -1582,7 +1582,7 @@ static void multi_dimension_rc_track_left_bank_to_flat(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 }
@@ -1628,7 +1628,7 @@ static void multi_dimension_rc_track_right_bank_to_flat(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
@@ -1668,7 +1668,7 @@ static void multi_dimension_rc_track_right_bank_to_flat(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 }
@@ -1713,7 +1713,7 @@ static void multi_dimension_rc_track_banked_left_quarter_turn_5(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -1895,7 +1895,7 @@ static void multi_dimension_rc_track_banked_left_quarter_turn_5(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -2094,11 +2094,11 @@ static void multi_dimension_rc_track_left_bank_to_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -2158,11 +2158,11 @@ static void multi_dimension_rc_track_left_bank_to_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
@@ -2211,11 +2211,11 @@ static void multi_dimension_rc_track_right_bank_to_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -2275,11 +2275,11 @@ static void multi_dimension_rc_track_right_bank_to_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
@@ -2328,11 +2328,11 @@ static void multi_dimension_rc_track_25_deg_up_to_left_bank(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
@@ -2392,11 +2392,11 @@ static void multi_dimension_rc_track_25_deg_up_to_left_bank(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
@@ -2445,11 +2445,11 @@ static void multi_dimension_rc_track_25_deg_up_to_right_bank(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
@@ -2509,11 +2509,11 @@ static void multi_dimension_rc_track_25_deg_up_to_right_bank(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
     }
@@ -2586,7 +2586,7 @@ static void multi_dimension_rc_track_left_bank(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
@@ -2626,7 +2626,7 @@ static void multi_dimension_rc_track_left_bank(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 }
@@ -2676,7 +2676,7 @@ static void multi_dimension_rc_track_s_bend_left(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -2819,7 +2819,7 @@ static void multi_dimension_rc_track_s_bend_left(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -2993,7 +2993,7 @@ static void multi_dimension_rc_track_s_bend_right(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -3136,7 +3136,7 @@ static void multi_dimension_rc_track_s_bend_right(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -3310,7 +3310,7 @@ static void multi_dimension_rc_track_left_quarter_turn_3(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -3424,7 +3424,7 @@ static void multi_dimension_rc_track_left_quarter_turn_3(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -3554,7 +3554,7 @@ static void multi_dimension_rc_track_left_quarter_turn_3_bank(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -3671,7 +3671,7 @@ static void multi_dimension_rc_track_left_quarter_turn_3_bank(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -3799,7 +3799,7 @@ static void multi_dimension_rc_track_left_half_banked_helix_up_small(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -3981,7 +3981,7 @@ static void multi_dimension_rc_track_left_half_banked_helix_up_small(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -4027,7 +4027,7 @@ static void multi_dimension_rc_track_right_half_banked_helix_up_small(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -4209,7 +4209,7 @@ static void multi_dimension_rc_track_right_half_banked_helix_up_small(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -4285,7 +4285,7 @@ static void multi_dimension_rc_track_left_half_banked_helix_up_large(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -4593,7 +4593,7 @@ static void multi_dimension_rc_track_left_half_banked_helix_up_large(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -4639,7 +4639,7 @@ static void multi_dimension_rc_track_right_half_banked_helix_up_large(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -4947,7 +4947,7 @@ static void multi_dimension_rc_track_right_half_banked_helix_up_large(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -5012,7 +5012,7 @@ static void multi_dimension_rc_track_brakes(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
@@ -5042,7 +5042,7 @@ static void multi_dimension_rc_track_brakes(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 }
@@ -5102,7 +5102,7 @@ static void multi_dimension_rc_track_on_ride_photo(
                 break;
         }
         track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
     }
@@ -5156,7 +5156,7 @@ static void multi_dimension_rc_track_on_ride_photo(
                 break;
         }
         track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
     }
@@ -5286,7 +5286,7 @@ static void multi_dimension_rc_track_60_deg_up_to_90_deg_up(
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
@@ -5327,7 +5327,7 @@ static void multi_dimension_rc_track_60_deg_up_to_90_deg_up(
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_INVERTED_4);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_INVERTED_4);
                 }
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
@@ -5466,7 +5466,7 @@ static void multi_dimension_rc_track_60_deg_down_to_90_deg_down(
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 48, TUNNEL_SQUARE_8);
+                    PaintUtilPushTunnelRotated(session, direction, height + 48, TUNNEL_SQUARE_8);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5506,7 +5506,7 @@ static void multi_dimension_rc_track_60_deg_down_to_90_deg_down(
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 48, TUNNEL_INVERTED_5);
+                    PaintUtilPushTunnelRotated(session, direction, height + 48, TUNNEL_INVERTED_5);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5555,7 +5555,7 @@ static void multi_dimension_rc_track_left_eighth_to_diag(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -5694,7 +5694,7 @@ static void multi_dimension_rc_track_left_eighth_to_diag(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -5856,7 +5856,7 @@ static void multi_dimension_rc_track_right_eighth_to_diag(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -5995,7 +5995,7 @@ static void multi_dimension_rc_track_right_eighth_to_diag(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6175,7 +6175,7 @@ static void multi_dimension_rc_track_left_eighth_bank_to_diag(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -6314,7 +6314,7 @@ static void multi_dimension_rc_track_left_eighth_bank_to_diag(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -6476,7 +6476,7 @@ static void multi_dimension_rc_track_right_eighth_bank_to_diag(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -6615,7 +6615,7 @@ static void multi_dimension_rc_track_right_eighth_bank_to_diag(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -11797,7 +11797,7 @@ static void multi_dimension_rc_track_left_flyer_twist_up(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -11916,7 +11916,7 @@ static void multi_dimension_rc_track_right_flyer_twist_up(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -12041,7 +12041,7 @@ static void multi_dimension_rc_track_left_flyer_twist_down(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -12160,7 +12160,7 @@ static void multi_dimension_rc_track_right_flyer_twist_down(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -12273,7 +12273,7 @@ static void multi_dimension_rc_track_multidim_inverted_flat_to_90_deg_quarter_lo
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 32, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height + 32, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -12369,7 +12369,7 @@ static void multi_dimension_rc_track_multidim_inverted_flat_to_90_deg_quarter_lo
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -12458,7 +12458,7 @@ static void multi_dimension_rc_track_block_brakes(
             { 32, 20, 3 }, { 0, 6, height });
         metal_a_supports_paint_setup(
             session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
@@ -12483,7 +12483,7 @@ static void multi_dimension_rc_track_block_brakes(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 }
@@ -12579,7 +12579,7 @@ static void multi_dimension_rc_track_multidim_90_deg_up_to_inverted_flat_quarter
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -12673,7 +12673,7 @@ static void multi_dimension_rc_track_multidim_90_deg_up_to_inverted_flat_quarter
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -12718,7 +12718,7 @@ static void multi_dimension_rc_track_multidim_flat_to_90_deg_down_quarter_loop(
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 32, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height + 32, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -12814,7 +12814,7 @@ static void multi_dimension_rc_track_multidim_flat_to_90_deg_down_quarter_loop(
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -12973,7 +12973,7 @@ static void multi_dimension_rc_track_multidim_inverted_90_deg_up_to_flat_quarter
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height + 16, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -13067,7 +13067,7 @@ static void multi_dimension_rc_track_multidim_inverted_90_deg_up_to_flat_quarter
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);

@@ -1849,7 +1849,7 @@ void junior_rc_paint_track_flat(
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_flat[EnumValue(chainType)][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
@@ -1931,7 +1931,7 @@ void junior_rc_paint_track_25_deg_up(
 
     int8_t tunnelHeights[4] = { -8, 8, 8, -8 };
     uint8_t tunnelType[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
-    paint_util_push_tunnel_rotated(session, direction, height + tunnelHeights[direction], tunnelType[direction]);
+    PaintUtilPushTunnelRotated(session, direction, height + tunnelHeights[direction], tunnelType[direction]);
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
@@ -1954,11 +1954,11 @@ void junior_rc_paint_track_flat_to_25_deg_up(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -5926,7 +5926,7 @@ static void junior_rc_track_on_ride_photo(
             break;
     }
     track_paint_util_onride_photo_paint(session, direction, height + 3 + photoCameraOffset, trackElement);
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48 + photoCameraOffset, 0x20);
 }

@@ -188,7 +188,7 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
             { { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height }, boundBoxLength });
     }
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     if (!entranceEl.IsGhost())
         PaintRideEntranceExitScrollingText(session, entranceEl, *stationObj, direction, height);
