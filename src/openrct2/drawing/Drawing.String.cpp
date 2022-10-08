@@ -837,8 +837,18 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
                 if (ttfRunIndex.has_value())
                 {
                     // Draw the TTF run
+                    // This error suppression abomination is here to suppress https://github.com/OpenRCT2/OpenRCT2/issues/17371.
+                    // Additionally, we have to suppress the error for the error suppression... :'-(
+                    // TODO: Re-evaluate somewhere in 2023.
+#    ifdef __MINGW32__
+#        pragma GCC diagnostic push
+#        pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#    endif
                     auto len = it.GetIndex() - ttfRunIndex.value();
                     ttf_draw_string_raw_ttf(dpi, text.substr(ttfRunIndex.value(), len), info);
+#    ifdef __MINGW32__
+#        pragma GCC diagnostic pop
+#    endif
                     ttfRunIndex = std::nullopt;
                 }
 
