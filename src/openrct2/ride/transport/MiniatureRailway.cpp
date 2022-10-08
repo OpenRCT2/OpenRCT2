@@ -690,7 +690,7 @@ static void paint_miniature_railway_track_flat(
         }
     }
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -711,7 +711,7 @@ static void paint_miniature_railway_station(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(miniature_railway_track_pieces_flat_station[direction]);
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 2 }, { 0, 0, height });
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     track_paint_util_draw_station_3(session, ride, direction, height + 2, height, trackElement);
     // covers shouldn't be offset by +2

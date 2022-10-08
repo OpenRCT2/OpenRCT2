@@ -185,7 +185,7 @@ static void PaintGhostTrainTrackFlat(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
-    paint_util_push_tunnel_rotated(session, direction, height, tunnelImage);
+    PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
@@ -386,7 +386,7 @@ static void PaintGhostTrainStation(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(GhostTrainTrackPiecesFlat[direction]);
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 0, height });
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     if (direction == 0 || direction == 2)
     {
@@ -502,7 +502,7 @@ static void PaintGhostTrainTrackSpinningTunnel(
     track_paint_util_spinning_tunnel_paint(session, 3, height, direction);
 
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
-    paint_util_push_tunnel_rotated(session, direction, height, tunnelImage);
+    PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
@@ -520,7 +520,7 @@ static void PaintGhostTrainTrackBrakes(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
-    paint_util_push_tunnel_rotated(session, direction, height, tunnelImage);
+    PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {

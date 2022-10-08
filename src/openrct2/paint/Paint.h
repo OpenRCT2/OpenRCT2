@@ -319,7 +319,7 @@ paint_struct* PaintAddImageAsParentRotated(
     paint_session& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
 
-void paint_util_push_tunnel_rotated(paint_session& session, uint8_t direction, uint16_t height, uint8_t type);
+void PaintUtilPushTunnelRotated(paint_session& session, uint8_t direction, uint16_t height, uint8_t type);
 
 bool PaintAttachToPreviousAttach(paint_session& session, const ImageId& imageId, int32_t x, int32_t y);
 bool PaintAttachToPreviousPS(paint_session& session, const ImageId& image_id, int32_t x, int32_t y);

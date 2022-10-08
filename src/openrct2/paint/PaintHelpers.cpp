@@ -52,7 +52,7 @@ paint_struct* PaintAddImageAsChildRotated(
     return PaintAddImageAsChild(session, image_id, offset, boundBoxSize, boundBoxOffset);
 }
 
-void paint_util_push_tunnel_rotated(paint_session& session, uint8_t direction, uint16_t height, uint8_t type)
+void PaintUtilPushTunnelRotated(paint_session& session, uint8_t direction, uint16_t height, uint8_t type)
 {
     if (direction & 1)
     {
