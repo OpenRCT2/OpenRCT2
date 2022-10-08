@@ -52,7 +52,6 @@
 #include "../rct12/EntryList.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
-#include "../rct12/SawyerEncoding.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -141,12 +140,6 @@ namespace RCT2
             OpenRCT2::IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck = false,
             const utf8* path = String::Empty) override
         {
-            if (isScenario && !gConfigGeneral.allow_loading_with_incorrect_checksum
-                && !SawyerEncoding::ValidateChecksum(stream))
-            {
-                throw IOException("Invalid checksum.");
-            }
-
             auto chunkReader = SawyerChunkReader(stream);
             chunkReader.ReadChunk(&_s6.header, sizeof(_s6.header));
 

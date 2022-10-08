@@ -192,7 +192,6 @@ namespace Config
             model->enable_light_fx_for_vehicles = isHardware && reader->GetBoolean("enable_light_fx_for_vehicles", false);
             model->upper_case_banners = reader->GetBoolean("upper_case_banners", false);
             model->disable_lightning_effect = reader->GetBoolean("disable_lightning_effect", false);
-            model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
             model->window_scale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
             model->show_fps = reader->GetBoolean("show_fps", false);
@@ -278,7 +277,6 @@ namespace Config
         writer->WriteBoolean("enable_light_fx_for_vehicles", model->enable_light_fx_for_vehicles);
         writer->WriteBoolean("upper_case_banners", model->upper_case_banners);
         writer->WriteBoolean("disable_lightning_effect", model->disable_lightning_effect);
-        writer->WriteBoolean("allow_loading_with_incorrect_checksum", model->allow_loading_with_incorrect_checksum);
         writer->WriteBoolean("steam_overlay_pause", model->steam_overlay_pause);
         writer->WriteFloat("window_scale", model->window_scale);
         writer->WriteBoolean("show_fps", model->show_fps);
