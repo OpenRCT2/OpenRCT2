@@ -101,7 +101,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
   - Desktop development with C++
 
 ### macOS:
-- Xcode Command Line Tools (Xcode is not supported for compiling)
+- Xcode Command Line Tools
 - [Homebrew](https://brew.sh)
 - CMake (available through Homebrew)
 
