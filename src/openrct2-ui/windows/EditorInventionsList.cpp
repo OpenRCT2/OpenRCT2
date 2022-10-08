@@ -655,9 +655,9 @@ public:
             const auto rideEntry = get_ride_entry(researchItem.entryIndex);
             const StringId rideTypeName = get_ride_naming(researchItem.baseRideType, rideEntry).Name;
             Formatter ft;
-            ft.Add<StringId>(stringId);
             ft.Add<StringId>(rideTypeName);
-            format_string(buffer, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &ft);
+            ft.Add<StringId>(stringId);
+            format_string(buffer, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG, &ft);
         }
         else
         {
