@@ -1144,7 +1144,7 @@ public:
                     if (tileElement->AsPath()->HasAddition())
                     {
                         const auto pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
-                        const auto* pathBitEntry = get_footpath_item_entry(pathAdditionType);
+                        const auto* pathBitEntry = GetFootpathItemEntry(pathAdditionType);
                         StringId additionNameId = pathBitEntry != nullptr ? pathBitEntry->name
                                                                           : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
                         auto ft = Formatter();

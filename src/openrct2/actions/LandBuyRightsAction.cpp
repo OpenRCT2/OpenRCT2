@@ -133,7 +133,7 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
             if (isExecuting)
             {
                 surfaceElement->SetOwnership(OWNERSHIP_OWNED);
-                update_park_fences_around_tile(loc);
+                ParkUpdateFencesAroundTile(loc);
             }
             res.Cost = gLandPrice;
             return res;

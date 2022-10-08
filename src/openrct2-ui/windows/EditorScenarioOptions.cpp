@@ -1133,7 +1133,7 @@ private:
             widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
             widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
 
-            if (!park_entry_price_unlocked())
+            if (!ParkEntranceFeeUnlocked())
             {
                 widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
                 widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;

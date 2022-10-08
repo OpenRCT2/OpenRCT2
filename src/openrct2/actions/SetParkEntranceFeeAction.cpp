@@ -40,7 +40,7 @@ void SetParkEntranceFeeAction::Serialise(DataSerialiser& stream)
 GameActions::Result SetParkEntranceFeeAction::Query() const
 {
     bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
-    bool forceFreeEntry = !park_entry_price_unlocked();
+    bool forceFreeEntry = !ParkEntranceFeeUnlocked();
     if (noMoney || forceFreeEntry)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);

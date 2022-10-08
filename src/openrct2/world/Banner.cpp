@@ -318,7 +318,7 @@ BannerSceneryEntry* BannerElement::GetEntry() const
     auto banner = GetBanner();
     if (banner != nullptr)
     {
-        return get_banner_entry(banner->type);
+        return GetBannerEntry(banner->type);
     }
     return nullptr;
 }

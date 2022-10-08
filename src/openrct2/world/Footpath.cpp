@@ -1624,7 +1624,7 @@ PathBitEntry* PathElement::GetAdditionEntry() const
 {
     if (!HasAddition())
         return nullptr;
-    return get_footpath_item_entry(GetAdditionEntryIndex());
+    return GetFootpathItemEntry(GetAdditionEntryIndex());
 }
 
 void PathElement::SetAddition(uint8_t newAddition)

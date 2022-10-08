@@ -1932,7 +1932,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             return true;
         }
 
-        money16 entranceFee = park_get_entrance_fee();
+        money16 entranceFee = ParkGetEntranceFee();
         if (entranceFee != 0)
         {
             if (guest->HasItem(ShopItem::Voucher))

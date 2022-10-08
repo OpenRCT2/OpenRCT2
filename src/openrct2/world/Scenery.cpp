@@ -120,7 +120,7 @@ int32_t LargeSceneryText::MeasureHeight(std::string_view text) const
     return result;
 }
 
-void scenery_update_tile(const CoordsXY& sceneryPos)
+void SceneryUpdateTile(const CoordsXY& sceneryPos)
 {
     TileElement* tileElement;
 
@@ -227,7 +227,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
  *
  *  rct2: 0x006E2712
  */
-void scenery_remove_ghost_tool_placement()
+void SceneryRemoveGhostToolPlacement()
 {
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_0)
     {
@@ -295,7 +295,7 @@ void scenery_remove_ghost_tool_placement()
     }
 }
 
-WallSceneryEntry* get_wall_entry(ObjectEntryIndex entryIndex)
+WallSceneryEntry* GetWallEntry(ObjectEntryIndex entryIndex)
 {
     WallSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -307,7 +307,7 @@ WallSceneryEntry* get_wall_entry(ObjectEntryIndex entryIndex)
     return result;
 }
 
-BannerSceneryEntry* get_banner_entry(ObjectEntryIndex entryIndex)
+BannerSceneryEntry* GetBannerEntry(ObjectEntryIndex entryIndex)
 {
     BannerSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -319,7 +319,7 @@ BannerSceneryEntry* get_banner_entry(ObjectEntryIndex entryIndex)
     return result;
 }
 
-PathBitEntry* get_footpath_item_entry(ObjectEntryIndex entryIndex)
+PathBitEntry* GetFootpathItemEntry(ObjectEntryIndex entryIndex)
 {
     PathBitEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -331,7 +331,7 @@ PathBitEntry* get_footpath_item_entry(ObjectEntryIndex entryIndex)
     return result;
 }
 
-rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex)
+rct_scenery_group_entry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_group_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -343,7 +343,7 @@ rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex)
     return result;
 }
 
-int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry)
+int32_t WallEntryGetDoorSound(const WallSceneryEntry* wallEntry)
 {
     return (wallEntry->flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
 }
@@ -401,13 +401,13 @@ static SceneryEntryBase* GetSceneryEntry(const ScenerySelection& item)
         case SCENERY_TYPE_SMALL:
             return get_small_scenery_entry(item.EntryIndex);
         case SCENERY_TYPE_PATH_ITEM:
-            return get_footpath_item_entry(item.EntryIndex);
+            return GetFootpathItemEntry(item.EntryIndex);
         case SCENERY_TYPE_WALL:
-            return get_wall_entry(item.EntryIndex);
+            return GetWallEntry(item.EntryIndex);
         case SCENERY_TYPE_LARGE:
             return GetLargeSceneryEntry(item.EntryIndex);
         case SCENERY_TYPE_BANNER:
-            return get_banner_entry(item.EntryIndex);
+            return GetBannerEntry(item.EntryIndex);
         default:
             return nullptr;
     }
@@ -434,7 +434,7 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
     std::vector<ScenerySelection> nonMiscScenery;
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        const auto* sgEntry = get_scenery_group_entry(i);
+        const auto* sgEntry = GetSceneryGroupEntry(i);
         if (sgEntry != nullptr)
         {
             nonMiscScenery.insert(nonMiscScenery.end(), sgEntry->SceneryEntries.begin(), sgEntry->SceneryEntries.end());

@@ -284,7 +284,7 @@ void research_finish_item(ResearchItem* researchItem)
     else
     {
         // Scenery
-        rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem->entryIndex);
+        rct_scenery_group_entry* sceneryGroupEntry = GetSceneryGroupEntry(researchItem->entryIndex);
         if (sceneryGroupEntry != nullptr)
         {
             scenery_group_set_invented(researchItem->entryIndex);
@@ -302,7 +302,7 @@ void research_finish_item(ResearchItem* researchItem)
             }
 
             research_invalidate_related_windows();
-            init_scenery();
+            SceneryInit();
         }
     }
 }
@@ -494,7 +494,7 @@ void research_populate_list_random()
     // Scenery
     for (uint32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(i);
+        rct_scenery_group_entry* sceneryGroupEntry = GetSceneryGroupEntry(i);
         if (sceneryGroupEntry == nullptr)
         {
             continue;
@@ -610,7 +610,7 @@ void scenery_set_not_invented(const ScenerySelection& sceneryItem)
 
 bool scenery_group_is_invented(int32_t sgIndex)
 {
-    const auto sgEntry = get_scenery_group_entry(sgIndex);
+    const auto sgEntry = GetSceneryGroupEntry(sgIndex);
     if (sgEntry == nullptr || sgEntry->SceneryEntries.empty())
     {
         return false;
@@ -635,7 +635,7 @@ bool scenery_group_is_invented(int32_t sgIndex)
 
 void scenery_group_set_invented(int32_t sgIndex)
 {
-    const auto sgEntry = get_scenery_group_entry(sgIndex);
+    const auto sgEntry = GetSceneryGroupEntry(sgIndex);
     if (sgEntry != nullptr)
     {
         for (const auto& entry : sgEntry->SceneryEntries)
@@ -649,7 +649,7 @@ void set_all_scenery_groups_not_invented()
 {
     for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
     {
-        rct_scenery_group_entry* scenery_set = get_scenery_group_entry(i);
+        rct_scenery_group_entry* scenery_set = GetSceneryGroupEntry(i);
         if (scenery_set == nullptr)
         {
             continue;
@@ -715,7 +715,7 @@ StringId ResearchItem::GetName() const
         return rideEntry->naming.Name;
     }
 
-    rct_scenery_group_entry* sceneryEntry = get_scenery_group_entry(entryIndex);
+    rct_scenery_group_entry* sceneryEntry = GetSceneryGroupEntry(entryIndex);
     if (sceneryEntry == nullptr)
     {
         return STR_EMPTY;
@@ -751,7 +751,7 @@ static void ResearchRemoveNullItems(std::vector<ResearchItem>& items)
         }
         else
         {
-            return get_scenery_group_entry(researchItem.entryIndex) == nullptr;
+            return GetSceneryGroupEntry(researchItem.entryIndex) == nullptr;
         }
     });
     items.erase(it, std::end(items));
@@ -776,7 +776,7 @@ static void research_mark_item_as_researched(const ResearchItem& item)
     }
     else if (item.type == Research::EntryType::Scenery)
     {
-        const auto sgEntry = get_scenery_group_entry(item.entryIndex);
+        const auto sgEntry = GetSceneryGroupEntry(item.entryIndex);
         if (sgEntry != nullptr)
         {
             for (const auto& sceneryEntry : sgEntry->SceneryEntries)
@@ -822,7 +822,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
 
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        const auto* groupEntry = get_scenery_group_entry(i);
+        const auto* groupEntry = GetSceneryGroupEntry(i);
         if (groupEntry != nullptr)
         {
             research_insert_scenery_group_entry(i, isResearched);

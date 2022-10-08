@@ -456,7 +456,7 @@ namespace Editor
         windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
 
         reset_all_sprite_quadrant_placements();
-        scenery_set_default_placement_configuration();
+        ScenerySetDefaultPlacementConfiguration();
 
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
 
@@ -530,7 +530,7 @@ namespace Editor
      */
     ResultWithMessage CheckPark()
     {
-        int32_t parkSize = park_calculate_size();
+        int32_t parkSize = ParkCalculateSize();
         if (parkSize == 0)
         {
             return { false, STR_PARK_MUST_OWN_SOME_LAND };

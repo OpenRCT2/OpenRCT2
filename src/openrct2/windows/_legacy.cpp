@@ -415,13 +415,13 @@ bool scenery_tool_is_active()
     return false;
 }
 
-void init_scenery()
+void SceneryInit()
 {
     auto intent = Intent(INTENT_ACTION_INIT_SCENERY);
     context_broadcast_intent(&intent);
 }
 
-void scenery_set_default_placement_configuration()
+void ScenerySetDefaultPlacementConfiguration()
 {
     auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
     context_broadcast_intent(&intent);

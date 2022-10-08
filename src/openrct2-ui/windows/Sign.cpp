@@ -244,7 +244,7 @@ public:
 
         if (_isSmall)
         {
-            auto* wallEntry = get_wall_entry(_sceneryEntry);
+            auto* wallEntry = GetWallEntry(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;

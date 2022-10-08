@@ -93,5 +93,5 @@ void ParkEntranceRemoveAction::ParkEntranceRemoveSegment(const CoordsXYZ& loc) c
 
     map_invalidate_tile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
     entranceElement->Remove();
-    update_park_fences({ loc.x, loc.y });
+    ParkUpdateFences({ loc.x, loc.y });
 }

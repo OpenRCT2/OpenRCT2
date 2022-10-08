@@ -157,7 +157,7 @@ private:
     {
         window_close_all();
         set_all_scenery_items_invented();
-        scenery_set_default_placement_configuration();
+        ScenerySetDefaultPlacementConfiguration();
         gEditorStep = EditorStep::LandscapeEditor;
         context_open_window(WindowClass::Map);
         gfx_invalidate_screen();
