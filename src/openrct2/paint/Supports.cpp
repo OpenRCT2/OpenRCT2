@@ -445,18 +445,6 @@ static constexpr const uint16_t word_97B3C4[] = {
 
 // clang-format on
 
-bool WoodenASupportsPaintSetup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
-{
-    return WoodenASupportsPaintSetup(session, supportType, special, height, ImageId::FromUInt32(imageColourFlags));
-}
-
-bool WoodenBSupportsPaintSetup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
-{
-    return WoodenASupportsPaintSetup(session, supportType, special, height, ImageId::FromUInt32(imageColourFlags));
-}
-
 /**
  * Adds paint structs for wooden supports.
  *  rct2: 0x006629BC
