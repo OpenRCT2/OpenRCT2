@@ -2082,12 +2082,18 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
             if (abs(litter->z - guest->NextLoc.z) > 16)
                 continue;
 
-            litter_count++;
-            if (litter->SubType != Litter::Type::Vomit && litter->SubType != Litter::Type::VomitAlt)
-                continue;
+            switch (litter->SubType)
+            {
+                case Litter::Type::Vomit:
+                case Litter::Type::VomitAlt:
+                case Litter::Type::Poop:
+                case Litter::Type::PoopAlt:
+                    sick_count++;
+                    break;
 
-            litter_count--;
-            sick_count++;
+                default:
+                    litter_count++;
+            }
         }
     }
 
