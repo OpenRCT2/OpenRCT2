@@ -1532,7 +1532,7 @@ void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(
             { 1, 0xFF, 3, 5, 0xFF, 3, 0 },
         };
         uint8_t supportType = supportTypes[direction][trackSequence];
-        wooden_a_supports_paint_setup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 }
 

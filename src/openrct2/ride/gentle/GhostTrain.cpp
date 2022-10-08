@@ -504,7 +504,7 @@ static void PaintGhostTrainTrackSpinningTunnel(
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
     PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);

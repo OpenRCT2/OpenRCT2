@@ -81,7 +81,7 @@ static void side_friction_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21664), { 0, 0, height }, { 32, 27, 0 },
                     { 0, 2, height + 27 });
-                wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -90,7 +90,7 @@ static void side_friction_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21665), { 0, 0, height }, { 32, 27, 0 },
                     { 0, 2, height + 27 });
-                wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -99,7 +99,7 @@ static void side_friction_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21668), { 0, 0, height }, { 32, 27, 0 },
                     { 0, 2, height + 27 });
-                wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -108,7 +108,7 @@ static void side_friction_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21669), { 0, 0, height }, { 32, 27, 0 },
                     { 0, 2, height + 27 });
-                wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -124,7 +124,7 @@ static void side_friction_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21608), { 0, 0, height }, { 32, 27, 0 },
                     { 0, 2, height + 27 });
-                wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
             case 3:
@@ -134,7 +134,7 @@ static void side_friction_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21609), { 0, 0, height }, { 32, 27, 0 },
                     { 0, 2, height + 27 });
-                wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -158,7 +158,7 @@ static void side_friction_rc_track_station(
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction]), { 0, 0, height }, { 32, 27, 2 },
         { 0, 2, height });
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 9, 11);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -181,7 +181,7 @@ static void side_friction_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21690), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -190,7 +190,7 @@ static void side_friction_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21691), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -199,7 +199,7 @@ static void side_friction_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21692), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -208,7 +208,7 @@ static void side_friction_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21693), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -223,7 +223,7 @@ static void side_friction_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21634), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -232,7 +232,7 @@ static void side_friction_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21635), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -241,7 +241,7 @@ static void side_friction_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21636), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -250,7 +250,7 @@ static void side_friction_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21637), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -282,7 +282,7 @@ static void side_friction_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21682), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -291,7 +291,7 @@ static void side_friction_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21683), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -300,7 +300,7 @@ static void side_friction_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21684), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -309,7 +309,7 @@ static void side_friction_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21685), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -324,7 +324,7 @@ static void side_friction_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21626), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -333,7 +333,7 @@ static void side_friction_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21627), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -342,7 +342,7 @@ static void side_friction_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21628), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -351,7 +351,7 @@ static void side_friction_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21629), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -383,7 +383,7 @@ static void side_friction_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21686), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -392,7 +392,7 @@ static void side_friction_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21687), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -401,7 +401,7 @@ static void side_friction_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21688), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -410,7 +410,7 @@ static void side_friction_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21689), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -425,7 +425,7 @@ static void side_friction_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21630), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -434,7 +434,7 @@ static void side_friction_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21631), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -443,7 +443,7 @@ static void side_friction_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21632), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -452,7 +452,7 @@ static void side_friction_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21633), { 0, 0, height }, { 32, 1, 9 },
                     { 0, 26, height + 5 });
-                wooden_a_supports_paint_setup(session, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -509,7 +509,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21747), { 0, 2, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -518,7 +518,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21752), { 0, 2, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -527,7 +527,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21757), { 0, 2, height },
                         { 32, 32, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -536,7 +536,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21742), { 0, 2, height },
                         { 32, 32, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -561,7 +561,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21746), { 0, 0, height },
                         { 32, 16, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -570,7 +570,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21751), { 0, 0, height },
                         { 32, 16, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -579,7 +579,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21756), { 0, 16, height },
                         { 32, 16, 0 }, { 0, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -588,7 +588,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21741), { 0, 16, height },
                         { 32, 16, 0 }, { 0, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -607,7 +607,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21745), { 0, 16, height },
                         { 16, 16, 0 }, { 0, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -616,7 +616,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21750), { 16, 16, height },
                         { 16, 16, 0 }, { 16, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -625,7 +625,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21755), { 16, 0, height },
                         { 16, 16, 0 }, { 16, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -634,7 +634,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21740), { 0, 0, height },
                         { 16, 16, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -660,7 +660,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21744), { 16, 0, height },
                         { 16, 34, 0 }, { 16, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -669,7 +669,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21749), { 0, 0, height },
                         { 16, 32, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -678,7 +678,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21754), { 0, 0, height },
                         { 16, 32, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -687,7 +687,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21739), { 16, 0, height },
                         { 16, 32, 0 }, { 16, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -706,7 +706,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21743), { 2, 0, height },
                         { 32, 32, 0 }, { 2, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -715,7 +715,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21748), { 2, 0, height },
                         { 27, 32, 0 }, { 2, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -724,7 +724,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21753), { 2, 0, height },
                         { 27, 32, 0 }, { 2, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -733,7 +733,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21738), { 2, 0, height },
                         { 32, 32, 0 }, { 2, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             switch (direction)
@@ -777,7 +777,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21904), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -786,7 +786,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21908), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -795,7 +795,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21907), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -804,7 +804,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21911), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -824,7 +824,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21905), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -833,7 +833,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21909), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -842,7 +842,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21906), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -851,7 +851,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21910), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -870,7 +870,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21906), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -879,7 +879,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21910), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -888,7 +888,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21905), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -897,7 +897,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21909), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -916,7 +916,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21907), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -925,7 +925,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21911), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -934,7 +934,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21904), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -943,7 +943,7 @@ static void side_friction_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21908), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             switch (direction)
@@ -978,7 +978,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21912), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -987,7 +987,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21916), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -996,7 +996,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21915), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1005,7 +1005,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21919), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -1025,7 +1025,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21913), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1034,7 +1034,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21917), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1043,7 +1043,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21914), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1052,7 +1052,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21918), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1071,7 +1071,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21914), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1080,7 +1080,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21918), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1089,7 +1089,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21913), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1098,7 +1098,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21917), { 0, 0, height },
                         { 32, 26, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1117,7 +1117,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21915), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1126,7 +1126,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21919), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1135,7 +1135,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21912), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1144,7 +1144,7 @@ static void side_friction_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21916), { 0, 0, height },
                         { 32, 27, 0 }, { 0, 2, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             switch (direction)
@@ -1179,7 +1179,7 @@ static void side_friction_rc_track_left_quarter_turn_3(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21711), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1188,7 +1188,7 @@ static void side_friction_rc_track_left_quarter_turn_3(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21714), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1197,7 +1197,7 @@ static void side_friction_rc_track_left_quarter_turn_3(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21717), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1206,7 +1206,7 @@ static void side_friction_rc_track_left_quarter_turn_3(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21708), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -1269,7 +1269,7 @@ static void side_friction_rc_track_left_quarter_turn_3(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21709), { 0, 0, height },
                         { 20, 32, 0 }, { 6, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1278,7 +1278,7 @@ static void side_friction_rc_track_left_quarter_turn_3(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21712), { 0, 0, height },
                         { 20, 32, 0 }, { 6, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1287,7 +1287,7 @@ static void side_friction_rc_track_left_quarter_turn_3(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21715), { 0, 0, height },
                         { 20, 32, 0 }, { 6, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1296,7 +1296,7 @@ static void side_friction_rc_track_left_quarter_turn_3(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21706), { 0, 0, height },
                         { 20, 32, 0 }, { 6, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             switch (direction)
@@ -1338,7 +1338,7 @@ static void side_friction_rc_track_brakes(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21612), { 0, 0, height }, { 32, 27, 0 },
                 { 0, 2, height + 27 });
-            wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
         case 3:
@@ -1348,7 +1348,7 @@ static void side_friction_rc_track_brakes(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21613), { 0, 0, height }, { 32, 27, 0 },
                 { 0, 2, height + 27 });
-            wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -1373,7 +1373,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21806), { 0, 0, height },
                         { 32, 32, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1382,7 +1382,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21810), { 0, 0, height },
                         { 32, 32, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1391,7 +1391,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21814), { 0, 0, height },
                         { 32, 32, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1400,7 +1400,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21818), { 0, 0, height },
                         { 32, 32, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -1420,7 +1420,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21807), { 0, 0, height },
                         { 32, 16, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1429,7 +1429,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21811), { 0, 0, height },
                         { 32, 16, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1438,7 +1438,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21815), { 0, 0, height },
                         { 32, 16, 0 }, { 0, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1447,7 +1447,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21819), { 0, 0, height },
                         { 32, 16, 0 }, { 0, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1463,7 +1463,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21808), { 0, 0, height },
                         { 16, 16, 0 }, { 0, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1472,7 +1472,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21812), { 0, 0, height },
                         { 16, 16, 0 }, { 16, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1481,7 +1481,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21816), { 0, 0, height },
                         { 16, 16, 0 }, { 16, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1490,7 +1490,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21820), { 0, 0, height },
                         { 16, 16, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1500,16 +1500,16 @@ static void side_friction_rc_track_left_eighth_to_diag(
             switch (direction)
             {
                 case 0:
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1574,7 +1574,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21774), { 0, 0, height },
                         { 32, 32, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1583,7 +1583,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21778), { 0, 0, height },
                         { 32, 32, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1592,7 +1592,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21782), { 0, 0, height },
                         { 32, 32, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1601,7 +1601,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21786), { 0, 0, height },
                         { 32, 32, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -1621,7 +1621,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21775), { 0, 0, height },
                         { 32, 16, 0 }, { 0, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1630,7 +1630,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21779), { 0, 0, height },
                         { 32, 16, 0 }, { 0, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1639,7 +1639,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21783), { 0, 0, height },
                         { 32, 16, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1648,7 +1648,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21787), { 0, 0, height },
                         { 32, 16, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1664,7 +1664,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21776), { 0, 0, height },
                         { 16, 16, 0 }, { 0, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1673,7 +1673,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21780), { 0, 0, height },
                         { 16, 16, 0 }, { 16, 0, height + 27 });
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1682,7 +1682,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21784), { 0, 0, height },
                         { 28, 28, 0 }, { 4, 4, height + 27 });
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1691,7 +1691,7 @@ static void side_friction_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21788), { 0, 0, height },
                         { 16, 16, 0 }, { 0, 16, height + 27 });
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1701,16 +1701,16 @@ static void side_friction_rc_track_right_eighth_to_diag(
             switch (direction)
             {
                 case 0:
-                    wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1821,16 +1821,16 @@ static void side_friction_rc_track_diag_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21850), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 27 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1845,16 +1845,16 @@ static void side_friction_rc_track_diag_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21826), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 27 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1867,10 +1867,10 @@ static void side_friction_rc_track_diag_flat(
                 switch (direction)
                 {
                     case 0:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -1879,10 +1879,10 @@ static void side_friction_rc_track_diag_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21851), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 27 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1891,10 +1891,10 @@ static void side_friction_rc_track_diag_flat(
                 switch (direction)
                 {
                     case 0:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -1903,10 +1903,10 @@ static void side_friction_rc_track_diag_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21827), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 27 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1987,16 +1987,16 @@ static void side_friction_rc_track_diag_25_deg_up(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21868), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 43 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2011,16 +2011,16 @@ static void side_friction_rc_track_diag_25_deg_up(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21844), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 43 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2033,10 +2033,10 @@ static void side_friction_rc_track_diag_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2045,10 +2045,10 @@ static void side_friction_rc_track_diag_25_deg_up(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21869), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 43 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2057,10 +2057,10 @@ static void side_friction_rc_track_diag_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2069,10 +2069,10 @@ static void side_friction_rc_track_diag_25_deg_up(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21845), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 43 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2153,16 +2153,16 @@ static void side_friction_rc_track_diag_flat_to_25_deg_up(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21856), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2177,16 +2177,16 @@ static void side_friction_rc_track_diag_flat_to_25_deg_up(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21832), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2199,10 +2199,10 @@ static void side_friction_rc_track_diag_flat_to_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2211,10 +2211,10 @@ static void side_friction_rc_track_diag_flat_to_25_deg_up(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21857), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2223,10 +2223,10 @@ static void side_friction_rc_track_diag_flat_to_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2235,10 +2235,10 @@ static void side_friction_rc_track_diag_flat_to_25_deg_up(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21833), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2319,16 +2319,16 @@ static void side_friction_rc_track_diag_25_deg_up_to_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21862), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2343,16 +2343,16 @@ static void side_friction_rc_track_diag_25_deg_up_to_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21838), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2365,10 +2365,10 @@ static void side_friction_rc_track_diag_25_deg_up_to_flat(
                 switch (direction)
                 {
                     case 0:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2377,10 +2377,10 @@ static void side_friction_rc_track_diag_25_deg_up_to_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21863), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2389,10 +2389,10 @@ static void side_friction_rc_track_diag_25_deg_up_to_flat(
                 switch (direction)
                 {
                     case 0:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2401,10 +2401,10 @@ static void side_friction_rc_track_diag_25_deg_up_to_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21839), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2485,16 +2485,16 @@ static void side_friction_rc_track_diag_25_deg_down(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21869), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 43 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2509,16 +2509,16 @@ static void side_friction_rc_track_diag_25_deg_down(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21845), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 43 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2531,10 +2531,10 @@ static void side_friction_rc_track_diag_25_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2543,10 +2543,10 @@ static void side_friction_rc_track_diag_25_deg_down(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21868), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 43 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2555,10 +2555,10 @@ static void side_friction_rc_track_diag_25_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2567,10 +2567,10 @@ static void side_friction_rc_track_diag_25_deg_down(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21844), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 43 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2649,16 +2649,16 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21863), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2673,16 +2673,16 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21839), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2693,10 +2693,10 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2705,10 +2705,10 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21862), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2717,10 +2717,10 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2729,10 +2729,10 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21838), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2812,16 +2812,16 @@ static void side_friction_rc_track_diag_25_deg_down_to_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21857), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2836,16 +2836,16 @@ static void side_friction_rc_track_diag_25_deg_down_to_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21833), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2858,10 +2858,10 @@ static void side_friction_rc_track_diag_25_deg_down_to_flat(
                 switch (direction)
                 {
                     case 0:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2870,10 +2870,10 @@ static void side_friction_rc_track_diag_25_deg_down_to_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21856), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2882,10 +2882,10 @@ static void side_friction_rc_track_diag_25_deg_down_to_flat(
                 switch (direction)
                 {
                     case 0:
-                        wooden_a_supports_paint_setup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2894,10 +2894,10 @@ static void side_friction_rc_track_diag_25_deg_down_to_flat(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21832), { -16, -16, height },
                             { 32, 32, 0 }, { -16, -16, height + 35 });
-                        wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2946,7 +2946,7 @@ static void side_friction_rc_track_60_deg_up(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_0_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
-            wooden_a_supports_paint_setup(session, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -2957,7 +2957,7 @@ static void side_friction_rc_track_60_deg_up(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
 
-            wooden_a_supports_paint_setup(session, 1, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -2967,7 +2967,7 @@ static void side_friction_rc_track_60_deg_up(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
 
-            wooden_a_supports_paint_setup(session, 0, 23, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 23, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -2976,7 +2976,7 @@ static void side_friction_rc_track_60_deg_up(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_3_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
-            wooden_a_supports_paint_setup(session, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -3014,7 +3014,7 @@ static void side_friction_rc_track_25_deg_up_to_60_deg_up(
                 session, direction,
                 session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_0_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
-            wooden_a_supports_paint_setup(session, 0, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -3025,7 +3025,7 @@ static void side_friction_rc_track_25_deg_up_to_60_deg_up(
                 session, direction,
                 session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
-            wooden_a_supports_paint_setup(session, 1, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -3036,7 +3036,7 @@ static void side_friction_rc_track_25_deg_up_to_60_deg_up(
                 session, direction,
                 session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
-            wooden_a_supports_paint_setup(session, 0, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -3047,7 +3047,7 @@ static void side_friction_rc_track_25_deg_up_to_60_deg_up(
                 session, direction,
                 session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_3_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
-            wooden_a_supports_paint_setup(session, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -3085,7 +3085,7 @@ static void side_friction_rc_track_60_deg_up_to_25_deg_up(
                 session, direction,
                 session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_0_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
-            wooden_a_supports_paint_setup(session, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -3096,7 +3096,7 @@ static void side_friction_rc_track_60_deg_up_to_25_deg_up(
                 session, direction,
                 session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
-            wooden_a_supports_paint_setup(session, 1, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -3107,7 +3107,7 @@ static void side_friction_rc_track_60_deg_up_to_25_deg_up(
                 session, direction,
                 session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
-            wooden_a_supports_paint_setup(session, 0, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -3118,7 +3118,7 @@ static void side_friction_rc_track_60_deg_up_to_25_deg_up(
                 session, direction,
                 session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_3_B),
                 { 0, 0, height }, { 32, 1, 9 }, { 0, 26, height + 5 });
-            wooden_a_supports_paint_setup(session, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -3172,16 +3172,16 @@ static void side_friction_rc_track_diag_60_deg_up(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_0_B),
                         { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 43 });
-                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -3192,10 +3192,10 @@ static void side_friction_rc_track_diag_60_deg_up(
             switch (direction)
             {
                 case 0:
-                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3206,10 +3206,10 @@ static void side_friction_rc_track_diag_60_deg_up(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_2_B),
                         { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 43 });
-                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -3270,16 +3270,16 @@ static void side_friction_rc_track_diag_60_deg_up_to_25_deg_up(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_0_B),
                         { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 59 });
-                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -3289,10 +3289,10 @@ static void side_friction_rc_track_diag_60_deg_up_to_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3303,10 +3303,10 @@ static void side_friction_rc_track_diag_60_deg_up_to_25_deg_up(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_2_B),
                         { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 59 });
-                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -3366,16 +3366,16 @@ static void side_friction_rc_track_diag_25_deg_up_to_60_deg_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(24033), { -16, -16, height },
                         { 32, 32, 0 }, { -16, -16, height + 59 });
-                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -3385,10 +3385,10 @@ static void side_friction_rc_track_diag_25_deg_up_to_60_deg_up(
             switch (direction)
             {
                 case 0:
-                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3398,10 +3398,10 @@ static void side_friction_rc_track_diag_25_deg_up_to_60_deg_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(24034), { -16, -16, height },
                         { 32, 32, 0 }, { -16, -16, height + 59 });
-                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);

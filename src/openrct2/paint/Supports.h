@@ -17,13 +17,13 @@ struct FootpathPaintInfo;
 
 constexpr const uint8_t NumVanillaWoodenSupportTypes = 49;
 
-bool wooden_a_supports_paint_setup(
+bool WoodenASupportsPaintSetup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
-bool wooden_b_supports_paint_setup(
+bool WoodenBSupportsPaintSetup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
-bool wooden_a_supports_paint_setup(
+bool WoodenASupportsPaintSetup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags);
-bool wooden_b_supports_paint_setup(
+bool WoodenBSupportsPaintSetup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags);
 bool metal_a_supports_paint_setup(
     paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageColourFlags);

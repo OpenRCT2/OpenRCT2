@@ -188,7 +188,7 @@ static void chairlift_paint_station_ne_sw(
 
     const auto* stationObj = ride.GetStationObject();
 
-    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_MISC]);
 
     if (!isStart && !isEnd)
     {
@@ -280,7 +280,7 @@ static void chairlift_paint_station_se_nw(
 
     const auto* stationObj = ride.GetStationObject();
 
-    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     if (!isStart && !isEnd)
     {

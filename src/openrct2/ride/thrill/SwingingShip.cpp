@@ -163,7 +163,7 @@ static void PaintSwingingShip(
 
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {
-        wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     else if (direction & 1)
     {
