@@ -785,7 +785,7 @@ bool WoodenBSupportsPaintSetup(
  * @param imageColourFlags (ebp)
  *  rct2: 0x00663105
  */
-bool metal_a_supports_paint_setup(
+bool MetalASupportsPaintSetup(
     paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageColourFlags)
 {
     support_height* supportSegments = session.SupportSegments;
@@ -986,7 +986,7 @@ bool metal_a_supports_paint_setup(
  *
  * @return (Carry Flag)
  */
-bool metal_b_supports_paint_setup(
+bool MetalBSupportsPaintSetup(
     paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageColourFlags)
 {
     support_height* supportSegments = session.SupportSegments;

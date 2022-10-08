@@ -180,7 +180,7 @@ static void PaintCarRideTrackFlat(
         PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -218,7 +218,7 @@ static void PaintCarRideTrack25DegUp(
             break;
     }
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
@@ -256,7 +256,7 @@ static void PaintCarRideTrackFlatTo25DegUp(
             break;
     }
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -294,7 +294,7 @@ static void PaintCarRideTrack25DegUpToFlat(
             break;
     }
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
@@ -363,13 +363,13 @@ static void PaintCarRideStation(
 
     if (direction == 0 || direction == 2)
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     else
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     track_paint_util_draw_station(session, ride, direction, height, trackElement);
@@ -392,7 +392,7 @@ static void PaintCarRideTrackRightQuarterTurn3Tiles(
     {
         case 0:
         case 3:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -446,7 +446,7 @@ static void PaintCarRideTrackLeftQuarterTurn1Tile(
             break;
     }
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
 
@@ -536,7 +536,7 @@ static void PaintCarRideTrack60DegUp(
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -592,7 +592,7 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -648,7 +648,7 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -705,7 +705,7 @@ static void PaintCarRideTrackLogBumps(
         PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);

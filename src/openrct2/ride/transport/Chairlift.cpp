@@ -86,7 +86,7 @@ static void chairlift_paint_util_draw_supports(paint_session& session, int32_t s
             continue;
         }
 
-        if (metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]))
+        if (MetalASupportsPaintSetup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]))
         {
             success = true;
         }
@@ -106,7 +106,7 @@ static void chairlift_paint_util_draw_supports(paint_session& session, int32_t s
         }
         uint16_t temp = supportSegments[s].height;
         supportSegments[s].height = session.Support.height;
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         supportSegments[s].height = temp;
     }
 }

@@ -31,8 +31,8 @@ static void PaintMiniHelicoptersTrackStation(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 0, height });
 
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else if (direction == 1 || direction == 3)
@@ -43,8 +43,8 @@ static void PaintMiniHelicoptersTrackStation(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 0, 0, height });
 
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
@@ -76,7 +76,7 @@ static void PaintMiniHelicoptersTrackFlat(
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(
+        MetalASupportsPaintSetup(
             session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -123,7 +123,7 @@ static void PaintMiniHelicoptersTrackFlatTo25DegUp(
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, -4, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -4, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -164,7 +164,7 @@ static void PaintMiniHelicoptersTrack25DegUp(
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -209,7 +209,7 @@ static void PaintMiniHelicoptersTrack25DegUpToFlat(
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, -7, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -7, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -254,7 +254,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
             break;
@@ -263,7 +263,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
                 session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
             break;
         case 3:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
             break;
