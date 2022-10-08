@@ -50,7 +50,7 @@ namespace OpenRCT2
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
         _items = ReadItems(stream);
-        GetImageTable().Read(context, stream);
+        ReadEmbeddedImages(*context, *stream);
     }
 
     void SceneryGroupObject::Load()
@@ -67,7 +67,7 @@ namespace OpenRCT2
         UnloadImages();
 
         _legacyType.name = 0;
-        _legacyType.image = 0;
+        _legacyType.image = kImageIndexUndefined;
     }
 
     void SceneryGroupObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const

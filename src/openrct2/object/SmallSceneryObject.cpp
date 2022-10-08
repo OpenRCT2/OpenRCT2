@@ -11,6 +11,8 @@
 
 #include "SmallSceneryObject.h"
 
+#include "../AssetPackManager.h"
+#include "../Context.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
@@ -53,7 +55,7 @@ namespace OpenRCT2
             _legacyType.flags |= SMALL_SCENERY_FLAG_IS_TREE;
         }
 
-        GetImageTable().Read(context, stream);
+        ReadEmbeddedImages(*context, *stream);
 
         // Validate properties
         if (_legacyType.price <= 0.00_GBP)
@@ -95,7 +97,7 @@ namespace OpenRCT2
         UnloadImages();
 
         _legacyType.name = 0;
-        _legacyType.image = 0;
+        _legacyType.image = kImageIndexUndefined;
     }
 
     void SmallSceneryObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const

@@ -7,26 +7,28 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ImageTable.h"
+#ifdef OLD_IMAGE_TABLE
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../OpenRCT2.h"
-#include "../PlatformEnvironment.h"
-#include "../SpriteIds.h"
-#include "../core/File.h"
-#include "../core/FileScanner.h"
-#include "../core/Guard.hpp"
-#include "../core/IStream.hpp"
-#include "../core/Json.hpp"
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
-#include "../drawing/ImageImporter.h"
-#include "Object.h"
-#include "ObjectFactory.h"
+    #include "ImageTable.h"
 
-#include <memory>
-#include <stdexcept>
+    #include "../Context.h"
+    #include "../Diagnostic.h"
+    #include "../OpenRCT2.h"
+    #include "../PlatformEnvironment.h"
+    #include "../SpriteIds.h"
+    #include "../core/File.h"
+    #include "../core/FileScanner.h"
+    #include "../core/Guard.hpp"
+    #include "../core/IStream.hpp"
+    #include "../core/Json.hpp"
+    #include "../core/Path.hpp"
+    #include "../core/String.hpp"
+    #include "../drawing/ImageImporter.h"
+    #include "Object.h"
+    #include "ObjectFactory.h"
+
+    #include <memory>
+    #include <stdexcept>
 
 namespace OpenRCT2
 {
@@ -643,3 +645,5 @@ namespace OpenRCT2
         _entries.push_back(std::move(newg1));
     }
 } // namespace OpenRCT2
+
+#endif

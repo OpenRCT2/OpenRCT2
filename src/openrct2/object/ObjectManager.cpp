@@ -17,6 +17,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/JobPool.h"
 #include "../core/Memory.hpp"
+#include "../drawing/Image.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"

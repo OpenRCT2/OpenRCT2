@@ -23,7 +23,7 @@ namespace OpenRCT2
         GetStringTable().Sort();
         NameStringId = LanguageAllocateObjectString(GetName());
 
-        auto numImages = GetImageTable().GetCount();
+        auto numImages = GetNumImages();
         if (numImages != 0)
         {
             PreviewImageId = LoadImages();
@@ -42,8 +42,8 @@ namespace OpenRCT2
         UnloadImages();
 
         NameStringId = 0;
-        PreviewImageId = 0;
-        BaseImageId = 0;
+        PreviewImageId = kImageIndexUndefined;
+        BaseImageId = kImageIndexUndefined;
     }
 
     void FootpathSurfaceObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const

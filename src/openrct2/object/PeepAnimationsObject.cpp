@@ -31,7 +31,9 @@ namespace OpenRCT2
 
     void PeepAnimationsObject::Load()
     {
-        auto numImages = GetImageTable().GetCount();
+        _imageOffsetId = kImageIndexUndefined;
+
+        auto numImages = GetNumImages();
         if (numImages == 0)
             return;
 
@@ -62,6 +64,7 @@ namespace OpenRCT2
     void PeepAnimationsObject::Unload()
     {
         UnloadImages();
+        _imageOffsetId = kImageIndexUndefined;
     }
 
     void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)

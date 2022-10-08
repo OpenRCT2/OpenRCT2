@@ -9,6 +9,7 @@
 
 #include "Object.h"
 
+#include "../AssetPackManager.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../core/File.h"
@@ -20,6 +21,7 @@
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
 #include "../world/Scenery.h"
+#include "ImageTable2.h"
 #include "ObjectLimits.h"
 #include "ObjectRepository.h"
 
@@ -147,6 +149,16 @@ namespace OpenRCT2
         return !(*this == rhs);
     }
 
+    Object::Object()
+    {
+        _imageTable = std::make_unique<ImageTable2>();
+        _loadedImageTable = std::make_unique<ImageTable2>();
+    }
+
+    Object::~Object()
+    {
+    }
+
     void* Object::GetLegacyData()
     {
         throw std::runtime_error("Not supported.");
@@ -157,10 +169,36 @@ namespace OpenRCT2
         throw std::runtime_error("Not supported.");
     }
 
+    ImageTable2* Object::GetImageTable()
+    {
+        return _loadedImageTable.get();
+    }
+
+    const ImageTable2* Object::GetImageTable() const
+    {
+        return _loadedImageTable.get();
+    }
+
+    uint32_t Object::GetNumImages() const
+    {
+        if (_loadedImageTable == nullptr)
+            return 0;
+        return static_cast<uint32_t>(_loadedImageTable->GetCount());
+    }
+
+    void Object::ReadEmbeddedImages(IReadObjectContext& context, IStream& stream)
+    {
+        _embeddedImages = GxFile(stream);
+    }
+
     void Object::PopulateTablesFromJson(IReadObjectContext* context, json_t& root)
     {
         _stringTable.ReadJson(root);
-        _usesFallbackImages = _imageTable.ReadJson(context, root);
+        _imageTable->ReadFromJson(*context, root);
+
+        // HACK this should not be necessary, but required for StationObject and TerrainSurfaceObject which
+        //      call GetNumImages()
+        _loadedImageTable->LoadFrom(*_imageTable, 0, _imageTable->GetCount());
     }
 
     std::string Object::GetString(ObjectStringID index) const
@@ -205,6 +243,31 @@ namespace OpenRCT2
         _sourceGames = sourceGames;
     }
 
+    ImageIndex Object::LoadImages()
+    {
+        // Start with base images
+        _loadedImageTable->LoadFrom(*_imageTable, 0, _imageTable->GetCount());
+
+        // Override with asset packs
+        auto context = GetContext();
+        auto assetManager = context->GetAssetPackManager();
+        if (assetManager != nullptr)
+        {
+            assetManager->LoadImagesForObject(GetIdentifier(), *_loadedImageTable);
+        }
+        return _loadedImageTable->Load();
+    }
+
+    void Object::UnloadImages()
+    {
+        _loadedImageTable->Unload();
+    }
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#endif
+
     std::string Object::GetName() const
     {
         return GetString(ObjectStringID::name);
@@ -213,24 +276,6 @@ namespace OpenRCT2
     std::string Object::GetName(int32_t language) const
     {
         return GetString(language, ObjectStringID::name);
-    }
-
-    ImageIndex Object::LoadImages()
-    {
-        if (_baseImageId == kImageIndexUndefined)
-        {
-            _baseImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
-        }
-        return _baseImageId;
-    }
-
-    void Object::UnloadImages()
-    {
-        if (_baseImageId != kImageIndexUndefined)
-        {
-            GfxObjectFreeImages(_baseImageId, GetImageTable().GetCount());
-            _baseImageId = kImageIndexUndefined;
-        }
     }
 
     void RCTObjectEntry::SetName(std::string_view value)
@@ -451,6 +496,11 @@ namespace OpenRCT2
         }
 
         return std::make_tuple(versions[0], versions[1], versions[2]);
+    }
+
+    bool operator==(const ObjectAsset& l, const ObjectAsset& r)
+    {
+        return l._zipPath == r._zipPath && l._path == r._path;
     }
 
 } // namespace OpenRCT2

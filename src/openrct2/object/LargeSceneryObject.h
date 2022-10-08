@@ -21,7 +21,7 @@ namespace OpenRCT2
     {
     private:
         LargeSceneryEntry _legacyType = {};
-        uint32_t _baseImageId = 0;
+        uint32_t _baseImageId = kImageIndexUndefined;
         std::vector<LargeSceneryTile> _tiles;
         std::unique_ptr<LargeSceneryText> _3dFont;
 
