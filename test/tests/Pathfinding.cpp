@@ -38,7 +38,7 @@ public:
         ASSERT_TRUE(initialised);
 
         std::string parkPath = TestData::GetParkPath("pathfinding-tests.sv6");
-        load_from_sv6(parkPath.c_str());
+        GetContext()->LoadParkFromFile(parkPath);
         game_load_init();
     }
 

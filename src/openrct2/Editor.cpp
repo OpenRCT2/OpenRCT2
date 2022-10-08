@@ -283,13 +283,9 @@ namespace Editor
         auto extensionS = Path::GetExtension(path);
         const char* extension = extensionS.c_str();
         auto loadedFromSave = false;
-        if (_stricmp(extension, ".sc6") == 0)
+        GetContext()->LoadParkFromFile(path);
+        if (_stricmp(extension, ".sv6") == 0 || _stricmp(extension, ".sv7") == 0)
         {
-            load_from_sc6(path);
-        }
-        else if (_stricmp(extension, ".sv6") == 0 || _stricmp(extension, ".sv7") == 0)
-        {
-            load_from_sv6(path);
             loadedFromSave = true;
         }
 

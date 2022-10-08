@@ -33,7 +33,7 @@ protected:
         bool initialised = _context->Initialise();
         ASSERT_TRUE(initialised);
 
-        load_from_sv6(parkPath.c_str());
+        GetContext()->LoadParkFromFile(parkPath);
         game_load_init();
 
         // Changed in some tests. Store to restore its value
