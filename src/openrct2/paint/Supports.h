@@ -22,9 +22,9 @@ bool WoodenASupportsPaintSetup(
 bool WoodenBSupportsPaintSetup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
 bool MetalASupportsPaintSetup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageColourFlags);
+    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate);
 bool MetalBSupportsPaintSetup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageColourFlags);
+    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate);
 bool path_a_supports_paint_setup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo, bool* underground);
