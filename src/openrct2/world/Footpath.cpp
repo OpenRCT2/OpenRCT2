@@ -166,26 +166,26 @@ money32 FootpathProvisionalSet(
     }
 
     // Invalidate previous footpath piece.
-    virtual_floor_invalidate();
+    VirtualFloorInvalidate();
 
     if (!scenery_tool_is_active())
     {
         if (res.Error != GameActions::Status::Ok)
         {
             // If we can't build this, don't show a virtual floor.
-            virtual_floor_set_height(0);
+            VirtualFloorSetHeight(0);
         }
         else if (
             gFootpathConstructSlope == TILE_ELEMENT_SLOPE_FLAT
             || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
         {
             // Going either straight on, or down.
-            virtual_floor_set_height(gProvisionalFootpath.Position.z);
+            VirtualFloorSetHeight(gProvisionalFootpath.Position.z);
         }
         else
         {
             // Going up in the world!
-            virtual_floor_set_height(gProvisionalFootpath.Position.z + LAND_HEIGHT_STEP);
+            VirtualFloorSetHeight(gProvisionalFootpath.Position.z + LAND_HEIGHT_STEP);
         }
     }
 

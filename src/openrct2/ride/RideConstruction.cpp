@@ -763,7 +763,7 @@ void ride_select_next_section()
         }
 
         // Invalidate previous track piece (we may not be changing height!)
-        virtual_floor_invalidate();
+        VirtualFloorInvalidate();
 
         CoordsXYE inputElement, outputElement;
         inputElement.x = newCoords->x;
@@ -777,7 +777,7 @@ void ride_select_next_section()
             if (!scenery_tool_is_active())
             {
                 // Set next element's height.
-                virtual_floor_set_height(tileElement->GetBaseZ());
+                VirtualFloorSetHeight(tileElement->GetBaseZ());
             }
 
             _currentTrackBegin = *newCoords;
@@ -830,7 +830,7 @@ void ride_select_previous_section()
         }
 
         // Invalidate previous track piece (we may not be changing height!)
-        virtual_floor_invalidate();
+        VirtualFloorInvalidate();
 
         track_begin_end trackBeginEnd;
         if (track_block_get_previous({ *newCoords, tileElement }, &trackBeginEnd))
@@ -844,7 +844,7 @@ void ride_select_previous_section()
             if (!scenery_tool_is_active())
             {
                 // Set previous element's height.
-                virtual_floor_set_height(trackBeginEnd.begin_element->GetBaseZ());
+                VirtualFloorSetHeight(trackBeginEnd.begin_element->GetBaseZ());
             }
             window_ride_construction_update_active_elements();
         }
