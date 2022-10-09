@@ -5289,7 +5289,7 @@ void Guest::UpdateWalking()
         }
     }
 
-    if (PathIsBlockedByVehicle())
+    if (ShouldWaitForLevelCrossing())
     {
         // Wait for vehicle to pass
         return;

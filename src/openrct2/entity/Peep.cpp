@@ -321,7 +321,7 @@ bool Peep::CheckForPath()
     return false;
 }
 
-bool Peep::PathIsBlockedByVehicle()
+bool Peep::ShouldWaitForLevelCrossing()
 {
     auto curPos = TileCoordsXYZ(GetLocation());
     if (FootpathIsBlockedByVehicle(curPos))

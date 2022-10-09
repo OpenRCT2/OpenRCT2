@@ -1338,7 +1338,7 @@ void Staff::UpdateHeadingToInspect()
         if (!CheckForPath())
             return;
 
-        if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+        if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
         uint8_t pathingResult;
@@ -1446,7 +1446,7 @@ void Staff::UpdateAnswering()
         if (!CheckForPath())
             return;
 
-        if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+        if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
         uint8_t pathingResult;
@@ -1781,7 +1781,7 @@ void Staff::UpdatePatrolling()
     if (!CheckForPath())
         return;
 
-    if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+    if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
         return;
 
     uint8_t pathingResult;
