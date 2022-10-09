@@ -162,7 +162,7 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
     CoordsXYZ boundBoxLength = {
         (direction & 1) ? 2 : 28,
         (direction & 1) ? 28 : 2,
-        isExit ? 35 : 51,
+        isExit ? 32 : 48,
     };
 
     // Back
