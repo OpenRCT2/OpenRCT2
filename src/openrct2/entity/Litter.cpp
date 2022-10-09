@@ -35,7 +35,7 @@ static bool isLocationLitterable(const CoordsXYZ& mapPos)
         if (pathZ < mapPos.z || pathZ >= mapPos.z + PATH_CLEARANCE)
             continue;
 
-        return !tile_element_is_underground(tileElement);
+        return !TileElementIsUnderground(tileElement);
     } while (!(tileElement++)->IsLastForTile());
     return false;
 }

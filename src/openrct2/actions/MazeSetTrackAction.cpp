@@ -167,7 +167,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
     if (!(flags & GAME_COMMAND_FLAG_GHOST))
     {
         FootpathRemoveLitter(_loc);
-        wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
+        WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
     }
 
     auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);

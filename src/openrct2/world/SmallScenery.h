@@ -55,4 +55,4 @@ enum
     MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS = (1 << 5),
 };
 
-SmallSceneryEntry* get_small_scenery_entry(ObjectEntryIndex entryIndex);
+SmallSceneryEntry* GetSmallSceneryEntry(ObjectEntryIndex entryIndex);

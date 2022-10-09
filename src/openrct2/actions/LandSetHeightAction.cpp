@@ -149,7 +149,7 @@ GameActions::Result LandSetHeightAction::Execute() const
 
     if (!gCheatsDisableClearanceChecks)
     {
-        wall_remove_at({ _coords, _height * 8 - 16, _height * 8 + 32 });
+        WallRemoveAt({ _coords, _height * 8 - 16, _height * 8 + 32 });
         cost += GetSmallSceneryRemovalCost();
         SmallSceneryRemoval();
     }

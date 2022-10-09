@@ -61,7 +61,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    auto* entry = get_small_scenery_entry(_sceneryType);
+    auto* entry = GetSmallSceneryEntry(_sceneryType);
     if (entry == nullptr)
     {
         return GameActions::Result(
@@ -110,7 +110,7 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
 {
     GameActions::Result res = GameActions::Result();
 
-    auto* entry = get_small_scenery_entry(_sceneryType);
+    auto* entry = GetSmallSceneryEntry(_sceneryType);
     if (entry == nullptr)
     {
         return GameActions::Result(

@@ -399,7 +399,7 @@ static SceneryEntryBase* GetSceneryEntry(const ScenerySelection& item)
     switch (item.SceneryType)
     {
         case SCENERY_TYPE_SMALL:
-            return get_small_scenery_entry(item.EntryIndex);
+            return GetSmallSceneryEntry(item.EntryIndex);
         case SCENERY_TYPE_PATH_ITEM:
             return GetFootpathItemEntry(item.EntryIndex);
         case SCENERY_TYPE_WALL:

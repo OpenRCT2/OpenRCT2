@@ -234,9 +234,9 @@ void map_extend_boundary_surface_x();
 void map_extend_boundary_surface_y();
 
 bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour);
-void wall_remove_at(const CoordsXYRangedZ& wallPos);
-void wall_remove_at_z(const CoordsXYZ& wallPos);
-void wall_remove_intersecting_walls(const CoordsXYRangedZ& wallPos, Direction direction);
+void WallRemoveAt(const CoordsXYRangedZ& wallPos);
+void WallRemoveAtZ(const CoordsXYZ& wallPos);
+void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction);
 
 void map_invalidate_tile(const CoordsXYRangedZ& tilePos);
 void map_invalidate_tile_zoom1(const CoordsXYRangedZ& tilePos);

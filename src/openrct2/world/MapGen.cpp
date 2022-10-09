@@ -253,7 +253,7 @@ void MapGenGenerate(mapgen_settings* settings)
 
 static void MapGenPlaceTree(ObjectEntryIndex type, const CoordsXY& loc)
 {
-    auto* sceneryEntry = get_small_scenery_entry(type);
+    auto* sceneryEntry = GetSmallSceneryEntry(type);
     if (sceneryEntry == nullptr)
     {
         return;
@@ -311,7 +311,7 @@ static void MapGenPlaceTrees()
 
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
-        auto* sceneryEntry = get_small_scenery_entry(i);
+        auto* sceneryEntry = GetSmallSceneryEntry(i);
         auto entry = object_entry_get_object(ObjectType::SmallScenery, i);
 
         if (sceneryEntry == nullptr)

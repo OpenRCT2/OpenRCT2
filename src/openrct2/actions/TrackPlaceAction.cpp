@@ -481,7 +481,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             FootpathRemoveLitter(mapLoc);
             if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
             {
-                wall_remove_at(mapLocWithClearance);
+                WallRemoveAt(mapLocWithClearance);
             }
             else
             {
@@ -493,7 +493,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                 {
                     if (intersectingDirections & (1 << i))
                     {
-                        wall_remove_intersecting_walls(mapLocWithClearance, i);
+                        WallRemoveIntersectingWalls(mapLocWithClearance, i);
                     }
                 }
             }
@@ -663,7 +663,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                         tempLoc.x += CoordsDirectionDelta[tempDirection].x;
                         tempLoc.y += CoordsDirectionDelta[tempDirection].y;
                         tempDirection = DirectionReverse(tempDirection);
-                        wall_remove_intersecting_walls({ tempLoc, baseZ, clearanceZ }, tempDirection & 3);
+                        WallRemoveIntersectingWalls({ tempLoc, baseZ, clearanceZ }, tempDirection & 3);
                     }
                 }
             }

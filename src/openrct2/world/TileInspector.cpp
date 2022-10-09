@@ -86,7 +86,7 @@ namespace OpenRCT2::TileInspector
         return nullptr;
     }
 
-    static int32_t numLargeScenerySequences(const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
+    static int32_t NumLargeScenerySequences(const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
     {
         const auto* const largeEntry = largeScenery->GetEntry();
         const auto direction = largeScenery->GetDirection();
@@ -151,7 +151,7 @@ namespace OpenRCT2::TileInspector
             if (largeScenery != nullptr)
             {
                 // Only delete the banner entry if there are no other parts of the large scenery to delete
-                if (numLargeScenerySequences(loc, largeScenery) == 1)
+                if (NumLargeScenerySequences(loc, largeScenery) == 1)
                 {
                     tileElement->RemoveBannerEntry();
                 }

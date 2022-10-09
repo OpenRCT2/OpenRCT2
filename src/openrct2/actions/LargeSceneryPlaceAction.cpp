@@ -277,7 +277,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
             FootpathRemoveLitter({ curTile, zLow });
             if (!gCheatsDisableClearanceChecks)
             {
-                wall_remove_at({ curTile, zLow, zHigh });
+                WallRemoveAt({ curTile, zLow, zHigh });
             }
         }
 
