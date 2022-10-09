@@ -351,7 +351,7 @@ int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(rct_large_scenery_tile* til
             continue;
         }
 
-        auto* surfaceElement = map_get_surface_element_at(curTile);
+        auto* surfaceElement = MapGetSurfaceElementAt(curTile);
         if (surfaceElement == nullptr)
             continue;
 

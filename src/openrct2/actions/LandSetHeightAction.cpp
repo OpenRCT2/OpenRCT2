@@ -93,7 +93,7 @@ GameActions::Result LandSetHeightAction::Query() const
         }
     }
 
-    auto* surfaceElement = map_get_surface_element_at(_coords);
+    auto* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
         return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
@@ -154,7 +154,7 @@ GameActions::Result LandSetHeightAction::Execute() const
         SmallSceneryRemoval();
     }
 
-    auto* surfaceElement = map_get_surface_element_at(_coords);
+    auto* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
         return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
@@ -246,7 +246,7 @@ money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
 
 void LandSetHeightAction::SmallSceneryRemoval() const
 {
-    TileElement* tileElement = map_get_first_element_at(_coords);
+    TileElement* tileElement = MapGetFirstElementAt(_coords);
     do
     {
         if (tileElement == nullptr)

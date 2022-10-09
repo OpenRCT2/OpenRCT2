@@ -307,7 +307,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
         if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !_trackDesignDrawingPreview)
         {
-            auto surfaceElement = map_get_surface_element_at(mapLoc);
+            auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
             if (surfaceElement == nullptr)
             {
                 return GameActions::Result(
@@ -355,7 +355,7 @@ GameActions::Result TrackPlaceAction::Query() const
         }
 
         // 6c5648 12 push
-        auto surfaceElement = map_get_surface_element_at(mapLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
             return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
@@ -511,7 +511,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         resultData.GroundFlags = mapGroundFlags;
 
         // 6c5648 12 push
-        auto surfaceElement = map_get_surface_element_at(mapLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
             return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
@@ -686,7 +686,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
         {
-            auto* waterSurfaceElement = map_get_surface_element_at(mapLoc);
+            auto* waterSurfaceElement = MapGetSurfaceElementAt(mapLoc);
             if (waterSurfaceElement != nullptr)
             {
                 waterSurfaceElement->SetHasTrackThatNeedsWater(true);

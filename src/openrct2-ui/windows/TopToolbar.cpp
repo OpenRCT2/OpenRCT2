@@ -1292,7 +1292,7 @@ static void Sub6E1F34SmallScenery(
             // If SHIFT pressed
             if (gSceneryShiftPressed)
             {
-                auto* surfaceElement = map_get_surface_element_at(gridPos);
+                auto* surfaceElement = MapGetSurfaceElementAt(gridPos);
 
                 if (surfaceElement == nullptr)
                 {
@@ -1375,7 +1375,7 @@ static void Sub6E1F34SmallScenery(
         // If SHIFT pressed
         if (gSceneryShiftPressed)
         {
-            auto surfaceElement = map_get_surface_element_at(gridPos);
+            auto surfaceElement = MapGetSurfaceElementAt(gridPos);
 
             if (surfaceElement == nullptr)
             {
@@ -1510,7 +1510,7 @@ static void Sub6E1F34Wall(
         // If SHIFT pressed
         if (gSceneryShiftPressed)
         {
-            auto* surfaceElement = map_get_surface_element_at(gridPos);
+            auto* surfaceElement = MapGetSurfaceElementAt(gridPos);
 
             if (surfaceElement == nullptr)
             {
@@ -1601,7 +1601,7 @@ static void Sub6E1F34LargeScenery(
         // If SHIFT pressed
         if (gSceneryShiftPressed)
         {
-            auto* surfaceElement = map_get_surface_element_at(gridPos);
+            auto* surfaceElement = MapGetSurfaceElementAt(gridPos);
 
             if (surfaceElement == nullptr)
             {

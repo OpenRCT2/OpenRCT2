@@ -64,7 +64,7 @@ GameActions::Result WaterSetHeightAction::Query() const
         }
     }
 
-    SurfaceElement* surfaceElement = map_get_surface_element_at(_coords);
+    SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
@@ -109,7 +109,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
     if (!gCheatsDisableClearanceChecks)
         WallRemoveAtZ({ _coords, surfaceHeight });
 
-    SurfaceElement* surfaceElement = map_get_surface_element_at(_coords);
+    SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);

@@ -4872,7 +4872,7 @@ void Guest::UpdateRideMazePathfinding()
     };
     maze_type mazeType = maze_type::invalid;
 
-    auto tileElement = map_get_first_element_at(targetLoc);
+    auto tileElement = MapGetFirstElementAt(targetLoc);
     if (tileElement == nullptr)
         return;
     do
@@ -4967,7 +4967,7 @@ void Guest::UpdateRideLeaveExit()
     // Find the station track element
     for (auto* pathElement : TileElementsView<PathElement>(targetLoc))
     {
-        int16_t height = map_height_from_slope(targetLoc, pathElement->GetSlopeDirection(), pathElement->IsSloped());
+        int16_t height = MapHeightFromSlope(targetLoc, pathElement->GetSlopeDirection(), pathElement->IsSloped());
         height += pathElement->GetBaseZ();
 
         int16_t z_diff = z - height;
@@ -5302,7 +5302,7 @@ void Guest::UpdateWalking()
 
     if (GetNextIsSurface())
     {
-        auto surfaceElement = map_get_surface_element_at(NextLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
 
         if (surfaceElement != nullptr)
         {
@@ -5351,7 +5351,7 @@ void Guest::UpdateWalking()
     if (GetNextIsSurface() || GetNextIsSloped())
         return;
 
-    TileElement* tileElement = map_get_first_element_at(NextLoc);
+    TileElement* tileElement = MapGetFirstElementAt(NextLoc);
     if (tileElement == nullptr)
         return;
 
@@ -6242,7 +6242,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
 {
     TileElement* tileElement;
 
-    auto surfaceElement = map_get_surface_element_at(peep->NextLoc);
+    auto surfaceElement = MapGetSurfaceElementAt(peep->NextLoc);
 
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
@@ -6281,7 +6281,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
@@ -6398,7 +6398,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
     // TODO: extract loop A
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6515,7 +6515,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
     // TODO: extract loop A
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6701,7 +6701,7 @@ void Guest::UpdateSpriteType()
         CoordsXY loc = { x, y };
         if (map_is_location_valid(loc.ToTileStart()))
         {
-            TileElement* tileElement = map_get_first_element_at(loc);
+            TileElement* tileElement = MapGetFirstElementAt(loc);
             while (true)
             {
                 if (tileElement == nullptr)

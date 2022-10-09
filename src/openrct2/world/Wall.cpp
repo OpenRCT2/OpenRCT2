@@ -60,7 +60,7 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
 {
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(wallPos);
+    tileElement = MapGetFirstElementAt(wallPos);
     if (tileElement == nullptr)
         return;
     do

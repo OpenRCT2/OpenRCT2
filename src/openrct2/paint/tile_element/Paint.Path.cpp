@@ -868,7 +868,7 @@ static FootpathPaintInfo GetFootpathPaintInfo(const PathElement& pathEl)
 
 static bool ShouldDrawSupports(paint_session& session, const PathElement& pathEl, uint16_t height)
 {
-    auto surface = map_get_surface_element_at(session.MapPosition);
+    auto surface = MapGetSurfaceElementAt(session.MapPosition);
     if (surface == nullptr)
     {
         return true;

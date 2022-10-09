@@ -318,7 +318,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertQuery(GameActions::Result 
             GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
     }
 
-    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
@@ -381,7 +381,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Resul
     const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     gFootpathGroundFlags = clearanceData.GroundFlags;
 
-    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);

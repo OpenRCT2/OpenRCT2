@@ -108,7 +108,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
                     continue;
             }
 
-            auto surfaceElement = map_get_surface_element_at(coords);
+            auto surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)
             {
                 continue;
@@ -176,7 +176,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
                     continue;
             }
 
-            auto surfaceElement = map_get_surface_element_at(coords);
+            auto surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)
             {
                 continue;

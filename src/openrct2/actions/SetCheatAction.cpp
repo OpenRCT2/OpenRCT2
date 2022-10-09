@@ -361,7 +361,7 @@ void SetCheatAction::SetGrassLength(int32_t length) const
     {
         for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
 
@@ -690,7 +690,7 @@ void SetCheatAction::OwnAllLand() const
     {
         for (coords.x = min.x; coords.x <= max.x; coords.x += COORDS_XY_STEP)
         {
-            auto* surfaceElement = map_get_surface_element_at(coords);
+            auto* surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)
                 continue;
 
@@ -714,7 +714,7 @@ void SetCheatAction::OwnAllLand() const
     // Completely unown peep spawn points
     for (const auto& spawn : gPeepSpawns)
     {
-        auto* surfaceElement = map_get_surface_element_at(spawn);
+        auto* surfaceElement = MapGetSurfaceElementAt(spawn);
         if (surfaceElement != nullptr)
         {
             surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
@@ -724,7 +724,7 @@ void SetCheatAction::OwnAllLand() const
         }
     }
 
-    map_count_remaining_land_rights();
+    MapCountRemainingLandRights();
 }
 
 void SetCheatAction::ParkSetOpen(bool isOpen) const

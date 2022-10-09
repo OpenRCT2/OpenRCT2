@@ -898,7 +898,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
 
     if (x != LOCATION_NULL)
     {
-        auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+        auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
         // vehicle underground
         if (surfaceElement != nullptr && surfaceElement->GetBaseZ() > z)
@@ -1737,13 +1737,13 @@ void Vehicle::UpdateMeasurements()
         return;
     }
 
-    auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
     // If vehicle above ground.
     if (surfaceElement != nullptr && surfaceElement->GetBaseZ() <= z)
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
-        auto tileElement = map_get_first_element_at(CoordsXY{ x, y });
+        auto tileElement = MapGetFirstElementAt(CoordsXY{ x, y });
         if (tileElement == nullptr)
             return;
 
@@ -4615,7 +4615,7 @@ void Vehicle::UpdateBoatLocation()
  */
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
 {
-    TileElement* tileElement = map_get_first_element_at(location);
+    TileElement* tileElement = MapGetFirstElementAt(location);
     if (tileElement == nullptr)
         return false;
     do
@@ -5121,7 +5121,7 @@ void Vehicle::UpdateDoingCircusShow()
  */
 static TileElement* vehicle_check_collision(const CoordsXYZ& vehiclePosition)
 {
-    TileElement* tileElement = map_get_first_element_at(vehiclePosition);
+    TileElement* tileElement = MapGetFirstElementAt(vehiclePosition);
     if (tileElement == nullptr)
     {
         return nullptr;

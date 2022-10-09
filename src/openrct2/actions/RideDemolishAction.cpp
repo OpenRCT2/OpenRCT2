@@ -206,7 +206,7 @@ money32 RideDemolishAction::DemolishTracks() const
             while (!lastForTileReached)
             {
                 offset++;
-                auto* tileElement = map_get_first_element_at(tileCoords) + offset;
+                auto* tileElement = MapGetFirstElementAt(tileCoords) + offset;
                 if (tileElement == nullptr)
                     break;
 

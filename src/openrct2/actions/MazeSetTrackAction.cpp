@@ -74,7 +74,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         res.ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
         return res;
     }
-    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         res.Error = GameActions::Status::Unknown;

@@ -111,7 +111,7 @@ namespace OpenRCT2
 
         Iterator begin() noexcept
         {
-            T* element = reinterpret_cast<T*>(map_get_first_element_at(_loc));
+            T* element = reinterpret_cast<T*>(MapGetFirstElementAt(_loc));
 
             if constexpr (!std::is_same_v<T, TileElement>)
             {

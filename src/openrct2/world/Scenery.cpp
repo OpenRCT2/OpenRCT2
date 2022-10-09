@@ -124,7 +124,7 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
 {
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(sceneryPos);
+    tileElement = MapGetFirstElementAt(sceneryPos);
     if (tileElement == nullptr)
         return;
     do
@@ -243,7 +243,7 @@ void SceneryRemoveGhostToolPlacement()
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_1)
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_1;
-        TileElement* tileElement = map_get_first_element_at(gSceneryGhostPosition);
+        TileElement* tileElement = MapGetFirstElementAt(gSceneryGhostPosition);
 
         do
         {

@@ -72,7 +72,7 @@ int32_t track_is_connected_by_shape(TileElement* a, TileElement* b)
 
 static TileElement* find_station_element(const CoordsXYZD& loc, RideId rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return nullptr;
     do

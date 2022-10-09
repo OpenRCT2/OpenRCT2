@@ -402,7 +402,7 @@ private:
 
     int32_t GetBaseZ(const CoordsXY& loc)
     {
-        auto surfaceElement = map_get_surface_element_at(loc);
+        auto surfaceElement = MapGetSurfaceElementAt(loc);
         if (surfaceElement == nullptr)
             return 0;
 

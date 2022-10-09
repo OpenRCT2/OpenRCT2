@@ -97,7 +97,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 
     if (isExecuting)
     {
-        map_count_remaining_land_rights();
+        MapCountRemainingLandRights();
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, centre);
     }
     return res;
@@ -105,7 +105,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 
 GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
 {
-    SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
+    SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);

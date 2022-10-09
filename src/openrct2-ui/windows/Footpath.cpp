@@ -1123,7 +1123,7 @@ private:
         z = std::min(255 * COORDS_Z_STEP, gFootpathConstructFromPosition.z);
         zLow = z - PATH_HEIGHT_STEP;
 
-        tileElement = map_get_first_element_at(gFootpathConstructFromPosition);
+        tileElement = MapGetFirstElementAt(gFootpathConstructFromPosition);
         do
         {
             if (tileElement == nullptr)

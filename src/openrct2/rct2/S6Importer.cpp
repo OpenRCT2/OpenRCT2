@@ -499,9 +499,9 @@ namespace RCT2
             // pad_13CE778
 
             // Fix and set dynamic variables
-            map_strip_ghost_flag_from_elements();
+            MapStripGhostFlagFromElements();
             ConvertScenarioStringsToUTF8();
-            map_count_remaining_land_rights();
+            MapCountRemainingLandRights();
             determine_ride_entrance_and_exit_locations();
 
             park.Name = GetUserString(_s6.park_name);
@@ -653,7 +653,7 @@ namespace RCT2
             };
             for (const auto& tile : tilesToUncovered)
             {
-                auto* tileElement = map_get_first_element_at(tile);
+                auto* tileElement = MapGetFirstElementAt(tile);
                 if (tileElement == nullptr)
                     continue;
 
@@ -678,7 +678,7 @@ namespace RCT2
             };
             for (const auto& tile : tilesToCovered)
             {
-                auto* tileElement = map_get_first_element_at(tile);
+                auto* tileElement = MapGetFirstElementAt(tile);
                 if (tileElement == nullptr)
                     continue;
 

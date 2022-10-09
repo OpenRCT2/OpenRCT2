@@ -163,7 +163,7 @@ namespace OpenRCT2::Audio
         params.volume = 0;
         params.pan = 0;
 
-        auto element = map_get_surface_element_at(location);
+        auto element = MapGetSurfaceElementAt(location);
         if (element != nullptr && (element->GetBaseZ()) - 5 > location.z)
         {
             volumeDown = 10;

@@ -23,7 +23,7 @@ static bool isLocationLitterable(const CoordsXYZ& mapPos)
     if (!map_is_location_owned(mapPos))
         return false;
 
-    tileElement = map_get_first_element_at(mapPos);
+    tileElement = MapGetFirstElementAt(mapPos);
     if (tileElement == nullptr)
         return false;
     do

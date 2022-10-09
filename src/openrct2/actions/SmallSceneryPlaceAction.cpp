@@ -164,7 +164,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    auto* surfaceElement = map_get_surface_element_at(_loc);
+    auto* surfaceElement = MapGetSurfaceElementAt(_loc);
 
     if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
     {

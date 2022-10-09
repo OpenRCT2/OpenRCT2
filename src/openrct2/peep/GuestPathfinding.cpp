@@ -280,7 +280,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
     }
 
     loc += TileDirectionDelta[chosenDirection];
-    nextTileElement = map_get_first_element_at(loc);
+    nextTileElement = MapGetFirstElementAt(loc);
     do
     {
         if (nextTileElement == nullptr)
@@ -330,7 +330,7 @@ static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenD
         return PATH_SEARCH_LIMIT_REACHED;
 
     loc += TileDirectionDelta[chosenDirection];
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
     {
         return PATH_SEARCH_FAILED;
@@ -742,7 +742,7 @@ static void peep_pathfind_heuristic_search(
 
     /* Get the next map element of interest in the direction of test_edge. */
     bool found = false;
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
     {
         return;
@@ -1286,7 +1286,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
     // Get the path element at this location
-    TileElement* dest_tile_element = map_get_first_element_at(loc);
+    TileElement* dest_tile_element = MapGetFirstElementAt(loc);
     /* Where there are multiple matching map elements placed with zero
      * clearance, save the first one for later use to determine the path
      * slope - this maintains the original behaviour (which only processes
@@ -1797,7 +1797,7 @@ int32_t OriginalPathfinding::GuestPathFindParkEntranceLeaving(Peep& peep, uint8_
 static void get_ride_queue_end(TileCoordsXYZ& loc)
 {
     TileCoordsXY queueEnd = { 0, 0 };
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
 
     if (tileElement == nullptr)
     {
@@ -1845,7 +1845,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         }
         nextTile += TileDirectionDelta[direction];
 
-        tileElement = map_get_first_element_at(nextTile);
+        tileElement = MapGetFirstElementAt(nextTile);
         found = false;
         if (tileElement == nullptr)
             break;

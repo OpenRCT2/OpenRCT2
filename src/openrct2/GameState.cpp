@@ -63,7 +63,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     gInMapInitCode = true;
     gCurrentTicks = 0;
 
-    map_init(mapSize);
+    MapInit(mapSize);
     _park->Initialise();
     finance_init();
     BannerInit();
