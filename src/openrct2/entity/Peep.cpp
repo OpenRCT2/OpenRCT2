@@ -321,9 +321,15 @@ bool Peep::CheckForPath()
     return false;
 }
 
-bool Peep::PathIsBlockedByVehicle()
+bool Peep::ShouldWaitForLevelCrossing()
 {
     auto curPos = TileCoordsXYZ(GetLocation());
+    if (FootpathIsBlockedByVehicle(curPos))
+    {
+        // If current position is blocked, try to get out of the way
+        return false;
+    }
+
     auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
     if ((curPos.x != dstPos.x || curPos.y != dstPos.y) && FootpathIsBlockedByVehicle(dstPos))
     {
