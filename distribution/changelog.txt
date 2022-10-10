@@ -5,6 +5,7 @@
 - Fix: [#17853] Invention name tears while being dragged.
 - Fix: [#18064] Unable to dismiss notification messages.
 - Fix: [#18070] Underground entrance/exit shows through terrain walls (original bug).
+- Fix: [#18094] Underground shops & facilities don't show when adjacent to non-underground path (original bug).
 - Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
 - Fix: [#18134] Underground on-ride photo section partially clips through adjacent terrain edge.
 - Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
