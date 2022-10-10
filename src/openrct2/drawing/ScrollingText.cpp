@@ -58,8 +58,7 @@ void scrolling_text_initialise_bitmaps()
     for (int32_t i = 0; i < FONT_SPRITE_GLYPH_COUNT; i++)
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        gfx_draw_sprite_software(
-            &dpi, ImageId::FromUInt32(SPR_CHAR_START + static_cast<uint32_t>(FontSpriteBase::TINY) + i), { -1, 0 });
+        gfx_draw_sprite_software(&dpi, ImageId(SPR_CHAR_START + static_cast<uint32_t>(FontSpriteBase::TINY) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -80,8 +79,7 @@ void scrolling_text_initialise_bitmaps()
     for (int32_t i = 0; i < SPR_G2_GLYPH_COUNT; i++)
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        gfx_draw_sprite_software(
-            &dpi, ImageId::FromUInt32(SPR_G2_CHAR_BEGIN + (FONT_SIZE_TINY * SPR_G2_GLYPH_COUNT) + i), { -1, 0 });
+        gfx_draw_sprite_software(&dpi, ImageId(SPR_G2_CHAR_BEGIN + (FONT_SIZE_TINY * SPR_G2_GLYPH_COUNT) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {

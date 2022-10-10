@@ -243,7 +243,8 @@ void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId& imageId, co
     }
 }
 
-void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+void FASTCALL
+    gfx_draw_glyph(rct_drawpixelinfo* dpi, const ImageId& image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)

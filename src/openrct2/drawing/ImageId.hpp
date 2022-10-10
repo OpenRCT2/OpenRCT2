@@ -94,20 +94,6 @@ public:
         return result;
     }
 
-    [[nodiscard]] static ImageId FromUInt32(uint32_t value, uint32_t tertiary)
-    {
-        if (!(value & FLAG_PRIMARY) && (value & FLAG_SECONDARY))
-        {
-            auto result = ImageId::FromUInt32(value).WithTertiary(tertiary);
-            assert(result.ToUInt32() == value);
-            return result;
-        }
-        else
-        {
-            return ImageId::FromUInt32(value);
-        }
-    }
-
     ImageId() = default;
 
     explicit constexpr ImageId(ImageIndex index)

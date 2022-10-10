@@ -4637,7 +4637,7 @@ void set_vehicle_type_image_max_sizes(CarEntry* vehicle_type, int32_t num_images
 
     for (int32_t i = 0; i < num_images; ++i)
     {
-        gfx_draw_sprite_software(&dpi, ImageId::FromUInt32(vehicle_type->base_image_id + i), { 0, 0 });
+        gfx_draw_sprite_software(&dpi, ImageId(vehicle_type->base_image_id + i), { 0, 0 });
     }
     int32_t al = -1;
     for (int32_t i = 99; i != 0; --i)

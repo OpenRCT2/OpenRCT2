@@ -73,7 +73,7 @@ static void PaintSpaceRingsStructure(
             if (rider != nullptr)
             {
                 imageColourFlags = ImageId(0, rider->TshirtColour, rider->TrousersColour);
-                imageId = imageColourFlags.WithIndex((baseImageId & 0x7FFFF) + 352 + frameNum);
+                imageId = imageColourFlags.WithIndex(baseImageId + 352 + frameNum);
                 PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 20, 23 }, { -10, -10, height });
             }
         }

@@ -529,7 +529,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteA
 void FASTCALL gfx_rle_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId& image_id, const ScreenCoordsXY& coords);
 void FASTCALL
-    gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image_id, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+    gfx_draw_glyph(rct_drawpixelinfo* dpi, const ImageId& image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, const ImageId& image, const ScreenCoordsXY& coords, uint8_t colour);
 void FASTCALL gfx_draw_sprite_raw_masked(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const ImageId& maskImage, const ImageId& colourImage);
@@ -575,7 +575,6 @@ class Formatter;
 ImageId scrolling_text_setup(
     struct paint_session& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour);
 
-rct_size16 FASTCALL gfx_get_sprite_size(uint32_t image_id);
 size_t g1_calculate_data_size(const rct_g1_element* g1);
 
 void mask_scalar(
