@@ -575,16 +575,16 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
     if (text == nullptr || text[0] == 0)
         return;
 
+    if (!Platform::IsFilenameValid(text))
+    {
+        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+        return;
+    }
+
     switch (widgetIndex)
     {
         case WIDX_NEW_FOLDER:
         {
-            if (!Platform::IsFilenameValid(text))
-            {
-                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
-                return;
-            }
-
             const u8string path = Path::Combine(_directory, text);
             if (!Platform::EnsureDirectoryExists(path))
             {
