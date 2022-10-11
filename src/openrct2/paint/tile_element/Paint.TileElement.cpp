@@ -48,7 +48,7 @@ void TileElementPaintSetup(paint_session& session, const CoordsXY& mapCoords, bo
 {
     PROFILED_FUNCTION();
 
-    if (!map_is_edge(mapCoords))
+    if (!MapIsEdge(mapCoords))
     {
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilForceSetGeneralSupportHeight(session, -1, 0);

@@ -74,8 +74,8 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     {
         supportsRequired = true;
     }
-    int32_t landHeight = tile_element_height(_loc);
-    int16_t waterHeight = tile_element_water_height(_loc);
+    int32_t landHeight = TileElementHeight(_loc);
+    int16_t waterHeight = TileElementWaterHeight(_loc);
 
     int32_t surfaceHeight = landHeight;
     // If on water
@@ -138,8 +138,8 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         loc2.x += SceneryQuadrantOffsets[quadrant & 3].x;
         loc2.y += SceneryQuadrantOffsets[quadrant & 3].y;
     }
-    landHeight = tile_element_height(loc2);
-    waterHeight = tile_element_water_height(loc2);
+    landHeight = TileElementHeight(loc2);
+    waterHeight = TileElementWaterHeight(loc2);
 
     surfaceHeight = landHeight;
     // If on water
@@ -159,7 +159,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
-        && !map_is_location_owned({ _loc.x, _loc.y, targetHeight }))
+        && !MapIsLocationOwned({ _loc.x, _loc.y, targetHeight }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -283,8 +283,8 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     {
         supportsRequired = true;
     }
-    int32_t landHeight = tile_element_height(_loc);
-    int16_t waterHeight = tile_element_water_height(_loc);
+    int32_t landHeight = TileElementHeight(_loc);
+    int16_t waterHeight = TileElementWaterHeight(_loc);
 
     int32_t surfaceHeight = landHeight;
     // If on water
@@ -332,8 +332,8 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
         x2 += SceneryQuadrantOffsets[quadrant & 3].x;
         y2 += SceneryQuadrantOffsets[quadrant & 3].y;
     }
-    landHeight = tile_element_height({ x2, y2 });
-    waterHeight = tile_element_water_height({ x2, y2 });
+    landHeight = TileElementHeight({ x2, y2 });
+    waterHeight = TileElementWaterHeight({ x2, y2 });
 
     surfaceHeight = landHeight;
     // If on water

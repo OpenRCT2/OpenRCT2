@@ -105,7 +105,7 @@ namespace OpenRCT2::Scripting
                     auto numToInsert = numElements - currentNumElements;
                     for (size_t i = 0; i < numToInsert; i++)
                     {
-                        tile_element_insert(pos, 0, TileElementType::Surface);
+                        TileElementInsert(pos, 0, TileElementType::Surface);
                     }
 
                     // Copy data to element span
@@ -150,7 +150,7 @@ namespace OpenRCT2::Scripting
             std::vector<TileElement> data(first, first + origNumElements);
 
             auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0).ToCoordsXYZ();
-            auto newElement = tile_element_insert(pos, 0, TileElementType::Surface);
+            auto newElement = TileElementInsert(pos, 0, TileElementType::Surface);
             if (newElement == nullptr)
             {
                 auto ctx = GetDukContext();
@@ -195,7 +195,7 @@ namespace OpenRCT2::Scripting
         auto first = GetFirstElement();
         if (index < GetNumElements(first))
         {
-            tile_element_remove(&first[index]);
+            TileElementRemove(&first[index]);
             map_invalidate_tile_full(_coords);
         }
     }

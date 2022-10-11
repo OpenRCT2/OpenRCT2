@@ -54,7 +54,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
     const uint32_t flags = GetFlags();
 
-    int32_t z = tile_element_height(_loc);
+    int32_t z = TileElementHeight(_loc);
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = z;
@@ -93,7 +93,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
-            if (!map_is_location_owned({ currentTile.x, currentTile.y, currentTile.z }))
+            if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
             {
                 return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
@@ -125,7 +125,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 {
     auto res = GameActions::Result();
 
-    int32_t z = tile_element_height(_loc);
+    int32_t z = TileElementHeight(_loc);
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = z;
@@ -165,7 +165,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
-            if (!map_is_location_owned({ currentTile.x, currentTile.y, currentTile.z }))
+            if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
             {
                 return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
@@ -175,7 +175,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
         if (sceneryElement != nullptr)
         {
             map_invalidate_tile_full(currentTile);
-            tile_element_remove(sceneryElement);
+            TileElementRemove(sceneryElement);
         }
         else
         {

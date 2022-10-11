@@ -249,7 +249,7 @@ public:
         ride_construction_invalidate_current_track();
         viewport_set_visibility(0);
 
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
@@ -2138,7 +2138,7 @@ public:
         int32_t trackType, trackDirection;
         CoordsXYZ trackPos{};
 
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
 
@@ -2170,7 +2170,7 @@ public:
         if (get_ride(_currentRideIndex))
         {
             SelectMapTiles(trackType, trackDirection, trackPos);
-            map_invalidate_map_selection_tiles();
+            MapInvalidateMapSelectionTiles();
         }
     }
 
@@ -2543,7 +2543,7 @@ private:
     void ToolDownEntranceExit(const ScreenCoordsXY& screenCoords)
     {
         ride_construction_invalidate_current_track();
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
@@ -3206,7 +3206,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     int32_t z;
     const rct_preview_track* trackBlock;
 
-    map_invalidate_map_selection_tiles();
+    MapInvalidateMapSelectionTiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3214,7 +3214,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     if (!mapCoords)
     {
         ride_construction_invalidate_current_track();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         return;
     }
 
@@ -3236,7 +3236,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr))
     {
         ride_construction_invalidate_current_track();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         return;
     }
     _currentTrackPieceType = trackType;
@@ -3268,7 +3268,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             int32_t highestZ = 0;
             for (const auto& selectedTile : gMapSelectionTiles)
             {
-                if (map_is_location_valid(selectedTile))
+                if (MapIsLocationValid(selectedTile))
                 {
                     z = map_get_highest_z(selectedTile);
                     if (z > highestZ)
@@ -3296,7 +3296,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     _currentTrackBegin.z = z;
     if ((_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) && _currentTrackBegin == _previousTrackPiece)
     {
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         return;
     }
 
@@ -3325,7 +3325,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
         auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
         context_broadcast_intent(&intent);
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         return;
     }
 
@@ -3357,7 +3357,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         for (int8_t i = 0; i < NumOrthogonalDirections; i++)
         {
             const auto testLoc = CoordsXYZ{ *mapCoords + CoordsDirectionDelta[i], z };
-            if (!map_is_location_owned(testLoc))
+            if (!MapIsLocationOwned(testLoc))
             {
                 pathsByDir[i] = nullptr;
                 continue;
@@ -3416,7 +3416,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     }
 
     window_ride_construction_update_active_elements();
-    map_invalidate_map_selection_tiles();
+    MapInvalidateMapSelectionTiles();
 }
 
 /**
@@ -3425,8 +3425,8 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
  */
 void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoords)
 {
-    map_invalidate_selection_rect();
-    map_invalidate_map_selection_tiles();
+    MapInvalidateSelectionRect();
+    MapInvalidateMapSelectionTiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3443,7 +3443,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
     gMapSelectPositionB = entranceOrExitCoords;
     gMapSelectArrowPosition = entranceOrExitCoords;
     gMapSelectArrowDirection = DirectionReverse(entranceOrExitCoords.direction);
-    map_invalidate_selection_rect();
+    MapInvalidateSelectionRect();
 
     entranceOrExitCoords.direction = DirectionReverse(gRideEntranceExitPlaceDirection);
     StationIndex stationNum = gRideEntranceExitPlaceStationIndex;
@@ -3470,7 +3470,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
     rct_window* w;
 
-    map_invalidate_map_selection_tiles();
+    MapInvalidateMapSelectionTiles();
     ride_construction_invalidate_current_track();
 
     CoordsXYZ mapCoords{};
@@ -3488,7 +3488,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     {
         for (const auto& selectedTile : gMapSelectionTiles)
         {
-            if (!map_is_location_valid(selectedTile))
+            if (!MapIsLocationValid(selectedTile))
                 continue;
 
             z = map_get_highest_z(selectedTile);

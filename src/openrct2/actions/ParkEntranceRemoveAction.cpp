@@ -85,7 +85,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
 
 void ParkEntranceRemoveAction::ParkEntranceRemoveSegment(const CoordsXYZ& loc) const
 {
-    auto entranceElement = map_get_park_entrance_element_at(loc, true);
+    auto entranceElement = MapGetParkEntranceElementAt(loc, true);
     if (entranceElement == nullptr)
     {
         return;

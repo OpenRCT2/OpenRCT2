@@ -55,7 +55,7 @@ GameActions::Result PlacePeepSpawnAction::Query() const
     }
 
     // Verify footpath exists at location, and retrieve coordinates
-    auto pathElement = map_get_path_element_at(TileCoordsXYZ{ _location });
+    auto pathElement = MapGetPathElementAt(TileCoordsXYZ{ _location });
     if (pathElement == nullptr)
     {
         return GameActions::Result(

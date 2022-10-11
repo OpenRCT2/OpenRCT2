@@ -109,8 +109,8 @@ void VehicleCrashParticle::Update()
     velocity_z = vz & 0xFFFF;
 
     // Check collision with land / water
-    int16_t landZ = tile_element_height(newLoc);
-    int16_t waterZ = tile_element_water_height(newLoc);
+    int16_t landZ = TileElementHeight(newLoc);
+    int16_t waterZ = TileElementWaterHeight(newLoc);
 
     if (waterZ != 0 && z >= waterZ && newLoc.z <= waterZ)
     {

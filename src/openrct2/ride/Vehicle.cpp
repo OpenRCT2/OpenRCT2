@@ -2619,7 +2619,7 @@ static rct_synchronised_vehicle* _lastSynchronisedVehicle = nullptr;
 static bool try_add_synchronised_station(const CoordsXYZ& coords)
 {
     // make sure we are in map bounds
-    if (!map_is_location_valid(coords))
+    if (!MapIsLocationValid(coords))
     {
         return false;
     }
@@ -5415,8 +5415,8 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        int16_t height = tile_element_height(curPos);
-        int16_t waterHeight = tile_element_water_height(curPos);
+        int16_t height = TileElementHeight(curPos);
+        int16_t waterHeight = TileElementWaterHeight(curPos);
         int16_t zDiff;
         if (waterHeight != 0)
         {
@@ -5442,7 +5442,7 @@ void Vehicle::UpdateCrash()
         curPos.z += static_cast<int8_t>(curVehicle->crash_z >> 8);
         curVehicle->TrackLocation = { (curVehicle->crash_x << 8), (curVehicle->crash_y << 8), (curVehicle->crash_z << 8) };
 
-        if (!map_is_location_valid(curPos))
+        if (!MapIsLocationValid(curPos))
         {
             curVehicle->CrashOnLand();
             continue;
@@ -6844,7 +6844,7 @@ static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* til
 template<bool isBackwards>
 static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& trackLocation, bool isLastVehicle)
 {
-    auto door = map_get_wall_element_at(doorLocation);
+    auto door = MapGetWallElementAt(doorLocation);
     if (door == nullptr)
     {
         return;
@@ -7320,7 +7320,7 @@ void Vehicle::Sub6DBF3E()
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
     TileElement* tileElement = nullptr;
-    if (map_is_location_valid(TrackLocation))
+    if (MapIsLocationValid(TrackLocation))
     {
         tileElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
     }
@@ -9201,7 +9201,7 @@ void Vehicle::UpdateCrossings() const
 
         while (true)
         {
-            auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
+            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
             auto curRide = GetRide();
 
             // Many New Element parks have invisible rides hacked into the path.
@@ -9263,7 +9263,7 @@ void Vehicle::UpdateCrossings() const
     uint8_t freeCount = travellingForwards ? 3 : 1;
     while (freeCount-- > 0)
     {
-        auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
+        auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
         if (pathElement != nullptr)
         {
             pathElement->SetIsBlockedByVehicle(false);

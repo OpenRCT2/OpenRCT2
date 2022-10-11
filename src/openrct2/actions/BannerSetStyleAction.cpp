@@ -55,7 +55,7 @@ GameActions::Result BannerSetStyleAction::Query() const
 
     res.Expenditure = ExpenditureType::Landscaping;
     auto location = banner->position.ToCoordsXY().ToTileCentre();
-    res.Position = { location, tile_element_height(location) };
+    res.Position = { location, TileElementHeight(location) };
 
     TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
@@ -109,7 +109,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
 
     res.Expenditure = ExpenditureType::Landscaping;
     auto location = banner->position.ToCoordsXY().ToTileCentre();
-    res.Position = { location, tile_element_height(location) };
+    res.Position = { location, TileElementHeight(location) };
 
     TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 

@@ -443,12 +443,12 @@ bool scenario_create_ducks()
     centrePos.x = SquareRadiusSize + (scenario_rand_max(gMapSize.x - SquareCentre) * 32);
     centrePos.y = SquareRadiusSize + (scenario_rand_max(gMapSize.y - SquareCentre) * 32);
 
-    Guard::Assert(map_is_location_valid(centrePos));
+    Guard::Assert(MapIsLocationValid(centrePos));
 
-    if (!map_is_location_in_park(centrePos))
+    if (!MapIsLocationInPark(centrePos))
         return false;
 
-    int32_t centreWaterZ = (tile_element_water_height(centrePos));
+    int32_t centreWaterZ = (TileElementWaterHeight(centrePos));
     if (centreWaterZ == 0)
         return false;
 
@@ -458,13 +458,13 @@ bool scenario_create_ducks()
     {
         for (int32_t x = 0; x < SquareSize; x++)
         {
-            if (!map_is_location_valid(innerPos))
+            if (!MapIsLocationValid(innerPos))
                 continue;
 
-            if (!map_is_location_in_park(innerPos))
+            if (!MapIsLocationInPark(innerPos))
                 continue;
 
-            int32_t waterZ = (tile_element_water_height(innerPos));
+            int32_t waterZ = (TileElementWaterHeight(innerPos));
             if (waterZ == centreWaterZ)
                 waterTiles++;
 
@@ -491,7 +491,7 @@ bool scenario_create_ducks()
 
         CoordsXY targetPos{ centrePos.x + innerPos.x - SquareRadiusSize, centrePos.y + innerPos.y - SquareRadiusSize };
 
-        Guard::Assert(map_is_location_valid(targetPos));
+        Guard::Assert(MapIsLocationValid(targetPos));
         Duck::Create(targetPos);
     }
 

@@ -93,7 +93,7 @@ void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
         if (!mapPositionXY.has_value())
             return;
 
-        offsetLoc = { mapPositionXY.value(), tile_element_height(*mapPositionXY) };
+        offsetLoc = { mapPositionXY.value(), TileElementHeight(*mapPositionXY) };
     }
     offsetLoc.z += 10;
     CreateAt(-value, offsetLoc, false);

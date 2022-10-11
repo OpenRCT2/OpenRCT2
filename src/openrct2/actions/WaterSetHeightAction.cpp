@@ -58,7 +58,7 @@ GameActions::Result WaterSetHeightAction::Query() const
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
-        if (!map_is_location_in_park(_coords))
+        if (!MapIsLocationInPark(_coords))
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -104,7 +104,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords, _height * COORDS_Z_STEP };
 
-    int32_t surfaceHeight = tile_element_height(_coords);
+    int32_t surfaceHeight = TileElementHeight(_coords);
     FootpathRemoveLitter({ _coords, surfaceHeight });
     if (!gCheatsDisableClearanceChecks)
         WallRemoveAtZ({ _coords, surfaceHeight });

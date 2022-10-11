@@ -176,14 +176,14 @@ public:
         if (stateChanged)
         {
             // Invalidate previous area
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             // Update and invalidate new area
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = posA;
             gMapSelectPositionB = posB;
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
         }
     }
 

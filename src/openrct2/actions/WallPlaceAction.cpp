@@ -70,7 +70,7 @@ GameActions::Result WallPlaceAction::Query() const
 
     if (_loc.z == 0)
     {
-        res.Position.z = tile_element_height(res.Position);
+        res.Position.z = TileElementHeight(res.Position);
     }
 
     if (!LocationValid(_loc))
@@ -83,12 +83,12 @@ GameActions::Result WallPlaceAction::Query() const
     {
         if (_loc.z == 0)
         {
-            if (!map_is_location_in_park(_loc))
+            if (!MapIsLocationInPark(_loc))
             {
                 return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
-        else if (!map_is_location_owned(_loc))
+        else if (!MapIsLocationOwned(_loc))
         {
             return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -280,7 +280,7 @@ GameActions::Result WallPlaceAction::Execute() const
 
     if (res.Position.z == 0)
     {
-        res.Position.z = tile_element_height(res.Position);
+        res.Position.z = TileElementHeight(res.Position);
     }
 
     uint8_t edgeSlope = 0;

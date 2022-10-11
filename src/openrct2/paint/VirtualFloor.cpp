@@ -239,7 +239,7 @@ static void VirtualFloorGetTileProperties(
         }
     }
 
-    *tileOwned = map_is_location_owned({ loc, height });
+    *tileOwned = MapIsLocationOwned({ loc, height });
 
     if (gCheatsSandboxMode)
         *tileOwned = true;

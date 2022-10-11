@@ -330,7 +330,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
     auto b = std::clamp(normRange.GetBottom(), 0, MAXIMUM_TILE_START_XY);
     auto validRange = MapRange{ l, t, r, b };
 
-    int32_t centreZ = tile_element_height(_coords);
+    int32_t centreZ = TileElementHeight(_coords);
 
     auto res = GameActions::Result();
     res.ErrorTitle = _ErrorTitles[_isLowering ? 0 : 1];
@@ -342,8 +342,8 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
     {
         case MAP_SELECT_TYPE_FULL:
         {
-            uint8_t minHeight = heightOffset + map_get_lowest_land_height(validRange);
-            uint8_t maxHeight = heightOffset + map_get_highest_land_height(validRange);
+            uint8_t minHeight = heightOffset + MapGetLowestLandHeight(validRange);
+            uint8_t maxHeight = heightOffset + MapGetHighestLandHeight(validRange);
 
             // Smooth the 4 corners
             { // top-left

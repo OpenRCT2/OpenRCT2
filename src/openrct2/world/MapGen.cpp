@@ -259,7 +259,7 @@ static void MapGenPlaceTree(ObjectEntryIndex type, const CoordsXY& loc)
         return;
     }
 
-    int32_t surfaceZ = tile_element_height(loc.ToTileCentre());
+    int32_t surfaceZ = TileElementHeight(loc.ToTileCentre());
 
     auto* sceneryElement = TileElementInsert<SmallSceneryElement>({ loc, surfaceZ }, 0b1111);
     Guard::Assert(sceneryElement != nullptr);

@@ -150,7 +150,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride* ride) const
     if (!ride->overall_view.IsNull())
     {
         auto xy = ride->overall_view.ToTileCentre();
-        res.Position = { xy, tile_element_height(xy) };
+        res.Position = { xy, TileElementHeight(xy) };
     }
 
     ride->Delete();
@@ -229,7 +229,7 @@ money32 RideDemolishAction::DemolishTracks() const
                     auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
                     if (removRes.Error != GameActions::Status::Ok)
                     {
-                        tile_element_remove(tileElement);
+                        TileElementRemove(tileElement);
                     }
                     else
                     {
@@ -281,7 +281,7 @@ GameActions::Result RideDemolishAction::RefurbishRide(Ride* ride) const
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res.Position = { location, tile_element_height(location) };
+        res.Position = { location, TileElementHeight(location) };
     }
 
     window_close_by_number(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());

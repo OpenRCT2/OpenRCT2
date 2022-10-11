@@ -70,7 +70,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    if (!map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
+    if (!MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }

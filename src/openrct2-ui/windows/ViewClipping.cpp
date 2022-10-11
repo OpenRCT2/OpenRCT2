@@ -232,14 +232,14 @@ public:
         auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
         if (mapCoords)
         {
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectPositionA.x = std::min(_selectionStart.x, mapCoords->x);
             gMapSelectPositionB.x = std::max(_selectionStart.x, mapCoords->x);
             gMapSelectPositionA.y = std::min(_selectionStart.y, mapCoords->y);
             gMapSelectPositionB.y = std::max(_selectionStart.y, mapCoords->y);
             gMapSelectType = MAP_SELECT_TYPE_FULL;
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
         }
     }
 

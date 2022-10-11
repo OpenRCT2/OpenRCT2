@@ -47,7 +47,7 @@ static int32_t MapPlaceClearFunc(
 
     map_invalidate_tile({ coords, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ() });
 
-    tile_element_remove(*tile_element);
+    TileElementRemove(*tile_element);
 
     (*tile_element)--;
     return 0;
@@ -124,7 +124,7 @@ GameActions::Result MapCanConstructWithClearAt(
     res.SetData(ConstructClearResult{ groundFlags });
 
     bool canBuildCrossing = false;
-    if (map_is_edge(pos))
+    if (MapIsEdge(pos))
     {
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorMessage = STR_OFF_EDGE_OF_MAP;

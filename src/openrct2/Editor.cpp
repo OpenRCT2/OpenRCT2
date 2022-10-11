@@ -294,7 +294,7 @@ namespace Editor
 
     static void ClearMapForEditing(bool fromSave)
     {
-        map_remove_all_rides();
+        MapRemoveAllRides();
         UnlinkAllRideBanners();
 
         ride_init_all();

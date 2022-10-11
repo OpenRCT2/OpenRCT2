@@ -1055,7 +1055,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
         tile_descriptor& descriptor = tileDescriptors[i + 1];
 
         descriptor.tile_element = nullptr;
-        if (!map_is_location_valid(position))
+        if (!MapIsLocationValid(position))
         {
             continue;
         }
@@ -1085,7 +1085,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
         const int16_t x = session.MapPosition.x;
         const int16_t y = session.MapPosition.y;
 
-        int32_t surfaceHeight = tile_element_height({ x + 16, y + 16 });
+        int32_t surfaceHeight = TileElementHeight({ x + 16, y + 16 });
         int32_t dx = surfaceHeight + 3;
 
         int32_t image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16);
@@ -1174,7 +1174,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
         else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
         {
             const CoordsXY& pos = session.MapPosition;
-            const int32_t height2 = (tile_element_height({ pos.x + 16, pos.y + 16 })) + 3;
+            const int32_t height2 = (TileElementHeight({ pos.x + 16, pos.y + 16 })) + 3;
             paint_struct* backup = session.LastPS;
             PaintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
             session.LastPS = backup;
@@ -1191,7 +1191,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
         else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
         {
             const CoordsXY& pos = session.MapPosition;
-            const int32_t height2 = tile_element_height({ pos.x + 16, pos.y + 16 });
+            const int32_t height2 = TileElementHeight({ pos.x + 16, pos.y + 16 });
             paint_struct* backup = session.LastPS;
             PaintAddImageAsParent(
                 session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), { 16, 16, height2 + 3 }, { 1, 1, 0 });

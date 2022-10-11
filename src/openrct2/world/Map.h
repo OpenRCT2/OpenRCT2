@@ -169,34 +169,34 @@ void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements);
 int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
 BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t direction);
 SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords);
-PathElement* map_get_path_element_at(const TileCoordsXYZ& loc);
-WallElement* map_get_wall_element_at(const CoordsXYZD& wallCoords);
-WallElement* map_get_wall_element_at(const CoordsXYRangedZ& coords);
-SmallSceneryElement* map_get_small_scenery_element_at(const CoordsXYZ& sceneryCoords, int32_t type, uint8_t quadrant);
-EntranceElement* map_get_park_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost);
-EntranceElement* map_get_ride_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost);
-EntranceElement* map_get_ride_exit_element_at(const CoordsXYZ& exitCoords, bool ghost);
-int16_t tile_element_height(const CoordsXY& loc);
-int16_t tile_element_water_height(const CoordsXY& loc);
-uint8_t map_get_highest_land_height(const MapRange& range);
-uint8_t map_get_lowest_land_height(const MapRange& range);
-bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection);
-void map_remove_provisional_elements();
-void map_restore_provisional_elements();
-void map_update_path_wide_flags();
-bool map_is_location_valid(const CoordsXY& coords);
-bool map_is_edge(const CoordsXY& coords);
-bool map_can_build_at(const CoordsXYZ& loc);
-bool map_is_location_owned(const CoordsXYZ& loc);
-bool map_is_location_in_park(const CoordsXY& coords);
-bool map_is_location_owned_or_has_rights(const CoordsXY& loc);
-bool map_surface_is_blocked(const CoordsXY& mapCoords);
-void tile_element_remove(TileElement* tileElement);
-void map_remove_all_rides();
-void map_invalidate_map_selection_tiles();
-void map_invalidate_selection_rect();
+PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc);
+WallElement* MapGetWallElementAt(const CoordsXYZD& wallCoords);
+WallElement* MapGetWallElementAt(const CoordsXYRangedZ& coords);
+SmallSceneryElement* MapGetSmallSceneryElementAt(const CoordsXYZ& sceneryCoords, int32_t type, uint8_t quadrant);
+EntranceElement* MapGetParkEntranceElementAt(const CoordsXYZ& entranceCoords, bool ghost);
+EntranceElement* MapGetRideEntranceElementAt(const CoordsXYZ& entranceCoords, bool ghost);
+EntranceElement* MapGetRideExitElementAt(const CoordsXYZ& exitCoords, bool ghost);
+uint8_t MapGetHighestLandHeight(const MapRange& range);
+uint8_t MapGetLowestLandHeight(const MapRange& range);
+bool MapCoordIsConnected(const TileCoordsXYZ& loc, uint8_t faceDirection);
+void MapRemoveProvisionalElements();
+void MapRestoreProvisionalElements();
+void MapUpdatePathWideFlags();
+bool MapIsLocationValid(const CoordsXY& coords);
+bool MapIsEdge(const CoordsXY& coords);
+bool MapCanBuildAt(const CoordsXYZ& loc);
+bool MapIsLocationOwned(const CoordsXYZ& loc);
+bool MapIsLocationInPark(const CoordsXY& coords);
+bool MapIsLocationOwnedOrHasRights(const CoordsXY& loc);
+bool MapSurfaceIsBlocked(const CoordsXY& mapCoords);
+void MapRemoveAllRides();
+void MapInvalidateMapSelectionTiles();
+void MapInvalidateSelectionRect();
 bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
-TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
+int16_t TileElementHeight(const CoordsXY& loc);
+int16_t TileElementWaterHeight(const CoordsXY& loc);
+void TileElementRemove(TileElement* tileElement);
+TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
 
 template<typename T = TileElement> T* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc)
 {
@@ -206,7 +206,7 @@ template<typename T = TileElement> T* MapGetFirstTileElementWithBaseHeightBetwee
 
 template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
 {
-    auto* element = tile_element_insert(loc, occupiedQuadrants, T::ElementType);
+    auto* element = TileElementInsert(loc, occupiedQuadrants, T::ElementType);
     return (element != nullptr) ? element->template as<T>() : nullptr;
 }
 

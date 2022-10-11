@@ -620,7 +620,7 @@ void Peep::PickupAbort(int32_t old_x)
 // dropped.
 GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
 {
-    auto* pathElement = map_get_path_element_at(location);
+    auto* pathElement = MapGetPathElementAt(location);
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
     if (pathElement == nullptr)
     {
@@ -635,7 +635,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     // in the middle of a tile.
     CoordsXYZ destination = { location.ToCoordsXY().ToTileCentre(), tileElement->GetBaseZ() + 16 };
 
-    if (!map_is_location_owned(destination))
+    if (!MapIsLocationOwned(destination))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_ERR_CANT_PLACE_PERSON_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -810,7 +810,7 @@ void Peep::UpdateFalling()
                         return;
                     }
                 }
-                int32_t map_height = tile_element_height({ x, y });
+                int32_t map_height = TileElementHeight({ x, y });
                 if (map_height < z || map_height - 4 > z)
                     continue;
                 saved_height = map_height;
@@ -2140,7 +2140,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
 
     int16_t z = tile_element->GetBaseZ();
     auto* guest = peep->As<Guest>();
-    if (map_is_location_owned({ coords, z }))
+    if (MapIsLocationOwned({ coords, z }))
     {
         if (guest != nullptr && guest->OutsideOfPark)
         {
@@ -2410,7 +2410,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         return;
     }
 
-    if (map_is_edge(newLoc))
+    if (MapIsEdge(newLoc))
     {
         if (guest != nullptr && guest->OutsideOfPark)
         {
@@ -2462,7 +2462,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     if (Is<Staff>() || (GetNextIsSurface()))
     {
-        int16_t height = abs(tile_element_height(newLoc) - z);
+        int16_t height = abs(TileElementHeight(newLoc) - z);
         if (height <= 3 || (Is<Staff>() && height <= 32))
         {
             InteractionRideIndex = RideId::GetNull();
@@ -2472,7 +2472,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
                 SetState(PeepState::One);
             }
 
-            if (!map_is_location_in_park(newLoc))
+            if (!MapIsLocationInPark(newLoc))
             {
                 peep_return_to_centre_of_tile(this);
                 return;
@@ -2528,7 +2528,7 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 
     if (GetNextIsSurface())
     {
-        return tile_element_height({ tile_x, tile_y });
+        return TileElementHeight({ tile_x, tile_y });
     }
 
     uint8_t slope = GetNextDirection();

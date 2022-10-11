@@ -20,7 +20,7 @@ static bool isLocationLitterable(const CoordsXYZ& mapPos)
 {
     TileElement* tileElement;
 
-    if (!map_is_location_owned(mapPos))
+    if (!MapIsLocationOwned(mapPos))
         return false;
 
     tileElement = MapGetFirstElementAt(mapPos);

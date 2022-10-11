@@ -427,7 +427,7 @@ public:
 
     void SetLandRightsToolUpdate(const ScreenCoordsXY& screenCoords)
     {
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
         if (!mapCoords.has_value())
@@ -447,7 +447,7 @@ public:
         gMapSelectPositionA = *mapCoords;
         gMapSelectPositionB.x = mapCoords->x + size;
         gMapSelectPositionB.y = mapCoords->y + size;
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
     }
 
     CoordsXYZD PlaceParkEntranceGetMapPosition(const ScreenCoordsXY& screenCoords)
@@ -484,8 +484,8 @@ public:
 
     void PlaceParkEntranceToolUpdate(const ScreenCoordsXY& screenCoords)
     {
-        map_invalidate_selection_rect();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateSelectionRect();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -508,7 +508,7 @@ public:
         gMapSelectArrowDirection = parkEntrancePosition.direction;
 
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT | MAP_SELECT_FLAG_ENABLE_ARROW;
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         if (gParkEntranceGhostExists && parkEntrancePosition == gParkEntranceGhostPosition)
         {
             return;
@@ -547,7 +547,7 @@ public:
     {
         int32_t direction;
         TileElement* tileElement;
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
@@ -570,7 +570,7 @@ public:
         gMapSelectPositionB = mapCoords;
         gMapSelectArrowPosition = CoordsXYZ{ mapCoords, mapZ };
         gMapSelectArrowDirection = DirectionReverse(direction);
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
     }
 
     void SetPeepSpawnToolDown(const ScreenCoordsXY& screenCoords)
@@ -648,7 +648,7 @@ public:
     {
         CoordsXY c = ScreenToMap(screenCoords);
         auto mapCoords = CoordsXY{ std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1), std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_BIG - 1) };
-        auto mapZ = tile_element_height(mapCoords);
+        auto mapZ = TileElementHeight(mapCoords);
 
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
@@ -664,12 +664,12 @@ public:
             int32_t radius = (landToolSize * 16) - 16;
 
             mapCoords = (mapCoords - CoordsXY{ radius, radius }).ToTileStart();
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords + CoordsXY{ size, size };
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             auto surfaceSetStyleAction = SurfaceSetStyleAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -684,12 +684,12 @@ public:
             int32_t radius = (landRightsToolSize * 16) - 16;
             mapCoords = (mapCoords - CoordsXY{ radius, radius }).ToTileStart();
 
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords + CoordsXY{ size, size };
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             auto landSetRightsAction = LandSetRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -1037,7 +1037,7 @@ private:
 
         for (int32_t i = 0; i < MAXIMUM_MAP_SIZE_TECHNICAL; i++)
         {
-            if (!map_is_edge({ x, y }))
+            if (!MapIsEdge({ x, y }))
             {
                 uint16_t colour = 0;
                 switch (selected_tab)

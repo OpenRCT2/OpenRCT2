@@ -434,7 +434,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         {
             FootpathRemoveEdgesAt(mapLoc, tileElement);
         }
-        tile_element_remove(tileElement);
+        TileElementRemove(tileElement);
         ride->ValidateStations();
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
