@@ -218,8 +218,8 @@ rct_window* WindowEditorObjectiveOptionsOpen()
 static void WindowEditorObjectiveOptionsSetPressedTab(rct_window* w)
 {
     int32_t i;
-    for (i = 0; i < 2; i++)
-        w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+    for (i = WIDX_TAB_1; i <= WIDX_TAB_2; i++)
+        w->pressed_widgets &= ~(1 << i);
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 

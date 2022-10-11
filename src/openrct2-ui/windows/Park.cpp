@@ -1213,8 +1213,8 @@ private:
 
     void SetPressedTab()
     {
-        for (auto i = 0; i < 7; i++)
-            pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+        for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
+            pressed_widgets &= ~(1 << i);
         pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
     }
 

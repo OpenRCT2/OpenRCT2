@@ -735,7 +735,6 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
 }
 static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 {
-    uint32_t i;
     if (argv.size() > 1)
     {
         int32_t int_val[4];
@@ -744,7 +743,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         bool double_valid[4];
         bool invalidArgs = false;
 
-        for (i = 0; i < 4; i++)
+        for (uint32_t i = 0; i < std::size(int_val); i++)
         {
             if (i + 1 < argv.size())
             {
@@ -1201,8 +1200,8 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
     {
         char name[9] = { 0 };
         std::fill_n(name, 8, ' ');
-        int32_t i = 0;
-        for (const char* ch = argv[0].c_str(); *ch != '\0' && i < 8; ch++)
+        std::size_t i = 0;
+        for (const char* ch = argv[0].c_str(); *ch != '\0' && i < std::size(name) - 1; ch++)
         {
             name[i++] = *ch;
         }

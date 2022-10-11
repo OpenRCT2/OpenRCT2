@@ -277,9 +277,9 @@ static void WindowMultiplayerAnchorBorderWidgets(rct_window* w)
 
 static void WindowMultiplayerSetPressedTab(rct_window* w)
 {
-    for (int32_t i = 0; i < 2; i++)
+    for (int32_t i = WIDX_TAB1; i <= WIDX_TAB4; i++)
     {
-        w->pressed_widgets &= ~(1 << (WIDX_TAB1 + i));
+        w->pressed_widgets &= ~(1 << i);
     }
     w->pressed_widgets |= 1LL << (WIDX_TAB1 + w->page);
 }

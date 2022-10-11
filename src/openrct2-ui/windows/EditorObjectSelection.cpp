@@ -915,8 +915,8 @@ public:
 
         if (ridePage)
         {
-            for (int32_t i = 0; i < 7; i++)
-                pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
+            for (int32_t i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
+                pressed_widgets &= ~(1 << i);
 
             if ((_filter_flags & FILTER_RIDES) == FILTER_RIDES)
                 pressed_widgets |= (1ULL << WIDX_FILTER_RIDE_TAB_ALL);

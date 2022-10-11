@@ -46,6 +46,7 @@
 #include "../world/Climate.h"
 #include "../world/Footpath.h"
 #include "../world/LargeScenery.h"
+#include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -4842,7 +4843,7 @@ void Guest::UpdateRideMazePathfinding()
     uint8_t hedges[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
     uint8_t openCount = 0;
     uint8_t mazeReverseLastEdge = DirectionReverse(MazeLastEdge);
-    for (uint8_t i = 0; i < 4; ++i)
+    for (uint8_t i = 0; i < NumOrthogonalDirections; ++i)
     {
         if (!(mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][i])) && i != mazeReverseLastEdge)
         {
