@@ -1189,5 +1189,5 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
 
 ImageId GetColourButtonImage(colour_t colour)
 {
-    return ImageId(SPR_PALETTE_BTN).WithTransparency(colour);
+    return ImageId(SPR_PALETTE_BTN, colour).WithBlended(true);
 }

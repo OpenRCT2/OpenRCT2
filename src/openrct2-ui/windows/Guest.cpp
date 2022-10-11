@@ -1652,7 +1652,7 @@ private:
         {
             case ShopItem::Balloon:
                 ft.Rewind();
-                ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest.BalloonColour) | GetShopItemDescriptor(item).Image);
+                ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.BalloonColour)).ToUInt32());
                 break;
             case ShopItem::Photo:
                 invRide = get_ride(guest.Photo1RideRef);
@@ -1666,7 +1666,7 @@ private:
                 break;
             case ShopItem::Umbrella:
                 ft.Rewind();
-                ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest.UmbrellaColour) | GetShopItemDescriptor(item).Image);
+                ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.UmbrellaColour)).ToUInt32());
                 break;
             case ShopItem::Voucher:
                 switch (guest.VoucherType)
@@ -1705,11 +1705,11 @@ private:
                 break;
             case ShopItem::Hat:
                 ft.Rewind();
-                ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest.HatColour) | GetShopItemDescriptor(item).Image);
+                ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.HatColour)).ToUInt32());
                 break;
             case ShopItem::TShirt:
                 ft.Rewind();
-                ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest.TshirtColour) | GetShopItemDescriptor(item).Image);
+                ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.TshirtColour)).ToUInt32());
                 break;
             case ShopItem::Photo2:
                 invRide = get_ride(guest.Photo2RideRef);

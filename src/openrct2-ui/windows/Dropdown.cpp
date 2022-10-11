@@ -456,7 +456,7 @@ void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdow
             defaultIndex = i;
 
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;
-        gDropdownItems[i].Args = (i << 32) | (SPRITE_ID_PALETTE_COLOUR_1(i) | SPR_PALETTE_BTN);
+        gDropdownItems[i].Args = (i << 32) | ImageId(SPR_PALETTE_BTN, i).ToUInt32();
     }
 
     // Show dropdown
