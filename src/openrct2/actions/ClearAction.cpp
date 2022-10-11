@@ -116,7 +116,7 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
     do
     {
         tileEdited = false;
-        tileElement = map_get_first_element_at(tilePos);
+        tileElement = MapGetFirstElementAt(tilePos);
         if (tileElement == nullptr)
             return totalCost;
         do
@@ -211,7 +211,7 @@ void ClearAction::ResetClearLargeSceneryFlag()
     {
         for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+            auto tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
             do
             {
                 if (tileElement == nullptr)

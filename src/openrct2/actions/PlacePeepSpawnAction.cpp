@@ -63,7 +63,7 @@ GameActions::Result PlacePeepSpawnAction::Query() const
     }
 
     // Verify location is unowned
-    auto surfaceMapElement = map_get_surface_element_at(_location);
+    auto surfaceMapElement = MapGetSurfaceElementAt(_location);
     if (surfaceMapElement == nullptr)
     {
         return GameActions::Result(GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);

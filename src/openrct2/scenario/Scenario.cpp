@@ -161,7 +161,7 @@ void scenario_reset()
     date_reset();
     Duck::RemoveAll();
     ParkCalculateSize();
-    map_count_remaining_land_rights();
+    MapCountRemainingLandRights();
     Staff::ResetStats();
 
     auto& objManager = GetContext()->GetObjectManager();

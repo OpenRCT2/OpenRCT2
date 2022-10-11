@@ -94,7 +94,7 @@ void MapAnimationInvalidateAll()
 static bool MapAnimationInvalidateRideEntrance(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
-    auto tileElement = map_get_first_element_at(loc);
+    auto tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -131,7 +131,7 @@ static bool MapAnimationInvalidateQueueBanner(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -164,7 +164,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
 
-    auto tileElement = map_get_first_element_at(loc);
+    auto tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -229,7 +229,7 @@ static bool MapAnimationInvalidateParkEntrance(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -259,7 +259,7 @@ static bool MapAnimationInvalidateTrackWaterfall(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -288,7 +288,7 @@ static bool MapAnimationInvalidateTrackRapids(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -317,7 +317,7 @@ static bool MapAnimationInvalidateTrackOnRidePhoto(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -356,7 +356,7 @@ static bool MapAnimationInvalidateTrackWhirlpool(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -385,7 +385,7 @@ static bool MapAnimationInvalidateTrackSpinningTunnel(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -423,7 +423,7 @@ static bool MapAnimationInvalidateBanner(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -449,7 +449,7 @@ static bool MapAnimationInvalidateLargeScenery(const CoordsXYZ& loc)
     TileElement* tileElement;
 
     bool wasInvalidated = false;
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -483,7 +483,7 @@ static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
         return false;
 
     bool removeAnimation = true;
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return removeAnimation;
     do
@@ -544,7 +544,7 @@ static bool MapAnimationInvalidateWall(const CoordsXYZ& loc)
     TileElement* tileElement;
 
     bool wasInvalidated = false;
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return true;
     do

@@ -22,7 +22,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 std::shared_ptr<ScTrackIterator> ScTrackIterator::FromElement(const CoordsXY& position, int32_t elementIndex)
 {
-    auto el = map_get_nth_element_at(position, elementIndex);
+    auto el = MapGetNthElementAt(position, elementIndex);
     auto origin = GetTrackSegmentOrigin(CoordsXYE(position, el));
     if (!origin)
         return nullptr;

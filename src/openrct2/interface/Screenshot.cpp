@@ -215,7 +215,7 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
 static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)
 {
     int32_t z = 0;
-    auto element = map_get_first_element_at(location);
+    auto element = MapGetFirstElementAt(location);
     if (element != nullptr)
     {
         do

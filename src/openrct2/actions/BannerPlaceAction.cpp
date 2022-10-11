@@ -79,7 +79,7 @@ GameActions::Result BannerPlaceAction::Query() const
     }
 
     auto baseHeight = _loc.z + PATH_HEIGHT_STEP;
-    BannerElement* existingBannerElement = map_get_banner_element_at({ _loc.x, _loc.y, baseHeight }, _loc.direction);
+    BannerElement* existingBannerElement = MapGetBannerElementAt({ _loc.x, _loc.y, baseHeight }, _loc.direction);
     if (existingBannerElement != nullptr)
     {
         return GameActions::Result(

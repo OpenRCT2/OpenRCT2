@@ -63,7 +63,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
         res.ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
         return res;
     }
-    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         res.Error = GameActions::Status::Unknown;
@@ -145,7 +145,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     if (!(flags & GAME_COMMAND_FLAG_GHOST))
     {
         FootpathRemoveLitter(_loc);
-        wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
+        WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
     }
 
     auto baseHeight = _loc.z;

@@ -107,7 +107,7 @@ void ParkUpdateFences(const CoordsXY& coords)
     if (map_is_edge(coords))
         return;
 
-    auto surfaceElement = map_get_surface_element_at(coords);
+    auto surfaceElement = MapGetSurfaceElementAt(coords);
     if (surfaceElement == nullptr)
         return;
 
@@ -116,7 +116,7 @@ void ParkUpdateFences(const CoordsXY& coords)
     {
         bool fenceRequired = true;
 
-        TileElement* tileElement = map_get_first_element_at(coords);
+        TileElement* tileElement = MapGetFirstElementAt(coords);
         if (tileElement == nullptr)
             return;
         // If an entrance element do not place flags around surface

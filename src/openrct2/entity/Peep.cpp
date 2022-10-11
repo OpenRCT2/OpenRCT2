@@ -294,7 +294,7 @@ bool Peep::CheckForPath()
         return true;
     }
 
-    TileElement* tile_element = map_get_first_element_at(NextLoc);
+    TileElement* tile_element = MapGetFirstElementAt(NextLoc);
 
     auto mapType = TileElementType::Path;
     if (GetNextIsSurface())
@@ -624,7 +624,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
     if (pathElement == nullptr)
     {
-        tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(location.ToCoordsXYZ()));
+        tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(location.ToCoordsXYZ()));
     }
     if (tileElement == nullptr)
     {
@@ -759,7 +759,7 @@ void Peep::UpdateFalling()
     }
 
     // If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
-    TileElement* tile_element = map_get_first_element_at(CoordsXY{ x, y });
+    TileElement* tile_element = MapGetFirstElementAt(CoordsXY{ x, y });
     TileElement* saved_map = nullptr;
     int32_t saved_height = 0;
 
@@ -770,7 +770,7 @@ void Peep::UpdateFalling()
             // If a path check if we are on it
             if (tile_element->GetType() == TileElementType::Path)
             {
-                int32_t height = map_height_from_slope(
+                int32_t height = MapHeightFromSlope(
                                      { x, y }, tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped())
                     + tile_element->GetBaseZ();
 
@@ -1886,7 +1886,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             auto nextLoc = coords.ToTileStart() + CoordsDirectionDelta[entranceDirection];
 
             // Make sure there is a path right behind the entrance, otherwise turn around
-            TileElement* nextTileElement = map_get_first_element_at(nextLoc);
+            TileElement* nextTileElement = MapGetFirstElementAt(nextLoc);
             do
             {
                 if (nextTileElement == nullptr)
@@ -2420,7 +2420,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         return;
     }
 
-    TileElement* tileElement = map_get_first_element_at(newLoc);
+    TileElement* tileElement = MapGetFirstElementAt(newLoc);
     if (tileElement == nullptr)
         return;
     int16_t base_z = std::max(0, (z / 8) - 2);
@@ -2478,7 +2478,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
                 return;
             }
 
-            auto surfaceElement = map_get_surface_element_at(newLoc);
+            auto surfaceElement = MapGetSurfaceElementAt(newLoc);
             if (surfaceElement == nullptr)
             {
                 peep_return_to_centre_of_tile(this);
@@ -2532,7 +2532,7 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
     }
 
     uint8_t slope = GetNextDirection();
-    return NextLoc.z + map_height_from_slope({ tile_x, tile_y }, slope, GetNextIsSloped());
+    return NextLoc.z + MapHeightFromSlope({ tile_x, tile_y }, slope, GetNextIsSloped());
 }
 
 StringId get_real_name_string_id_from_id(uint32_t id)

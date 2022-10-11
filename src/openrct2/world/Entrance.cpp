@@ -139,7 +139,7 @@ void MazeEntranceHedgeReplacement(const CoordsXYE& entrance)
     int32_t z = entrance.element->GetBaseZ();
     RideId rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
-    auto tileElement = map_get_first_element_at(hedgePos);
+    auto tileElement = MapGetFirstElementAt(hedgePos);
     if (tileElement == nullptr)
         return;
     do
@@ -176,7 +176,7 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
     int32_t z = entrance.element->GetBaseZ();
     RideId rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
-    auto tileElement = map_get_first_element_at(hedgePos);
+    auto tileElement = MapGetFirstElementAt(hedgePos);
     if (tileElement == nullptr)
         return;
     do

@@ -103,7 +103,7 @@ void Duck::UpdateFlyToWater()
     auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
     int32_t manhattanDistanceN = abs(target_x - destination.x) + abs(target_y - destination.y);
 
-    auto surfaceElement = map_get_surface_element_at(CoordsXY{ target_x, target_y });
+    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ target_x, target_y });
     int32_t waterHeight = surfaceElement != nullptr ? surfaceElement->GetWaterHeight() : 0;
     if (waterHeight == 0)
     {

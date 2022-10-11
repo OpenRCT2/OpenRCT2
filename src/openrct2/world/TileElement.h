@@ -708,4 +708,4 @@ enum
     LANDSCAPE_DOOR_OPEN = 3,
 };
 
-bool tile_element_is_underground(TileElement* tileElement);
+bool TileElementIsUnderground(TileElement* tileElement);

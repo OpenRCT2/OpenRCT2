@@ -89,7 +89,7 @@ void Banner::FormatTextTo(Formatter& ft) const
  */
 static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
 {
-    TileElement* tileElement = map_get_first_element_at(bannerCoords);
+    TileElement* tileElement = MapGetFirstElementAt(bannerCoords);
     RideId resultRideIndex = RideId::GetNull();
     if (tileElement == nullptr)
         return resultRideIndex;
@@ -146,7 +146,7 @@ TileElement* BannerGetTileElement(BannerIndex bannerIndex)
     auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {
-        auto tileElement = map_get_first_element_at(banner->position);
+        auto tileElement = MapGetFirstElementAt(banner->position);
         if (tileElement != nullptr)
         {
             do
@@ -167,7 +167,7 @@ WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex)
     if (banner == nullptr)
         return nullptr;
 
-    auto tileElement = map_get_first_element_at(banner->position);
+    auto tileElement = MapGetFirstElementAt(banner->position);
     if (tileElement == nullptr)
         return nullptr;
 

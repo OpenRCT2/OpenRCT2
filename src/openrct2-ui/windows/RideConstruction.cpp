@@ -2673,16 +2673,16 @@ private:
             auto southTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_SOUTH];
 
             // Replace map elements with temporary ones containing track
-            backupTileElementArrays[0] = map_get_first_element_at(centreTileCoords);
-            backupTileElementArrays[1] = map_get_first_element_at(eastTileCoords);
-            backupTileElementArrays[2] = map_get_first_element_at(westTileCoords);
-            backupTileElementArrays[3] = map_get_first_element_at(northTileCoords);
-            backupTileElementArrays[4] = map_get_first_element_at(southTileCoords);
-            map_set_tile_element(centreTileCoords, &tempTrackTileElement);
-            map_set_tile_element(eastTileCoords, &tempSideTrackTileElement);
-            map_set_tile_element(westTileCoords, &tempSideTrackTileElement);
-            map_set_tile_element(northTileCoords, &tempSideTrackTileElement);
-            map_set_tile_element(southTileCoords, &tempSideTrackTileElement);
+            backupTileElementArrays[0] = MapGetFirstElementAt(centreTileCoords);
+            backupTileElementArrays[1] = MapGetFirstElementAt(eastTileCoords);
+            backupTileElementArrays[2] = MapGetFirstElementAt(westTileCoords);
+            backupTileElementArrays[3] = MapGetFirstElementAt(northTileCoords);
+            backupTileElementArrays[4] = MapGetFirstElementAt(southTileCoords);
+            MapSetTileElement(centreTileCoords, &tempTrackTileElement);
+            MapSetTileElement(eastTileCoords, &tempSideTrackTileElement);
+            MapSetTileElement(westTileCoords, &tempSideTrackTileElement);
+            MapSetTileElement(northTileCoords, &tempSideTrackTileElement);
+            MapSetTileElement(southTileCoords, &tempSideTrackTileElement);
 
             // Set the temporary track element
             tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
@@ -2694,11 +2694,11 @@ private:
             TileElementPaintSetup(*session, coords, true);
 
             // Restore map elements
-            map_set_tile_element(centreTileCoords, backupTileElementArrays[0]);
-            map_set_tile_element(eastTileCoords, backupTileElementArrays[1]);
-            map_set_tile_element(westTileCoords, backupTileElementArrays[2]);
-            map_set_tile_element(northTileCoords, backupTileElementArrays[3]);
-            map_set_tile_element(southTileCoords, backupTileElementArrays[4]);
+            MapSetTileElement(centreTileCoords, backupTileElementArrays[0]);
+            MapSetTileElement(eastTileCoords, backupTileElementArrays[1]);
+            MapSetTileElement(westTileCoords, backupTileElementArrays[2]);
+            MapSetTileElement(northTileCoords, backupTileElementArrays[3]);
+            MapSetTileElement(southTileCoords, backupTileElementArrays[4]);
 
             trackBlock++;
         }
@@ -2982,7 +2982,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
         _trackPlaceZ = 0;
         if (_trackPlaceShiftState)
         {
-            auto surfaceElement = map_get_surface_element_at(mapCoords);
+            auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
             if (surfaceElement == nullptr)
                 return std::nullopt;
             auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);

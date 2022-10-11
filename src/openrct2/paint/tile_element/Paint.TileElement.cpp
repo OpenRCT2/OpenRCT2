@@ -136,7 +136,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     session.MapPosition.x = coords.x;
     session.MapPosition.y = coords.y;
 
-    auto* tile_element = map_get_first_element_at(session.MapPosition);
+    auto* tile_element = MapGetFirstElementAt(session.MapPosition);
     if (tile_element == nullptr)
         return;
     uint8_t rotation = session.CurrentRotation;

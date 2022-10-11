@@ -1060,7 +1060,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
             continue;
         }
 
-        auto surfaceElement = map_get_surface_element_at(position);
+        auto surfaceElement = MapGetSurfaceElementAt(position);
         if (surfaceElement == nullptr)
         {
             continue;

@@ -111,7 +111,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
-    auto* sceneryEntry = get_small_scenery_entry(_sceneryType);
+    auto* sceneryEntry = GetSmallSceneryEntry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -164,7 +164,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    auto* surfaceElement = map_get_surface_element_at(_loc);
+    auto* surfaceElement = MapGetSurfaceElementAt(_loc);
 
     if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
     {
@@ -303,7 +303,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
         res.Position.z = surfaceHeight;
     }
 
-    auto* sceneryEntry = get_small_scenery_entry(_sceneryType);
+    auto* sceneryEntry = GetSmallSceneryEntry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -353,7 +353,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
         FootpathRemoveLitter({ _loc, targetHeight });
         if (!gCheatsDisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
         {
-            wall_remove_at({ _loc, targetHeight, targetHeight + sceneryEntry->height });
+            WallRemoveAt({ _loc, targetHeight, targetHeight + sceneryEntry->height });
         }
     }
 

@@ -218,7 +218,7 @@ void CrashSplashParticle::Paint(paint_session& session, int32_t imageDirection) 
  */
 void SteamParticle::Create(const CoordsXYZ& coords)
 {
-    auto surfaceElement = map_get_surface_element_at(coords);
+    auto surfaceElement = MapGetSurfaceElementAt(coords);
     if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
     {
         SteamParticle* steam = CreateEntity<SteamParticle>();

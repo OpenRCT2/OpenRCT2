@@ -157,18 +157,18 @@ void StashMap();
 void UnstashMap();
 std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
 
-void map_init(const TileCoordsXY& size);
+void MapInit(const TileCoordsXY& size);
 
-void map_count_remaining_land_rights();
-void map_strip_ghost_flag_from_elements();
-TileElement* map_get_first_element_at(const CoordsXY& tilePos);
-TileElement* map_get_first_element_at(const TileCoordsXY& tilePos);
-TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n);
+void MapCountRemainingLandRights();
+void MapStripGhostFlagFromElements();
+TileElement* MapGetFirstElementAt(const CoordsXY& tilePos);
+TileElement* MapGetFirstElementAt(const TileCoordsXY& tilePos);
+TileElement* MapGetNthElementAt(const CoordsXY& coords, int32_t n);
 TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type);
-void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements);
-int32_t map_height_from_slope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
-BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t direction);
-SurfaceElement* map_get_surface_element_at(const CoordsXY& coords);
+void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements);
+int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
+BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t direction);
+SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords);
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc);
 WallElement* map_get_wall_element_at(const CoordsXYZD& wallCoords);
 WallElement* map_get_wall_element_at(const CoordsXYRangedZ& coords);
@@ -234,9 +234,9 @@ void map_extend_boundary_surface_x();
 void map_extend_boundary_surface_y();
 
 bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour);
-void wall_remove_at(const CoordsXYRangedZ& wallPos);
-void wall_remove_at_z(const CoordsXYZ& wallPos);
-void wall_remove_intersecting_walls(const CoordsXYRangedZ& wallPos, Direction direction);
+void WallRemoveAt(const CoordsXYRangedZ& wallPos);
+void WallRemoveAtZ(const CoordsXYZ& wallPos);
+void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction);
 
 void map_invalidate_tile(const CoordsXYRangedZ& tilePos);
 void map_invalidate_tile_zoom1(const CoordsXYRangedZ& tilePos);

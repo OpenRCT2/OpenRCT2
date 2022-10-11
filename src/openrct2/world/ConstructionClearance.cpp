@@ -137,7 +137,7 @@ GameActions::Result MapCanConstructWithClearAt(
         return res;
     }
 
-    TileElement* tileElement = map_get_first_element_at(pos);
+    TileElement* tileElement = MapGetFirstElementAt(pos);
     if (tileElement == nullptr)
     {
         res.Error = GameActions::Status::Unknown;
