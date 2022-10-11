@@ -34,8 +34,7 @@
  */
 void WallRemoveAt(const CoordsXYRangedZ& wallPos)
 {
-    for (auto wallElement = MapGetWallElementAt(wallPos); wallElement != nullptr;
-         wallElement = MapGetWallElementAt(wallPos))
+    for (auto wallElement = MapGetWallElementAt(wallPos); wallElement != nullptr; wallElement = MapGetWallElementAt(wallPos))
     {
         reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
         map_invalidate_tile_zoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });

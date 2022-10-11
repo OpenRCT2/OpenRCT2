@@ -103,8 +103,7 @@ TEST_F(TileElementWantsFootpathConnection, Stall)
 TEST_F(TileElementWantsFootpathConnection, RideEntrance)
 {
     // Ride entrances and exits want a connection in one direction
-    const EntranceElement* const entranceElement = MapGetRideEntranceElementAt(
-        TileCoordsXYZ{ 18, 8, 14 }.ToCoordsXYZ(), false);
+    const EntranceElement* const entranceElement = MapGetRideEntranceElementAt(TileCoordsXYZ{ 18, 8, 14 }.ToCoordsXYZ(), false);
     ASSERT_NE(entranceElement, nullptr);
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 8, 14, 0 }, nullptr));
     EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 8, 14, 1 }, nullptr));
