@@ -1187,7 +1187,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     }
 }
 
-uint32_t GetColourButtonImage(colour_t colour)
+ImageId GetColourButtonImage(colour_t colour)
 {
-    return SPRITE_ID_PALETTE_COLOUR_1(colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+    return ImageId(SPR_PALETTE_BTN, colour).WithBlended(true);
 }

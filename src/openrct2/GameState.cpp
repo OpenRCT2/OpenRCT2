@@ -63,7 +63,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     gInMapInitCode = true;
     gCurrentTicks = 0;
 
-    map_init(mapSize);
+    MapInit(mapSize);
     _park->Initialise();
     finance_init();
     BannerInit();
@@ -79,7 +79,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     gNextGuestNumber = 1;
 
     context_init();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
 
     auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
     context_broadcast_intent(&intent);

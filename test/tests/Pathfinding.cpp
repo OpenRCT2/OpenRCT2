@@ -38,7 +38,7 @@ public:
         ASSERT_TRUE(initialised);
 
         std::string parkPath = TestData::GetParkPath("pathfinding-tests.sv6");
-        load_from_sv6(parkPath.c_str());
+        GetContext()->LoadParkFromFile(parkPath);
         game_load_init();
     }
 
@@ -137,7 +137,7 @@ protected:
     static ::testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
         const uint32_t expectedSurfaceStyle = 11u;
-        const uint32_t style = map_get_surface_element_at(location.ToCoordsXYZ())->GetSurfaceStyle();
+        const uint32_t style = MapGetSurfaceElementAt(location.ToCoordsXYZ())->GetSurfaceStyle();
 
         if (style != expectedSurfaceStyle)
             return ::testing::AssertionFailure()
@@ -152,7 +152,7 @@ protected:
     {
         const uint32_t forbiddenSurfaceStyle = 8u;
 
-        const uint32_t style = map_get_surface_element_at(location.ToCoordsXYZ())->GetSurfaceStyle();
+        const uint32_t style = MapGetSurfaceElementAt(location.ToCoordsXYZ())->GetSurfaceStyle();
 
         if (style == forbiddenSurfaceStyle)
             return ::testing::AssertionFailure()

@@ -34,7 +34,7 @@ static void heartline_twister_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21356), { 0, 0, height }, { 32, 1, 26 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -43,7 +43,7 @@ static void heartline_twister_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21357), { 0, 0, height }, { 32, 1, 26 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -52,7 +52,7 @@ static void heartline_twister_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21360), { 0, 0, height }, { 32, 1, 26 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -61,7 +61,7 @@ static void heartline_twister_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21361), { 0, 0, height }, { 32, 1, 26 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -77,7 +77,7 @@ static void heartline_twister_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21296), { 0, 0, height }, { 32, 1, 26 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
             case 3:
@@ -87,11 +87,11 @@ static void heartline_twister_rc_track_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21297), { 0, 0, height }, { 32, 1, 26 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -115,7 +115,7 @@ static void heartline_twister_rc_track_station(
         { 32, 32, 1 });
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station(session, ride, direction, height, trackElement);
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -136,7 +136,7 @@ static void heartline_twister_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21382), { 0, 0, height }, { 32, 1, 50 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -145,7 +145,7 @@ static void heartline_twister_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21383), { 0, 0, height }, { 32, 1, 50 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -154,7 +154,7 @@ static void heartline_twister_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21384), { 0, 0, height }, { 32, 1, 50 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -163,7 +163,7 @@ static void heartline_twister_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21385), { 0, 0, height }, { 32, 1, 50 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -178,7 +178,7 @@ static void heartline_twister_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21326), { 0, 0, height }, { 32, 1, 50 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -187,7 +187,7 @@ static void heartline_twister_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21327), { 0, 0, height }, { 32, 1, 50 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -196,7 +196,7 @@ static void heartline_twister_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21328), { 0, 0, height }, { 32, 1, 50 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -205,17 +205,17 @@ static void heartline_twister_rc_track_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21329), { 0, 0, height }, { 32, 1, 50 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
@@ -237,7 +237,7 @@ static void heartline_twister_rc_track_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21406), { 0, 0, height }, { 32, 1, 98 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -246,7 +246,7 @@ static void heartline_twister_rc_track_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21407), { 0, 0, height }, { 32, 1, 98 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -255,7 +255,7 @@ static void heartline_twister_rc_track_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21408), { 0, 0, height }, { 32, 1, 98 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 23, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 23, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -264,7 +264,7 @@ static void heartline_twister_rc_track_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21409), { 0, 0, height }, { 32, 1, 98 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -279,7 +279,7 @@ static void heartline_twister_rc_track_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21350), { 0, 0, height }, { 32, 1, 98 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -288,7 +288,7 @@ static void heartline_twister_rc_track_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21351), { 0, 0, height }, { 32, 1, 98 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -297,7 +297,7 @@ static void heartline_twister_rc_track_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21352), { 0, 0, height }, { 32, 1, 98 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 23, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 23, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -306,17 +306,17 @@ static void heartline_twister_rc_track_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21353), { 0, 0, height }, { 32, 1, 98 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
@@ -338,7 +338,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21366), { 0, 0, height }, { 32, 1, 42 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -347,7 +347,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21367), { 0, 0, height }, { 32, 1, 42 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -356,7 +356,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21368), { 0, 0, height }, { 32, 1, 42 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -365,7 +365,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21369), { 0, 0, height }, { 32, 1, 42 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -380,7 +380,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21310), { 0, 0, height }, { 32, 1, 42 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -389,7 +389,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21311), { 0, 0, height }, { 32, 1, 42 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -398,7 +398,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21312), { 0, 0, height }, { 32, 1, 42 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -407,17 +407,17 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21313), { 0, 0, height }, { 32, 1, 42 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -439,7 +439,7 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21390), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -448,7 +448,7 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21391), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -457,7 +457,7 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21392), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -466,7 +466,7 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21393), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -481,7 +481,7 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21334), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -490,7 +490,7 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21335), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -499,7 +499,7 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21336), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -508,17 +508,17 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21337), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
@@ -540,7 +540,7 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21398), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -549,7 +549,7 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21399), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -558,7 +558,7 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21400), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -567,7 +567,7 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21401), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -582,7 +582,7 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21342), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -591,7 +591,7 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21343), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -600,7 +600,7 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21344), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -609,17 +609,17 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21345), { 0, 0, height }, { 32, 1, 66 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
@@ -641,7 +641,7 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21374), { 0, 0, height }, { 32, 1, 34 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -650,7 +650,7 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21375), { 0, 0, height }, { 32, 1, 34 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -659,7 +659,7 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21376), { 0, 0, height }, { 32, 1, 34 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -668,7 +668,7 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21377), { 0, 0, height }, { 32, 1, 34 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -683,7 +683,7 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21318), { 0, 0, height }, { 32, 1, 34 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -692,7 +692,7 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21319), { 0, 0, height }, { 32, 1, 34 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -701,7 +701,7 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21320), { 0, 0, height }, { 32, 1, 34 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 6, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 6, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -710,17 +710,17 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21321), { 0, 0, height }, { 32, 1, 34 },
                     { 0, 27, height });
-                wooden_a_supports_paint_setup(session, 7, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenASupportsPaintSetup(session, 7, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
@@ -791,7 +791,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21310), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 23 });
-                    wooden_a_supports_paint_setup(session, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -800,7 +800,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21311), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 23 });
-                    wooden_a_supports_paint_setup(session, 7, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -809,7 +809,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21312), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 23 });
-                    wooden_a_supports_paint_setup(session, 6, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -818,16 +818,16 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21313), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 23 });
-                    wooden_a_supports_paint_setup(session, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
             else
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -848,7 +848,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21312), { 0, 0, height + 16 },
                         { 32, 1, 34 }, { 0, 27, height + 16 });
-                    wooden_a_supports_paint_setup(session, 6, 5, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 5, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -863,7 +863,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21313), { 0, 0, height + 16 },
                         { 32, 1, 34 }, { 0, 27, height + 16 });
-                    wooden_a_supports_paint_setup(session, 7, 6, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 6, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -878,7 +878,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21310), { 0, 0, height + 16 },
                         { 32, 1, 34 }, { 0, 27, height + 16 });
-                    wooden_a_supports_paint_setup(session, 6, 7, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 7, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -893,7 +893,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21311), { 0, 0, height + 16 },
                         { 32, 1, 34 }, { 0, 27, height + 16 });
-                    wooden_a_supports_paint_setup(session, 7, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -909,7 +909,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21302), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -918,7 +918,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21303), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -927,7 +927,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21304), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -936,7 +936,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21305), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -980,11 +980,11 @@ static void heartline_twister_rc_track_heartline_transfer_up(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
             else
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 16, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height - 16, TUNNEL_0);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -1037,11 +1037,11 @@ static void heartline_twister_rc_track_heartline_transfer_down(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
             else
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 16, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height - 16, TUNNEL_0);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -1062,7 +1062,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21312), { 0, 0, height + 16 },
                         { 32, 1, 34 }, { 0, 27, height + 16 });
-                    wooden_a_supports_paint_setup(session, 6, 5, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 5, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1077,7 +1077,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21313), { 0, 0, height + 16 },
                         { 32, 1, 34 }, { 0, 27, height + 16 });
-                    wooden_a_supports_paint_setup(session, 7, 6, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 6, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1092,7 +1092,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21310), { 0, 0, height + 16 },
                         { 32, 1, 34 }, { 0, 27, height + 16 });
-                    wooden_a_supports_paint_setup(session, 6, 7, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 7, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1107,7 +1107,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21311), { 0, 0, height + 16 },
                         { 32, 1, 34 }, { 0, 27, height + 16 });
-                    wooden_a_supports_paint_setup(session, 7, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1123,7 +1123,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21302), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1132,7 +1132,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21303), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1141,7 +1141,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21304), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1150,7 +1150,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21305), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1166,7 +1166,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21310), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 23 });
-                    wooden_a_supports_paint_setup(session, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1175,7 +1175,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21311), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 23 });
-                    wooden_a_supports_paint_setup(session, 7, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1184,7 +1184,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21312), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 23 });
-                    wooden_a_supports_paint_setup(session, 6, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1193,16 +1193,16 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21313), { 0, 0, height },
                         { 32, 20, 0 }, { 0, 6, height + 23 });
-                    wooden_a_supports_paint_setup(session, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
             else
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -1227,7 +1227,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21422), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1236,7 +1236,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21425), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1245,7 +1245,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21428), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1254,10 +1254,10 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21431), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -1271,7 +1271,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21423), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1280,7 +1280,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21426), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1289,7 +1289,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21429), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1298,7 +1298,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21432), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1314,7 +1314,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21424), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1323,7 +1323,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21427), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1332,7 +1332,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21430), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1341,7 +1341,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21433), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1357,7 +1357,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21430), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1366,7 +1366,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21433), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1375,7 +1375,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21424), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1384,7 +1384,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21427), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1400,7 +1400,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21429), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1409,7 +1409,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21432), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1418,7 +1418,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21423), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1427,7 +1427,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21426), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1443,7 +1443,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21428), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1452,7 +1452,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21431), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1461,7 +1461,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21422), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1470,10 +1470,10 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21425), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -1497,7 +1497,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21446), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1506,7 +1506,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21449), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1515,7 +1515,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21452), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1524,10 +1524,10 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21455), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
@@ -1541,7 +1541,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21447), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1550,7 +1550,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21450), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1559,7 +1559,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21453), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1568,7 +1568,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21456), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1584,7 +1584,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21448), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1593,7 +1593,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21451), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1602,7 +1602,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21454), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1611,7 +1611,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21457), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1627,7 +1627,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21454), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1636,7 +1636,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21457), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1645,7 +1645,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21448), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1654,7 +1654,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21451), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1670,7 +1670,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21453), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1679,7 +1679,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21456), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1688,7 +1688,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21447), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1697,7 +1697,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21450), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1713,7 +1713,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21452), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1722,7 +1722,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21455), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1731,7 +1731,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21446), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1740,10 +1740,10 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21449), { 0, 0, height },
                         { 32, 1, 26 }, { 0, 27, height });
-                    wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;

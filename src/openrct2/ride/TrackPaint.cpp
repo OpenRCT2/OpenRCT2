@@ -939,13 +939,13 @@ void track_paint_util_draw_station_metal_supports_2(
 {
     if (direction & 1)
     {
-        metal_a_supports_paint_setup(session, type, 6, 0, height, colour);
-        metal_a_supports_paint_setup(session, type, 7, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, 6, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, 7, 0, height, colour);
     }
     else
     {
-        metal_a_supports_paint_setup(session, type, 5, 0, height, colour);
-        metal_a_supports_paint_setup(session, type, 8, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, 5, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, 8, 0, height, colour);
     }
 }
 
@@ -1532,7 +1532,7 @@ void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(
             { 1, 0xFF, 3, 5, 0xFF, 3, 0 },
         };
         uint8_t supportType = supportTypes[direction][trackSequence];
-        wooden_a_supports_paint_setup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 }
 
@@ -2160,7 +2160,7 @@ void track_paint_util_left_corkscrew_up_supports(paint_session& session, Directi
             session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
             0);
     }
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     if (direction != 2)
     {
         PaintUtilSetSegmentSupportHeight(

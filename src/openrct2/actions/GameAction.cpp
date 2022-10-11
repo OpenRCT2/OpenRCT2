@@ -133,7 +133,7 @@ namespace GameActions
                 case GameCommand::PlaceLargeScenery:
                 case GameCommand::PlaceBanner:
                 case GameCommand::PlaceScenery:
-                    scenery_remove_ghost_tool_placement();
+                    SceneryRemoveGhostToolPlacement();
                     break;
                 default:
                     break;

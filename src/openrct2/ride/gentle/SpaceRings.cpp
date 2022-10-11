@@ -73,7 +73,7 @@ static void PaintSpaceRingsStructure(
             if (rider != nullptr)
             {
                 imageColourFlags = ImageId(0, rider->TshirtColour, rider->TrousersColour);
-                imageId = imageColourFlags.WithIndex((baseImageId & 0x7FFFF) + 352 + frameNum);
+                imageId = imageColourFlags.WithIndex(baseImageId + 352 + frameNum);
                 PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 20, 23 }, { -10, -10, height });
             }
         }
@@ -95,7 +95,7 @@ static void PaintSpaceRings(
 
     ImageId imageId;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
     track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);

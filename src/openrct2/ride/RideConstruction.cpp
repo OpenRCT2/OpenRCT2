@@ -763,7 +763,7 @@ void ride_select_next_section()
         }
 
         // Invalidate previous track piece (we may not be changing height!)
-        virtual_floor_invalidate();
+        VirtualFloorInvalidate();
 
         CoordsXYE inputElement, outputElement;
         inputElement.x = newCoords->x;
@@ -777,7 +777,7 @@ void ride_select_next_section()
             if (!scenery_tool_is_active())
             {
                 // Set next element's height.
-                virtual_floor_set_height(tileElement->GetBaseZ());
+                VirtualFloorSetHeight(tileElement->GetBaseZ());
             }
 
             _currentTrackBegin = *newCoords;
@@ -830,7 +830,7 @@ void ride_select_previous_section()
         }
 
         // Invalidate previous track piece (we may not be changing height!)
-        virtual_floor_invalidate();
+        VirtualFloorInvalidate();
 
         track_begin_end trackBeginEnd;
         if (track_block_get_previous({ *newCoords, tileElement }, &trackBeginEnd))
@@ -844,7 +844,7 @@ void ride_select_previous_section()
             if (!scenery_tool_is_active())
             {
                 // Set previous element's height.
-                virtual_floor_set_height(trackBeginEnd.begin_element->GetBaseZ());
+                VirtualFloorSetHeight(trackBeginEnd.begin_element->GetBaseZ());
             }
             window_ride_construction_update_active_elements();
         }
@@ -1291,7 +1291,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         if (map_is_location_valid(nextLocation))
         {
             // iterate over every element in the tile until we find what we want
-            auto* tileElement = map_get_first_element_at(nextLocation);
+            auto* tileElement = MapGetFirstElementAt(nextLocation);
             if (tileElement == nullptr)
                 continue;
             do
@@ -1361,7 +1361,7 @@ void Ride::ValidateStations()
                     location.x -= CoordsDirectionDelta[direction].x;
                     location.y -= CoordsDirectionDelta[direction].y;
                 }
-                tileElement = map_get_first_element_at(location);
+                tileElement = MapGetFirstElementAt(location);
                 if (tileElement == nullptr)
                     break;
 
@@ -1418,7 +1418,7 @@ void Ride::ValidateStations()
                 CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };
 
                 bool trackFound = false;
-                tileElement = map_get_first_element_at(blockLocation);
+                tileElement = MapGetFirstElementAt(blockLocation);
                 if (tileElement == nullptr)
                     break;
                 // find the target TrackElement on the tile it's supposed to appear on
@@ -1490,7 +1490,7 @@ void Ride::ValidateStations()
         // if it's not a duplicate location
         CoordsXY location = locationCoords.ToCoordsXY();
 
-        TileElement* tileElement = map_get_first_element_at(location);
+        TileElement* tileElement = MapGetFirstElementAt(location);
         if (tileElement == nullptr)
             continue;
         do
@@ -1512,7 +1512,7 @@ void Ride::ValidateStations()
 
             // if there's no connected station, remove the ride entrance (see below)
             bool shouldRemove = true;
-            TileElement* trackElement = map_get_first_element_at(nextLocation);
+            TileElement* trackElement = MapGetFirstElementAt(nextLocation);
             if (trackElement == nullptr)
                 continue;
             do

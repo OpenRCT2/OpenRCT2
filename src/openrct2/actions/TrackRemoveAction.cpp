@@ -68,7 +68,7 @@ GameActions::Result TrackRemoveAction::Query() const
 
     bool found = false;
     bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-    TileElement* tileElement = map_get_first_element_at(_origin);
+    TileElement* tileElement = MapGetFirstElementAt(_origin);
 
     do
     {
@@ -167,7 +167,7 @@ GameActions::Result TrackRemoveAction::Query() const
         map_invalidate_tile_full(mapLoc);
 
         found = false;
-        tileElement = map_get_first_element_at(mapLoc);
+        tileElement = MapGetFirstElementAt(mapLoc);
         do
         {
             if (tileElement == nullptr)
@@ -214,7 +214,7 @@ GameActions::Result TrackRemoveAction::Query() const
             }
         }
 
-        auto* surfaceElement = map_get_surface_element_at(mapLoc);
+        auto* surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
             log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
@@ -264,7 +264,7 @@ GameActions::Result TrackRemoveAction::Execute() const
 
     bool found = false;
     bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-    TileElement* tileElement = map_get_first_element_at(_origin);
+    TileElement* tileElement = MapGetFirstElementAt(_origin);
 
     do
     {
@@ -346,7 +346,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         map_invalidate_tile_full(mapLoc);
 
         found = false;
-        tileElement = map_get_first_element_at(mapLoc);
+        tileElement = MapGetFirstElementAt(mapLoc);
         do
         {
             if (tileElement == nullptr)
@@ -393,7 +393,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             }
         }
 
-        auto* surfaceElement = map_get_surface_element_at(mapLoc);
+        auto* surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
             log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);

@@ -413,7 +413,7 @@ void game_fix_save_vars()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
 
             if (surfaceElement == nullptr)
             {
@@ -482,7 +482,7 @@ void game_load_init()
     }
     ResetEntitySpatialIndices();
     reset_all_sprite_quadrant_placements();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
     context_broadcast_intent(&intent);
@@ -726,7 +726,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
         game_notify_map_change();
         game_unload_scripts();
         window_close_by_class(WindowClass::EditorObjectSelection);
-        context_load_park_from_file(path);
+        GetContext()->LoadParkFromFile(path);
         game_load_scripts();
         game_notify_map_changed();
         gIsAutosaveLoaded = gIsAutosave;

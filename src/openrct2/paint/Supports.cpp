@@ -445,29 +445,17 @@ static constexpr const uint16_t word_97B3C4[] = {
 
 // clang-format on
 
-bool wooden_a_supports_paint_setup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
-{
-    return wooden_a_supports_paint_setup(session, supportType, special, height, ImageId::FromUInt32(imageColourFlags));
-}
-
-bool wooden_b_supports_paint_setup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
-{
-    return wooden_a_supports_paint_setup(session, supportType, special, height, ImageId::FromUInt32(imageColourFlags));
-}
-
 /**
  * Adds paint structs for wooden supports.
  *  rct2: 0x006629BC
  * @param supportType (edi) Type and direction of supports.
  * @param special (ax) Used for curved supports.
  * @param height (dx) The height of the supports.
- * @param imageColourFlags (ebp) The colour and palette flags for the support sprites.
+ * @param imageTemplate (ebp) The colour and palette flags for the support sprites.
  * @param[out] underground (Carry flag) true if underground.
  * @returns (al) true if any supports have been drawn, otherwise false.
  */
-bool wooden_a_supports_paint_setup(
+bool WoodenASupportsPaintSetup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
@@ -623,12 +611,12 @@ bool wooden_a_supports_paint_setup(
  * @param supportType (edi)
  * @param special (ax)
  * @param height (dx)
- * @param imageColourFlags (ebp)
+ * @param imageTemplate (ebp)
  * @param[out] underground (Carry Flag)
  *
  * @return (al) whether supports have been drawn
  */
-bool wooden_b_supports_paint_setup(
+bool WoodenBSupportsPaintSetup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
@@ -794,11 +782,11 @@ bool wooden_b_supports_paint_setup(
  * @param segment (ebx)
  * @param special (ax)
  * @param height (edx)
- * @param imageColourFlags (ebp)
+ * @param imageTemplate (ebp)
  *  rct2: 0x00663105
  */
-bool metal_a_supports_paint_setup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageColourFlags)
+bool MetalASupportsPaintSetup(
+    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate)
 {
     support_height* supportSegments = session.SupportSegments;
 
@@ -813,7 +801,7 @@ bool metal_a_supports_paint_setup(
         {
             return false;
         }
-        imageColourFlags = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
+        imageTemplate = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
     int16_t originalHeight = height;
@@ -862,7 +850,7 @@ bool metal_a_supports_paint_setup(
         int16_t boundBoxLengthX = _97B062[ebp].x;
         int16_t boundBoxLengthY = _97B062[ebp].y;
 
-        auto image_id = imageColourFlags.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]);
+        auto image_id = imageTemplate.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]);
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { boundBoxLengthX, boundBoxLengthY, 1 });
 
         segment = newSegment;
@@ -880,7 +868,7 @@ bool metal_a_supports_paint_setup(
 
         uint32_t imageIndex = _97B15C[supportType].base_id;
         imageIndex += metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
-        auto image_id = imageColourFlags.WithIndex(imageIndex);
+        auto image_id = imageTemplate.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, supportSegments[segment].height }, { 0, 0, 5 });
 
@@ -904,7 +892,7 @@ bool metal_a_supports_paint_setup(
 
         uint32_t imageIndex = _97B15C[supportType].beam_id;
         imageIndex += heightDiff - 1;
-        auto image_id = imageColourFlags.WithIndex(imageIndex);
+        auto image_id = imageTemplate.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { 0, 0, heightDiff - 1 });
     }
@@ -936,7 +924,7 @@ bool metal_a_supports_paint_setup(
         if (count == 3 && z == 0x10)
             imageIndex++;
 
-        auto image_id = imageColourFlags.WithIndex(imageIndex);
+        auto image_id = imageTemplate.WithIndex(imageIndex);
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { 0, 0, z - 1 });
 
         height += z;
@@ -976,7 +964,7 @@ bool metal_a_supports_paint_setup(
 
         uint32_t imageIndex = _97B190[supportType].beam_id;
         imageIndex += z - 1;
-        auto image_id = imageColourFlags.WithIndex(imageIndex);
+        auto image_id = imageTemplate.WithIndex(imageIndex);
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { 0, 0, 0 }, boundBoxOffset);
 
@@ -994,12 +982,12 @@ bool metal_a_supports_paint_setup(
  * @param segment (ebx)
  * @param special (ax)
  * @param height (edx)
- * @param imageColourFlags (ebp)
+ * @param imageTemplate (ebp)
  *
  * @return (Carry Flag)
  */
-bool metal_b_supports_paint_setup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageColourFlags)
+bool MetalBSupportsPaintSetup(
+    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate)
 {
     support_height* supportSegments = session.SupportSegments;
     uint8_t originalSegment = segment;
@@ -1015,7 +1003,7 @@ bool metal_b_supports_paint_setup(
         {
             return false;
         }
-        imageColourFlags = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
+        imageTemplate = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
     uint16_t _9E3294 = 0xFFFF;
@@ -1061,7 +1049,7 @@ bool metal_b_supports_paint_setup(
         }
 
         PaintAddImageAsParent(
-            session, imageColourFlags.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]),
+            session, imageTemplate.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]),
             { SupportBoundBoxes[originalSegment] + loc_97B052[ebp], baseHeight }, { _97B062[ebp], 1 });
     }
 
@@ -1078,7 +1066,7 @@ bool metal_b_supports_paint_setup(
         uint32_t imageId = _97B15C[supportType].base_id + imageOffset;
 
         PaintAddImageAsParent(
-            session, imageColourFlags.WithIndex(imageId), { SupportBoundBoxes[segment], supportSegments[segment].height },
+            session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[segment], supportSegments[segment].height },
             { 0, 0, 5 });
 
         baseHeight = supportSegments[segment].height + 6;
@@ -1094,7 +1082,7 @@ bool metal_b_supports_paint_setup(
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
-            session, imageColourFlags.WithIndex(_97B15C[supportType].beam_id + (heightDiff - 1)),
+            session, imageTemplate.WithIndex(_97B15C[supportType].beam_id + (heightDiff - 1)),
             { SupportBoundBoxes[segment], baseHeight }, { 0, 0, heightDiff - 1 });
     }
 
@@ -1130,7 +1118,7 @@ bool metal_b_supports_paint_setup(
         }
 
         PaintAddImageAsParent(
-            session, imageColourFlags.WithIndex(imageId), { SupportBoundBoxes[segment], baseHeight }, { 0, 0, beamLength - 1 });
+            session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[segment], baseHeight }, { 0, 0, beamLength - 1 });
 
         baseHeight += beamLength;
         i++;
@@ -1159,7 +1147,7 @@ bool metal_b_supports_paint_setup(
 
             uint32_t imageId = _97B15C[supportType].beam_id + (beamLength - 1);
             PaintAddImageAsParent(
-                session, imageColourFlags.WithIndex(imageId), { SupportBoundBoxes[originalSegment], baseHeight }, { 0, 0, 0 },
+                session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[originalSegment], baseHeight }, { 0, 0, 0 },
                 { SupportBoundBoxes[originalSegment], height });
             baseHeight += beamLength;
         }
@@ -1174,13 +1162,13 @@ bool metal_b_supports_paint_setup(
  * @param supportType (edi)
  * @param special (ax)
  * @param height (dx)
- * @param imageColourFlags (ebp)
+ * @param imageTemplate (ebp)
  * @param railingsDescriptor (0x00F3EF6C)
  * @param[out] underground (Carry Flag)
  *
  * @return Whether supports were drawn
  */
-bool path_a_supports_paint_setup(
+bool PathASupportsPaintSetup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo, bool* underground)
 {
@@ -1330,12 +1318,12 @@ bool path_a_supports_paint_setup(
  * @param segment (ebx)
  * @param special (ax)
  * @param height (dx)
- * @param imageColourFlags (ebp)
+ * @param imageTemplate (ebp)
  * @param railingsDescriptor (0x00F3EF6C)
  *
  * @return Whether supports were drawn
  */
-bool path_b_supports_paint_setup(
+bool PathBSupportsPaintSetup(
     paint_session& session, int32_t segment, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo)
 {

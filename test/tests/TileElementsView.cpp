@@ -33,7 +33,7 @@ protected:
         bool initialised = _context->Initialise();
         ASSERT_TRUE(initialised);
 
-        load_from_sv6(parkPath.c_str());
+        GetContext()->LoadParkFromFile(parkPath);
         game_load_init();
 
         // Changed in some tests. Store to restore its value
@@ -61,7 +61,7 @@ template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
 {
     std::vector<TileElement*> res;
 
-    TileElement* element = map_get_first_element_at(pos);
+    TileElement* element = MapGetFirstElementAt(pos);
     if (element == nullptr)
         return res;
 

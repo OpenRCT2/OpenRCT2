@@ -174,7 +174,7 @@ std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
             auto oldSize = newElements.size();
 
             // Add all non-ghost elements
-            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            const auto* element = MapGetFirstElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (element != nullptr)
             {
                 do
@@ -211,7 +211,7 @@ static void ReorganiseTileElements(size_t capacity)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y });
+            const auto* element = MapGetFirstElementAt(TileCoordsXY{ x, y });
             if (element == nullptr)
             {
                 newElements.push_back(GetDefaultSurfaceElement());
@@ -282,14 +282,14 @@ void tile_element_iterator_begin(tile_element_iterator* it)
 {
     it->x = 0;
     it->y = 0;
-    it->element = map_get_first_element_at(TileCoordsXY{ 0, 0 });
+    it->element = MapGetFirstElementAt(TileCoordsXY{ 0, 0 });
 }
 
 int32_t tile_element_iterator_next(tile_element_iterator* it)
 {
     if (it->element == nullptr)
     {
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
+        it->element = MapGetFirstElementAt(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -302,7 +302,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
     if (it->y < (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
     {
         it->y++;
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
+        it->element = MapGetFirstElementAt(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -310,7 +310,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
     {
         it->y = 0;
         it->x++;
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
+        it->element = MapGetFirstElementAt(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -329,7 +329,7 @@ static bool IsTileLocationValid(const TileCoordsXY& coords)
     return is_x_valid && is_y_valid;
 }
 
-TileElement* map_get_first_element_at(const TileCoordsXY& tilePos)
+TileElement* MapGetFirstElementAt(const TileCoordsXY& tilePos)
 {
     if (!IsTileLocationValid(tilePos))
     {
@@ -339,14 +339,14 @@ TileElement* map_get_first_element_at(const TileCoordsXY& tilePos)
     return _tileIndex.GetFirstElementAt(tilePos);
 }
 
-TileElement* map_get_first_element_at(const CoordsXY& elementPos)
+TileElement* MapGetFirstElementAt(const CoordsXY& elementPos)
 {
-    return map_get_first_element_at(TileCoordsXY{ elementPos });
+    return MapGetFirstElementAt(TileCoordsXY{ elementPos });
 }
 
-TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
+TileElement* MapGetNthElementAt(const CoordsXY& coords, int32_t n)
 {
-    TileElement* tileElement = map_get_first_element_at(coords);
+    TileElement* tileElement = MapGetFirstElementAt(coords);
     if (tileElement == nullptr)
     {
         return nullptr;
@@ -373,7 +373,7 @@ TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
 
 TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type)
 {
-    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
+    TileElement* tileElement = MapGetFirstElementAt(loc.ToCoordsXY());
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -387,7 +387,7 @@ TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRange
     return nullptr;
 }
 
-void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
+void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements)
 {
     if (!map_is_location_valid(tilePos.ToCoordsXY()))
     {
@@ -397,7 +397,7 @@ void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
     _tileIndex.SetTile(tilePos, elements);
 }
 
-SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
+SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords)
 {
     auto view = TileElementsView<SurfaceElement>(coords);
 
@@ -417,7 +417,7 @@ PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
     return nullptr;
 }
 
-BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t position)
+BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t position)
 {
     const auto bannerTilePos = TileCoordsXYZ{ bannerPos };
     for (auto* element : TileElementsView<BannerElement>(bannerPos))
@@ -435,7 +435,7 @@ BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t pos
  *
  *  rct2: 0x0068AB4C
  */
-void map_init(const TileCoordsXY& size)
+void MapInit(const TileCoordsXY& size)
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
     SetTileElements(std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
@@ -456,7 +456,7 @@ void map_init(const TileCoordsXY& size)
  * but haven't been bought yet. It updates gLandRemainingOwnershipSales and
  * gLandRemainingConstructionSales.
  */
-void map_count_remaining_land_rights()
+void MapCountRemainingLandRights()
 {
     gLandRemainingOwnershipSales = 0;
     gLandRemainingConstructionSales = 0;
@@ -465,7 +465,7 @@ void map_count_remaining_land_rights()
     {
         for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             // Surface elements are sometimes hacked out to save some space for other map elements
             if (surfaceElement == nullptr)
             {
@@ -501,7 +501,7 @@ void map_count_remaining_land_rights()
  * This is less invasive than removing ghost elements themselves, as they can
  * contain valid data.
  */
-void map_strip_ghost_flag_from_elements()
+void MapStripGhostFlagFromElements()
 {
     for (auto& element : _tileElements)
     {
@@ -524,7 +524,7 @@ int16_t tile_element_height(const CoordsXY& loc)
         return MINIMUM_LAND_HEIGHT_BIG;
 
     // Get the surface element for the tile
-    auto surfaceElement = map_get_surface_element_at(loc);
+    auto surfaceElement = MapGetSurfaceElementAt(loc);
 
     if (surfaceElement == nullptr)
     {
@@ -661,7 +661,7 @@ int16_t tile_element_water_height(const CoordsXY& loc)
         return 0;
 
     // Get the surface element for the tile
-    auto surfaceElement = map_get_surface_element_at(loc);
+    auto surfaceElement = MapGetSurfaceElementAt(loc);
 
     if (surfaceElement == nullptr)
     {
@@ -677,7 +677,7 @@ int16_t tile_element_water_height(const CoordsXY& loc)
  */
 bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection)
 {
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
 
     if (tileElement == nullptr)
         return false;
@@ -753,7 +753,7 @@ void map_update_path_wide_flags()
  *
  *  rct2: 0x006A7B84
  */
-int32_t map_height_from_slope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped)
+int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped)
 {
     if (!isSloped)
         return 0;
@@ -805,7 +805,7 @@ bool map_is_location_owned(const CoordsXYZ& loc)
     // This check is to avoid throwing lots of messages in logs.
     if (map_is_location_valid(loc))
     {
-        auto* surfaceElement = map_get_surface_element_at(loc);
+        auto* surfaceElement = MapGetSurfaceElementAt(loc);
         if (surfaceElement != nullptr)
         {
             if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
@@ -829,7 +829,7 @@ bool map_is_location_in_park(const CoordsXY& coords)
 {
     if (map_is_location_valid(coords))
     {
-        auto surfaceElement = map_get_surface_element_at(coords);
+        auto surfaceElement = MapGetSurfaceElementAt(coords);
         if (surfaceElement == nullptr)
             return false;
         if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
@@ -842,7 +842,7 @@ bool map_is_location_owned_or_has_rights(const CoordsXY& loc)
 {
     if (map_is_location_valid(loc))
     {
-        auto surfaceElement = map_get_surface_element_at(loc);
+        auto surfaceElement = MapGetSurfaceElementAt(loc);
         if (surfaceElement == nullptr)
         {
             return false;
@@ -1008,7 +1008,7 @@ uint8_t map_get_lowest_land_height(const MapRange& range)
     {
         for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += COORDS_XY_STEP)
         {
-            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ xi, yi });
+            auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
 
             if (surfaceElement != nullptr && min_height > surfaceElement->base_height)
             {
@@ -1038,7 +1038,7 @@ uint8_t map_get_highest_land_height(const MapRange& range)
     {
         for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += COORDS_XY_STEP)
         {
-            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ xi, yi });
+            auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
             {
                 if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
@@ -1330,11 +1330,11 @@ void map_update_tiles()
             for (int32_t blockX = 0; blockX < gMapSize.x; blockX += 256)
             {
                 auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
-                auto* surfaceElement = map_get_surface_element_at(mapPos);
+                auto* surfaceElement = MapGetSurfaceElementAt(mapPos);
                 if (surfaceElement != nullptr)
                 {
                     surfaceElement->UpdateGrassLength(mapPos);
-                    scenery_update_tile(mapPos);
+                    SceneryUpdateTile(mapPos);
                 }
             }
         }
@@ -1415,11 +1415,11 @@ void map_remove_out_of_range_elements()
             if (x == 0 || y == 0 || x >= mapSizeMax.x || y >= mapSizeMax.y)
             {
                 // Note this purposely does not use LandSetRightsAction as X Y coordinates are outside of normal range.
-                auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
                 if (surfaceElement != nullptr)
                 {
                     surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-                    update_park_fences_around_tile({ x, y });
+                    ParkUpdateFencesAroundTile({ x, y });
                 }
                 clear_elements_at({ x, y });
             }
@@ -1475,15 +1475,15 @@ void map_extend_boundary_surface_y()
     auto y = gMapSize.y - 2;
     for (auto x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
     {
-        auto existingTileElement = map_get_surface_element_at(TileCoordsXY{ x, y - 1 }.ToCoordsXY());
-        auto newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+        auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y - 1 }.ToCoordsXY());
+        auto newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
 
         if (existingTileElement != nullptr && newTileElement != nullptr)
         {
             map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }
 
-        update_park_fences({ x << 5, y << 5 });
+        ParkUpdateFences({ x << 5, y << 5 });
     }
 }
 
@@ -1495,13 +1495,13 @@ void map_extend_boundary_surface_x()
     auto x = gMapSize.x - 2;
     for (auto y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        auto existingTileElement = map_get_surface_element_at(TileCoordsXY{ x - 1, y }.ToCoordsXY());
-        auto newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+        auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y }.ToCoordsXY());
+        auto newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
         if (existingTileElement != nullptr && newTileElement != nullptr)
         {
             map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }
-        update_park_fences({ x << 5, y << 5 });
+        ParkUpdateFences({ x << 5, y << 5 });
     }
 }
 
@@ -1606,7 +1606,7 @@ static void clear_elements_at(const CoordsXY& loc)
             [loc](const CoordsXY& spawn) { return spawn.ToTileStart() == loc.ToTileStart(); }),
         gPeepSpawns.end());
 
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return;
 
@@ -1620,7 +1620,7 @@ static void clear_elements_at(const CoordsXY& loc)
 
 int32_t map_get_highest_z(const CoordsXY& loc)
 {
-    auto surfaceElement = map_get_surface_element_at(loc);
+    auto surfaceElement = MapGetSurfaceElementAt(loc);
     if (surfaceElement == nullptr)
         return -1;
 
@@ -1638,7 +1638,7 @@ int32_t map_get_highest_z(const CoordsXY& loc)
 
 LargeSceneryElement* map_get_large_scenery_segment(const CoordsXYZD& sceneryPos, int32_t sequence)
 {
-    TileElement* tileElement = map_get_first_element_at(sceneryPos);
+    TileElement* tileElement = MapGetFirstElementAt(sceneryPos);
     if (tileElement == nullptr)
     {
         return nullptr;
@@ -1663,7 +1663,7 @@ LargeSceneryElement* map_get_large_scenery_segment(const CoordsXYZD& sceneryPos,
 EntranceElement* map_get_park_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost)
 {
     auto entranceTileCoords = TileCoordsXYZ(entranceCoords);
-    TileElement* tileElement = map_get_first_element_at(entranceCoords);
+    TileElement* tileElement = MapGetFirstElementAt(entranceCoords);
     if (tileElement != nullptr)
     {
         do
@@ -1689,7 +1689,7 @@ EntranceElement* map_get_park_entrance_element_at(const CoordsXYZ& entranceCoord
 EntranceElement* map_get_ride_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost)
 {
     auto entranceTileCoords = TileCoordsXYZ{ entranceCoords };
-    TileElement* tileElement = map_get_first_element_at(entranceCoords);
+    TileElement* tileElement = MapGetFirstElementAt(entranceCoords);
     if (tileElement != nullptr)
     {
         do
@@ -1715,7 +1715,7 @@ EntranceElement* map_get_ride_entrance_element_at(const CoordsXYZ& entranceCoord
 EntranceElement* map_get_ride_exit_element_at(const CoordsXYZ& exitCoords, bool ghost)
 {
     auto exitTileCoords = TileCoordsXYZ{ exitCoords };
-    TileElement* tileElement = map_get_first_element_at(exitCoords);
+    TileElement* tileElement = MapGetFirstElementAt(exitCoords);
     if (tileElement != nullptr)
     {
         do
@@ -1741,7 +1741,7 @@ EntranceElement* map_get_ride_exit_element_at(const CoordsXYZ& exitCoords, bool 
 SmallSceneryElement* map_get_small_scenery_element_at(const CoordsXYZ& sceneryCoords, int32_t type, uint8_t quadrant)
 {
     auto sceneryTileCoords = TileCoordsXYZ{ sceneryCoords };
-    TileElement* tileElement = map_get_first_element_at(sceneryCoords);
+    TileElement* tileElement = MapGetFirstElementAt(sceneryCoords);
     if (tileElement != nullptr)
     {
         do
@@ -1938,7 +1938,7 @@ bool map_surface_is_blocked(const CoordsXY& mapCoords)
     if (!map_is_location_valid(mapCoords))
         return true;
 
-    auto surfaceElement = map_get_surface_element_at(mapCoords);
+    auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
 
     if (surfaceElement == nullptr)
     {
@@ -1999,7 +1999,7 @@ void map_clear_all_elements()
  */
 TrackElement* map_get_track_element_at(const CoordsXYZ& trackPos)
 {
-    TileElement* tileElement = map_get_first_element_at(trackPos);
+    TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -2023,7 +2023,7 @@ TrackElement* map_get_track_element_at(const CoordsXYZ& trackPos)
  */
 TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, track_type_t trackType)
 {
-    TileElement* tileElement = map_get_first_element_at(trackPos);
+    TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
         return nullptr;
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -2050,7 +2050,7 @@ TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, track_t
  */
 TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence)
 {
-    TileElement* tileElement = map_get_first_element_at(trackPos);
+    TileElement* tileElement = MapGetFirstElementAt(trackPos);
     auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
@@ -2073,7 +2073,7 @@ TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, tra
 
 TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, track_type_t trackType)
 {
-    auto tileElement = map_get_first_element_at(location);
+    auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
     {
         do
@@ -2096,7 +2096,7 @@ TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, track
 
 TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, track_type_t trackType, int32_t sequence)
 {
-    auto tileElement = map_get_first_element_at(location);
+    auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
     {
         do
@@ -2127,7 +2127,7 @@ TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, t
  */
 TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, RideId rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at(trackPos);
+    TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
         return nullptr;
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -2156,7 +2156,7 @@ TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPo
  */
 TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, RideId rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at(trackPos);
+    TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
         return nullptr;
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -2184,7 +2184,7 @@ TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, RideI
  */
 TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, RideId rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at(trackPos);
+    TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
         return nullptr;
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -2207,7 +2207,7 @@ TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD&
 
 WallElement* map_get_wall_element_at(const CoordsXYRangedZ& coords)
 {
-    auto tileElement = map_get_first_element_at(coords);
+    auto tileElement = MapGetFirstElementAt(coords);
 
     if (tileElement != nullptr)
     {
@@ -2227,7 +2227,7 @@ WallElement* map_get_wall_element_at(const CoordsXYRangedZ& coords)
 WallElement* map_get_wall_element_at(const CoordsXYZD& wallCoords)
 {
     auto tileWallCoords = TileCoordsXYZ(wallCoords);
-    TileElement* tileElement = map_get_first_element_at(wallCoords);
+    TileElement* tileElement = MapGetFirstElementAt(wallCoords);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -2246,7 +2246,7 @@ WallElement* map_get_wall_element_at(const CoordsXYZD& wallCoords)
 
 uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos)
 {
-    TileElement* tileElement = map_get_first_element_at(tileMapPos);
+    TileElement* tileElement = MapGetFirstElementAt(tileMapPos);
     uint16_t destOwnership = OWNERSHIP_OWNED;
 
     // Sometimes done deliberately.
@@ -2285,14 +2285,14 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
 {
     for (const TileCoordsXY* tile = tiles.begin(); tile != tiles.end(); ++tile)
     {
-        auto surfaceElement = map_get_surface_element_at(tile->ToCoordsXY());
+        auto surfaceElement = MapGetSurfaceElementAt(tile->ToCoordsXY());
         if (surfaceElement != nullptr)
         {
             if (doNotDowngrade && surfaceElement->GetOwnership() == OWNERSHIP_OWNED)
                 continue;
 
             surfaceElement->SetOwnership(ownership);
-            update_park_fences_around_tile({ (*tile).x * 32, (*tile).y * 32 });
+            ParkUpdateFencesAroundTile({ (*tile).x * 32, (*tile).y * 32 });
         }
     }
 }

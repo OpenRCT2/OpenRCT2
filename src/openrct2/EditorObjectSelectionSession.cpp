@@ -491,7 +491,7 @@ void finish_object_selection()
     else
     {
         set_all_scenery_items_invented();
-        scenery_set_default_placement_configuration();
+        ScenerySetDefaultPlacementConfiguration();
         gEditorStep = EditorStep::LandscapeEditor;
         gfx_invalidate_screen();
     }

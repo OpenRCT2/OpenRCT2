@@ -1,10 +1,15 @@
 0.4.3 (in development)
 ------------------------------------------------------------------------
 - Fix: [#14312] Research ride type message incorrect.
+- Fix: [#17763] Missing validation on invalid characters in file name.
+- Fix: [#17853] Invention name tears while being dragged.
 - Fix: [#18064] Unable to dismiss notification messages.
+- Fix: [#18070] Underground entrance/exit shows through terrain walls (original bug).
 - Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
 - Fix: [#18134] Underground on-ride photo section partially clips through adjacent terrain edge.
+- Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
 - Improved: [#18192, #18214] Tycoon Park has been added Extras tab, Competition scenarios have received their own section.
+- Improved: [#18250] Added modern style file and folder pickers on Windows.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 
 0.4.2 (2022-10-05)

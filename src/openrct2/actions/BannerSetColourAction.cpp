@@ -75,7 +75,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    auto bannerElement = map_get_banner_element_at(_loc, _loc.direction);
+    auto bannerElement = MapGetBannerElementAt(_loc, _loc.direction);
 
     if (bannerElement == nullptr)
     {

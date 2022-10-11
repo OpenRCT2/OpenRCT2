@@ -168,7 +168,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
         }
 
         /* Search through all adjacent map elements */
-        TileElement* test_element = map_get_first_element_at(adjacPos);
+        TileElement* test_element = MapGetFirstElementAt(adjacPos);
         if (test_element == nullptr)
             return false;
         bool pathfound = false;
@@ -360,7 +360,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     int16_t nextZ = ((z + COORDS_Z_STEP) & 0xFFF0) / COORDS_Z_STEP;
 
-    TileElement* tileElement = map_get_first_element_at(nextTile);
+    TileElement* tileElement = MapGetFirstElementAt(nextTile);
     if (tileElement == nullptr)
         return INVALID_DIRECTION;
     do
@@ -375,7 +375,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     nextTile = CoordsXY(x, y).ToTileStart() + CoordsDirectionDelta[nextDirection];
 
-    tileElement = map_get_first_element_at(nextTile);
+    tileElement = MapGetFirstElementAt(nextTile);
     if (tileElement == nullptr)
         return INVALID_DIRECTION;
 
@@ -400,7 +400,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
 {
     if (!(GetNextIsSurface()))
     {
-        auto surfaceElement = map_get_surface_element_at(NextLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
         if (surfaceElement == nullptr)
             return INVALID_DIRECTION;
 
@@ -431,7 +431,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
         if (!map_is_location_valid(chosenTile))
             continue;
 
-        auto surfaceElement = map_get_surface_element_at(chosenTile);
+        auto surfaceElement = MapGetSurfaceElementAt(chosenTile);
         if (surfaceElement != nullptr)
         {
             if (std::abs(surfaceElement->GetBaseZ() - NextLoc.z) <= 2 * COORDS_Z_STEP)
@@ -1027,7 +1027,7 @@ uint32_t staff_get_available_entertainer_costumes()
     {
         if (scenery_group_is_invented(i))
         {
-            const auto sgEntry = get_scenery_group_entry(i);
+            const auto sgEntry = GetSceneryGroupEntry(i);
             entertainerCostumes |= sgEntry->entertainer_costumes;
         }
     }
@@ -1098,7 +1098,7 @@ void Staff::UpdateMowing()
         if (Var37 != 7)
             continue;
 
-        auto surfaceElement = map_get_surface_element_at(NextLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
         if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
@@ -1145,7 +1145,7 @@ void Staff::UpdateWatering()
 
         auto actionLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[Var37];
 
-        TileElement* tile_element = map_get_first_element_at(actionLoc);
+        TileElement* tile_element = MapGetFirstElementAt(actionLoc);
         if (tile_element == nullptr)
             return;
 
@@ -1212,7 +1212,7 @@ void Staff::UpdateEmptyingBin()
         if (ActionFrame != 11)
             return;
 
-        TileElement* tile_element = map_get_first_element_at(NextLoc);
+        TileElement* tile_element = MapGetFirstElementAt(NextLoc);
         if (tile_element == nullptr)
             return;
 
@@ -1338,7 +1338,7 @@ void Staff::UpdateHeadingToInspect()
         if (!CheckForPath())
             return;
 
-        if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+        if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
         uint8_t pathingResult;
@@ -1446,7 +1446,7 @@ void Staff::UpdateAnswering()
         if (!CheckForPath())
             return;
 
-        if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+        if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
         uint8_t pathingResult;
@@ -1524,7 +1524,7 @@ bool Staff::UpdatePatrollingFindWatering()
 
         auto chosenLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[chosen_position];
 
-        TileElement* tile_element = map_get_first_element_at(chosenLoc);
+        TileElement* tile_element = MapGetFirstElementAt(chosenLoc);
 
         // This seems to happen in some SV4 files.
         if (tile_element == nullptr)
@@ -1591,7 +1591,7 @@ bool Staff::UpdatePatrollingFindBin()
     if (GetNextIsSurface())
         return false;
 
-    TileElement* tileElement = map_get_first_element_at(NextLoc);
+    TileElement* tileElement = MapGetFirstElementAt(NextLoc);
     if (tileElement == nullptr)
         return false;
 
@@ -1658,7 +1658,7 @@ bool Staff::UpdatePatrollingFindGrass()
     if (!(GetNextIsSurface()))
         return false;
 
-    auto surfaceElement = map_get_surface_element_at(NextLoc);
+    auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
     if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
     {
         if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
@@ -1781,7 +1781,7 @@ void Staff::UpdatePatrolling()
     if (!CheckForPath())
         return;
 
-    if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+    if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
         return;
 
     uint8_t pathingResult;
@@ -1791,7 +1791,7 @@ void Staff::UpdatePatrolling()
 
     if (GetNextIsSurface())
     {
-        auto surfaceElement = map_get_surface_element_at(NextLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
 
         if (surfaceElement != nullptr)
         {

@@ -635,7 +635,7 @@ static void paint_miniature_railway_track_flat(
         paintGrooved = true;
     }
 
-    bool isSupported = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    bool isSupported = WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     ImageId imageId, imageIdAlt;
 
     // In the following 3 calls to PaintAddImageAsParentRotated/PaintAddImageAsChildRotated, we add 1 to the
@@ -690,7 +690,7 @@ static void paint_miniature_railway_track_flat(
         }
     }
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -703,7 +703,7 @@ static void paint_miniature_railway_station(
 {
     ImageId imageId;
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(miniature_railway_station_floor[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height - 2 }, { 32, 28, 2 }, { 0, 2, height });
@@ -711,7 +711,7 @@ static void paint_miniature_railway_station(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(miniature_railway_track_pieces_flat_station[direction]);
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 2 }, { 0, 0, height });
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     track_paint_util_draw_station_3(session, ride, direction, height + 2, height, trackElement);
     // covers shouldn't be offset by +2
@@ -745,7 +745,7 @@ static void paint_miniature_railway_track_25_deg_up(
             break;
     }
 
-    wooden_a_supports_paint_setup(session, direction & 1, 45 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 45 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
@@ -776,7 +776,7 @@ static void paint_miniature_railway_track_flat_to_25_deg_up(
             break;
     }
 
-    wooden_a_supports_paint_setup(session, direction & 1, 37 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 37 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -807,7 +807,7 @@ static void paint_miniature_railway_track_25_deg_up_to_flat(
             break;
     }
 
-    wooden_a_supports_paint_setup(session, direction & 1, 41 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 41 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
@@ -979,7 +979,7 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(
 {
     if (right_quarter_turn_5_supports_type[direction][trackSequence] != -1)
     {
-        bool isSupported = wooden_a_supports_paint_setup(
+        bool isSupported = WoodenASupportsPaintSetup(
             session, right_quarter_turn_5_supports_type[direction][trackSequence], 0, height,
             session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -1103,7 +1103,7 @@ static void paint_miniature_railway_track_s_bend_left(
         trackSequence = 3 - trackSequence;
     }
 
-    bool isSupported = wooden_a_supports_paint_setup(
+    bool isSupported = WoodenASupportsPaintSetup(
         session, s_bend_left_supports_type[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     static constexpr const CoordsXY offsetList[] = {
@@ -1212,7 +1212,7 @@ static void paint_miniature_railway_track_s_bend_right(
         trackSequence = 3 - trackSequence;
     }
 
-    bool isSupported = wooden_a_supports_paint_setup(
+    bool isSupported = WoodenASupportsPaintSetup(
         session, s_bend_right_supports_type[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     static constexpr const CoordsXY offsetList[] = {
@@ -1344,7 +1344,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
     if (trackSequence != 1 && trackSequence != 2)
     {
         static constexpr const uint8_t supportType[] = { 4, 5, 2, 3 };
-        isSupported = wooden_a_supports_paint_setup(
+        isSupported = WoodenASupportsPaintSetup(
             session, supportType[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (!isSupported)
@@ -1527,7 +1527,7 @@ static void paint_miniature_railway_track_left_eighth_to_diag(
     // for track sequence 4
     if (trackSequence != 4 || !isRightEighthToOrthog)
     {
-        isSupported = wooden_a_supports_paint_setup(
+        isSupported = WoodenASupportsPaintSetup(
             session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     ImageId imageId;
@@ -1691,7 +1691,7 @@ static void paint_miniature_railway_track_right_eighth_to_diag(
     // for track sequence 4
     if (trackSequence != 4 || !isLeftEighthToOrthog)
     {
-        isSupported = wooden_a_supports_paint_setup(
+        isSupported = WoodenASupportsPaintSetup(
             session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1820,7 +1820,7 @@ static void miniature_railway_track_diag_flat(
         floorImage = floors[supportType].image_id;
         floorBoundSize = floors[supportType].bound_size;
         floorBoundOffset = floors[supportType].bound_offset;
-        isSupported = wooden_a_supports_paint_setup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        isSupported = WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -1866,10 +1866,10 @@ static bool wooden_supports_paint_setup(
     switch (woodType)
     {
         case WOOD_A:
-            return wooden_a_supports_paint_setup(session, supportType, special, height, imageColourFlags);
+            return WoodenASupportsPaintSetup(session, supportType, special, height, imageColourFlags);
 
         case WOOD_B:
-            return wooden_b_supports_paint_setup(session, supportType, special, height, imageColourFlags);
+            return WoodenBSupportsPaintSetup(session, supportType, special, height, imageColourFlags);
     }
 
     return false;
@@ -1972,7 +1972,7 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(
         floorImage = floors[supportType].image_id;
         floorBoundSize = floors[supportType].bound_size;
         floorBoundOffset = floors[supportType].bound_offset;
-        hasSupports = wooden_a_supports_paint_setup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        hasSupports = WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -2246,7 +2246,7 @@ static void miniature_railway_track_diag_25_deg_down_to_flat(
         floorImage = floors[supportType].image_id;
         floorBoundSize = floors[supportType].bound_size;
         floorBoundOffset = floors[supportType].bound_offset;
-        hasSupports = wooden_a_supports_paint_setup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        hasSupports = WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 1 && trackSequence == 3)

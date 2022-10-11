@@ -158,9 +158,9 @@ void InputManager::HandleModifiers()
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
         if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
-            virtual_floor_enable();
+            VirtualFloorEnable();
         else
-            virtual_floor_disable();
+            VirtualFloorDisable();
     }
 }
 

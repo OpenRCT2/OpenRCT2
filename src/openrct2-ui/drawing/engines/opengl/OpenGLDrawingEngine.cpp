@@ -108,9 +108,9 @@ public:
     void DrawSpriteRawMasked(
         rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId& maskImage, const ImageId& colourImage) override;
     void DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId& image, int32_t x, int32_t y, uint8_t colour) override;
-    void DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& palette) override;
+    void DrawGlyph(rct_drawpixelinfo* dpi, const ImageId& image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawBitmap(
-        rct_drawpixelinfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x,
+        rct_drawpixelinfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
         int32_t y) override;
 
     void FlushCommandBuffers();
@@ -852,17 +852,18 @@ void OpenGLDrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& palette)
+void OpenGLDrawingContext::DrawGlyph(
+    rct_drawpixelinfo* dpi, const ImageId& image, int32_t x, int32_t y, const PaletteMap& palette)
 {
     CalculcateClipping(dpi);
 
-    auto g1Element = gfx_get_g1_element(image & 0x7FFFF);
+    auto g1Element = gfx_get_g1_element(image);
     if (g1Element == nullptr)
     {
         return;
     }
 
-    const auto texture = _textureCache->GetOrLoadGlyphTexture(ImageId::FromUInt32(image), palette);
+    const auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 
     int32_t left = x + g1Element->x_offset;
     int32_t top = y + g1Element->y_offset;
@@ -908,7 +909,7 @@ void OpenGLDrawingContext::DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int
 }
 
 void OpenGLDrawingContext::DrawBitmap(
-    rct_drawpixelinfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y)
+    rct_drawpixelinfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y)
 {
     CalculcateClipping(dpi);
 

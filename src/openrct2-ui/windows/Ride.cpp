@@ -1003,12 +1003,11 @@ static void WindowRideDrawTabCustomer(rct_drawpixelinfo* dpi, rct_window* w)
         if (w->page == WINDOW_RIDE_PAGE_CUSTOMER)
             spriteIndex = w->picked_peep_frame & ~3;
 
-        spriteIndex += GetPeepAnimation(PeepSpriteType::Normal).base_image;
-        spriteIndex += 1;
-        spriteIndex |= 0xA9E00000;
+        spriteIndex += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
 
         gfx_draw_sprite(
-            dpi, ImageId::FromUInt32(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.midX(), widget.bottom - 6 });
+            dpi, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_TEAL),
+            w->windowPos + ScreenCoordsXY{ widget.midX(), widget.bottom - 6 });
     }
 }
 
@@ -4218,11 +4217,6 @@ static void WindowRideMaintenancePaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Colour
 
-static uint32_t WindowRideGetColourButtonImage(int32_t colour)
-{
-    return IMAGE_TYPE_TRANSPARENT | SPRITE_ID_PALETTE_COLOUR_1(colour) | SPR_PALETTE_BTN;
-}
-
 static int32_t WindowRideHasTrackColour(Ride* ride, int32_t trackColour)
 {
     // Get station flags (shops don't have them)
@@ -4676,7 +4670,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (WindowRideHasTrackColour(ride, 0))
     {
         window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].image = WindowRideGetColourButtonImage(trackColour.main);
+        window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].image = GetColourButtonImage(trackColour.main).ToUInt32();
     }
     else
     {
@@ -4687,7 +4681,8 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (WindowRideHasTrackColour(ride, 1))
     {
         window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = WindowRideGetColourButtonImage(trackColour.additional);
+        window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = GetColourButtonImage(trackColour.additional)
+                                                                             .ToUInt32();
     }
     else
     {
@@ -4716,7 +4711,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (WindowRideHasTrackColour(ride, 2) && ride->type != RIDE_TYPE_MAZE)
     {
         window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].image = WindowRideGetColourButtonImage(trackColour.supports);
+        window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].image = GetColourButtonImage(trackColour.supports).ToUInt32();
     }
     else
     {
@@ -4765,7 +4760,7 @@ static void WindowRideColourInvalidate(rct_window* w)
 
         window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WindowWidgetType::Scroll;
         window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOR].image = WindowRideGetColourButtonImage(vehicleColour.Body);
+        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOR].image = GetColourButtonImage(vehicleColour.Body).ToUInt32();
 
         bool allowChangingTrimColour = false;
         bool allowChangingTernaryColour = false;
@@ -4788,12 +4783,12 @@ static void WindowRideColourInvalidate(rct_window* w)
         if (allowChangingTrimColour)
         {
             window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::ColourBtn;
-            window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].image = WindowRideGetColourButtonImage(vehicleColour.Trim);
+            window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].image = GetColourButtonImage(vehicleColour.Trim).ToUInt32();
             if (allowChangingTernaryColour)
             {
                 window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::ColourBtn;
-                window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].image = WindowRideGetColourButtonImage(
-                    vehicleColour.Tertiary);
+                window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary)
+                                                                                    .ToUInt32();
             }
             else
             {
@@ -6448,7 +6443,7 @@ static bool WindowRideIncomeCanModifyPrimaryPrice(rct_window* w)
 
     auto rideEntry = ride->GetRideEntry();
     const auto& rtd = ride->GetRideTypeDescriptor();
-    return park_ride_prices_unlocked() || rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET)
+    return ParkRidePricesUnlocked() || rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET)
         || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::None);
 }
 
@@ -6648,7 +6643,7 @@ static void WindowRideIncomeInvalidate(rct_window* w)
 
     // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (!park_ride_prices_unlocked() && rideEntry->shop_item[0] == ShopItem::None && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+    if (!ParkRidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
     {
         w->disabled_widgets |= (1ULL << WIDX_PRIMARY_PRICE);
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;

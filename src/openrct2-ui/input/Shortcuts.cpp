@@ -520,7 +520,7 @@ static void ShortcutToggleVisibility()
         return;
 
     extern TileCoordsXY windowTileInspectorTile;
-    TileElement* tileElement = map_get_nth_element_at(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
+    TileElement* tileElement = MapGetNthElementAt(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
     if (tileElement != nullptr)
     {
         tileElement->SetInvisible(!tileElement->IsInvisible());

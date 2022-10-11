@@ -22,15 +22,15 @@ enum class VirtualFloorStyles : int32_t
 
 struct paint_session;
 
-uint16_t virtual_floor_get_height();
+uint16_t VirtualFloorGetHeight();
 
-bool virtual_floor_is_enabled();
-void virtual_floor_set_height(int16_t height);
+bool VirtualFloorIsEnabled();
+void VirtualFloorSetHeight(int16_t height);
 
-void virtual_floor_enable();
-void virtual_floor_disable();
-void virtual_floor_invalidate();
+void VirtualFloorEnable();
+void VirtualFloorDisable();
+void VirtualFloorInvalidate();
 
-bool virtual_floor_tile_is_floor(const CoordsXY& loc);
+bool VirtualFloorTileIsFloor(const CoordsXY& loc);
 
-void virtual_floor_paint(paint_session& session);
+void VirtualFloorPaint(paint_session& session);

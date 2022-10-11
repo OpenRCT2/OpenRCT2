@@ -258,11 +258,9 @@ public:
                             }
                         }
 
-                        uint32_t image_id = GetPeepAnimation(spriteType).base_image;
-                        image_id += 0xA0000001;
-                        image_id |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24);
-
-                        gfx_draw_sprite(&cliped_dpi, ImageId::FromUInt32(image_id), clipCoords);
+                        ImageIndex imageId = GetPeepAnimation(spriteType).base_image + 1;
+                        auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
+                        gfx_draw_sprite(&cliped_dpi, image, clipCoords);
                         break;
                     }
                     case News::ItemType::Money:

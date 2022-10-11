@@ -1144,7 +1144,7 @@ public:
                     if (tileElement->AsPath()->HasAddition())
                     {
                         const auto pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
-                        const auto* pathBitEntry = get_footpath_item_entry(pathAdditionType);
+                        const auto* pathBitEntry = GetFootpathItemEntry(pathAdditionType);
                         StringId additionNameId = pathBitEntry != nullptr ? pathBitEntry->name
                                                                           : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
                         auto ft = Formatter();
@@ -1551,7 +1551,7 @@ public:
         int32_t i = 0;
         char buffer[256];
 
-        const TileElement* tileElement = map_get_first_element_at(_toolMap);
+        const TileElement* tileElement = MapGetFirstElementAt(_toolMap);
 
         do
         {
@@ -1775,7 +1775,7 @@ private:
         windowTileInspectorSelectedIndex = -1;
         scrolls[0].v_top = 0;
 
-        TileElement* element = map_get_first_element_at(_toolMap);
+        TileElement* element = MapGetFirstElementAt(_toolMap);
         int16_t numItems = 0;
         do
         {
@@ -1967,7 +1967,7 @@ private:
         openrct2_assert(
             windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
             "Selected list item out of range");
-        return map_get_first_element_at(_toolMap) + windowTileInspectorSelectedIndex;
+        return MapGetFirstElementAt(_toolMap) + windowTileInspectorSelectedIndex;
     }
 
     void OnPrepareDraw() override

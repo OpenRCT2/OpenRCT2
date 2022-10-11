@@ -18,7 +18,7 @@
 #include "Location.hpp"
 #include "Scenery.h"
 
-bool tile_element_is_underground(TileElement* tileElement)
+bool TileElementIsUnderground(TileElement* tileElement)
 {
     do
     {

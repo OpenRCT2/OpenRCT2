@@ -479,7 +479,7 @@ bool track_block_get_next_from_zero(
         trackPos += CoordsDirectionDelta[direction_start];
     }
 
-    TileElement* tileElement = map_get_first_element_at(trackPos);
+    TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
     {
         output->element = nullptr;
@@ -611,7 +611,7 @@ bool track_block_get_previous_from_zero(
         trackPos += CoordsDirectionDelta[direction];
     }
 
-    TileElement* tileElement = map_get_first_element_at(trackPos);
+    TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
     {
         outTrackBeginEnd->end_x = trackPos.x;
@@ -2308,7 +2308,7 @@ static void ride_shop_connected(Ride* ride)
         return;
 
     TrackElement* trackElement = nullptr;
-    TileElement* tileElement = map_get_first_element_at(shopLoc);
+    TileElement* tileElement = MapGetFirstElementAt(shopLoc);
     do
     {
         if (tileElement == nullptr)
@@ -2653,7 +2653,7 @@ void Ride::ChainQueues() const
 
         // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
         // the ride or not.
-        TileElement* tileElement = map_get_first_element_at(station.Entrance);
+        TileElement* tileElement = MapGetFirstElementAt(station.Entrance);
         if (tileElement != nullptr)
         {
             do
@@ -2994,7 +2994,7 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
     {
         auto entranceExitMapPos = position->ToCoordsXYZ();
 
-        TileElement* tileElement = map_get_first_element_at(*position);
+        TileElement* tileElement = MapGetFirstElementAt(*position);
         do
         {
             if (tileElement == nullptr)
@@ -3626,7 +3626,7 @@ static ResultWithMessage ride_initialise_cable_lift_track(Ride* ride, bool isApp
     }
 
     bool success = false;
-    TileElement* tileElement = map_get_first_element_at(location);
+    TileElement* tileElement = MapGetFirstElementAt(location);
     if (tileElement == nullptr)
         return { false };
     do
@@ -3864,7 +3864,7 @@ static void ride_scroll_to_track_error(const CoordsXYE& trackElement)
 TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
 {
     auto stationLoc = GetStation(stationIndex).Start;
-    TileElement* tileElement = map_get_first_element_at(stationLoc);
+    TileElement* tileElement = MapGetFirstElementAt(stationLoc);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -4637,7 +4637,7 @@ void set_vehicle_type_image_max_sizes(CarEntry* vehicle_type, int32_t num_images
 
     for (int32_t i = 0; i < num_images; ++i)
     {
-        gfx_draw_sprite_software(&dpi, ImageId::FromUInt32(vehicle_type->base_image_id + i), { 0, 0 });
+        gfx_draw_sprite_software(&dpi, ImageId(vehicle_type->base_image_id + i), { 0, 0 });
     }
     int32_t al = -1;
     for (int32_t i = 99; i != 0; --i)
@@ -5039,7 +5039,7 @@ static int32_t ride_get_track_length(Ride* ride)
         if (trackStart.IsNull())
             continue;
 
-        tileElement = map_get_first_element_at(trackStart);
+        tileElement = MapGetFirstElementAt(trackStart);
         if (tileElement == nullptr)
             continue;
         do
@@ -5397,7 +5397,7 @@ money16 ride_get_price(const Ride* ride)
         return 0;
     if (ride->IsRide())
     {
-        if (!park_ride_prices_unlocked())
+        if (!ParkRidePricesUnlocked())
         {
             return 0;
         }
@@ -5412,7 +5412,7 @@ money16 ride_get_price(const Ride* ride)
 TileElement* get_station_platform(const CoordsXYRangedZ& coords)
 {
     bool foundTileElement = false;
-    TileElement* tileElement = map_get_first_element_at(coords);
+    TileElement* tileElement = MapGetFirstElementAt(coords);
     if (tileElement != nullptr)
     {
         do
@@ -5683,7 +5683,7 @@ void determine_ride_entrance_and_exit_locations()
             {
                 for (int32_t x = 1; x < gMapSize.x - 1; x++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+                    TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
 
                     if (tileElement != nullptr)
                     {
@@ -5847,7 +5847,7 @@ void Ride::UpdateRideTypeForAllPieces()
     {
         for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto* tileElement = map_get_first_element_at(TileCoordsXY(x, y));
+            auto* tileElement = MapGetFirstElementAt(TileCoordsXY(x, y));
             if (tileElement == nullptr)
                 continue;
 

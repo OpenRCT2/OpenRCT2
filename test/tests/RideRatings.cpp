@@ -66,7 +66,7 @@ TEST_F(RideRatings, all)
     bool initialised = context->Initialise();
     ASSERT_TRUE(initialised);
 
-    load_from_sv6(path.c_str());
+    GetContext()->LoadParkFromFile(path);
 
     // Check ride count to check load was successful
     ASSERT_EQ(ride_get_count(), 134);

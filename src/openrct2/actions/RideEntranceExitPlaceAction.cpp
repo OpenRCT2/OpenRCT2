@@ -165,7 +165,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         FootpathRemoveLitter({ _loc, z });
-        wall_remove_at_z({ _loc, z });
+        WallRemoveAtZ({ _loc, z });
     }
 
     auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);

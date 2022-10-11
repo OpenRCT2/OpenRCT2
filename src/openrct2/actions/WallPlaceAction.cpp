@@ -108,7 +108,7 @@ GameActions::Result WallPlaceAction::Query() const
     auto targetHeight = _loc.z;
     if (targetHeight == 0)
     {
-        auto* surfaceElement = map_get_surface_element_at(_loc);
+        auto* surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
             log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -125,7 +125,7 @@ GameActions::Result WallPlaceAction::Query() const
         }
     }
 
-    auto* surfaceElement = map_get_surface_element_at(_loc);
+    auto* surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -215,7 +215,7 @@ GameActions::Result WallPlaceAction::Query() const
         }
     }
 
-    auto* wallEntry = get_wall_entry(_wallType);
+    auto* wallEntry = GetWallEntry(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -287,7 +287,7 @@ GameActions::Result WallPlaceAction::Execute() const
     auto targetHeight = _loc.z;
     if (targetHeight == 0)
     {
-        auto* surfaceElement = map_get_surface_element_at(_loc);
+        auto* surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
             log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -305,7 +305,7 @@ GameActions::Result WallPlaceAction::Execute() const
     }
     auto targetLoc = CoordsXYZ(_loc, targetHeight);
 
-    auto* wallEntry = get_wall_entry(_wallType);
+    auto* wallEntry = GetWallEntry(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -501,7 +501,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    TileElement* tileElement = map_get_first_element_at(_loc);
+    TileElement* tileElement = MapGetFirstElementAt(_loc);
     do
     {
         if (tileElement == nullptr)

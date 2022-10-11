@@ -412,7 +412,7 @@ public: // Peep
     // TODO: Make these private again when done refactoring
 public: // Peep
     [[nodiscard]] bool CheckForPath();
-    bool PathIsBlockedByVehicle();
+    bool ShouldWaitForLevelCrossing();
     bool IsOnLevelCrossing();
     void PerformNextAction(uint8_t& pathing_result);
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);

@@ -136,7 +136,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     session.MapPosition.x = coords.x;
     session.MapPosition.y = coords.y;
 
-    auto* tile_element = map_get_first_element_at(session.MapPosition);
+    auto* tile_element = MapGetFirstElementAt(session.MapPosition);
     if (tile_element == nullptr)
         return;
     uint8_t rotation = session.CurrentRotation;
@@ -145,7 +145,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        partOfVirtualFloor = virtual_floor_tile_is_floor(session.MapPosition);
+        partOfVirtualFloor = VirtualFloorTileIsFloor(session.MapPosition);
     }
 
     switch (rotation)
@@ -204,7 +204,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     if (partOfVirtualFloor)
     {
         // We must pretend this tile is at least as tall as the virtual floor
-        max_height = std::max(max_height, virtual_floor_get_height());
+        max_height = std::max(max_height, VirtualFloorGetHeight());
     }
 
     if (screenMinY - (max_height + 32) >= dpi->y + dpi->height)
@@ -291,7 +291,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off && partOfVirtualFloor)
     {
-        virtual_floor_paint(session);
+        VirtualFloorPaint(session);
     }
 
     if (!gShowSupportSegmentHeights)

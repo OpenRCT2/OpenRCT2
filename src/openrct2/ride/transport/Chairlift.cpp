@@ -86,7 +86,7 @@ static void chairlift_paint_util_draw_supports(paint_session& session, int32_t s
             continue;
         }
 
-        if (metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]))
+        if (MetalASupportsPaintSetup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]))
         {
             success = true;
         }
@@ -106,7 +106,7 @@ static void chairlift_paint_util_draw_supports(paint_session& session, int32_t s
         }
         uint16_t temp = supportSegments[s].height;
         supportSegments[s].height = session.Support.height;
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         supportSegments[s].height = temp;
     }
 }
@@ -114,7 +114,7 @@ static void chairlift_paint_util_draw_supports(paint_session& session, int32_t s
 static const TrackElement* chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(
     int32_t x, int32_t y, int32_t z, const Ride& ride)
 {
-    const TileElement* tileElement = map_get_first_element_at(CoordsXY{ x, y });
+    const TileElement* tileElement = MapGetFirstElementAt(CoordsXY{ x, y });
     if (tileElement == nullptr)
     {
         return nullptr;
@@ -188,7 +188,7 @@ static void chairlift_paint_station_ne_sw(
 
     const auto* stationObj = ride.GetStationObject();
 
-    wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_MISC]);
 
     if (!isStart && !isEnd)
     {
@@ -280,7 +280,7 @@ static void chairlift_paint_station_se_nw(
 
     const auto* stationObj = ride.GetStationObject();
 
-    wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     if (!isStart && !isEnd)
     {

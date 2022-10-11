@@ -209,7 +209,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
     auto loc = state.Proximity;
     track_type_t trackType = state.ProximityTrackType;
 
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -315,7 +315,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
     auto loc = state.Proximity;
     track_type_t trackType = state.ProximityTrackType;
 
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -420,7 +420,7 @@ static void ride_ratings_score_close_proximity_in_direction(
     if (!map_is_location_valid(scorePos))
         return;
 
-    TileElement* tileElement = map_get_first_element_at(scorePos);
+    TileElement* tileElement = MapGetFirstElementAt(scorePos);
     if (tileElement == nullptr)
         return;
     do
@@ -476,7 +476,7 @@ static void ride_ratings_score_close_proximity_in_direction(
 
 static void ride_ratings_score_close_proximity_loops_helper(RideRatingUpdateState& state, const CoordsXYE& coordsElement)
 {
-    TileElement* tileElement = map_get_first_element_at(coordsElement);
+    TileElement* tileElement = MapGetFirstElementAt(coordsElement);
     if (tileElement == nullptr)
         return;
     do
@@ -544,7 +544,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
     }
 
     state.ProximityTotal++;
-    TileElement* tileElement = map_get_first_element_at(state.Proximity);
+    TileElement* tileElement = MapGetFirstElementAt(state.Proximity);
     if (tileElement == nullptr)
         return;
     do
@@ -1461,7 +1461,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
         for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, gMapSize.x - 1); xx++)
         {
             // Count scenery items on this tile
-            TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy });
+            TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ xx, yy });
             if (tileElement == nullptr)
                 continue;
             do

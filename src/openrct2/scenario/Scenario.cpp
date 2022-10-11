@@ -106,7 +106,7 @@ void scenario_reset()
     gScenarioRand.seed(s);
 
     research_reset_current_item();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
     News::InitQueue();
 
     auto& park = GetContext()->GetGameState()->GetPark();
@@ -160,8 +160,8 @@ void scenario_reset()
     reset_all_ride_build_dates();
     date_reset();
     Duck::RemoveAll();
-    park_calculate_size();
-    map_count_remaining_land_rights();
+    ParkCalculateSize();
+    MapCountRemainingLandRights();
     Staff::ResetStats();
 
     auto& objManager = GetContext()->GetObjectManager();
@@ -245,7 +245,7 @@ static void scenario_entrance_fee_too_high_check()
 {
     const auto max_fee = add_clamp_money16(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
 
-    if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
+    if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && ParkGetEntranceFee() > max_fee)
     {
         if (!gParkEntrances.empty())
         {

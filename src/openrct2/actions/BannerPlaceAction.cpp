@@ -79,7 +79,7 @@ GameActions::Result BannerPlaceAction::Query() const
     }
 
     auto baseHeight = _loc.z + PATH_HEIGHT_STEP;
-    BannerElement* existingBannerElement = map_get_banner_element_at({ _loc.x, _loc.y, baseHeight }, _loc.direction);
+    BannerElement* existingBannerElement = MapGetBannerElementAt({ _loc.x, _loc.y, baseHeight }, _loc.direction);
     if (existingBannerElement != nullptr)
     {
         return GameActions::Result(
@@ -93,7 +93,7 @@ GameActions::Result BannerPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
     }
 
-    auto* bannerEntry = get_banner_entry(_bannerType);
+    auto* bannerEntry = GetBannerEntry(_bannerType);
     if (bannerEntry == nullptr)
     {
         log_error("Invalid banner object type. bannerType = ", _bannerType);
@@ -120,7 +120,7 @@ GameActions::Result BannerPlaceAction::Execute() const
             GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    auto* bannerEntry = get_banner_entry(_bannerType);
+    auto* bannerEntry = GetBannerEntry(_bannerType);
     if (bannerEntry == nullptr)
     {
         log_error("Invalid banner object type. bannerType = ", _bannerType);

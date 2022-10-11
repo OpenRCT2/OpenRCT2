@@ -67,7 +67,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
             if (!LocationValid({ x, y }))
                 continue;
 
-            auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+            auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 
@@ -144,7 +144,7 @@ uint16_t WaterRaiseAction::GetHighestHeight(const MapRange& validRange) const
                 }
             }
 
-            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+            auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 

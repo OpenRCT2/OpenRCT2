@@ -69,7 +69,7 @@ static void PaintLargeScenerySupports(
         special = 49;
     }
 
-    wooden_b_supports_paint_setup(session, (direction & 1), special, supportHeight, imageTemplate);
+    WoodenBSupportsPaintSetup(session, (direction & 1), special, supportHeight, imageTemplate);
 
     int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
     if (tile.flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)

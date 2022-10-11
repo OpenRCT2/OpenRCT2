@@ -586,7 +586,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
                 {
                     console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
                 }
-                else if (current_happiness == calculate_guest_initial_happiness(i))
+                else if (current_happiness == CalculateGuestInitialHappiness(i))
                 {
                     console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gGuestInitialHappiness);
                     break;
@@ -833,7 +833,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "guest_initial_happiness" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::GuestInitialHappiness, calculate_guest_initial_happiness(static_cast<uint8_t>(int_val[0])));
+                ScenarioSetSetting::GuestInitialHappiness, CalculateGuestInitialHappiness(static_cast<uint8_t>(int_val[0])));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set guest_initial_happiness command failed, likely due to permissions.");
@@ -1260,7 +1260,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             research_reset_current_item();
             gSilentResearch = false;
         }
-        scenery_set_default_placement_configuration();
+        ScenerySetDefaultPlacementConfiguration();
 
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
         context_broadcast_intent(&intent);
@@ -1517,7 +1517,7 @@ static int32_t cc_load_park([[maybe_unused]] InteractiveConsole& console, [[mayb
     {
         savePath += ".park";
     }
-    if (context_load_park_from_file(savePath.c_str()))
+    if (OpenRCT2::GetContext()->LoadParkFromFile(savePath))
     {
         console.WriteFormatLine("Park %s was loaded successfully", savePath.c_str());
     }

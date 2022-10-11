@@ -52,7 +52,6 @@
 #include "../rct12/EntryList.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
-#include "../rct12/SawyerEncoding.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -141,12 +140,6 @@ namespace RCT2
             OpenRCT2::IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck = false,
             const utf8* path = String::Empty) override
         {
-            if (isScenario && !gConfigGeneral.allow_loading_with_incorrect_checksum
-                && !SawyerEncoding::ValidateChecksum(stream))
-            {
-                throw IOException("Invalid checksum.");
-            }
-
             auto chunkReader = SawyerChunkReader(stream);
             chunkReader.ReadChunk(&_s6.header, sizeof(_s6.header));
 
@@ -506,9 +499,9 @@ namespace RCT2
             // pad_13CE778
 
             // Fix and set dynamic variables
-            map_strip_ghost_flag_from_elements();
+            MapStripGhostFlagFromElements();
             ConvertScenarioStringsToUTF8();
-            map_count_remaining_land_rights();
+            MapCountRemainingLandRights();
             determine_ride_entrance_and_exit_locations();
 
             park.Name = GetUserString(_s6.park_name);
@@ -660,7 +653,7 @@ namespace RCT2
             };
             for (const auto& tile : tilesToUncovered)
             {
-                auto* tileElement = map_get_first_element_at(tile);
+                auto* tileElement = MapGetFirstElementAt(tile);
                 if (tileElement == nullptr)
                     continue;
 
@@ -685,7 +678,7 @@ namespace RCT2
             };
             for (const auto& tile : tilesToCovered)
             {
-                auto* tileElement = map_get_first_element_at(tile);
+                auto* tileElement = MapGetFirstElementAt(tile);
                 if (tileElement == nullptr)
                     continue;
 
@@ -2315,86 +2308,4 @@ namespace RCT2
 std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectRepository)
 {
     return std::make_unique<RCT2::S6Importer>(objectRepository);
-}
-
-static void show_error(uint8_t errorType, StringId errorStringId)
-{
-    if (errorType == ERROR_TYPE_GENERIC)
-    {
-        context_show_error(errorStringId, STR_NONE, {});
-    }
-    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId, {});
-}
-
-void load_from_sv6(const char* path)
-{
-    auto context = OpenRCT2::GetContext();
-    auto s6Importer = std::make_unique<RCT2::S6Importer>(context->GetObjectRepository());
-    try
-    {
-        auto& objectMgr = context->GetObjectManager();
-        auto result = s6Importer->LoadSavedGame(path);
-        objectMgr.LoadObjects(result.RequiredObjects);
-        s6Importer->Import();
-        game_fix_save_vars();
-        MapAnimationAutoCreate();
-        EntityTweener::Get().Reset();
-        gScreenAge = 0;
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-    }
-    catch (const ObjectLoadException&)
-    {
-        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
-    }
-    catch (const IOException& loadError)
-    {
-        log_error("Error loading: %s", loadError.what());
-        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
-    }
-    catch (const UnsupportedRideTypeException&)
-    {
-        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES);
-    }
-    catch (const std::exception&)
-    {
-        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
-    }
-}
-
-/**
- *
- *  rct2: 0x00676053
- * scenario (ebx)
- */
-void load_from_sc6(const char* path)
-{
-    auto context = OpenRCT2::GetContext();
-    auto& objManager = context->GetObjectManager();
-    auto s6Importer = std::make_unique<RCT2::S6Importer>(context->GetObjectRepository());
-    try
-    {
-        auto result = s6Importer->LoadScenario(path);
-        objManager.LoadObjects(result.RequiredObjects);
-        s6Importer->Import();
-        game_fix_save_vars();
-        MapAnimationAutoCreate();
-        EntityTweener::Get().Reset();
-        return;
-    }
-    catch (const ObjectLoadException& loadError)
-    {
-        log_error("Error loading: %s", loadError.what());
-        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
-    }
-    catch (const IOException& loadError)
-    {
-        log_error("Error loading: %s", loadError.what());
-        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
-    }
-    catch (const std::exception&)
-    {
-        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
-    }
-    gScreenAge = 0;
-    gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 }

@@ -729,7 +729,8 @@ void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId& im
     gfx_draw_sprite_palette_set_software(dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
 }
 
-void X8DrawingContext::DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap)
+void X8DrawingContext::DrawGlyph(
+    rct_drawpixelinfo* dpi, const ImageId& image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
-    gfx_draw_sprite_palette_set_software(dpi, ImageId::FromUInt32(image), { x, y }, paletteMap);
+    gfx_draw_sprite_palette_set_software(dpi, image, { x, y }, paletteMap);
 }

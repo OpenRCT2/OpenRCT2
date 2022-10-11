@@ -458,7 +458,7 @@ public:
         if (parkEntranceMapPosition.IsNull())
             return parkEntranceMapPosition;
 
-        auto surfaceElement = map_get_surface_element_at(mapCoords);
+        auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
         if (surfaceElement == nullptr)
         {
             parkEntranceMapPosition.SetNull();
@@ -1066,7 +1066,7 @@ private:
 
     uint16_t GetPixelColourPeep(const CoordsXY& c)
     {
-        auto* surfaceElement = map_get_surface_element_at(c);
+        auto* surfaceElement = MapGetSurfaceElementAt(c);
         if (surfaceElement == nullptr)
             return 0;
 
@@ -1109,7 +1109,7 @@ private:
         uint16_t colourB = MapColour(PALETTE_INDEX_13); // surface colour (dark grey)
 
         // as an improvement we could use first_element to show underground stuff?
-        TileElement* tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(c));
+        TileElement* tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(c));
         do
         {
             if (tileElement == nullptr)
