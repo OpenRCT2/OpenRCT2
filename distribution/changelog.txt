@@ -1,6 +1,7 @@
 0.4.3 (in development)
 ------------------------------------------------------------------------
 - Fix: [#14312] Research ride type message incorrect.
+- Fix: [#17763] Missing validation on invalid characters in file name.
 - Fix: [#17853] Invention name tears while being dragged.
 - Fix: [#18064] Unable to dismiss notification messages.
 - Fix: [#18070] Underground entrance/exit shows through terrain walls (original bug).
