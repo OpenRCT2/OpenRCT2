@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -802,9 +802,9 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     const auto& widget = w.widgets[widgetIndex];
 
     // Get the image
-    int32_t image = widget.image;
-    if (image == SPR_NONE)
+    if (static_cast<int32_t>(widget.image) == SPR_NONE)
         return;
+    auto image = ImageId::FromUInt32(widget.image);
 
     // Resolve the absolute ltrb
     auto screenCoords = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
@@ -815,7 +815,7 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     if (widget.type == WindowWidgetType::ColourBtn || widget.type == WindowWidgetType::TrnBtn
         || widget.type == WindowWidgetType::Tab)
         if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
-            image++;
+            image = image.WithIndexOffset(1);
 
     if (WidgetIsDisabled(w, widgetIndex))
     {
@@ -831,17 +831,17 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     }
     else
     {
-        if (image & IMAGE_TYPE_REMAP_2_PLUS)
+        if (image.HasSecondary())
         {
             // ?
         }
 
-        if (image & IMAGE_TYPE_TRANSPARENT)
-            image &= ~IMAGE_TYPE_TRANSPARENT;
+        if (image.IsBlended())
+            image = image.WithBlended(false);
         else
-            image |= colour << 19;
+            image = image.WithPrimary(colour);
 
-        gfx_draw_sprite(dpi, ImageId::FromUInt32(image), screenCoords);
+        gfx_draw_sprite(dpi, image, screenCoords);
     }
 }
 
@@ -1187,7 +1187,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     }
 }
 
-uint32_t GetColourButtonImage(colour_t colour)
+ImageId GetColourButtonImage(colour_t colour)
 {
-    return SPRITE_ID_PALETTE_COLOUR_1(colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+    return ImageId(SPR_PALETTE_BTN).WithTransparency(colour);
 }

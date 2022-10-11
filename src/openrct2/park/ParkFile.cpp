@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1013,7 +1013,7 @@ namespace OpenRCT2
                                 }
                             }
                         }
-                        UpdateParkEntranceLocations();
+                        ParkEntranceUpdateLocations();
                     }
                     else
                     {
@@ -1034,7 +1034,7 @@ namespace OpenRCT2
             {
                 for (int32_t x = 0; x < gMapSize.x; x++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+                    TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
                         continue;
                     do

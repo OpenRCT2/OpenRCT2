@@ -76,7 +76,7 @@ GameActions::Result LandSetHeightAction::Query() const
             if (tileElement != nullptr)
             {
                 auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
         }
@@ -93,14 +93,14 @@ GameActions::Result LandSetHeightAction::Query() const
         }
     }
 
-    auto* surfaceElement = map_get_surface_element_at(_coords);
+    auto* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
         return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
     // We need to check if there is _currently_ a level crossing on the tile.
     // For that, we need the old height, so we can't use the _height variable.
     auto oldCoords = CoordsXYZ{ _coords, surfaceElement->GetBaseZ() };
-    auto* pathElement = map_get_footpath_element(oldCoords);
+    auto* pathElement = MapGetFootpathElement(oldCoords);
     if (pathElement != nullptr && pathElement->AsPath()->IsLevelCrossing(oldCoords))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, STR_NONE);
@@ -110,7 +110,7 @@ GameActions::Result LandSetHeightAction::Query() const
     if (tileElement != nullptr)
     {
         auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
-        map_obstruction_set_error_text(tileElement, res);
+        MapGetObstructionErrorText(tileElement, res);
         return res;
     }
 
@@ -145,16 +145,16 @@ GameActions::Result LandSetHeightAction::Execute() const
 {
     money32 cost = 0.00_GBP;
     auto surfaceHeight = tile_element_height(_coords);
-    footpath_remove_litter({ _coords, surfaceHeight });
+    FootpathRemoveLitter({ _coords, surfaceHeight });
 
     if (!gCheatsDisableClearanceChecks)
     {
-        wall_remove_at({ _coords, _height * 8 - 16, _height * 8 + 32 });
+        WallRemoveAt({ _coords, _height * 8 - 16, _height * 8 + 32 });
         cost += GetSmallSceneryRemovalCost();
         SmallSceneryRemoval();
     }
 
-    auto* surfaceElement = map_get_surface_element_at(_coords);
+    auto* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
         return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
@@ -246,7 +246,7 @@ money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
 
 void LandSetHeightAction::SmallSceneryRemoval() const
 {
-    TileElement* tileElement = map_get_first_element_at(_coords);
+    TileElement* tileElement = MapGetFirstElementAt(_coords);
     do
     {
         if (tileElement == nullptr)

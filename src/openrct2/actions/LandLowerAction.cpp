@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -81,7 +81,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
         {
             if (!LocationValid({ x, y }))
                 continue;
-            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+            auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 

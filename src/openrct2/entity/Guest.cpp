@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1468,7 +1468,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     bool hasVoucher = false;
 
-    bool isRainingAndUmbrella = shopItem == ShopItem::Umbrella && climate_is_raining();
+    bool isRainingAndUmbrella = shopItem == ShopItem::Umbrella && ClimateIsRaining();
 
     if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) && (VoucherShopItem == shopItem))
     {
@@ -1496,7 +1496,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     if ((shopItem == ShopItem::Balloon || shopItem == ShopItem::IceCream || shopItem == ShopItem::Candyfloss
          || shopItem == ShopItem::Sunglasses)
-        && climate_is_raining())
+        && ClimateIsRaining())
     {
         return false;
     }
@@ -2047,7 +2047,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                     }
                 }
 
-                if (climate_is_raining() && !ShouldRideWhileRaining(*ride))
+                if (ClimateIsRaining() && !ShouldRideWhileRaining(*ride))
                 {
                     if (peepAtRide)
                     {
@@ -2376,7 +2376,7 @@ void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 
 void Guest::ReadMap()
 {
-    if (IsActionInterruptable())
+    if (IsActionInterruptable() && !IsOnLevelCrossing())
     {
         Action = PeepActionType::ReadMap;
         ActionFrame = 0;
@@ -2924,6 +2924,11 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
             {
                 Ride* ride;
 
+                if (tileElement->IsGhost())
+                {
+                    continue;
+                }
+
                 switch (tileElement->GetType())
                 {
                     case TileElementType::Path:
@@ -3346,7 +3351,7 @@ void Guest::UpdateBuying()
 
         auto destination = CoordsXY{ 16, 16 } + NextLoc;
         SetDestination(destination);
-        PeepDirection = direction_reverse(PeepDirection);
+        PeepDirection = DirectionReverse(PeepDirection);
 
         SetState(PeepState::Walking);
         return;
@@ -4131,7 +4136,7 @@ void Guest::UpdateRideLeaveVehicle()
         CoordsXYZD platformLocation;
         platformLocation.z = station.GetBaseZ();
 
-        platformLocation.direction = direction_reverse(exitLocation.direction);
+        platformLocation.direction = DirectionReverse(exitLocation.direction);
 
         if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
         {
@@ -4182,7 +4187,7 @@ void Guest::UpdateRideLeaveVehicle()
                     specialDirection &= 3;
 
                     if (vehicle->TrackSubposition == VehicleTrackSubposition::GoKartsRightLane)
-                        specialDirection = direction_reverse(specialDirection);
+                        specialDirection = DirectionReverse(specialDirection);
                 }
             }
 
@@ -4525,7 +4530,7 @@ void Guest::UpdateRideApproachExitWaypoints()
     Var37 |= 3;
 
     auto targetLoc = ride->GetStation(CurrentRideStation).Exit.ToCoordsXYZD().ToTileCentre();
-    uint8_t exit_direction = direction_reverse(targetLoc.direction);
+    uint8_t exit_direction = DirectionReverse(targetLoc.direction);
 
     int16_t x_shift = DirectionOffsets[exit_direction].x;
     int16_t y_shift = DirectionOffsets[exit_direction].y;
@@ -4758,8 +4763,8 @@ void Guest::UpdateRideLeaveSpiralSlide()
 
     auto targetLoc = ride->GetStation(CurrentRideStation).Exit.ToCoordsXYZD().ToTileCentre();
 
-    int16_t xShift = DirectionOffsets[direction_reverse(targetLoc.direction)].x;
-    int16_t yShift = DirectionOffsets[direction_reverse(targetLoc.direction)].y;
+    int16_t xShift = DirectionOffsets[DirectionReverse(targetLoc.direction)].x;
+    int16_t yShift = DirectionOffsets[DirectionReverse(targetLoc.direction)].y;
 
     int16_t shiftMultiplier = 20;
 
@@ -4812,7 +4817,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (IsActionInterruptable())
     {
-        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !climate_is_raining() && (scenario_rand() & 0xFFFF) <= 2427)
+        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsRaining() && (scenario_rand() & 0xFFFF) <= 2427)
         {
             Action = PeepActionType::Jump;
             ActionFrame = 0;
@@ -4836,7 +4841,7 @@ void Guest::UpdateRideMazePathfinding()
     // Var37 is 3, 7, 11 or 15
     uint8_t hedges[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
     uint8_t openCount = 0;
-    uint8_t mazeReverseLastEdge = direction_reverse(MazeLastEdge);
+    uint8_t mazeReverseLastEdge = DirectionReverse(MazeLastEdge);
     for (uint8_t i = 0; i < 4; ++i)
     {
         if (!(mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][i])) && i != mazeReverseLastEdge)
@@ -4867,7 +4872,7 @@ void Guest::UpdateRideMazePathfinding()
     };
     maze_type mazeType = maze_type::invalid;
 
-    auto tileElement = map_get_first_element_at(targetLoc);
+    auto tileElement = MapGetFirstElementAt(targetLoc);
     if (tileElement == nullptr)
         return;
     do
@@ -4962,7 +4967,7 @@ void Guest::UpdateRideLeaveExit()
     // Find the station track element
     for (auto* pathElement : TileElementsView<PathElement>(targetLoc))
     {
-        int16_t height = map_height_from_slope(targetLoc, pathElement->GetSlopeDirection(), pathElement->IsSloped());
+        int16_t height = MapHeightFromSlope(targetLoc, pathElement->GetSlopeDirection(), pathElement->IsSloped());
         height += pathElement->GetBaseZ();
 
         int16_t z_diff = z - height;
@@ -5205,48 +5210,33 @@ void Guest::UpdateWalking()
     if (!CheckForPath())
         return;
 
-    if (PeepFlags & PEEP_FLAGS_WAVING)
+    if (!IsOnLevelCrossing())
     {
-        if (IsActionInterruptable())
+        if (PeepFlags & PEEP_FLAGS_WAVING && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
-            {
-                Action = PeepActionType::Wave2;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
+            Action = PeepActionType::Wave2;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
 
-                UpdateCurrentActionSpriteType();
-            }
+            UpdateCurrentActionSpriteType();
         }
-    }
 
-    if (PeepFlags & PEEP_FLAGS_PHOTO)
-    {
-        if (IsActionInterruptable())
+        if (PeepFlags & PEEP_FLAGS_PHOTO && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
-            {
-                Action = PeepActionType::TakePhoto;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
+            Action = PeepActionType::TakePhoto;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
 
-                UpdateCurrentActionSpriteType();
-            }
+            UpdateCurrentActionSpriteType();
         }
-    }
 
-    if (PeepFlags & PEEP_FLAGS_PAINTING)
-    {
-        if (IsActionInterruptable())
+        if (PeepFlags & PEEP_FLAGS_PAINTING && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
-            {
-                Action = PeepActionType::DrawPicture;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
+            Action = PeepActionType::DrawPicture;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
 
-                UpdateCurrentActionSpriteType();
-            }
+            UpdateCurrentActionSpriteType();
         }
     }
 
@@ -5299,7 +5289,7 @@ void Guest::UpdateWalking()
         }
     }
 
-    if (PathIsBlockedByVehicle())
+    if (ShouldWaitForLevelCrossing())
     {
         // Wait for vehicle to pass
         return;
@@ -5312,7 +5302,7 @@ void Guest::UpdateWalking()
 
     if (GetNextIsSurface())
     {
-        auto surfaceElement = map_get_surface_element_at(NextLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
 
         if (surfaceElement != nullptr)
         {
@@ -5361,7 +5351,7 @@ void Guest::UpdateWalking()
     if (GetNextIsSurface() || GetNextIsSloped())
         return;
 
-    TileElement* tileElement = map_get_first_element_at(NextLoc);
+    TileElement* tileElement = MapGetFirstElementAt(NextLoc);
     if (tileElement == nullptr)
         return;
 
@@ -5406,7 +5396,7 @@ void Guest::UpdateWalking()
 
     RideId ride_to_view;
     uint8_t ride_seat_to_view;
-    if (!peep_find_ride_to_look_at(this, chosen_edge, &ride_to_view, &ride_seat_to_view))
+    if (IsOnLevelCrossing() || !peep_find_ride_to_look_at(this, chosen_edge, &ride_to_view, &ride_seat_to_view))
         return;
 
     // Check if there is a peep watching (and if there is place for us)
@@ -6252,7 +6242,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
 {
     TileElement* tileElement;
 
-    auto surfaceElement = map_get_surface_element_at(peep->NextLoc);
+    auto surfaceElement = MapGetSurfaceElementAt(peep->NextLoc);
 
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
@@ -6291,7 +6281,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
@@ -6310,7 +6300,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         }
         if (tileElement->GetType() != TileElementType::Wall)
             continue;
-        if (direction_reverse(tileElement->GetDirection()) != edge)
+        if (DirectionReverse(tileElement->GetDirection()) != edge)
             continue;
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6408,7 +6398,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
     // TODO: extract loop A
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6429,7 +6419,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         }
         if (tileElement->GetType() != TileElementType::Wall)
             continue;
-        if (direction_reverse(tileElement->GetDirection()) != edge)
+        if (DirectionReverse(tileElement->GetDirection()) != edge)
             continue;
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6525,7 +6515,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
     // TODO: extract loop A
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6545,7 +6535,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         }
         if (tileElement->GetType() != TileElementType::Wall)
             continue;
-        if (direction_reverse(tileElement->GetDirection()) != edge)
+        if (DirectionReverse(tileElement->GetDirection()) != edge)
             continue;
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6706,12 +6696,12 @@ void Guest::UpdateSpriteType()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (climate_is_raining() && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
+    if (ClimateIsRaining() && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
         if (map_is_location_valid(loc.ToTileStart()))
         {
-            TileElement* tileElement = map_get_first_element_at(loc);
+            TileElement* tileElement = MapGetFirstElementAt(loc);
             while (true)
             {
                 if (tileElement == nullptr)

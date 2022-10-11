@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -74,6 +74,7 @@ rct_window* WindowViewportOpen();
 rct_window* WindowWaterOpen();
 rct_window* WindowViewClippingOpen();
 rct_window* WindowTransparencyOpen();
+rct_window* WindowAssetPacksOpen();
 
 // WC_FINANCES
 rct_window* WindowFinancesOpen();

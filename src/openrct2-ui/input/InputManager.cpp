@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -158,9 +158,9 @@ void InputManager::HandleModifiers()
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
         if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
-            virtual_floor_enable();
+            VirtualFloorEnable();
         else
-            virtual_floor_disable();
+            VirtualFloorDisable();
     }
 }
 

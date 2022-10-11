@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1144,7 +1144,7 @@ public:
                     if (tileElement->AsPath()->HasAddition())
                     {
                         const auto pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
-                        const auto* pathBitEntry = get_footpath_item_entry(pathAdditionType);
+                        const auto* pathBitEntry = GetFootpathItemEntry(pathAdditionType);
                         StringId additionNameId = pathBitEntry != nullptr ? pathBitEntry->name
                                                                           : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
                         auto ft = Formatter();
@@ -1320,7 +1320,7 @@ public:
                     {
                         // TODO: Make this work with Left/Right park entrance parts
                         ft = Formatter();
-                        ft.Add<StringId>(park_entrance_get_index({ _toolMap, tileElement->GetBaseZ() }));
+                        ft.Add<StringId>(ParkEntranceGetIndex({ _toolMap, tileElement->GetBaseZ() }));
                         DrawTextBasic(
                             &dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, ft,
                             { colours[1] });
@@ -1459,7 +1459,7 @@ public:
                         { colours[1] });
 
                     // Banner info
-                    auto* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
+                    auto* largeSceneryEntry = GetLargeSceneryEntry(largeSceneryType);
                     if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         auto banner = sceneryElement->GetBanner();
@@ -1551,7 +1551,7 @@ public:
         int32_t i = 0;
         char buffer[256];
 
-        const TileElement* tileElement = map_get_first_element_at(_toolMap);
+        const TileElement* tileElement = MapGetFirstElementAt(_toolMap);
 
         do
         {
@@ -1775,7 +1775,7 @@ private:
         windowTileInspectorSelectedIndex = -1;
         scrolls[0].v_top = 0;
 
-        TileElement* element = map_get_first_element_at(_toolMap);
+        TileElement* element = MapGetFirstElementAt(_toolMap);
         int16_t numItems = 0;
         do
         {
@@ -1967,7 +1967,7 @@ private:
         openrct2_assert(
             windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
             "Selected list item out of range");
-        return map_get_first_element_at(_toolMap) + windowTileInspectorSelectedIndex;
+        return MapGetFirstElementAt(_toolMap) + windowTileInspectorSelectedIndex;
     }
 
     void OnPrepareDraw() override

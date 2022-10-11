@@ -3628,6 +3628,11 @@ STR_6511    :Zero-G roll (droite)
 STR_6512    :Grand zero-G roll (gauche)
 STR_6513    :Grand zero-G roll (droite)
 STR_6514    :Hauteur invalide !
+STR_6515    :{BLACK}RCT1 pas lié — des images de secours seront utilisées.
+STR_6516    :Un ou plusieurs des objets ajoutés nécessitent que RCT1 soit lié pour être affichés correctement. Des images de secours seront utilisées.
+STR_6517    :Un ou plusieurs objets de ce parc nécessitent que RCT1 soit lié pour être affichés correctement. Des images de secours seront utilisées.
+STR_6518    :{BLACK}Survolez un scénario pour afficher sa description et son objectif. Cliquez pour commencer à jouer.
+STR_6519    :Extras
 
 #############
 # Scenarios #
@@ -4405,15 +4410,6 @@ STR_NAME    :Toit
 
 [TTRFWD08]
 STR_NAME    :Toit
-
-[TTRFGL01]
-STR_NAME    :Toit en verre
-
-[TTRFGL02]
-STR_NAME    :Toit en verre
-
-[TTRFGL03]
-STR_NAME    :Toit en verre
 
 [ACWW33]
 STR_NAME    :Tableau d’affichage en bois

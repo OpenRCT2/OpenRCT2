@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@
  *
  *  rct2: 0x006E588E
  */
-void wall_remove_at(const CoordsXYRangedZ& wallPos)
+void WallRemoveAt(const CoordsXYRangedZ& wallPos)
 {
     for (auto wallElement = map_get_wall_element_at(wallPos); wallElement != nullptr;
          wallElement = map_get_wall_element_at(wallPos))
@@ -47,20 +47,20 @@ void wall_remove_at(const CoordsXYRangedZ& wallPos)
  *
  *  rct2: 0x006E57E6
  */
-void wall_remove_at_z(const CoordsXYZ& wallPos)
+void WallRemoveAtZ(const CoordsXYZ& wallPos)
 {
-    wall_remove_at({ wallPos, wallPos.z, wallPos.z + 48 });
+    WallRemoveAt({ wallPos, wallPos.z, wallPos.z + 48 });
 }
 
 /**
  *
  *  rct2: 0x006E5935
  */
-void wall_remove_intersecting_walls(const CoordsXYRangedZ& wallPos, Direction direction)
+void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
 {
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(wallPos);
+    tileElement = MapGetFirstElementAt(wallPos);
     if (tileElement == nullptr)
         return;
     do
@@ -140,7 +140,7 @@ uint16_t WallElement::GetEntryIndex() const
 
 WallSceneryEntry* WallElement::GetEntry() const
 {
-    return get_wall_entry(entryIndex);
+    return GetWallEntry(entryIndex);
 }
 
 void WallElement::SetEntryIndex(uint16_t newIndex)

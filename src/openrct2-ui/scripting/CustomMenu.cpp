@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -199,7 +199,7 @@ namespace OpenRCT2::Scripting
             else if (info.Element != nullptr)
             {
                 int32_t index = 0;
-                auto el = map_get_first_element_at(info.Loc);
+                auto el = MapGetFirstElementAt(info.Loc);
                 if (el != nullptr)
                 {
                     do

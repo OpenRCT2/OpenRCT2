@@ -23,7 +23,7 @@ static bool isLocationLitterable(const CoordsXYZ& mapPos)
     if (!map_is_location_owned(mapPos))
         return false;
 
-    tileElement = map_get_first_element_at(mapPos);
+    tileElement = MapGetFirstElementAt(mapPos);
     if (tileElement == nullptr)
         return false;
     do
@@ -35,7 +35,7 @@ static bool isLocationLitterable(const CoordsXYZ& mapPos)
         if (pathZ < mapPos.z || pathZ >= mapPos.z + PATH_CLEARANCE)
             continue;
 
-        return !tile_element_is_underground(tileElement);
+        return !TileElementIsUnderground(tileElement);
     } while (!(tileElement++)->IsLastForTile());
     return false;
 }
@@ -188,5 +188,5 @@ void Litter::Paint(paint_session& session, int32_t imageDirection) const
 
     // In the following call to PaintAddImageAsParent, we add 4 (instead of 2) to the
     // bound_box_offset_z to make sure litter is drawn on top of railways
-    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 5, 5, -1 }, { -4, -4, z + 4 });
+    PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { 5, 5, -1 }, { -4, -4, z + 4 });
 }

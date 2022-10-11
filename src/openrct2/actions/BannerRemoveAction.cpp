@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,7 +75,7 @@ GameActions::Result BannerRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
-    auto* bannerEntry = get_banner_entry(banner->type);
+    auto* bannerEntry = GetBannerEntry(banner->type);
     if (bannerEntry != nullptr)
     {
         res.Cost = -((bannerEntry->price * 3) / 4);
@@ -114,7 +114,7 @@ GameActions::Result BannerRemoveAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
-    auto* bannerEntry = get_banner_entry(banner->type);
+    auto* bannerEntry = GetBannerEntry(banner->type);
     if (bannerEntry != nullptr)
     {
         res.Cost = -((bannerEntry->price * 3) / 4);

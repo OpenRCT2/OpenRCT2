@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -126,7 +126,7 @@ static int32_t path_get_permitted_edges(PathElement* pathElement)
  */
 static int32_t peep_move_one_tile(Direction direction, Peep& peep)
 {
-    assert(direction_valid(direction));
+    assert(DirectionValid(direction));
     auto newTile = CoordsXY{ CoordsXY{ peep.NextLoc } + CoordsDirectionDelta[direction] }.ToTileCentre();
 
     if (newTile.x >= MAXIMUM_MAP_SIZE_BIG || newTile.y >= MAXIMUM_MAP_SIZE_BIG)
@@ -185,13 +185,13 @@ static int32_t guest_surface_path_finding(Peep& peep)
     auto pathPos = CoordsXYRangedZ{ peep.NextLoc, peep.NextLoc.z, peep.NextLoc.z + PATH_CLEARANCE };
     Direction randDirection = scenario_rand() & 3;
 
-    if (!fence_in_the_way(pathPos, randDirection))
+    if (!WallInTheWay(pathPos, randDirection))
     {
         pathPos.x += CoordsDirectionDelta[randDirection].x;
         pathPos.y += CoordsDirectionDelta[randDirection].y;
-        Direction backwardsDirection = direction_reverse(randDirection);
+        Direction backwardsDirection = DirectionReverse(randDirection);
 
-        if (!fence_in_the_way(pathPos, backwardsDirection))
+        if (!WallInTheWay(pathPos, backwardsDirection))
         {
             if (!map_surface_is_blocked(pathPos))
             {
@@ -210,13 +210,13 @@ static int32_t guest_surface_path_finding(Peep& peep)
 
     pathPos.x = peep.NextLoc.x;
     pathPos.y = peep.NextLoc.y;
-    if (!fence_in_the_way(pathPos, randDirection))
+    if (!WallInTheWay(pathPos, randDirection))
     {
         pathPos.x += CoordsDirectionDelta[randDirection].x;
         pathPos.y += CoordsDirectionDelta[randDirection].y;
-        Direction backwardsDirection = direction_reverse(randDirection);
+        Direction backwardsDirection = DirectionReverse(randDirection);
 
-        if (!fence_in_the_way(pathPos, backwardsDirection))
+        if (!WallInTheWay(pathPos, backwardsDirection))
         {
             if (!map_surface_is_blocked(pathPos))
             {
@@ -230,13 +230,13 @@ static int32_t guest_surface_path_finding(Peep& peep)
 
     pathPos.x = peep.NextLoc.x;
     pathPos.y = peep.NextLoc.y;
-    if (!fence_in_the_way(pathPos, randDirection))
+    if (!WallInTheWay(pathPos, randDirection))
     {
         pathPos.x += CoordsDirectionDelta[randDirection].x;
         pathPos.y += CoordsDirectionDelta[randDirection].y;
-        Direction backwardsDirection = direction_reverse(randDirection);
+        Direction backwardsDirection = DirectionReverse(randDirection);
 
-        if (!fence_in_the_way(pathPos, backwardsDirection))
+        if (!WallInTheWay(pathPos, backwardsDirection))
         {
             if (!map_surface_is_blocked(pathPos))
             {
@@ -280,7 +280,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
     }
 
     loc += TileDirectionDelta[chosenDirection];
-    nextTileElement = map_get_first_element_at(loc);
+    nextTileElement = MapGetFirstElementAt(loc);
     do
     {
         if (nextTileElement == nullptr)
@@ -330,7 +330,7 @@ static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenD
         return PATH_SEARCH_LIMIT_REACHED;
 
     loc += TileDirectionDelta[chosenDirection];
-    tileElement = map_get_first_element_at(loc);
+    tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
     {
         return PATH_SEARCH_FAILED;
@@ -388,7 +388,7 @@ static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenD
                     return PATH_SEARCH_WIDE;
 
                 uint8_t edges = path_get_permitted_edges(tileElement->AsPath());
-                edges &= ~(1 << direction_reverse(chosenDirection));
+                edges &= ~(1 << DirectionReverse(chosenDirection));
                 loc.z = tileElement->base_height;
 
                 for (Direction dir : ALL_DIRECTIONS)
@@ -742,7 +742,7 @@ static void peep_pathfind_heuristic_search(
 
     /* Get the next map element of interest in the direction of test_edge. */
     bool found = false;
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
     {
         return;
@@ -1005,7 +1005,7 @@ static void peep_pathfind_heuristic_search(
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
         /* Remove the reverse edge (i.e. the edge back to the previous map element.) */
-        edges &= ~(1 << direction_reverse(test_edge));
+        edges &= ~(1 << DirectionReverse(test_edge));
 
         int32_t next_test_edge = bitscanforward(edges);
 
@@ -1286,7 +1286,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
     // Get the path element at this location
-    TileElement* dest_tile_element = map_get_first_element_at(loc);
+    TileElement* dest_tile_element = MapGetFirstElementAt(loc);
     /* Where there are multiple matching map elements placed with zero
      * clearance, save the first one for later use to determine the path
      * slope - this maintains the original behaviour (which only processes
@@ -1405,7 +1405,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 
     /* If this is a new goal for the peep. Store it and reset the peep's
      * PathfindHistory. */
-    if (!direction_valid(peep.PathfindGoal.direction) || peep.PathfindGoal != goal)
+    if (!DirectionValid(peep.PathfindGoal.direction) || peep.PathfindGoal != goal)
     {
         peep.PathfindGoal = { goal, 0 };
 
@@ -1599,13 +1599,13 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
                 peep.PathfindHistory[i].direction &= ~(1 << chosen_edge);
                 /* Also remove the edge through which the peep
                  * entered the junction from those left to try. */
-                peep.PathfindHistory[i].direction &= ~(1 << direction_reverse(peep.PeepDirection));
+                peep.PathfindHistory[i].direction &= ~(1 << DirectionReverse(peep.PeepDirection));
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 if (_pathFindDebug)
                 {
                     log_verbose(
                         "Updating existing pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i,
-                        loc.x, loc.y, loc.z, direction_reverse(peep.PeepDirection), chosen_edge);
+                        loc.x, loc.y, loc.z, DirectionReverse(peep.PeepDirection), chosen_edge);
                 }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 return chosen_edge;
@@ -1621,13 +1621,13 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
         peep.PathfindHistory[i].direction &= ~(1 << chosen_edge);
         /* Also remove the edge through which the peep
          * entered the junction from those left to try. */
-        peep.PathfindHistory[i].direction &= ~(1 << direction_reverse(peep.PeepDirection));
+        peep.PathfindHistory[i].direction &= ~(1 << DirectionReverse(peep.PeepDirection));
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
             log_verbose(
                 "Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, loc.x, loc.y,
-                loc.z, direction_reverse(peep.PeepDirection), chosen_edge);
+                loc.z, DirectionReverse(peep.PeepDirection), chosen_edge);
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     }
@@ -1797,7 +1797,7 @@ int32_t OriginalPathfinding::GuestPathFindParkEntranceLeaving(Peep& peep, uint8_
 static void get_ride_queue_end(TileCoordsXYZ& loc)
 {
     TileCoordsXY queueEnd = { 0, 0 };
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
 
     if (tileElement == nullptr)
     {
@@ -1820,7 +1820,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
     if (!found)
         return;
 
-    Direction direction = direction_reverse(tileElement->GetDirection());
+    Direction direction = DirectionReverse(tileElement->GetDirection());
     TileElement* lastPathElement = nullptr;
     TileElement* firstPathElement = nullptr;
 
@@ -1845,7 +1845,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         }
         nextTile += TileDirectionDelta[direction];
 
-        tileElement = map_get_first_element_at(nextTile);
+        tileElement = MapGetFirstElementAt(nextTile);
         found = false;
         if (tileElement == nullptr)
             break;
@@ -1875,7 +1875,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
                 if (!tileElement->AsPath()->IsSloped())
                     break;
 
-                if (tileElement->AsPath()->GetSlopeDirection() != direction_reverse(direction))
+                if (tileElement->AsPath()->GetSlopeDirection() != DirectionReverse(direction))
                     break;
 
                 baseZ -= 2;
@@ -1890,7 +1890,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         if (!tileElement->AsPath()->IsQueue())
             break;
 
-        if (!(tileElement->AsPath()->GetEdges() & (1 << direction_reverse(direction))))
+        if (!(tileElement->AsPath()->GetEdges() & (1 << DirectionReverse(direction))))
             break;
 
         if (firstPathElement == nullptr)
@@ -1906,7 +1906,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         if (tileElement->AsPath()->GetEdges() & (1 << (direction)))
             continue;
 
-        direction = direction_reverse(direction);
+        direction = DirectionReverse(direction);
         // More queue to go.
         if (tileElement->AsPath()->GetEdges() & (1 << (direction)))
             continue;
@@ -2024,7 +2024,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
             edges = adjustedEdges;
     }
 
-    int32_t direction = direction_reverse(peep.PeepDirection);
+    int32_t direction = DirectionReverse(peep.PeepDirection);
     // Check if in a dead end (i.e. only edge is where the peep came from)
     if (!(edges & ~(1 << direction)))
     {
@@ -2280,7 +2280,7 @@ bool GuestPathfinding::IsValidPathZAndDirection(TileElement* tileElement, int32_
         }
         else
         {
-            slopeDirection = direction_reverse(slopeDirection);
+            slopeDirection = DirectionReverse(slopeDirection);
             if (slopeDirection != currentDirection)
                 return false;
             if (currentZ != tileElement->base_height + 2)

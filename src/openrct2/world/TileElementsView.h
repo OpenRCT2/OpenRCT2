@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -111,7 +111,7 @@ namespace OpenRCT2
 
         Iterator begin() noexcept
         {
-            T* element = reinterpret_cast<T*>(map_get_first_element_at(_loc));
+            T* element = reinterpret_cast<T*>(MapGetFirstElementAt(_loc));
 
             if constexpr (!std::is_same_v<T, TileElement>)
             {

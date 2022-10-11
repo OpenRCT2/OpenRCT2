@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -348,7 +348,7 @@ private:
         RideId rideIndex = gRideEntranceExitPlaceRideIndex;
 
         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-            entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex,
+            entranceOrExitCoords, DirectionReverse(entranceOrExitCoords.direction), rideIndex,
             gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {

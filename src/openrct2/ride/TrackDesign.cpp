@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -289,7 +289,7 @@ StringId TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& 
 
             CoordsXY mapLocation = location.ToCoordsXY();
 
-            TileElement* tileElement = map_get_first_element_at(mapLocation);
+            TileElement* tileElement = MapGetFirstElementAt(mapLocation);
             if (tileElement == nullptr)
                 continue;
 
@@ -368,7 +368,7 @@ StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& r
     {
         for (; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
         {
-            auto tileElement = map_get_first_element_at(CoordsXY{ x, y });
+            auto tileElement = MapGetFirstElementAt(CoordsXY{ x, y });
             do
             {
                 if (tileElement == nullptr)
@@ -402,7 +402,7 @@ StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& r
     }
 
     CoordsXY entranceLoc = location.ToCoordsXY();
-    auto tileElement = map_get_first_element_at(entranceLoc);
+    auto tileElement = MapGetFirstElementAt(entranceLoc);
     do
     {
         if (tileElement == nullptr)
@@ -431,7 +431,7 @@ StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& r
     }
 
     CoordsXY exitLoc = location.ToCoordsXY();
-    tileElement = map_get_first_element_at(exitLoc);
+    tileElement = MapGetFirstElementAt(exitLoc);
     if (tileElement == nullptr)
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     do
@@ -474,7 +474,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
     {
         for (tile.x = 0; tile.x < MAXIMUM_MAP_SIZE_BIG; tile.x += COORDS_XY_STEP)
         {
-            tile.element = map_get_first_element_at(CoordsXY{ tile.x, tile.y });
+            tile.element = MapGetFirstElementAt(CoordsXY{ tile.x, tile.y });
             do
             {
                 if (tile.element == nullptr)
@@ -890,7 +890,7 @@ static void TrackDesignMirrorRide(TrackDesign* td6)
         entrance.y = -entrance.y;
         if (entrance.direction & 1)
         {
-            entrance.direction = direction_reverse(entrance.direction);
+            entrance.direction = DirectionReverse(entrance.direction);
         }
     }
 }
@@ -914,7 +914,7 @@ static void TrackDesignMirrorMaze(TrackDesign* td6)
         {
             if (maze.direction & 1)
             {
-                maze.direction = direction_reverse(maze.direction);
+                maze.direction = DirectionReverse(maze.direction);
             }
             continue;
         }
@@ -990,7 +990,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
             uint8_t quadrant = (scenery.flags >> 2) + _currentTrackPieceDirection;
             quadrant &= 3;
 
-            auto* sceneryEntry = get_small_scenery_entry(entryInfo->Index);
+            auto* sceneryEntry = GetSmallSceneryEntry(entryInfo->Index);
             if (!(!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
                 && sceneryEntry->HasFlag(
                     SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
@@ -1259,8 +1259,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE)
                 {
-                    footpath_queue_chain_reset();
-                    footpath_remove_edges_at(mapCoord, reinterpret_cast<TileElement*>(pathElement));
+                    FootpathQueueChainReset();
+                    FootpathRemoveEdgesAt(mapCoord, reinterpret_cast<TileElement*>(pathElement));
                 }
 
                 flags = GAME_COMMAND_FLAG_APPLY;
@@ -1280,8 +1280,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE)
                 {
-                    footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
-                    footpath_update_queue_chains();
+                    FootpathConnectEdges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
+                    FootpathUpdateQueueChains();
                 }
 
                 return GameActions::Result();
@@ -1516,7 +1516,7 @@ static GameActions::Result TrackDesignPlaceMaze(TrackDesignState& tds, TrackDesi
                 continue;
             }
 
-            auto surfaceElement = map_get_surface_element_at(mapCoord);
+            auto surfaceElement = MapGetSurfaceElementAt(mapCoord);
             if (surfaceElement == nullptr)
                 continue;
             int16_t surfaceZ = surfaceElement->GetBaseZ();
@@ -1673,7 +1673,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                         continue;
                     }
 
-                    auto surfaceElement = map_get_surface_element_at(tile);
+                    auto surfaceElement = MapGetSurfaceElementAt(tile);
                     if (surfaceElement == nullptr)
                     {
                         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
@@ -1744,7 +1744,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                 if (tds.PlaceOperation != PTD_OPERATION_PLACE_QUERY)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsDirectionDelta[rotation];
-                    TileElement* tile_element = map_get_first_element_at(tile);
+                    TileElement* tile_element = MapGetFirstElementAt(tile);
                     newCoords.z = tds.Origin.z / COORDS_Z_STEP;
                     newCoords.z += entrance.z;
                     if (tile_element == nullptr)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -99,8 +99,8 @@ money32 LandSmoothAction::SmoothLandRowByEdge(
     {
         return 0;
     }
-    auto surfaceElement = map_get_surface_element_at(loc);
-    auto nextSurfaceElement = map_get_surface_element_at(CoordsXY{ loc.x + stepX, loc.y + stepY });
+    auto surfaceElement = MapGetSurfaceElementAt(loc);
+    auto nextSurfaceElement = MapGetSurfaceElementAt(CoordsXY{ loc.x + stepX, loc.y + stepY });
     if (surfaceElement == nullptr || nextSurfaceElement == nullptr)
     {
         return 0;
@@ -138,7 +138,7 @@ money32 LandSmoothAction::SmoothLandRowByEdge(
         else
         {
             surfaceElement = nextSurfaceElement;
-            nextSurfaceElement = map_get_surface_element_at(CoordsXY{ nextLoc.x + stepX, nextLoc.y + stepY });
+            nextSurfaceElement = MapGetSurfaceElementAt(CoordsXY{ nextLoc.x + stepX, nextLoc.y + stepY });
             if (nextSurfaceElement == nullptr)
             {
                 shouldContinue &= ~0x3;
@@ -251,8 +251,8 @@ money32 LandSmoothAction::SmoothLandRowByCorner(
     {
         return 0;
     }
-    auto surfaceElement = map_get_surface_element_at(loc);
-    auto nextSurfaceElement = map_get_surface_element_at(CoordsXY{ loc.x + stepX, loc.y + stepY });
+    auto surfaceElement = MapGetSurfaceElementAt(loc);
+    auto nextSurfaceElement = MapGetSurfaceElementAt(CoordsXY{ loc.x + stepX, loc.y + stepY });
     if (surfaceElement == nullptr || nextSurfaceElement == nullptr)
     {
         return 0;
@@ -281,7 +281,7 @@ money32 LandSmoothAction::SmoothLandRowByCorner(
         else
         {
             surfaceElement = nextSurfaceElement;
-            nextSurfaceElement = map_get_surface_element_at(CoordsXY{ nextLoc.x + stepX, nextLoc.y + stepY });
+            nextSurfaceElement = MapGetSurfaceElementAt(CoordsXY{ nextLoc.x + stepX, nextLoc.y + stepY });
             if (nextSurfaceElement == nullptr)
             {
                 shouldContinue = false;
@@ -347,7 +347,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
 
             // Smooth the 4 corners
             { // top-left
-                auto surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
+                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
                 if (surfaceElement != nullptr)
                 {
                     int32_t z = std::clamp(
@@ -357,7 +357,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
                 }
             }
             { // bottom-left
-                auto surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetLeft(), validRange.GetBottom() });
+                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), validRange.GetBottom() });
                 if (surfaceElement != nullptr)
                 {
                     int32_t z = std::clamp(
@@ -367,7 +367,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
                 }
             }
             { // bottom-right
-                auto surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetRight(), validRange.GetBottom() });
+                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetRight(), validRange.GetBottom() });
                 if (surfaceElement != nullptr)
                 {
                     int32_t z = std::clamp(
@@ -377,7 +377,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
                 }
             }
             { // top-right
-                auto surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetRight(), validRange.GetTop() });
+                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetRight(), validRange.GetTop() });
                 if (surfaceElement != nullptr)
                 {
                     int32_t z = std::clamp(
@@ -391,7 +391,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
             int32_t z1, z2;
             for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
             {
-                auto surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetLeft(), y });
+                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), y });
                 if (surfaceElement != nullptr)
                 {
                     z1 = std::clamp(
@@ -401,7 +401,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
                     res.Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetLeft(), y }, z1, z2, -32, 0, 0, 1, 3, 2);
                 }
 
-                surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetRight(), y });
+                surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetRight(), y });
                 if (surfaceElement != nullptr)
                 {
                     z1 = std::clamp(
@@ -414,7 +414,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
 
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
             {
-                auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, validRange.GetTop() });
+                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, validRange.GetTop() });
                 if (surfaceElement != nullptr)
                 {
                     z1 = std::clamp(
@@ -424,7 +424,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
                     res.Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetTop() }, z1, z2, 0, -32, 0, 3, 1, 2);
                 }
 
-                surfaceElement = map_get_surface_element_at(CoordsXY{ x, validRange.GetBottom() });
+                surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, validRange.GetBottom() });
                 if (surfaceElement != nullptr)
                 {
                     z1 = std::clamp(
@@ -441,7 +441,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
         case MAP_SELECT_TYPE_CORNER_2:
         case MAP_SELECT_TYPE_CORNER_3:
         {
-            auto surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
+            auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
             if (surfaceElement == nullptr)
                 break;
             uint8_t newBaseZ = surfaceElement->base_height;
@@ -537,7 +537,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
         {
             // TODO: Handle smoothing by edge
             // Get the two corners to raise
-            auto surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
+            auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
             if (surfaceElement == nullptr)
                 break;
             uint8_t newBaseZ = surfaceElement->base_height;

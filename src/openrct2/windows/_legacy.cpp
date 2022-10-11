@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,12 +64,12 @@ money32 place_provisional_track_piece(
             viewport_set_visibility(2);
 
         // Invalidate previous track piece (we may not be changing height!)
-        virtual_floor_invalidate();
+        VirtualFloorInvalidate();
 
         if (!scenery_tool_is_active())
         {
             // Set new virtual floor height.
-            virtual_floor_set_height(trackPos.z);
+            VirtualFloorSetHeight(trackPos.z);
         }
 
         return result.Cost;
@@ -106,12 +106,12 @@ money32 place_provisional_track_piece(
         viewport_set_visibility(2);
 
     // Invalidate previous track piece (we may not be changing height!)
-    virtual_floor_invalidate();
+    VirtualFloorInvalidate();
 
     if (!scenery_tool_is_active())
     {
         // Set height to where the next track piece would begin
-        virtual_floor_set_height(trackPos.z - z_begin + z_end);
+        VirtualFloorSetHeight(trackPos.z - z_begin + z_end);
     }
 
     return res.Cost;
@@ -330,7 +330,7 @@ bool window_ride_construction_update_state(
 
         CoordsXY offsets = { trackCoordinates.x, trackCoordinates.y };
         CoordsXY coords = { x, y };
-        coords += offsets.Rotate(direction_reverse(trackDirection));
+        coords += offsets.Rotate(DirectionReverse(trackDirection));
         x = static_cast<uint16_t>(coords.x);
         y = static_cast<uint16_t>(coords.y);
     }
@@ -415,13 +415,13 @@ bool scenery_tool_is_active()
     return false;
 }
 
-void init_scenery()
+void SceneryInit()
 {
     auto intent = Intent(INTENT_ACTION_INIT_SCENERY);
     context_broadcast_intent(&intent);
 }
 
-void scenery_set_default_placement_configuration()
+void ScenerySetDefaultPlacementConfiguration()
 {
     auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
     context_broadcast_intent(&intent);

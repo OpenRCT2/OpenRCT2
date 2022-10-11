@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -215,7 +215,7 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
 static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)
 {
     int32_t z = 0;
-    auto element = map_get_first_element_at(location);
+    auto element = MapGetFirstElementAt(location);
     if (element != nullptr)
     {
         do
@@ -518,7 +518,7 @@ static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewpor
 {
     if (options->weather != WeatherType::Sunny && options->weather != WeatherType::Count)
     {
-        climate_force_weather(WeatherType{ static_cast<uint8_t>(EnumValue(options->weather) - 1) });
+        ClimateForceWeather(WeatherType{ static_cast<uint8_t>(EnumValue(options->weather) - 1) });
     }
 
     if (options->hide_guests)

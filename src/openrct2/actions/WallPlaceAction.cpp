@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -108,7 +108,7 @@ GameActions::Result WallPlaceAction::Query() const
     auto targetHeight = _loc.z;
     if (targetHeight == 0)
     {
-        auto* surfaceElement = map_get_surface_element_at(_loc);
+        auto* surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
             log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -125,7 +125,7 @@ GameActions::Result WallPlaceAction::Query() const
         }
     }
 
-    auto* surfaceElement = map_get_surface_element_at(_loc);
+    auto* surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -215,7 +215,7 @@ GameActions::Result WallPlaceAction::Query() const
         }
     }
 
-    auto* wallEntry = get_wall_entry(_wallType);
+    auto* wallEntry = GetWallEntry(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -287,7 +287,7 @@ GameActions::Result WallPlaceAction::Execute() const
     auto targetHeight = _loc.z;
     if (targetHeight == 0)
     {
-        auto* surfaceElement = map_get_surface_element_at(_loc);
+        auto* surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
             log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -305,7 +305,7 @@ GameActions::Result WallPlaceAction::Execute() const
     }
     auto targetLoc = CoordsXYZ(_loc, targetHeight);
 
-    auto* wallEntry = get_wall_entry(_wallType);
+    auto* wallEntry = GetWallEntry(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -348,7 +348,7 @@ GameActions::Result WallPlaceAction::Execute() const
         banner->type = 0; // Banner must be deleted after this point in an early return
         banner->position = TileCoordsXY(_loc);
 
-        RideId rideIndex = banner_get_closest_ride_index(targetLoc);
+        RideId rideIndex = BannerGetClosestRideIndex(targetLoc);
         if (!rideIndex.IsNull())
         {
             banner->ride_index = rideIndex;
@@ -381,7 +381,7 @@ GameActions::Result WallPlaceAction::Execute() const
 
     wallElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
-    map_animation_create(MAP_ANIMATION_TYPE_WALL, targetLoc);
+    MapAnimationCreate(MAP_ANIMATION_TYPE_WALL, targetLoc);
     map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
     res.Cost = wallEntry->price;
@@ -444,7 +444,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         {
             if (!(ted.Coordinates.rotation_begin & 4))
             {
-                direction = direction_reverse(trackElement->GetDirection());
+                direction = DirectionReverse(trackElement->GetDirection());
                 if (direction == _edge)
                 {
                     const rct_preview_track* trackBlock = &ted.Block[sequence];
@@ -501,7 +501,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    TileElement* tileElement = map_get_first_element_at(_loc);
+    TileElement* tileElement = MapGetFirstElementAt(_loc);
     do
     {
         if (tileElement == nullptr)
@@ -521,7 +521,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
             if (_edge == direction)
             {
                 auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
             continue;
@@ -532,12 +532,12 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
         switch (elementType)
         {
             case TileElementType::Entrance:
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 return res;
             case TileElementType::Path:
                 if (tileElement->AsPath()->GetEdges() & (1 << _edge))
                 {
-                    map_obstruction_set_error_text(tileElement, res);
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;
@@ -556,7 +556,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                 if (!(tile.flags & (1 << direction)))
                 {
-                    map_obstruction_set_error_text(tileElement, res);
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;
@@ -566,7 +566,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                 if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
                 {
-                    map_obstruction_set_error_text(tileElement, res);
+                    MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
                 break;

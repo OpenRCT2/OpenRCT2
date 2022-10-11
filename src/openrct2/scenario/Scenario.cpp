@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,7 +61,7 @@
 const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
 
-    STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS,
+    STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS, STR_COMPETITIONS,
 };
 
 SCENARIO_CATEGORY gScenarioCategory;
@@ -106,7 +106,7 @@ void scenario_reset()
     gScenarioRand.seed(s);
 
     research_reset_current_item();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
     News::InitQueue();
 
     auto& park = GetContext()->GetGameState()->GetPark();
@@ -160,8 +160,8 @@ void scenario_reset()
     reset_all_ride_build_dates();
     date_reset();
     Duck::RemoveAll();
-    park_calculate_size();
-    map_count_remaining_land_rights();
+    ParkCalculateSize();
+    MapCountRemainingLandRights();
     Staff::ResetStats();
 
     auto& objManager = GetContext()->GetObjectManager();
@@ -245,7 +245,7 @@ static void scenario_entrance_fee_too_high_check()
 {
     const auto max_fee = add_clamp_money16(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
 
-    if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
+    if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && ParkGetEntranceFee() > max_fee)
     {
         if (!gParkEntrances.empty())
         {

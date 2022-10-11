@@ -410,7 +410,7 @@ public:
                 hide_construction_rights();
                 break;
             case WIDX_BUILD_PARK_ENTRANCE:
-                park_entrance_remove_ghost();
+                ParkEntranceRemoveGhost();
                 Invalidate();
                 hide_gridlines();
                 hide_land_rights();
@@ -458,7 +458,7 @@ public:
         if (parkEntranceMapPosition.IsNull())
             return parkEntranceMapPosition;
 
-        auto surfaceElement = map_get_surface_element_at(mapCoords);
+        auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
         if (surfaceElement == nullptr)
         {
             parkEntranceMapPosition.SetNull();
@@ -492,7 +492,7 @@ public:
         CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
         if (parkEntrancePosition.IsNull())
         {
-            park_entrance_remove_ghost();
+            ParkEntranceRemoveGhost();
             return;
         }
 
@@ -514,7 +514,7 @@ public:
             return;
         }
 
-        park_entrance_remove_ghost();
+        ParkEntranceRemoveGhost();
 
         auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
         gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
@@ -529,7 +529,7 @@ public:
 
     void PlaceParkEntranceToolDown(const ScreenCoordsXY& screenCoords)
     {
-        park_entrance_remove_ghost();
+        ParkEntranceRemoveGhost();
 
         CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
         if (!parkEntrancePosition.IsNull())
@@ -550,7 +550,7 @@ public:
         map_invalidate_selection_rect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-        auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
+        auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
         if (mapCoords.IsNull())
             return;
 
@@ -569,7 +569,7 @@ public:
         gMapSelectPositionA = mapCoords;
         gMapSelectPositionB = mapCoords;
         gMapSelectArrowPosition = CoordsXYZ{ mapCoords, mapZ };
-        gMapSelectArrowDirection = direction_reverse(direction);
+        gMapSelectArrowDirection = DirectionReverse(direction);
         map_invalidate_selection_rect();
     }
 
@@ -578,7 +578,7 @@ public:
         // Verify footpath exists at location, and retrieve coordinates
         TileElement* tileElement;
         int32_t direction;
-        auto mapCoords = footpath_get_coordinates_from_pos(screenCoords, &direction, &tileElement);
+        auto mapCoords = FootpathGetCoordinatesFromPos(screenCoords, &direction, &tileElement);
         if (mapCoords.IsNull())
             return;
 
@@ -1066,7 +1066,7 @@ private:
 
     uint16_t GetPixelColourPeep(const CoordsXY& c)
     {
-        auto* surfaceElement = map_get_surface_element_at(c);
+        auto* surfaceElement = MapGetSurfaceElementAt(c);
         if (surfaceElement == nullptr)
             return 0;
 
@@ -1109,7 +1109,7 @@ private:
         uint16_t colourB = MapColour(PALETTE_INDEX_13); // surface colour (dark grey)
 
         // as an improvement we could use first_element to show underground stuff?
-        TileElement* tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(c));
+        TileElement* tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(c));
         do
         {
             if (tileElement == nullptr)

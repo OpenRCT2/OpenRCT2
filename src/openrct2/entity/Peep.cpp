@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -294,7 +294,7 @@ bool Peep::CheckForPath()
         return true;
     }
 
-    TileElement* tile_element = map_get_first_element_at(NextLoc);
+    TileElement* tile_element = MapGetFirstElementAt(NextLoc);
 
     auto mapType = TileElementType::Path;
     if (GetNextIsSurface())
@@ -321,16 +321,28 @@ bool Peep::CheckForPath()
     return false;
 }
 
-bool Peep::PathIsBlockedByVehicle()
+bool Peep::ShouldWaitForLevelCrossing()
 {
     auto curPos = TileCoordsXYZ(GetLocation());
+    if (FootpathIsBlockedByVehicle(curPos))
+    {
+        // If current position is blocked, try to get out of the way
+        return false;
+    }
+
     auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
-    if ((curPos.x != dstPos.x || curPos.y != dstPos.y) && footpath_is_blocked_by_vehicle(dstPos))
+    if ((curPos.x != dstPos.x || curPos.y != dstPos.y) && FootpathIsBlockedByVehicle(dstPos))
     {
         return true;
     }
 
     return false;
+}
+
+bool Peep::IsOnLevelCrossing()
+{
+    auto trackElement = map_get_track_element_at(GetLocation());
+    return trackElement != nullptr;
 }
 
 PeepActionSpriteType Peep::GetActionSpriteType()
@@ -612,7 +624,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
     if (pathElement == nullptr)
     {
-        tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(location.ToCoordsXYZ()));
+        tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(location.ToCoordsXYZ()));
     }
     if (tileElement == nullptr)
     {
@@ -747,7 +759,7 @@ void Peep::UpdateFalling()
     }
 
     // If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
-    TileElement* tile_element = map_get_first_element_at(CoordsXY{ x, y });
+    TileElement* tile_element = MapGetFirstElementAt(CoordsXY{ x, y });
     TileElement* saved_map = nullptr;
     int32_t saved_height = 0;
 
@@ -758,7 +770,7 @@ void Peep::UpdateFalling()
             // If a path check if we are on it
             if (tile_element->GetType() == TileElementType::Path)
             {
-                int32_t height = map_height_from_slope(
+                int32_t height = MapHeightFromSlope(
                                      { x, y }, tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped())
                     + tile_element->GetBaseZ();
 
@@ -1660,7 +1672,7 @@ void Peep::SwitchNextActionSpriteType()
  */
 static void peep_return_to_centre_of_tile(Peep* peep)
 {
-    peep->PeepDirection = direction_reverse(peep->PeepDirection);
+    peep->PeepDirection = DirectionReverse(peep->PeepDirection);
     auto destination = peep->GetLocation().ToTileCentre();
     peep->SetDestination(destination, 5);
 }
@@ -1805,7 +1817,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         uint8_t entranceDirection = tile_element->GetDirection();
         if (entranceDirection != guest->PeepDirection)
         {
-            if (direction_reverse(entranceDirection) != guest->PeepDirection)
+            if (DirectionReverse(entranceDirection) != guest->PeepDirection)
             {
                 peep_return_to_centre_of_tile(guest);
                 return true;
@@ -1874,7 +1886,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             auto nextLoc = coords.ToTileStart() + CoordsDirectionDelta[entranceDirection];
 
             // Make sure there is a path right behind the entrance, otherwise turn around
-            TileElement* nextTileElement = map_get_first_element_at(nextLoc);
+            TileElement* nextTileElement = MapGetFirstElementAt(nextLoc);
             do
             {
                 if (nextTileElement == nullptr)
@@ -1898,7 +1910,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                         break;
                     }
 
-                    if (direction_reverse(slopeDirection) != entranceDirection)
+                    if (DirectionReverse(slopeDirection) != entranceDirection)
                         continue;
 
                     if (z - 2 != nextTileElement->base_height)
@@ -1926,7 +1938,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             return true;
         }
 
-        money16 entranceFee = park_get_entrance_fee();
+        money16 entranceFee = ParkGetEntranceFee();
         if (entranceFee != 0)
         {
             if (guest->HasItem(ShopItem::Voucher))
@@ -2174,7 +2186,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
 
             if ((tile_element->AsPath()->HasQueueBanner())
                 && (tile_element->AsPath()->GetQueueBannerDirection()
-                    == direction_reverse(guest->PeepDirection)) // Ride sign is facing the direction the peep is walking
+                    == DirectionReverse(guest->PeepDirection)) // Ride sign is facing the direction the peep is walking
             )
             {
                 /* Peep is approaching the entrance of a ride queue.
@@ -2408,7 +2420,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         return;
     }
 
-    TileElement* tileElement = map_get_first_element_at(newLoc);
+    TileElement* tileElement = MapGetFirstElementAt(newLoc);
     if (tileElement == nullptr)
         return;
     int16_t base_z = std::max(0, (z / 8) - 2);
@@ -2466,7 +2478,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
                 return;
             }
 
-            auto surfaceElement = map_get_surface_element_at(newLoc);
+            auto surfaceElement = MapGetSurfaceElementAt(newLoc);
             if (surfaceElement == nullptr)
             {
                 peep_return_to_centre_of_tile(this);
@@ -2520,7 +2532,7 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
     }
 
     uint8_t slope = GetNextDirection();
-    return NextLoc.z + map_height_from_slope({ tile_x, tile_y }, slope, GetNextIsSloped());
+    return NextLoc.z + MapHeightFromSlope({ tile_x, tile_y }, slope, GetNextIsSloped());
 }
 
 StringId get_real_name_string_id_from_id(uint32_t id)
@@ -2798,7 +2810,7 @@ void Peep::Paint(paint_session& session, int32_t imageDirection) const
     // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
     uint32_t baseImageId = (imageDirection >> 3) + GetPeepAnimation(SpriteType, actionSpriteType).base_image + imageOffset * 4;
-    uint32_t imageId = baseImageId | TshirtColour << 19 | TrousersColour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    auto imageId = ImageId(baseImageId, TshirtColour, TrousersColour);
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
 
     auto* guest = As<Guest>();
@@ -2806,21 +2818,21 @@ void Peep::Paint(paint_session& session, int32_t imageDirection) const
     {
         if (baseImageId >= 10717 && baseImageId < 10749)
         {
-            imageId = (baseImageId + 32) | guest->HatColour << 19 | IMAGE_TYPE_REMAP;
+            imageId = ImageId(baseImageId + 32, guest->HatColour);
             PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
             return;
         }
 
         if (baseImageId >= 10781 && baseImageId < 10813)
         {
-            imageId = (baseImageId + 32) | guest->BalloonColour << 19 | IMAGE_TYPE_REMAP;
+            imageId = ImageId(baseImageId + 32, guest->BalloonColour);
             PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
             return;
         }
 
         if (baseImageId >= 11197 && baseImageId < 11229)
         {
-            imageId = (baseImageId + 32) | guest->UmbrellaColour << 19 | IMAGE_TYPE_REMAP;
+            imageId = ImageId(baseImageId + 32, guest->UmbrellaColour);
             PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
             return;
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
     DukValue ScTile::data_get() const
     {
         auto ctx = GetDukContext();
-        auto first = map_get_first_element_at(_coords);
+        auto first = MapGetFirstElementAt(_coords);
         auto dataLen = GetNumElements(first) * sizeof(TileElement);
         auto data = duk_push_fixed_buffer(ctx, dataLen);
         if (first != nullptr)
@@ -92,7 +92,7 @@ namespace OpenRCT2::Scripting
             auto numElements = dataLen / sizeof(TileElement);
             if (numElements == 0)
             {
-                map_set_tile_element(TileCoordsXY(_coords), nullptr);
+                MapSetTileElement(TileCoordsXY(_coords), nullptr);
             }
             else
             {
@@ -109,7 +109,7 @@ namespace OpenRCT2::Scripting
                     }
 
                     // Copy data to element span
-                    first = map_get_first_element_at(_coords);
+                    first = MapGetFirstElementAt(_coords);
                     currentNumElements = GetNumElements(first);
                     if (currentNumElements != 0)
                     {
@@ -202,7 +202,7 @@ namespace OpenRCT2::Scripting
 
     TileElement* ScTile::GetFirstElement() const
     {
-        return map_get_first_element_at(_coords);
+        return MapGetFirstElementAt(_coords);
     }
 
     size_t ScTile::GetNumElements(const TileElement* first)

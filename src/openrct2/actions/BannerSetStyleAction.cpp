@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,7 +57,7 @@ GameActions::Result BannerSetStyleAction::Query() const
     auto location = banner->position.ToCoordsXY().ToTileCentre();
     res.Position = { location, tile_element_height(location) };
 
-    TileElement* tileElement = banner_get_tile_element(_bannerIndex);
+    TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
     if (tileElement == nullptr)
     {
@@ -111,7 +111,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
     auto location = banner->position.ToCoordsXY().ToTileCentre();
     res.Position = { location, tile_element_height(location) };
 
-    TileElement* tileElement = banner_get_tile_element(_bannerIndex);
+    TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
     if (tileElement == nullptr)
     {

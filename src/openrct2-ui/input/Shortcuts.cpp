@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -520,7 +520,7 @@ static void ShortcutToggleVisibility()
         return;
 
     extern TileCoordsXY windowTileInspectorTile;
-    TileElement* tileElement = map_get_nth_element_at(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
+    TileElement* tileElement = MapGetNthElementAt(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
     if (tileElement != nullptr)
     {
         tileElement->SetInvisible(!tileElement->IsInvisible());

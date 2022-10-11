@@ -2976,7 +2976,7 @@ STR_5831    :A hőmérséklet kijelzéséhez{NEWLINE}használt mértékegység m
 STR_5833    :A játék által használt dátumformátum megváltoztatása
 STR_5834    :Az OpenRCT2 által használt hangeszköz kiválasztása
 STR_5835    :A játék némítása, ha az ablak elveszti a fókuszt
-STR_5836    :A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha az RCT1 játékmappájából a ’data/css17.dat’-ot átmásolod az RCT2 mappán belül a ’data/css50.dat’-ba, vagy megadod az RCT1 útvonalát az Egyéb fülön.
+STR_5836    :A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha megadod az RCT1 útvonalát az Egyéb fülön.
 STR_5838    :Külön gomb a pénzügyi ablak számára az eszköztáron
 STR_5839    :Külön gomb a kutatás-fejlesztés ablak számára az eszköztáron
 STR_5840    :Külön gomb a csalások ablak számára az eszköztáron
@@ -3585,6 +3585,11 @@ STR_6511    :Zéró G orsó (jobbra)
 STR_6512    :Nagy Zéró G orsó (balra)
 STR_6513    :Nagy Zéró G orsó (jobbra)
 STR_6514    :Érvénytelen magasság!
+STR_6515    :{BLACK}Nincs összekapcsolódás az RCT1-el - tartalékképek lesznek használva.
+STR_6516    :Egy vagy több hozzáadott objektum RCT1 összekapcsolást igényel a megfelelő megjelenítéshez. Tartalékképek lesznek használva.
+STR_6517    :Egy vagy több objektum ebben a parkban RCT1 összekapcsolást igényel a megfelelő megjelenítéshez. Tartalékképek lesznek használva.
+STR_6518    :{BLACK}Vidd az egeret egy pálya fölé a leírás és a cél megtekintéséhez.  Kattints rá a játék elindításához.
+STR_6519    :Extrák
 
 #############
 # Scenarios #
@@ -4059,15 +4064,6 @@ STR_NAME    :Tető
 
 [TTRFWD08]
 STR_NAME    :Tető
-
-[TTRFGL01]
-STR_NAME    :Üvegtető
-
-[TTRFGL02]
-STR_NAME    :Üvegtető
-
-[TTRFGL03]
-STR_NAME    :Üvegtető
 
 [ACWW33]
 STR_NAME    :Fa sánckerítés

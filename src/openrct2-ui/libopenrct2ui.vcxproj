@@ -136,6 +136,7 @@
     <ClCompile Include="UiContext.Win32.cpp" />
     <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="windows\About.cpp" />
+    <ClCompile Include="windows\AssetPacks.cpp" />
     <ClCompile Include="windows\Banner.cpp" />
     <ClCompile Include="windows\Changelog.cpp" />
     <ClCompile Include="windows\Cheats.cpp" />

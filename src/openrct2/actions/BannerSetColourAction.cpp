@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,7 +75,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    auto bannerElement = map_get_banner_element_at(_loc, _loc.direction);
+    auto bannerElement = MapGetBannerElementAt(_loc, _loc.direction);
 
     if (bannerElement == nullptr)
     {

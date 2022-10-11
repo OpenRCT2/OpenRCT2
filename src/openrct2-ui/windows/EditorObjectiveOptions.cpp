@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -391,7 +391,7 @@ static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
 
         const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(i);
         // This objective can only work if the player can ask money for rides.
-        const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || park_ride_prices_unlocked();
+        const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || ParkRidePricesUnlocked();
         if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
         {
             gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
@@ -664,8 +664,7 @@ static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
     // Check if objective is allowed by money and pay-per-ride settings.
     const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(objectiveType);
     // This objective can only work if the player can ask money for rides.
-    const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
-        || park_ride_prices_unlocked();
+    const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME) || ParkRidePricesUnlocked();
     if (!objectiveAllowedByMoneyUsage || !objectiveAllowedByPaymentSettings)
     {
         // Reset objective

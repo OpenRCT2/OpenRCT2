@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -196,7 +196,6 @@ enum WindowOptionsWidgetIdx {
 
     // Advanced
     WIDX_DEBUGGING_TOOLS = WIDX_PAGE_START,
-    WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,
     WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
     WIDX_STAY_CONNECTED_AFTER_DESYNC,
     WIDX_ALWAYS_NATIVE_LOADSAVE,
@@ -210,6 +209,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_PATH_TO_RCT1_TEXT,
     WIDX_PATH_TO_RCT1_BUTTON,
     WIDX_PATH_TO_RCT1_CLEAR,
+    WIDX_ASSET_PACKS,
 };
 
 static constexpr const StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
@@ -383,7 +383,6 @@ static rct_widget window_options_misc_widgets[] = {
 static rct_widget window_options_advanced_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget        ({ 10,  54}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
-    MakeWidget        ({ 10,  69}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP), // Allow loading with incorrect checksum
     MakeWidget        ({ 10,  84}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
     MakeWidget        ({ 10,  99}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
     MakeWidget        ({ 10, 114}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
@@ -395,6 +394,7 @@ static rct_widget window_options_advanced_widgets[] = {
     MakeWidget        ({ 23, 169}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
     MakeWidget        ({ 24, 184}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
     MakeWidget        ({289, 184}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
+    MakeWidget        ({ 24, 200}, {140, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_ASSET_PACKS,                           STR_NONE                                     ), // Asset packs
     WIDGETS_END,
 };
 
@@ -1876,11 +1876,6 @@ private:
                 config_save_default();
                 gfx_invalidate_screen();
                 break;
-            case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
-                gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral.allow_loading_with_incorrect_checksum;
-                config_save_default();
-                Invalidate();
-                break;
             case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
                 gConfigGeneral.save_plugin_data ^= 1;
                 config_save_default();
@@ -1940,6 +1935,9 @@ private:
                 }
                 Invalidate();
                 break;
+            case WIDX_ASSET_PACKS:
+                context_open_window(WindowClass::AssetPacks);
+                break;
         }
     }
 
@@ -1996,8 +1994,6 @@ private:
     void AdvancedPrepareDraw()
     {
         SetCheckboxValue(WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
-        WidgetSetCheckboxValue(
-            *this, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
         SetCheckboxValue(WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
         SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
         SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
@@ -2110,10 +2106,11 @@ private:
             uint8_t window_colour = NOT_TRANSLUCENT(colours[widget->colour]);
 
             // Draw greyed out (light border bottom right shadow)
-            gfx_draw_sprite_solid(dpi, spriteIndex, screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
+            gfx_draw_sprite_solid(
+                dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
 
             // Draw greyed out (dark)
-            gfx_draw_sprite_solid(dpi, spriteIndex, screenCoords, ColourMapA[window_colour].mid_light);
+            gfx_draw_sprite_solid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
         }
     }
 

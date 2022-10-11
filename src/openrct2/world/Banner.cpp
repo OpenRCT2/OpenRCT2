@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,9 +87,9 @@ void Banner::FormatTextTo(Formatter& ft) const
  *
  *  rct2: 0x006B7EAB
  */
-static RideId banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
+static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
 {
-    TileElement* tileElement = map_get_first_element_at(bannerCoords);
+    TileElement* tileElement = MapGetFirstElementAt(bannerCoords);
     RideId resultRideIndex = RideId::GetNull();
     if (tileElement == nullptr)
         return resultRideIndex;
@@ -136,17 +136,17 @@ static BannerIndex BannerGetNewIndex()
  *
  *  rct2: 0x006B9CB0
  */
-void banner_init()
+void BannerInit()
 {
     _banners.clear();
 }
 
-TileElement* banner_get_tile_element(BannerIndex bannerIndex)
+TileElement* BannerGetTileElement(BannerIndex bannerIndex)
 {
     auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {
-        auto tileElement = map_get_first_element_at(banner->position);
+        auto tileElement = MapGetFirstElementAt(banner->position);
         if (tileElement != nullptr)
         {
             do
@@ -161,13 +161,13 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
     return nullptr;
 }
 
-WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
+WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex)
 {
     auto banner = GetBanner(bannerIndex);
     if (banner == nullptr)
         return nullptr;
 
-    auto tileElement = map_get_first_element_at(banner->position);
+    auto tileElement = MapGetFirstElementAt(banner->position);
     if (tileElement == nullptr)
         return nullptr;
 
@@ -193,7 +193,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
  *
  *  rct2: 0x006B7D86
  */
-RideId banner_get_closest_ride_index(const CoordsXYZ& mapPos)
+RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos)
 {
     static constexpr const std::array NeighbourCheckOrder = {
         CoordsXY{ COORDS_XY_STEP, 0 },
@@ -209,7 +209,7 @@ RideId banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 
     for (const auto& neighhbourCoords : NeighbourCheckOrder)
     {
-        RideId rideIndex = banner_get_ride_index_at({ CoordsXY{ mapPos } + neighhbourCoords, mapPos.z });
+        RideId rideIndex = BannerGetRideIndexAt({ CoordsXY{ mapPos } + neighhbourCoords, mapPos.z });
         if (!rideIndex.IsNull())
         {
             return rideIndex;
@@ -237,12 +237,12 @@ RideId banner_get_closest_ride_index(const CoordsXYZ& mapPos)
     return rideIndex;
 }
 
-void banner_reset_broken_index()
+void BannerResetBrokenIndex()
 {
     for (BannerIndex::UnderlyingType index = 0; index < _banners.size(); index++)
     {
         const auto bannerId = BannerIndex::FromUnderlying(index);
-        auto tileElement = banner_get_tile_element(bannerId);
+        auto tileElement = BannerGetTileElement(bannerId);
         if (tileElement == nullptr)
         {
             auto banner = GetBanner(bannerId);
@@ -254,7 +254,7 @@ void banner_reset_broken_index()
     }
 }
 
-void fix_duplicated_banners()
+void BannerFixDuplicates()
 {
     // For each banner in the map, check if the banner index is in use already, and if so, create a new entry for it
     std::vector<bool> activeBanners;
@@ -318,7 +318,7 @@ BannerSceneryEntry* BannerElement::GetEntry() const
     auto banner = GetBanner();
     if (banner != nullptr)
     {
-        return get_banner_entry(banner->type);
+        return GetBannerEntry(banner->type);
     }
     return nullptr;
 }

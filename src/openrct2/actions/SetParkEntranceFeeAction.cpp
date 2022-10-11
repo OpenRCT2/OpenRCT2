@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,7 +40,7 @@ void SetParkEntranceFeeAction::Serialise(DataSerialiser& stream)
 GameActions::Result SetParkEntranceFeeAction::Query() const
 {
     bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
-    bool forceFreeEntry = !park_entry_price_unlocked();
+    bool forceFreeEntry = !ParkEntranceFeeUnlocked();
     if (noMoney || forceFreeEntry)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);

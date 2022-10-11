@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -176,16 +176,16 @@ static void wild_mouse_track_flat(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void wild_mouse_track_station(
@@ -201,26 +201,27 @@ static void wild_mouse_track_station(
 
     int32_t trackType = trackElement.GetTrackType();
     PaintAddImageAsParentRotated(
-        session, direction, baseImageIds[direction] | session.TrackColours[SCHEME_MISC], { 0, 0, height - 2 }, { 32, 28, 2 },
-        { 0, 2, height });
+        session, direction, session.TrackColours[SCHEME_MISC].WithIndex(baseImageIds[direction]), { 0, 0, height - 2 },
+        { 32, 28, 2 }, { 0, 2, height });
     if (trackType == TrackElemType::EndStation)
     {
         bool isClosed = trackElement.BlockBrakeClosed();
         PaintAddImageAsChildRotated(
-            session, direction, _wild_mouse_block_brakes_image_ids[direction][isClosed] | session.TrackColours[SCHEME_TRACK],
+            session, direction,
+            session.TrackColours[SCHEME_TRACK].WithIndex(_wild_mouse_block_brakes_image_ids[direction][isClosed]),
             { 0, 0, height }, { 32, 20, 2 }, { 0, 0, height });
     }
     else
     {
         PaintAddImageAsChildRotated(
-            session, direction, _wild_mouse_brakes_image_ids[direction] | session.TrackColours[SCHEME_TRACK], { 0, 0, height },
-            { 32, 20, 2 }, { 0, 0, height });
+            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_wild_mouse_brakes_image_ids[direction]),
+            { 0, 0, height }, { 32, 20, 2 }, { 0, 0, height });
     }
     track_paint_util_draw_station_metal_supports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS]);
     track_paint_util_draw_station(session, ride, direction, height, trackElement);
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0078B1F4 */
@@ -236,23 +237,23 @@ static void wild_mouse_track_25_deg_up(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x0078B204 */
@@ -268,7 +269,7 @@ static void wild_mouse_track_60_deg_up(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
     if (direction == 0 || direction == 3)
     {
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
@@ -281,24 +282,24 @@ static void wild_mouse_track_60_deg_up(
     {
         if (direction == 0 || direction == 3)
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -33, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -33, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         else
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 104, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 /** rct2: 0x0078B214 */
@@ -314,23 +315,23 @@ static void wild_mouse_track_flat_to_25_deg_up(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -4, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -4, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x0078B224 */
@@ -352,8 +353,8 @@ static void wild_mouse_track_25_deg_up_to_60_deg_up(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = frontImageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(frontImageIds[direction][isChained]);
     if (direction == 0 || direction == 3)
     {
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
@@ -365,19 +366,19 @@ static void wild_mouse_track_25_deg_up_to_60_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -13, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -13, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
 /** rct2: 0x0078B234 */
@@ -399,8 +400,8 @@ static void wild_mouse_track_60_deg_up_to_25_deg_up(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = frontImageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(frontImageIds[direction][isChained]);
     if (direction == 0 || direction == 3)
     {
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
@@ -412,19 +413,19 @@ static void wild_mouse_track_60_deg_up_to_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -21, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -21, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
 /** rct2: 0x0078B244 */
@@ -440,23 +441,23 @@ static void wild_mouse_track_25_deg_up_to_flat(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -7, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -7, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x0078B254 */
@@ -542,7 +543,7 @@ static void wild_mouse_track_right_quarter_turn_3(
     {
         case 0:
         case 3:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -559,8 +560,8 @@ static void wild_mouse_track_right_quarter_turn_3(
             blockedSegments = SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4;
             break;
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
@@ -593,7 +594,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
         const sprite_bb* sbb = &imageIds[direction][part];
         const auto& offset = sbb->offset;
         PaintAddImageAsParent(
-            session, sbb->sprite_id | session.TrackColours[SCHEME_TRACK], { offset.x, offset.y, height + offset.z },
+            session, session.TrackColours[SCHEME_TRACK].WithIndex(sbb->sprite_id), { offset.x, offset.y, height + offset.z },
             sbb->bb_size);
     }
 
@@ -604,7 +605,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
     {
         case 0:
         case 3:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -618,8 +619,8 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
             blockedSegments = SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4;
             break;
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + generalSupportHeights[trackSequence], 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence], 0x20);
 }
 
 static void wild_mouse_track_left_quarter_turn_3_25_deg_up(
@@ -660,7 +661,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
         int32_t part = trackSequence == 0 ? 0 : 1;
         const sprite_bb* sbb = &imageIds[direction][part];
         PaintAddImageAsParent(
-            session, sbb->sprite_id | session.TrackColours[SCHEME_TRACK],
+            session, session.TrackColours[SCHEME_TRACK].WithIndex(sbb->sprite_id),
             { sbb->offset.x, sbb->offset.y, height + sbb->offset.z }, sbb->bb_size);
     }
 
@@ -669,18 +670,16 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
     switch (trackSequence)
     {
         case 0:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             if (direction == 2)
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, -11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -11, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             else
             {
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             break;
     }
@@ -695,8 +694,8 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
             blockedSegments = SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4;
             break;
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + generalSupportHeights[trackSequence], 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence], 0x20);
 }
 
 /** rct2: 0x0078B324 */
@@ -728,7 +727,7 @@ static void wild_mouse_track_left_quarter_turn_1(
         SPR_WILD_MOUSE_QUARTER_TURN_1_SE_NW,
     };
 
-    uint32_t imageId = imageIds[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction]);
     switch (direction)
     {
         case 0:
@@ -744,11 +743,11 @@ static void wild_mouse_track_left_quarter_turn_1(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 24, 24, 2 }, { 6, 6, height });
             break;
     }
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
     track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0078B3A4 */
@@ -778,8 +777,8 @@ static void wild_mouse_track_flat_to_60_deg_up(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = frontImageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(frontImageIds[direction][isChained]);
     if (direction == 0 || direction == 3)
     {
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
@@ -791,19 +790,19 @@ static void wild_mouse_track_flat_to_60_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -5, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -5, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 64, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
 /** rct2: 0x0078B364 */
@@ -825,8 +824,8 @@ static void wild_mouse_track_60_deg_up_to_flat(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    uint32_t imageId = imageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = frontImageIds[direction][isChained] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(frontImageIds[direction][isChained]);
     if (direction == 0 || direction == 3)
     {
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
@@ -840,24 +839,24 @@ static void wild_mouse_track_60_deg_up_to_flat(
     {
         if (direction == 0 || direction == 3)
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -17, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -17, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         else
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_0);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
 /** rct2: 0x0078B374 */
@@ -881,16 +880,16 @@ static void wild_mouse_track_brakes(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = _wild_mouse_brakes_image_ids[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(_wild_mouse_brakes_image_ids[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0078B3C4 */
@@ -905,16 +904,16 @@ static void wild_mouse_track_rotation_control_toggle(
         SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_NW_SE,
     };
 
-    uint32_t imageId = imageIds[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0078B3B4 */
@@ -923,16 +922,16 @@ static void wild_mouse_track_block_brakes(
     const TrackElement& trackElement)
 {
     bool isClosed = trackElement.BlockBrakeClosed();
-    uint32_t imageId = _wild_mouse_block_brakes_image_ids[direction][isClosed] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(_wild_mouse_block_brakes_image_ids[direction][isClosed]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_wild_mouse(int32_t trackType)

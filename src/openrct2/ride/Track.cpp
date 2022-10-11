@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -72,7 +72,7 @@ int32_t track_is_connected_by_shape(TileElement* a, TileElement* b)
 
 static TileElement* find_station_element(const CoordsXYZD& loc, RideId rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -671,7 +671,7 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
     // Subtract the current sequence's offset
     const auto* trackBlock = &ted.Block[trackEl->GetSequenceIndex()];
     CoordsXY trackBlockOffset = { trackBlock->x, trackBlock->y };
-    coords += trackBlockOffset.Rotate(direction_reverse(direction));
+    coords += trackBlockOffset.Rotate(DirectionReverse(direction));
     coords.z -= trackBlock->z;
 
     return CoordsXYZD(coords, direction);

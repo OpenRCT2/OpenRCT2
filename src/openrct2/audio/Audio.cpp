@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -109,7 +109,6 @@ namespace OpenRCT2::Audio
             baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2cBase);
             if (baseAudio != nullptr)
             {
-                baseAudio->SetIdentifier(AudioObjectIdentifiers::Rct2Base);
                 _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
             }
         }
@@ -164,7 +163,7 @@ namespace OpenRCT2::Audio
         params.volume = 0;
         params.pan = 0;
 
-        auto element = map_get_surface_element_at(location);
+        auto element = MapGetSurfaceElementAt(location);
         if (element != nullptr && (element->GetBaseZ()) - 5 > location.z)
         {
             volumeDown = 10;

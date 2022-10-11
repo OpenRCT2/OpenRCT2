@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -95,7 +95,7 @@ GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
     }
     if (isExecuting)
     {
-        map_count_remaining_land_rights();
+        MapCountRemainingLandRights();
     }
     return res;
 }
@@ -108,7 +108,7 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
         return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
     }
 
-    SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
+    SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
@@ -133,7 +133,7 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
             if (isExecuting)
             {
                 surfaceElement->SetOwnership(OWNERSHIP_OWNED);
-                update_park_fences_around_tile(loc);
+                ParkUpdateFencesAroundTile(loc);
             }
             res.Cost = gLandPrice;
             return res;

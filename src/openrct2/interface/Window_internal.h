@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -157,6 +157,9 @@ struct rct_window
     {
         return {};
     }
+    virtual void OnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType)
+    {
+    }
     virtual void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
     }
@@ -178,7 +181,7 @@ struct rct_window
     virtual void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
     }
-    virtual void OnToolUp(WidgetIndex, const ScreenCoordsXY&)
+    virtual void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&)
     {
     }
     virtual void OnToolAbort(WidgetIndex widgetIndex)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -293,7 +293,7 @@ private:
         if (result == MODAL_RESULT_OK)
         {
             game_notify_map_change();
-            context_load_park_from_file(path);
+            GetContext()->LoadParkFromFile(path);
             network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
         }
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -89,7 +89,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             window_invalidate_by_class(WindowClass::Finances);
             break;
         case ScenarioSetSetting::AnnualInterestRate:
-            gBankLoanInterestRate = std::clamp<uint8_t>(_value, 0, 80);
+            gBankLoanInterestRate = std::clamp<uint8_t>(_value, 0, MaxBankLoanInterestRate);
             window_invalidate_by_class(WindowClass::Finances);
             break;
         case ScenarioSetSetting::ForbidMarketingCampaigns:

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -575,16 +575,16 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
     if (text == nullptr || text[0] == 0)
         return;
 
+    if (!Platform::IsFilenameValid(text))
+    {
+        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+        return;
+    }
+
     switch (widgetIndex)
     {
         case WIDX_NEW_FOLDER:
         {
-            if (!Platform::IsFilenameValid(text))
-            {
-                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
-                return;
-            }
-
             const u8string path = Path::Combine(_directory, text);
             if (!Platform::EnsureDirectoryExists(path))
             {

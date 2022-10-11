@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -116,9 +116,13 @@ void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const 
     OpenRCT2String result;
     if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
     {
+        auto tooltipString = widget->sztooltip;
+        if (*tooltipString == 0)
+            return;
+
         result.str = STR_STRING_TOOLTIP;
         result.args = Formatter();
-        result.args.Add<const char*>(widget->sztooltip);
+        result.args.Add<const char*>(tooltipString);
 
         gTooltipWidget.window_classification = widgetWindow->classification;
         gTooltipWidget.window_number = widgetWindow->number;

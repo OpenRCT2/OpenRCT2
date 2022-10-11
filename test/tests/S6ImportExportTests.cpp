@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,10 +64,10 @@ static void GameInit(bool retainSpatialIndices)
         ResetEntitySpatialIndices();
 
     reset_all_sprite_quadrant_placements();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
     load_palette();
     EntityTweener::Get().Reset();
-    AutoCreateMapAnimations();
+    MapAnimationAutoCreate();
     fix_invalid_vehicle_sprite_sizes();
 
     gGameSpeed = 1;

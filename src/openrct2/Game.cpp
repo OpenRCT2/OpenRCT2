@@ -206,7 +206,7 @@ void update_palette_effects()
         uint32_t shade = 0;
         if (gConfigGeneral.render_weather_gloom)
         {
-            auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
+            auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
@@ -413,7 +413,7 @@ void game_fix_save_vars()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
 
             if (surfaceElement == nullptr)
             {
@@ -441,16 +441,16 @@ void game_fix_save_vars()
     ResearchFix();
 
     // Fix banner list pointing to NULL map elements
-    banner_reset_broken_index();
+    BannerResetBrokenIndex();
 
     // Fix banners which share their index
-    fix_duplicated_banners();
+    BannerFixDuplicates();
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
-    fix_park_entrance_locations();
+    ParkEntranceFixLocations();
 
     UpdateConsolidatedPatrolAreas();
 }
@@ -482,7 +482,7 @@ void game_load_init()
     }
     ResetEntitySpatialIndices();
     reset_all_sprite_quadrant_placements();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
     context_broadcast_intent(&intent);
@@ -726,7 +726,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
         game_notify_map_change();
         game_unload_scripts();
         window_close_by_class(WindowClass::EditorObjectSelection);
-        context_load_park_from_file(path);
+        GetContext()->LoadParkFromFile(path);
         game_load_scripts();
         game_notify_map_changed();
         gIsAutosaveLoaded = gIsAutosave;

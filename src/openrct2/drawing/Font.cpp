@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -325,7 +325,7 @@ int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t c
     return _spriteFontCharacterWidths[baseFontIndex][glyphIndex];
 }
 
-int32_t font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t codepoint)
+ImageId font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t codepoint)
 {
     int32_t offset = static_cast<int32_t>(fontSpriteBase);
     auto codePointOffset = font_sprite_get_codepoint_offset(codepoint);
@@ -334,7 +334,7 @@ int32_t font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t 
         offset = font_get_font_index_from_sprite_base(fontSpriteBase) * SPR_G2_GLYPH_COUNT;
     }
 
-    return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (offset + codePointOffset));
+    return ImageId(SPR_CHAR_START + offset + codePointOffset, COLOUR_BLACK);
 }
 
 int32_t font_get_font_index_from_sprite_base(FontSpriteBase spriteBase)

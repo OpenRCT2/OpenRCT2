@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -428,7 +428,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             auto banner = tileElement->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto* bannerEntry = get_banner_entry(banner->type);
+                auto* bannerEntry = GetBannerEntry(banner->type);
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
@@ -620,9 +620,9 @@ static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const Co
 
     w = window_find_by_class(WindowClass::Footpath);
     if (w != nullptr)
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
 
-    tileElement2 = map_get_first_element_at(mapCoords);
+    tileElement2 = MapGetFirstElementAt(mapCoords);
     if (tileElement2 == nullptr)
         return;
     do

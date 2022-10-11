@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -198,7 +198,7 @@ GameActions::Result SetCheatAction::Execute() const
             break;
         case CheatType::ForceWeather:
             // Todo - make sure this is safe
-            climate_force_weather(WeatherType{ static_cast<uint8_t>(_param1) });
+            ClimateForceWeather(WeatherType{ static_cast<uint8_t>(_param1) });
             break;
         case CheatType::FreezeWeather:
             gCheatsFreezeWeather = _param1 != 0;
@@ -207,13 +207,13 @@ GameActions::Result SetCheatAction::Execute() const
             gCheatsNeverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
-            ParkSetOpen(!park_is_open());
+            ParkSetOpen(!ParkIsOpen());
             break;
         case CheatType::HaveFun:
             gScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
             break;
         case CheatType::SetForcedParkRating:
-            set_forced_park_rating(_param1);
+            ParkSetForcedRating(_param1);
             break;
         case CheatType::AllowArbitraryRideTypeChanges:
             gCheatsAllowArbitraryRideTypeChanges = _param1 != 0;
@@ -361,7 +361,7 @@ void SetCheatAction::SetGrassLength(int32_t length) const
     {
         for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
 
@@ -517,7 +517,7 @@ void SetCheatAction::SetScenarioNoMoney(bool enabled) const
     window_invalidate_by_class(WindowClass::Cheats);
 }
 
-void SetCheatAction::SetMoney(money32 amount) const
+void SetCheatAction::SetMoney(money64 amount) const
 {
     gCash = amount;
 
@@ -525,9 +525,9 @@ void SetCheatAction::SetMoney(money32 amount) const
     window_invalidate_by_class(WindowClass::BottomToolbar);
 }
 
-void SetCheatAction::AddMoney(money32 amount) const
+void SetCheatAction::AddMoney(money64 amount) const
 {
-    gCash = add_clamp_money32(gCash, amount);
+    gCash = add_clamp_money64(gCash, amount);
 
     window_invalidate_by_class(WindowClass::Finances);
     window_invalidate_by_class(WindowClass::BottomToolbar);
@@ -690,7 +690,7 @@ void SetCheatAction::OwnAllLand() const
     {
         for (coords.x = min.x; coords.x <= max.x; coords.x += COORDS_XY_STEP)
         {
-            auto* surfaceElement = map_get_surface_element_at(coords);
+            auto* surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)
                 continue;
 
@@ -705,7 +705,7 @@ void SetCheatAction::OwnAllLand() const
             if (destOwnership != OWNERSHIP_UNOWNED)
             {
                 surfaceElement->SetOwnership(destOwnership);
-                update_park_fences_around_tile(coords);
+                ParkUpdateFencesAroundTile(coords);
                 map_invalidate_tile({ coords, baseZ, baseZ + 16 });
             }
         }
@@ -714,17 +714,17 @@ void SetCheatAction::OwnAllLand() const
     // Completely unown peep spawn points
     for (const auto& spawn : gPeepSpawns)
     {
-        auto* surfaceElement = map_get_surface_element_at(spawn);
+        auto* surfaceElement = MapGetSurfaceElementAt(spawn);
         if (surfaceElement != nullptr)
         {
             surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-            update_park_fences_around_tile(spawn);
+            ParkUpdateFencesAroundTile(spawn);
             uint16_t baseZ = surfaceElement->GetBaseZ();
             map_invalidate_tile({ spawn, baseZ, baseZ + 16 });
         }
     }
 
-    map_count_remaining_land_rights();
+    MapCountRemainingLandRights();
 }
 
 void SetCheatAction::ParkSetOpen(bool isOpen) const

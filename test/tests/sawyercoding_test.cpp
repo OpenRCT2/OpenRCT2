@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,8 @@ protected:
         chdr_in.encoding = encoding_type;
         chdr_in.length = sizeof(randomdata);
         uint8_t* encodedDataBuffer = new uint8_t[BUFFER_SIZE];
-        size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (const uint8_t*)randomdata, chdr_in);
+        size_t encodedDataSize = sawyercoding_write_chunk_buffer(
+            encodedDataBuffer, reinterpret_cast<const uint8_t*>(randomdata), chdr_in);
         ASSERT_GT(encodedDataSize, sizeof(sawyercoding_chunk_header));
 
         // Decode

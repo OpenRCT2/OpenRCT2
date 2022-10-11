@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -63,15 +63,15 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     gInMapInitCode = true;
     gCurrentTicks = 0;
 
-    map_init(mapSize);
+    MapInit(mapSize);
     _park->Initialise();
     finance_init();
-    banner_init();
+    BannerInit();
     ride_init_all();
     ResetAllEntities();
     UpdateConsolidatedPatrolAreas();
     date_reset();
-    climate_reset(ClimateType::CoolAndWet);
+    ClimateReset(ClimateType::CoolAndWet);
     News::InitQueue();
 
     gInMapInitCode = false;
@@ -79,7 +79,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     gNextGuestNumber = 1;
 
     context_init();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
 
     auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
     context_broadcast_intent(&intent);
@@ -173,7 +173,7 @@ void GameState::Tick()
 
             // Update the animation list. Note this does not
             // increment the map animation.
-            map_animation_invalidate_all();
+            MapAnimationInvalidateAll();
 
             // Post-tick network update
             network_process_pending();
@@ -319,7 +319,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
 
     scenario_update();
     report_time(LogicTimePart::Scenario);
-    climate_update();
+    ClimateUpdate();
     report_time(LogicTimePart::Climate);
     map_update_tiles();
     report_time(LogicTimePart::MapTiles);
@@ -354,11 +354,11 @@ void GameState::UpdateLogic(LogicTimings* timings)
     News::UpdateCurrentItem();
     report_time(LogicTimePart::News);
 
-    map_animation_invalidate_all();
+    MapAnimationInvalidateAll();
     report_time(LogicTimePart::MapAnimation);
     vehicle_sounds_update();
     peep_update_crowd_noise();
-    climate_update_sound();
+    ClimateUpdateSound();
     report_time(LogicTimePart::Sounds);
     editor_open_windows_for_current_step();
 

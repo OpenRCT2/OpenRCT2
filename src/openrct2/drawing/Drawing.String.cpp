@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -503,7 +503,7 @@ struct text_draw_info
 static void ttf_draw_character_sprite(rct_drawpixelinfo* dpi, int32_t codepoint, text_draw_info* info)
 {
     int32_t characterWidth = font_sprite_get_codepoint_width(info->font_sprite_base, codepoint);
-    int32_t sprite = font_sprite_get_codepoint_sprite(info->font_sprite_base, codepoint);
+    auto sprite = font_sprite_get_codepoint_sprite(info->font_sprite_base, codepoint);
 
     if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
     {
@@ -758,12 +758,13 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
         }
         case FormatToken::InlineSprite:
         {
-            auto g1 = gfx_get_g1_element(token.parameter & 0x7FFFF);
+            auto imageId = ImageId::FromUInt32(token.parameter);
+            auto g1 = gfx_get_g1_element(imageId.GetIndex());
             if (g1 != nullptr && g1->width <= 32 && g1->height <= 32)
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
                 {
-                    gfx_draw_sprite(dpi, token.parameter, { info->x, info->y }, 0);
+                    gfx_draw_sprite(dpi, imageId, { info->x, info->y });
                 }
                 info->x += g1->width;
             }
@@ -827,7 +828,7 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
     else
     {
         CodepointView codepoints(text);
-        std::optional<size_t> ttfRunIndex;
+        std::optional<size_t> ttfRunIndex{};
         for (auto it = codepoints.begin(); it != codepoints.end(); it++)
         {
             auto codepoint = *it;
@@ -836,8 +837,18 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
                 if (ttfRunIndex.has_value())
                 {
                     // Draw the TTF run
+                    // This error suppression abomination is here to suppress https://github.com/OpenRCT2/OpenRCT2/issues/17371.
+                    // Additionally, we have to suppress the error for the error suppression... :'-(
+                    // TODO: Re-evaluate somewhere in 2023.
+#    ifdef __MINGW32__
+#        pragma GCC diagnostic push
+#        pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#    endif
                     auto len = it.GetIndex() - ttfRunIndex.value();
                     ttf_draw_string_raw_ttf(dpi, text.substr(ttfRunIndex.value(), len), info);
+#    ifdef __MINGW32__
+#        pragma GCC diagnostic pop
+#    endif
                     ttfRunIndex = std::nullopt;
                 }
 

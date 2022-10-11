@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -68,7 +68,7 @@ GameActions::Result TrackRemoveAction::Query() const
 
     bool found = false;
     bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-    TileElement* tileElement = map_get_first_element_at(_origin);
+    TileElement* tileElement = MapGetFirstElementAt(_origin);
 
     do
     {
@@ -167,7 +167,7 @@ GameActions::Result TrackRemoveAction::Query() const
         map_invalidate_tile_full(mapLoc);
 
         found = false;
-        tileElement = map_get_first_element_at(mapLoc);
+        tileElement = MapGetFirstElementAt(mapLoc);
         do
         {
             if (tileElement == nullptr)
@@ -214,7 +214,7 @@ GameActions::Result TrackRemoveAction::Query() const
             }
         }
 
-        auto* surfaceElement = map_get_surface_element_at(mapLoc);
+        auto* surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
             log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
@@ -264,7 +264,7 @@ GameActions::Result TrackRemoveAction::Execute() const
 
     bool found = false;
     bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-    TileElement* tileElement = map_get_first_element_at(_origin);
+    TileElement* tileElement = MapGetFirstElementAt(_origin);
 
     do
     {
@@ -346,7 +346,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         map_invalidate_tile_full(mapLoc);
 
         found = false;
-        tileElement = map_get_first_element_at(mapLoc);
+        tileElement = MapGetFirstElementAt(mapLoc);
         do
         {
             if (tileElement == nullptr)
@@ -393,7 +393,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             }
         }
 
-        auto* surfaceElement = map_get_surface_element_at(mapLoc);
+        auto* surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
             log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
@@ -429,10 +429,10 @@ GameActions::Result TrackRemoveAction::Execute() const
         }
 
         invalidate_test_results(ride);
-        footpath_queue_chain_reset();
+        FootpathQueueChainReset();
         if (!gCheatsDisableClearanceChecks || !(tileElement->IsGhost()))
         {
-            footpath_remove_edges_at(mapLoc, tileElement);
+            FootpathRemoveEdgesAt(mapLoc, tileElement);
         }
         tile_element_remove(tileElement);
         ride->ValidateStations();

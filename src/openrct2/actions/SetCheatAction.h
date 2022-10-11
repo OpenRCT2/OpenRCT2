@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,8 +44,8 @@ private:
     void ResetRideCrashStatus() const;
     void Set10MinuteInspection() const;
     void SetScenarioNoMoney(bool enabled) const;
-    void SetMoney(money32 amount) const;
-    void AddMoney(money32 amount) const;
+    void SetMoney(money64 amount) const;
+    void AddMoney(money64 amount) const;
     void ClearLoan() const;
     void GenerateGuests(int32_t count) const;
     void SetGuestParameter(int32_t parameter, int32_t value) const;

@@ -4069,15 +4069,6 @@ STR_NAME    :Tag
 [TTRFWD08]
 STR_NAME    :Tag
 
-[TTRFGL01]
-STR_NAME    :Glas tag
-
-[TTRFGL02]
-STR_NAME    :Glas tag
-
-[TTRFGL03]
-STR_NAME    :Glas tag
-
 [ACWW33]
 STR_NAME    :Træ stolpe væg
 

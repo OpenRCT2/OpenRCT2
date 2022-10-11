@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,7 +57,7 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
     MakeWidget({  2, 21}, {138, 11}, WindowWidgetType::FlatBtn,     WindowColour::Primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
 
     MakeWidget({142,  0}, {356, 34}, WindowWidgetType::ImgBtn,      WindowColour::Tertiary                                                    ), // Middle outset panel
-    MakeWidget({144,  2}, {352, 30}, WindowWidgetType::Placeholder, WindowColour::Tertiary                                                    ), // Middle inset panel
+    MakeWidget({144,  2}, {352, 30}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary                                                    ), // Middle inset panel
     MakeWidget({147,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
     MakeWidget({469,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
 
@@ -291,7 +291,7 @@ static void WindowGameBottomToolbarInvalidate(rct_window* w)
         else
         {
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Placeholder;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 0;
@@ -302,7 +302,7 @@ static void WindowGameBottomToolbarInvalidate(rct_window* w)
     {
         News::Item* newsItem = News::GetItem(0);
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Placeholder;
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
@@ -465,12 +465,12 @@ static void WindowGameBottomToolbarDrawParkRating(
     bar_width = (factor * 114) / 255;
     gfx_fill_rect_inset(
         dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, w->colours[1], INSET_RECT_F_30);
-    if (!(colour & IMAGE_TYPE_REMAP_2_PLUS) || game_is_paused() || (gCurrentRealTimeTicks & 8))
+    if (!(colour & BAR_BLINK) || game_is_paused() || (gCurrentRealTimeTicks & 8))
     {
         if (bar_width > 2)
         {
             gfx_fill_rect_inset(
-                dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour & 0x7FFFFFFF, 0);
+                dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
         }
     }
 
@@ -523,7 +523,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
     StringId format = STR_CELSIUS_VALUE;
     if (gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit)
     {
-        temperature = climate_celsius_to_fahrenheit(temperature);
+        temperature = ClimateCelsiusToFahrenheit(temperature);
         format = STR_FAHRENHEIT_VALUE;
     }
     ft = Formatter();
@@ -532,11 +532,11 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
     screenCoords.x += 30;
 
     // Current weather
-    auto currentWeatherSpriteId = climate_get_weather_sprite_id(gClimateCurrent);
+    auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateCurrent);
     gfx_draw_sprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
     // Next weather
-    auto nextWeatherSpriteId = climate_get_weather_sprite_id(gClimateNext);
+    auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateNext);
     if (currentWeatherSpriteId != nextWeatherSpriteId)
     {
         if (gClimateUpdateTimer < 960)

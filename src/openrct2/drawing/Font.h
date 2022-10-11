@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../core/String.hpp"
+#include "../drawing/ImageId.hpp"
 
 constexpr const uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
 
@@ -60,7 +61,7 @@ extern TTFFontSetDescriptor* gCurrentTTFFontSet;
 void font_sprite_initialise_characters();
 int32_t font_sprite_get_codepoint_offset(int32_t codepoint);
 int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t codepoint);
-int32_t font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t codepoint);
+ImageId font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t codepoint);
 int32_t font_get_font_index_from_sprite_base(FontSpriteBase spriteBase);
 int32_t font_get_size_from_sprite_base(FontSpriteBase spriteBase);
 int32_t font_get_line_height(FontSpriteBase fontSpriteBase);

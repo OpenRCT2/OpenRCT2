@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,11 +50,11 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
     switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-            if (park_get_entrance_fee() < 4.00_GBP)
+            if (ParkGetEntranceFee() < 4.00_GBP)
                 probability /= 8;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            if (park_get_entrance_fee() < 6.00_GBP)
+            if (ParkGetEntranceFee() < 6.00_GBP)
                 probability /= 8;
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
@@ -174,12 +174,12 @@ bool marketing_is_campaign_type_applicable(int32_t campaignType)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            if (!park_entry_price_unlocked())
+            if (!ParkEntranceFeeUnlocked())
                 return false;
             return true;
 
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
-            if (!park_ride_prices_unlocked())
+            if (!ParkRidePricesUnlocked())
                 return false;
 
             // fall-through

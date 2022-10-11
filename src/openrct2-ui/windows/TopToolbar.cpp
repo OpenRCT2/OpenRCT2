@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1074,7 +1074,7 @@ static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, WidgetIndex 
             auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto* bannerEntry = get_banner_entry(banner->type);
+                auto* bannerEntry = GetBannerEntry(banner->type);
                 if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                 {
                     auto repaintScenery = BannerSetColourAction(
@@ -1103,7 +1103,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
         {
             SmallSceneryElement* sceneryElement = info.Element->AsSmallScenery();
             auto entryIndex = sceneryElement->GetEntryIndex();
-            auto* sceneryEntry = get_small_scenery_entry(entryIndex);
+            auto* sceneryEntry = GetSmallSceneryEntry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 WindowScenerySetSelectedItem(
@@ -1116,7 +1116,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
         case ViewportInteractionItem::Wall:
         {
             auto entryIndex = info.Element->AsWall()->GetEntryIndex();
-            auto* sceneryEntry = get_wall_entry(entryIndex);
+            auto* sceneryEntry = GetWallEntry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 WindowScenerySetSelectedItem(
@@ -1128,7 +1128,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
         case ViewportInteractionItem::LargeScenery:
         {
             auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
-            auto* sceneryEntry = get_large_scenery_entry(entryIndex);
+            auto* sceneryEntry = GetLargeSceneryEntry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 WindowScenerySetSelectedItem(
@@ -1143,7 +1143,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
             auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto sceneryEntry = get_banner_entry(banner->type);
+                auto sceneryEntry = GetBannerEntry(banner->type);
                 if (sceneryEntry != nullptr)
                 {
                     WindowScenerySetSelectedItem(
@@ -1155,7 +1155,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
         case ViewportInteractionItem::FootpathItem:
         {
             auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
-            auto* pathBitEntry = get_footpath_item_entry(entryIndex);
+            auto* pathBitEntry = GetFootpathItemEntry(entryIndex);
             if (pathBitEntry != nullptr)
             {
                 WindowScenerySetSelectedItem(
@@ -1256,7 +1256,7 @@ static void Sub6E1F34SmallScenery(
     uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
     bool can_raise_item = false;
 
-    const auto* sceneryEntry = get_small_scenery_entry(sceneryIndex);
+    const auto* sceneryEntry = GetSmallSceneryEntry(sceneryIndex);
     if (sceneryEntry == nullptr)
     {
         gridPos.SetNull();
@@ -1292,7 +1292,7 @@ static void Sub6E1F34SmallScenery(
             // If SHIFT pressed
             if (gSceneryShiftPressed)
             {
-                auto* surfaceElement = map_get_surface_element_at(gridPos);
+                auto* surfaceElement = MapGetSurfaceElementAt(gridPos);
 
                 if (surfaceElement == nullptr)
                 {
@@ -1346,7 +1346,7 @@ static void Sub6E1F34SmallScenery(
 
         if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
         {
-            virtual_floor_set_height(gSceneryPlaceZ);
+            VirtualFloorSetHeight(gSceneryPlaceZ);
         }
 
         *outQuadrant = quadrant ^ 2;
@@ -1375,7 +1375,7 @@ static void Sub6E1F34SmallScenery(
         // If SHIFT pressed
         if (gSceneryShiftPressed)
         {
-            auto surfaceElement = map_get_surface_element_at(gridPos);
+            auto surfaceElement = MapGetSurfaceElementAt(gridPos);
 
             if (surfaceElement == nullptr)
             {
@@ -1430,7 +1430,7 @@ static void Sub6E1F34SmallScenery(
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_set_height(gSceneryPlaceZ);
+        VirtualFloorSetHeight(gSceneryPlaceZ);
     }
 
     *outQuadrant = 0;
@@ -1464,7 +1464,7 @@ static void Sub6E1F34PathItem(
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_set_height(gSceneryPlaceZ);
+        VirtualFloorSetHeight(gSceneryPlaceZ);
     }
 
     *outZ = info.Element->GetBaseZ();
@@ -1484,7 +1484,7 @@ static void Sub6E1F34Wall(
     auto screenPos = sourceScreenPos;
     uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
 
-    auto* wallEntry = get_wall_entry(sceneryIndex);
+    auto* wallEntry = GetWallEntry(sceneryIndex);
     if (wallEntry != nullptr)
     {
         maxPossibleHeight -= wallEntry->height;
@@ -1510,7 +1510,7 @@ static void Sub6E1F34Wall(
         // If SHIFT pressed
         if (gSceneryShiftPressed)
         {
-            auto* surfaceElement = map_get_surface_element_at(gridPos);
+            auto* surfaceElement = MapGetSurfaceElementAt(gridPos);
 
             if (surfaceElement == nullptr)
             {
@@ -1553,7 +1553,7 @@ static void Sub6E1F34Wall(
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_set_height(gSceneryPlaceZ);
+        VirtualFloorSetHeight(gSceneryPlaceZ);
     }
 
     *outEdges = edge;
@@ -1573,7 +1573,7 @@ static void Sub6E1F34LargeScenery(
     auto screenPos = sourceScreenPos;
     uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
 
-    auto* sceneryEntry = get_large_scenery_entry(sceneryIndex);
+    auto* sceneryEntry = GetLargeSceneryEntry(sceneryIndex);
     if (sceneryEntry)
     {
         int16_t maxClearZ = 0;
@@ -1601,7 +1601,7 @@ static void Sub6E1F34LargeScenery(
         // If SHIFT pressed
         if (gSceneryShiftPressed)
         {
-            auto* surfaceElement = map_get_surface_element_at(gridPos);
+            auto* surfaceElement = MapGetSurfaceElementAt(gridPos);
 
             if (surfaceElement == nullptr)
             {
@@ -1652,7 +1652,7 @@ static void Sub6E1F34LargeScenery(
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_set_height(gSceneryPlaceZ);
+        VirtualFloorSetHeight(gSceneryPlaceZ);
     }
 
     *outDirection = rotation;
@@ -1692,7 +1692,7 @@ static void Sub6E1F34Banner(
 
     if (info.Element->AsPath()->IsSloped())
     {
-        if (rotation != direction_reverse(info.Element->AsPath()->GetSlopeDirection()))
+        if (rotation != DirectionReverse(info.Element->AsPath()->GetSlopeDirection()))
         {
             z += (2 * COORDS_Z_STEP);
         }
@@ -1700,7 +1700,7 @@ static void Sub6E1F34Banner(
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_set_height(gSceneryPlaceZ);
+        VirtualFloorSetHeight(gSceneryPlaceZ);
     }
 
     *outDirection = rotation;
@@ -1713,7 +1713,7 @@ static void Sub6E1F34Banner(
  */
 static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct_window* w, WidgetIndex widgetIndex)
 {
-    scenery_remove_ghost_tool_placement();
+    SceneryRemoveGhostToolPlacement();
     if (gWindowSceneryPaintEnabled & 1)
     {
         RepaintSceneryToolDown(windowPos, widgetIndex);
@@ -1768,7 +1768,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
             for (int32_t q = 0; q < quantity; q++)
             {
                 int32_t zCoordinate = gSceneryPlaceZ;
-                auto* sceneryEntry = get_small_scenery_entry(selectedScenery);
+                auto* sceneryEntry = GetSmallSceneryEntry(selectedScenery);
 
                 int16_t cur_grid_x = gridPos.x;
                 int16_t cur_grid_y = gridPos.y;
@@ -2469,7 +2469,7 @@ static money64 TryPlaceGhostSmallScenery(
     CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
     colour_t tertiaryColour)
 {
-    scenery_remove_ghost_tool_placement();
+    SceneryRemoveGhostToolPlacement();
 
     // 6e252b
     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
@@ -2504,7 +2504,7 @@ static money64 TryPlaceGhostSmallScenery(
 
 static money64 TryPlaceGhostPathAddition(CoordsXYZ loc, ObjectEntryIndex entryIndex)
 {
-    scenery_remove_ghost_tool_placement();
+    SceneryRemoveGhostToolPlacement();
 
     // 6e265b
     auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction(loc, entryIndex + 1);
@@ -2528,7 +2528,7 @@ static money64 TryPlaceGhostWall(
     CoordsXYZ loc, uint8_t edge, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
     colour_t tertiaryColour)
 {
-    scenery_remove_ghost_tool_placement();
+    SceneryRemoveGhostToolPlacement();
 
     // 6e26b0
     auto wallPlaceAction = WallPlaceAction(entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
@@ -2554,7 +2554,7 @@ static money64 TryPlaceGhostWall(
 static money64 TryPlaceGhostLargeScenery(
     CoordsXYZD loc, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour)
 {
-    scenery_remove_ghost_tool_placement();
+    SceneryRemoveGhostToolPlacement();
 
     // 6e25a7
     auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour, tertiaryColour);
@@ -2585,7 +2585,7 @@ static money64 TryPlaceGhostLargeScenery(
 
 static money64 TryPlaceGhostBanner(CoordsXYZD loc, ObjectEntryIndex entryIndex)
 {
-    scenery_remove_ghost_tool_placement();
+    SceneryRemoveGhostToolPlacement();
 
     // 6e2612
     auto primaryColour = gWindowSceneryPrimaryColour;
@@ -2613,7 +2613,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
-        virtual_floor_invalidate();
+        VirtualFloorInvalidate();
     }
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -2627,7 +2627,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
     const auto selection = WindowSceneryGetTabSelection();
     if (selection.IsUndefined())
     {
-        scenery_remove_ghost_tool_placement();
+        SceneryRemoveGhostToolPlacement();
         return;
     }
 
@@ -2645,7 +2645,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
 
             if (mapTile.IsNull())
             {
-                scenery_remove_ghost_tool_placement();
+                SceneryRemoveGhostToolPlacement();
                 return;
             }
 
@@ -2671,7 +2671,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
                 gMapSelectPositionB.y = mapTile.y;
             }
 
-            auto* sceneryEntry = get_small_scenery_entry(selection.EntryIndex);
+            auto* sceneryEntry = GetSmallSceneryEntry(selection.EntryIndex);
 
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
@@ -2689,7 +2689,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
                 return;
             }
 
-            scenery_remove_ghost_tool_placement();
+            SceneryRemoveGhostToolPlacement();
 
             _unkF64F0E = quadrant;
             _unkF64F0A = gSceneryPlaceZ;
@@ -2723,7 +2723,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
 
             if (mapTile.IsNull())
             {
-                scenery_remove_ghost_tool_placement();
+                SceneryRemoveGhostToolPlacement();
                 return;
             }
 
@@ -2742,7 +2742,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
                 return;
             }
 
-            scenery_remove_ghost_tool_placement();
+            SceneryRemoveGhostToolPlacement();
 
             cost = TryPlaceGhostPathAddition({ mapTile, z }, selection.EntryIndex);
 
@@ -2758,7 +2758,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
 
             if (mapTile.IsNull())
             {
-                scenery_remove_ghost_tool_placement();
+                SceneryRemoveGhostToolPlacement();
                 return;
             }
 
@@ -2778,7 +2778,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
                 return;
             }
 
-            scenery_remove_ghost_tool_placement();
+            SceneryRemoveGhostToolPlacement();
 
             gSceneryGhostWallRotation = edge;
             _unkF64F0A = gSceneryPlaceZ;
@@ -2813,11 +2813,11 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
 
             if (mapTile.IsNull())
             {
-                scenery_remove_ghost_tool_placement();
+                SceneryRemoveGhostToolPlacement();
                 return;
             }
 
-            auto* sceneryEntry = get_large_scenery_entry(selection.EntryIndex);
+            auto* sceneryEntry = GetLargeSceneryEntry(selection.EntryIndex);
             gMapSelectionTiles.clear();
 
             for (rct_large_scenery_tile* tile = sceneryEntry->tiles;
@@ -2843,7 +2843,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
                 return;
             }
 
-            scenery_remove_ghost_tool_placement();
+            SceneryRemoveGhostToolPlacement();
 
             gSceneryPlaceObject.SceneryType = SCENERY_TYPE_LARGE;
             gSceneryPlaceObject.EntryIndex = selection.EntryIndex;
@@ -2880,7 +2880,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
 
             if (mapTile.IsNull())
             {
-                scenery_remove_ghost_tool_placement();
+                SceneryRemoveGhostToolPlacement();
                 return;
             }
 
@@ -2900,7 +2900,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
                 return;
             }
 
-            scenery_remove_ghost_tool_placement();
+            SceneryRemoveGhostToolPlacement();
 
             cost = TryPlaceGhostBanner({ mapTile, z, direction }, selection.EntryIndex);
 

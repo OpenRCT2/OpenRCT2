@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -898,7 +898,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
 
     if (x != LOCATION_NULL)
     {
-        auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+        auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
         // vehicle underground
         if (surfaceElement != nullptr && surfaceElement->GetBaseZ() > z)
@@ -1087,6 +1087,11 @@ static void UpdateSound(
     volume = volume / 8;
     volume = std::max(volume - 0x1FFF, -10000);
 
+    if (sound.Channel != nullptr && sound.Channel->IsDone())
+    {
+        sound.Id = OpenRCT2::Audio::SoundId::Null;
+        sound.Channel = nullptr;
+    }
     if (id != sound.Id && sound.Id != OpenRCT2::Audio::SoundId::Null)
     {
         sound.Id = OpenRCT2::Audio::SoundId::Null;
@@ -1732,13 +1737,13 @@ void Vehicle::UpdateMeasurements()
         return;
     }
 
-    auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
     // If vehicle above ground.
     if (surfaceElement != nullptr && surfaceElement->GetBaseZ() <= z)
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
-        auto tileElement = map_get_first_element_at(CoordsXY{ x, y });
+        auto tileElement = MapGetFirstElementAt(CoordsXY{ x, y });
         if (tileElement == nullptr)
             return;
 
@@ -2748,7 +2753,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
 
     // Other search direction.
     location = station.GetStart();
-    direction = direction_reverse(direction) & 3;
+    direction = DirectionReverse(direction) & 3;
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
@@ -4610,7 +4615,7 @@ void Vehicle::UpdateBoatLocation()
  */
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
 {
-    TileElement* tileElement = map_get_first_element_at(location);
+    TileElement* tileElement = MapGetFirstElementAt(location);
     if (tileElement == nullptr)
         return false;
     do
@@ -5116,7 +5121,7 @@ void Vehicle::UpdateDoingCircusShow()
  */
 static TileElement* vehicle_check_collision(const CoordsXYZ& vehiclePosition)
 {
-    TileElement* tileElement = map_get_first_element_at(vehiclePosition);
+    TileElement* tileElement = MapGetFirstElementAt(vehiclePosition);
     if (tileElement == nullptr)
     {
         return nullptr;
@@ -6216,7 +6221,7 @@ static void block_brakes_open_previous_section(Ride& ride, const CoordsXYZ& vehi
         location.z = trackBeginEnd.begin_z;
         tileElement = trackBeginEnd.begin_element;
 
-        //#2081: prevent infinite loop
+        // #2081: prevent infinite loop
         counter = !counter;
         if (counter)
         {
@@ -6807,7 +6812,7 @@ void Vehicle::UpdateAdditionalAnimation()
 static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tileElement)
 {
     auto* wallEntry = tileElement->GetEntry();
-    int32_t doorSoundType = wall_entry_get_door_sound(wallEntry);
+    int32_t doorSoundType = WallEntryGetDoorSound(wallEntry);
     if (doorSoundType != 0)
     {
         auto soundId = DoorOpenSoundIds[doorSoundType - 1];
@@ -6825,7 +6830,7 @@ static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tile
 static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* tileElement)
 {
     auto* wallEntry = tileElement->GetEntry();
-    int32_t doorSoundType = wall_entry_get_door_sound(wallEntry);
+    int32_t doorSoundType = WallEntryGetDoorSound(wallEntry);
     if (doorSoundType != 0)
     {
         auto soundId = DoorCloseSoundIds[doorSoundType - 1];
@@ -6849,7 +6854,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
     {
         door->SetAnimationIsBackwards(isBackwards);
         door->SetAnimationFrame(1);
-        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, doorLocation);
+        MapAnimationCreate(MAP_ANIMATION_TYPE_WALL_DOOR, doorLocation);
         play_scenery_door_open_sound(trackLocation, door);
     }
 
@@ -6956,7 +6961,7 @@ static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement
 {
     tileElement->AsTrack()->SetPhotoTimeout();
 
-    map_animation_create(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { loc, tileElement->GetBaseZ() });
+    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { loc, tileElement->GetBaseZ() });
 }
 
 /**
@@ -6971,7 +6976,7 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
     auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;
-    direction = direction_reverse(direction);
+    direction = DirectionReverse(direction);
 
     AnimateSceneryDoor<true>({ wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());
 }
@@ -8151,7 +8156,7 @@ loc_6DC476:
     if (mini_golf_flags & MiniGolfFlag::Flag2)
     {
         uint8_t nextFrame = animation_frame + 1;
-        if (nextFrame < mini_golf_peep_animation_lengths[EnumValue(mini_golf_current_animation)])
+        if (nextFrame < MiniGolfPeepAnimationLengths[EnumValue(mini_golf_current_animation)])
         {
             animation_frame = nextFrame;
             goto loc_6DC985;

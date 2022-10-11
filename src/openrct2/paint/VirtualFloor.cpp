@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,26 +41,26 @@ enum VirtualFloorFlags
     VIRTUAL_FLOOR_FORCE_INVALIDATION = (1 << 2),
 };
 
-bool virtual_floor_is_enabled()
+bool VirtualFloorIsEnabled()
 {
     return (_virtualFloorFlags & VIRTUAL_FLOOR_FLAG_ENABLED) != 0;
 }
 
-void virtual_floor_set_height(int16_t height)
+void VirtualFloorSetHeight(int16_t height)
 {
-    if (!virtual_floor_is_enabled())
+    if (!VirtualFloorIsEnabled())
     {
         return;
     }
 
     if (_virtualFloorHeight != height)
     {
-        virtual_floor_invalidate();
+        VirtualFloorInvalidate();
         _virtualFloorHeight = height;
     }
 }
 
-static void virtual_floor_reset()
+static void VirtualFloorReset()
 {
     _virtualFloorLastMinPos.x = std::numeric_limits<int32_t>::max();
     _virtualFloorLastMinPos.y = std::numeric_limits<int32_t>::max();
@@ -69,20 +69,20 @@ static void virtual_floor_reset()
     _virtualFloorHeight = 0;
 }
 
-void virtual_floor_enable()
+void VirtualFloorEnable()
 {
-    if (virtual_floor_is_enabled())
+    if (VirtualFloorIsEnabled())
     {
         return;
     }
 
-    virtual_floor_reset();
+    VirtualFloorReset();
     _virtualFloorFlags |= VIRTUAL_FLOOR_FLAG_ENABLED;
 }
 
-void virtual_floor_disable()
+void VirtualFloorDisable()
 {
-    if (!virtual_floor_is_enabled())
+    if (!VirtualFloorIsEnabled())
     {
         return;
     }
@@ -91,13 +91,13 @@ void virtual_floor_disable()
 
     // Force invalidation, even if the position hasn't changed.
     _virtualFloorFlags |= VIRTUAL_FLOOR_FORCE_INVALIDATION;
-    virtual_floor_invalidate();
+    VirtualFloorInvalidate();
     _virtualFloorFlags &= ~VIRTUAL_FLOOR_FORCE_INVALIDATION;
 
-    virtual_floor_reset();
+    VirtualFloorReset();
 }
 
-void virtual_floor_invalidate()
+void VirtualFloorInvalidate()
 {
     PROFILED_FUNCTION();
 
@@ -174,9 +174,9 @@ void virtual_floor_invalidate()
     }
 }
 
-bool virtual_floor_tile_is_floor(const CoordsXY& loc)
+bool VirtualFloorTileIsFloor(const CoordsXY& loc)
 {
-    if (!virtual_floor_is_enabled())
+    if (!VirtualFloorIsEnabled())
     {
         return false;
     }
@@ -206,7 +206,7 @@ bool virtual_floor_tile_is_floor(const CoordsXY& loc)
     return false;
 }
 
-static void virtual_floor_get_tile_properties(
+static void VirtualFloorGetTileProperties(
     const CoordsXY& loc, int16_t height, bool* outOccupied, bool* tileOwned, uint8_t* outOccupiedEdges, bool* outBelowGround,
     bool* aboveGround, bool* outLit)
 {
@@ -292,7 +292,7 @@ static void virtual_floor_get_tile_properties(
     }
 }
 
-void virtual_floor_paint(paint_session& session)
+void VirtualFloorPaint(paint_session& session)
 {
     PROFILED_FUNCTION();
 
@@ -322,7 +322,7 @@ void virtual_floor_paint(paint_session& session)
     bool weAreAboveGround;
     uint8_t litEdges = 0;
 
-    virtual_floor_get_tile_properties(
+    VirtualFloorGetTileProperties(
         session.MapPosition, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges, &weAreBelowGround,
         &weAreAboveGround, &weAreLit);
 
@@ -345,7 +345,7 @@ void virtual_floor_paint(paint_session& session)
         bool theyAreOwned;
         bool theyAreAboveGround;
 
-        virtual_floor_get_tile_properties(
+        VirtualFloorGetTileProperties(
             theirLocation, virtualFloorClipHeight, &theyAreOccupied, &theyAreOwned, &theirOccupiedEdges, &theyAreBelowGround,
             &theyAreAboveGround, &theyAreLit);
 
@@ -363,9 +363,9 @@ void virtual_floor_paint(paint_session& session)
         }
     }
 
-    uint32_t remap_base = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_DARK_PURPLE);
-    uint32_t remap_edge = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_WHITE);
-    uint32_t remap_lit = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_DARK_BROWN);
+    const ImageId remap_base = ImageId(0, COLOUR_DARK_PURPLE);
+    const ImageId remap_edge = ImageId(0, COLOUR_WHITE);
+    const ImageId remap_lit = ImageId(0, COLOUR_DARK_BROWN);
 
     // Edges which are internal to objects (i.e., the tile on both sides
     //  is occupied/lit) are not rendered to provide visual clarity.
@@ -375,35 +375,31 @@ void virtual_floor_paint(paint_session& session)
     const auto virtualFloorOffset = CoordsXYZ{ 0, 0, _virtualFloorHeight };
     if (paintEdges & EDGE_NE)
     {
+        const auto baseImg = !(occupiedEdges & EDGE_NE) ? ((litEdges & EDGE_NE) ? remap_lit : remap_base) : remap_edge;
         PaintAddImageAsParent(
-            session,
-            SPR_G2_SELECTION_EDGE_NE
-                | (!(occupiedEdges & EDGE_NE) ? ((litEdges & EDGE_NE) ? remap_lit : remap_base) : remap_edge),
-            virtualFloorOffset, { 0, 0, 1 }, { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NE) ? -2 : 0) });
+            session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_NE), virtualFloorOffset, { 0, 0, 1 },
+            { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NE) ? -2 : 0) });
     }
     if (paintEdges & EDGE_SE)
     {
+        const auto baseImg = !(occupiedEdges & EDGE_SE) ? ((litEdges & EDGE_SE) ? remap_lit : remap_base) : remap_edge;
         PaintAddImageAsParent(
-            session,
-            SPR_G2_SELECTION_EDGE_SE
-                | (!(occupiedEdges & EDGE_SE) ? ((litEdges & EDGE_SE) ? remap_lit : remap_base) : remap_edge),
-            virtualFloorOffset, { 1, 1, 1 }, { 16, 27, _virtualFloorHeight + ((dullEdges & EDGE_SE) ? -2 : 0) });
+            session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_SE), virtualFloorOffset, { 1, 1, 1 },
+            { 16, 27, _virtualFloorHeight + ((dullEdges & EDGE_SE) ? -2 : 0) });
     }
     if (paintEdges & EDGE_SW)
     {
+        const auto baseImg = !(occupiedEdges & EDGE_SW) ? ((litEdges & EDGE_SW) ? remap_lit : remap_base) : remap_edge;
         PaintAddImageAsParent(
-            session,
-            SPR_G2_SELECTION_EDGE_SW
-                | (!(occupiedEdges & EDGE_SW) ? ((litEdges & EDGE_SW) ? remap_lit : remap_base) : remap_edge),
-            virtualFloorOffset, { 1, 1, 1 }, { 27, 16, _virtualFloorHeight + ((dullEdges & EDGE_SW) ? -2 : 0) });
+            session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_SW), virtualFloorOffset, { 1, 1, 1 },
+            { 27, 16, _virtualFloorHeight + ((dullEdges & EDGE_SW) ? -2 : 0) });
     }
     if (paintEdges & EDGE_NW)
     {
+        const auto baseImg = !(occupiedEdges & EDGE_NW) ? ((litEdges & EDGE_NW) ? remap_lit : remap_base) : remap_edge;
         PaintAddImageAsParent(
-            session,
-            SPR_G2_SELECTION_EDGE_NW
-                | (!(occupiedEdges & EDGE_NW) ? ((litEdges & EDGE_NW) ? remap_lit : remap_base) : remap_edge),
-            virtualFloorOffset, { 0, 0, 1 }, { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) });
+            session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_NW), virtualFloorOffset, { 0, 0, 1 },
+            { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) });
     }
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Glassy)
@@ -411,13 +407,12 @@ void virtual_floor_paint(paint_session& session)
 
     if (!weAreOccupied && !weAreLit && weAreAboveGround && weAreOwned)
     {
-        int32_t imageColourFlats = SPR_G2_SURFACE_GLASSY_RECOLOURABLE | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
-            | EnumValue(FilterPaletteID::PaletteWater) << 19;
+        auto imageColourFlats = ImageId(SPR_G2_SURFACE_GLASSY_RECOLOURABLE, FilterPaletteID::PaletteWater).WithBlended(true);
         PaintAddImageAsParent(session, imageColourFlats, virtualFloorOffset, { 30, 30, 0 }, { 2, 2, _virtualFloorHeight - 3 });
     }
 }
 
-uint16_t virtual_floor_get_height()
+uint16_t VirtualFloorGetHeight()
 {
     return _virtualFloorHeight;
 }

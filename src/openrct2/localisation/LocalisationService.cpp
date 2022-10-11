@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -79,6 +79,15 @@ std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
     auto languageDirectory = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::LANGUAGE);
     auto languagePath = Path::Combine(languageDirectory, locale + u8".txt");
     return languagePath;
+}
+
+std::string_view LocalisationService::GetCurrentLanguageLocale() const
+{
+    if (_currentLanguage >= 0 && static_cast<size_t>(_currentLanguage) < std::size(LanguagesDescriptors))
+    {
+        return LanguagesDescriptors[_currentLanguage].locale;
+    }
+    return {};
 }
 
 void LocalisationService::OpenLanguage(int32_t id)

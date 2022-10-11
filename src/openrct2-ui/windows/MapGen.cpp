@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -447,7 +447,7 @@ rct_window* WindowMapgenOpen()
 
 static void WindowMapgenSharedClose(rct_window* w)
 {
-    mapgen_unload_heightmap();
+    MapGenUnloadHeightmap();
 }
 
 static void WindowMapgenSharedMouseup(rct_window* w, WidgetIndex widgetIndex)
@@ -494,7 +494,7 @@ static void WindowMapgenBaseMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.floor = _floorTexture;
             mapgenSettings.wall = _wallTexture;
 
-            mapgen_generate_blank(&mapgenSettings);
+            MapGenGenerateBlank(&mapgenSettings);
             gfx_invalidate_screen();
             break;
         case WIDX_MAP_SIZE_Y:
@@ -788,7 +788,7 @@ static void WindowMapgenRandomMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.simplex_base_freq = 1.75f;
             mapgenSettings.simplex_octaves = 6;
 
-            mapgen_generate(&mapgenSettings);
+            MapGenGenerate(&mapgenSettings);
             gfx_invalidate_screen();
             break;
         case WIDX_RANDOM_TERRAIN:
@@ -872,7 +872,7 @@ static void WindowMapgenSimplexMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.simplex_base_freq = (static_cast<float>(_simplex_base_freq)) / 100.00f;
             mapgenSettings.simplex_octaves = _simplex_octaves;
 
-            mapgen_generate(&mapgenSettings);
+            MapGenGenerate(&mapgenSettings);
             gfx_invalidate_screen();
             break;
     }
@@ -1165,7 +1165,7 @@ static void WindowMapgenHeightmapGenerateMap()
     mapgenSettings.normalize_height = _heightmapNormalize;
     mapgenSettings.simplex_low = _heightmapLow;
     mapgenSettings.simplex_high = _heightmapHigh;
-    mapgen_generate_from_heightmap(&mapgenSettings);
+    MapGenGenerateFromHeightmap(&mapgenSettings);
     gfx_invalidate_screen();
 }
 
@@ -1173,7 +1173,7 @@ static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, const utf8* pa
 {
     if (result == MODAL_RESULT_OK)
     {
-        if (!mapgen_load_heightmap(path))
+        if (!MapGenLoadHeightmap(path))
         {
             // TODO: Display error popup
             return;

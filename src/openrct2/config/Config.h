@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -89,7 +89,6 @@ struct GeneralConfiguration
     // Miscellaneous
     bool play_intro;
     int32_t window_snap_proximity;
-    bool allow_loading_with_incorrect_checksum;
     bool save_plugin_data;
     bool debugging_tools;
     int32_t autosave_frequency;
@@ -105,6 +104,8 @@ struct GeneralConfiguration
     bool steam_overlay_pause;
     bool show_real_names_of_guests;
     bool allow_early_completion;
+    u8string asset_pack_order;
+    u8string enabled_asset_packs;
 
     // Loading and saving
     bool confirmation_prompt;

@@ -57,7 +57,7 @@ The following people are not part of the development team, but have been contrib
 * Inseok Lee (dlunch) - Load save files from command line
 * Jørn Lomax (jvlomax) - Configuration parser
 * Alexander Overvoorde (Overv) - OpenGL improvements, Steam overlay detection, various bugfixes.
-* (eezstreet) - Add finances button to toolbar
+* (eezstreet) - Add finances button to toolbar, various bugfixes.
 * Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
 * Joe Minor Jr (wolfreak99) - Various cheats, bugfixes, new About and Changelog windows.
 * Thomas den Hollander (ThomasdenH) - Dithering in sprite importer, invert viewport dragging, park rating cheats misc.
@@ -197,6 +197,7 @@ The following people are not part of the development team, but have been contrib
 * Huu Kim Nguyen (CoderUndefined)
 * Henry Cheng (jazzysoggy)
 * Dan Stevens (MajeureX)
+* 73 (733737)
 
 ## Toolchain
 * (Balletie) - macOS

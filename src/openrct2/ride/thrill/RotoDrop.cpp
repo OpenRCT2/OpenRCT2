@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,13 +39,13 @@ void vehicle_visual_roto_drop(
 {
     imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
 
-    auto imageFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.Body, vehicle->colours.Trim);
+    auto imageFlags = ImageId(0, vehicle->colours.Body, vehicle->colours.Trim);
     if (vehicle->IsGhost())
     {
-        imageFlags = CONSTRUCTION_MARKER;
+        imageFlags = ConstructionMarker;
     }
 
-    int32_t image_id;
+    ImageId image_id;
     int32_t baseImage_id = (carEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
     if (vehicle->restraints_position >= 64)
     {
@@ -54,11 +54,11 @@ void vehicle_visual_roto_drop(
     }
 
     // Draw back:
-    image_id = baseImage_id | imageFlags;
+    image_id = imageFlags.WithIndex(baseImage_id);
     PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 2, 2, 41 }, { -11, -11, z + 1 });
 
     // Draw front:
-    image_id = (baseImage_id + 4) | imageFlags;
+    image_id = imageFlags.WithIndex(baseImage_id + 4);
     PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
 
     if (vehicle->num_peeps > 0 && !vehicle->IsGhost())
@@ -87,7 +87,7 @@ void vehicle_visual_roto_drop(
                     baseImage_id += 64;
                     baseImage_id += vehicle->restraints_position / 64;
                 }
-                image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[i]);
+                image_id = ImageId(baseImage_id, riding_peep_sprites[i]);
                 PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
             }
         }
@@ -107,7 +107,7 @@ static void paint_roto_drop_base(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -120,22 +120,22 @@ static void paint_roto_drop_base(
 
     if (trackSequence == 0)
     {
-        uint32_t imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE)
-            | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+            (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 8, 8, height + 3 });
 
-        imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT)
-            | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+            (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT));
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 32 }, { 2, 2, 30 }, { 8, 8, height + 32 });
 
-        imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT)
-            | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+            (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT));
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 64 }, { 2, 2, 30 }, { 8, 8, height + 64 });
 
-        paint_util_set_vertical_tunnel(session, height + 96);
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetVerticalTunnel(session, height + 96);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-        paint_util_set_general_support_height(session, height + 96, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
 
         return;
     }
@@ -168,9 +168,9 @@ static void paint_roto_drop_base(
             blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
             break;
     }
-    paint_util_set_segment_support_height(session, blockedSegments, 0xFFFF, 0);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008861A4 */
@@ -183,20 +183,20 @@ static void paint_roto_drop_tower_section(
         return;
     }
 
-    uint32_t imageId = SPR_ROTO_DROP_TOWER_SEGMENT | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_ROTO_DROP_TOWER_SEGMENT);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
-        imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_ROTO_DROP_TOWER_SEGMENT_TOP);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-    paint_util_set_vertical_tunnel(session, height + 32);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetVerticalTunnel(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /**

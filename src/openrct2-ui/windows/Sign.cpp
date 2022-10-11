@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -99,7 +99,7 @@ public:
         }
 
         auto signViewPosition = banner->position.ToCoordsXY().ToTileCentre();
-        auto* tileElement = banner_get_tile_element(GetBannerIndex());
+        auto* tileElement = BannerGetTileElement(GetBannerIndex());
         if (tileElement == nullptr)
             return false;
 
@@ -156,7 +156,7 @@ public:
                 break;
             case WIDX_SIGN_DEMOLISH:
             {
-                auto* tileElement = banner_get_tile_element(GetBannerIndex());
+                auto* tileElement = BannerGetTileElement(GetBannerIndex());
                 if (tileElement == nullptr)
                 {
                     Close();
@@ -244,7 +244,7 @@ public:
 
         if (_isSmall)
         {
-            auto* wallEntry = get_wall_entry(_sceneryEntry);
+            auto* wallEntry = GetWallEntry(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
@@ -260,7 +260,7 @@ public:
         }
         else
         {
-            auto* sceneryEntry = get_large_scenery_entry(_sceneryEntry);
+            auto* sceneryEntry = GetLargeSceneryEntry(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;

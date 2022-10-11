@@ -2995,7 +2995,7 @@ STR_5832    :Montri altecon per komunaj unuoj anstataŭ mezurformato agordita su
 STR_5833    :Ŝanĝas kiun datoformaton estas uzata
 STR_5834    :Elekti kiun sonludilon OpenRCT2 uzos
 STR_5835    :Silentigi la ludon se la fenestro perdas fokuson
-STR_5836    :Elekti muzikon por uzi je la ĉefa menuo.{NEWLINE}Elekti RCT1-temon postulas, ke vi kopiu ‘data/css17.dat’ de via RCT1-ludodosierujo al ‘data/css50.dat’ en via RCT2-dosierujo, aŭ agordu la dosierindikon al RCT1 en la Diversaĵo-langeto.
+STR_5836    :Elekti muzikon por uzi je la ĉefa menuo.{NEWLINE}Elekti la RCT1-temon postulas, ke vi agordu la dosierindikon al RCT1 en la Diversaĵo-langeto.
 STR_5837    :Krei kaj administri proprajn fasado-temojn
 STR_5838    :Montri apartan butonon por la fenestro de financoj en la ilobreto
 STR_5839    :Montri apartan butonon por la fenestro de esplorado kaj disvolvado en la ilobreto
@@ -3619,6 +3619,11 @@ STR_6511    :Sengravida Ruliĝo (dekstre)
 STR_6512    :Granda Sengravida Ruliĝo (maldekstre)
 STR_6513    :Granda Sengravida Ruliĝo (dekstre)
 STR_6514    :Nevalida alteco!
+STR_6515    :{BLACK}RCT1 ne estas ligita - retropaŝaj bildoj estos uzitaj.
+STR_6516    :Unu aŭ pli objektoj aldonitaj bezonas je RCT1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
+STR_6517    :Unu aŭ pli objektoj en ĉi tiu parko bezonas je RCT1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
+STR_6518    :{BLACK}Musumu super scenaro por vidi ĝian priskribon kaj celon. Alklaku ĝin por ekludi.
+STR_6519    :Ekstraĵoj
 
 #############
 # Scenarios #
@@ -4093,15 +4098,6 @@ STR_NAME    :Tegmento
 
 [TTRFWD08]
 STR_NAME    :Tegmento
-
-[TTRFGL01]
-STR_NAME    :Vitra Tegmento
-
-[TTRFGL02]
-STR_NAME    :Vitra Tegmento
-
-[TTRFGL03]
-STR_NAME    :Vitra Tegmento
 
 [ACWW33]
 STR_NAME    :Muro el Lignaj Fostoj

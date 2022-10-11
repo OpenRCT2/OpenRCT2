@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -338,7 +338,7 @@ TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex
     auto stationStart = ride->GetStation(stationIndex).GetStart();
 
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(stationStart);
+    TileElement* tileElement = MapGetFirstElementAt(stationStart);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -354,7 +354,7 @@ TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos)
 {
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(elementPos);
+    TileElement* tileElement = MapGetFirstElementAt(elementPos);
     if (tileElement == nullptr)
         return nullptr;
     do

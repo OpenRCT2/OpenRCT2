@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -280,7 +280,7 @@ private:
 
     std::optional<CoordsXY> GetBestCoordsFromPos(const ScreenCoordsXY& pos)
     {
-        auto coords = footpath_get_coordinates_from_pos(pos, nullptr, nullptr);
+        auto coords = FootpathGetCoordinatesFromPos(pos, nullptr, nullptr);
         return coords.IsNull() ? std::nullopt : std::make_optional(coords);
     }
 };

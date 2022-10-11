@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -100,7 +100,7 @@ private:
             return nullptr;
         }
 
-        TileElement* tileElement = map_get_first_element_at(banner->position);
+        TileElement* tileElement = MapGetFirstElementAt(banner->position);
         if (tileElement == nullptr)
         {
             return nullptr;
@@ -274,7 +274,7 @@ public:
         rct_widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
         colourBtn->type = WindowWidgetType::Empty;
 
-        auto* bannerEntry = get_banner_entry(banner->type);
+        auto* bannerEntry = GetBannerEntry(banner->type);
         if (bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
         {
             colourBtn->type = WindowWidgetType::ColourBtn;

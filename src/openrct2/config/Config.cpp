@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -192,7 +192,6 @@ namespace Config
             model->enable_light_fx_for_vehicles = isHardware && reader->GetBoolean("enable_light_fx_for_vehicles", false);
             model->upper_case_banners = reader->GetBoolean("upper_case_banners", false);
             model->disable_lightning_effect = reader->GetBoolean("disable_lightning_effect", false);
-            model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
             model->window_scale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
             model->show_fps = reader->GetBoolean("show_fps", false);
@@ -214,6 +213,8 @@ namespace Config
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
+            model->asset_pack_order = reader->GetString("asset_pack_order", "");
+            model->enabled_asset_packs = reader->GetString("enabled_asset_packs", "");
             model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", true);
             model->transparent_water = reader->GetBoolean("transparent_water", true);
 
@@ -276,7 +277,6 @@ namespace Config
         writer->WriteBoolean("enable_light_fx_for_vehicles", model->enable_light_fx_for_vehicles);
         writer->WriteBoolean("upper_case_banners", model->upper_case_banners);
         writer->WriteBoolean("disable_lightning_effect", model->disable_lightning_effect);
-        writer->WriteBoolean("allow_loading_with_incorrect_checksum", model->allow_loading_with_incorrect_checksum);
         writer->WriteBoolean("steam_overlay_pause", model->steam_overlay_pause);
         writer->WriteFloat("window_scale", model->window_scale);
         writer->WriteBoolean("show_fps", model->show_fps);
@@ -298,6 +298,8 @@ namespace Config
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
+        writer->WriteString("asset_pack_order", model->asset_pack_order);
+        writer->WriteString("enabled_asset_packs", model->enabled_asset_packs);
         writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
         writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
         writer->WriteBoolean("transparent_water", model->transparent_water);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,6 +51,7 @@ namespace OpenRCT2
         REPLAY,      // Contains recorded replays.
         LOG_DESYNCS, // Contains desync reports.
         CRASH,       // Contains crash dumps.
+        ASSET_PACK,  // Contains asset packs.
     };
 
     enum class PATHID
