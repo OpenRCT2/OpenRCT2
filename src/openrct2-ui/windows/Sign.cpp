@@ -275,8 +275,8 @@ public:
             }
         }
 
-        main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(_mainColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-        text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(_textColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        main_colour_btn->image = GetColourButtonImage(_mainColour).ToUInt32();
+        text_colour_btn->image = GetColourButtonImage(_textColour).ToUInt32();
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
