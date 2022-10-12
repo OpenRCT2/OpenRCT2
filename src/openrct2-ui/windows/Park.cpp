@@ -713,7 +713,7 @@ private:
             ft.Add<uint32_t>(axisValue);
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+                { FontStyle::Small, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
@@ -786,7 +786,7 @@ private:
             ft.Add<uint32_t>(axisValue);
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+                { FontStyle::Small, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);

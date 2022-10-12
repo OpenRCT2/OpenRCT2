@@ -288,10 +288,10 @@ static int32_t GetScenarioListItemSize()
         return 24;
 
     // Scenario title
-    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontStyle::Medium);
 
     // 'Completed by' line
-    lineHeight += font_get_line_height(FontSpriteBase::SMALL);
+    lineHeight += font_get_line_height(FontStyle::Small);
 
     return lineHeight;
 }
@@ -436,7 +436,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(*w, dpi);
 
     format = ScenarioSelectUseSmallFont() ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
-    FontSpriteBase fontSpriteBase = ScenarioSelectUseSmallFont() ? FontSpriteBase::SMALL : FontSpriteBase::MEDIUM;
+    FontStyle fontStyle = ScenarioSelectUseSmallFont() ? FontStyle::Small : FontStyle::Medium;
 
     // Text for each tab
     for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
@@ -456,7 +456,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
         }
 
         ScreenCoordsXY stringCoords(widget->midX() + w->windowPos.x, widget->midY() + w->windowPos.y - 3);
-        DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontSpriteBase, TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
     }
 
     // Return if no scenario highlighted
@@ -490,7 +490,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         utf8 path[MAX_PATH];
 
-        shorten_path(path, sizeof(path), scenario->path, w->width - 6 - TabWidth, FontSpriteBase::MEDIUM);
+        shorten_path(path, sizeof(path), scenario->path, w->width - 6 - TabWidth, FontStyle::Medium);
 
         const utf8* pathPtr = path;
         auto ft = Formatter();
@@ -571,7 +571,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
     const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
     // Scenario title
-    int32_t scenarioTitleHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+    int32_t scenarioTitleHeight = font_get_line_height(FontStyle::Medium);
 
     int32_t y = 0;
     for (const auto& listItem : _listItems)
@@ -617,8 +617,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                 const auto scrollCentre = window_scenarioselect_widgets[WIDX_SCENARIOLIST].width() / 2;
 
                 DrawTextBasic(
-                    dpi, { scrollCentre, y + 1 }, format, ft,
-                    { colour, FontSpriteBase::MEDIUM, TextAlignment::CENTRE, darkness });
+                    dpi, { scrollCentre, y + 1 }, format, ft, { colour, FontStyle::Medium, TextAlignment::CENTRE, darkness });
 
                 // Check if scenario is completed
                 if (isCompleted)
@@ -641,7 +640,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                     ft.Add<char*>(buffer);
                     DrawTextBasic(
                         dpi, { scrollCentre, y + scenarioTitleHeight + 1 }, format, ft,
-                        { FontSpriteBase::SMALL, TextAlignment::CENTRE });
+                        { FontStyle::Small, TextAlignment::CENTRE });
                 }
 
                 y += scenarioItemHeight;
@@ -665,7 +664,7 @@ static void DrawCategoryHeading(
     // Get string dimensions
     utf8* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, stringId, nullptr);
-    int32_t categoryStringHalfWidth = (gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2) + 4;
+    int32_t categoryStringHalfWidth = (gfx_get_string_width(buffer, FontStyle::Medium) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;
 

@@ -1087,7 +1087,7 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
                 auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                 gfx_draw_string(
                     dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
-                    { static_cast<colour_t>(w->colours[1] & 0x7F), FontSpriteBase::MEDIUM, darkness });
+                    { static_cast<colour_t>(w->colours[1] & 0x7F), FontStyle::Medium, darkness });
             }
 
             // Ride name

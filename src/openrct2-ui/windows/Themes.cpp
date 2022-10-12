@@ -823,7 +823,7 @@ public:
                     {
                         gfx_draw_string(
                             &dpi, topLeft, static_cast<const char*>(CheckBoxMarkString),
-                            { static_cast<colour_t>(colours[1] & 0x7F), FontSpriteBase::MEDIUM, TextDarkness::Dark });
+                            { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, TextDarkness::Dark });
                     }
                 }
             }

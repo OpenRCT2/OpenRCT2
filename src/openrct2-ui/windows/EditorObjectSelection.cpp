@@ -728,7 +728,7 @@ public:
 
                     gfx_draw_string(
                         &dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
-                        { static_cast<colour_t>(colour2), FontSpriteBase::MEDIUM, darkness });
+                        { static_cast<colour_t>(colour2), FontStyle::Medium, darkness });
                 }
 
                 screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
@@ -755,7 +755,7 @@ public:
                     auto ft = Formatter();
                     ft.Add<const char*>(gCommonStringFormatBuffer);
                     DrawTextEllipsised(
-                        &dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontSpriteBase::MEDIUM, darkness });
+                        &dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                     screenCoords.x = widgets[WIDX_LIST_SORT_RIDE].left - widgets[WIDX_LIST].left;
                 }
 
@@ -770,8 +770,7 @@ public:
                 }
                 auto ft = Formatter();
                 ft.Add<const char*>(gCommonStringFormatBuffer);
-                DrawTextEllipsised(
-                    &dpi, screenCoords, width_limit, STR_STRING, ft, { colour, FontSpriteBase::MEDIUM, darkness });
+                DrawTextEllipsised(&dpi, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
             }
             screenCoords.y += SCROLLABLE_ROW_HEIGHT;
         }

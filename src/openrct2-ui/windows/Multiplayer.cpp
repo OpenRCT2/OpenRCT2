@@ -340,7 +340,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
         return _windowInformationSize;
     }
 
-    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontStyle::Medium);
 
     // Base dimensions.
     const int32_t width = 450;
@@ -350,7 +350,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
         u8string buffer = network_get_server_name();
-        gfx_wrap_string(buffer.data(), width, FontSpriteBase::MEDIUM, &numLines);
+        gfx_wrap_string(buffer.data(), width, FontStyle::Medium, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
@@ -359,7 +359,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     if (!str_is_null_or_empty(descString))
     {
         u8string buffer = descString;
-        gfx_wrap_string(buffer.data(), width, FontSpriteBase::MEDIUM, &numLines);
+        gfx_wrap_string(buffer.data(), width, FontStyle::Medium, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
@@ -623,7 +623,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 _buffer += network_get_player_name(player);
             }
             screenCoords.x = 0;
-            gfx_clip_string(_buffer.data(), 230, FontSpriteBase::MEDIUM);
+            gfx_clip_string(_buffer.data(), 230, FontStyle::Medium);
             gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
 
             // Draw group name
@@ -634,7 +634,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 _buffer += "{BLACK}";
                 screenCoords.x = 173;
                 _buffer += network_get_group_name(group);
-                gfx_clip_string(_buffer.data(), 80, FontSpriteBase::MEDIUM);
+                gfx_clip_string(_buffer.data(), 80, FontStyle::Medium);
                 gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
             }
 

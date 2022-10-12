@@ -2013,7 +2013,7 @@ private:
 
         // Apply vertical alignment if appropriate.
         int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
-        int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+        int32_t lineHeight = font_get_line_height(FontStyle::Medium);
         uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
         ScreenCoordsXY screenCoords = { windowPos.x + pathWidget.left + 1,
                                         windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };

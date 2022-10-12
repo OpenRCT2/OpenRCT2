@@ -13,22 +13,19 @@
 #include "../core/String.hpp"
 #include "../drawing/ImageId.hpp"
 
+#include <array>
+
 constexpr const uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
 
-enum
+enum class FontStyle : uint8_t
 {
-    FONT_SIZE_TINY = 2,
-    FONT_SIZE_SMALL = 0,
-    FONT_SIZE_MEDIUM = 1,
-    FONT_SIZE_COUNT = 3
+    Small = 0,
+    Medium = 1,
+    Tiny = 2,
 };
 
-enum class FontSpriteBase : int16_t
-{
-    TINY = FONT_SIZE_TINY * FONT_SPRITE_GLYPH_COUNT,
-    SMALL = FONT_SIZE_SMALL * FONT_SPRITE_GLYPH_COUNT,
-    MEDIUM = FONT_SIZE_MEDIUM * FONT_SPRITE_GLYPH_COUNT,
-};
+constexpr const uint8_t FontStyleCount = 3;
+constexpr const std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::Small, FontStyle::Medium, FontStyle::Tiny };
 
 #ifndef NO_TTF
 
@@ -48,7 +45,7 @@ struct TTFFontDescriptor
 
 struct TTFFontSetDescriptor
 {
-    TTFFontDescriptor size[FONT_SIZE_COUNT];
+    TTFFontDescriptor size[FontStyleCount];
 };
 
 extern TTFFontSetDescriptor* gCurrentTTFFontSet;
@@ -57,12 +54,10 @@ extern TTFFontSetDescriptor* gCurrentTTFFontSet;
 
 void font_sprite_initialise_characters();
 int32_t font_sprite_get_codepoint_offset(int32_t codepoint);
-int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t codepoint);
-ImageId font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t codepoint);
-int32_t font_get_font_index_from_sprite_base(FontSpriteBase spriteBase);
-int32_t font_get_size_from_sprite_base(FontSpriteBase spriteBase);
-int32_t font_get_line_height(FontSpriteBase fontSpriteBase);
-int32_t font_get_line_height_small(FontSpriteBase fontSpriteBase);
+int32_t font_sprite_get_codepoint_width(FontStyle fontStyle, int32_t codepoint);
+ImageId font_sprite_get_codepoint_sprite(FontStyle fontStyle, int32_t codepoint);
+int32_t font_get_line_height(FontStyle fontStyle);
+int32_t font_get_line_height_small(FontStyle fontStyle);
 bool font_supports_string_sprite(const utf8* text);
-bool font_supports_string_ttf(const utf8* text, int32_t fontSize);
-bool font_supports_string(const utf8* text, int32_t fontSize);
+bool font_supports_string_ttf(const utf8* text, FontStyle fontStyle);
+bool font_supports_string(const utf8* text, FontStyle fontStyle);

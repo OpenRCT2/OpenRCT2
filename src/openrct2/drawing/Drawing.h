@@ -545,24 +545,24 @@ void gfx_draw_string_no_formatting(
 void gfx_draw_string_left_centred(
     rct_drawpixelinfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords);
 void draw_string_centred_raw(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text, FontSpriteBase fontSpriteBase);
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text, FontStyle fontStyle);
 void DrawNewsTicker(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, void* args,
     int32_t ticks);
 void gfx_draw_string_with_y_offsets(
     rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
-    bool forceSpriteFont, FontSpriteBase fontSpriteBase);
+    bool forceSpriteFont, FontStyle fontStyle);
 
-int32_t gfx_wrap_string(char* buffer, int32_t width, FontSpriteBase fontSpriteBase, int32_t* num_lines);
-int32_t gfx_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase);
-int32_t gfx_get_string_width_new_lined(std::string_view text, FontSpriteBase fontSpriteBase);
-int32_t gfx_get_string_width_no_formatting(std::string_view text, FontSpriteBase fontSpriteBase);
-int32_t string_get_height_raw(std::string_view text, FontSpriteBase fontBase);
-int32_t gfx_clip_string(char* buffer, int32_t width, FontSpriteBase fontSpriteBase);
-void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontSpriteBase fontSpriteBase);
+int32_t gfx_wrap_string(char* buffer, int32_t width, FontStyle fontStyle, int32_t* num_lines);
+int32_t gfx_get_string_width(std::string_view text, FontStyle fontStyle);
+int32_t gfx_get_string_width_new_lined(std::string_view text, FontStyle fontStyle);
+int32_t gfx_get_string_width_no_formatting(std::string_view text, FontStyle fontStyle);
+int32_t string_get_height_raw(std::string_view text, FontStyle fontStyle);
+int32_t gfx_clip_string(char* buffer, int32_t width, FontStyle fontStyle);
+void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontStyle fontStyle);
 void ttf_draw_string(
     rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
-    FontSpriteBase fontSpriteBase, TextDarkness darkness);
+    FontStyle fontStyle, TextDarkness darkness);
 
 // scrolling text
 void scrolling_text_initialise_bitmaps();

@@ -294,7 +294,7 @@ public:
             // TODO: this parameter by itself produces very light text.
             // It needs a {BLACK} token in the string to work properly.
             colour_t colour = COLOUR_BLACK;
-            FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
+            FontStyle fontStyle = FontStyle::Medium;
             auto darkness = TextDarkness::Regular;
 
             if (researchItem.IsAlwaysResearched())
@@ -319,21 +319,21 @@ public:
                 ft.Add<StringId>(rideTypeName);
                 DrawTextEllipsised(
                     &dpi, { 1, itemY }, columnSplitOffset - 11, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, ft,
-                    { colour, fontSpriteBase, darkness });
+                    { colour, fontStyle, darkness });
 
                 // Draw vehicle name
                 ft = Formatter();
                 ft.Add<StringId>(itemNameId);
                 DrawTextEllipsised(
                     &dpi, { columnSplitOffset + 1, itemY }, columnSplitOffset - 11, STR_BLACK_STRING, ft,
-                    { colour, fontSpriteBase, darkness });
+                    { colour, fontStyle, darkness });
             }
             else
             {
                 // Scenery group, flat ride or shop
                 auto ft = Formatter();
                 ft.Add<StringId>(itemNameId);
-                DrawTextEllipsised(&dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, { colour, fontSpriteBase, darkness });
+                DrawTextEllipsised(&dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, { colour, fontStyle, darkness });
             }
         }
     }
@@ -665,7 +665,7 @@ public:
             format_string(buffer, 256, stringId, nullptr);
         }
 
-        auto stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
+        auto stringWidth = gfx_get_string_width(buffer, FontStyle::Medium);
         widgets[0].right = stringWidth;
 
         Invalidate();

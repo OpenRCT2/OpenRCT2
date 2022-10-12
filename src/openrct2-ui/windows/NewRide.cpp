@@ -386,7 +386,7 @@ public:
 
         const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
         auto string = ls.GetString(STR_GROUP_BY_TRACK_TYPE);
-        auto strWidth = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
+        auto strWidth = gfx_get_string_width(string, FontStyle::Medium);
         auto localizedGroupByTrackTypeWidth = strWidth + 14;
         widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - localizedGroupByTrackTypeWidth;
     }

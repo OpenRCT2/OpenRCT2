@@ -647,7 +647,7 @@ static void WindowLoadsaveComputeMaxDateWidth()
 
     // Check how this date is represented (e.g. 2000-02-20, or 00/02/20)
     std::string date = Platform::FormatShortDate(long_time);
-    maxDateWidth = gfx_get_string_width(date.c_str(), FontSpriteBase::MEDIUM) + DATE_TIME_GAP;
+    maxDateWidth = gfx_get_string_width(date.c_str(), FontStyle::Medium) + DATE_TIME_GAP;
 
     // Some locales do not use leading zeros for months and days, so let's try October, too.
     tm.tm_mon = 10;
@@ -656,11 +656,11 @@ static void WindowLoadsaveComputeMaxDateWidth()
 
     // Again, check how this date is represented (e.g. 2000-10-20, or 00/10/20)
     date = Platform::FormatShortDate(long_time);
-    maxDateWidth = std::max(maxDateWidth, gfx_get_string_width(date.c_str(), FontSpriteBase::MEDIUM) + DATE_TIME_GAP);
+    maxDateWidth = std::max(maxDateWidth, gfx_get_string_width(date.c_str(), FontStyle::Medium) + DATE_TIME_GAP);
 
     // Time appears to be universally represented with two digits for minutes, so 12:00 or 00:00 should be representable.
     std::string time = Platform::FormatTime(long_time);
-    maxTimeWidth = gfx_get_string_width(time.c_str(), FontSpriteBase::MEDIUM) + DATE_TIME_GAP;
+    maxTimeWidth = gfx_get_string_width(time.c_str(), FontStyle::Medium) + DATE_TIME_GAP;
 }
 
 static void WindowLoadsaveInvalidate(rct_window* w)
@@ -696,7 +696,7 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (_shortenedDirectory[0] == '\0')
     {
-        shorten_path(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, w->width - 8, FontSpriteBase::MEDIUM);
+        shorten_path(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, w->width - 8, FontStyle::Medium);
     }
 
     // Format text

@@ -354,7 +354,7 @@ void WindowDropdownShowText(const ScreenCoordsXY& screenPos, int32_t extray, uin
     for (size_t i = 0; i < num_items; i++)
     {
         format_string(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
-        string_width = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
+        string_width = gfx_get_string_width(buffer, FontStyle::Medium);
         max_string_width = std::max(string_width, max_string_width);
     }
 
