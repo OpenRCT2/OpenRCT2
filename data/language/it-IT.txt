@@ -2716,8 +2716,6 @@ STR_5503    :Inserisci hostname o indirizzo IP:
 STR_5504    :Show multiplayer status
 STR_5505    :Impossibile connettersi al server.
 STR_5506    :I visitatori ignorano l’intensità
-STR_5508    :Permetti caricamento file con checksum errato
-STR_5509    :Permetti il caricamento di scenari e salvataggi{NEWLINE}che hanno un codice di controllo errato,{NEWLINE}come ad esempio gli scenari della demo{NEWLINE}o i salvataggi danneggiati.
 STR_5510    :Scheda audio predefinita
 STR_5511    :(UNKNOWN)
 STR_5512    :Salva partita con nome…

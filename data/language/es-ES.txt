@@ -2713,8 +2713,6 @@ STR_5503    :Escribe el nombre del host o la IP:
 STR_5504    :Mostrar estado multijugador
 STR_5505    :No se pudo conectar al servidor.
 STR_5506    :Visitantes ignoran intensidad de atracc.
-STR_5508    :Permitir cargar ficheros dañados
-STR_5509    :Permite cargar escenarios y partidas que tengan una suma de comprobación incorrecta, como los escenarios de la demo o partidas dañadas.
 STR_5510    :Dispositivo de sonido predeterminado
 STR_5511    :(DESCONOCIDO)
 STR_5512    :Guardar Partida como…

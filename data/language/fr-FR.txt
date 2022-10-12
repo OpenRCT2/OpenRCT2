@@ -2719,8 +2719,6 @@ STR_5503    :Saisir nom d’hôte ou adresse IP :
 STR_5504    :Afficher le statut multijoueur
 STR_5505    :Impossible de se connecter au serveur
 STR_5506    :Les visiteurs ignorent l’intensité
-STR_5508    :Autor. charg. de fichiers avec une empreinte incorrecte
-STR_5509    :Autorise le chargement de scénarios et sauvegardes ayant une empreinte incorrecte, par exemple les scénarios de la démo ou des sauvegardes corrompues
 STR_5510    :Périphérique audio par défaut
 STR_5511    :(UNKNOWN)
 STR_5512    :Sauvegarder partie sous

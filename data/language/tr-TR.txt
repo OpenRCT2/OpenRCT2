@@ -2702,8 +2702,6 @@ STR_5503    :Host ismini veya IP-Adresini giriniz:
 STR_5504    :Multiplayer durumunu göster
 STR_5505    :Server’e bağlanamadı.
 STR_5506    :Müşteriler şiddet oranını aldırmasın
-STR_5508    :Checksum’ı yanlış olan dosyaların yüklenmesine izin ver
-STR_5509    :Bu ayar ile bozuk veya arızalı senrayolar ve oyun kayıdları yüklenebiliyor
 STR_5510    :Varasayılan aygıt
 STR_5511    :(BILINMIYOR)
 STR_5512    :Farklı kaydet

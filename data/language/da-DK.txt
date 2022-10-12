@@ -2706,8 +2706,6 @@ STR_5503    :Angiv computernavn eller IP adresse:
 STR_5504    :Vis multiplayer status
 STR_5505    :Kan ikke forbinde til server server.
 STR_5506    :Gæster ignorer intensitet
-STR_5508    :Tilland indlæsning af filer med forkert checksums
-STR_5509    :Tillad indlæsning af gemte spil og scenarier{NEWLINE}der har en forkert checksum,{NEWLINE}Som scenarierne fra demoen{NEWLINE}Eller beskadiget gemte spil.
 STR_5510    :Standard lydenhed
 STR_5511    :(UKENDT)
 STR_5512    :Gem spil som

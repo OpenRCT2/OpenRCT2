@@ -2710,8 +2710,6 @@ STR_5503    :Entajpu servilonomon aŭ IP-adreson:
 STR_5504    :Montri staton plurludantan
 STR_5505    :Ne eblas aliĝi al servilo.
 STR_5506    :Gastoj malatentas intensecojn
-STR_5508    :Permesi ŝargadon de dosieroj kun nevalidaj kontrolsumoj
-STR_5509    :Permesas ŝargadon de scenaroj kaj konservaĵoj{NEWLINE}kiuj havas nevalidan kontrolsumon,{NEWLINE}kiel la scenaroj de la demonstrado{NEWLINE}aŭ difektitaj konservaĵoj.
 STR_5510    :Defaŭlta sonludilo
 STR_5511    :(NEKONATA)
 STR_5512    :Konservi Ludon Kiel
@@ -3624,6 +3622,14 @@ STR_6516    :Unu aŭ pli objektoj aldonitaj bezonas je RCT1 ligita por ĝusta mo
 STR_6517    :Unu aŭ pli objektoj en ĉi tiu parko bezonas je RCT1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
 STR_6518    :{BLACK}Musumu super scenaro por vidi ĝian priskribon kaj celon. Alklaku ĝin por ekludi.
 STR_6519    :Ekstraĵoj
+STR_6520    :Havaĵo-Pakoj
+STR_6521    :Malalta Prioritato
+STR_6522    :Alta Prioritato
+STR_6523    :Malkreskigi la prioritaton de la elektita havaĵo-pako.
+STR_6524    :Kreskigi ka prioritaton de la elektita havaĵo-pako.
+STR_6525    :Reŝargi ĉiujn havaĵojn en la ludo kontraŭ la ŝaltitaj havaĵo-pakoj.
+STR_6526    :(bazaj grafikoj, muziko kaj sonefikoj)
+STR_6527    :Konkursoj
 
 #############
 # Scenarios #

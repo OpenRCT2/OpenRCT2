@@ -2711,8 +2711,6 @@ STR_5503    :Hostnaam of IP-adres invoeren:
 STR_5504    :Status multiplayer tonen
 STR_5505    :Kan niet met de server verbinden.
 STR_5506    :Bezoekers negeren intensiteit
-STR_5508    :Bestanden met incorrecte checksum toch laden
-STR_5509    :Maakt het mogelijk om scenario’s en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario’s uit de demo of beschadigde opgeslagen parken.
 STR_5510    :Standaard geluidsapparaat
 STR_5511    :(ONBEKEND)
 STR_5512    :Spel opslaan als…

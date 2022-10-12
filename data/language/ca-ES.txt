@@ -2715,8 +2715,6 @@ STR_5503    :Escriviu el nom de l’hoste o de l’adreça IP:
 STR_5504    :Mostra l’estat multijugador
 STR_5505    :No s’ha pogut connectar al servidor.
 STR_5506    :Els visitants ignoren les intensitats
-STR_5508    :Permet carregar fitxers danyats
-STR_5509    :Permet carregar escenaris i partides desades{NEWLINE}que tenen una suma de comprovació no vàlida,{NEWLINE}com els escenaris de la demostració{NEWLINE}o partides danyades.
 STR_5510    :Dispositiu de so predeterminat
 STR_5511    :(desconegut)
 STR_5512    :Desa la partida com a…
