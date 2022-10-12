@@ -2166,7 +2166,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
     {
         gCurrentRotation = i;
 
-        view.viewPos = translate_3d_to_2d_with_z(i, centre) - offset;
+        view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
         viewport_paint(&view, &dpi, { view.viewPos, view.viewPos + ScreenCoordsXY{ size_x, size_y } });
 
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;

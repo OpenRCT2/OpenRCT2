@@ -91,7 +91,7 @@ TEST_F(TileElementWantsFootpathConnection, Stall)
 {
     // Stalls usually have one path direction flag, but can have multiple (info kiosk for example)
     auto tileCoords = TileCoordsXYZ{ 19, 15, 14 };
-    const TrackElement* const stallElement = map_get_track_element_at(tileCoords.ToCoordsXYZ());
+    const TrackElement* const stallElement = MapGetTrackElementAt(tileCoords.ToCoordsXYZ());
     ASSERT_NE(stallElement, nullptr);
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 19, 15, 14, 0 }, nullptr));
     EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 15, 14, 1 }, nullptr));

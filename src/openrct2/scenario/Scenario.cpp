@@ -568,7 +568,7 @@ static ResultWithMessage scenario_prepare_rides_for_save()
 
     bool markTrackAsIndestructible;
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() == TileElementType::Track)
@@ -588,7 +588,7 @@ static ResultWithMessage scenario_prepare_rides_for_save()
 
             it.element->AsTrack()->SetIsIndestructible(markTrackAsIndestructible);
         }
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     return { true };
 }

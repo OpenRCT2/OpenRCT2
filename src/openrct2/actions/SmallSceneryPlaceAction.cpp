@@ -433,7 +433,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
     res.SetData(SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
 
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
     {
         MapAnimationCreate(MAP_ANIMATION_TYPE_SMALL_SCENERY, CoordsXYZ{ _loc, sceneryElement->GetBaseZ() });

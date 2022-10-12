@@ -75,7 +75,7 @@ DukValue ScTrackIterator::previousPosition_get() const
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return ToDuk(ctx, nullptr);
 
@@ -95,7 +95,7 @@ DukValue ScTrackIterator::nextPosition_get() const
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return ToDuk(ctx, nullptr);
 
@@ -114,7 +114,7 @@ bool ScTrackIterator::previous()
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return false;
 
@@ -140,7 +140,7 @@ bool ScTrackIterator::next()
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return false;
 

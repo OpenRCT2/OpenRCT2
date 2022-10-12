@@ -155,7 +155,7 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
             {
                 surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                 uint16_t baseZ = surfaceElement->GetBaseZ();
-                map_invalidate_tile({ loc, baseZ, baseZ + 16 });
+                MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
             res.Cost = gConstructionRightsPrice;
             return res;

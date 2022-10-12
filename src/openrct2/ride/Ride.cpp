@@ -421,7 +421,7 @@ bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output)
     TileElement* resultTileElement = nullptr;
 
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() != TileElementType::Track)
@@ -455,7 +455,7 @@ bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output)
         {
             return true;
         }
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     return resultTileElement != nullptr;
 }
@@ -1126,10 +1126,10 @@ void UpdateChairlift(Ride& ride)
         return;
 
     auto bullwheelLoc = ride.ChairliftBullwheelLocation[0].ToCoordsXYZ();
-    map_invalidate_tile_zoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * COORDS_Z_STEP) });
+    MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * COORDS_Z_STEP) });
 
     bullwheelLoc = ride.ChairliftBullwheelLocation[1].ToCoordsXYZ();
-    map_invalidate_tile_zoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * COORDS_Z_STEP) });
+    MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * COORDS_Z_STEP) });
 }
 
 /**
@@ -1242,7 +1242,7 @@ void UpdateSpiralSlide(Ride& ride)
         int32_t rotation = tileElement->GetDirection();
         startLoc += ride_spiral_slide_main_tile_offset[rotation][current_rotation];
 
-        map_invalidate_tile_zoom0({ startLoc, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+        MapInvalidateTileZoom0({ startLoc, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
     }
 }
 
@@ -3404,7 +3404,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
         return;
 
     auto curTrackPos = vehicle->TrackLocation;
-    auto curTrackElement = map_get_track_element_at(curTrackPos);
+    auto curTrackElement = MapGetTrackElementAt(curTrackPos);
 
     assert(curTrackElement != nullptr);
 
@@ -3435,7 +3435,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
             case TrackElemType::DiagUp60ToFlat:
                 if (trackElement->HasChain())
                 {
-                    TileElement* tileElement = map_get_track_element_at_of_type_seq(
+                    TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(
                         { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z }, trackType, 0);
 
                     if (tileElement != nullptr)
@@ -3493,7 +3493,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
     {
         vehiclePos -= CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
 
-        trackElement = map_get_track_element_at(vehiclePos);
+        trackElement = MapGetTrackElementAt(vehiclePos);
 
         vehiclePos.z = trackElement->GetBaseZ();
     }
@@ -3744,7 +3744,7 @@ static ResultWithMessage ride_create_cable_lift(RideId rideIndex, bool isApplyin
     }
 
     auto cableLiftLoc = ride->CableLiftLoc;
-    auto tileElement = map_get_track_element_at(cableLiftLoc);
+    auto tileElement = MapGetTrackElementAt(cableLiftLoc);
     int32_t direction = tileElement->GetDirection();
 
     Vehicle* head = nullptr;
@@ -4601,8 +4601,8 @@ bool ride_has_any_track_elements(const Ride* ride)
 {
     tile_element_iterator it;
 
-    tile_element_iterator_begin(&it);
-    while (tile_element_iterator_next(&it))
+    TileElementIteratorBegin(&it);
+    while (TileElementIteratorNext(&it))
     {
         if (it.element->GetType() != TileElementType::Track)
             continue;
@@ -5908,8 +5908,8 @@ std::vector<RideId> GetTracklessRides()
     std::vector<bool> seen;
     seen.resize(256);
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
-    while (tile_element_iterator_next(&it))
+    TileElementIteratorBegin(&it);
+    while (TileElementIteratorNext(&it))
     {
         auto trackEl = it.element->AsTrack();
         if (trackEl != nullptr && !trackEl->IsGhost())

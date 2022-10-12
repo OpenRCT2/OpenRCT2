@@ -202,7 +202,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
             case TileElementType::LargeScenery:
             case TileElementType::Entrance:
             case TileElementType::Path:
-                map_invalidate_tile_zoom1({ sceneryPos, tileElementAbove->GetBaseZ(), tileElementAbove->GetClearanceZ() });
+                MapInvalidateTileZoom1({ sceneryPos, tileElementAbove->GetBaseZ(), tileElementAbove->GetClearanceZ() });
                 IncreaseAge(sceneryPos);
                 return;
             case TileElementType::SmallScenery:
@@ -220,7 +220,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
 
     // Reset age / water plant
     SetAge(0);
-    map_invalidate_tile_zoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
+    MapInvalidateTileZoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
 }
 
 /**

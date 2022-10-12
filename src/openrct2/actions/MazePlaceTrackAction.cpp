@@ -174,7 +174,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     trackElement->SetMazeEntry(_mazeEntry);
     trackElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
 
-    map_invalidate_tile_full(startLoc);
+    MapInvalidateTileFull(startLoc);
 
     ride->maze_tiles++;
     ride->GetStation().SetBaseZ(trackElement->GetBaseZ());

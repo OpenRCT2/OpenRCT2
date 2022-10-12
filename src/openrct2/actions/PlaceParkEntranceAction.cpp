@@ -166,7 +166,7 @@ GameActions::Result PlaceParkEntranceAction::Execute() const
         ParkUpdateFences({ entranceLoc.x, entranceLoc.y - COORDS_XY_STEP });
         ParkUpdateFences({ entranceLoc.x, entranceLoc.y + COORDS_XY_STEP });
 
-        map_invalidate_tile({ entranceLoc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
+        MapInvalidateTile({ entranceLoc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
 
         if (index == 0)
         {

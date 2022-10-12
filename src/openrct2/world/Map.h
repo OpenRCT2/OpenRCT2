@@ -220,56 +220,56 @@ struct tile_element_iterator
 assert_struct_size(tile_element_iterator, 12);
 #endif
 
-void tile_element_iterator_begin(tile_element_iterator* it);
-int32_t tile_element_iterator_next(tile_element_iterator* it);
-void tile_element_iterator_restart_for_tile(tile_element_iterator* it);
+void TileElementIteratorBegin(tile_element_iterator* it);
+int32_t TileElementIteratorNext(tile_element_iterator* it);
+void TileElementIteratorRestartForTile(tile_element_iterator* it);
 
-void map_update_tiles();
-int32_t map_get_highest_z(const CoordsXY& loc);
+void MapUpdateTiles();
+int32_t MapGetHighestZ(const CoordsXY& loc);
 
 bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved);
 
-void map_remove_out_of_range_elements();
-void map_extend_boundary_surface_x();
-void map_extend_boundary_surface_y();
+void MapRemoveOutOfRangeElements();
+void MapExtendBoundarySurfaceX();
+void MapExtendBoundarySurfaceY();
 
-bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour);
+bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour);
 void WallRemoveAt(const CoordsXYRangedZ& wallPos);
 void WallRemoveAtZ(const CoordsXYZ& wallPos);
 void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction);
 
-void map_invalidate_tile(const CoordsXYRangedZ& tilePos);
-void map_invalidate_tile_zoom1(const CoordsXYRangedZ& tilePos);
-void map_invalidate_tile_zoom0(const CoordsXYRangedZ& tilePos);
-void map_invalidate_tile_full(const CoordsXY& tilePos);
-void map_invalidate_element(const CoordsXY& elementPos, TileElement* tileElement);
-void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs);
+void MapInvalidateTile(const CoordsXYRangedZ& tilePos);
+void MapInvalidateTileZoom1(const CoordsXYRangedZ& tilePos);
+void MapInvalidateTileZoom0(const CoordsXYRangedZ& tilePos);
+void MapInvalidateTileFull(const CoordsXY& tilePos);
+void MapInvalidateElement(const CoordsXY& elementPos, TileElement* tileElement);
+void MapInvalidateRegion(const CoordsXY& mins, const CoordsXY& maxs);
 
-int32_t map_get_tile_side(const CoordsXY& mapPos);
-int32_t map_get_tile_quadrant(const CoordsXY& mapPos);
-int32_t map_get_corner_height(int32_t z, int32_t slope, int32_t direction);
-int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int32_t direction);
+int32_t MapGetTileSide(const CoordsXY& mapPos);
+int32_t MapGetTileQuadrant(const CoordsXY& mapPos);
+int32_t MapGetCornerHeight(int32_t z, int32_t slope, int32_t direction);
+int32_t TileElementGetCornerHeight(const SurfaceElement* surfaceElement, int32_t direction);
 
-void map_clear_all_elements();
+void MapClearAllElements();
 
-LargeSceneryElement* map_get_large_scenery_segment(const CoordsXYZD& sceneryPos, int32_t sequence);
-std::optional<CoordsXYZ> map_large_scenery_get_origin(
+LargeSceneryElement* MapGetLargeScenerySegment(const CoordsXYZD& sceneryPos, int32_t sequence);
+std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
     const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement);
 
-ScreenCoordsXY translate_3d_to_2d_with_z(int32_t rotation, const CoordsXYZ& pos);
+ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos);
 
-TrackElement* map_get_track_element_at(const CoordsXYZ& trackPos);
-TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, track_type_t trackType);
-TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence);
-TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, track_type_t trackType);
-TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, track_type_t trackType, int32_t sequence);
-TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, RideId rideIndex);
-TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, RideId rideIndex);
-TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, RideId rideIndex);
+TrackElement* MapGetTrackElementAt(const CoordsXYZ& trackPos);
+TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, track_type_t trackType);
+TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence);
+TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, track_type_t trackType);
+TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, track_type_t trackType, int32_t sequence);
+TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, track_type_t trackType, RideId rideIndex);
+TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
+TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPos, RideId rideIndex);
 
-bool map_is_location_at_edge(const CoordsXY& loc);
+bool MapIsLocationAtEdge(const CoordsXY& loc);
 
-uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos);
+uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos);
 
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(

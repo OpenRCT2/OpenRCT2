@@ -100,7 +100,7 @@ GameActions::Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) 
         sceneryElement->SetSecondaryColour(_secondaryColour);
         sceneryElement->SetTertiaryColour(_tertiaryColour);
 
-        map_invalidate_tile_full(_loc);
+        MapInvalidateTileFull(_loc);
     }
 
     return res;

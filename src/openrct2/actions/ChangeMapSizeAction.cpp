@@ -51,19 +51,19 @@ GameActions::Result ChangeMapSizeAction::Execute() const
     while (_targetSize.x > gMapSize.x)
     {
         gMapSize.x++;
-        map_extend_boundary_surface_x();
+        MapExtendBoundarySurfaceX();
     }
     while (_targetSize.y > gMapSize.y)
     {
         gMapSize.y++;
-        map_extend_boundary_surface_y();
+        MapExtendBoundarySurfaceY();
     }
 
     // Shrink map
     if (_targetSize.x < gMapSize.x || _targetSize.y < gMapSize.y)
     {
         gMapSize = _targetSize;
-        map_remove_out_of_range_elements();
+        MapRemoveOutOfRangeElements();
     }
 
     auto* ctx = OpenRCT2::GetContext();

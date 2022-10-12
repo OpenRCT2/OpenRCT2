@@ -380,14 +380,14 @@ void SetCheatAction::WaterPlants() const
 {
     tile_element_iterator it;
 
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() == TileElementType::SmallScenery)
         {
             it.element->AsSmallScenery()->SetAge(0);
         }
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     gfx_invalidate_screen();
 }
@@ -396,7 +396,7 @@ void SetCheatAction::FixVandalism() const
 {
     tile_element_iterator it;
 
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() != TileElementType::Path)
@@ -406,7 +406,7 @@ void SetCheatAction::FixVandalism() const
             continue;
 
         it.element->AsPath()->SetIsBroken(false);
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     gfx_invalidate_screen();
 }
@@ -419,7 +419,7 @@ void SetCheatAction::RemoveLitter() const
     }
 
     tile_element_iterator it{};
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() != TileElementType::Path)
@@ -433,7 +433,7 @@ void SetCheatAction::RemoveLitter() const
         if (pathBitEntry != nullptr && pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
             path->SetAdditionStatus(0xFF);
 
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     gfx_invalidate_screen();
 }
@@ -699,14 +699,14 @@ void SetCheatAction::OwnAllLand() const
                 continue;
 
             int32_t baseZ = surfaceElement->GetBaseZ();
-            int32_t destOwnership = check_max_allowable_land_rights_for_tile({ coords, baseZ });
+            int32_t destOwnership = CheckMaxAllowableLandRightsForTile({ coords, baseZ });
 
             // only own tiles that were not set to 0
             if (destOwnership != OWNERSHIP_UNOWNED)
             {
                 surfaceElement->SetOwnership(destOwnership);
                 ParkUpdateFencesAroundTile(coords);
-                map_invalidate_tile({ coords, baseZ, baseZ + 16 });
+                MapInvalidateTile({ coords, baseZ, baseZ + 16 });
             }
         }
     }
@@ -720,7 +720,7 @@ void SetCheatAction::OwnAllLand() const
             surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
             ParkUpdateFencesAroundTile(spawn);
             uint16_t baseZ = surfaceElement->GetBaseZ();
-            map_invalidate_tile({ spawn, baseZ, baseZ + 16 });
+            MapInvalidateTile({ spawn, baseZ, baseZ + 16 });
         }
     }
 

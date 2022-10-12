@@ -245,7 +245,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
             {
                 entranceElement->SetSurfaceEntryIndex(_type);
             }
-            map_invalidate_tile_full(_loc);
+            MapInvalidateTileFull(_loc);
         }
     }
     else
@@ -274,7 +274,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
         pathElement->SetCorners(0);
         pathElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
-        map_invalidate_tile_full(_loc);
+        MapInvalidateTileFull(_loc);
     }
 
     // Prevent the place sound from being spammed

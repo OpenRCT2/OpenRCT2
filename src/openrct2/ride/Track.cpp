@@ -244,7 +244,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
 
-                map_invalidate_element(loc, stationElement);
+                MapInvalidateElement(loc, stationElement);
 
                 if (stationBackLoc != loc)
                 {
@@ -275,7 +275,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
-        TileElement* tileElement = map_get_track_element_at_with_direction_from_ride(loc, rideIndex);
+        TileElement* tileElement = MapGetTrackElementAtWithDirectionFromRide(loc, rideIndex);
         if (tileElement != nullptr)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -390,7 +390,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
 
-                map_invalidate_element(currentLoc, stationElement);
+                MapInvalidateElement(currentLoc, stationElement);
             }
         }
 

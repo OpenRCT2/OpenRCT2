@@ -319,8 +319,8 @@ money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
     money32 cost{ 0 };
     for (Direction i : ALL_DIRECTIONS)
     {
-        int32_t cornerHeight = tile_element_get_corner_height(surfaceElement, i);
-        cornerHeight -= map_get_corner_height(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
+        int32_t cornerHeight = TileElementGetCornerHeight(surfaceElement, i);
+        cornerHeight -= MapGetCornerHeight(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
         cost += 2.50_GBP * abs(cornerHeight);
     }
     return cost;
@@ -337,7 +337,7 @@ void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
         surfaceElement->AsSurface()->SetWaterHeight(0);
     }
 
-    map_invalidate_tile_full(_coords);
+    MapInvalidateTileFull(_coords);
 }
 
 int32_t LandSetHeightAction::map_set_land_height_clear_func(

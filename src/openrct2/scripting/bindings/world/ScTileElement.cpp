@@ -2005,7 +2005,7 @@ namespace OpenRCT2::Scripting
 
     void ScTileElement::Invalidate()
     {
-        map_invalidate_tile_full(_coords);
+        MapInvalidateTileFull(_coords);
     }
 
     void ScTileElement::Register(duk_context* ctx)

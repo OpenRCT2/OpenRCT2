@@ -215,7 +215,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     FootpathConnectEdges(_loc, entranceElement->as<TileElement>(), GetFlags());
     FootpathUpdateQueueChains();
 
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
 
     return res;
 }

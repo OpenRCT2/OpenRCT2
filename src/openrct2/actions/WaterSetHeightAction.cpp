@@ -124,7 +124,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
     {
         surfaceElement->SetWaterHeight(0);
     }
-    map_invalidate_tile_full(_coords);
+    MapInvalidateTileFull(_coords);
 
     res.Cost = 250;
 

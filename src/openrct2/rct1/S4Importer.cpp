@@ -2408,8 +2408,8 @@ namespace RCT1
         {
             gParkEntrances.clear();
             tile_element_iterator it;
-            tile_element_iterator_begin(&it);
-            while (tile_element_iterator_next(&it) && gParkEntrances.size() < Limits::MaxParkEntrances)
+            TileElementIteratorBegin(&it);
+            while (TileElementIteratorNext(&it) && gParkEntrances.size() < Limits::MaxParkEntrances)
             {
                 TileElement* element = it.element;
 

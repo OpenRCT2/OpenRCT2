@@ -163,7 +163,7 @@ namespace OpenRCT2::TileInspector
             }
 
             TileElementRemove(tileElement);
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -194,7 +194,7 @@ namespace OpenRCT2::TileInspector
             {
                 return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
             }
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -285,7 +285,7 @@ namespace OpenRCT2::TileInspector
                     break;
             }
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -310,7 +310,7 @@ namespace OpenRCT2::TileInspector
         bool currentlyInvisible = tileElement->IsInvisible();
         tileElement->SetInvisible(!currentlyInvisible);
 
-        map_invalidate_tile_full(loc);
+        MapInvalidateTileFull(loc);
         if (loc == windowTileInspectorTile.ToCoordsXY())
         {
             window_invalidate_by_class(WindowClass::TileInspector);
@@ -359,7 +359,7 @@ namespace OpenRCT2::TileInspector
             *pastedElement = element;
             pastedElement->SetLastForTile(lastForTile);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -423,7 +423,7 @@ namespace OpenRCT2::TileInspector
                 }
             }
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -499,7 +499,7 @@ namespace OpenRCT2::TileInspector
             tileElement->base_height += heightOffset;
             tileElement->clearance_height += heightOffset;
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -525,7 +525,7 @@ namespace OpenRCT2::TileInspector
             else
                 ParkUpdateFences(loc);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -578,7 +578,7 @@ namespace OpenRCT2::TileInspector
 
             surfaceElement->SetSlope(newSlope);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -602,7 +602,7 @@ namespace OpenRCT2::TileInspector
             uint8_t newSlope = surfaceElement->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
             surfaceElement->SetSlope(newSlope);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -623,7 +623,7 @@ namespace OpenRCT2::TileInspector
         {
             pathElement->AsPath()->SetSloped(sloped);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -644,7 +644,7 @@ namespace OpenRCT2::TileInspector
         {
             pathElement->AsPath()->SetIsBroken(broken);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -666,7 +666,7 @@ namespace OpenRCT2::TileInspector
             uint8_t newEdges = pathElement->AsPath()->GetEdgesAndCorners() ^ (1 << edgeIndex);
             pathElement->AsPath()->SetEdgesAndCorners(newEdges);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -722,7 +722,7 @@ namespace OpenRCT2::TileInspector
             // Set new slope value
             wallElement->AsWall()->SetSlope(slopeValue);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -745,7 +745,7 @@ namespace OpenRCT2::TileInspector
             uint8_t animationFrame = wallElement->AsWall()->GetAnimationFrame();
             wallElement->AsWall()->SetAnimationFrame(animationFrame + animationFrameOffset);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -800,7 +800,7 @@ namespace OpenRCT2::TileInspector
                 offsets.y = trackBlock->y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* tileElement = map_get_track_element_at_of_type_seq(elem, type, trackBlock->index);
+                TrackElement* tileElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
                 if (tileElement == nullptr)
                 {
                     log_error("Track map element part not found!");
@@ -811,7 +811,7 @@ namespace OpenRCT2::TileInspector
                 // for when you decrease the map size.
                 openrct2_assert(MapGetSurfaceElementAt(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
 
-                map_invalidate_tile_full(elem);
+                MapInvalidateTileFull(elem);
 
                 // Keep?
                 // invalidate_test_results(ride);
@@ -883,7 +883,7 @@ namespace OpenRCT2::TileInspector
                 offsets.y = trackBlock->y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* tileElement = map_get_track_element_at_of_type_seq(elem, type, trackBlock->index);
+                TrackElement* tileElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
                 if (tileElement == nullptr)
                 {
                     log_error("Track map element part not found!");
@@ -894,7 +894,7 @@ namespace OpenRCT2::TileInspector
                 // for when you decrease the map size.
                 openrct2_assert(MapGetSurfaceElementAt(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
 
-                map_invalidate_tile_full(elem);
+                MapInvalidateTileFull(elem);
 
                 // Keep?
                 // invalidate_test_results(ride);
@@ -924,7 +924,7 @@ namespace OpenRCT2::TileInspector
         {
             trackElement->AsTrack()->SetBlockBrakeClosed(blockBrake);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -946,7 +946,7 @@ namespace OpenRCT2::TileInspector
         {
             trackElement->AsTrack()->SetIsIndestructible(isIndestructible);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -972,7 +972,7 @@ namespace OpenRCT2::TileInspector
             // Update collision
             tileElement->SetOccupiedQuadrants(1 << ((quarterIndex + 2) & 3));
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
@@ -996,7 +996,7 @@ namespace OpenRCT2::TileInspector
             occupiedQuadrants ^= 1 << quarterIndex;
             tileElement->SetOccupiedQuadrants(occupiedQuadrants);
 
-            map_invalidate_tile_full(loc);
+            MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {

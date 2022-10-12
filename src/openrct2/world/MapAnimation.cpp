@@ -113,7 +113,7 @@ static bool MapAnimationInvalidateRideEntrance(const CoordsXYZ& loc)
             if (stationObj != nullptr)
             {
                 int32_t height = loc.z + stationObj->Height + 8;
-                map_invalidate_tile_zoom1({ loc, height, height + 16 });
+                MapInvalidateTileZoom1({ loc, height, height + 16 });
             }
         }
         return false;
@@ -148,7 +148,7 @@ static bool MapAnimationInvalidateQueueBanner(const CoordsXYZ& loc)
         int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + get_current_rotation()) & 3;
         if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
         {
-            map_invalidate_tile_zoom1({ loc, loc.z + 16, loc.z + 30 });
+            MapInvalidateTileZoom1({ loc, loc.z + 16, loc.z + 30 });
         }
         return false;
     } while (!(tileElement++)->IsLastForTile());
@@ -184,7 +184,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
                 SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
                 | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
         {
-            map_invalidate_tile_zoom1({ loc, loc.z, tileElement->GetClearanceZ() });
+            MapInvalidateTileZoom1({ loc, loc.z, tileElement->GetClearanceZ() });
             return false;
         }
 
@@ -212,7 +212,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
                     break;
                 }
             }
-            map_invalidate_tile_zoom1({ loc, loc.z, tileElement->GetClearanceZ() });
+            MapInvalidateTileZoom1({ loc, loc.z, tileElement->GetClearanceZ() });
             return false;
         }
 
@@ -243,7 +243,7 @@ static bool MapAnimationInvalidateParkEntrance(const CoordsXYZ& loc)
         if (tileElement->AsEntrance()->GetSequenceIndex())
             continue;
 
-        map_invalidate_tile_zoom1({ loc, loc.z + 32, loc.z + 64 });
+        MapInvalidateTileZoom1({ loc, loc.z + 32, loc.z + 64 });
         return false;
     } while (!(tileElement++)->IsLastForTile());
 
@@ -271,7 +271,7 @@ static bool MapAnimationInvalidateTrackWaterfall(const CoordsXYZ& loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Waterfall)
         {
-            map_invalidate_tile_zoom1({ loc, loc.z + 14, loc.z + 46 });
+            MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 46 });
             return false;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -300,7 +300,7 @@ static bool MapAnimationInvalidateTrackRapids(const CoordsXYZ& loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Rapids)
         {
-            map_invalidate_tile_zoom1({ loc, loc.z + 14, loc.z + 18 });
+            MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 18 });
             return false;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -329,7 +329,7 @@ static bool MapAnimationInvalidateTrackOnRidePhoto(const CoordsXYZ& loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
         {
-            map_invalidate_tile_zoom1({ loc, loc.z, tileElement->GetClearanceZ() });
+            MapInvalidateTileZoom1({ loc, loc.z, tileElement->GetClearanceZ() });
             if (game_is_paused())
             {
                 return false;
@@ -368,7 +368,7 @@ static bool MapAnimationInvalidateTrackWhirlpool(const CoordsXYZ& loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Whirlpool)
         {
-            map_invalidate_tile_zoom1({ loc, loc.z + 14, loc.z + 18 });
+            MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 18 });
             return false;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -397,7 +397,7 @@ static bool MapAnimationInvalidateTrackSpinningTunnel(const CoordsXYZ& loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::SpinningTunnel)
         {
-            map_invalidate_tile_zoom1({ loc, loc.z + 14, loc.z + 32 });
+            MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 32 });
             return false;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -432,7 +432,7 @@ static bool MapAnimationInvalidateBanner(const CoordsXYZ& loc)
             continue;
         if (tileElement->GetType() != TileElementType::Banner)
             continue;
-        map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
+        MapInvalidateTileZoom1({ loc, loc.z, loc.z + 16 });
         return false;
     } while (!(tileElement++)->IsLastForTile());
 
@@ -462,7 +462,7 @@ static bool MapAnimationInvalidateLargeScenery(const CoordsXYZ& loc)
         auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
         if (sceneryEntry != nullptr && sceneryEntry->flags & LARGE_SCENERY_FLAG_ANIMATED)
         {
-            map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
+            MapInvalidateTileZoom1({ loc, loc.z, loc.z + 16 });
             wasInvalidated = true;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -527,7 +527,7 @@ static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
         tileElement->AsWall()->SetAnimationFrame(currentFrame);
         if (invalidate)
         {
-            map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 32 });
+            MapInvalidateTileZoom1({ loc, loc.z, loc.z + 32 });
         }
     } while (!(tileElement++)->IsLastForTile());
 
@@ -560,7 +560,7 @@ static bool MapAnimationInvalidateWall(const CoordsXYZ& loc)
             || (!(wallEntry->flags2 & WALL_SCENERY_2_ANIMATED) && wallEntry->scrolling_mode == SCROLLING_MODE_NONE))
             continue;
 
-        map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
+        MapInvalidateTileZoom1({ loc, loc.z, loc.z + 16 });
         wasInvalidated = true;
     } while (!(tileElement++)->IsLastForTile());
 
@@ -606,8 +606,8 @@ void MapAnimationAutoCreate()
     ClearMapAnimations();
 
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
-    while (tile_element_iterator_next(&it))
+    TileElementIteratorBegin(&it);
+    while (TileElementIteratorNext(&it))
     {
         auto el = it.element;
         auto loc = CoordsXYZ{ TileCoordsXY(it.x, it.y).ToCoordsXY(), el->GetBaseZ() };

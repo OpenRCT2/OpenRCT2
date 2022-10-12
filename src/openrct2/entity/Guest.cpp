@@ -4831,7 +4831,7 @@ void Guest::UpdateRideMazePathfinding()
     auto stationBaseZ = ride->GetStation().GetBaseZ();
 
     // Find the station track element
-    auto trackElement = map_get_track_element_at({ targetLoc, stationBaseZ });
+    auto trackElement = MapGetTrackElementAt({ targetLoc, stationBaseZ });
     if (trackElement == nullptr)
     {
         return;
@@ -5830,7 +5830,7 @@ void Guest::UpdateUsingBin()
             additionStatus |= spaceLeftInBin << selectedBin;
             foundElement->SetAdditionStatus(additionStatus);
 
-            map_invalidate_tile_zoom0({ NextLoc, foundElement->GetBaseZ(), foundElement->GetClearanceZ() });
+            MapInvalidateTileZoom0({ NextLoc, foundElement->GetBaseZ(), foundElement->GetClearanceZ() });
             StateReset();
             break;
         }
@@ -6127,7 +6127,7 @@ static void peep_update_walking_break_scenery(Guest* peep)
 
     tileElement->SetIsBroken(true);
 
-    map_invalidate_tile_zoom1({ peep->NextLoc, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 32 });
+    MapInvalidateTileZoom1({ peep->NextLoc, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 32 });
 
     peep->Angriness = 16;
 }

@@ -203,9 +203,9 @@ public:
         if (mapCoords.has_value())
         {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-            map_invalidate_tile_full(gMapSelectPositionA);
+            MapInvalidateTileFull(gMapSelectPositionA);
             gMapSelectPositionA = gMapSelectPositionB = mapCoords.value();
-            map_invalidate_tile_full(mapCoords.value());
+            MapInvalidateTileFull(mapCoords.value());
             gMapSelectType = MAP_SELECT_TYPE_FULL;
         }
     }

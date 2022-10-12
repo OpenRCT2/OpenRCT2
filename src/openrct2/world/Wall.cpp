@@ -37,7 +37,7 @@ void WallRemoveAt(const CoordsXYRangedZ& wallPos)
     for (auto wallElement = MapGetWallElementAt(wallPos); wallElement != nullptr; wallElement = MapGetWallElementAt(wallPos))
     {
         reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
-        map_invalidate_tile_zoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
+        MapInvalidateTileZoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
         TileElementRemove(reinterpret_cast<TileElement*>(wallElement));
     }
 }
@@ -74,7 +74,7 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
             continue;
 
         tileElement->RemoveBannerEntry();
-        map_invalidate_tile_zoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
+        MapInvalidateTileZoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
         TileElementRemove(tileElement);
         tileElement--;
     } while (!(tileElement++)->IsLastForTile());

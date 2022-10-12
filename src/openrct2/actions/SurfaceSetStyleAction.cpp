@@ -197,7 +197,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
 
                         surfaceElement->SetSurfaceStyle(_surfaceStyle);
 
-                        map_invalidate_tile_full(coords);
+                        MapInvalidateTileFull(coords);
                         FootpathRemoveLitter({ coords, TileElementHeight(coords) });
                     }
                 }
@@ -212,14 +212,14 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
                     edgeCost += 100;
 
                     surfaceElement->SetEdgeStyle(_edgeStyle);
-                    map_invalidate_tile_full(coords);
+                    MapInvalidateTileFull(coords);
                 }
             }
 
             if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
             {
                 surfaceElement->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-                map_invalidate_tile_full(coords);
+                MapInvalidateTileFull(coords);
             }
         }
     }

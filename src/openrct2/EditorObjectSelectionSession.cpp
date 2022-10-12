@@ -141,7 +141,7 @@ void setup_in_use_selection_flags()
     }
 
     tile_element_iterator iter;
-    tile_element_iterator_begin(&iter);
+    TileElementIteratorBegin(&iter);
     do
     {
         ObjectEntryIndex type;
@@ -230,7 +230,7 @@ void setup_in_use_selection_flags()
                 break;
             }
         }
-    } while (tile_element_iterator_next(&iter));
+    } while (TileElementIteratorNext(&iter));
 
     for (auto& ride : GetRideManager())
     {

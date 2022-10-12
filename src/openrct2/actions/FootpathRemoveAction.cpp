@@ -96,7 +96,7 @@ GameActions::Result FootpathRemoveAction::Execute() const
             res.Cost += bannerRes.Cost;
         }
         FootpathRemoveEdgesAt(_loc, footpathElement);
-        map_invalidate_tile_full(_loc);
+        MapInvalidateTileFull(_loc);
         TileElementRemove(footpathElement);
         FootpathUpdateQueueChains();
 

@@ -117,7 +117,7 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
         return std::nullopt;
     }
 
-    auto screenCoord = translate_3d_to_2d_with_z(get_current_rotation(), loc);
+    auto screenCoord = Translate3DTo2DWithZ(get_current_rotation(), loc);
     screenCoord.x -= viewport->view_width / 2;
     screenCoord.y -= viewport->view_height / 2;
     return { screenCoord };
@@ -1169,7 +1169,7 @@ void rct_viewport::Invalidate() const
 
 CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z)
 {
-    // Reverse of translate_3d_to_2d_with_z
+    // Reverse of Translate3DTo2DWithZ
     CoordsXY ret = { coords.y - coords.x / 2 + z, coords.y + coords.x / 2 + z };
     auto inverseRotation = DirectionFlipXAxis(get_current_rotation());
     return ret.Rotate(inverseRotation);
@@ -2042,7 +2042,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenC
     if (!mapCoords.has_value())
         return std::nullopt;
 
-    *quadrant = map_get_tile_quadrant(*mapCoords);
+    *quadrant = MapGetTileQuadrant(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
@@ -2056,7 +2056,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& 
     if (!mapCoords.has_value())
         return std::nullopt;
 
-    *quadrant = map_get_tile_quadrant(*mapCoords);
+    *quadrant = MapGetTileQuadrant(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
@@ -2070,7 +2070,7 @@ std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoord
     if (!mapCoords.has_value())
         return std::nullopt;
 
-    *side = map_get_tile_side(*mapCoords);
+    *side = MapGetTileSide(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
@@ -2084,7 +2084,7 @@ std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& scre
     if (!mapCoords.has_value())
         return std::nullopt;
 
-    *side = map_get_tile_side(*mapCoords);
+    *side = MapGetTileSide(*mapCoords);
     return mapCoords->ToTileStart();
 }
 

@@ -161,7 +161,7 @@ static paint_struct* CreateNormalPaintStruct(
     auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z };
     swappedRotCoord += session.SpritePosition;
 
-    const auto imagePos = translate_3d_to_2d_with_z(session.CurrentRotation, swappedRotCoord);
+    const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
 
     if (!ImageWithinDPI(imagePos, *g1, session.DPI))
     {
@@ -575,56 +575,56 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
         ps->bounds.y_end,
         ps->bounds.z_end,
     };
-    const auto screenCoordFrontTop = translate_3d_to_2d_with_z(rotation, frontTop);
+    const auto screenCoordFrontTop = Translate3DTo2DWithZ(rotation, frontTop);
 
     const CoordsXYZ frontBottom = {
         ps->bounds.x_end,
         ps->bounds.y_end,
         ps->bounds.z,
     };
-    const auto screenCoordFrontBottom = translate_3d_to_2d_with_z(rotation, frontBottom);
+    const auto screenCoordFrontBottom = Translate3DTo2DWithZ(rotation, frontBottom);
 
     const CoordsXYZ leftTop = {
         ps->bounds.x,
         ps->bounds.y_end,
         ps->bounds.z_end,
     };
-    const auto screenCoordLeftTop = translate_3d_to_2d_with_z(rotation, leftTop);
+    const auto screenCoordLeftTop = Translate3DTo2DWithZ(rotation, leftTop);
 
     const CoordsXYZ leftBottom = {
         ps->bounds.x,
         ps->bounds.y_end,
         ps->bounds.z,
     };
-    const auto screenCoordLeftBottom = translate_3d_to_2d_with_z(rotation, leftBottom);
+    const auto screenCoordLeftBottom = Translate3DTo2DWithZ(rotation, leftBottom);
 
     const CoordsXYZ rightTop = {
         ps->bounds.x_end,
         ps->bounds.y,
         ps->bounds.z_end,
     };
-    const auto screenCoordRightTop = translate_3d_to_2d_with_z(rotation, rightTop);
+    const auto screenCoordRightTop = Translate3DTo2DWithZ(rotation, rightTop);
 
     const CoordsXYZ rightBottom = {
         ps->bounds.x_end,
         ps->bounds.y,
         ps->bounds.z,
     };
-    const auto screenCoordRightBottom = translate_3d_to_2d_with_z(rotation, rightBottom);
+    const auto screenCoordRightBottom = Translate3DTo2DWithZ(rotation, rightBottom);
 
     const CoordsXYZ backTop = {
         ps->bounds.x,
         ps->bounds.y,
         ps->bounds.z_end,
     };
-    const auto screenCoordBackTop = translate_3d_to_2d_with_z(rotation, backTop);
+    const auto screenCoordBackTop = Translate3DTo2DWithZ(rotation, backTop);
 
     const CoordsXYZ backBottom = {
         ps->bounds.x,
         ps->bounds.y,
         ps->bounds.z,
     };
-    const auto screenCoordBackBottom = translate_3d_to_2d_with_z(rotation, backBottom);
+    const auto screenCoordBackBottom = Translate3DTo2DWithZ(rotation, backBottom);
 
     // bottom square
     gfx_draw_line(dpi, { screenCoordFrontBottom, screenCoordLeftBottom }, colour);
@@ -894,7 +894,7 @@ void PaintFloatingMoneyEffect(
         session.SpritePosition.y,
         z,
     };
-    const auto coord = translate_3d_to_2d_with_z(rotation, position);
+    const auto coord = Translate3DTo2DWithZ(rotation, position);
 
     ps->string_id = string_id;
     ps->next = nullptr;

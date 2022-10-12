@@ -71,7 +71,7 @@ void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
             {
-                map_invalidate_tile_zoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
+                MapInvalidateTileZoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
             }
         }
     }

@@ -401,7 +401,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Resul
             {
                 entranceElement->SetSurfaceEntryIndex(_type);
             }
-            map_invalidate_tile_full(_loc);
+            MapInvalidateTileFull(_loc);
         }
     }
     else
@@ -505,7 +505,7 @@ void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) cons
         FootpathConnectEdges(_loc, reinterpret_cast<TileElement*>(pathElement), GetFlags());
 
     FootpathUpdateQueueChains();
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
 }
 
 PathElement* FootpathPlaceAction::map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const

@@ -1397,7 +1397,7 @@ static int32_t cc_remove_floating_objects(InteractiveConsole& console, const arg
 static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() == TileElementType::Surface)
@@ -1405,7 +1405,7 @@ static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused
             // Remove all park fence flags
             it.element->AsSurface()->SetParkFences(0);
         }
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     gfx_invalidate_screen();
 
