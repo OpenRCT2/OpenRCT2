@@ -197,6 +197,6 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
             pathElement->SetAdditionStatus(255);
         }
     }
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
     return res;
 }

@@ -164,7 +164,7 @@ GameActions::Result TrackRemoveAction::Query() const
             return GameActions::Result(
                 GameActions::Status::NotOwned, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
-        map_invalidate_tile_full(mapLoc);
+        MapInvalidateTileFull(mapLoc);
 
         found = false;
         tileElement = MapGetFirstElementAt(mapLoc);
@@ -343,7 +343,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
         auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrackLoc;
 
-        map_invalidate_tile_full(mapLoc);
+        MapInvalidateTileFull(mapLoc);
 
         found = false;
         tileElement = MapGetFirstElementAt(mapLoc);

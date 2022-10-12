@@ -125,7 +125,7 @@ namespace OpenRCT2::Scripting
                     first[numElements - 1].SetLastForTile(true);
                 }
             }
-            map_invalidate_tile_full(_coords);
+            MapInvalidateTileFull(_coords);
         }
     }
 
@@ -177,7 +177,7 @@ namespace OpenRCT2::Scripting
                     first[i].SetLastForTile(false);
                 }
                 first[origNumElements].SetLastForTile(true);
-                map_invalidate_tile_full(_coords);
+                MapInvalidateTileFull(_coords);
                 result = std::make_shared<ScTileElement>(_coords, &first[index]);
             }
         }
@@ -196,7 +196,7 @@ namespace OpenRCT2::Scripting
         if (index < GetNumElements(first))
         {
             TileElementRemove(&first[index]);
-            map_invalidate_tile_full(_coords);
+            MapInvalidateTileFull(_coords);
         }
     }
 

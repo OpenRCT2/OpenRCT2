@@ -98,7 +98,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
         context_broadcast_intent(&intent);
 
         banner->colour = _primaryColour;
-        map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
+        MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 32 });
     }
 
     return res;

@@ -163,7 +163,7 @@ void ParkUpdateFences(const CoordsXY& coords)
     {
         int32_t baseZ = surfaceElement->GetBaseZ();
         int32_t clearZ = baseZ + 16;
-        map_invalidate_tile({ coords, baseZ, clearZ });
+        MapInvalidateTile({ coords, baseZ, clearZ });
         surfaceElement->SetParkFences(newFences);
     }
 }
@@ -342,7 +342,7 @@ uint32_t Park::CalculateParkSize() const
 {
     uint32_t tiles = 0;
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() == TileElementType::Surface)
@@ -352,7 +352,7 @@ uint32_t Park::CalculateParkSize() const
                 tiles++;
             }
         }
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     if (tiles != gParkSize)
     {

@@ -647,7 +647,7 @@ static void LightfxAdd3DLight(
             continue;
 
         entry->Position = loc;
-        entry->ViewCoords = translate_3d_to_2d_with_z(get_current_rotation(), loc);
+        entry->ViewCoords = Translate3DTo2DWithZ(get_current_rotation(), loc);
         entry->Type = lightType;
         entry->LightIntensity = 0xFF;
         entry->LightHash = lightHash;
@@ -661,7 +661,7 @@ static void LightfxAdd3DLight(
     LightListEntry* entry = &_LightListBack[LightListCurrentCountBack++];
 
     entry->Position = loc;
-    entry->ViewCoords = translate_3d_to_2d_with_z(get_current_rotation(), loc);
+    entry->ViewCoords = Translate3DTo2DWithZ(get_current_rotation(), loc);
     entry->Type = lightType;
     entry->LightIntensity = 0xFF;
     entry->LightHash = lightHash;

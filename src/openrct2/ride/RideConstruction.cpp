@@ -379,10 +379,10 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
-    auto trackElement = map_get_track_element_at_of_type_seq(location, type, 0);
+    auto trackElement = MapGetTrackElementAtOfTypeSeq(location, type, 0);
     if (trackElement == nullptr)
     {
-        trackElement = map_get_track_element_at_of_type(location, type);
+        trackElement = MapGetTrackElementAtOfType(location, type);
         if (trackElement == nullptr)
         {
             return std::nullopt;
@@ -414,9 +414,9 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         cur += offsets.Rotate(mapDirection);
         int32_t cur_z = start_z + trackBlock[i].z;
 
-        map_invalidate_tile_full(cur);
+        MapInvalidateTileFull(cur);
 
-        trackElement = map_get_track_element_at_of_type_seq(
+        trackElement = MapGetTrackElementAtOfTypeSeq(
             { cur, cur_z, static_cast<Direction>(location.direction) }, type, trackBlock[i].index);
         if (trackElement == nullptr)
         {
@@ -563,7 +563,7 @@ void ride_construction_invalidate_current_track()
         case RideConstructionState::Back:
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
             {
-                map_invalidate_tile_full(_currentTrackBegin.ToTileStart());
+                MapInvalidateTileFull(_currentTrackBegin.ToTileStart());
             }
             ride_construction_remove_ghosts();
             break;
@@ -574,7 +574,7 @@ void ride_construction_invalidate_current_track()
             {
                 _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ARROW;
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-                map_invalidate_tile_full(_currentTrackBegin);
+                MapInvalidateTileFull(_currentTrackBegin);
             }
             ride_construction_remove_ghosts();
             break;
@@ -1576,7 +1576,7 @@ void Ride::ValidateStations()
                 MazeEntranceHedgeReplacement({ location, tileElement });
                 FootpathRemoveEdgesAt(location, tileElement);
                 FootpathUpdateQueueChains();
-                map_invalidate_tile_full(location);
+                MapInvalidateTileFull(location);
                 TileElementRemove(tileElement);
                 tileElement--;
             }

@@ -1102,7 +1102,7 @@ void Staff::UpdateMowing()
         if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
-            map_invalidate_tile_zoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
+            MapInvalidateTileZoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
         StaffLawnsMown++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
@@ -1163,7 +1163,7 @@ void Staff::UpdateWatering()
                 continue;
 
             tile_element->AsSmallScenery()->SetAge(0);
-            map_invalidate_tile_zoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
+            MapInvalidateTileZoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
             StaffGardensWatered++;
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
@@ -1247,7 +1247,7 @@ void Staff::UpdateEmptyingBin()
         uint8_t additionStatus = tile_element->AsPath()->GetAdditionStatus() | ((3 << Var37) << Var37);
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
-        map_invalidate_tile_zoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
+        MapInvalidateTileZoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
         StaffBinsEmptied++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
@@ -2207,7 +2207,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
             return true;
         }
 
-        auto tileElement = map_get_track_element_at(stationPos);
+        auto tileElement = MapGetTrackElementAt(stationPos);
         if (tileElement == nullptr)
         {
             log_error("Couldn't find tile_element");
@@ -2296,7 +2296,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
         CoordsXYE input;
         input.x = stationPosition.x;
         input.y = stationPosition.y;
-        input.element = map_get_track_element_at_from_ride({ input.x, input.y, stationPosition.z }, CurrentRide);
+        input.element = MapGetTrackElementAtFromRide({ input.x, input.y, stationPosition.z }, CurrentRide);
         if (input.element == nullptr)
         {
             return true;

@@ -108,7 +108,7 @@ GameActions::Result PlacePeepSpawnAction::Execute() const
         if (foundSpawn != std::end(gPeepSpawns))
         {
             gPeepSpawns.erase(foundSpawn);
-            map_invalidate_tile_full(spawn);
+            MapInvalidateTileFull(spawn);
             return res;
         }
     }
@@ -118,14 +118,14 @@ GameActions::Result PlacePeepSpawnAction::Execute() const
     {
         PeepSpawn oldestSpawn = *gPeepSpawns.begin();
         gPeepSpawns.erase(gPeepSpawns.begin());
-        map_invalidate_tile_full(oldestSpawn);
+        MapInvalidateTileFull(oldestSpawn);
     }
 
     // Set peep spawn
     gPeepSpawns.push_back(spawn);
 
     // Invalidate tile
-    map_invalidate_tile_full(_location);
+    MapInvalidateTileFull(_location);
 
     return res;
 }

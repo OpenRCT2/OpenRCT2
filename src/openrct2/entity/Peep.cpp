@@ -341,7 +341,7 @@ bool Peep::ShouldWaitForLevelCrossing()
 
 bool Peep::IsOnLevelCrossing()
 {
-    auto trackElement = map_get_track_element_at(GetLocation());
+    auto trackElement = MapGetTrackElementAt(GetLocation());
     return trackElement != nullptr;
 }
 

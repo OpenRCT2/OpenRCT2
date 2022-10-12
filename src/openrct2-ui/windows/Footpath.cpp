@@ -564,7 +564,7 @@ private:
             {
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             }
-            map_invalidate_tile_full(footpathLoc);
+            MapInvalidateTileFull(footpathLoc);
         }
     }
 

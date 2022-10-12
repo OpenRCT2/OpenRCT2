@@ -164,7 +164,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
             break;
     }
 
-    int32_t screenMinY = translate_3d_to_2d_with_z(rotation, { coords, 0 }).y;
+    int32_t screenMinY = Translate3DTo2DWithZ(rotation, { coords, 0 }).y;
 
     // Display little yellow arrow when building footpaths?
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) && session.MapPosition.x == gMapSelectArrowPosition.x

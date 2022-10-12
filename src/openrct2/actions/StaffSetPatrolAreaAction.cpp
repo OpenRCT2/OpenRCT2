@@ -52,7 +52,7 @@ GameActions::Result StaffSetPatrolAreaAction::Execute() const
 
 static void InvalidatePatrolTiles(const MapRange& range)
 {
-    map_invalidate_region(range.Point1, range.Point2);
+    MapInvalidateRegion(range.Point1, range.Point2);
 }
 
 GameActions::Result StaffSetPatrolAreaAction::QueryExecute(bool executing) const

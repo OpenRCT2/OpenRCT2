@@ -698,7 +698,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         {
             FootpathConnectEdges(mapLoc, tileElement, GetFlags());
         }
-        map_invalidate_tile_full(mapLoc);
+        MapInvalidateTileFull(mapLoc);
     }
 
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;

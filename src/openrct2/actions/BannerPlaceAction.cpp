@@ -151,7 +151,7 @@ GameActions::Result BannerPlaceAction::Execute() const
     bannerElement->SetIndex(banner->id);
     bannerElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
     MapAnimationCreate(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
 
     res.Cost = bannerEntry->price;

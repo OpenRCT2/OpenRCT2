@@ -130,7 +130,7 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
 
     res.Position.z = TileElementHeight(res.Position);
 
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
     TileElementRemove(tileElement);
 
     return res;

@@ -1969,7 +1969,7 @@ namespace RCT2
                 // ride is on. It's possible to create unwanted behavior if a user layers spinning control track on top of
                 // booster track but this is unlikely since only two rides have spinning control track - by default they load as
                 // booster
-                TileElement* tileElement2 = map_get_track_element_at_of_type_seq(
+                TileElement* tileElement2 = MapGetTrackElementAtOfTypeSeq(
                     dst->TrackLocation, TrackElemType::RotationControlToggle, 0);
 
                 if (tileElement2 != nullptr)

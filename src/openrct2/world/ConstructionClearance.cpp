@@ -45,7 +45,7 @@ static int32_t MapPlaceClearFunc(
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
         return 0;
 
-    map_invalidate_tile({ coords, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ() });
+    MapInvalidateTile({ coords, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ() });
 
     TileElementRemove(*tile_element);
 

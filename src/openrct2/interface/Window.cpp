@@ -838,7 +838,7 @@ void window_scroll_to_location(rct_window& w, const CoordsXYZ& coords)
             }
         }
 
-        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords);
+        auto screenCoords = Translate3DTo2DWithZ(get_current_rotation(), coords);
 
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))

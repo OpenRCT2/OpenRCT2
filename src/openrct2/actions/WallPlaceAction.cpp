@@ -382,7 +382,7 @@ GameActions::Result WallPlaceAction::Execute() const
     wallElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
     MapAnimationCreate(MAP_ANIMATION_TYPE_WALL, targetLoc);
-    map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
+    MapInvalidateTileZoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
     res.Cost = wallEntry->price;
 
@@ -496,7 +496,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
     WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
 {
     *wallAcrossTrack = false;
-    if (map_is_location_at_edge(_loc))
+    if (MapIsLocationAtEdge(_loc))
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }

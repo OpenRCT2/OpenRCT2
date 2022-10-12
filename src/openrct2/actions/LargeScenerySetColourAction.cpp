@@ -80,7 +80,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    auto largeElement = map_get_large_scenery_segment(_loc, _tileIndex);
+    auto largeElement = MapGetLargeScenerySegment(_loc, _tileIndex);
 
     if (largeElement == nullptr)
     {
@@ -130,7 +130,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
             return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        auto tileElement = map_get_large_scenery_segment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, i);
+        auto tileElement = MapGetLargeScenerySegment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, i);
 
         if (tileElement == nullptr)
         {
@@ -145,7 +145,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
             tileElement->SetSecondaryColour(_secondaryColour);
             tileElement->SetTertiaryColour(_tertiaryColour);
 
-            map_invalidate_tile_full(currentTile);
+            MapInvalidateTileFull(currentTile);
         }
     }
     return res;

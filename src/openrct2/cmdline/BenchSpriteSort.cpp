@@ -104,7 +104,7 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
 
         auto customXY = TileCoordsXY(gMapSize.x / 2, gMapSize.y / 2).ToCoordsXY().ToTileCentre();
         auto customXYZ = CoordsXYZ(customXY, TileElementHeight(customXY));
-        auto screenXY = translate_3d_to_2d_with_z(0, customXYZ);
+        auto screenXY = Translate3DTo2DWithZ(0, customXYZ);
 
         viewport.viewPos = { screenXY.x - (viewport.view_width / 2), screenXY.y - (viewport.view_height / 2) };
         viewport.zoom = ZoomLevel{ 0 };

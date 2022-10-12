@@ -121,7 +121,7 @@ GameActions::Result BannerRemoveAction::Execute() const
     }
 
     reinterpret_cast<TileElement*>(bannerElement)->RemoveBannerEntry();
-    map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
+    MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 32 });
     bannerElement->Remove();
 
     return res;

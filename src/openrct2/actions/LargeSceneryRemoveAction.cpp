@@ -174,7 +174,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
         auto* sceneryElement = FindLargeSceneryElement(currentTile, i);
         if (sceneryElement != nullptr)
         {
-            map_invalidate_tile_full(currentTile);
+            MapInvalidateTileFull(currentTile);
             TileElementRemove(sceneryElement);
         }
         else

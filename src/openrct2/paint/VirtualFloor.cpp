@@ -140,7 +140,7 @@ void VirtualFloorInvalidate()
             log_verbose(
                 "Invalidating previous region, Min: %d %d, Max: %d %d", _virtualFloorLastMinPos.x, _virtualFloorLastMinPos.y,
                 _virtualFloorLastMaxPos.x, _virtualFloorLastMaxPos.y);
-            map_invalidate_region(_virtualFloorLastMinPos, _virtualFloorLastMaxPos);
+            MapInvalidateRegion(_virtualFloorLastMinPos, _virtualFloorLastMaxPos);
         }
     }
 
@@ -161,7 +161,7 @@ void VirtualFloorInvalidate()
     if (min_position.x != std::numeric_limits<int32_t>::max() && min_position.y != std::numeric_limits<int32_t>::max()
         && max_position.x != std::numeric_limits<int32_t>::lowest() && max_position.y != std::numeric_limits<int32_t>::lowest())
     {
-        map_invalidate_region(min_position, max_position);
+        MapInvalidateRegion(min_position, max_position);
 
         // Save minimal and maximal positions.
         _virtualFloorLastMinPos.x = min_position.x;

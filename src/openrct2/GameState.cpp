@@ -321,7 +321,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     report_time(LogicTimePart::Scenario);
     ClimateUpdate();
     report_time(LogicTimePart::Climate);
-    map_update_tiles();
+    MapUpdateTiles();
     report_time(LogicTimePart::MapTiles);
     // Temporarily remove provisional paths to prevent peep from interacting with them
     MapRemoveProvisionalElements();

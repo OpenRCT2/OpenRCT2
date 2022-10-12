@@ -2613,7 +2613,7 @@ private:
         int16_t previewZOffset = ted.Definition.preview_z_offset;
         mapCoords.z -= previewZOffset;
 
-        const ScreenCoordsXY rotatedScreenCoords = translate_3d_to_2d_with_z(get_current_rotation(), mapCoords);
+        const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(get_current_rotation(), mapCoords);
 
         dpi->x += rotatedScreenCoords.x - widgetWidth / 2;
         dpi->y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
@@ -3139,7 +3139,7 @@ void UpdateGhostTrackAndArrow()
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-            map_invalidate_tile_full(trackPos);
+            MapInvalidateTileFull(trackPos);
             break;
         }
         case RideConstructionState::Selected:
@@ -3189,7 +3189,7 @@ void UpdateGhostTrackAndArrow()
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-            map_invalidate_tile_full(trackPos);
+            MapInvalidateTileFull(trackPos);
             break;
         }
         default:
@@ -3220,7 +3220,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(*mapCoords);
+        z = MapGetHighestZ(*mapCoords);
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3270,14 +3270,14 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             {
                 if (MapIsLocationValid(selectedTile))
                 {
-                    z = map_get_highest_z(selectedTile);
+                    z = MapGetHighestZ(selectedTile);
                     if (z > highestZ)
                         highestZ = z;
                 }
             }
         }
         // loc_6CC8BF:
-        // z = map_get_highest_z(x >> 5, y >> 5);
+        // z = MapGetHighestZ(x >> 5, y >> 5);
     }
     // loc_6CC91B:
     const auto& ted = GetTrackElementDescriptor(trackType);
@@ -3491,7 +3491,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             if (!MapIsLocationValid(selectedTile))
                 continue;
 
-            z = map_get_highest_z(selectedTile);
+            z = MapGetHighestZ(selectedTile);
             if (z > highestZ)
                 highestZ = z;
         }
@@ -3508,7 +3508,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(mapCoords);
+        z = MapGetHighestZ(mapCoords);
 
     tool_cancel();
 

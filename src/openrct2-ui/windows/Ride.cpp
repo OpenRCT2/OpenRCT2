@@ -1093,14 +1093,14 @@ static void WindowRideUpdateOverallView(Ride* ride)
     // Calculate x, y, z bounds of the entire ride using its track elements
     tile_element_iterator it;
 
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
 
     CoordsXYZ min = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max(),
                       std::numeric_limits<int32_t>::max() };
     CoordsXYZ max = { std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::min(),
                       std::numeric_limits<int32_t>::min() };
 
-    while (tile_element_iterator_next(&it))
+    while (TileElementIteratorNext(&it))
     {
         if (it.element->GetType() != TileElementType::Track)
             continue;

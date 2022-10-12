@@ -293,7 +293,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         }
 
         MapAnimationCreate(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
-        map_invalidate_tile_full(curTile);
+        MapInvalidateTileFull(curTile);
 
         if (tileNum == 0)
         {

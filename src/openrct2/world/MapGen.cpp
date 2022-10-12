@@ -118,7 +118,7 @@ static void SetHeight(int32_t x, int32_t y, int32_t height)
 void MapGenGenerateBlank(mapgen_settings* settings)
 {
     int32_t x, y;
-    map_clear_all_elements();
+    MapClearAllElements();
 
     MapInit(settings->mapSize);
     for (y = 1; y < settings->mapSize.y - 1; y++)
@@ -181,7 +181,7 @@ void MapGenGenerate(mapgen_settings* settings)
     auto floorTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(floorTexture));
     auto edgeTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(edgeTexture));
 
-    map_clear_all_elements();
+    MapClearAllElements();
 
     // Initialise the base map
     MapInit(mapSize);

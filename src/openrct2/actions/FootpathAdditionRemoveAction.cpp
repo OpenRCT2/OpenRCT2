@@ -106,7 +106,7 @@ GameActions::Result FootpathAdditionRemoveAction::Execute() const
     }
 
     pathElement->SetAddition(0);
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
 
     auto res = GameActions::Result();
     res.Position = _loc;

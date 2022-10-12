@@ -158,6 +158,6 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
 
     FootpathUpdateQueueChains();
 
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
     return res;
 }

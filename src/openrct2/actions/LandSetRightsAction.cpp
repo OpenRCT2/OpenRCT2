@@ -128,7 +128,7 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
             {
                 surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                 uint16_t baseZ = surfaceElement->GetBaseZ();
-                map_invalidate_tile({ loc, baseZ, baseZ + 16 });
+                MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
             return res;
         case LandSetRightSetting::SetForSale:
@@ -136,7 +136,7 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
             {
                 surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
                 uint16_t baseZ = surfaceElement->GetBaseZ();
-                map_invalidate_tile({ loc, baseZ, baseZ + 16 });
+                MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
             return res;
         case LandSetRightSetting::SetConstructionRightsForSale:
@@ -144,7 +144,7 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
             {
                 surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
                 uint16_t baseZ = surfaceElement->GetBaseZ();
-                map_invalidate_tile({ loc, baseZ, baseZ + 16 });
+                MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
             return res;
         case LandSetRightSetting::SetOwnershipWithChecks:

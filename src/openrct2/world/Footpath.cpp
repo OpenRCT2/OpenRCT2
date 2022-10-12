@@ -219,7 +219,7 @@ void FootpathProvisionalUpdate()
         gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-        map_invalidate_tile_full(gFootpathConstructFromPosition);
+        MapInvalidateTileFull(gFootpathConstructFromPosition);
     }
     FootpathProvisionalRemove();
 }
@@ -541,25 +541,21 @@ static void FootpathConnectCorners(const CoordsXY& footpathPos, PathElement* ini
 
         direction = DirectionNext(direction);
         std::get<3>(tileElements).first->SetCorners(std::get<3>(tileElements).first->GetCorners() | (1 << (direction)));
-        map_invalidate_element(
-            std::get<3>(tileElements).second, reinterpret_cast<TileElement*>(std::get<3>(tileElements).first));
+        MapInvalidateElement(std::get<3>(tileElements).second, reinterpret_cast<TileElement*>(std::get<3>(tileElements).first));
 
         direction = DirectionPrev(direction);
         std::get<2>(tileElements).first->SetCorners(std::get<2>(tileElements).first->GetCorners() | (1 << (direction)));
 
-        map_invalidate_element(
-            std::get<2>(tileElements).second, reinterpret_cast<TileElement*>(std::get<2>(tileElements).first));
+        MapInvalidateElement(std::get<2>(tileElements).second, reinterpret_cast<TileElement*>(std::get<2>(tileElements).first));
 
         direction = DirectionPrev(direction);
         std::get<1>(tileElements).first->SetCorners(std::get<1>(tileElements).first->GetCorners() | (1 << (direction)));
 
-        map_invalidate_element(
-            std::get<1>(tileElements).second, reinterpret_cast<TileElement*>(std::get<1>(tileElements).first));
+        MapInvalidateElement(std::get<1>(tileElements).second, reinterpret_cast<TileElement*>(std::get<1>(tileElements).first));
 
         direction = initialDirection;
         std::get<0>(tileElements).first->SetCorners(std::get<0>(tileElements).first->GetCorners() | (1 << (direction)));
-        map_invalidate_element(
-            std::get<0>(tileElements).second, reinterpret_cast<TileElement*>(std::get<0>(tileElements).first));
+        MapInvalidateElement(std::get<0>(tileElements).second, reinterpret_cast<TileElement*>(std::get<0>(tileElements).first));
     }
 }
 
@@ -714,7 +710,7 @@ static bool FootpathReconnectQueueToPath(
             targetQueueElement->SetEdges(targetQueueElement->GetEdges() | (1 << (DirectionReverse(direction) & 3)));
         }
         if (action != 0)
-            map_invalidate_tile_full(targetQueuePos);
+            MapInvalidateTileFull(targetQueuePos);
         return true;
     }
     return false;
@@ -762,7 +758,7 @@ static void loc_6A6FD2(const CoordsXYZ& initialTileElementPos, int32_t direction
         if (!query)
         {
             initialTileElement->AsPath()->SetEdges(initialTileElement->AsPath()->GetEdges() | (1 << direction));
-            map_invalidate_element(initialTileElementPos, initialTileElement);
+            MapInvalidateElement(initialTileElementPos, initialTileElement);
         }
     }
 }
@@ -816,7 +812,7 @@ static void loc_6A6F1F(
     {
         FootpathInterruptPeeps({ targetPos, tileElement->GetBaseZ() });
     }
-    map_invalidate_element(targetPos, tileElement);
+    MapInvalidateElement(targetPos, tileElement);
     loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
 }
 
@@ -1151,7 +1147,7 @@ void FootpathChainRideQueue(
             tileElement->AsPath()->SetStationIndex(entranceIndex);
 
             curQueuePos = targetQueuePos;
-            map_invalidate_element(targetQueuePos, tileElement);
+            MapInvalidateElement(targetQueuePos, tileElement);
 
             if (lastQueuePathElement == nullptr)
             {
@@ -1257,7 +1253,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
     if (surfaceElement != nullptr)
     {
         // If the tile is not safe to own construction rights of, erase them.
-        if (check_max_allowable_land_rights_for_tile({ mapPos, surfaceElement->base_height << 3 }) == OWNERSHIP_UNOWNED)
+        if (CheckMaxAllowableLandRightsForTile({ mapPos, surfaceElement->base_height << 3 }) == OWNERSHIP_UNOWNED)
         {
             ownership = OWNERSHIP_UNOWNED;
         }
@@ -1822,7 +1818,7 @@ static TileElement* FootpathCanBeWide(const CoordsXYZ& footpathPos)
  */
 void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos)
 {
-    if (map_is_location_at_edge(footpathPos))
+    if (MapIsLocationAtEdge(footpathPos))
         return;
 
     FootpathClearWide(footpathPos);
@@ -2075,7 +2071,7 @@ static void FootpathRemoveEdgesTowardsHere(
     tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
     cd = ((cd + 1) & 3);
     tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
-    map_invalidate_tile({ footpathPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+    MapInvalidateTile({ footpathPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 
     if (isQueue)
         FootpathDisconnectQueueFromPath(footpathPos, tileElement, -1);
@@ -2098,7 +2094,7 @@ static void FootpathRemoveEdgesTowardsHere(
 
         cd = ((shiftedDirection + 1) & 3);
         tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
-        map_invalidate_tile({ targetFootPathPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+        MapInvalidateTile({ targetFootPathPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
         break;
     } while (!(tileElement++)->IsLastForTile());
 }
@@ -2553,7 +2549,7 @@ void PathElement::SetEdgesAndCorners(uint8_t newEdgesAndCorners)
 
 bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
 {
-    auto trackElement = map_get_track_element_at({ coords, GetBaseZ() });
+    auto trackElement = MapGetTrackElementAt({ coords, GetBaseZ() });
     if (trackElement == nullptr)
     {
         return false;

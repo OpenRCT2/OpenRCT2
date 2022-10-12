@@ -330,7 +330,7 @@ static void ride_invalidate_station_start(Ride* ride, StationIndex stationIndex,
     tileElement->AsTrack()->SetHasGreenLight(greenLight);
 
     // Invalidate map tile
-    map_invalidate_tile_zoom1({ startPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+    MapInvalidateTileZoom1({ startPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 }
 
 TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex stationIndex)
