@@ -193,7 +193,7 @@ static int32_t guest_surface_path_finding(Peep& peep)
 
         if (!WallInTheWay(pathPos, backwardsDirection))
         {
-            if (!map_surface_is_blocked(pathPos))
+            if (!MapSurfaceIsBlocked(pathPos))
             {
                 return peep_move_one_tile(randDirection, peep);
             }
@@ -218,7 +218,7 @@ static int32_t guest_surface_path_finding(Peep& peep)
 
         if (!WallInTheWay(pathPos, backwardsDirection))
         {
-            if (!map_surface_is_blocked(pathPos))
+            if (!MapSurfaceIsBlocked(pathPos))
             {
                 return peep_move_one_tile(randDirection, peep);
             }
@@ -238,7 +238,7 @@ static int32_t guest_surface_path_finding(Peep& peep)
 
         if (!WallInTheWay(pathPos, backwardsDirection))
         {
-            if (!map_surface_is_blocked(pathPos))
+            if (!MapSurfaceIsBlocked(pathPos))
             {
                 return peep_move_one_tile(randDirection, peep);
             }
@@ -1747,7 +1747,7 @@ int32_t OriginalPathfinding::GuestPathFindParkEntranceLeaving(Peep& peep, uint8_
     if (peep.PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN)
     {
         entranceGoal = peep.PathfindGoal;
-        auto* entranceElement = map_get_park_entrance_element_at(entranceGoal.ToCoordsXYZ(), false);
+        auto* entranceElement = MapGetParkEntranceElementAt(entranceGoal.ToCoordsXYZ(), false);
         // If entrance no longer exists, choose a new one
         if (entranceElement == nullptr)
         {
@@ -1988,7 +1988,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
 
     TileCoordsXYZ loc{ peep.NextLoc };
 
-    auto* pathElement = map_get_path_element_at(loc);
+    auto* pathElement = MapGetPathElementAt(loc);
     if (pathElement == nullptr)
     {
         return 1;

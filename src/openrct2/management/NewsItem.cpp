@@ -219,7 +219,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
                 break;
             }
             auto rideViewCentre = ride->overall_view.ToTileCentre();
-            subjectLoc = CoordsXYZ{ rideViewCentre, tile_element_height(rideViewCentre) };
+            subjectLoc = CoordsXYZ{ rideViewCentre, TileElementHeight(rideViewCentre) };
             break;
         }
         case News::ItemType::PeepOnRide:
@@ -275,7 +275,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
                                        static_cast<int16_t>(subjectUnsigned >> 16) };
             if (!subjectXY.IsNull())
             {
-                subjectLoc = CoordsXYZ{ subjectXY, tile_element_height(subjectXY) };
+                subjectLoc = CoordsXYZ{ subjectXY, TileElementHeight(subjectXY) };
             }
             break;
         }

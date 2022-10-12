@@ -55,7 +55,7 @@ GameActions::Result ClearAction::CreateResult() const
 
     auto x = (_range.GetLeft() + _range.GetRight()) / 2 + 16;
     auto y = (_range.GetTop() + _range.GetBottom()) / 2 + 16;
-    auto z = tile_element_height({ x, y });
+    auto z = TileElementHeight({ x, y });
     result.Position = CoordsXYZ(x, y, z);
 
     return result;
@@ -227,5 +227,5 @@ void ClearAction::ResetClearLargeSceneryFlag()
 
 bool ClearAction::MapCanClearAt(const CoordsXY& location)
 {
-    return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || map_is_location_owned_or_has_rights(location);
+    return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || MapIsLocationOwnedOrHasRights(location);
 }

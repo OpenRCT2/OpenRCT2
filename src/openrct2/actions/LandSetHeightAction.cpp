@@ -60,7 +60,7 @@ GameActions::Result LandSetHeightAction::Query() const
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
-        if (!map_is_location_in_park(_coords))
+        if (!MapIsLocationInPark(_coords))
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
         }
@@ -144,7 +144,7 @@ GameActions::Result LandSetHeightAction::Query() const
 GameActions::Result LandSetHeightAction::Execute() const
 {
     money32 cost = 0.00_GBP;
-    auto surfaceHeight = tile_element_height(_coords);
+    auto surfaceHeight = TileElementHeight(_coords);
     FootpathRemoveLitter({ _coords, surfaceHeight });
 
     if (!gCheatsDisableClearanceChecks)
@@ -257,7 +257,7 @@ void LandSetHeightAction::SmallSceneryRemoval() const
             continue;
         if (_height + 4 < tileElement->base_height)
             continue;
-        tile_element_remove(tileElement--);
+        TileElementRemove(tileElement--);
     } while (!(tileElement++)->IsLastForTile());
 }
 

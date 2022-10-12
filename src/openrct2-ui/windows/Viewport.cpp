@@ -144,7 +144,7 @@ public:
                 {
                     auto info = get_map_coordinates_from_pos(
                         { windowPos.x + (width / 2), windowPos.y + (height / 2) }, ViewportInteractionItemAll);
-                    window_scroll_to_location(*mainWindow, { info.Loc, tile_element_height(info.Loc) });
+                    window_scroll_to_location(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
                 }
                 break;
         }

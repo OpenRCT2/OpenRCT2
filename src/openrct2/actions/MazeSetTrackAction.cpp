@@ -61,7 +61,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         return res;
     }
 
-    if (!LocationValid(_loc) || (!map_is_location_owned(_loc) && !gCheatsSandboxMode))
+    if (!LocationValid(_loc) || (!MapIsLocationOwned(_loc) && !gCheatsSandboxMode))
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -292,7 +292,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
     if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
     {
-        tile_element_remove(tileElement);
+        TileElementRemove(tileElement);
         ride->ValidateStations();
         ride->maze_tiles--;
     }

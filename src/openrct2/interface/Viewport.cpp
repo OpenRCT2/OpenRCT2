@@ -248,7 +248,7 @@ CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
     for (int32_t i = 0; i < 6; i++)
     {
         pos = viewport_coord_to_map_coord(startCoords, height);
-        height = tile_element_height(pos);
+        height = TileElementHeight(pos);
 
         // HACK: This is to prevent the x and y values being set to values outside
         // of the map. This can happen when the height is larger than the map size.
@@ -673,7 +673,7 @@ void viewport_update_sprite_follow(rct_window* window)
 
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
-            int32_t height = (tile_element_height({ sprite->x, sprite->y })) - 16;
+            int32_t height = (TileElementHeight({ sprite->x, sprite->y })) - 16;
             int32_t underground = sprite->z < height;
             viewport_set_underground_flag(underground, window, window->viewport);
         }
@@ -761,7 +761,7 @@ void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep)
             CoordsXYZ coordFocus;
             coordFocus.x = xy.x;
             coordFocus.y = xy.y;
-            coordFocus.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
+            coordFocus.z = TileElementHeight(xy) + (4 * COORDS_Z_STEP);
             focus = Focus(coordFocus);
             window->viewport_target_sprite = EntityId::GetNull();
         }
@@ -1998,7 +1998,7 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
     // Iterates the cursor location to work out exactly where on the tile it is
     for (int32_t i = 0; i < 5; i++)
     {
-        int32_t z = tile_element_height(cursorMapPos);
+        int32_t z = TileElementHeight(cursorMapPos);
         cursorMapPos = viewport_coord_to_map_coord(start_vp_pos, z);
         cursorMapPos.x = std::clamp(cursorMapPos.x, info.Loc.x, info.Loc.x + 31);
         cursorMapPos.y = std::clamp(cursorMapPos.y, info.Loc.y, info.Loc.y + 31);
@@ -2024,7 +2024,7 @@ std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoo
 
     auto vpCoords = viewport->ScreenToViewportCoord(screenCoords);
     auto mapPosition = viewport_coord_to_map_coord(vpCoords, z);
-    if (!map_is_location_valid(mapPosition))
+    if (!MapIsLocationValid(mapPosition))
     {
         return std::nullopt;
     }

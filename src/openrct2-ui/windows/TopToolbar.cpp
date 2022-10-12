@@ -2012,7 +2012,7 @@ static uint8_t TopToolbarToolUpdateLandPaint(const ScreenCoordsXY& screenPos)
 {
     uint8_t state_changed = 0;
 
-    map_invalidate_selection_rect();
+    MapInvalidateSelectionRect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     auto mapTile = screen_get_map_xy(screenPos, nullptr);
@@ -2074,7 +2074,7 @@ static uint8_t TopToolbarToolUpdateLandPaint(const ScreenCoordsXY& screenPos)
         state_changed++;
     }
 
-    map_invalidate_selection_rect();
+    MapInvalidateSelectionRect();
     return state_changed;
 }
 
@@ -2105,7 +2105,7 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
 {
     const bool mapCtrlPressed = InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z);
 
-    map_invalidate_selection_rect();
+    MapInvalidateSelectionRect();
 
     if (gCurrentToolId == Tool::UpDownArrow)
     {
@@ -2194,7 +2194,7 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
             state_changed++;
         }
 
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         if (!state_changed)
             return;
 
@@ -2320,7 +2320,7 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
         state_changed++;
     }
 
-    map_invalidate_selection_rect();
+    MapInvalidateSelectionRect();
     if (!state_changed)
         return;
 
@@ -2341,7 +2341,7 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
  */
 static void TopToolbarToolUpdateWater(const ScreenCoordsXY& screenPos)
 {
-    map_invalidate_selection_rect();
+    MapInvalidateSelectionRect();
 
     if (gCurrentToolId == Tool::UpDownArrow)
     {
@@ -2436,7 +2436,7 @@ static void TopToolbarToolUpdateWater(const ScreenCoordsXY& screenPos)
         state_changed++;
     }
 
-    map_invalidate_selection_rect();
+    MapInvalidateSelectionRect();
     if (!state_changed)
         return;
 
@@ -2608,8 +2608,8 @@ static money64 TryPlaceGhostBanner(CoordsXYZD loc, ObjectEntryIndex entryIndex)
  */
 static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
 {
-    map_invalidate_selection_rect();
-    map_invalidate_map_selection_tiles();
+    MapInvalidateSelectionRect();
+    MapInvalidateMapSelectionTiles();
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
@@ -2679,7 +2679,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
                 gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + (quadrant ^ 2);
             }
 
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_0) && mapTile == gSceneryGhostPosition && quadrant == _unkF64F0E
@@ -2734,7 +2734,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
             gMapSelectPositionB.y = mapTile.y;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
 
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) && mapTile == gSceneryGhostPosition && z == gSceneryGhostPosition.z)
@@ -2769,7 +2769,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
             gMapSelectPositionB.y = mapTile.y;
             gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + edge;
 
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_2) && mapTile == gSceneryGhostPosition
@@ -2833,7 +2833,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
             }
 
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-            map_invalidate_map_selection_tiles();
+            MapInvalidateMapSelectionTiles();
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_3) && mapTile == gSceneryGhostPosition && gSceneryPlaceZ == _unkF64F0A
@@ -2891,7 +2891,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
             gMapSelectPositionB.y = mapTile.y;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
 
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) && mapTile == gSceneryGhostPosition && z == gSceneryGhostPosition.z
@@ -3235,17 +3235,17 @@ static void WindowTopToolbarToolUp(rct_window* w, WidgetIndex widgetIndex, const
     switch (widgetIndex)
     {
         case WIDX_LAND:
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
             gCurrentToolId = Tool::DigDown;
             break;
         case WIDX_WATER:
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
             gCurrentToolId = Tool::WaterDown;
             break;
         case WIDX_CLEAR_SCENERY:
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
             gCurrentToolId = Tool::Crosshair;
             break;

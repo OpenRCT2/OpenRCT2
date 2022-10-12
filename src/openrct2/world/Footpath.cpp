@@ -282,7 +282,7 @@ CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32
     {
         if (info.SpriteType != ViewportInteractionItem::Footpath)
         {
-            z = tile_element_height(position);
+            z = TileElementHeight(position);
         }
         position = viewport_coord_to_map_coord(start_vp_pos, z);
         position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
@@ -463,7 +463,7 @@ bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction)
 
 static PathElement* FootpathConnectCornersGetNeighbour(const CoordsXYZ& footpathPos, int32_t requireEdges)
 {
-    if (!map_is_location_valid(footpathPos))
+    if (!MapIsLocationValid(footpathPos))
     {
         return nullptr;
     }
@@ -825,7 +825,7 @@ static void loc_6A6D7E(
     rct_neighbour_list* neighbourList)
 {
     auto targetPos = CoordsXY{ initialTileElementPos } + CoordsDirectionDelta[direction];
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(targetPos))
+    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && MapIsEdge(targetPos))
     {
         if (query)
         {
@@ -1397,7 +1397,7 @@ static int32_t FootpathIsConnectedToMapEdgeHelper(CoordsXYZ footpathPos, int32_t
 
         // Return immediately if we are at the edge of the map and not unowning
         // Or if we are unowning and have no tiles left
-        if ((map_is_edge(targetPos) && !(flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN)))
+        if ((MapIsEdge(targetPos) && !(flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN)))
         {
             return FOOTPATH_SEARCH_SUCCESS;
         }
@@ -2109,7 +2109,7 @@ static void FootpathRemoveEdgesTowardsHere(
  */
 static void FootpathRemoveEdgesTowards(const CoordsXYRangedZ& footPathPos, int32_t direction, bool isQueue)
 {
-    if (!map_is_location_valid(footPathPos))
+    if (!MapIsLocationValid(footPathPos))
     {
         return;
     }

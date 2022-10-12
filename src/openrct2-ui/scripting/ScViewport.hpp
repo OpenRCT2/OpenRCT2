@@ -294,7 +294,7 @@ namespace OpenRCT2::Scripting
                         return CoordsXYZ(x, y, dukZ.as_int());
                     }
 
-                    auto z = tile_element_height(CoordsXY(x, y));
+                    auto z = TileElementHeight(CoordsXY(x, y));
                     return CoordsXYZ(x, y, z);
                 }
             }

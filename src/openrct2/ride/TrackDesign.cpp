@@ -1251,7 +1251,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     return GameActions::Result();
                 }
 
-                auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ CoordsXYZ{ mapCoord.x, mapCoord.y, z } });
+                auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ CoordsXYZ{ mapCoord.x, mapCoord.y, z } });
                 if (pathElement == nullptr)
                 {
                     return GameActions::Result();
@@ -1350,7 +1350,7 @@ static GameActions::Result TrackDesignPlaceMaze(TrackDesignState& tds, TrackDesi
     if (tds.PlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
         gMapSelectionTiles.clear();
-        gMapSelectArrowPosition = CoordsXYZ{ coords, tile_element_height(coords) };
+        gMapSelectArrowPosition = CoordsXYZ{ coords, TileElementHeight(coords) };
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -1511,7 +1511,7 @@ static GameActions::Result TrackDesignPlaceMaze(TrackDesignState& tds, TrackDesi
 
         if (tds.PlaceOperation == PTD_OPERATION_GET_PLACE_Z)
         {
-            if (!map_is_location_valid(mapCoord))
+            if (!MapIsLocationValid(mapCoord))
             {
                 continue;
             }
@@ -1564,7 +1564,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
     if (tds.PlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
         gMapSelectionTiles.clear();
-        gMapSelectArrowPosition = CoordsXYZ{ origin, tile_element_height(origin) };
+        gMapSelectArrowPosition = CoordsXYZ{ origin, TileElementHeight(origin) };
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -1668,7 +1668,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                 for (const rct_preview_track* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
-                    if (!map_is_location_valid(tile))
+                    if (!MapIsLocationValid(tile))
                     {
                         continue;
                     }
@@ -1904,7 +1904,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
     }
 
     auto res = GameActions::Result();

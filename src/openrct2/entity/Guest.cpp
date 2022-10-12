@@ -449,7 +449,7 @@ static bool IsValidLocation(const CoordsXYZ& coords)
 {
     if (coords.x != LOCATION_NULL)
     {
-        if (map_is_location_valid(coords))
+        if (MapIsLocationValid(coords))
         {
             return true;
         }
@@ -1885,7 +1885,7 @@ BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
             for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += COORDS_XY_STEP)
             {
                 auto location = CoordsXY{ tileX, tileY };
-                if (!map_is_location_valid(location))
+                if (!MapIsLocationValid(location))
                     continue;
 
                 for (auto* trackElement : TileElementsView<TrackElement>(location))
@@ -2903,7 +2903,7 @@ static bool peep_really_liked_ride(Guest* peep, Ride* ride)
  */
 static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z)
 {
-    if ((tile_element_height({ centre_x, centre_y })) > centre_z)
+    if ((TileElementHeight({ centre_x, centre_y })) > centre_z)
         return PeepThoughtType::None;
 
     uint16_t num_scenery = 0;
@@ -3158,7 +3158,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
             for (auto y = cy - searchRadius; y <= cy + searchRadius; y += COORDS_XY_STEP)
             {
                 auto location = CoordsXY{ x, y };
-                if (!map_is_location_valid(location))
+                if (!MapIsLocationValid(location))
                     continue;
 
                 for (auto* trackElement : TileElementsView<TrackElement>(location))
@@ -6276,7 +6276,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
 
     uint16_t x = peep->NextLoc.x + CoordsDirectionDelta[edge].x;
     uint16_t y = peep->NextLoc.y + CoordsDirectionDelta[edge].y;
-    if (!map_is_location_valid({ x, y }))
+    if (!MapIsLocationValid({ x, y }))
     {
         return false;
     }
@@ -6393,7 +6393,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
-    if (!map_is_location_valid({ x, y }))
+    if (!MapIsLocationValid({ x, y }))
     {
         return false;
     }
@@ -6510,7 +6510,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
-    if (!map_is_location_valid({ x, y }))
+    if (!MapIsLocationValid({ x, y }))
     {
         return false;
     }
@@ -6699,7 +6699,7 @@ void Guest::UpdateSpriteType()
     if (ClimateIsRaining() && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
-        if (map_is_location_valid(loc.ToTileStart()))
+        if (MapIsLocationValid(loc.ToTileStart()))
         {
             TileElement* tileElement = MapGetFirstElementAt(loc);
             while (true)

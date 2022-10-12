@@ -820,7 +820,7 @@ void window_scroll_to_location(rct_window& w, const CoordsXYZ& coords)
     window_unfollow_sprite(w);
     if (w.viewport != nullptr)
     {
-        int16_t height = tile_element_height(coords);
+        int16_t height = TileElementHeight(coords);
         if (coords.z < height - 16)
         {
             if (!(w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
@@ -932,7 +932,7 @@ void window_rotate_camera(rct_window& w, int32_t direction)
     {
         coords.x = mapXYCoords->x;
         coords.y = mapXYCoords->y;
-        coords.z = tile_element_height(coords);
+        coords.z = TileElementHeight(coords);
     }
 
     gCurrentRotation = (get_current_rotation() + direction) & 3;
@@ -965,7 +965,7 @@ void window_viewport_get_map_coords_by_cursor(
     *map_y = mapCoords.y;
 
     // Get viewport coordinates centring around the tile.
-    int32_t z = tile_element_height(mapCoords);
+    int32_t z = TileElementHeight(mapCoords);
 
     auto centreLoc = centre_2d_coordinates({ mapCoords.x, mapCoords.y, z }, w.viewport);
     if (!centreLoc)
@@ -986,7 +986,7 @@ void window_viewport_get_map_coords_by_cursor(
 void window_viewport_centre_tile_around_cursor(rct_window& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
 {
     // Get viewport coordinates centring around the tile.
-    int32_t z = tile_element_height({ map_x, map_y });
+    int32_t z = TileElementHeight({ map_x, map_y });
     auto centreLoc = centre_2d_coordinates({ map_x, map_y, z }, w.viewport);
 
     if (!centreLoc.has_value())
@@ -1380,8 +1380,8 @@ void tool_cancel()
     {
         input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
 
-        map_invalidate_selection_rect();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateSelectionRect();
+        MapInvalidateMapSelectionTiles();
 
         // Reset map selection
         gMapSelectFlags = 0;

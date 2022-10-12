@@ -417,7 +417,7 @@ static void ride_ratings_score_close_proximity_in_direction(
     RideRatingUpdateState& state, TileElement* inputTileElement, int32_t direction)
 {
     auto scorePos = CoordsXY{ CoordsXY{ state.Proximity } + CoordsDirectionDelta[direction] };
-    if (!map_is_location_valid(scorePos))
+    if (!MapIsLocationValid(scorePos))
         return;
 
     TileElement* tileElement = MapGetFirstElementAt(scorePos);
@@ -1445,7 +1445,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
         location = ride->GetStation(stationIndex).Start;
     }
 
-    int32_t z = tile_element_height(location);
+    int32_t z = TileElementHeight(location);
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
     if (z > ride->GetStation(stationIndex).GetBaseZ())

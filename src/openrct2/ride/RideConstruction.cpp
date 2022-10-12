@@ -1288,7 +1288,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         // search for TrackElement one tile over, shifted in the search direction
         auto nextLocation = entranceExitCoords;
         nextLocation += CoordsDirectionDelta[entranceExitCoords.direction];
-        if (map_is_location_valid(nextLocation))
+        if (MapIsLocationValid(nextLocation))
         {
             // iterate over every element in the tile until we find what we want
             auto* tileElement = MapGetFirstElementAt(nextLocation);
@@ -1577,7 +1577,7 @@ void Ride::ValidateStations()
                 FootpathRemoveEdgesAt(location, tileElement);
                 FootpathUpdateQueueChains();
                 map_invalidate_tile_full(location);
-                tile_element_remove(tileElement);
+                TileElementRemove(tileElement);
                 tileElement--;
             }
         } while (!(tileElement++)->IsLastForTile());

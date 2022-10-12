@@ -923,7 +923,7 @@ public:
 
     void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
 
         CoordsXY mapCoords;
@@ -953,7 +953,7 @@ public:
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
     }
 
     void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override

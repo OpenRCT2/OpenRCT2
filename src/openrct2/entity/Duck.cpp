@@ -180,8 +180,8 @@ void Duck::UpdateSwim()
         else
         {
             Invalidate();
-            int16_t landZ = tile_element_height({ x, y });
-            int16_t waterZ = tile_element_water_height({ x, y });
+            int16_t landZ = TileElementHeight({ x, y });
+            int16_t waterZ = TileElementWaterHeight({ x, y });
 
             if (z < landZ || waterZ == 0)
             {
@@ -200,8 +200,8 @@ void Duck::UpdateSwim()
 
                 int32_t direction = sprite_direction >> 3;
                 auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
-                landZ = tile_element_height(destination);
-                waterZ = tile_element_water_height(destination);
+                landZ = TileElementHeight(destination);
+                waterZ = TileElementWaterHeight(destination);
 
                 if (z > landZ && z == waterZ)
                 {
@@ -259,7 +259,7 @@ void Duck::UpdateFlyAway()
         int32_t direction = sprite_direction >> 3;
         auto destination = CoordsXYZ{ x + (DuckMoveOffset[direction].x * 2), y + (DuckMoveOffset[direction].y * 2),
                                       std::min<int32_t>(z + 2, 496) };
-        if (map_is_location_valid(destination))
+        if (MapIsLocationValid(destination))
         {
             MoveTo(destination);
         }

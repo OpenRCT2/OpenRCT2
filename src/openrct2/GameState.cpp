@@ -324,13 +324,13 @@ void GameState::UpdateLogic(LogicTimings* timings)
     map_update_tiles();
     report_time(LogicTimePart::MapTiles);
     // Temporarily remove provisional paths to prevent peep from interacting with them
-    map_remove_provisional_elements();
+    MapRemoveProvisionalElements();
     report_time(LogicTimePart::MapStashProvisionalElements);
-    map_update_path_wide_flags();
+    MapUpdatePathWideFlags();
     report_time(LogicTimePart::MapPathWideFlags);
     peep_update_all();
     report_time(LogicTimePart::Peep);
-    map_restore_provisional_elements();
+    MapRestoreProvisionalElements();
     report_time(LogicTimePart::MapRestoreProvisionalElements);
     vehicle_update_all();
     report_time(LogicTimePart::Vehicle);

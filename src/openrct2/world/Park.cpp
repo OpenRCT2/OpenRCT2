@@ -104,7 +104,7 @@ void ParkSetOpen(bool open)
  */
 void ParkUpdateFences(const CoordsXY& coords)
 {
-    if (map_is_edge(coords))
+    if (MapIsEdge(coords))
         return;
 
     auto surfaceElement = MapGetSurfaceElementAt(coords);
@@ -137,22 +137,22 @@ void ParkUpdateFences(const CoordsXY& coords)
 
         if (fenceRequired)
         {
-            if (map_is_location_in_park({ coords.x - COORDS_XY_STEP, coords.y }))
+            if (MapIsLocationInPark({ coords.x - COORDS_XY_STEP, coords.y }))
             {
                 newFences |= 0x8;
             }
 
-            if (map_is_location_in_park({ coords.x, coords.y - COORDS_XY_STEP }))
+            if (MapIsLocationInPark({ coords.x, coords.y - COORDS_XY_STEP }))
             {
                 newFences |= 0x4;
             }
 
-            if (map_is_location_in_park({ coords.x + COORDS_XY_STEP, coords.y }))
+            if (MapIsLocationInPark({ coords.x + COORDS_XY_STEP, coords.y }))
             {
                 newFences |= 0x2;
             }
 
-            if (map_is_location_in_park({ coords.x, coords.y + COORDS_XY_STEP }))
+            if (MapIsLocationInPark({ coords.x, coords.y + COORDS_XY_STEP }))
             {
                 newFences |= 0x1;
             }

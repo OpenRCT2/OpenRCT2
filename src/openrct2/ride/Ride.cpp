@@ -1766,7 +1766,7 @@ Staff* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspec
         }
 
         auto location = entrancePosition.ToTileStart();
-        if (map_is_location_in_park(location))
+        if (MapIsLocationInPark(location))
             if (!peep->IsLocationInPatrol(location))
                 continue;
 
@@ -2262,7 +2262,7 @@ static bool ride_entrance_exit_is_reachable(const TileCoordsXYZD& coordinates)
     TileCoordsXYZ loc{ coordinates.x, coordinates.y, coordinates.z };
     loc -= TileDirectionDelta[coordinates.direction];
 
-    return map_coord_is_connected(loc, coordinates.direction);
+    return MapCoordIsConnected(loc, coordinates.direction);
 }
 
 static void ride_entrance_exit_connected(Ride* ride)
@@ -2354,7 +2354,7 @@ static void ride_shop_connected(Ride* ride)
         int32_t y2 = shopLoc.y - TileDirectionDelta[face_direction].y;
         int32_t x2 = shopLoc.x - TileDirectionDelta[face_direction].x;
 
-        if (map_coord_is_connected({ x2, y2, tileElement->base_height }, face_direction))
+        if (MapCoordIsConnected({ x2, y2, tileElement->base_height }, face_direction))
             return;
     }
 
@@ -5642,7 +5642,7 @@ void determine_ride_entrance_and_exit_locations()
             // Skip if the station has no entrance
             if (!entranceLoc.IsNull())
             {
-                const EntranceElement* entranceElement = map_get_ride_entrance_element_at(entranceLoc.ToCoordsXYZD(), false);
+                const EntranceElement* entranceElement = MapGetRideEntranceElementAt(entranceLoc.ToCoordsXYZD(), false);
 
                 if (entranceElement == nullptr || entranceElement->GetRideIndex() != ride.id
                     || entranceElement->GetStationIndex() != stationIndex)
@@ -5657,7 +5657,7 @@ void determine_ride_entrance_and_exit_locations()
 
             if (!exitLoc.IsNull())
             {
-                const EntranceElement* entranceElement = map_get_ride_exit_element_at(exitLoc.ToCoordsXYZD(), false);
+                const EntranceElement* entranceElement = MapGetRideExitElementAt(exitLoc.ToCoordsXYZD(), false);
 
                 if (entranceElement == nullptr || entranceElement->GetRideIndex() != ride.id
                     || entranceElement->GetStationIndex() != stationIndex)
@@ -5778,7 +5778,7 @@ void ride_clear_leftover_entrances(Ride* ride)
                 if (entrance->GetRideIndex() != ride->id)
                     continue;
 
-                tile_element_remove(entrance->as<TileElement>());
+                TileElementRemove(entrance->as<TileElement>());
             }
         }
     }

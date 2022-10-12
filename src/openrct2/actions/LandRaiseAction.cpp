@@ -65,15 +65,15 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
 
     auto validRange = ClampRangeWithinMap(_range);
 
-    res.Position = { _coords.x, _coords.y, tile_element_height(_coords) };
+    res.Position = { _coords.x, _coords.y, TileElementHeight(_coords) };
     res.Expenditure = ExpenditureType::Landscaping;
 
     if (isExecuting)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, TileElementHeight(_coords) });
     }
 
-    uint8_t minHeight = map_get_lowest_land_height(validRange);
+    uint8_t minHeight = MapGetLowestLandHeight(validRange);
     bool withinOwnership = false;
 
     for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
@@ -88,7 +88,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(CoordsXY{ x, y }))
+                if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
                     continue;
                 }

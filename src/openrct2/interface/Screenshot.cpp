@@ -667,7 +667,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
                 if (centreMapY)
                     customY = (mapSize.y / 2) * 32 + 16;
 
-                int32_t z = tile_element_height({ customX, customY });
+                int32_t z = TileElementHeight({ customX, customY });
                 CoordsXYZ coords3d = { customX, customY, z };
 
                 auto coords2d = translate_3d_to_2d_with_z(customRotation, coords3d);
@@ -763,7 +763,7 @@ void CaptureImage(const CaptureOptions& options)
         viewport.view_width = viewport.width;
         viewport.view_height = viewport.height;
 
-        auto z = tile_element_height(options.View->Position);
+        auto z = TileElementHeight(options.View->Position);
         CoordsXYZ coords3d(options.View->Position, z);
         auto coords2d = translate_3d_to_2d_with_z(options.Rotation, coords3d);
         viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.view_width)) / 2),

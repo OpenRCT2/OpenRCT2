@@ -56,7 +56,7 @@ GameActions::Result FootpathRemoveAction::Query() const
             GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(
             GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -97,7 +97,7 @@ GameActions::Result FootpathRemoveAction::Execute() const
         }
         FootpathRemoveEdgesAt(_loc, footpathElement);
         map_invalidate_tile_full(_loc);
-        tile_element_remove(footpathElement);
+        TileElementRemove(footpathElement);
         FootpathUpdateQueueChains();
 
         // Remove the spawn point (if there is one in the current tile)

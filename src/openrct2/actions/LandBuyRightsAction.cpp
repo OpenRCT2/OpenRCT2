@@ -74,7 +74,7 @@ GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
 
     CoordsXYZ centre{ (validRange.GetLeft() + validRange.GetRight()) / 2 + 16,
                       (validRange.GetTop() + validRange.GetBottom()) / 2 + 16, 0 };
-    centre.z = tile_element_height(centre);
+    centre.z = TileElementHeight(centre);
 
     res.Position = centre;
     res.Expenditure = ExpenditureType::LandPurchase;

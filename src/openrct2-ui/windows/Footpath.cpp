@@ -182,7 +182,7 @@ public:
     {
         FootpathProvisionalUpdate();
         viewport_set_visibility(0);
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         window_invalidate_by_class(WindowClass::TopToolbar);
         hide_gridlines();
@@ -293,7 +293,7 @@ public:
                 _windowFootpathCost = MONEY32_UNDEFINED;
                 tool_cancel();
                 FootpathProvisionalUpdate();
-                map_invalidate_map_selection_tiles();
+                MapInvalidateMapSelectionTiles();
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                 _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
                 tool_set(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
@@ -310,7 +310,7 @@ public:
                 _windowFootpathCost = MONEY32_UNDEFINED;
                 tool_cancel();
                 FootpathProvisionalUpdate();
-                map_invalidate_map_selection_tiles();
+                MapInvalidateMapSelectionTiles();
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                 _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
                 tool_set(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::Crosshair);
@@ -765,7 +765,7 @@ private:
      */
     void WindowFootpathSetProvisionalPathAtPoint(const ScreenCoordsXY& screenCoords)
     {
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
         auto info = get_map_coordinates_from_pos(
@@ -846,7 +846,7 @@ private:
         int32_t direction;
         TileElement* tileElement;
 
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
@@ -878,7 +878,7 @@ private:
         gMapSelectArrowPosition = CoordsXYZ{ mapCoords, z };
         gMapSelectArrowDirection = direction;
 
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
     }
 
     /**
@@ -1115,7 +1115,7 @@ private:
         TileElement* tileElement;
         int32_t z, zLow;
 
-        if (!map_is_location_valid(gFootpathConstructFromPosition))
+        if (!MapIsLocationValid(gFootpathConstructFromPosition))
         {
             return nullptr;
         }
@@ -1188,7 +1188,7 @@ private:
     {
         if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
         {
-            map_invalidate_map_selection_tiles();
+            MapInvalidateMapSelectionTiles();
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
 
@@ -1196,7 +1196,7 @@ private:
             gMapSelectionTiles.clear();
             gMapSelectionTiles.push_back({ gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
                                            gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
-            map_invalidate_map_selection_tiles();
+            MapInvalidateMapSelectionTiles();
         }
 
         uint64_t pressedWidgets = pressed_widgets

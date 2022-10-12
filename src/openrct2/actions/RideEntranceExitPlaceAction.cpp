@@ -92,7 +92,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     }
 
     auto z = ride->GetStation(_stationNum).GetBaseZ();
-    if (!LocationValid(_loc) || (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z })))
+    if (!LocationValid(_loc) || (!gCheatsSandboxMode && !MapIsLocationOwned({ _loc, z })))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -225,7 +225,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
     const auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                    : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
 
-    if (!gCheatsSandboxMode && !map_is_location_owned(loc))
+    if (!gCheatsSandboxMode && !MapIsLocationOwned(loc))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -254,7 +254,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
         return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_TOO_HIGH);
     }
     auto res = GameActions::Result();
-    res.Position = { loc.ToTileCentre(), tile_element_height(loc) };
+    res.Position = { loc.ToTileCentre(), TileElementHeight(loc) };
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Cost += canBuild.Cost;
     return res;

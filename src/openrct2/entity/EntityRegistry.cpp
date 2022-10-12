@@ -454,7 +454,7 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
     }
 
     auto loc = newLocation;
-    if (!map_is_location_valid(loc))
+    if (!MapIsLocationValid(loc))
     {
         loc.x = LOCATION_NULL;
     }

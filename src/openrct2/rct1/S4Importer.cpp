@@ -2538,9 +2538,9 @@ namespace RCT1
                     station.Entrance = entranceCoords;
                     station.Exit = exitCoords;
 
-                    auto entranceElement = map_get_ride_exit_element_at(entranceCoords.ToCoordsXYZD(), false);
+                    auto entranceElement = MapGetRideExitElementAt(entranceCoords.ToCoordsXYZD(), false);
                     entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
-                    auto exitElement = map_get_ride_entrance_element_at(exitCoords.ToCoordsXYZD(), false);
+                    auto exitElement = MapGetRideEntranceElementAt(exitCoords.ToCoordsXYZD(), false);
                     exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
 
                     // Trigger footpath update

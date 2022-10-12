@@ -48,8 +48,8 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
     auto validRange = ClampRangeWithinMap(_range);
     res.Position.x = ((validRange.GetLeft() + validRange.GetRight()) / 2) + 16;
     res.Position.y = ((validRange.GetTop() + validRange.GetBottom()) / 2) + 16;
-    int32_t z = tile_element_height(res.Position);
-    int16_t waterHeight = tile_element_water_height(res.Position);
+    int32_t z = TileElementHeight(res.Position);
+    int16_t waterHeight = TileElementWaterHeight(res.Position);
     if (waterHeight != 0)
     {
         z = waterHeight;
@@ -73,7 +73,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(CoordsXY{ x, y }))
+                if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
                     continue;
                 }
@@ -138,7 +138,7 @@ uint16_t WaterRaiseAction::GetHighestHeight(const MapRange& validRange) const
         {
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(CoordsXY{ x, y }))
+                if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
                     continue;
                 }

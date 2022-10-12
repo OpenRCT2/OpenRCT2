@@ -1058,7 +1058,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             if (w != nullptr)
             {
                 auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
-                location.z = tile_element_height(location);
+                location.z = TileElementHeight(location);
                 w->SetLocation(location);
                 viewport_update_position(w);
                 console.Execute("get location");

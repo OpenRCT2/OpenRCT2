@@ -87,7 +87,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
         }
 
         // Check if the land is owned
-        if (!map_is_location_owned(_loc))
+        if (!MapIsLocationOwned(_loc))
         {
             res.Error = GameActions::Status::NoClearance;
             res.ErrorTitle = STR_CANT_REMOVE_THIS;
@@ -128,10 +128,10 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res.Position.z = tile_element_height(res.Position);
+    res.Position.z = TileElementHeight(res.Position);
 
     map_invalidate_tile_full(_loc);
-    tile_element_remove(tileElement);
+    TileElementRemove(tileElement);
 
     return res;
 }

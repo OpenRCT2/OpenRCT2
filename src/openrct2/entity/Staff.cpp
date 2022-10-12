@@ -81,7 +81,7 @@ template<> bool EntityBase::Is<Staff>() const
 bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
 {
     // Check if location is in the park
-    if (!map_is_location_owned_or_has_rights(loc))
+    if (!MapIsLocationOwnedOrHasRights(loc))
         return false;
 
     // Check if staff has patrol area
@@ -428,7 +428,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
 
         CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[chosenDirection];
 
-        if (!map_is_location_valid(chosenTile))
+        if (!MapIsLocationValid(chosenTile))
             continue;
 
         auto surfaceElement = MapGetSurfaceElementAt(chosenTile);
@@ -461,7 +461,7 @@ Direction Staff::HandymanDirectionRandSurface(uint8_t validDirections) const
 
         CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
-        if (map_surface_is_blocked(chosenTile))
+        if (MapSurfaceIsBlocked(chosenTile))
             continue;
 
         break;
@@ -503,7 +503,7 @@ bool Staff::DoHandymanPathFinding()
         }
         else
         {
-            auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ NextLoc });
+            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ NextLoc });
 
             if (pathElement == nullptr)
                 return true;
@@ -554,7 +554,7 @@ bool Staff::DoHandymanPathFinding()
 
     CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
-    while (!map_is_location_valid(chosenTile))
+    while (!MapIsLocationValid(chosenTile))
     {
         newDirection = HandymanDirectionRandSurface(validDirections);
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
@@ -599,7 +599,7 @@ Direction Staff::DirectionSurface(Direction initialDirection) const
 
         CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[direction];
 
-        if (!map_surface_is_blocked(chosenTile))
+        if (!MapSurfaceIsBlocked(chosenTile))
         {
             return direction;
         }
@@ -759,7 +759,7 @@ bool Staff::DoMechanicPathFinding()
     }
     else
     {
-        auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ NextLoc });
+        auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ NextLoc });
         if (pathElement == nullptr)
             return true;
 
@@ -771,7 +771,7 @@ bool Staff::DoMechanicPathFinding()
 
     CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
-    while (!map_is_location_valid(chosenTile))
+    while (!MapIsLocationValid(chosenTile))
     {
         newDirection = MechanicDirectionSurface();
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
@@ -840,7 +840,7 @@ bool Staff::DoMiscPathFinding()
     }
     else
     {
-        auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ NextLoc });
+        auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ NextLoc });
         if (pathElement == nullptr)
             return true;
 
@@ -849,7 +849,7 @@ bool Staff::DoMiscPathFinding()
 
     CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
-    while (!map_is_location_valid(chosenTile))
+    while (!MapIsLocationValid(chosenTile))
     {
         newDirection = DirectionSurface(scenario_rand() & 3);
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
@@ -1074,7 +1074,7 @@ void Staff::UpdateMowing()
     {
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            int16_t checkZ = tile_element_height(*loc);
+            int16_t checkZ = TileElementHeight(*loc);
             MoveTo({ loc.value(), checkZ });
             return;
         }

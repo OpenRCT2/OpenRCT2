@@ -78,7 +78,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
     auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
     auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
-    auto heightMid = tile_element_height({ xMid, yMid });
+    auto heightMid = TileElementHeight({ xMid, yMid });
 
     res.Position.x = xMid;
     res.Position.y = yMid;
@@ -104,7 +104,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(coords))
+                if (!MapIsLocationInPark(coords))
                     continue;
             }
 
@@ -154,7 +154,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
     auto validRange = ClampRangeWithinMap(_range.Normalise());
     auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
     auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
-    auto heightMid = tile_element_height({ xMid, yMid });
+    auto heightMid = TileElementHeight({ xMid, yMid });
 
     res.Position.x = xMid;
     res.Position.y = yMid;
@@ -172,7 +172,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(coords))
+                if (!MapIsLocationInPark(coords))
                     continue;
             }
 
@@ -198,7 +198,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
                         surfaceElement->SetSurfaceStyle(_surfaceStyle);
 
                         map_invalidate_tile_full(coords);
-                        FootpathRemoveLitter({ coords, tile_element_height(coords) });
+                        FootpathRemoveLitter({ coords, TileElementHeight(coords) });
                     }
                 }
             }

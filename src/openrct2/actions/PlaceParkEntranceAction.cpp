@@ -93,7 +93,7 @@ GameActions::Result PlaceParkEntranceAction::Query() const
         }
 
         // Check that entrance element does not already exist at this location
-        EntranceElement* entranceElement = map_get_park_entrance_element_at(entranceLoc, false);
+        EntranceElement* entranceElement = MapGetParkEntranceElementAt(entranceLoc, false);
         if (entranceElement != nullptr)
         {
             return GameActions::Result(GameActions::Status::ItemAlreadyPlaced, STR_CANT_BUILD_THIS_HERE, STR_NONE);

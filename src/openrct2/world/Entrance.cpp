@@ -214,7 +214,7 @@ void ParkEntranceFixLocations(void)
     gParkEntrances.erase(
         std::remove_if(
             gParkEntrances.begin(), gParkEntrances.end(),
-            [](const auto& entrance) { return map_get_park_entrance_element_at(entrance, false) == nullptr; }),
+            [](const auto& entrance) { return MapGetParkEntranceElementAt(entrance, false) == nullptr; }),
         gParkEntrances.end());
 }
 
