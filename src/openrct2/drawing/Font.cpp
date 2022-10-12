@@ -298,11 +298,6 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
 
 int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t codepoint)
 {
-    if (fontSpriteBase == FontSpriteBase::MEDIUM_DARK || fontSpriteBase == FontSpriteBase::MEDIUM_EXTRA_DARK)
-    {
-        fontSpriteBase = FontSpriteBase::MEDIUM;
-    }
-
     int32_t glyphIndex = font_sprite_get_codepoint_offset(codepoint);
     int32_t baseFontIndex = font_get_font_index_from_sprite_base(fontSpriteBase);
     if (glyphIndex >= FONT_SPRITE_GLYPH_COUNT)

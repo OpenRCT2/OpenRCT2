@@ -30,12 +30,20 @@ enum class TextUnderline
     On,
 };
 
+enum class TextDarkness
+{
+    Regular = 0,
+    Dark = 1,
+    ExtraDark = 2,
+};
+
 struct TextPaint
 {
     colour_t Colour = COLOUR_BLACK;
     FontSpriteBase SpriteBase = FontSpriteBase::MEDIUM;
     TextUnderline UnderlineText = TextUnderline::Off;
     TextAlignment Alignment = TextAlignment::LEFT;
+    TextDarkness Darkness = TextDarkness::Regular;
 
     TextPaint() = default;
     TextPaint(colour_t colour)
@@ -99,6 +107,12 @@ struct TextPaint
         , Alignment(alignment)
     {
     }
+    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextDarkness darkness)
+        : Colour(colour)
+        , SpriteBase(spriteBase)
+        , Darkness(darkness)
+    {
+    }
     TextPaint(colour_t colour, TextUnderline underlineText, TextAlignment alignment)
         : Colour(colour)
         , UnderlineText(underlineText)
@@ -117,6 +131,13 @@ struct TextPaint
         , SpriteBase(spriteBase)
         , UnderlineText(underlineText)
         , Alignment(alignment)
+    {
+    }
+    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextAlignment alignment, TextDarkness darkness)
+        : Colour(colour)
+        , SpriteBase(spriteBase)
+        , Alignment(alignment)
+        , Darkness(darkness)
     {
     }
 };

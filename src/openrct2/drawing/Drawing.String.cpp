@@ -917,17 +917,7 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
 {
     if (colour != TEXT_COLOUR_254 && colour != TEXT_COLOUR_255)
     {
-        info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE | TEXT_DRAW_FLAG_DARK | TEXT_DRAW_FLAG_EXTRA_DARK);
-        if (info->font_sprite_base == FontSpriteBase::MEDIUM_DARK
-            || info->font_sprite_base == FontSpriteBase::MEDIUM_EXTRA_DARK)
-        {
-            info->flags |= TEXT_DRAW_FLAG_DARK;
-            if (info->font_sprite_base == FontSpriteBase::MEDIUM_EXTRA_DARK)
-            {
-                info->flags |= TEXT_DRAW_FLAG_EXTRA_DARK;
-            }
-            info->font_sprite_base = FontSpriteBase::MEDIUM;
-        }
+        info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE);
         if (colour & COLOUR_FLAG_OUTLINE)
         {
             info->flags |= TEXT_DRAW_FLAG_OUTLINE;
@@ -980,7 +970,7 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
 
 void ttf_draw_string(
     rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
-    FontSpriteBase fontSpriteBase)
+    FontSpriteBase fontSpriteBase, TextDarkness darkness)
 {
     if (text == nullptr)
         return;
@@ -1001,6 +991,15 @@ void ttf_draw_string(
     if (noFormatting)
     {
         info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
+    }
+
+    if (darkness == TextDarkness::Dark)
+    {
+        info.flags |= TEXT_DRAW_FLAG_DARK;
+    }
+    else if (darkness == TextDarkness::ExtraDark)
+    {
+        info.flags |= (TEXT_DRAW_FLAG_DARK | TEXT_DRAW_FLAG_EXTRA_DARK);
     }
 
     std::memcpy(info.palette, gTextPalette, sizeof(info.palette));

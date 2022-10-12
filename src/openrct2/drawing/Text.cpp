@@ -100,7 +100,7 @@ static void DrawText(
             break;
     }
 
-    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.SpriteBase);
+    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.SpriteBase, paint.Darkness);
 
     if (paint.UnderlineText == TextUnderline::On)
     {
