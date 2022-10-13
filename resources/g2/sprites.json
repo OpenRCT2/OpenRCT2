@@ -15944,6 +15944,16 @@
         "y_offset": 1
     },
     {
+        "path": "track/bm_invert/booster_1.png",
+        "x_offset": -25,
+        "y_offset": -5
+    },
+    {
+        "path": "track/bm_invert/booster_2.png",
+        "x_offset": -25,
+        "y_offset": -5
+    },
+    {
         "path": "track/lim/barrel_roll_left_1_1.png",
         "x_offset": -22,
         "y_offset": 9,
