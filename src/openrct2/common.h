@@ -125,6 +125,14 @@ constexpr money64 ToMoney64(money16 value)
     return value == MONEY16_UNDEFINED ? MONEY64_UNDEFINED : value;
 }
 
+// Note: Only valid for 5 decimal places.
+constexpr int32_t operator"" _mph(long double speedMph)
+{
+    uint32_t wholeNumber = speedMph;
+    uint64_t fraction = (speedMph - wholeNumber) * 100000;
+    return wholeNumber << 16 | ((fraction << 16) / 100000);
+}
+
 using StringId = uint16_t;
 
 #define SafeFree(x)                                                                                                            \
