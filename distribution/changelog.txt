@@ -1,6 +1,7 @@
 0.4.3 (in development)
 ------------------------------------------------------------------------
 - Fix: [#14312] Research ride type message incorrect.
+- Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17763] Missing validation on invalid characters in file name.
 - Fix: [#17853] Invention name tears while being dragged.
 - Fix: [#18064] Unable to dismiss notification messages.
@@ -58,7 +59,6 @@
 - Fix: [#16476] The game sometimes crashes when demolishing a maze.
 - Fix: [#17053] Crash when trying to open files under 4 bytes in length.
 - Fix: [#17312] (Flying) Inline Twist appearing under the surface when placed on ground level.
-- Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17339] Distorted visuals when changing scaling factor between integer numbers in OpenGL rendering mode.
 - Fix: [#17394] Six-seater Hyper-Twister Trains focuses ride window camera on Car 2 rather than Car 1 (original bug).
 - Fix: [#17430] Possible crash when toggling tile element visibility in multiplayer.
