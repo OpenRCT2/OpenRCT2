@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#17782] The Flying Coaster now has access to boosters and can draw outside loops.
 - Fix: [#14312] Research ride type message incorrect.
+- Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17763] Missing validation on invalid characters in file name.
 - Fix: [#17853] Invention name tears while being dragged.
 - Fix: [#18064] Unable to dismiss notification messages.
