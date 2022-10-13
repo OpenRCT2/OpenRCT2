@@ -27,7 +27,8 @@ static rct_widget window_title_logo_widgets[] = {
     WIDGETS_END,
 };
 
-class TitleLogoWindow final : public Window {
+class TitleLogoWindow final : public Window
+{
 public:
     /**
      * Creates the window containing the logo and the expansion packs on the title screen.
@@ -42,7 +43,8 @@ public:
         colours[2] = TRANSLUCENT(COLOUR_GREY);
     }
 
-    void OnMouseUp(WidgetIndex widgetIndex) override {
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
         switch (widgetIndex)
         {
             case WIDX_LOGO:
@@ -68,7 +70,8 @@ rct_window* WindowTitleLogoOpen()
     auto* window = window_bring_to_front_by_class(WindowClass::TitleLogo);
     if (window == nullptr)
     {
-        window = WindowCreate<TitleLogoWindow>(WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT);
+        window = WindowCreate<TitleLogoWindow>(
+            WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT);
     }
     return window;
 }
