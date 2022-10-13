@@ -13,6 +13,7 @@
 - Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
 - Improved: [#18192, #18214] Tycoon Park has been added Extras tab, Competition scenarios have received their own section.
 - Improved: [#18250] Added modern style file and folder pickers on Windows.
+- Improved: [#18332] Allow Invert RC to draw booster.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 
 0.4.2 (2022-10-05)

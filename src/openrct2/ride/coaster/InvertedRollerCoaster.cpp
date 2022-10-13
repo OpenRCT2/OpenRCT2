@@ -10499,6 +10499,28 @@ static void inverted_rc_track_right_banked_25_deg_down_to_flat(
     inverted_rc_track_flat_to_left_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
+// Added by OpenRCT2
+
+static void inverted_rc_track_booster(
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    const auto imageId = (direction & 1) ? SPR_G2_BM_INVERT_BOOSTER_2 : SPR_G2_BM_INVERT_BOOSTER_1;
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { 0, 0, height + 29 }, { 32, 20, 1 },
+        { 0, 6, height + 29 });
+
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    if (track_paint_util_should_paint_supports(session.MapPosition))
+    {
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int32_t trackType)
 {
     switch (trackType)
@@ -10793,6 +10815,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int32_t trackType)
             return inverted_rc_track_left_banked_25_deg_down_to_flat;
         case TrackElemType::RightBankedDown25ToFlat:
             return inverted_rc_track_right_banked_25_deg_down_to_flat;
+
+        case TrackElemType::Booster:
+            return inverted_rc_track_booster;
     }
     return nullptr;
 }
