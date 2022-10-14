@@ -67,12 +67,20 @@ void AssetPackManager::Scan()
 
     auto context = GetContext();
     auto env = context->GetPlatformEnvironment();
-    auto assetPackDirectory = fs::u8path(env->GetDirectoryPath(DIRBASE::USER, DIRID::ASSET_PACK));
-    Platform::EnsureDirectoryExists(assetPackDirectory.u8string());
 
+    auto openrct2Dir = fs::u8path(env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::ASSET_PACK));
+    Scan(openrct2Dir);
+
+    auto userDirectory = fs::u8path(env->GetDirectoryPath(DIRBASE::USER, DIRID::ASSET_PACK));
+    Platform::EnsureDirectoryExists(userDirectory.u8string());
+    Scan(userDirectory);
+}
+
+void AssetPackManager::Scan(const fs::path& directory)
+{
     // Recursively scan for .parkap files
     std::error_code ec;
-    for (const fs::directory_entry& entry : fs::recursive_directory_iterator(assetPackDirectory, ec))
+    for (const fs::directory_entry& entry : fs::recursive_directory_iterator(directory, ec))
     {
         if (!entry.is_directory())
         {

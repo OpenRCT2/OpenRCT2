@@ -47,6 +47,10 @@
     <TitleSequencesSha1>4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.3.5/objects.zip</ObjectsUrl>
     <ObjectsSha1>58bddc5f845d8c7eb5d9fd25e52ab1fed24c85db</ObjectsSha1>
+    <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.1/opensound.zip</OpenSFXUrl>
+    <OpenSFXSha1>8f04aea33f8034131c3069f6accacce0d94f80c1</OpenSFXSha1>
+    <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.0.1/openmusic.zip</OpenMSXUrl>
+    <OpenMSXSha1>8ff94490180e2fbfdd13a4130eb300da726ca406</OpenMSXSha1>
     <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.70/replays.zip</ReplaysUrl>
     <ReplaysSha1>09B339E86AAE81580C5AC3E23AC4BC9E030DA076</ReplaysSha1>
   </PropertyGroup>
@@ -126,6 +130,24 @@
                         Sha1="$(ObjectsSha1)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)data\object" />
+  </Target>
+
+  <!-- Target to download OpenSFX -->
+  <Target Name="DownloadOpenSFX" AfterTargets="Build">
+    <DownloadDependency Name="OpenSFX"
+                        Url="$(OpenSFXUrl)"
+                        Sha1="$(OpenSFXSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data" />
+  </Target>
+
+  <!-- Target to download OpenMSX -->
+  <Target Name="DownloadOpenMSX" AfterTargets="Build">
+    <DownloadDependency Name="OpenMSX"
+                        Url="$(OpenMSXUrl)"
+                        Sha1="$(OpenMSXSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data" />
   </Target>
 
   <!-- Target to download replays -->
