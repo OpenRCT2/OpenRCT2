@@ -61,7 +61,7 @@ static uint32_t GetObservationTowerVehicleBaseImageId(const Vehicle* vehicle, co
  *  rct2: 0x006D6258
  */
 void VehicleVisualObservationTower(
-    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
     auto baseImageId = GetObservationTowerVehicleBaseImageId(vehicle, carEntry, imageDirection);
@@ -80,7 +80,7 @@ void VehicleVisualObservationTower(
 
 /** rct2: 0x0070DD6C */
 static void PaintObservationTowerBase(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -153,7 +153,7 @@ static void PaintObservationTowerBase(
 
 /** rct2: 0x0070DD7C */
 static void PaintObservationTowerSection(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence == 1)

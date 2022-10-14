@@ -365,7 +365,7 @@ void Duck::Serialise(DataSerialiser& stream)
     stream << state;
 }
 
-void Duck::Paint(paint_session& session, int32_t imageDirection) const
+void Duck::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 

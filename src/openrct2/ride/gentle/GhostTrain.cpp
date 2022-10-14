@@ -177,7 +177,7 @@ static uint8_t GetTunnelDoorsImageStraightFlat(const TrackElement& trackElement,
 
 /** rct2: 0x00770BEC */
 static void PaintGhostTrainTrackFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(GhostTrainTrackPiecesFlat[direction]);
@@ -199,7 +199,7 @@ static void PaintGhostTrainTrackFlat(
 
 /** rct2: 0x00770BFC */
 static void PaintGhostTrainTrack25DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(GhostTrainTrackPieces25DegUp[direction][0]);
@@ -236,7 +236,7 @@ static void PaintGhostTrainTrack25DegUp(
 
 /** rct2: 0x00770C0C */
 static void PaintGhostTrainTrackFlatTo25DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isBackwards = trackElement.GetTrackType() == TrackElemType::Down25ToFlat;
@@ -283,7 +283,7 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
 }
 
 static void PaintGhostTrainTrack25DegUpToFlatShared(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(GhostTrainTrackPieces25DegUpToFlat[direction][0]);
@@ -304,7 +304,7 @@ static void PaintGhostTrainTrack25DegUpToFlatShared(
 
 /** rct2: 0x00770C1C */
 static void PaintGhostTrainTrack25DegUpToFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintGhostTrainTrack25DegUpToFlatShared(session, ride, trackSequence, direction, height, trackElement);
@@ -328,7 +328,7 @@ static void PaintGhostTrainTrack25DegUpToFlat(
 
 /** rct2: 0x00770C2C */
 static void PaintGhostTrainTrack25DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintGhostTrainTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -336,7 +336,7 @@ static void PaintGhostTrainTrack25DegDown(
 
 /** rct2: 0x00770C3C */
 static void PaintGhostTrainTrackFlatTo25DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintGhostTrainTrack25DegUpToFlatShared(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -360,7 +360,7 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
 
 /** rct2: 0x00770C4C */
 static void PaintGhostTrainTrack25DegDownToFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintGhostTrainTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -368,7 +368,7 @@ static void PaintGhostTrainTrack25DegDownToFlat(
 
 /** rct2: 0x00770C5C, 0x00770C6C, 0x00770C7C */
 static void PaintGhostTrainStation(
-    paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -407,7 +407,7 @@ static void PaintGhostTrainStation(
 
 /** rct2: 0x00770C9C */
 static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_3_tiles_paint(
@@ -448,7 +448,7 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
 
 /** rct2: 0x00770CAC */
 static void PaintGhostTrainTrackLeftQuarterTurn3Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -457,7 +457,7 @@ static void PaintGhostTrainTrackLeftQuarterTurn3Tiles(
 
 /** rct2: 0x00770CAC */
 static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isBackwards = trackElement.GetTrackType() == TrackElemType::RightQuarterTurn1Tile;
@@ -484,7 +484,7 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
 
 /** rct2: 0x00770CBC */
 static void PaintGhostTrainTrackRightQuarterTurn1Tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintGhostTrainTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
@@ -492,7 +492,7 @@ static void PaintGhostTrainTrackRightQuarterTurn1Tile(
 
 /** rct2: 0x00770CCC */
 static void PaintGhostTrainTrackSpinningTunnel(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(ghost_train_track_pieces_spinning_tunnel_track[direction]);
@@ -512,7 +512,7 @@ static void PaintGhostTrainTrackSpinningTunnel(
 
 /** rct2: 0x00770CDC */
 static void PaintGhostTrainTrackBrakes(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(GhostTrainTrackPiecesBrakes[direction]);

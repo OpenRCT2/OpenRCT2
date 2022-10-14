@@ -18,7 +18,7 @@
 
 /** rct2: 0x */
 static void PaintMiniHelicoptersTrackStation(
-    paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -56,7 +56,7 @@ static void PaintMiniHelicoptersTrackStation(
 
 /** rct2: 0x0081F348 */
 static void PaintMiniHelicoptersTrackFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -88,7 +88,7 @@ static void PaintMiniHelicoptersTrackFlat(
 
 /** rct2: 0x0081F368 */
 static void PaintMiniHelicoptersTrackFlatTo25DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -133,7 +133,7 @@ static void PaintMiniHelicoptersTrackFlatTo25DegUp(
 
 /** rct2: 0x0081F358 */
 static void PaintMiniHelicoptersTrack25DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -174,7 +174,7 @@ static void PaintMiniHelicoptersTrack25DegUp(
 
 /** rct2: 0x0081F378 */
 static void PaintMiniHelicoptersTrack25DegUpToFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -219,7 +219,7 @@ static void PaintMiniHelicoptersTrack25DegUpToFlat(
 
 /** rct2: 0x */
 static void PaintMiniHelicoptersTrackFlatTo25DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintMiniHelicoptersTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -227,7 +227,7 @@ static void PaintMiniHelicoptersTrackFlatTo25DegDown(
 
 /** rct2: 0x0081F388 */
 static void PaintMiniHelicoptersTrack25DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintMiniHelicoptersTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -235,7 +235,7 @@ static void PaintMiniHelicoptersTrack25DegDown(
 
 /** rct2: 0x0081F3A8 */
 static void PaintMiniHelicoptersTrack25DegDownToFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintMiniHelicoptersTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -243,7 +243,7 @@ static void PaintMiniHelicoptersTrack25DegDownToFlat(
 
 /** rct2: 0x0081F3E8 */
 static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
@@ -281,7 +281,7 @@ static constexpr const uint8_t MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMa
 
 /** rct2: 0x0081F3F8 */
 static void PaintMiniHelicoptersTrackRightQuarterTurn3Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[trackSequence];
@@ -290,7 +290,7 @@ static void PaintMiniHelicoptersTrackRightQuarterTurn3Tiles(
 
 /** rct2: 0x0081F408 */
 static void PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_1_tile_paint(
@@ -305,7 +305,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(
 
 /** rct2: 0x0081F418 */
 static void PaintMiniHelicoptersTrackRightQuarterTurn1Tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);

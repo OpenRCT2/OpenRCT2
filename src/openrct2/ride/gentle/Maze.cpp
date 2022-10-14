@@ -53,7 +53,7 @@ enum
  * rct: 0x004ACF4A
  */
 static void MazePaintSetup(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint16_t mazeEntry = trackElement.GetMazeEntry();

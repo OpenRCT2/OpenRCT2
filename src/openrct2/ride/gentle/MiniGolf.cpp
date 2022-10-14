@@ -443,8 +443,8 @@ const size_t MiniGolfPeepAnimationLengths[] = {
 };
 // clang-format on
 
-static paint_struct* MiniGolfPaintUtil7C(
-    paint_session& session, uint8_t direction, ImageId imageId, int8_t x_offset, int8_t yOffset, int16_t boundBoxLengthX,
+static PaintStruct* MiniGolfPaintUtil7C(
+    PaintSession& session, uint8_t direction, ImageId imageId, int8_t x_offset, int8_t yOffset, int16_t boundBoxLengthX,
     int16_t boundBoxLengthY, int8_t boundBoxLengthZ, int16_t zOffset, int16_t boundBoxOffsetX, int16_t boundBoxOffsetY,
     int16_t boundBoxOffsetZ, uint32_t rotation)
 {
@@ -460,7 +460,7 @@ static paint_struct* MiniGolfPaintUtil7C(
         { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ });
 }
 
-static bool MiniGolfPaintUtilShouldDrawFence(paint_session& session, const TrackElement& trackElement)
+static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackElement& trackElement)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -484,7 +484,7 @@ static bool MiniGolfPaintUtilShouldDrawFence(paint_session& session, const Track
 
 /** rct2: 0x0087F10C */
 static void PaintMiniGolfTrackFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -531,7 +531,7 @@ static void PaintMiniGolfTrackFlat(
 
 /** rct2: 0x0087F11C */
 static void PaintMiniGolfTrack25DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -570,7 +570,7 @@ static void PaintMiniGolfTrack25DegUp(
 
 /** rct2: 0x0087F12C */
 static void PaintMiniGolfTrackFlatTo25DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -609,7 +609,7 @@ static void PaintMiniGolfTrackFlatTo25DegUp(
 
 /** rct2: 0x0087F13C */
 static void PaintMiniGolfTrack25DegUpToFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -648,7 +648,7 @@ static void PaintMiniGolfTrack25DegUpToFlat(
 
 /** rct2: 0x0087F14C */
 static void PaintMiniGolfTrack25DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintMiniGolfTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -656,7 +656,7 @@ static void PaintMiniGolfTrack25DegDown(
 
 /** rct2: 0x0087F15C */
 static void PaintMiniGolfTrackFlatTo25DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintMiniGolfTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -664,7 +664,7 @@ static void PaintMiniGolfTrackFlatTo25DegDown(
 
 /** rct2: 0x0087F16C */
 static void PaintMiniGolfTrack25DegDownToFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintMiniGolfTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -672,7 +672,7 @@ static void PaintMiniGolfTrack25DegDownToFlat(
 
 /** rct2: 0x0087F17C, 0x0087F18C, 0x0087F19C */
 static void PaintMiniGolfStation(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     const auto* stationObj = ride.GetStationObject();
@@ -734,7 +734,7 @@ static void PaintMiniGolfStation(
 
 /** rct2: 0x0087F1AC */
 static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -814,14 +814,14 @@ static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
 
 /** rct2: 0x0087F1BC */
 static void PaintMiniGolfTrackRightQuarterTurn1Tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintMiniGolfTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 static void PaintMiniGolfHoleAb(
-    paint_session& session, uint8_t trackSequence, uint8_t direction, int32_t height, const uint32_t sprites[4][2][2])
+    PaintSession& session, uint8_t trackSequence, uint8_t direction, int32_t height, const uint32_t sprites[4][2][2])
 {
     ImageId imageId;
     CoordsXY boundBox, boundBoxOffset;
@@ -876,7 +876,7 @@ static void PaintMiniGolfHoleAb(
 
 /** rct2: 0x0087F1CC */
 static void PaintMiniGolfHoleA(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintMiniGolfHoleAb(session, trackSequence, direction, height, MiniGolfTrackSpritesHoleA);
@@ -884,7 +884,7 @@ static void PaintMiniGolfHoleA(
 
 /** rct2: 0x0087F1DC */
 static void PaintMiniGolfHoleB(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintMiniGolfHoleAb(session, trackSequence, direction, height, MiniGolfTrackSpritesHoleB);
@@ -892,7 +892,7 @@ static void PaintMiniGolfHoleB(
 
 /** rct2: 0x0087F1EC */
 static void PaintMiniGolfHoleC(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -963,7 +963,7 @@ static void PaintMiniGolfHoleC(
 
 /** rct2: 0x0087F1FC */
 static void PaintMiniGolfHoleD(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -1057,7 +1057,7 @@ static void PaintMiniGolfHoleD(
 
 /** rct2: 0x0087F1FC */
 static void PaintMiniGolfHoleE(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -1202,7 +1202,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(int32_t trackType)
  * rct2: 0x006D42F0
  */
 void vehicle_visual_mini_golf_player(
-    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
+    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->num_peeps == 0)
     {
@@ -1239,7 +1239,7 @@ void vehicle_visual_mini_golf_player(
  * rct2: 0x006D43C6
  */
 void VehicleVisualMiniGolfBall(
-    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
+    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->mini_golf_current_animation != MiniGolfAnimation::PlaceBallDown)
     {

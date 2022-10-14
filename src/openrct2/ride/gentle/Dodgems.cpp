@@ -34,7 +34,7 @@ static constexpr const uint32_t DodgemsFenceSprites[] = {
     SprDodgemsFenceTopLeft,
 };
 
-static void PaintDodgemsRoof(paint_session& session, int32_t height, int32_t offset)
+static void PaintDodgemsRoof(PaintSession& session, int32_t height, int32_t offset)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SprDodgemsRoofFrame + offset));
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 2 });
@@ -44,7 +44,7 @@ static void PaintDodgemsRoof(paint_session& session, int32_t height, int32_t off
 }
 
 static void PaintDodgems(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];

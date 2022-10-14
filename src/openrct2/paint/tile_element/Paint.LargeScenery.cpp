@@ -53,7 +53,7 @@ static constexpr const BoundBoxXY LargeSceneryBoundBoxes[] = {
 // clang-format on
 
 static void PaintLargeScenerySupports(
-    paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
+    PaintSession& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
     const rct_large_scenery_tile& tile)
 {
     PROFILED_FUNCTION();
@@ -105,7 +105,7 @@ static int32_t DivToMinusInfinity(int32_t a, int32_t b)
 }
 
 static void PaintLargeScenery3DTextLine(
-    paint_session& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryText& text, std::string_view line,
+    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryText& text, std::string_view line,
     ImageId imageTemplate, Direction direction, int32_t offsetY)
 {
     PROFILED_FUNCTION();
@@ -181,7 +181,7 @@ static bool Is3DTextSingleLine(const LargeSceneryText& text, std::string_view s)
 }
 
 static void PaintLargeScenery3DText(
-    paint_session& session, const LargeSceneryEntry& sceneryEntry, const rct_large_scenery_tile& tile,
+    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const rct_large_scenery_tile& tile,
     const LargeSceneryElement& tileElement, uint8_t direction, uint16_t height, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -295,7 +295,7 @@ static void PaintLargeScenery3DText(
 }
 
 static void PaintLargeSceneryScrollingText(
-    paint_session& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryElement& tileElement, uint8_t direction,
+    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryElement& tileElement, uint8_t direction,
     uint16_t height, const CoordsXYZ& bbOffset, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -327,7 +327,7 @@ static void PaintLargeSceneryScrollingText(
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { 1, 1, 21 }, bbOffset);
 }
 
-void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
+void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
 {
     PROFILED_FUNCTION();
 

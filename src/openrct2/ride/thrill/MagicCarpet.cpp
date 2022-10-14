@@ -97,7 +97,7 @@ static Vehicle* GetFirstVehicle(const Ride& ride)
 }
 
 static void PaintMagicCarpetRiders(
-    paint_session& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, Direction direction,
+    PaintSession& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, Direction direction,
     const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 1 })
@@ -114,7 +114,7 @@ static void PaintMagicCarpetRiders(
 }
 
 static void PaintMagicCarpetFrame(
-    paint_session& session, Plane plane, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
+    PaintSession& session, Plane plane, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetFrameImage(plane, direction);
     auto imageTemplate = session.TrackColours[SCHEME_TRACK];
@@ -130,7 +130,7 @@ static void PaintMagicCarpetFrame(
 }
 
 static void PaintMagicCarpetPendulum(
-    paint_session& session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
+    PaintSession& session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetPendulumImage(plane, direction, swing);
     auto imageTemplate = session.TrackColours[SCHEME_TRACK];
@@ -139,7 +139,7 @@ static void PaintMagicCarpetPendulum(
 }
 
 static void PaintMagicCarpetVehicle(
-    paint_session& session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const BoundBoxXYZ& bb)
+    PaintSession& session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const BoundBoxXYZ& bb)
 {
     const auto* rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -181,7 +181,7 @@ static void PaintMagicCarpetVehicle(
 }
 
 static void PaintMagicCarpetStructure(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     auto swing = 0;
     auto* vehicle = GetFirstVehicle(ride);
@@ -210,7 +210,7 @@ static void PaintMagicCarpetStructure(
 }
 
 static void PaintMagicCarpet(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];

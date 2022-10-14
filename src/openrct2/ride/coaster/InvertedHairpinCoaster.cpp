@@ -20,7 +20,7 @@
 
 /** rct2: 0x00890CB4 */
 static void inverted_hairpin_rc_track_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -82,7 +82,7 @@ static void inverted_hairpin_rc_track_flat(
 
 /** rct2: 0x00890D84, 0x00890D94, 0x00890DA4 */
 static void inverted_hairpin_rc_track_station(
-    paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][3] = {
@@ -110,7 +110,7 @@ static void inverted_hairpin_rc_track_station(
 
 /** rct2: 0x00890CC4 */
 static void inverted_hairpin_rc_track_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -204,7 +204,7 @@ static void inverted_hairpin_rc_track_25_deg_up(
 
 /** rct2: 0x00890CD4 */
 static void inverted_hairpin_rc_track_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -274,7 +274,7 @@ static void inverted_hairpin_rc_track_60_deg_up(
 
 /** rct2: 0x00890CE4 */
 static void inverted_hairpin_rc_track_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -368,7 +368,7 @@ static void inverted_hairpin_rc_track_flat_to_25_deg_up(
 
 /** rct2: 0x00890CF4 */
 static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -450,7 +450,7 @@ static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(
 
 /** rct2: 0x00890D04 */
 static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -556,7 +556,7 @@ static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(
 
 /** rct2: 0x00890D14 */
 static void inverted_hairpin_rc_track_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -650,7 +650,7 @@ static void inverted_hairpin_rc_track_25_deg_up_to_flat(
 
 /** rct2: 0x00890D24 */
 static void inverted_hairpin_rc_track_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     inverted_hairpin_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -658,7 +658,7 @@ static void inverted_hairpin_rc_track_25_deg_down(
 
 /** rct2: 0x00890D34 */
 static void inverted_hairpin_rc_track_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     inverted_hairpin_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -666,7 +666,7 @@ static void inverted_hairpin_rc_track_60_deg_down(
 
 /** rct2: 0x00890D44 */
 static void inverted_hairpin_rc_track_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     inverted_hairpin_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -674,7 +674,7 @@ static void inverted_hairpin_rc_track_flat_to_25_deg_down(
 
 /** rct2: 0x00890D54 */
 static void inverted_hairpin_rc_track_25_deg_down_to_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -682,7 +682,7 @@ static void inverted_hairpin_rc_track_25_deg_down_to_60_deg_down(
 
 /** rct2: 0x00890D64 */
 static void inverted_hairpin_rc_track_60_deg_down_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -690,7 +690,7 @@ static void inverted_hairpin_rc_track_60_deg_down_to_25_deg_down(
 
 /** rct2: 0x00890D74 */
 static void inverted_hairpin_rc_track_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     inverted_hairpin_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -698,7 +698,7 @@ static void inverted_hairpin_rc_track_25_deg_down_to_flat(
 
 /** rct2: 0x00890DB4 */
 static void inverted_hairpin_rc_track_left_quarter_turn_3(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -818,7 +818,7 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3(
 
 /** rct2: 0x00890DC4 */
 static void inverted_hairpin_rc_track_right_quarter_turn_3(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -827,7 +827,7 @@ static void inverted_hairpin_rc_track_right_quarter_turn_3(
 
 /** rct2: 0x00890DD4 */
 static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -922,7 +922,7 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(
 
 /** rct2: 0x00890DE4 */
 static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1017,7 +1017,7 @@ static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(
 
 /** rct2: 0x00890DF4 */
 static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -1027,7 +1027,7 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_down(
 
 /** rct2: 0x00890E04 */
 static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -1037,7 +1037,7 @@ static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_down(
 
 /** rct2: 0x00890E64 */
 static void inverted_hairpin_rc_track_left_quarter_turn_1(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -1086,7 +1086,7 @@ static void inverted_hairpin_rc_track_left_quarter_turn_1(
 
 /** rct2: 0x00890E74 */
 static void inverted_hairpin_rc_track_right_quarter_turn_1(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     inverted_hairpin_rc_track_left_quarter_turn_1(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
@@ -1094,7 +1094,7 @@ static void inverted_hairpin_rc_track_right_quarter_turn_1(
 
 /** rct2: 0x00890E24 */
 static void inverted_hairpin_rc_track_flat_to_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -1176,7 +1176,7 @@ static void inverted_hairpin_rc_track_flat_to_60_deg_up(
 
 /** rct2: 0x00890E34 */
 static void inverted_hairpin_rc_track_60_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -1279,7 +1279,7 @@ static void inverted_hairpin_rc_track_60_deg_up_to_flat(
 
 /** rct2: 0x00890E44 */
 static void inverted_hairpin_rc_track_flat_to_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     inverted_hairpin_rc_track_60_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -1287,7 +1287,7 @@ static void inverted_hairpin_rc_track_flat_to_60_deg_down(
 
 /** rct2: 0x00890E54 */
 static void inverted_hairpin_rc_track_60_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     inverted_hairpin_rc_track_flat_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -1295,7 +1295,7 @@ static void inverted_hairpin_rc_track_60_deg_down_to_flat(
 
 /** rct2: 0x00890E14 */
 static void inverted_hairpin_rc_track_brakes(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -1328,7 +1328,7 @@ static void inverted_hairpin_rc_track_brakes(
 
 /** rct2: 0x00890E84 */
 static void inverted_hairpin_rc_track_block_brakes(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)

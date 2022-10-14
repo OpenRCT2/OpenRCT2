@@ -20,7 +20,7 @@
 #include "../Vehicle.h"
 
 static void PaintEnterpriseRiders(
-    paint_session& session, const rct_ride_entry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
+    PaintSession& session, const rct_ride_entry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
     const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 0 })
@@ -43,7 +43,7 @@ static void PaintEnterpriseRiders(
 }
 
 static void PaintEnterpriseStructure(
-    paint_session& session, const Ride& ride, int8_t xOffset, int8_t yOffset, uint16_t height, const TrackElement& trackElement)
+    PaintSession& session, const Ride& ride, int8_t xOffset, int8_t yOffset, uint16_t height, const TrackElement& trackElement)
 {
     const auto* rideEntry = get_ride_entry(ride.subtype);
     if (rideEntry == nullptr)
@@ -88,7 +88,7 @@ static void PaintEnterpriseStructure(
 }
 
 static void PaintEnterprise(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_4x4[direction][trackSequence];

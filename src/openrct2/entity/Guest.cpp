@@ -5065,7 +5065,7 @@ void Guest::UpdateRideShopLeave()
             return;
     }
 
-    //#11758 Previously SetState(PeepState::Walking) caused Peeps to double-back to exit point of shop
+    // #11758 Previously SetState(PeepState::Walking) caused Peeps to double-back to exit point of shop
     SetState(PeepState::Falling);
 
     auto ride = get_ride(CurrentRide);

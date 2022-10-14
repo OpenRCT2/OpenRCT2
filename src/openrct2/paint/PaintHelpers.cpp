@@ -11,8 +11,8 @@
 #include "../ride/TrackPaint.h"
 #include "Paint.h"
 
-paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
+PaintStruct* PaintAddImageAsParentRotated(
+    PaintSession& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {
     if (direction & 1)
@@ -25,8 +25,8 @@ paint_struct* PaintAddImageAsParentRotated(
     return PaintAddImageAsParent(session, imageId, offset, boundBoxSize, boundBoxOffset);
 }
 
-paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
+PaintStruct* PaintAddImageAsParentRotated(
+    PaintSession& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize)
 {
     if (direction & 1)
@@ -38,8 +38,8 @@ paint_struct* PaintAddImageAsParentRotated(
     return PaintAddImageAsParent(session, image_id, offset, boundBoxSize);
 }
 
-paint_struct* PaintAddImageAsChildRotated(
-    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
+PaintStruct* PaintAddImageAsChildRotated(
+    PaintSession& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {
     if (direction & 1)
@@ -52,7 +52,7 @@ paint_struct* PaintAddImageAsChildRotated(
     return PaintAddImageAsChild(session, image_id, offset, boundBoxSize, boundBoxOffset);
 }
 
-void PaintUtilPushTunnelRotated(paint_session& session, uint8_t direction, uint16_t height, uint8_t type)
+void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type)
 {
     if (direction & 1)
     {

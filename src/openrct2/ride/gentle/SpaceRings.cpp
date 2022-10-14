@@ -34,7 +34,7 @@ static constexpr const uint32_t SpaceRingsFenceSprites[] = {
 
 /** rct2: 0x00768A3B */
 static void PaintSpaceRingsStructure(
-    paint_session& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
 {
     uint32_t vehicleIndex = (segment - direction) & 0x3;
 
@@ -85,7 +85,7 @@ static void PaintSpaceRingsStructure(
 
 /** rct2: 0x00767C40 */
 static void PaintSpaceRings(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];

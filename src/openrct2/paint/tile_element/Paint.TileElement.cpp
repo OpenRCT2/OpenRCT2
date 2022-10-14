@@ -34,8 +34,8 @@
 
 #include <algorithm>
 
-static void BlankTilesPaint(paint_session& session, int32_t x, int32_t y);
-static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoords);
+static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
+static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
 
 const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC
     | SEGMENT_D0 | SEGMENT_D4;
@@ -44,7 +44,7 @@ const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 |
  *
  *  rct2: 0x0068B35F
  */
-void TileElementPaintSetup(paint_session& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
+void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
 {
     PROFILED_FUNCTION();
 
@@ -67,7 +67,7 @@ void TileElementPaintSetup(paint_session& session, const CoordsXY& mapCoords, bo
  *
  *  rct2: 0x0068B60E
  */
-static void BlankTilesPaint(paint_session& session, int32_t x, int32_t y)
+static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
 {
     int32_t dx = 0;
     switch (session.CurrentRotation)
@@ -113,7 +113,7 @@ bool gShowSupportSegmentHeights = false;
  *
  *  rct2: 0x0068B3FB
  */
-static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoords)
+static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords)
 {
     PROFILED_FUNCTION();
 
@@ -330,7 +330,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
 
             int32_t xOffset = sy * 10;
             int32_t yOffset = -22 + sx * 10;
-            paint_struct* ps = PaintAddImageAsParent(
+            PaintStruct* ps = PaintAddImageAsParent(
                 session, imageColourFlats, { xOffset, yOffset, segmentHeight }, { 10, 10, 1 },
                 { xOffset + 1, yOffset + 16, segmentHeight });
             if (ps != nullptr)
@@ -341,7 +341,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     }
 }
 
-void PaintUtilPushTunnelLeft(paint_session& session, uint16_t height, uint8_t type)
+void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, uint8_t type)
 {
     session.LeftTunnels[session.LeftTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
     if (session.LeftTunnelCount < TUNNEL_MAX_COUNT - 1)
@@ -351,7 +351,7 @@ void PaintUtilPushTunnelLeft(paint_session& session, uint16_t height, uint8_t ty
     }
 }
 
-void PaintUtilPushTunnelRight(paint_session& session, uint16_t height, uint8_t type)
+void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, uint8_t type)
 {
     session.RightTunnels[session.RightTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
     if (session.RightTunnelCount < TUNNEL_MAX_COUNT - 1)
@@ -361,12 +361,12 @@ void PaintUtilPushTunnelRight(paint_session& session, uint16_t height, uint8_t t
     }
 }
 
-void PaintUtilSetVerticalTunnel(paint_session& session, uint16_t height)
+void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height)
 {
     session.VerticalTunnelHeight = height / 16;
 }
 
-void PaintUtilSetGeneralSupportHeight(paint_session& session, int16_t height, uint8_t slope)
+void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
 {
     if (session.Support.height >= height)
     {
@@ -376,7 +376,7 @@ void PaintUtilSetGeneralSupportHeight(paint_session& session, int16_t height, ui
     PaintUtilForceSetGeneralSupportHeight(session, height, slope);
 }
 
-void PaintUtilForceSetGeneralSupportHeight(paint_session& session, int16_t height, uint8_t slope)
+void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
 {
     session.Support.height = height;
     session.Support.slope = slope;
@@ -386,9 +386,9 @@ const uint16_t segment_offsets[9] = {
     SEGMENT_B4, SEGMENT_B8, SEGMENT_BC, SEGMENT_C0, SEGMENT_C4, SEGMENT_C8, SEGMENT_CC, SEGMENT_D0, SEGMENT_D4,
 };
 
-void PaintUtilSetSegmentSupportHeight(paint_session& session, int32_t segments, uint16_t height, uint8_t slope)
+void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
 {
-    support_height* supportSegments = session.SupportSegments;
+    SupportHeight* supportSegments = session.SupportSegments;
     for (int32_t s = 0; s < 9; s++)
     {
         if (segments & segment_offsets[s])
@@ -410,7 +410,7 @@ uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
     return (segments & 0xFF00) | temp;
 }
 
-bool PaintShouldShowHeightMarkers(const paint_session& session, const uint32_t viewportFlag)
+bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag)
 {
     auto dpi = &session.DPI;
     return (session.ViewFlags & viewportFlag) && (dpi->zoom_level <= ZoomLevel{ 0 });
