@@ -20,7 +20,7 @@ enum class VirtualFloorStyles : int32_t
     Glassy
 };
 
-struct paint_session;
+struct PaintSession;
 
 uint16_t VirtualFloorGetHeight();
 
@@ -33,4 +33,4 @@ void VirtualFloorInvalidate();
 
 bool VirtualFloorTileIsFloor(const CoordsXY& loc);
 
-void VirtualFloorPaint(paint_session& session);
+void VirtualFloorPaint(PaintSession& session);

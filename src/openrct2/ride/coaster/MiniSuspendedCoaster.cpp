@@ -20,7 +20,7 @@
 
 /** rct2: 0x008AFE9C */
 static void mini_suspended_rc_track_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -85,7 +85,7 @@ static void mini_suspended_rc_track_flat(
 
 /** rct2: 0x008AFF4C, 0x008AFF5C, 0x008AFF6C */
 static void mini_suspended_rc_track_station(
-    paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][3] = {
@@ -113,7 +113,7 @@ static void mini_suspended_rc_track_station(
 
 /** rct2: 0x008AFEAC */
 static void mini_suspended_rc_track_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -207,7 +207,7 @@ static void mini_suspended_rc_track_25_deg_up(
 
 /** rct2: 0x008AFEBC */
 static void mini_suspended_rc_track_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -301,7 +301,7 @@ static void mini_suspended_rc_track_flat_to_25_deg_up(
 
 /** rct2: 0x008AFECC */
 static void mini_suspended_rc_track_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -395,7 +395,7 @@ static void mini_suspended_rc_track_25_deg_up_to_flat(
 
 /** rct2: 0x008AFEDC */
 static void mini_suspended_rc_track_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     mini_suspended_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -403,7 +403,7 @@ static void mini_suspended_rc_track_25_deg_down(
 
 /** rct2: 0x008AFEEC */
 static void mini_suspended_rc_track_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     mini_suspended_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -411,7 +411,7 @@ static void mini_suspended_rc_track_flat_to_25_deg_down(
 
 /** rct2: 0x008AFEFC */
 static void mini_suspended_rc_track_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     mini_suspended_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -419,7 +419,7 @@ static void mini_suspended_rc_track_25_deg_down_to_flat(
 
 /** rct2: 0x008AFF0C */
 static void mini_suspended_rc_track_left_quarter_turn_5(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -624,7 +624,7 @@ static void mini_suspended_rc_track_left_quarter_turn_5(
 
 /** rct2: 0x008AFF1C */
 static void mini_suspended_rc_track_right_quarter_turn_5(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -633,7 +633,7 @@ static void mini_suspended_rc_track_right_quarter_turn_5(
 
 /** rct2: 0x008AFF2C */
 static void mini_suspended_rc_track_s_bend_left(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -828,7 +828,7 @@ static void mini_suspended_rc_track_s_bend_left(
 
 /** rct2: 0x008AFF3C */
 static void mini_suspended_rc_track_s_bend_right(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1023,7 +1023,7 @@ static void mini_suspended_rc_track_s_bend_right(
 
 /** rct2: 0x008AFF7C */
 static void mini_suspended_rc_track_left_quarter_turn_3(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1165,7 +1165,7 @@ static void mini_suspended_rc_track_left_quarter_turn_3(
 
 /** rct2: 0x008AFF8C */
 static void mini_suspended_rc_track_right_quarter_turn_3(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -1174,7 +1174,7 @@ static void mini_suspended_rc_track_right_quarter_turn_3(
 
 /** rct2: 0x008AFFAC */
 static void mini_suspended_rc_track_left_eighth_to_diag(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1347,7 +1347,7 @@ static void mini_suspended_rc_track_left_eighth_to_diag(
 
 /** rct2: 0x008AFFBC */
 static void mini_suspended_rc_track_right_eighth_to_diag(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1520,7 +1520,7 @@ static void mini_suspended_rc_track_right_eighth_to_diag(
 
 /** rct2: 0x008AFFCC */
 static void mini_suspended_rc_track_left_eighth_to_orthogonal(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -1529,7 +1529,7 @@ static void mini_suspended_rc_track_left_eighth_to_orthogonal(
 
 /** rct2: 0x008AFFDC */
 static void mini_suspended_rc_track_right_eighth_to_orthogonal(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -1538,7 +1538,7 @@ static void mini_suspended_rc_track_right_eighth_to_orthogonal(
 
 /** rct2: 0x008AFF9C */
 static void mini_suspended_rc_track_diag_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1677,7 +1677,7 @@ static void mini_suspended_rc_track_diag_flat(
 
 /** rct2: 0x008B000C */
 static void mini_suspended_rc_track_diag_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1816,7 +1816,7 @@ static void mini_suspended_rc_track_diag_25_deg_up(
 
 /** rct2: 0x008AFFEC */
 static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1955,7 +1955,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
 
 /** rct2: 0x008AFFFC */
 static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -2094,7 +2094,7 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
 
 /** rct2: 0x008B003C */
 static void mini_suspended_rc_track_diag_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -2233,7 +2233,7 @@ static void mini_suspended_rc_track_diag_25_deg_down(
 
 /** rct2: 0x008B001C */
 static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -2369,7 +2369,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
 
 /** rct2: 0x008B002C */
 static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)

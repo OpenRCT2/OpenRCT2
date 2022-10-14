@@ -35,7 +35,7 @@ struct JumpingFountain : EntityBase
     void Update();
     static void StartAnimation(JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement);
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 
 private:
     JumpingFountainType GetType() const;

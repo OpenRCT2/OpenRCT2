@@ -34,7 +34,7 @@
 using namespace OpenRCT2;
 
 static void PaintRideEntranceExitScrollingText(
-    paint_session& session, const EntranceElement& entranceEl, const StationObject& stationObj, Direction direction,
+    PaintSession& session, const EntranceElement& entranceEl, const StationObject& stationObj, Direction direction,
     int32_t height)
 {
     PROFILED_FUNCTION();
@@ -77,7 +77,7 @@ static void PaintRideEntranceExitScrollingText(
         { 0, 0, height + stationObj.Height }, { 28, 28, 51 }, { 2, 2, height + stationObj.Height });
 }
 
-static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t height, const EntranceElement& entranceEl)
+static void PaintRideEntranceExitLightEffects(PaintSession& session, int32_t height, const EntranceElement& entranceEl)
 {
     PROFILED_FUNCTION();
 
@@ -106,7 +106,7 @@ static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t he
     }
 }
 
-static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
+static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
 {
     PROFILED_FUNCTION();
 
@@ -206,7 +206,7 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
 }
 
 static void PaintParkEntranceScrollingText(
-    paint_session& session, const EntranceObject& entrance, Direction direction, int32_t height)
+    PaintSession& session, const EntranceObject& entrance, Direction direction, int32_t height)
 {
     PROFILED_FUNCTION();
 
@@ -249,7 +249,7 @@ static void PaintParkEntranceScrollingText(
     PaintAddImageAsChild(session, imageIndex, { 0, 0, textHeight }, { { 2, 2, textHeight }, { 28, 28, 47 } });
 }
 
-static void PaintParkEntranceLightEffects(paint_session& session)
+static void PaintParkEntranceLightEffects(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
@@ -259,7 +259,7 @@ static void PaintParkEntranceLightEffects(paint_session& session)
     }
 }
 
-static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
+static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
 {
     PROFILED_FUNCTION();
 
@@ -332,7 +332,7 @@ static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t
     PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
 }
 
-static void PaintHeightMarkers(paint_session& session, const EntranceElement& entranceEl, int32_t height)
+static void PaintHeightMarkers(PaintSession& session, const EntranceElement& entranceEl, int32_t height)
 {
     PROFILED_FUNCTION();
 
@@ -351,7 +351,7 @@ static void PaintHeightMarkers(paint_session& session, const EntranceElement& en
     }
 }
 
-void PaintEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceElement)
+void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, const EntranceElement& entranceElement)
 {
     PROFILED_FUNCTION();
 

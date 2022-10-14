@@ -30,7 +30,7 @@ enum
  *  rct2: 0x006D5FAB
  */
 void vehicle_visual_launched_freefall(
-    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
     auto imageFlags = ImageId(0, vehicle->colours.Body, vehicle->colours.Trim);
@@ -88,7 +88,7 @@ void vehicle_visual_launched_freefall(
 
 /** rct2: 0x006FD1F8 */
 static void paint_launched_freefall_base(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -162,7 +162,7 @@ static void paint_launched_freefall_base(
 
 /** rct2: 0x006FD208 */
 static void paint_launched_freefall_tower_section(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence == 1)

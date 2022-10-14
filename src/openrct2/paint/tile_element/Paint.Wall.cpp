@@ -46,7 +46,7 @@ static constexpr const uint8_t* DirectionToDoorImageOffset[] = { DirectionToDoor
                                                                  DirectionToDoorImageOffset2, DirectionToDoorImageOffset3 };
 
 static void PaintWallDoor(
-    paint_session& session, const WallSceneryEntry& wallEntry, ImageId imageId, CoordsXYZ offset, BoundBoxXYZ bbR1,
+    PaintSession& session, const WallSceneryEntry& wallEntry, ImageId imageId, CoordsXYZ offset, BoundBoxXYZ bbR1,
     BoundBoxXYZ bbR2, BoundBoxXYZ bbL)
 {
     PROFILED_FUNCTION();
@@ -66,7 +66,7 @@ static void PaintWallDoor(
 }
 
 static void PaintWallDoor(
-    paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
+    PaintSession& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
     Direction direction, int32_t height)
 {
     PROFILED_FUNCTION();
@@ -130,7 +130,7 @@ static void PaintWallDoor(
 }
 
 static void PaintWallWall(
-    paint_session& session, const WallSceneryEntry& wallEntry, ImageId imageTemplate, uint32_t imageOffset, CoordsXYZ offset,
+    PaintSession& session, const WallSceneryEntry& wallEntry, ImageId imageTemplate, uint32_t imageOffset, CoordsXYZ offset,
     BoundBoxXYZ boundBox, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -146,7 +146,7 @@ static void PaintWallWall(
 }
 
 static void PaintWallScrollingText(
-    paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, Direction direction,
+    PaintSession& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, Direction direction,
     int32_t height, const CoordsXYZ& boundsOffset, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -188,7 +188,7 @@ static void PaintWallScrollingText(
 }
 
 static void PaintWallWall(
-    paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
+    PaintSession& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
     Direction direction, int32_t height, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -296,7 +296,7 @@ static void PaintWallWall(
     PaintWallScrollingText(session, wallEntry, wallElement, direction, height, boundBox.offset, isGhost);
 }
 
-void PaintWall(paint_session& session, uint8_t direction, int32_t height, const WallElement& wallElement)
+void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const WallElement& wallElement)
 {
     PROFILED_FUNCTION();
 

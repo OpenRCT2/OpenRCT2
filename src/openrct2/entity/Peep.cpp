@@ -2761,7 +2761,7 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << PeepFlags;
 }
 
-void Peep::Paint(paint_session& session, int32_t imageDirection) const
+void Peep::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 

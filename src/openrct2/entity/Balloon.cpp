@@ -109,7 +109,7 @@ void Balloon::Serialise(DataSerialiser& stream)
     stream << colour;
 }
 
-void Balloon::Paint(paint_session& session, int32_t imageDirection) const
+void Balloon::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 

@@ -30,7 +30,7 @@ struct Ride;
 struct rct_ride_entry;
 struct CarEntry;
 class DataSerialiser;
-struct paint_session;
+struct PaintSession;
 
 struct GForces
 {
@@ -270,7 +270,7 @@ struct Vehicle : EntityBase
     }
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);

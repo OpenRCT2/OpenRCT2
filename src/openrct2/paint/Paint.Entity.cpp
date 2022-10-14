@@ -34,7 +34,7 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
+void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
 {
     PROFILED_FUNCTION();
 

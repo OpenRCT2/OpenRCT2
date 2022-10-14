@@ -19,7 +19,7 @@
 #include "../TrackPaint.h"
 
 static void PaintShop(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool hasSupports = WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_3]);

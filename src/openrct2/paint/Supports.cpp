@@ -456,7 +456,7 @@ static constexpr const uint16_t word_97B3C4[] = {
  * @returns (al) true if any supports have been drawn, otherwise false.
  */
 bool WoodenASupportsPaintSetup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -617,7 +617,7 @@ bool WoodenASupportsPaintSetup(
  * @return (al) whether supports have been drawn
  */
 bool WoodenBSupportsPaintSetup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -786,9 +786,9 @@ bool WoodenBSupportsPaintSetup(
  *  rct2: 0x00663105
  */
 bool MetalASupportsPaintSetup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate)
+    PaintSession& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate)
 {
-    support_height* supportSegments = session.SupportSegments;
+    SupportHeight* supportSegments = session.SupportSegments;
 
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -987,9 +987,9 @@ bool MetalASupportsPaintSetup(
  * @return (Carry Flag)
  */
 bool MetalBSupportsPaintSetup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate)
+    PaintSession& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate)
 {
-    support_height* supportSegments = session.SupportSegments;
+    SupportHeight* supportSegments = session.SupportSegments;
     uint8_t originalSegment = segment;
 
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
@@ -1169,7 +1169,7 @@ bool MetalBSupportsPaintSetup(
  * @return Whether supports were drawn
  */
 bool PathASupportsPaintSetup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo, bool* underground)
 {
     if (underground != nullptr)
@@ -1295,7 +1295,7 @@ bool PathASupportsPaintSetup(
         }
         else
         {
-            paint_struct* paintStruct = PaintAddImageAsOrphan(
+            PaintStruct* paintStruct = PaintAddImageAsOrphan(
                 session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, boundBox);
             hasSupports = true;
             if (paintStruct != nullptr)
@@ -1324,10 +1324,10 @@ bool PathASupportsPaintSetup(
  * @return Whether supports were drawn
  */
 bool PathBSupportsPaintSetup(
-    paint_session& session, int32_t segment, int32_t special, int32_t height, ImageId imageTemplate,
+    PaintSession& session, int32_t segment, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo)
 {
-    support_height* supportSegments = session.SupportSegments;
+    SupportHeight* supportSegments = session.SupportSegments;
 
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {

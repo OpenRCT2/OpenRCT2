@@ -21,7 +21,7 @@
 
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
     Vehicle* vehicle = nullptr;
@@ -82,7 +82,7 @@ static void paint_twist_structure(
 
 /** rct2: 0x0076D858 */
 static void paint_twist(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];

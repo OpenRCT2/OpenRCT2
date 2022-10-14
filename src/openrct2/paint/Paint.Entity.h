@@ -9,7 +9,7 @@
 
 #pragma once
 
-struct paint_session;
+struct PaintSession;
 struct CoordsXY;
 
-void EntityPaintSetup(paint_session& session, const CoordsXY& pos);
+void EntityPaintSetup(PaintSession& session, const CoordsXY& pos);

@@ -292,7 +292,7 @@ static void VirtualFloorGetTileProperties(
     }
 }
 
-void VirtualFloorPaint(paint_session& session)
+void VirtualFloorPaint(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
