@@ -40,8 +40,10 @@ int wmain(int argc, wchar_t** argvW, [[maybe_unused]] wchar_t* envp)
     std::vector<const char*> argv;
     std::transform(
         argvStrings.begin(), argvStrings.end(), std::back_inserter(argv), [](const auto& string) { return string.c_str(); });
-    auto exitCode = NormalisedMain(argc, argv.data());
-    return exitCode;
+
+    // Ensure that argv[argc] == nullptr, as mandated by the standard
+    argv.push_back(nullptr);
+    return NormalisedMain(argc, argv.data());
 }
 
 static std::vector<std::string> GetCommandLineArgs(int argc, wchar_t** argvW)
