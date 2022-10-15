@@ -565,7 +565,12 @@ void save_game()
 {
     if (!gFirstTimeSaving && !gIsAutosaveLoaded)
     {
-        const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
+        u8string savePath = gScenarioSavePath;
+        if (!String::Equals(Path::GetExtension(gScenarioSavePath), ".park", true))
+        {
+            savePath = Path::WithExtension(gScenarioSavePath, ".park");
+        }
+
         save_game_with_name(savePath);
     }
     else
@@ -578,14 +583,23 @@ void save_game_cmd(u8string_view name /* = {} */)
 {
     if (name.empty())
     {
-        const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
+        u8string savePath = gScenarioSavePath;
+        if (!String::Equals(Path::GetExtension(gScenarioSavePath), ".park", true))
+        {
+            savePath = Path::WithExtension(gScenarioSavePath, ".park");
+        }
 
         save_game_with_name(savePath);
     }
     else
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        auto savePath = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE), u8string(name) + u8".park");
+        u8string saveName = u8string(name);
+        if (!String::Equals(Path::GetExtension(name), ".park", true))
+        {
+            saveName += ".park";
+        }
+        auto savePath = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE), saveName);
         save_game_with_name(savePath);
     }
 }

@@ -605,8 +605,13 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
 
         case WIDX_NEW_FILE:
         {
-            const u8string path = Path::WithExtension(
-                Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
+            const auto extension = Path::GetExtension(text);
+            const auto newExtension = RemovePatternWildcard(_extensionPattern);
+            u8string path = Path::Combine(_directory, text);
+            if (!String::Equals(extension, newExtension, true))
+            {
+                path += newExtension;
+            }
 
             overwrite = false;
             for (auto& item : _listItems)
@@ -1088,7 +1093,12 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
         {
             SetAndSaveConfigPath(gConfigGeneral.last_save_track_directory, pathBuffer);
 
-            const auto withExtension = Path::WithExtension(pathBuffer, "td6");
+            u8string withExtension = pathBuffer;
+            if (!String::Equals(Path::GetExtension(pathBuffer), "td6", true))
+            {
+                withExtension = Path::WithExtension(pathBuffer, "td6");
+            }
+
             String::Set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
 
             RCT2::T6Exporter t6Export{ _trackDesign };
