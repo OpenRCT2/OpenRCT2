@@ -1032,6 +1032,7 @@ static bool IsSpecialFrequencySound(SoundId id)
     switch (id)
     {
         case SoundId::TrackFrictionBM:
+        case SoundId::TrackFrictionRMC:
             return true;
         default:
             return false;
