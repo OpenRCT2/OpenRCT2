@@ -553,8 +553,8 @@ namespace Config
         if (reader->ReadSection("plugin"))
         {
             auto model = &gConfigPlugin;
-            model->enable_hot_reloading = reader->GetBoolean("enable_hot_reloading", false);
-            model->allowed_hosts = reader->GetString("allowed_hosts", "");
+            model->EnableHotReloading = reader->GetBoolean("enable_hot_reloading", false);
+            model->AllowedHosts = reader->GetString("allowed_hosts", "");
         }
     }
 
@@ -562,8 +562,8 @@ namespace Config
     {
         auto model = &gConfigPlugin;
         writer->WriteSection("plugin");
-        writer->WriteBoolean("enable_hot_reloading", model->enable_hot_reloading);
-        writer->WriteString("allowed_hosts", model->allowed_hosts);
+        writer->WriteBoolean("enable_hot_reloading", model->EnableHotReloading);
+        writer->WriteString("allowed_hosts", model->AllowedHosts);
     }
 
     static bool SetDefaults()

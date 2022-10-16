@@ -216,8 +216,8 @@ struct FontConfiguration
 
 struct PluginConfiguration
 {
-    bool enable_hot_reloading;
-    std::string allowed_hosts;
+    bool EnableHotReloading;
+    std::string AllowedHosts;
 };
 
 enum class Sort : int32_t
