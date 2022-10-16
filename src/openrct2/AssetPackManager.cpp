@@ -198,5 +198,5 @@ void AssetPackManager::SaveEnabledAssetPacks()
         enabledList.pop_back();
     gConfigGeneral.AssetPackOrder = orderList;
     gConfigGeneral.EnabledAssetPacks = enabledList;
-    config_save_default();
+    ConfigSaveDefault();
 }

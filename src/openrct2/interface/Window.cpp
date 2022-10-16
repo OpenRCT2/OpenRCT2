@@ -189,7 +189,7 @@ void window_set_window_limit(int32_t value)
     int32_t prev = gConfigGeneral.WindowLimit;
     int32_t val = std::clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
     gConfigGeneral.WindowLimit = val;
-    config_save_default();
+    ConfigSaveDefault();
     // Checks if value decreases and then closes surplus
     // windows if one sets a limit lower than the number of windows open
     if (val < prev)

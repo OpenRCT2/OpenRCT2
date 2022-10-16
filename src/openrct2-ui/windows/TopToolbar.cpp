@@ -3723,7 +3723,7 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
                 break;
             case DDIDX_TRANSPARENT_WATER:
                 gConfigGeneral.TransparentWater ^= 1;
-                config_save_default();
+                ConfigSaveDefault();
                 break;
             case DDIDX_HIDE_BASE:
                 w->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;

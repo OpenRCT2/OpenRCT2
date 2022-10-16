@@ -959,15 +959,15 @@ static void WindowMultiplayerOptionsMouseup(rct_window* w, WidgetIndex widgetInd
             break;
         case WIDX_LOG_CHAT_CHECKBOX:
             gConfigNetwork.LogChat = !gConfigNetwork.LogChat;
-            config_save_default();
+            ConfigSaveDefault();
             break;
         case WIDX_LOG_SERVER_ACTIONS_CHECKBOX:
             gConfigNetwork.LogServerActions = !gConfigNetwork.LogServerActions;
-            config_save_default();
+            ConfigSaveDefault();
             break;
         case WIDX_KNOWN_KEYS_ONLY_CHECKBOX:
             gConfigNetwork.KnownKeysOnly = !gConfigNetwork.KnownKeysOnly;
-            config_save_default();
+            ConfigSaveDefault();
             break;
     }
 }

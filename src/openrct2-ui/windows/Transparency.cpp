@@ -240,7 +240,7 @@ private:
         gConfigGeneral.InvisibleTrees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
         gConfigGeneral.InvisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
         gConfigGeneral.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
-        config_save_default();
+        ConfigSaveDefault();
     }
 };
 

@@ -487,7 +487,7 @@ static void WindowLoadsaveMouseup(rct_window* w, WidgetIndex widgetIndex)
             {
                 gConfigGeneral.LoadSaveSort = Sort::NameAscending;
             }
-            config_save_default();
+            ConfigSaveDefault();
             WindowLoadsaveSortList();
             w->Invalidate();
             break;
@@ -501,7 +501,7 @@ static void WindowLoadsaveMouseup(rct_window* w, WidgetIndex widgetIndex)
             {
                 gConfigGeneral.LoadSaveSort = Sort::DateDescending;
             }
-            config_save_default();
+            ConfigSaveDefault();
             WindowLoadsaveSortList();
             w->Invalidate();
             break;
@@ -961,7 +961,7 @@ static void WindowLoadsaveInvokeCallback(int32_t result, const utf8* path)
 static void SetAndSaveConfigPath(u8string& config_str, u8string_view path)
 {
     config_str = Path::GetDirectory(path);
-    config_save_default();
+    ConfigSaveDefault();
 }
 
 static bool IsValidPath(const char* path)

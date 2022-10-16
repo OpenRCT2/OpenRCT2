@@ -199,7 +199,7 @@ namespace OpenRCT2
             gfx_unload_g2();
             gfx_unload_g1();
             Audio::Close();
-            config_release();
+            ConfigRelease();
 
             Instance = nullptr;
         }
@@ -345,7 +345,7 @@ namespace OpenRCT2
             {
                 gOpenRCT2ShowChangelog = true;
                 gConfigGeneral.LastRunVersion = OPENRCT2_VERSION;
-                config_save_default();
+                ConfigSaveDefault();
             }
 
             try
@@ -513,7 +513,7 @@ namespace OpenRCT2
 
                     // Fallback to software
                     gConfigGeneral.DrawingEngine = DrawingEngine::Software;
-                    config_save_default();
+                    ConfigSaveDefault();
                     drawing_engine_init();
                 }
             }
@@ -541,7 +541,7 @@ namespace OpenRCT2
 
                         // Fallback to software
                         gConfigGeneral.DrawingEngine = DrawingEngine::Software;
-                        config_save_default();
+                        ConfigSaveDefault();
                         drawing_engine_init();
                     }
                 }
@@ -816,9 +816,9 @@ namespace OpenRCT2
                 {
                     log_verbose(
                         "install directory does not exist or invalid directory selected, %s", gConfigGeneral.RCT2Path.c_str());
-                    if (!config_find_or_browse_install_directory())
+                    if (!ConfigFindOrBrowseInstallDirectory())
                     {
-                        auto path = config_get_default_path();
+                        auto path = ConfigGetDefaultPath();
                         Console::Error::WriteLine(
                             "An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path.c_str());
                         return std::string();

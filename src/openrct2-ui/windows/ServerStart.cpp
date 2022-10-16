@@ -116,7 +116,7 @@ public:
                 {
                     gConfigNetwork.Maxplayers++;
                 }
-                config_save_default();
+                ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_MAXPLAYERS_DECREASE:
@@ -124,12 +124,12 @@ public:
                 {
                     gConfigNetwork.Maxplayers--;
                 }
-                config_save_default();
+                ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_ADVERTISE_CHECKBOX:
                 gConfigNetwork.Advertise = !gConfigNetwork.Advertise;
-                config_save_default();
+                ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_START_SERVER:
@@ -185,7 +185,7 @@ public:
                 }
 
                 gConfigNetwork.DefaultPort = atoi(_port);
-                config_save_default();
+                ConfigSaveDefault();
 
                 widget_invalidate(*this, WIDX_NAME_INPUT);
                 break;
@@ -202,7 +202,7 @@ public:
                 if (_name[0] != '\0')
                 {
                     gConfigNetwork.ServerName = _name;
-                    config_save_default();
+                    ConfigSaveDefault();
                 }
 
                 widget_invalidate(*this, WIDX_NAME_INPUT);
@@ -220,7 +220,7 @@ public:
                 if (_description[0] != '\0')
                 {
                     gConfigNetwork.ServerDescription = _description;
-                    config_save_default();
+                    ConfigSaveDefault();
                 }
 
                 widget_invalidate(*this, WIDX_DESCRIPTION_INPUT);
@@ -238,7 +238,7 @@ public:
                 if (_greeting[0] != '\0')
                 {
                     gConfigNetwork.ServerGreeting = _greeting;
-                    config_save_default();
+                    ConfigSaveDefault();
                 }
 
                 widget_invalidate(*this, WIDX_GREETING_INPUT);

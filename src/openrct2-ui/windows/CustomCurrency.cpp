@@ -71,7 +71,7 @@ public:
             case WIDX_RATE_UP:
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
                 gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                config_save_default();
+                ConfigSaveDefault();
                 window_invalidate_all();
                 break;
             case WIDX_RATE_DOWN:
@@ -79,7 +79,7 @@ public:
                 {
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
                     gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                    config_save_default();
+                    ConfigSaveDefault();
                     window_invalidate_all();
                 }
                 break;
@@ -144,7 +144,7 @@ public:
             }
 
             gConfigGeneral.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
-            config_save_default();
+            ConfigSaveDefault();
 
             window_invalidate_all();
         }
@@ -168,7 +168,7 @@ public:
                     gConfigGeneral.CustomCurrencySymbol, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
                     CURRENCY_SYMBOL_MAX_SIZE);
 
-                config_save_default();
+                ConfigSaveDefault();
                 window_invalidate_all();
                 break;
 
@@ -179,7 +179,7 @@ public:
                     rate = res.value();
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
                     gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                    config_save_default();
+                    ConfigSaveDefault();
                     window_invalidate_all();
                 }
                 break;

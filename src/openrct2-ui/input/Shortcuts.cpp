@@ -474,7 +474,7 @@ static void ShortcutOpenSceneryPicker()
 static void ShortcutScaleUp()
 {
     gConfigGeneral.WindowScale += 0.25f;
-    config_save_default();
+    ConfigSaveDefault();
     gfx_invalidate_screen();
     context_trigger_resize();
     context_update_cursor_scale();
@@ -484,7 +484,7 @@ static void ShortcutScaleDown()
 {
     gConfigGeneral.WindowScale -= 0.25f;
     gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
-    config_save_default();
+    ConfigSaveDefault();
     gfx_invalidate_screen();
     context_trigger_resize();
     context_update_cursor_scale();
@@ -731,7 +731,7 @@ static void ShortcutToggleTransparentWater()
         return;
 
     gConfigGeneral.TransparentWater ^= 1;
-    config_save_default();
+    ConfigSaveDefault();
     gfx_invalidate_screen();
 }
 

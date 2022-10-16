@@ -354,7 +354,7 @@ public:
                             if (displayIndex != gConfigGeneral.DefaultDisplay)
                             {
                                 gConfigGeneral.DefaultDisplay = displayIndex;
-                                config_save_default();
+                                ConfigSaveDefault();
                             }
                             break;
                         }
@@ -802,7 +802,7 @@ private:
             {
                 gConfigGeneral.WindowWidth = width;
                 gConfigGeneral.WindowHeight = height;
-                config_save_default();
+                ConfigSaveDefault();
             }
         }
     }

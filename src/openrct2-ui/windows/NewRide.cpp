@@ -344,7 +344,7 @@ public:
                 break;
             case WIDX_GROUP_BY_TRACK_TYPE:
                 gConfigInterface.ListRideVehiclesSeparately = !gConfigInterface.ListRideVehiclesSeparately;
-                config_save_default();
+                ConfigSaveDefault();
                 SetPage(_currentTab);
                 break;
         }

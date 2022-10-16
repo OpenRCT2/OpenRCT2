@@ -773,20 +773,20 @@ NotificationConfiguration gConfigNotifications;
 FontConfiguration gConfigFonts;
 PluginConfiguration gConfigPlugin;
 
-void config_set_defaults()
+void ConfigSetDefaults()
 {
-    config_release();
+    ConfigRelease();
     Config::SetDefaults();
 }
 
-bool config_open(u8string_view path)
+bool ConfigOpen(u8string_view path)
 {
     if (!File::Exists(path))
     {
         return false;
     }
 
-    config_release();
+    ConfigRelease();
     auto result = Config::ReadFile(path);
     if (result)
     {
@@ -795,12 +795,12 @@ bool config_open(u8string_view path)
     return result;
 }
 
-bool config_save(u8string_view path)
+bool ConfigSave(u8string_view path)
 {
     return Config::WriteFile(path);
 }
 
-void config_release()
+void ConfigRelease()
 {
     SafeFree(gConfigGeneral.CustomCurrencySymbol);
     SafeFree(gConfigInterface.CurrentThemePreset);
@@ -809,19 +809,19 @@ void config_release()
     SafeFree(gConfigFonts.FontName);
 }
 
-u8string config_get_default_path()
+u8string ConfigGetDefaultPath()
 {
     auto env = GetContext()->GetPlatformEnvironment();
     return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"config.ini");
 }
 
-bool config_save_default()
+bool ConfigSaveDefault()
 {
-    auto path = config_get_default_path();
-    return config_save(path);
+    auto path = ConfigGetDefaultPath();
+    return ConfigSave(path);
 }
 
-bool config_find_or_browse_install_directory()
+bool ConfigFindOrBrowseInstallDirectory()
 {
     std::string path = Config::FindRCT2Path();
     if (!path.empty())

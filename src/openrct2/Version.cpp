@@ -89,7 +89,7 @@ NewVersionInfo get_latest_version()
         verinfo.url = Json::GetString(root["html_url"]);
 
         gConfigGeneral.LastVersionCheckTime = now;
-        config_save_default();
+        ConfigSaveDefault();
     }
 #endif
     return verinfo;

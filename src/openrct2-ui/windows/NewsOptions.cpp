@@ -129,7 +129,7 @@ public:
                             bool* configValue = GetNotificationValuePtr(ndef);
                             *configValue = !(*configValue);
 
-                            config_save_default();
+                            ConfigSaveDefault();
 
                             InvalidateWidget(widgetIndex);
                             break;

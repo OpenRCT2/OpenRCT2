@@ -365,7 +365,7 @@ namespace OpenRCT2::Audio
         }
 
         _currentAudioDevice = device;
-        config_save_default();
+        ConfigSaveDefault();
     }
 
     void Close()

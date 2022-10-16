@@ -264,13 +264,13 @@ extern NotificationConfiguration gConfigNotifications;
 extern FontConfiguration gConfigFonts;
 extern PluginConfiguration gConfigPlugin;
 
-bool config_open(u8string_view path);
-bool config_save(u8string_view path);
-u8string config_get_default_path();
-void config_set_defaults();
-void config_release();
-bool config_save_default();
-bool config_find_or_browse_install_directory();
+bool ConfigOpen(u8string_view path);
+bool ConfigSave(u8string_view path);
+u8string ConfigGetDefaultPath();
+void ConfigSetDefaults();
+void ConfigRelease();
+bool ConfigSaveDefault();
+bool ConfigFindOrBrowseInstallDirectory();
 
 bool RCT1DataPresentAtLocation(u8string_view path);
 std::string FindCsg1datAtLocation(u8string_view path);

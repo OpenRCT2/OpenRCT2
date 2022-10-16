@@ -1049,7 +1049,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "console_small_font" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             gConfigInterface.ConsoleSmallFont = (int_val[0] != 0);
-            config_save_default();
+            ConfigSaveDefault();
             console.Execute("get console_small_font");
         }
         else if (argv[0] == "location" && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
@@ -1068,7 +1068,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
             gConfigGeneral.WindowScale = std::clamp(newScale, 0.5f, 5.0f);
-            config_save_default();
+            ConfigSaveDefault();
             gfx_invalidate_screen();
             context_trigger_resize();
             context_update_cursor_scale();
@@ -1082,13 +1082,13 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "render_weather_effects" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             gConfigGeneral.RenderWeatherEffects = (int_val[0] != 0);
-            config_save_default();
+            ConfigSaveDefault();
             console.Execute("get render_weather_effects");
         }
         else if (argv[0] == "render_weather_gloom" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             gConfigGeneral.RenderWeatherGloom = (int_val[0] != 0);
-            config_save_default();
+            ConfigSaveDefault();
             console.Execute("get render_weather_gloom");
         }
         else if (argv[0] == "cheat_sandbox_mode" && invalidArguments(&invalidArgs, int_valid[0]))
@@ -1172,7 +1172,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "enable_hinting" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             gConfigFonts.EnableHinting = (int_val[0] != 0);
-            config_save_default();
+            ConfigSaveDefault();
             console.Execute("get enable_hinting");
             ttf_toggle_hinting();
         }

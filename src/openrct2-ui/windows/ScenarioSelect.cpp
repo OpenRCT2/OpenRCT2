@@ -272,7 +272,7 @@ static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex
         w->selected_tab = widgetIndex - 4;
         w->highlighted_scenario = nullptr;
         gConfigInterface.ScenarioselectLastTab = w->selected_tab;
-        config_save_default();
+        ConfigSaveDefault();
         InitialiseListItems(w);
         w->Invalidate();
         window_event_resize_call(w);

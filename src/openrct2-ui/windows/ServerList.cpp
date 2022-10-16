@@ -323,7 +323,7 @@ static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, ch
             if (_playerName[0] != '\0')
             {
                 gConfigNetwork.PlayerName = _playerName;
-                config_save_default();
+                ConfigSaveDefault();
             }
 
             widget_invalidate(*w, WIDX_PLAYER_NAME_INPUT);

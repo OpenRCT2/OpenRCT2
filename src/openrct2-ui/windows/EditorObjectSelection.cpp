@@ -368,7 +368,7 @@ public:
             case WIDX_FILTER_RIDE_TAB_ALL:
                 _filter_flags |= FILTER_RIDES;
                 gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
-                config_save_default();
+                ConfigSaveDefault();
 
                 FilterUpdateCounts();
                 VisibleListRefresh();
@@ -386,7 +386,7 @@ public:
                 _filter_flags &= ~FILTER_RIDES;
                 _filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + _numSourceGameItems));
                 gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
-                config_save_default();
+                ConfigSaveDefault();
 
                 FilterUpdateCounts();
                 VisibleListRefresh();
@@ -547,7 +547,7 @@ public:
                     _filter_flags ^= (1 << dropdownIndex);
                 }
                 gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
-                config_save_default();
+                ConfigSaveDefault();
 
                 FilterUpdateCounts();
                 scrolls->v_top = 0;

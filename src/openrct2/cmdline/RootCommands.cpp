@@ -368,10 +368,10 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     // Update RCT2 path in config
     auto env = OpenRCT2::CreatePlatformEnvironment();
     auto configPath = env->GetFilePath(OpenRCT2::PATHID::CONFIG);
-    config_set_defaults();
-    config_open(configPath);
+    ConfigSetDefaults();
+    ConfigOpen(configPath);
     gConfigGeneral.RCT2Path = path;
-    if (config_save(configPath))
+    if (ConfigSave(configPath))
     {
         Console::WriteFormat("Updating RCT2 path to '%s'.", path.c_str());
         Console::WriteLine();
