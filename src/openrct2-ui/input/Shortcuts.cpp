@@ -832,7 +832,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
         }
     });
     RegisterShortcut(ShortcutId::InterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
-        if (gConfigInterface.toolbar_show_cheats)
+        if (gConfigInterface.ToolbarShowCheats)
         {
             OpenWindow(WindowClass::TileInspector);
         }

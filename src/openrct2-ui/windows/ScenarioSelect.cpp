@@ -221,9 +221,9 @@ static void WindowScenarioselectInitTabs(rct_window* w)
         }
     }
 
-    if (showPages & (1 << gConfigInterface.scenarioselect_last_tab))
+    if (showPages & (1 << gConfigInterface.ScenarioselectLastTab))
     {
-        w->selected_tab = gConfigInterface.scenarioselect_last_tab;
+        w->selected_tab = gConfigInterface.ScenarioselectLastTab;
     }
     else
     {
@@ -271,7 +271,7 @@ static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex
     {
         w->selected_tab = widgetIndex - 4;
         w->highlighted_scenario = nullptr;
-        gConfigInterface.scenarioselect_last_tab = w->selected_tab;
+        gConfigInterface.ScenarioselectLastTab = w->selected_tab;
         config_save_default();
         InitialiseListItems(w);
         w->Invalidate();

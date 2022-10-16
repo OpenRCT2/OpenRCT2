@@ -669,7 +669,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "console_small_font")
         {
-            console.WriteFormatLine("console_small_font %d", gConfigInterface.console_small_font);
+            console.WriteFormatLine("console_small_font %d", gConfigInterface.ConsoleSmallFont);
         }
         else if (argv[0] == "location")
         {
@@ -1048,7 +1048,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "console_small_font" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigInterface.console_small_font = (int_val[0] != 0);
+            gConfigInterface.ConsoleSmallFont = (int_val[0] != 0);
             config_save_default();
             console.Execute("get console_small_font");
         }

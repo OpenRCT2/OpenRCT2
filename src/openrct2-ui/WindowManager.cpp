@@ -159,7 +159,7 @@ public:
             case WV_FINANCES_RESEARCH:
                 return WindowFinancesResearchOpen();
             case WV_RIDE_RESEARCH:
-                if (gConfigInterface.toolbar_show_research)
+                if (gConfigInterface.ToolbarShowResearch)
                 {
                     return this->OpenWindow(WindowClass::Research);
                 }

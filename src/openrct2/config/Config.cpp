@@ -317,20 +317,20 @@ namespace Config
         if (reader->ReadSection("interface"))
         {
             auto model = &gConfigInterface;
-            model->toolbar_show_finances = reader->GetBoolean("toolbar_show_finances", true);
-            model->toolbar_show_research = reader->GetBoolean("toolbar_show_research", true);
-            model->toolbar_show_cheats = reader->GetBoolean("toolbar_show_cheats", false);
-            model->toolbar_show_news = reader->GetBoolean("toolbar_show_news", false);
-            model->toolbar_show_mute = reader->GetBoolean("toolbar_show_mute", false);
-            model->toolbar_show_chat = reader->GetBoolean("toolbar_show_chat", false);
-            model->toolbar_show_zoom = reader->GetBoolean("toolbar_show_zoom", true);
-            model->console_small_font = reader->GetBoolean("console_small_font", false);
-            model->current_theme_preset = reader->GetCString("current_theme", "*RCT2");
-            model->current_title_sequence_preset = reader->GetCString("current_title_sequence", "*OPENRCT2");
-            model->random_title_sequence = reader->GetBoolean("random_title_sequence", false);
-            model->object_selection_filter_flags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
-            model->scenarioselect_last_tab = reader->GetInt32("scenarioselect_last_tab", 0);
-            model->list_ride_vehicles_separately = reader->GetBoolean("list_ride_vehicles_separately", false);
+            model->ToolbarShowFinances = reader->GetBoolean("toolbar_show_finances", true);
+            model->ToolbarShowResearch = reader->GetBoolean("toolbar_show_research", true);
+            model->ToolbarShowCheats = reader->GetBoolean("toolbar_show_cheats", false);
+            model->ToolbarShowNews = reader->GetBoolean("toolbar_show_news", false);
+            model->ToolbarShowMute = reader->GetBoolean("toolbar_show_mute", false);
+            model->ToolbarShowChat = reader->GetBoolean("toolbar_show_chat", false);
+            model->ToolbarShowZoom = reader->GetBoolean("toolbar_show_zoom", true);
+            model->ConsoleSmallFont = reader->GetBoolean("console_small_font", false);
+            model->CurrentThemePreset = reader->GetCString("current_theme", "*RCT2");
+            model->CurrentTitleSequencePreset = reader->GetCString("current_title_sequence", "*OPENRCT2");
+            model->RandomTitleSequence = reader->GetBoolean("random_title_sequence", false);
+            model->ObjectSelectionFilterFlags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
+            model->ScenarioselectLastTab = reader->GetInt32("scenarioselect_last_tab", 0);
+            model->ListRideVehiclesSeparately = reader->GetBoolean("list_ride_vehicles_separately", false);
         }
     }
 
@@ -338,20 +338,20 @@ namespace Config
     {
         auto model = &gConfigInterface;
         writer->WriteSection("interface");
-        writer->WriteBoolean("toolbar_show_finances", model->toolbar_show_finances);
-        writer->WriteBoolean("toolbar_show_research", model->toolbar_show_research);
-        writer->WriteBoolean("toolbar_show_cheats", model->toolbar_show_cheats);
-        writer->WriteBoolean("toolbar_show_news", model->toolbar_show_news);
-        writer->WriteBoolean("toolbar_show_mute", model->toolbar_show_mute);
-        writer->WriteBoolean("toolbar_show_chat", model->toolbar_show_chat);
-        writer->WriteBoolean("toolbar_show_zoom", model->toolbar_show_zoom);
-        writer->WriteBoolean("console_small_font", model->console_small_font);
-        writer->WriteString("current_theme", model->current_theme_preset);
-        writer->WriteString("current_title_sequence", model->current_title_sequence_preset);
-        writer->WriteBoolean("random_title_sequence", model->random_title_sequence);
-        writer->WriteInt32("object_selection_filter_flags", model->object_selection_filter_flags);
-        writer->WriteInt32("scenarioselect_last_tab", model->scenarioselect_last_tab);
-        writer->WriteBoolean("list_ride_vehicles_separately", model->list_ride_vehicles_separately);
+        writer->WriteBoolean("toolbar_show_finances", model->ToolbarShowFinances);
+        writer->WriteBoolean("toolbar_show_research", model->ToolbarShowResearch);
+        writer->WriteBoolean("toolbar_show_cheats", model->ToolbarShowCheats);
+        writer->WriteBoolean("toolbar_show_news", model->ToolbarShowNews);
+        writer->WriteBoolean("toolbar_show_mute", model->ToolbarShowMute);
+        writer->WriteBoolean("toolbar_show_chat", model->ToolbarShowChat);
+        writer->WriteBoolean("toolbar_show_zoom", model->ToolbarShowZoom);
+        writer->WriteBoolean("console_small_font", model->ConsoleSmallFont);
+        writer->WriteString("current_theme", model->CurrentThemePreset);
+        writer->WriteString("current_title_sequence", model->CurrentTitleSequencePreset);
+        writer->WriteBoolean("random_title_sequence", model->RandomTitleSequence);
+        writer->WriteInt32("object_selection_filter_flags", model->ObjectSelectionFilterFlags);
+        writer->WriteInt32("scenarioselect_last_tab", model->ScenarioselectLastTab);
+        writer->WriteBoolean("list_ride_vehicles_separately", model->ListRideVehiclesSeparately);
     }
 
     static void ReadSound(IIniReader* reader)
@@ -803,8 +803,8 @@ bool config_save(u8string_view path)
 void config_release()
 {
     SafeFree(gConfigGeneral.CustomCurrencySymbol);
-    SafeFree(gConfigInterface.current_theme_preset);
-    SafeFree(gConfigInterface.current_title_sequence_preset);
+    SafeFree(gConfigInterface.CurrentThemePreset);
+    SafeFree(gConfigInterface.CurrentTitleSequencePreset);
     SafeFree(gConfigFonts.file_name);
     SafeFree(gConfigFonts.font_name);
 }

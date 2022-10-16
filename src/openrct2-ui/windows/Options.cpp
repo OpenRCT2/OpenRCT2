@@ -1549,43 +1549,43 @@ private:
                 Invalidate();
                 break;
             case WIDX_TOOLBAR_SHOW_FINANCES:
-                gConfigInterface.toolbar_show_finances ^= 1;
+                gConfigInterface.ToolbarShowFinances ^= 1;
                 config_save_default();
                 Invalidate();
                 window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_RESEARCH:
-                gConfigInterface.toolbar_show_research ^= 1;
+                gConfigInterface.ToolbarShowResearch ^= 1;
                 config_save_default();
                 Invalidate();
                 window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_CHEATS:
-                gConfigInterface.toolbar_show_cheats ^= 1;
+                gConfigInterface.ToolbarShowCheats ^= 1;
                 config_save_default();
                 Invalidate();
                 window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_NEWS:
-                gConfigInterface.toolbar_show_news ^= 1;
+                gConfigInterface.ToolbarShowNews ^= 1;
                 config_save_default();
                 Invalidate();
                 window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_MUTE:
-                gConfigInterface.toolbar_show_mute ^= 1;
+                gConfigInterface.ToolbarShowMute ^= 1;
                 config_save_default();
                 Invalidate();
                 window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_CHAT:
-                gConfigInterface.toolbar_show_chat ^= 1;
+                gConfigInterface.ToolbarShowChat ^= 1;
                 config_save_default();
                 Invalidate();
                 window_invalidate_by_class(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_ZOOM:
-                gConfigInterface.toolbar_show_zoom ^= 1;
+                gConfigInterface.ToolbarShowZoom ^= 1;
                 config_save_default();
                 Invalidate();
                 window_invalidate_by_class(WindowClass::TopToolbar);
@@ -1647,13 +1647,13 @@ private:
         SetCheckboxValue(WIDX_TRAP_CURSOR, gConfigGeneral.TrapCursor);
         SetCheckboxValue(WIDX_INVERT_DRAG, gConfigGeneral.InvertViewportDrag);
         SetCheckboxValue(WIDX_ZOOM_TO_CURSOR, gConfigGeneral.ZoomToCursor);
-        SetCheckboxValue(WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
-        SetCheckboxValue(WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
-        SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
-        SetCheckboxValue(WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
-        SetCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
-        SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
-        SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, gConfigInterface.toolbar_show_zoom);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.ToolbarShowFinances);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.ToolbarShowResearch);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.ToolbarShowCheats);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.ToolbarShowNews);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.ToolbarShowMute);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.ToolbarShowChat);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, gConfigInterface.ToolbarShowZoom);
 
         size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
         const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
@@ -1730,9 +1730,8 @@ private:
                     { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1],
                     Dropdown::Flag::StayOpen, numItems);
 
-                auto selectedIndex = gConfigInterface.random_title_sequence
-                    ? numItems - 1
-                    : static_cast<int32_t>(title_get_current_sequence());
+                auto selectedIndex = gConfigInterface.RandomTitleSequence ? numItems - 1
+                                                                          : static_cast<int32_t>(title_get_current_sequence());
                 Dropdown::SetChecked(selectedIndex, true);
                 break;
             }
@@ -1774,14 +1773,14 @@ private:
                 auto numItems = static_cast<int32_t>(title_sequence_manager_get_count());
                 if (dropdownIndex < numItems && dropdownIndex != static_cast<int32_t>(title_get_current_sequence()))
                 {
-                    gConfigInterface.random_title_sequence = false;
+                    gConfigInterface.RandomTitleSequence = false;
                     title_sequence_change_preset(static_cast<size_t>(dropdownIndex));
                     config_save_default();
                     Invalidate();
                 }
                 else if (dropdownIndex == numItems + 1)
                 {
-                    gConfigInterface.random_title_sequence = true;
+                    gConfigInterface.RandomTitleSequence = true;
                     config_save_default();
                     Invalidate();
                 }
@@ -1799,7 +1798,7 @@ private:
                 if (dropdownIndex != gConfigGeneral.ScenarioSelectMode)
                 {
                     gConfigGeneral.ScenarioSelectMode = dropdownIndex;
-                    gConfigInterface.scenarioselect_last_tab = 0;
+                    gConfigInterface.ScenarioselectLastTab = 0;
                     config_save_default();
                     Invalidate();
                     window_close_by_class(WindowClass::ScenarioSelect);
@@ -1811,7 +1810,7 @@ private:
     void MiscPrepareDraw()
     {
         auto ft = Formatter::Common();
-        if (gConfigInterface.random_title_sequence)
+        if (gConfigInterface.RandomTitleSequence)
         {
             ft.Add<StringId>(STR_TITLE_SEQUENCE_RANDOM);
         }
@@ -1903,7 +1902,7 @@ private:
                             if (CsgAtLocationIsUsable(rct1path))
                             {
                                 gConfigGeneral.RCT1Path = std::move(rct1path);
-                                gConfigInterface.scenarioselect_last_tab = 0;
+                                gConfigInterface.ScenarioselectLastTab = 0;
                                 config_save_default();
                                 context_show_error(STR_RESTART_REQUIRED, STR_NONE, {});
                             }

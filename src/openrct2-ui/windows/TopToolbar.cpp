@@ -701,22 +701,22 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::TrnBtn;
     window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::TrnBtn;
 
-    if (!gConfigInterface.toolbar_show_mute)
+    if (!gConfigInterface.ToolbarShowMute)
         window_top_toolbar_widgets[WIDX_MUTE].type = WindowWidgetType::Empty;
 
-    if (!gConfigInterface.toolbar_show_chat)
+    if (!gConfigInterface.ToolbarShowChat)
         window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
 
-    if (!gConfigInterface.toolbar_show_research)
+    if (!gConfigInterface.ToolbarShowResearch)
         window_top_toolbar_widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
 
-    if (!gConfigInterface.toolbar_show_cheats)
+    if (!gConfigInterface.ToolbarShowCheats)
         window_top_toolbar_widgets[WIDX_CHEATS].type = WindowWidgetType::Empty;
 
-    if (!gConfigInterface.toolbar_show_news)
+    if (!gConfigInterface.ToolbarShowNews)
         window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
 
-    if (!gConfigInterface.toolbar_show_zoom)
+    if (!gConfigInterface.ToolbarShowZoom)
     {
         window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
@@ -727,7 +727,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
     }
 
-    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.toolbar_show_finances)
+    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.ToolbarShowFinances)
         window_top_toolbar_widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)

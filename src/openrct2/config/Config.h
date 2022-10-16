@@ -121,20 +121,20 @@ struct GeneralConfiguration
 
 struct InterfaceConfiguration
 {
-    bool toolbar_show_finances;
-    bool toolbar_show_research;
-    bool toolbar_show_cheats;
-    bool toolbar_show_news;
-    bool toolbar_show_mute;
-    bool toolbar_show_chat;
-    bool toolbar_show_zoom;
-    bool console_small_font;
-    bool random_title_sequence;
-    utf8* current_theme_preset;
-    utf8* current_title_sequence_preset;
-    int32_t object_selection_filter_flags;
-    int32_t scenarioselect_last_tab;
-    bool list_ride_vehicles_separately;
+    bool ToolbarShowFinances;
+    bool ToolbarShowResearch;
+    bool ToolbarShowCheats;
+    bool ToolbarShowNews;
+    bool ToolbarShowMute;
+    bool ToolbarShowChat;
+    bool ToolbarShowZoom;
+    bool ConsoleSmallFont;
+    bool RandomTitleSequence;
+    utf8* CurrentThemePreset;
+    utf8* CurrentTitleSequencePreset;
+    int32_t ObjectSelectionFilterFlags;
+    int32_t ScenarioselectLastTab;
+    bool ListRideVehiclesSeparately;
 };
 
 struct SoundConfiguration
