@@ -609,9 +609,10 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
                 Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
 
             overwrite = false;
+            int32_t lowerCase = Platform::GetDrives();
             for (auto& item : _listItems)
             {
-                if (String::Equals(item.path, path))
+                if (String::Equals(item.path, path, lowerCase && !Platform::IsRunningInWine()))
                 {
                     overwrite = true;
                     break;
