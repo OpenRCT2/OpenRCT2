@@ -97,7 +97,8 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    if (!map_is_location_in_park(_loc - CoordsDirectionDelta[_direction]))
+    CoordsXYZ pathLocation = { _loc - CoordsDirectionDelta[_direction], z };
+    if (!LocationValid(pathLocation) || !MapIsLocationOwned(pathLocation))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_FACING_PARK_FENCE);
     }
