@@ -32,10 +32,10 @@ static void PaintFacility(
     if (firstCarEntry == nullptr)
         return;
 
-    auto lengthX = (direction & 1) == 0 ? 28 : 2;
-    auto lengthY = (direction & 1) == 0 ? 2 : 28;
+    auto lengthX = direction == 1 ? 2 : 28;
+    auto lengthY = direction == 2 ? 2 : 28;
     CoordsXYZ offset(0, 0, height);
-    BoundBoxXYZ bb = { { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height }, { lengthX, lengthY, 29 } };
+    BoundBoxXYZ bb = { { 2, 2, height }, { lengthX, lengthY, 29 } };
 
     auto imageTemplate = session.TrackColours[SCHEME_TRACK];
     auto imageIndex = firstCarEntry->base_image_id + ((direction + 2) & 3);
