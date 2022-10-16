@@ -461,24 +461,24 @@ namespace Config
         if (reader->ReadSection("notifications"))
         {
             auto model = &gConfigNotifications;
-            model->park_award = reader->GetBoolean("park_award", true);
-            model->park_marketing_campaign_finished = reader->GetBoolean("park_marketing_campaign_finished", true);
-            model->park_warnings = reader->GetBoolean("park_warnings", true);
-            model->park_rating_warnings = reader->GetBoolean("park_rating_warnings", true);
-            model->ride_broken_down = reader->GetBoolean("ride_broken_down", true);
-            model->ride_crashed = reader->GetBoolean("ride_crashed", true);
-            model->ride_casualties = reader->GetBoolean("ride_casualties", true);
-            model->ride_warnings = reader->GetBoolean("ride_warnings", true);
-            model->ride_researched = reader->GetBoolean("ride_researched", true);
-            model->ride_stalled_vehicles = reader->GetBoolean("ride_stalled_vehicles", true);
-            model->guest_warnings = reader->GetBoolean("guest_warnings", true);
-            model->guest_left_park = reader->GetBoolean("guest_left_park", true);
-            model->guest_queuing_for_ride = reader->GetBoolean("guest_queuing_for_ride", true);
-            model->guest_on_ride = reader->GetBoolean("guest_on_ride", true);
-            model->guest_left_ride = reader->GetBoolean("guest_left_ride", true);
-            model->guest_bought_item = reader->GetBoolean("guest_bought_item", true);
-            model->guest_used_facility = reader->GetBoolean("guest_used_facility", true);
-            model->guest_died = reader->GetBoolean("guest_died", true);
+            model->ParkAward = reader->GetBoolean("park_award", true);
+            model->ParkMarketingCampaignFinished = reader->GetBoolean("park_marketing_campaign_finished", true);
+            model->ParkWarnings = reader->GetBoolean("park_warnings", true);
+            model->ParkRatingWarnings = reader->GetBoolean("park_rating_warnings", true);
+            model->RideBrokenDown = reader->GetBoolean("ride_broken_down", true);
+            model->RideCrashed = reader->GetBoolean("ride_crashed", true);
+            model->RideCasualties = reader->GetBoolean("ride_casualties", true);
+            model->RideWarnings = reader->GetBoolean("ride_warnings", true);
+            model->RideResearched = reader->GetBoolean("ride_researched", true);
+            model->RideStalledVehicles = reader->GetBoolean("ride_stalled_vehicles", true);
+            model->GuestWarnings = reader->GetBoolean("guest_warnings", true);
+            model->GuestLeftPark = reader->GetBoolean("guest_left_park", true);
+            model->GuestQueuingForRide = reader->GetBoolean("guest_queuing_for_ride", true);
+            model->GuestOnRide = reader->GetBoolean("guest_on_ride", true);
+            model->GuestLeftRide = reader->GetBoolean("guest_left_ride", true);
+            model->GuestBoughtItem = reader->GetBoolean("guest_bought_item", true);
+            model->GuestUsedFacility = reader->GetBoolean("guest_used_facility", true);
+            model->GuestDied = reader->GetBoolean("guest_died", true);
         }
     }
 
@@ -486,24 +486,24 @@ namespace Config
     {
         auto model = &gConfigNotifications;
         writer->WriteSection("notifications");
-        writer->WriteBoolean("park_award", model->park_award);
-        writer->WriteBoolean("park_marketing_campaign_finished", model->park_marketing_campaign_finished);
-        writer->WriteBoolean("park_warnings", model->park_warnings);
-        writer->WriteBoolean("park_rating_warnings", model->park_rating_warnings);
-        writer->WriteBoolean("ride_broken_down", model->ride_broken_down);
-        writer->WriteBoolean("ride_crashed", model->ride_crashed);
-        writer->WriteBoolean("ride_casualties", model->ride_casualties);
-        writer->WriteBoolean("ride_warnings", model->ride_warnings);
-        writer->WriteBoolean("ride_researched", model->ride_researched);
-        writer->WriteBoolean("ride_stalled_vehicles", model->ride_stalled_vehicles);
-        writer->WriteBoolean("guest_warnings", model->guest_warnings);
-        writer->WriteBoolean("guest_left_park", model->guest_left_park);
-        writer->WriteBoolean("guest_queuing_for_ride", model->guest_queuing_for_ride);
-        writer->WriteBoolean("guest_on_ride", model->guest_on_ride);
-        writer->WriteBoolean("guest_left_ride", model->guest_left_ride);
-        writer->WriteBoolean("guest_bought_item", model->guest_bought_item);
-        writer->WriteBoolean("guest_used_facility", model->guest_used_facility);
-        writer->WriteBoolean("guest_died", model->guest_died);
+        writer->WriteBoolean("park_award", model->ParkAward);
+        writer->WriteBoolean("park_marketing_campaign_finished", model->ParkMarketingCampaignFinished);
+        writer->WriteBoolean("park_warnings", model->ParkWarnings);
+        writer->WriteBoolean("park_rating_warnings", model->ParkRatingWarnings);
+        writer->WriteBoolean("ride_broken_down", model->RideBrokenDown);
+        writer->WriteBoolean("ride_crashed", model->RideCrashed);
+        writer->WriteBoolean("ride_casualties", model->RideCasualties);
+        writer->WriteBoolean("ride_warnings", model->RideWarnings);
+        writer->WriteBoolean("ride_researched", model->RideResearched);
+        writer->WriteBoolean("ride_stalled_vehicles", model->RideStalledVehicles);
+        writer->WriteBoolean("guest_warnings", model->GuestWarnings);
+        writer->WriteBoolean("guest_left_park", model->GuestLeftPark);
+        writer->WriteBoolean("guest_queuing_for_ride", model->GuestQueuingForRide);
+        writer->WriteBoolean("guest_on_ride", model->GuestOnRide);
+        writer->WriteBoolean("guest_left_ride", model->GuestLeftRide);
+        writer->WriteBoolean("guest_bought_item", model->GuestBoughtItem);
+        writer->WriteBoolean("guest_used_facility", model->GuestUsedFacility);
+        writer->WriteBoolean("guest_died", model->GuestDied);
     }
 
     static void ReadFont(IIniReader* reader)

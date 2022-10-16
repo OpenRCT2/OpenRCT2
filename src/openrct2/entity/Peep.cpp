@@ -746,7 +746,7 @@ void Peep::UpdateFalling()
         if (Action == PeepActionType::Drowning)
             return;
 
-        if (gConfigNotifications.guest_died)
+        if (gConfigNotifications.GuestDied)
         {
             auto ft = Formatter();
             FormatNameTo(ft);
@@ -1124,7 +1124,7 @@ void peep_problem_warnings_update()
     else if (hungerCounter >= PEEP_HUNGER_WARNING_THRESHOLD && hungerCounter >= gNumGuestsInPark / 16)
     {
         warningThrottle[0] = 4;
-        if (gConfigNotifications.guest_warnings)
+        if (gConfigNotifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Hungry);
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, thoughtId, {});
@@ -1136,7 +1136,7 @@ void peep_problem_warnings_update()
     else if (thirstCounter >= PEEP_THIRST_WARNING_THRESHOLD && thirstCounter >= gNumGuestsInPark / 16)
     {
         warningThrottle[1] = 4;
-        if (gConfigNotifications.guest_warnings)
+        if (gConfigNotifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Thirsty);
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, thoughtId, {});
@@ -1148,7 +1148,7 @@ void peep_problem_warnings_update()
     else if (toiletCounter >= PEEP_TOILET_WARNING_THRESHOLD && toiletCounter >= gNumGuestsInPark / 16)
     {
         warningThrottle[2] = 4;
-        if (gConfigNotifications.guest_warnings)
+        if (gConfigNotifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Toilet);
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, thoughtId, {});
@@ -1160,7 +1160,7 @@ void peep_problem_warnings_update()
     else if (litterCounter >= PEEP_LITTER_WARNING_THRESHOLD && litterCounter >= gNumGuestsInPark / 32)
     {
         warningThrottle[3] = 4;
-        if (gConfigNotifications.guest_warnings)
+        if (gConfigNotifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::BadLitter);
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, thoughtId, {});
@@ -1172,7 +1172,7 @@ void peep_problem_warnings_update()
     else if (disgustCounter >= PEEP_DISGUST_WARNING_THRESHOLD && disgustCounter >= gNumGuestsInPark / 32)
     {
         warningThrottle[4] = 4;
-        if (gConfigNotifications.guest_warnings)
+        if (gConfigNotifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::PathDisgusting);
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, thoughtId, {});
@@ -1184,7 +1184,7 @@ void peep_problem_warnings_update()
     else if (vandalismCounter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalismCounter >= gNumGuestsInPark / 32)
     {
         warningThrottle[5] = 4;
-        if (gConfigNotifications.guest_warnings)
+        if (gConfigNotifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Vandalism);
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, thoughtId, {});
@@ -1196,7 +1196,7 @@ void peep_problem_warnings_update()
     else if (noexitCounter >= PEEP_NOEXIT_WARNING_THRESHOLD)
     {
         warningThrottle[6] = 4;
-        if (gConfigNotifications.guest_warnings)
+        if (gConfigNotifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::CantFindExit);
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
@@ -1205,7 +1205,7 @@ void peep_problem_warnings_update()
     else if (lostCounter >= PEEP_LOST_WARNING_THRESHOLD)
     {
         warningThrottle[6] = 4;
-        if (gConfigNotifications.guest_warnings)
+        if (gConfigNotifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Lost);
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
@@ -1218,7 +1218,7 @@ void peep_problem_warnings_update()
     { // The amount of guests complaining about queue duration is at least 5% of the amount of queuing guests.
       // This includes guests who are no longer queuing.
         warningThrottle[7] = 4;
-        if (gConfigNotifications.guest_warnings)
+        if (gConfigNotifications.GuestWarnings)
         {
             auto rideWithMostQueueComplaints = std::max_element(
                 queueComplainingGuestsMap.begin(), queueComplainingGuestsMap.end(),
@@ -1789,7 +1789,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             auto ft = Formatter();
             guest->FormatNameTo(ft);
             ride->FormatNameTo(ft);
-            if (gConfigNotifications.guest_queuing_for_ride)
+            if (gConfigNotifications.GuestQueuingForRide)
             {
                 News::AddItemToQueue(
                     News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->sprite_index, ft);
@@ -1850,7 +1850,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             {
                 auto ft = Formatter();
                 guest->FormatNameTo(ft);
-                if (gConfigNotifications.guest_left_park)
+                if (gConfigNotifications.GuestLeftPark)
                 {
                     News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->sprite_index, ft);
                 }
@@ -2219,7 +2219,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                         auto ft = Formatter();
                         guest->FormatNameTo(ft);
                         ride->FormatNameTo(ft);
-                        if (gConfigNotifications.guest_queuing_for_ride)
+                        if (gConfigNotifications.GuestQueuingForRide)
                         {
                             News::AddItemToQueue(
                                 News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->sprite_index, ft);
@@ -2334,7 +2334,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
             ride->FormatNameTo(ft);
             StringId string_id = ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE) ? STR_PEEP_TRACKING_PEEP_IS_IN_X
                                                                                                : STR_PEEP_TRACKING_PEEP_IS_ON_X;
-            if (gConfigNotifications.guest_used_facility)
+            if (gConfigNotifications.GuestUsedFacility)
             {
                 News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, guest->sprite_index, ft);
             }

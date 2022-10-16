@@ -1564,7 +1564,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
  */
 void ride_breakdown_add_news_item(Ride* ride)
 {
-    if (gConfigNotifications.ride_broken_down)
+    if (gConfigNotifications.RideBrokenDown)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
@@ -1591,7 +1591,7 @@ static void ride_breakdown_status_update(Ride* ride)
         if (!(ride->not_fixed_timeout & 15) && ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING
             && ride->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            if (gConfigNotifications.ride_warnings)
+            if (gConfigNotifications.RideWarnings)
             {
                 Formatter ft;
                 ride->FormatNameTo(ft);
@@ -2280,7 +2280,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             // name of ride is parameter of the format string
             Formatter ft;
             ride->FormatNameTo(ft);
-            if (gConfigNotifications.ride_warnings)
+            if (gConfigNotifications.RideWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id.ToUnderlying(), ft);
             }
@@ -2292,7 +2292,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             // name of ride is parameter of the format string
             Formatter ft;
             ride->FormatNameTo(ft);
-            if (gConfigNotifications.ride_warnings)
+            if (gConfigNotifications.RideWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, ride->id.ToUnderlying(), ft);
             }
@@ -2359,7 +2359,7 @@ static void ride_shop_connected(Ride* ride)
     }
 
     // Name of ride is parameter of the format string
-    if (gConfigNotifications.ride_warnings)
+    if (gConfigNotifications.RideWarnings)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
@@ -5316,7 +5316,7 @@ void Ride::Crash(uint8_t vehicleIndex)
         }
     }
 
-    if (gConfigNotifications.ride_crashed)
+    if (gConfigNotifications.RideCrashed)
     {
         Formatter ft;
         FormatNameTo(ft);

@@ -1651,7 +1651,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
         auto ft = Formatter();
         FormatNameTo(ft);
         ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
-        if (gConfigNotifications.guest_bought_item)
+        if (gConfigNotifications.GuestBoughtItem)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
         }
@@ -3568,7 +3568,7 @@ void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride* ride, CoordsXYZD& ent
 
         auto ft = Formatter();
         ride->FormatNameTo(ft);
-        if (gConfigNotifications.ride_warnings)
+        if (gConfigNotifications.RideWarnings)
         {
             News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, peep->CurrentRide.ToUnderlying(), ft);
         }
@@ -3855,7 +3855,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         else
             msg_string = STR_PEEP_TRACKING_PEEP_IS_ON_X;
 
-        if (gConfigNotifications.guest_on_ride)
+        if (gConfigNotifications.GuestOnRide)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, sprite_index, ft);
         }
@@ -4953,7 +4953,7 @@ void Guest::UpdateRideLeaveExit()
         FormatNameTo(ft);
         ride->FormatNameTo(ft);
 
-        if (gConfigNotifications.guest_left_ride)
+        if (gConfigNotifications.GuestLeftRide)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, sprite_index, ft);
         }

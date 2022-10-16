@@ -176,24 +176,24 @@ struct NetworkConfiguration
 
 struct NotificationConfiguration
 {
-    bool park_award;
-    bool park_marketing_campaign_finished;
-    bool park_warnings;
-    bool park_rating_warnings;
-    bool ride_broken_down;
-    bool ride_crashed;
-    bool ride_casualties;
-    bool ride_warnings;
-    bool ride_researched;
-    bool ride_stalled_vehicles;
-    bool guest_warnings;
-    bool guest_left_park;
-    bool guest_queuing_for_ride;
-    bool guest_on_ride;
-    bool guest_left_ride;
-    bool guest_bought_item;
-    bool guest_used_facility;
-    bool guest_died;
+    bool ParkAward;
+    bool ParkMarketingCampaignFinished;
+    bool ParkWarnings;
+    bool ParkRatingWarnings;
+    bool RideBrokenDown;
+    bool RideCrashed;
+    bool RideCasualties;
+    bool RideWarnings;
+    bool RideResearched;
+    bool RideStalledVehicles;
+    bool GuestWarnings;
+    bool GuestLeftPark;
+    bool GuestQueuingForRide;
+    bool GuestOnRide;
+    bool GuestLeftRide;
+    bool GuestBoughtItem;
+    bool GuestUsedFacility;
+    bool GuestDied;
 };
 
 struct FontConfiguration
