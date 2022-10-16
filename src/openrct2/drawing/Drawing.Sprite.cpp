@@ -324,14 +324,14 @@ bool gfx_load_csg()
 {
     log_verbose("gfx_load_csg()");
 
-    if (gConfigGeneral.rct1_path.empty())
+    if (gConfigGeneral.RCT1Path.empty())
     {
         log_verbose("  unable to load CSG, RCT1 path not set");
         return false;
     }
 
-    auto pathHeaderPath = FindCsg1idatAtLocation(gConfigGeneral.rct1_path);
-    auto pathDataPath = FindCsg1datAtLocation(gConfigGeneral.rct1_path);
+    auto pathHeaderPath = FindCsg1idatAtLocation(gConfigGeneral.RCT1Path);
+    auto pathDataPath = FindCsg1datAtLocation(gConfigGeneral.RCT1Path);
     try
     {
         auto fileHeader = FileStream(pathHeaderPath, FILE_MODE_OPEN);

@@ -186,7 +186,7 @@ void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t 
     viewport->zoom = zoom;
     viewport->flags = 0;
 
-    if (gConfigGeneral.always_show_gridlines)
+    if (gConfigGeneral.AlwaysShowGridlines)
         viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
     w->viewport = viewport;
 
@@ -933,7 +933,7 @@ static void viewport_paint_column(PaintSession& session)
 
     PaintDrawStructs(session);
 
-    if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
+    if (gConfigGeneral.RenderWeatherGloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         viewport_paint_weather_gloom(&session.DPI);
@@ -999,7 +999,7 @@ void viewport_paint(
 
     _paintColumns.clear();
 
-    bool useMultithreading = gConfigGeneral.multithreading;
+    bool useMultithreading = gConfigGeneral.MultiThreading;
     if (useMultithreading && _paintJobs == nullptr)
     {
         _paintJobs = std::make_unique<JobPool>();
@@ -1208,7 +1208,7 @@ void hide_gridlines()
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            if (!gConfigGeneral.always_show_gridlines)
+            if (!gConfigGeneral.AlwaysShowGridlines)
             {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
                 mainWindow->Invalidate();
@@ -2114,11 +2114,11 @@ uint8_t get_current_rotation()
 int32_t get_height_marker_offset()
 {
     // Height labels in units
-    if (gConfigGeneral.show_height_as_units)
+    if (gConfigGeneral.ShowHeightAsUnits)
         return 0;
 
     // Height labels in feet
-    if (gConfigGeneral.measurement_format == MeasurementFormat::Imperial)
+    if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         return 1 * 256;
 
     // Height labels in metres

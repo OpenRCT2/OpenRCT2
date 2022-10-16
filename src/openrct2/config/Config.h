@@ -27,96 +27,96 @@ enum class TitleMusicKind : int32_t;
 struct GeneralConfiguration
 {
     // Paths
-    u8string rct1_path;
-    u8string rct2_path;
+    u8string RCT1Path;
+    u8string RCT2Path;
 
     // Display
-    int32_t default_display;
-    int32_t window_width;
-    int32_t window_height;
-    int32_t fullscreen_mode;
-    int32_t fullscreen_width;
-    int32_t fullscreen_height;
-    float window_scale;
-    DrawingEngine drawing_engine;
-    bool uncap_fps;
-    bool use_vsync;
-    bool show_fps;
-    bool multithreading;
-    bool minimize_fullscreen_focus_loss;
-    bool disable_screensaver;
+    int32_t DefaultDisplay;
+    int32_t WindowWidth;
+    int32_t WindowHeight;
+    int32_t FullscreenMode;
+    int32_t FullscreenWidth;
+    int32_t FullscreenHeight;
+    float WindowScale;
+    ::DrawingEngine DrawingEngine;
+    bool UncapFPS;
+    bool UseVSync;
+    bool ShowFPS;
+    bool MultiThreading;
+    bool MinimizeFullscreenFocusLoss;
+    bool DisableScreensaver;
 
     // Map rendering
-    bool landscape_smoothing;
-    bool always_show_gridlines;
-    VirtualFloorStyles virtual_floor_style;
-    bool day_night_cycle;
-    bool enable_light_fx;
-    bool enable_light_fx_for_vehicles;
-    bool upper_case_banners;
-    bool render_weather_effects;
-    bool render_weather_gloom;
-    bool disable_lightning_effect;
-    bool show_guest_purchases;
-    bool transparent_screenshot;
-    bool transparent_water;
+    bool LandscapeSmoothing;
+    bool AlwaysShowGridlines;
+    VirtualFloorStyles VirtualFloorStyle;
+    bool DayNightCycle;
+    bool EnableLightFx;
+    bool EnableLightFxForVehicles;
+    bool UpperCaseBanners;
+    bool RenderWeatherEffects;
+    bool RenderWeatherGloom;
+    bool DisableLightningEffect;
+    bool ShowGuestPurchases;
+    bool TransparentScreenshot;
+    bool TransparentWater;
 
-    bool invisible_rides;
-    bool invisible_vehicles;
-    bool invisible_trees;
-    bool invisible_scenery;
-    bool invisible_paths;
-    bool invisible_supports;
+    bool InvisibleRides;
+    bool InvisibleVehicles;
+    bool InvisibleTrees;
+    bool InvisibleScenery;
+    bool InvisiblePaths;
+    bool InvisibleSupports;
 
     // Localisation
-    int32_t language;
-    MeasurementFormat measurement_format;
-    TemperatureUnit temperature_format;
-    bool show_height_as_units;
-    int32_t date_format;
-    CurrencyType currency_format;
-    int32_t custom_currency_rate;
-    CurrencyAffix custom_currency_affix;
-    utf8* custom_currency_symbol;
+    int32_t Language;
+    ::MeasurementFormat MeasurementFormat;
+    TemperatureUnit TemperatureFormat;
+    bool ShowHeightAsUnits;
+    int32_t DateFormat;
+    CurrencyType CurrencyFormat;
+    int32_t CustomCurrencyRate;
+    CurrencyAffix CustomCurrencyAffix;
+    utf8* CustomCurrencySymbol;
 
     // Controls
-    bool edge_scrolling;
-    int32_t edge_scrolling_speed;
-    bool trap_cursor;
-    bool invert_viewport_drag;
-    bool zoom_to_cursor;
+    bool EdgeScrolling;
+    int32_t EdgeScrollingSpeed;
+    bool TrapCursor;
+    bool InvertViewportDrag;
+    bool ZoomToCursor;
 
     // Miscellaneous
-    bool play_intro;
-    int32_t window_snap_proximity;
-    bool save_plugin_data;
-    bool debugging_tools;
-    int32_t autosave_frequency;
-    int32_t autosave_amount;
-    bool auto_staff_placement;
-    bool handymen_mow_default;
-    bool auto_open_shops;
-    int32_t default_inspection_interval;
-    int32_t window_limit;
-    int32_t scenario_select_mode;
-    bool scenario_unlocking_enabled;
-    bool scenario_hide_mega_park;
-    bool steam_overlay_pause;
-    bool show_real_names_of_guests;
-    bool allow_early_completion;
-    u8string asset_pack_order;
-    u8string enabled_asset_packs;
+    bool PlayIntro;
+    int32_t WindowSnapProximity;
+    bool SavePluginData;
+    bool DebuggingTools;
+    int32_t AutosaveFrequency;
+    int32_t AutosaveAmount;
+    bool AutoStaffPlacement;
+    bool HandymenMowByDefault;
+    bool AutoOpenShops;
+    int32_t DefaultInspectionInterval;
+    int32_t WindowLimit;
+    int32_t ScenarioSelectMode;
+    bool ScenarioUnlockingEnabled;
+    bool ScenarioHideMegaPark;
+    bool SteamOverlayPause;
+    bool ShowRealNamesOfGuests;
+    bool AllowEarlyCompletion;
+    u8string AssetPackOrder;
+    u8string EnabledAssetPacks;
 
     // Loading and saving
-    bool confirmation_prompt;
-    Sort load_save_sort;
-    u8string last_save_game_directory;
-    u8string last_save_landscape_directory;
-    u8string last_save_scenario_directory;
-    u8string last_save_track_directory;
-    u8string last_run_version;
-    bool use_native_browse_dialog;
-    int64_t last_version_check_time;
+    bool ConfirmationPrompt;
+    Sort LoadSaveSort;
+    u8string LastSaveGameDirectory;
+    u8string LastSaveLandscapeDirectory;
+    u8string LastSaveScenarioDirectory;
+    u8string LastSaveTrackDirectory;
+    u8string LastRunVersion;
+    bool UseNativeBrowseDialog;
+    int64_t LastVersionCheckTime;
 };
 
 struct InterfaceConfiguration

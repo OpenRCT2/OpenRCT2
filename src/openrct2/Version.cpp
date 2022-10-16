@@ -61,7 +61,7 @@ NewVersionInfo get_latest_version()
     NewVersionInfo verinfo{ tag, "", "", "" };
 #ifndef DISABLE_HTTP
     auto now = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    auto then = gConfigGeneral.last_version_check_time;
+    auto then = gConfigGeneral.LastVersionCheckTime;
     if (then < now - 24 * 60 * 60)
     {
         Http::Request request;
@@ -88,7 +88,7 @@ NewVersionInfo get_latest_version()
         verinfo.changelog = Json::GetString(root["body"]);
         verinfo.url = Json::GetString(root["html_url"]);
 
-        gConfigGeneral.last_version_check_time = now;
+        gConfigGeneral.LastVersionCheckTime = now;
         config_save_default();
     }
 #endif

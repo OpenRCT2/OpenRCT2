@@ -455,7 +455,7 @@ static void sub_6A4101(
             {
                 ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
             }
-            if (gConfigGeneral.upper_case_banners)
+            if (gConfigGeneral.UpperCaseBanners)
             {
                 format_string_to_upper(
                     gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());

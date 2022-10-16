@@ -696,8 +696,8 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     window_top_toolbar_widgets[WIDX_RESEARCH].type = WindowWidgetType::TrnBtn;
     window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::TrnBtn;
     window_top_toolbar_widgets[WIDX_CHEATS].type = WindowWidgetType::TrnBtn;
-    window_top_toolbar_widgets[WIDX_DEBUG].type = gConfigGeneral.debugging_tools ? WindowWidgetType::TrnBtn
-                                                                                 : WindowWidgetType::Empty;
+    window_top_toolbar_widgets[WIDX_DEBUG].type = gConfigGeneral.DebuggingTools ? WindowWidgetType::TrnBtn
+                                                                                : WindowWidgetType::Empty;
     window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::TrnBtn;
     window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::TrnBtn;
 
@@ -1344,7 +1344,7 @@ static void Sub6E1F34SmallScenery(
         rotation -= get_current_rotation();
         rotation &= 0x3;
 
-        if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+        if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
         {
             VirtualFloorSetHeight(gSceneryPlaceZ);
         }
@@ -1428,7 +1428,7 @@ static void Sub6E1F34SmallScenery(
     rotation -= get_current_rotation();
     rotation &= 0x3;
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
         VirtualFloorSetHeight(gSceneryPlaceZ);
     }
@@ -1462,7 +1462,7 @@ static void Sub6E1F34PathItem(
         return;
     }
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
         VirtualFloorSetHeight(gSceneryPlaceZ);
     }
@@ -1551,7 +1551,7 @@ static void Sub6E1F34Wall(
     if (gridPos.IsNull())
         return;
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
         VirtualFloorSetHeight(gSceneryPlaceZ);
     }
@@ -1650,7 +1650,7 @@ static void Sub6E1F34LargeScenery(
     rotation -= get_current_rotation();
     rotation &= 0x3;
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
         VirtualFloorSetHeight(gSceneryPlaceZ);
     }
@@ -1698,7 +1698,7 @@ static void Sub6E1F34Banner(
         }
     }
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
         VirtualFloorSetHeight(gSceneryPlaceZ);
     }
@@ -2611,7 +2611,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
     MapInvalidateSelectionRect();
     MapInvalidateMapSelectionTiles();
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
         VirtualFloorInvalidate();
     }
@@ -3372,7 +3372,7 @@ static void TopToolbarInitFastforwardMenu(rct_window* w, rct_widget* widget)
     gDropdownItems[1].Format = STR_TOGGLE_OPTION;
     gDropdownItems[2].Format = STR_TOGGLE_OPTION;
     gDropdownItems[3].Format = STR_TOGGLE_OPTION;
-    if (gConfigGeneral.debugging_tools)
+    if (gConfigGeneral.DebuggingTools)
     {
         gDropdownItems[4].Format = STR_EMPTY;
         gDropdownItems[5].Format = STR_TOGGLE_OPTION;
@@ -3399,7 +3399,7 @@ static void TopToolbarInitFastforwardMenu(rct_window* w, rct_widget* widget)
         Dropdown::SetChecked(5, true);
     }
 
-    if (gConfigGeneral.debugging_tools)
+    if (gConfigGeneral.DebuggingTools)
     {
         gDropdownDefaultIndex = (gGameSpeed == 8 ? 0 : gGameSpeed);
     }
@@ -3665,7 +3665,7 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
     rct_viewport* mainViewport = window_get_main()->viewport;
     if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         Dropdown::SetChecked(DDIDX_UNDERGROUND_INSIDE, true);
-    if (gConfigGeneral.transparent_water)
+    if (gConfigGeneral.TransparentWater)
         Dropdown::SetChecked(DDIDX_TRANSPARENT_WATER, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
         Dropdown::SetChecked(DDIDX_HIDE_BASE, true);
@@ -3722,7 +3722,7 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
                 w->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                 break;
             case DDIDX_TRANSPARENT_WATER:
-                gConfigGeneral.transparent_water ^= 1;
+                gConfigGeneral.TransparentWater ^= 1;
                 config_save_default();
                 break;
             case DDIDX_HIDE_BASE:

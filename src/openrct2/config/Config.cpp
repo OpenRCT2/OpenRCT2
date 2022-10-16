@@ -138,94 +138,94 @@ namespace Config
         if (reader->ReadSection("general"))
         {
             auto model = &gConfigGeneral;
-            model->always_show_gridlines = reader->GetBoolean("always_show_gridlines", false);
-            model->autosave_frequency = reader->GetInt32("autosave", AUTOSAVE_EVERY_5MINUTES);
-            model->autosave_amount = reader->GetInt32("autosave_amount", DEFAULT_NUM_AUTOSAVES_TO_KEEP);
-            model->confirmation_prompt = reader->GetBoolean("confirmation_prompt", false);
-            model->currency_format = reader->GetEnum<CurrencyType>(
+            model->AlwaysShowGridlines = reader->GetBoolean("always_show_gridlines", false);
+            model->AutosaveFrequency = reader->GetInt32("autosave", AUTOSAVE_EVERY_5MINUTES);
+            model->AutosaveAmount = reader->GetInt32("autosave_amount", DEFAULT_NUM_AUTOSAVES_TO_KEEP);
+            model->ConfirmationPrompt = reader->GetBoolean("confirmation_prompt", false);
+            model->CurrencyFormat = reader->GetEnum<CurrencyType>(
                 "currency_format", Platform::GetLocaleCurrency(), Enum_Currency);
-            model->custom_currency_rate = reader->GetInt32("custom_currency_rate", 10);
-            model->custom_currency_affix = reader->GetEnum<CurrencyAffix>(
+            model->CustomCurrencyRate = reader->GetInt32("custom_currency_rate", 10);
+            model->CustomCurrencyAffix = reader->GetEnum<CurrencyAffix>(
                 "custom_currency_affix", CurrencyAffix::Suffix, Enum_CurrencySymbolAffix);
-            model->custom_currency_symbol = reader->GetCString("custom_currency_symbol", "Ctm");
-            model->edge_scrolling = reader->GetBoolean("edge_scrolling", true);
-            model->edge_scrolling_speed = reader->GetInt32("edge_scrolling_speed", 12);
-            model->fullscreen_mode = reader->GetInt32("fullscreen_mode", 0);
-            model->fullscreen_height = reader->GetInt32("fullscreen_height", -1);
-            model->fullscreen_width = reader->GetInt32("fullscreen_width", -1);
-            model->rct1_path = reader->GetString("rct1_path", "");
-            model->rct2_path = reader->GetString("game_path", "");
-            model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
-            model->language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
-            model->measurement_format = reader->GetEnum<MeasurementFormat>(
+            model->CustomCurrencySymbol = reader->GetCString("custom_currency_symbol", "Ctm");
+            model->EdgeScrolling = reader->GetBoolean("edge_scrolling", true);
+            model->EdgeScrollingSpeed = reader->GetInt32("edge_scrolling_speed", 12);
+            model->FullscreenMode = reader->GetInt32("fullscreen_mode", 0);
+            model->FullscreenHeight = reader->GetInt32("fullscreen_height", -1);
+            model->FullscreenWidth = reader->GetInt32("fullscreen_width", -1);
+            model->RCT1Path = reader->GetString("rct1_path", "");
+            model->RCT2Path = reader->GetString("game_path", "");
+            model->LandscapeSmoothing = reader->GetBoolean("landscape_smoothing", true);
+            model->Language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
+            model->MeasurementFormat = reader->GetEnum<MeasurementFormat>(
                 "measurement_format", Platform::GetLocaleMeasurementFormat(), Enum_MeasurementFormat);
-            model->play_intro = reader->GetBoolean("play_intro", false);
-            model->save_plugin_data = reader->GetBoolean("save_plugin_data", true);
-            model->debugging_tools = reader->GetBoolean("debugging_tools", false);
-            model->show_height_as_units = reader->GetBoolean("show_height_as_units", false);
-            model->temperature_format = reader->GetEnum<TemperatureUnit>(
+            model->PlayIntro = reader->GetBoolean("play_intro", false);
+            model->SavePluginData = reader->GetBoolean("save_plugin_data", true);
+            model->DebuggingTools = reader->GetBoolean("debugging_tools", false);
+            model->ShowHeightAsUnits = reader->GetBoolean("show_height_as_units", false);
+            model->TemperatureFormat = reader->GetEnum<TemperatureUnit>(
                 "temperature_format", Platform::GetLocaleTemperatureFormat(), Enum_Temperature);
-            model->window_height = reader->GetInt32("window_height", -1);
-            model->window_snap_proximity = reader->GetInt32("window_snap_proximity", 5);
-            model->window_width = reader->GetInt32("window_width", -1);
-            model->default_display = reader->GetInt32("default_display", 0);
-            model->drawing_engine = reader->GetEnum<DrawingEngine>(
+            model->WindowHeight = reader->GetInt32("window_height", -1);
+            model->WindowSnapProximity = reader->GetInt32("window_snap_proximity", 5);
+            model->WindowWidth = reader->GetInt32("window_width", -1);
+            model->DefaultDisplay = reader->GetInt32("default_display", 0);
+            model->DrawingEngine = reader->GetEnum<DrawingEngine>(
                 "drawing_engine", DrawingEngine::Software, Enum_DrawingEngine);
-            model->uncap_fps = reader->GetBoolean("uncap_fps", false);
-            model->use_vsync = reader->GetBoolean("use_vsync", true);
-            model->virtual_floor_style = reader->GetEnum<VirtualFloorStyles>(
+            model->UncapFPS = reader->GetBoolean("uncap_fps", false);
+            model->UseVSync = reader->GetBoolean("use_vsync", true);
+            model->VirtualFloorStyle = reader->GetEnum<VirtualFloorStyles>(
                 "virtual_floor_style", VirtualFloorStyles::Glassy, Enum_VirtualFloorStyle);
-            model->date_format = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
-            model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
-            model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
-            model->default_inspection_interval = reader->GetInt32("default_inspection_interval", 2);
-            model->last_run_version = reader->GetString("last_run_version", "");
-            model->invert_viewport_drag = reader->GetBoolean("invert_viewport_drag", false);
-            model->load_save_sort = reader->GetEnum<Sort>("load_save_sort", Sort::NameAscending, Enum_Sort);
-            model->minimize_fullscreen_focus_loss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
-            model->disable_screensaver = reader->GetBoolean("disable_screensaver", true);
+            model->DateFormat = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
+            model->AutoStaffPlacement = reader->GetBoolean("auto_staff", true);
+            model->HandymenMowByDefault = reader->GetBoolean("handymen_mow_default", false);
+            model->DefaultInspectionInterval = reader->GetInt32("default_inspection_interval", 2);
+            model->LastRunVersion = reader->GetString("last_run_version", "");
+            model->InvertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
+            model->LoadSaveSort = reader->GetEnum<Sort>("load_save_sort", Sort::NameAscending, Enum_Sort);
+            model->MinimizeFullscreenFocusLoss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
+            model->DisableScreensaver = reader->GetBoolean("disable_screensaver", true);
 
             // Default config setting is false until the games canvas can be separated from the effect
-            model->day_night_cycle = reader->GetBoolean("day_night_cycle", false);
-            const bool isHardware = model->drawing_engine != DrawingEngine::Software;
-            model->enable_light_fx = isHardware && reader->GetBoolean("enable_light_fx", false);
-            model->enable_light_fx_for_vehicles = isHardware && reader->GetBoolean("enable_light_fx_for_vehicles", false);
-            model->upper_case_banners = reader->GetBoolean("upper_case_banners", false);
-            model->disable_lightning_effect = reader->GetBoolean("disable_lightning_effect", false);
-            model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
-            model->window_scale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
-            model->show_fps = reader->GetBoolean("show_fps", false);
-            model->multithreading = reader->GetBoolean("multi_threading", false);
-            model->trap_cursor = reader->GetBoolean("trap_cursor", false);
-            model->auto_open_shops = reader->GetBoolean("auto_open_shops", false);
-            model->scenario_select_mode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
-            model->scenario_unlocking_enabled = reader->GetBoolean("scenario_unlocking_enabled", true);
-            model->scenario_hide_mega_park = reader->GetBoolean("scenario_hide_mega_park", true);
-            model->last_save_game_directory = reader->GetString("last_game_directory", "");
-            model->last_save_landscape_directory = reader->GetString("last_landscape_directory", "");
-            model->last_save_scenario_directory = reader->GetString("last_scenario_directory", "");
-            model->last_save_track_directory = reader->GetString("last_track_directory", "");
-            model->use_native_browse_dialog = reader->GetBoolean("use_native_browse_dialog", false);
-            model->window_limit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
-            model->zoom_to_cursor = reader->GetBoolean("zoom_to_cursor", true);
-            model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
-            model->render_weather_gloom = reader->GetBoolean("render_weather_gloom", true);
-            model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
-            model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
-            model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
-            model->asset_pack_order = reader->GetString("asset_pack_order", "");
-            model->enabled_asset_packs = reader->GetString("enabled_asset_packs", "");
-            model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", true);
-            model->transparent_water = reader->GetBoolean("transparent_water", true);
+            model->DayNightCycle = reader->GetBoolean("day_night_cycle", false);
+            const bool isHardware = model->DrawingEngine != DrawingEngine::Software;
+            model->EnableLightFx = isHardware && reader->GetBoolean("enable_light_fx", false);
+            model->EnableLightFxForVehicles = isHardware && reader->GetBoolean("enable_light_fx_for_vehicles", false);
+            model->UpperCaseBanners = reader->GetBoolean("upper_case_banners", false);
+            model->DisableLightningEffect = reader->GetBoolean("disable_lightning_effect", false);
+            model->SteamOverlayPause = reader->GetBoolean("steam_overlay_pause", true);
+            model->WindowScale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
+            model->ShowFPS = reader->GetBoolean("show_fps", false);
+            model->MultiThreading = reader->GetBoolean("multi_threading", false);
+            model->TrapCursor = reader->GetBoolean("trap_cursor", false);
+            model->AutoOpenShops = reader->GetBoolean("auto_open_shops", false);
+            model->ScenarioSelectMode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
+            model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
+            model->ScenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
+            model->LastSaveGameDirectory = reader->GetString("last_game_directory", "");
+            model->LastSaveLandscapeDirectory = reader->GetString("last_landscape_directory", "");
+            model->LastSaveScenarioDirectory = reader->GetString("last_scenario_directory", "");
+            model->LastSaveTrackDirectory = reader->GetString("last_track_directory", "");
+            model->UseNativeBrowseDialog = reader->GetBoolean("use_native_browse_dialog", false);
+            model->WindowLimit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
+            model->ZoomToCursor = reader->GetBoolean("zoom_to_cursor", true);
+            model->RenderWeatherEffects = reader->GetBoolean("render_weather_effects", true);
+            model->RenderWeatherGloom = reader->GetBoolean("render_weather_gloom", true);
+            model->ShowGuestPurchases = reader->GetBoolean("show_guest_purchases", false);
+            model->ShowRealNamesOfGuests = reader->GetBoolean("show_real_names_of_guests", true);
+            model->AllowEarlyCompletion = reader->GetBoolean("allow_early_completion", false);
+            model->AssetPackOrder = reader->GetString("asset_pack_order", "");
+            model->EnabledAssetPacks = reader->GetString("enabled_asset_packs", "");
+            model->TransparentScreenshot = reader->GetBoolean("transparent_screenshot", true);
+            model->TransparentWater = reader->GetBoolean("transparent_water", true);
 
-            model->invisible_rides = reader->GetBoolean("invisible_rides", false);
-            model->invisible_vehicles = reader->GetBoolean("invisible_vehicles", false);
-            model->invisible_trees = reader->GetBoolean("invisible_trees", false);
-            model->invisible_scenery = reader->GetBoolean("invisible_scenery", false);
-            model->invisible_paths = reader->GetBoolean("invisible_paths", false);
-            model->invisible_supports = reader->GetBoolean("invisible_supports", true);
+            model->InvisibleRides = reader->GetBoolean("invisible_rides", false);
+            model->InvisibleVehicles = reader->GetBoolean("invisible_vehicles", false);
+            model->InvisibleTrees = reader->GetBoolean("invisible_trees", false);
+            model->InvisibleScenery = reader->GetBoolean("invisible_scenery", false);
+            model->InvisiblePaths = reader->GetBoolean("invisible_paths", false);
+            model->InvisibleSupports = reader->GetBoolean("invisible_supports", true);
 
-            model->last_version_check_time = reader->GetInt64("last_version_check_time", 0);
+            model->LastVersionCheckTime = reader->GetInt64("last_version_check_time", 0);
         }
     }
 
@@ -233,83 +233,83 @@ namespace Config
     {
         auto model = &gConfigGeneral;
         writer->WriteSection("general");
-        writer->WriteBoolean("always_show_gridlines", model->always_show_gridlines);
-        writer->WriteInt32("autosave", model->autosave_frequency);
-        writer->WriteInt32("autosave_amount", model->autosave_amount);
-        writer->WriteBoolean("confirmation_prompt", model->confirmation_prompt);
-        writer->WriteEnum<CurrencyType>("currency_format", model->currency_format, Enum_Currency);
-        writer->WriteInt32("custom_currency_rate", model->custom_currency_rate);
-        writer->WriteEnum<CurrencyAffix>("custom_currency_affix", model->custom_currency_affix, Enum_CurrencySymbolAffix);
-        writer->WriteString("custom_currency_symbol", model->custom_currency_symbol);
-        writer->WriteBoolean("edge_scrolling", model->edge_scrolling);
-        writer->WriteInt32("edge_scrolling_speed", model->edge_scrolling_speed);
-        writer->WriteInt32("fullscreen_mode", model->fullscreen_mode);
-        writer->WriteInt32("fullscreen_height", model->fullscreen_height);
-        writer->WriteInt32("fullscreen_width", model->fullscreen_width);
-        writer->WriteString("rct1_path", model->rct1_path);
-        writer->WriteString("game_path", model->rct2_path);
-        writer->WriteBoolean("landscape_smoothing", model->landscape_smoothing);
-        writer->WriteEnum<int32_t>("language", model->language, Enum_LanguageEnum);
-        writer->WriteEnum<MeasurementFormat>("measurement_format", model->measurement_format, Enum_MeasurementFormat);
-        writer->WriteBoolean("play_intro", model->play_intro);
-        writer->WriteBoolean("save_plugin_data", model->save_plugin_data);
-        writer->WriteBoolean("debugging_tools", model->debugging_tools);
-        writer->WriteBoolean("show_height_as_units", model->show_height_as_units);
-        writer->WriteEnum<TemperatureUnit>("temperature_format", model->temperature_format, Enum_Temperature);
-        writer->WriteInt32("window_height", model->window_height);
-        writer->WriteInt32("window_snap_proximity", model->window_snap_proximity);
-        writer->WriteInt32("window_width", model->window_width);
-        writer->WriteInt32("default_display", model->default_display);
-        writer->WriteEnum<DrawingEngine>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
-        writer->WriteBoolean("uncap_fps", model->uncap_fps);
-        writer->WriteBoolean("use_vsync", model->use_vsync);
-        writer->WriteEnum<int32_t>("date_format", model->date_format, Enum_DateFormat);
-        writer->WriteBoolean("auto_staff", model->auto_staff_placement);
-        writer->WriteBoolean("handymen_mow_default", model->handymen_mow_default);
-        writer->WriteInt32("default_inspection_interval", model->default_inspection_interval);
-        writer->WriteString("last_run_version", model->last_run_version);
-        writer->WriteBoolean("invert_viewport_drag", model->invert_viewport_drag);
-        writer->WriteEnum<Sort>("load_save_sort", model->load_save_sort, Enum_Sort);
-        writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimize_fullscreen_focus_loss);
-        writer->WriteBoolean("disable_screensaver", model->disable_screensaver);
-        writer->WriteBoolean("day_night_cycle", model->day_night_cycle);
-        writer->WriteBoolean("enable_light_fx", model->enable_light_fx);
-        writer->WriteBoolean("enable_light_fx_for_vehicles", model->enable_light_fx_for_vehicles);
-        writer->WriteBoolean("upper_case_banners", model->upper_case_banners);
-        writer->WriteBoolean("disable_lightning_effect", model->disable_lightning_effect);
-        writer->WriteBoolean("steam_overlay_pause", model->steam_overlay_pause);
-        writer->WriteFloat("window_scale", model->window_scale);
-        writer->WriteBoolean("show_fps", model->show_fps);
-        writer->WriteBoolean("multi_threading", model->multithreading);
-        writer->WriteBoolean("trap_cursor", model->trap_cursor);
-        writer->WriteBoolean("auto_open_shops", model->auto_open_shops);
-        writer->WriteInt32("scenario_select_mode", model->scenario_select_mode);
-        writer->WriteBoolean("scenario_unlocking_enabled", model->scenario_unlocking_enabled);
-        writer->WriteBoolean("scenario_hide_mega_park", model->scenario_hide_mega_park);
-        writer->WriteString("last_game_directory", model->last_save_game_directory);
-        writer->WriteString("last_landscape_directory", model->last_save_landscape_directory);
-        writer->WriteString("last_scenario_directory", model->last_save_scenario_directory);
-        writer->WriteString("last_track_directory", model->last_save_track_directory);
-        writer->WriteBoolean("use_native_browse_dialog", model->use_native_browse_dialog);
-        writer->WriteInt32("window_limit", model->window_limit);
-        writer->WriteBoolean("zoom_to_cursor", model->zoom_to_cursor);
-        writer->WriteBoolean("render_weather_effects", model->render_weather_effects);
-        writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
-        writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
-        writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
-        writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
-        writer->WriteString("asset_pack_order", model->asset_pack_order);
-        writer->WriteString("enabled_asset_packs", model->enabled_asset_packs);
-        writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
-        writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
-        writer->WriteBoolean("transparent_water", model->transparent_water);
-        writer->WriteBoolean("invisible_rides", model->invisible_rides);
-        writer->WriteBoolean("invisible_vehicles", model->invisible_vehicles);
-        writer->WriteBoolean("invisible_trees", model->invisible_trees);
-        writer->WriteBoolean("invisible_scenery", model->invisible_scenery);
-        writer->WriteBoolean("invisible_paths", model->invisible_paths);
-        writer->WriteBoolean("invisible_supports", model->invisible_supports);
-        writer->WriteInt64("last_version_check_time", model->last_version_check_time);
+        writer->WriteBoolean("always_show_gridlines", model->AlwaysShowGridlines);
+        writer->WriteInt32("autosave", model->AutosaveFrequency);
+        writer->WriteInt32("autosave_amount", model->AutosaveAmount);
+        writer->WriteBoolean("confirmation_prompt", model->ConfirmationPrompt);
+        writer->WriteEnum<CurrencyType>("currency_format", model->CurrencyFormat, Enum_Currency);
+        writer->WriteInt32("custom_currency_rate", model->CustomCurrencyRate);
+        writer->WriteEnum<CurrencyAffix>("custom_currency_affix", model->CustomCurrencyAffix, Enum_CurrencySymbolAffix);
+        writer->WriteString("custom_currency_symbol", model->CustomCurrencySymbol);
+        writer->WriteBoolean("edge_scrolling", model->EdgeScrolling);
+        writer->WriteInt32("edge_scrolling_speed", model->EdgeScrollingSpeed);
+        writer->WriteInt32("fullscreen_mode", model->FullscreenMode);
+        writer->WriteInt32("fullscreen_height", model->FullscreenHeight);
+        writer->WriteInt32("fullscreen_width", model->FullscreenWidth);
+        writer->WriteString("rct1_path", model->RCT1Path);
+        writer->WriteString("game_path", model->RCT2Path);
+        writer->WriteBoolean("landscape_smoothing", model->LandscapeSmoothing);
+        writer->WriteEnum<int32_t>("language", model->Language, Enum_LanguageEnum);
+        writer->WriteEnum<MeasurementFormat>("measurement_format", model->MeasurementFormat, Enum_MeasurementFormat);
+        writer->WriteBoolean("play_intro", model->PlayIntro);
+        writer->WriteBoolean("save_plugin_data", model->SavePluginData);
+        writer->WriteBoolean("debugging_tools", model->DebuggingTools);
+        writer->WriteBoolean("show_height_as_units", model->ShowHeightAsUnits);
+        writer->WriteEnum<TemperatureUnit>("temperature_format", model->TemperatureFormat, Enum_Temperature);
+        writer->WriteInt32("window_height", model->WindowHeight);
+        writer->WriteInt32("window_snap_proximity", model->WindowSnapProximity);
+        writer->WriteInt32("window_width", model->WindowWidth);
+        writer->WriteInt32("default_display", model->DefaultDisplay);
+        writer->WriteEnum<DrawingEngine>("drawing_engine", model->DrawingEngine, Enum_DrawingEngine);
+        writer->WriteBoolean("uncap_fps", model->UncapFPS);
+        writer->WriteBoolean("use_vsync", model->UseVSync);
+        writer->WriteEnum<int32_t>("date_format", model->DateFormat, Enum_DateFormat);
+        writer->WriteBoolean("auto_staff", model->AutoStaffPlacement);
+        writer->WriteBoolean("handymen_mow_default", model->HandymenMowByDefault);
+        writer->WriteInt32("default_inspection_interval", model->DefaultInspectionInterval);
+        writer->WriteString("last_run_version", model->LastRunVersion);
+        writer->WriteBoolean("invert_viewport_drag", model->InvertViewportDrag);
+        writer->WriteEnum<Sort>("load_save_sort", model->LoadSaveSort, Enum_Sort);
+        writer->WriteBoolean("minimize_fullscreen_focus_loss", model->MinimizeFullscreenFocusLoss);
+        writer->WriteBoolean("disable_screensaver", model->DisableScreensaver);
+        writer->WriteBoolean("day_night_cycle", model->DayNightCycle);
+        writer->WriteBoolean("enable_light_fx", model->EnableLightFx);
+        writer->WriteBoolean("enable_light_fx_for_vehicles", model->EnableLightFxForVehicles);
+        writer->WriteBoolean("upper_case_banners", model->UpperCaseBanners);
+        writer->WriteBoolean("disable_lightning_effect", model->DisableLightningEffect);
+        writer->WriteBoolean("steam_overlay_pause", model->SteamOverlayPause);
+        writer->WriteFloat("window_scale", model->WindowScale);
+        writer->WriteBoolean("show_fps", model->ShowFPS);
+        writer->WriteBoolean("multi_threading", model->MultiThreading);
+        writer->WriteBoolean("trap_cursor", model->TrapCursor);
+        writer->WriteBoolean("auto_open_shops", model->AutoOpenShops);
+        writer->WriteInt32("scenario_select_mode", model->ScenarioSelectMode);
+        writer->WriteBoolean("scenario_unlocking_enabled", model->ScenarioUnlockingEnabled);
+        writer->WriteBoolean("scenario_hide_mega_park", model->ScenarioHideMegaPark);
+        writer->WriteString("last_game_directory", model->LastSaveGameDirectory);
+        writer->WriteString("last_landscape_directory", model->LastSaveLandscapeDirectory);
+        writer->WriteString("last_scenario_directory", model->LastSaveScenarioDirectory);
+        writer->WriteString("last_track_directory", model->LastSaveTrackDirectory);
+        writer->WriteBoolean("use_native_browse_dialog", model->UseNativeBrowseDialog);
+        writer->WriteInt32("window_limit", model->WindowLimit);
+        writer->WriteBoolean("zoom_to_cursor", model->ZoomToCursor);
+        writer->WriteBoolean("render_weather_effects", model->RenderWeatherEffects);
+        writer->WriteBoolean("render_weather_gloom", model->RenderWeatherGloom);
+        writer->WriteBoolean("show_guest_purchases", model->ShowGuestPurchases);
+        writer->WriteBoolean("show_real_names_of_guests", model->ShowRealNamesOfGuests);
+        writer->WriteBoolean("allow_early_completion", model->AllowEarlyCompletion);
+        writer->WriteString("asset_pack_order", model->AssetPackOrder);
+        writer->WriteString("enabled_asset_packs", model->EnabledAssetPacks);
+        writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->VirtualFloorStyle, Enum_VirtualFloorStyle);
+        writer->WriteBoolean("transparent_screenshot", model->TransparentScreenshot);
+        writer->WriteBoolean("transparent_water", model->TransparentWater);
+        writer->WriteBoolean("invisible_rides", model->InvisibleRides);
+        writer->WriteBoolean("invisible_vehicles", model->InvisibleVehicles);
+        writer->WriteBoolean("invisible_trees", model->InvisibleTrees);
+        writer->WriteBoolean("invisible_scenery", model->InvisibleScenery);
+        writer->WriteBoolean("invisible_paths", model->InvisiblePaths);
+        writer->WriteBoolean("invisible_supports", model->InvisibleSupports);
+        writer->WriteInt64("last_version_check_time", model->LastVersionCheckTime);
     }
 
     static void ReadInterface(IIniReader* reader)
@@ -802,7 +802,7 @@ bool config_save(u8string_view path)
 
 void config_release()
 {
-    SafeFree(gConfigGeneral.custom_currency_symbol);
+    SafeFree(gConfigGeneral.CustomCurrencySymbol);
     SafeFree(gConfigInterface.current_theme_preset);
     SafeFree(gConfigInterface.current_title_sequence_preset);
     SafeFree(gConfigFonts.file_name);
@@ -826,7 +826,7 @@ bool config_find_or_browse_install_directory()
     std::string path = Config::FindRCT2Path();
     if (!path.empty())
     {
-        gConfigGeneral.rct2_path = path;
+        gConfigGeneral.RCT2Path = path;
     }
     else
     {
@@ -917,7 +917,7 @@ bool config_find_or_browse_install_directory()
                 {
                     return false;
                 }
-                gConfigGeneral.rct2_path = installPath;
+                gConfigGeneral.RCT2Path = installPath;
 
                 if (Platform::OriginalGameDataExists(installPath))
                 {
@@ -937,7 +937,7 @@ bool config_find_or_browse_install_directory()
     std::string rct1Path = Config::FindRCT1Path();
     if (!rct1Path.empty())
     {
-        gConfigGeneral.rct1_path = std::move(rct1Path);
+        gConfigGeneral.RCT1Path = std::move(rct1Path);
     }
 
     return true;

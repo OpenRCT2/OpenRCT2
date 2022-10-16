@@ -234,12 +234,12 @@ private:
 
     void SaveInConfig(uint32_t wflags)
     {
-        gConfigGeneral.invisible_rides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
-        gConfigGeneral.invisible_vehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-        gConfigGeneral.invisible_scenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
-        gConfigGeneral.invisible_trees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-        gConfigGeneral.invisible_paths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
-        gConfigGeneral.invisible_supports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+        gConfigGeneral.InvisibleRides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
+        gConfigGeneral.InvisibleVehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+        gConfigGeneral.InvisibleScenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
+        gConfigGeneral.InvisibleTrees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
+        gConfigGeneral.InvisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
+        gConfigGeneral.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
         config_save_default();
     }
 };

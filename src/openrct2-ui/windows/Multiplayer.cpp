@@ -466,7 +466,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
 
 static bool IsServerPlayerInvisible()
 {
-    return network_is_server_player_invisible() && !gConfigGeneral.debugging_tools;
+    return network_is_server_player_invisible() && !gConfigGeneral.DebuggingTools;
 }
 
 static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetIndex)

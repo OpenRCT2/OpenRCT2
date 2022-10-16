@@ -143,7 +143,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     bool partOfVirtualFloor = false;
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
         partOfVirtualFloor = VirtualFloorTileIsFloor(session.MapPosition);
     }
@@ -289,7 +289,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         session.MapPosition = mapPosition;
     } while (!(tile_element++)->IsLastForTile());
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off && partOfVirtualFloor)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off && partOfVirtualFloor)
     {
         VirtualFloorPaint(session);
     }

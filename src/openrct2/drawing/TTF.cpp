@@ -76,7 +76,7 @@ template<typename T> class FontLockHelper
 public:
     FontLockHelper(T& mutex)
         : _mutex(mutex)
-        , _enabled(gConfigGeneral.multithreading)
+        , _enabled(gConfigGeneral.MultiThreading)
     {
         if (_enabled)
             _mutex.lock();

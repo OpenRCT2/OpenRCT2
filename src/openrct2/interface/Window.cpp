@@ -186,9 +186,9 @@ static void window_close_surplus(int32_t cap, WindowClass avoid_classification)
  */
 void window_set_window_limit(int32_t value)
 {
-    int32_t prev = gConfigGeneral.window_limit;
+    int32_t prev = gConfigGeneral.WindowLimit;
     int32_t val = std::clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
-    gConfigGeneral.window_limit = val;
+    gConfigGeneral.WindowLimit = val;
     config_save_default();
     // Checks if value decreases and then closes surplus
     // windows if one sets a limit lower than the number of windows open
@@ -1035,7 +1035,7 @@ void window_zoom_set(rct_window& w, ZoomLevel zoomLevel, bool atCursor)
     int32_t saved_map_y = 0;
     int32_t offset_x = 0;
     int32_t offset_y = 0;
-    if (gConfigGeneral.zoom_to_cursor && atCursor)
+    if (gConfigGeneral.ZoomToCursor && atCursor)
     {
         window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
     }
@@ -1061,7 +1061,7 @@ void window_zoom_set(rct_window& w, ZoomLevel zoomLevel, bool atCursor)
     }
 
     // Zooming to cursor? Centre around the tile we were hovering over just now.
-    if (gConfigGeneral.zoom_to_cursor && atCursor)
+    if (gConfigGeneral.ZoomToCursor && atCursor)
     {
         window_viewport_centre_tile_around_cursor(w, saved_map_x, saved_map_y, offset_x, offset_y);
     }

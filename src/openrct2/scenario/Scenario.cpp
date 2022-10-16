@@ -271,7 +271,7 @@ void scenario_autosave_check()
     uint32_t timeSinceSave = Platform::GetTicks() - gLastAutoSaveUpdate;
 
     bool shouldSave = false;
-    switch (gConfigGeneral.autosave_frequency)
+    switch (gConfigGeneral.AutosaveFrequency)
     {
         case AUTOSAVE_EVERY_MINUTE:
             shouldSave = timeSinceSave >= 1 * 60 * 1000;
@@ -367,7 +367,7 @@ static void scenario_update_daynight_cycle()
     float currentDayNightCycle = gDayNightCycle;
     gDayNightCycle = 0;
 
-    if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle)
+    if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.DayNightCycle)
     {
         float monthFraction = gDateMonthTicks / static_cast<float>(TICKS_PER_MONTH);
         if (monthFraction < (1 / 8.0f))
@@ -862,7 +862,7 @@ bool AllowEarlyCompletion()
         case NETWORK_MODE_NONE:
         case NETWORK_MODE_SERVER:
         default:
-            return gConfigGeneral.allow_early_completion;
+            return gConfigGeneral.AllowEarlyCompletion;
     }
 }
 

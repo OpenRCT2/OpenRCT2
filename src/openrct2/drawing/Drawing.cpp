@@ -858,8 +858,8 @@ void RefreshVideo(bool recreateWindow)
 
 void ToggleWindowedMode()
 {
-    int32_t targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
+    int32_t targetMode = gConfigGeneral.FullscreenMode == 0 ? 2 : 0;
     context_set_fullscreen_mode(targetMode);
-    gConfigGeneral.fullscreen_mode = targetMode;
+    gConfigGeneral.FullscreenMode = targetMode;
     config_save_default();
 }

@@ -217,7 +217,7 @@ rct_window* WindowCreate(
 
     // Check if there are any window slots left
     // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
-    if (g_window_list.size() >= static_cast<size_t>(gConfigGeneral.window_limit + WINDOW_LIMIT_RESERVED))
+    if (g_window_list.size() >= static_cast<size_t>(gConfigGeneral.WindowLimit + WINDOW_LIMIT_RESERVED))
     {
         // Close least recently used window
         for (auto& w : g_window_list)
@@ -566,7 +566,7 @@ void WindowAllWheelInput()
 
 void ApplyScreenSaverLockSetting()
 {
-    gConfigGeneral.disable_screensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
+    gConfigGeneral.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
 }
 
 /**

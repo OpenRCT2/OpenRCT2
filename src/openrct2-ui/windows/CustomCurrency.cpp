@@ -70,7 +70,7 @@ public:
                 break;
             case WIDX_RATE_UP:
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
-                gConfigGeneral.custom_currency_rate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                 config_save_default();
                 window_invalidate_all();
                 break;
@@ -78,7 +78,7 @@ public:
                 if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate > 1)
                 {
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
-                    gConfigGeneral.custom_currency_rate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                    gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                     config_save_default();
                     window_invalidate_all();
                 }
@@ -143,7 +143,7 @@ public:
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = CurrencyAffix::Suffix;
             }
 
-            gConfigGeneral.custom_currency_affix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
+            gConfigGeneral.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
             config_save_default();
 
             window_invalidate_all();
@@ -165,7 +165,7 @@ public:
                     CURRENCY_SYMBOL_MAX_SIZE);
 
                 safe_strcpy(
-                    gConfigGeneral.custom_currency_symbol, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
+                    gConfigGeneral.CustomCurrencySymbol, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
                     CURRENCY_SYMBOL_MAX_SIZE);
 
                 config_save_default();
@@ -178,7 +178,7 @@ public:
                 {
                     rate = res.value();
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
-                    gConfigGeneral.custom_currency_rate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                    gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                     config_save_default();
                     window_invalidate_all();
                 }

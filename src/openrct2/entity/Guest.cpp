@@ -2296,7 +2296,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
     finance_payment(-amount, expenditure);
 
-    if (gConfigGeneral.show_guest_purchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (gConfigGeneral.ShowGuestPurchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
         // HACK Currently disabled for multiplayer due to limitation of all sprites
         //      needing to be synchronised

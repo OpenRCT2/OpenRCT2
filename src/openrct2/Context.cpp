@@ -337,20 +337,20 @@ namespace OpenRCT2
 
             crash_init();
 
-            if (String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
+            if (String::Equals(gConfigGeneral.LastRunVersion, OPENRCT2_VERSION))
             {
                 gOpenRCT2ShowChangelog = false;
             }
             else
             {
                 gOpenRCT2ShowChangelog = true;
-                gConfigGeneral.last_run_version = OPENRCT2_VERSION;
+                gConfigGeneral.LastRunVersion = OPENRCT2_VERSION;
                 config_save_default();
             }
 
             try
             {
-                _localisationService->OpenLanguage(gConfigGeneral.language);
+                _localisationService->OpenLanguage(gConfigGeneral.Language);
             }
             catch (const std::exception& e)
             {
@@ -494,7 +494,7 @@ namespace OpenRCT2
         {
             assert(_drawingEngine == nullptr);
 
-            _drawingEngineType = gConfigGeneral.drawing_engine;
+            _drawingEngineType = gConfigGeneral.DrawingEngine;
 
             auto drawingEngineFactory = _uiContext->GetDrawingEngineFactory();
             auto drawingEngine = drawingEngineFactory->Create(_drawingEngineType, _uiContext);
@@ -512,7 +512,7 @@ namespace OpenRCT2
                     log_error("Unable to create drawing engine. Falling back to software.");
 
                     // Fallback to software
-                    gConfigGeneral.drawing_engine = DrawingEngine::Software;
+                    gConfigGeneral.DrawingEngine = DrawingEngine::Software;
                     config_save_default();
                     drawing_engine_init();
                 }
@@ -522,7 +522,7 @@ namespace OpenRCT2
                 try
                 {
                     drawingEngine->Initialise();
-                    drawingEngine->SetVSync(gConfigGeneral.use_vsync);
+                    drawingEngine->SetVSync(gConfigGeneral.UseVSync);
                     _drawingEngine = std::move(drawingEngine);
                 }
                 catch (const std::exception& ex)
@@ -540,7 +540,7 @@ namespace OpenRCT2
                         log_error("Unable to initialise drawing engine. Falling back to software.");
 
                         // Fallback to software
-                        gConfigGeneral.drawing_engine = DrawingEngine::Software;
+                        gConfigGeneral.DrawingEngine = DrawingEngine::Software;
                         config_save_default();
                         drawing_engine_init();
                     }
@@ -690,7 +690,7 @@ namespace OpenRCT2
                 }
                 // This ensures that the newly loaded save reflects the user's
                 // 'show real names of guests' option, now that it's a global setting
-                peep_update_names(gConfigGeneral.show_real_names_of_guests);
+                peep_update_names(gConfigGeneral.ShowRealNamesOfGuests);
 #ifndef DISABLE_NETWORK
                 if (sendMap)
                 {
@@ -812,10 +812,10 @@ namespace OpenRCT2
             if (gCustomRCT2DataPath.empty())
             {
                 // Check install directory
-                if (gConfigGeneral.rct2_path.empty() || !Platform::OriginalGameDataExists(gConfigGeneral.rct2_path))
+                if (gConfigGeneral.RCT2Path.empty() || !Platform::OriginalGameDataExists(gConfigGeneral.RCT2Path))
                 {
                     log_verbose(
-                        "install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path.c_str());
+                        "install directory does not exist or invalid directory selected, %s", gConfigGeneral.RCT2Path.c_str());
                     if (!config_find_or_browse_install_directory())
                     {
                         auto path = config_get_default_path();
@@ -824,7 +824,7 @@ namespace OpenRCT2
                         return std::string();
                     }
                 }
-                result = gConfigGeneral.rct2_path;
+                result = gConfigGeneral.RCT2Path;
             }
             else
             {
@@ -872,7 +872,7 @@ namespace OpenRCT2
             }
             else
             {
-                if ((gOpenRCT2StartupAction == StartupAction::Title) && gConfigGeneral.play_intro)
+                if ((gOpenRCT2StartupAction == StartupAction::Title) && gConfigGeneral.PlayIntro)
                 {
                     gOpenRCT2StartupAction = StartupAction::Intro;
                 }
@@ -1004,7 +1004,7 @@ namespace OpenRCT2
         {
             if (!ShouldDraw())
                 return false;
-            if (!gConfigGeneral.uncap_fps)
+            if (!gConfigGeneral.UncapFPS)
                 return false;
             if (gGameSpeed > 4)
                 return false;
@@ -1382,7 +1382,7 @@ void context_setcurrentcursor(CursorID cursor)
 
 void context_update_cursor_scale()
 {
-    GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8_t>(std::round(gConfigGeneral.window_scale)));
+    GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8_t>(std::round(gConfigGeneral.WindowScale)));
 }
 
 void context_hide_cursor()
@@ -1404,8 +1404,8 @@ ScreenCoordsXY context_get_cursor_position_scaled()
 {
     auto cursorCoords = context_get_cursor_position();
     // Compensate for window scaling.
-    return { static_cast<int32_t>(std::ceil(cursorCoords.x / gConfigGeneral.window_scale)),
-             static_cast<int32_t>(std::ceil(cursorCoords.y / gConfigGeneral.window_scale)) };
+    return { static_cast<int32_t>(std::ceil(cursorCoords.x / gConfigGeneral.WindowScale)),
+             static_cast<int32_t>(std::ceil(cursorCoords.y / gConfigGeneral.WindowScale)) };
 }
 
 void context_set_cursor_position(const ScreenCoordsXY& cursorPosition)

@@ -153,16 +153,16 @@ static u8string GetLastDirectoryByType(int32_t type)
     switch (type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
-            return gConfigGeneral.last_save_game_directory;
+            return gConfigGeneral.LastSaveGameDirectory;
 
         case LOADSAVETYPE_LANDSCAPE:
-            return gConfigGeneral.last_save_landscape_directory;
+            return gConfigGeneral.LastSaveLandscapeDirectory;
 
         case LOADSAVETYPE_SCENARIO:
-            return gConfigGeneral.last_save_scenario_directory;
+            return gConfigGeneral.LastSaveScenarioDirectory;
 
         case LOADSAVETYPE_TRACK:
-            return gConfigGeneral.last_save_track_directory;
+            return gConfigGeneral.LastSaveTrackDirectory;
 
         default:
             return u8string();
@@ -262,7 +262,7 @@ rct_window* WindowLoadsaveOpen(
 
     // Bypass the lot?
     auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
-    if (gConfigGeneral.use_native_browse_dialog && hasFilePicker)
+    if (gConfigGeneral.UseNativeBrowseDialog && hasFilePicker)
     {
         const u8string path = Browse(isSave);
         if (!path.empty())
@@ -479,13 +479,13 @@ static void WindowLoadsaveMouseup(rct_window* w, WidgetIndex widgetIndex)
         break;
 
         case WIDX_SORT_NAME:
-            if (gConfigGeneral.load_save_sort == Sort::NameAscending)
+            if (gConfigGeneral.LoadSaveSort == Sort::NameAscending)
             {
-                gConfigGeneral.load_save_sort = Sort::NameDescending;
+                gConfigGeneral.LoadSaveSort = Sort::NameDescending;
             }
             else
             {
-                gConfigGeneral.load_save_sort = Sort::NameAscending;
+                gConfigGeneral.LoadSaveSort = Sort::NameAscending;
             }
             config_save_default();
             WindowLoadsaveSortList();
@@ -493,13 +493,13 @@ static void WindowLoadsaveMouseup(rct_window* w, WidgetIndex widgetIndex)
             break;
 
         case WIDX_SORT_DATE:
-            if (gConfigGeneral.load_save_sort == Sort::DateDescending)
+            if (gConfigGeneral.LoadSaveSort == Sort::DateDescending)
             {
-                gConfigGeneral.load_save_sort = Sort::DateAscending;
+                gConfigGeneral.LoadSaveSort = Sort::DateAscending;
             }
             else
             {
-                gConfigGeneral.load_save_sort = Sort::DateDescending;
+                gConfigGeneral.LoadSaveSort = Sort::DateDescending;
             }
             config_save_default();
             WindowLoadsaveSortList();
@@ -713,9 +713,9 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Name button text
     StringId id = STR_NONE;
-    if (gConfigGeneral.load_save_sort == Sort::NameAscending)
+    if (gConfigGeneral.LoadSaveSort == Sort::NameAscending)
         id = STR_UP;
-    else if (gConfigGeneral.load_save_sort == Sort::NameDescending)
+    else if (gConfigGeneral.LoadSaveSort == Sort::NameDescending)
         id = STR_DOWN;
 
     // Draw name button indicator.
@@ -727,9 +727,9 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
         { COLOUR_GREY });
 
     // Date button text
-    if (gConfigGeneral.load_save_sort == Sort::DateAscending)
+    if (gConfigGeneral.LoadSaveSort == Sort::DateAscending)
         id = STR_UP;
-    else if (gConfigGeneral.load_save_sort == Sort::DateDescending)
+    else if (gConfigGeneral.LoadSaveSort == Sort::DateDescending)
         id = STR_DOWN;
     else
         id = STR_NONE;
@@ -803,7 +803,7 @@ static bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b)
     if (a.type != b.type)
         return a.type - b.type < 0;
 
-    switch (gConfigGeneral.load_save_sort)
+    switch (gConfigGeneral.LoadSaveSort)
     {
         case Sort::NameAscending:
             return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
@@ -988,15 +988,15 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
     switch (_type & 0x0F)
     {
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
-            SetAndSaveConfigPath(gConfigGeneral.last_save_game_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
             WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             window_close_by_class(WindowClass::Loadsave);
             gfx_invalidate_screen();
             break;
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
-            SetAndSaveConfigPath(gConfigGeneral.last_save_game_directory, pathBuffer);
-            if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 1 : 0))
+            SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
+            if (scenario_save(pathBuffer, gConfigGeneral.SavePluginData ? 1 : 0))
             {
                 gScenarioSavePath = pathBuffer;
                 gCurrentLoadedPath = pathBuffer;
@@ -1016,7 +1016,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             break;
 
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE):
-            SetAndSaveConfigPath(gConfigGeneral.last_save_landscape_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.LastSaveLandscapeDirectory, pathBuffer);
             if (Editor::LoadLandscape(pathBuffer))
             {
                 gCurrentLoadedPath = pathBuffer;
@@ -1032,9 +1032,9 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             break;
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
-            SetAndSaveConfigPath(gConfigGeneral.last_save_landscape_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.LastSaveLandscapeDirectory, pathBuffer);
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
-            if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2))
+            if (scenario_save(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2))
             {
                 gCurrentLoadedPath = pathBuffer;
                 window_close_by_class(WindowClass::Loadsave);
@@ -1050,12 +1050,12 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
         {
-            SetAndSaveConfigPath(gConfigGeneral.last_save_scenario_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.LastSaveScenarioDirectory, pathBuffer);
             int32_t parkFlagsBackup = gParkFlags;
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
             gEditorStep = EditorStep::Invalid;
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
-            int32_t success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
+            int32_t success = scenario_save(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
             gParkFlags = parkFlagsBackup;
 
             if (success)
@@ -1075,7 +1075,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK):
         {
-            SetAndSaveConfigPath(gConfigGeneral.last_save_track_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.LastSaveTrackDirectory, pathBuffer);
             auto intent = Intent(WindowClass::InstallTrack);
             intent.putExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
             context_open_intent(&intent);
@@ -1086,7 +1086,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK):
         {
-            SetAndSaveConfigPath(gConfigGeneral.last_save_track_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.LastSaveTrackDirectory, pathBuffer);
 
             const auto withExtension = Path::WithExtension(pathBuffer, "td6");
             String::Set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());

@@ -686,19 +686,19 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "window_scale")
         {
-            console.WriteFormatLine("window_scale %.3f", gConfigGeneral.window_scale);
+            console.WriteFormatLine("window_scale %.3f", gConfigGeneral.WindowScale);
         }
         else if (argv[0] == "window_limit")
         {
-            console.WriteFormatLine("window_limit %d", gConfigGeneral.window_limit);
+            console.WriteFormatLine("window_limit %d", gConfigGeneral.WindowLimit);
         }
         else if (argv[0] == "render_weather_effects")
         {
-            console.WriteFormatLine("render_weather_effects %d", gConfigGeneral.render_weather_effects);
+            console.WriteFormatLine("render_weather_effects %d", gConfigGeneral.RenderWeatherEffects);
         }
         else if (argv[0] == "render_weather_gloom")
         {
-            console.WriteFormatLine("render_weather_gloom %d", gConfigGeneral.render_weather_gloom);
+            console.WriteFormatLine("render_weather_gloom %d", gConfigGeneral.RenderWeatherGloom);
         }
         else if (argv[0] == "cheat_sandbox_mode")
         {
@@ -1067,7 +1067,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "window_scale" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
-            gConfigGeneral.window_scale = std::clamp(newScale, 0.5f, 5.0f);
+            gConfigGeneral.WindowScale = std::clamp(newScale, 0.5f, 5.0f);
             config_save_default();
             gfx_invalidate_screen();
             context_trigger_resize();
@@ -1081,13 +1081,13 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "render_weather_effects" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigGeneral.render_weather_effects = (int_val[0] != 0);
+            gConfigGeneral.RenderWeatherEffects = (int_val[0] != 0);
             config_save_default();
             console.Execute("get render_weather_effects");
         }
         else if (argv[0] == "render_weather_gloom" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigGeneral.render_weather_gloom = (int_val[0] != 0);
+            gConfigGeneral.RenderWeatherGloom = (int_val[0] != 0);
             config_save_default();
             console.Execute("get render_weather_gloom");
         }

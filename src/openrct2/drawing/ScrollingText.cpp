@@ -159,7 +159,7 @@ static int32_t scrolling_text_get_matching_or_oldest(
 
 static void scrolling_text_format(utf8* dst, size_t size, rct_draw_scroll_text* scrollText)
 {
-    if (gConfigGeneral.upper_case_banners)
+    if (gConfigGeneral.UpperCaseBanners)
     {
         format_string_to_upper(dst, size, scrollText->string_id, scrollText->string_args);
     }

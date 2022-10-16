@@ -122,7 +122,7 @@ private:
         }
 
         // Copy the surface to the window
-        if (gConfigGeneral.window_scale == 1 || gConfigGeneral.window_scale <= 0)
+        if (gConfigGeneral.WindowScale == 1 || gConfigGeneral.WindowScale <= 0)
         {
             SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
             if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))

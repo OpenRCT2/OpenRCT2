@@ -505,7 +505,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
         = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_DATE
                ? COLOUR_WHITE
                : NOT_TRANSLUCENT(w->colours[0]));
-    StringId stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
+    StringId stringId = DateFormatStringFormatIds[gConfigGeneral.DateFormat];
     auto ft = Formatter();
     ft.Add<StringId>(DateDayNames[day]);
     ft.Add<int16_t>(month);
@@ -521,7 +521,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
 
     int32_t temperature = gClimateCurrent.Temperature;
     StringId format = STR_CELSIUS_VALUE;
-    if (gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit)
+    if (gConfigGeneral.TemperatureFormat == TemperatureUnit::Fahrenheit)
     {
         temperature = ClimateCelsiusToFahrenheit(temperature);
         format = STR_FAHRENHEIT_VALUE;

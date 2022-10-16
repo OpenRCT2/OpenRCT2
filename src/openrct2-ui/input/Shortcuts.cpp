@@ -473,7 +473,7 @@ static void ShortcutOpenSceneryPicker()
 
 static void ShortcutScaleUp()
 {
-    gConfigGeneral.window_scale += 0.25f;
+    gConfigGeneral.WindowScale += 0.25f;
     config_save_default();
     gfx_invalidate_screen();
     context_trigger_resize();
@@ -482,8 +482,8 @@ static void ShortcutScaleUp()
 
 static void ShortcutScaleDown()
 {
-    gConfigGeneral.window_scale -= 0.25f;
-    gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
+    gConfigGeneral.WindowScale -= 0.25f;
+    gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
     config_save_default();
     gfx_invalidate_screen();
     context_trigger_resize();
@@ -623,7 +623,7 @@ static void ShortcutToggleConsole()
     {
         console.Toggle();
     }
-    else if (gConfigGeneral.debugging_tools && !context_is_input_active())
+    else if (gConfigGeneral.DebuggingTools && !context_is_input_active())
     {
         window_cancel_textbox();
         console.Toggle();
@@ -730,7 +730,7 @@ static void ShortcutToggleTransparentWater()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    gConfigGeneral.transparent_water ^= 1;
+    gConfigGeneral.TransparentWater ^= 1;
     config_save_default();
     gfx_invalidate_screen();
 }
