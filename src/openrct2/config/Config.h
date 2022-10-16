@@ -198,20 +198,20 @@ struct NotificationConfiguration
 
 struct FontConfiguration
 {
-    utf8* file_name;
-    utf8* font_name;
-    int32_t x_offset;
-    int32_t y_offset;
-    int32_t size_tiny;
-    int32_t size_small;
-    int32_t size_medium;
-    int32_t size_big;
-    int32_t height_tiny;
-    int32_t height_small;
-    int32_t height_medium;
-    int32_t height_big;
-    bool enable_hinting;
-    int32_t hinting_threshold;
+    utf8* FileName;
+    utf8* FontName;
+    int32_t OffsetX;
+    int32_t OffsetY;
+    int32_t SizeTiny;
+    int32_t SizeSmall;
+    int32_t SizeMedium;
+    int32_t SizeBig;
+    int32_t HeightTiny;
+    int32_t HeightSmall;
+    int32_t HeightMedium;
+    int32_t HeightBig;
+    bool EnableHinting;
+    int32_t HintingThreshold;
 };
 
 struct PluginConfiguration

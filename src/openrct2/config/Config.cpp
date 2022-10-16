@@ -511,20 +511,20 @@ namespace Config
         if (reader->ReadSection("font"))
         {
             auto model = &gConfigFonts;
-            model->file_name = reader->GetCString("file_name", nullptr);
-            model->font_name = reader->GetCString("font_name", nullptr);
-            model->x_offset = reader->GetInt32("x_offset", false);
-            model->y_offset = reader->GetInt32("y_offset", true);
-            model->size_tiny = reader->GetInt32("size_tiny", true);
-            model->size_small = reader->GetInt32("size_small", false);
-            model->size_medium = reader->GetInt32("size_medium", false);
-            model->size_big = reader->GetInt32("size_big", false);
-            model->height_tiny = reader->GetInt32("height_tiny", false);
-            model->height_small = reader->GetInt32("height_small", false);
-            model->height_medium = reader->GetInt32("height_medium", false);
-            model->height_big = reader->GetInt32("height_big", false);
-            model->enable_hinting = reader->GetBoolean("enable_hinting", true);
-            model->hinting_threshold = reader->GetInt32("hinting_threshold", false);
+            model->FileName = reader->GetCString("file_name", nullptr);
+            model->FontName = reader->GetCString("font_name", nullptr);
+            model->OffsetX = reader->GetInt32("x_offset", false);
+            model->OffsetY = reader->GetInt32("y_offset", true);
+            model->SizeTiny = reader->GetInt32("size_tiny", true);
+            model->SizeSmall = reader->GetInt32("size_small", false);
+            model->SizeMedium = reader->GetInt32("size_medium", false);
+            model->SizeBig = reader->GetInt32("size_big", false);
+            model->HeightTiny = reader->GetInt32("height_tiny", false);
+            model->HeightSmall = reader->GetInt32("height_small", false);
+            model->HeightMedium = reader->GetInt32("height_medium", false);
+            model->HeightBig = reader->GetInt32("height_big", false);
+            model->EnableHinting = reader->GetBoolean("enable_hinting", true);
+            model->HintingThreshold = reader->GetInt32("hinting_threshold", false);
         }
     }
 
@@ -532,20 +532,20 @@ namespace Config
     {
         auto model = &gConfigFonts;
         writer->WriteSection("font");
-        writer->WriteString("file_name", model->file_name);
-        writer->WriteString("font_name", model->font_name);
-        writer->WriteInt32("x_offset", model->x_offset);
-        writer->WriteInt32("y_offset", model->y_offset);
-        writer->WriteInt32("size_tiny", model->size_tiny);
-        writer->WriteInt32("size_small", model->size_small);
-        writer->WriteInt32("size_medium", model->size_medium);
-        writer->WriteInt32("size_big", model->size_big);
-        writer->WriteInt32("height_tiny", model->height_tiny);
-        writer->WriteInt32("height_small", model->height_small);
-        writer->WriteInt32("height_medium", model->height_medium);
-        writer->WriteInt32("height_big", model->height_big);
-        writer->WriteBoolean("enable_hinting", model->enable_hinting);
-        writer->WriteInt32("hinting_threshold", model->hinting_threshold);
+        writer->WriteString("file_name", model->FileName);
+        writer->WriteString("font_name", model->FontName);
+        writer->WriteInt32("x_offset", model->OffsetX);
+        writer->WriteInt32("y_offset", model->OffsetY);
+        writer->WriteInt32("size_tiny", model->SizeTiny);
+        writer->WriteInt32("size_small", model->SizeSmall);
+        writer->WriteInt32("size_medium", model->SizeMedium);
+        writer->WriteInt32("size_big", model->SizeBig);
+        writer->WriteInt32("height_tiny", model->HeightTiny);
+        writer->WriteInt32("height_small", model->HeightSmall);
+        writer->WriteInt32("height_medium", model->HeightMedium);
+        writer->WriteInt32("height_big", model->HeightBig);
+        writer->WriteBoolean("enable_hinting", model->EnableHinting);
+        writer->WriteInt32("hinting_threshold", model->HintingThreshold);
     }
 
     static void ReadPlugin(IIniReader* reader)
@@ -805,8 +805,8 @@ void config_release()
     SafeFree(gConfigGeneral.CustomCurrencySymbol);
     SafeFree(gConfigInterface.CurrentThemePreset);
     SafeFree(gConfigInterface.CurrentTitleSequencePreset);
-    SafeFree(gConfigFonts.file_name);
-    SafeFree(gConfigFonts.font_name);
+    SafeFree(gConfigFonts.FileName);
+    SafeFree(gConfigFonts.FontName);
 }
 
 u8string config_get_default_path()

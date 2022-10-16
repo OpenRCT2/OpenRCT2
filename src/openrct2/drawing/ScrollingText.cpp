@@ -1601,7 +1601,7 @@ static void scrolling_text_set_bitmap_for_ttf(
     int32_t min_vpos = -fontDesc->offset_y;
     int32_t max_vpos = std::min(surface->h - 2, min_vpos + 7);
 
-    bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold > 0;
+    bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold > 0;
 
     for (int32_t x = 0;; x++)
     {

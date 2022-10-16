@@ -723,7 +723,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting")
         {
-            console.WriteFormatLine("enable_hinting %d", gConfigFonts.enable_hinting);
+            console.WriteFormatLine("enable_hinting %d", gConfigFonts.EnableHinting);
         }
 #endif
         else
@@ -1171,7 +1171,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigFonts.enable_hinting = (int_val[0] != 0);
+            gConfigFonts.EnableHinting = (int_val[0] != 0);
             config_save_default();
             console.Execute("get enable_hinting");
             ttf_toggle_hinting();
