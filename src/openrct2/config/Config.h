@@ -139,14 +139,14 @@ struct InterfaceConfiguration
 
 struct SoundConfiguration
 {
-    std::string device;
-    bool master_sound_enabled;
-    uint8_t master_volume;
-    TitleMusicKind title_music;
-    bool sound_enabled;
-    uint8_t sound_volume;
-    bool ride_music_enabled;
-    uint8_t ride_music_volume;
+    std::string Device;
+    bool MasterSoundEnabled;
+    uint8_t MasterVolume;
+    TitleMusicKind TitleMusic;
+    bool SoundEnabled;
+    uint8_t SoundVolume;
+    bool RideMusicEnabled;
+    uint8_t AudioFocus;
     bool audio_focus;
 };
 

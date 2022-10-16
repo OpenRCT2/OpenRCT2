@@ -359,14 +359,14 @@ namespace Config
         if (reader->ReadSection("sound"))
         {
             auto model = &gConfigSound;
-            model->device = reader->GetString("audio_device", "");
-            model->master_sound_enabled = reader->GetBoolean("master_sound", true);
-            model->master_volume = reader->GetInt32("master_volume", 100);
-            model->title_music = static_cast<TitleMusicKind>(reader->GetInt32("title_music", EnumValue(TitleMusicKind::Rct2)));
-            model->sound_enabled = reader->GetBoolean("sound", true);
-            model->sound_volume = reader->GetInt32("sound_volume", 100);
-            model->ride_music_enabled = reader->GetBoolean("ride_music", true);
-            model->ride_music_volume = reader->GetInt32("ride_music_volume", 100);
+            model->Device = reader->GetString("audio_device", "");
+            model->MasterSoundEnabled = reader->GetBoolean("master_sound", true);
+            model->MasterVolume = reader->GetInt32("master_volume", 100);
+            model->TitleMusic = static_cast<TitleMusicKind>(reader->GetInt32("title_music", EnumValue(TitleMusicKind::Rct2)));
+            model->SoundEnabled = reader->GetBoolean("sound", true);
+            model->SoundVolume = reader->GetInt32("sound_volume", 100);
+            model->RideMusicEnabled = reader->GetBoolean("ride_music", true);
+            model->AudioFocus = reader->GetInt32("ride_music_volume", 100);
             model->audio_focus = reader->GetBoolean("audio_focus", false);
         }
     }
@@ -375,14 +375,14 @@ namespace Config
     {
         auto model = &gConfigSound;
         writer->WriteSection("sound");
-        writer->WriteString("audio_device", model->device);
-        writer->WriteBoolean("master_sound", model->master_sound_enabled);
-        writer->WriteInt32("master_volume", model->master_volume);
-        writer->WriteInt32("title_music", EnumValue(model->title_music));
-        writer->WriteBoolean("sound", model->sound_enabled);
-        writer->WriteInt32("sound_volume", model->sound_volume);
-        writer->WriteBoolean("ride_music", model->ride_music_enabled);
-        writer->WriteInt32("ride_music_volume", model->ride_music_volume);
+        writer->WriteString("audio_device", model->Device);
+        writer->WriteBoolean("master_sound", model->MasterSoundEnabled);
+        writer->WriteInt32("master_volume", model->MasterVolume);
+        writer->WriteInt32("title_music", EnumValue(model->TitleMusic));
+        writer->WriteBoolean("sound", model->SoundEnabled);
+        writer->WriteInt32("sound_volume", model->SoundVolume);
+        writer->WriteBoolean("ride_music", model->RideMusicEnabled);
+        writer->WriteInt32("ride_music_volume", model->AudioFocus);
         writer->WriteBoolean("audio_focus", model->audio_focus);
     }
 

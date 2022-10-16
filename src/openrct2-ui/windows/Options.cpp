@@ -1293,14 +1293,14 @@ private:
         switch (widgetIndex)
         {
             case WIDX_SOUND_CHECKBOX:
-                gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
+                gConfigSound.SoundEnabled = !gConfigSound.SoundEnabled;
                 config_save_default();
                 Invalidate();
                 break;
 
             case WIDX_MASTER_SOUND_CHECKBOX:
-                gConfigSound.master_sound_enabled = !gConfigSound.master_sound_enabled;
-                if (!gConfigSound.master_sound_enabled)
+                gConfigSound.MasterSoundEnabled = !gConfigSound.MasterSoundEnabled;
+                if (!gConfigSound.MasterSoundEnabled)
                     OpenRCT2::Audio::Pause();
                 else
                     OpenRCT2::Audio::Resume();
@@ -1310,8 +1310,8 @@ private:
                 break;
 
             case WIDX_MUSIC_CHECKBOX:
-                gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
-                if (!gConfigSound.ride_music_enabled)
+                gConfigSound.RideMusicEnabled = !gConfigSound.RideMusicEnabled;
+                if (!gConfigSound.RideMusicEnabled)
                 {
                     OpenRCT2::RideAudio::StopAllChannels();
                 }
@@ -1358,9 +1358,9 @@ private:
                     gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItems[numItems++].Args = TitleMusicNames[2];
                     ShowDropdown(widget, numItems);
-                    if (gConfigSound.title_music == TitleMusicKind::None)
+                    if (gConfigSound.TitleMusic == TitleMusicKind::None)
                         Dropdown::SetChecked(0, true);
-                    else if (gConfigSound.title_music == TitleMusicKind::Rct2)
+                    else if (gConfigSound.TitleMusic == TitleMusicKind::Rct2)
                         Dropdown::SetChecked(1, true);
                 }
                 else
@@ -1373,7 +1373,7 @@ private:
                         gDropdownItems[numItems++].Args = musicName;
                     }
                     ShowDropdown(widget, numItems);
-                    Dropdown::SetChecked(EnumValue(gConfigSound.title_music), true);
+                    Dropdown::SetChecked(EnumValue(gConfigSound.TitleMusic), true);
                 }
                 break;
             }
@@ -1392,13 +1392,13 @@ private:
                     if (dropdownIndex == 0)
                     {
                         audioContext->SetOutputDevice("");
-                        gConfigSound.device = "";
+                        gConfigSound.Device = "";
                     }
                     else
                     {
                         const auto& deviceName = GetDeviceName(dropdownIndex);
                         audioContext->SetOutputDevice(deviceName);
-                        gConfigSound.device = deviceName;
+                        gConfigSound.Device = deviceName;
                     }
                     config_save_default();
                     OpenRCT2::Audio::PlayTitleMusic();
@@ -1413,7 +1413,7 @@ private:
                     titleMusic = TitleMusicKind::Rct2;
                 }
 
-                gConfigSound.title_music = titleMusic;
+                gConfigSound.TitleMusic = titleMusic;
                 config_save_default();
                 Invalidate();
 
@@ -1432,9 +1432,9 @@ private:
         const auto& masterVolumeWidget = widgets[WIDX_MASTER_VOLUME];
         const auto& masterVolumeScroll = scrolls[0];
         uint8_t masterVolume = GetScrollPercentage(masterVolumeWidget, masterVolumeScroll);
-        if (masterVolume != gConfigSound.master_volume)
+        if (masterVolume != gConfigSound.MasterVolume)
         {
-            gConfigSound.master_volume = masterVolume;
+            gConfigSound.MasterVolume = masterVolume;
             config_save_default();
             InvalidateWidget(WIDX_MASTER_VOLUME);
         }
@@ -1442,9 +1442,9 @@ private:
         const auto& soundVolumeWidget = widgets[WIDX_MASTER_VOLUME];
         const auto& soundVolumeScroll = scrolls[1];
         uint8_t soundVolume = GetScrollPercentage(soundVolumeWidget, soundVolumeScroll);
-        if (soundVolume != gConfigSound.sound_volume)
+        if (soundVolume != gConfigSound.SoundVolume)
         {
-            gConfigSound.sound_volume = soundVolume;
+            gConfigSound.SoundVolume = soundVolume;
             config_save_default();
             InvalidateWidget(WIDX_SOUND_VOLUME);
         }
@@ -1452,9 +1452,9 @@ private:
         const auto& musicVolumeWidget = widgets[WIDX_MASTER_VOLUME];
         const auto& musicVolumeScroll = scrolls[2];
         uint8_t rideMusicVolume = GetScrollPercentage(musicVolumeWidget, musicVolumeScroll);
-        if (rideMusicVolume != gConfigSound.ride_music_volume)
+        if (rideMusicVolume != gConfigSound.AudioFocus)
         {
-            gConfigSound.ride_music_volume = rideMusicVolume;
+            gConfigSound.AudioFocus = rideMusicVolume;
             config_save_default();
             InvalidateWidget(WIDX_MUSIC_VOLUME);
         }
@@ -1467,7 +1467,7 @@ private:
 
     StringId GetTitleMusicName()
     {
-        auto index = EnumValue(gConfigSound.title_music);
+        auto index = EnumValue(gConfigSound.TitleMusic);
         if (index < 0 || static_cast<size_t>(index) >= std::size(TitleMusicNames))
         {
             index = EnumValue(TitleMusicKind::None);
@@ -1506,19 +1506,19 @@ private:
 
         widgets[WIDX_TITLE_MUSIC].text = GetTitleMusicName();
 
-        SetCheckboxValue(WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
-        SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-        SetCheckboxValue(WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
+        SetCheckboxValue(WIDX_SOUND_CHECKBOX, gConfigSound.SoundEnabled);
+        SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.MasterSoundEnabled);
+        SetCheckboxValue(WIDX_MUSIC_CHECKBOX, gConfigSound.RideMusicEnabled);
         SetCheckboxValue(WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
-        WidgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-        WidgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
+        WidgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, gConfigSound.MasterSoundEnabled);
+        WidgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, gConfigSound.MasterSoundEnabled);
 
         // Initialize only on first frame, otherwise the scrollbars won't be able to be modified
         if (frame_no == 0)
         {
-            InitializeScrollPosition(WIDX_MASTER_VOLUME, 0, gConfigSound.master_volume);
-            InitializeScrollPosition(WIDX_SOUND_VOLUME, 1, gConfigSound.sound_volume);
-            InitializeScrollPosition(WIDX_MUSIC_VOLUME, 2, gConfigSound.ride_music_volume);
+            InitializeScrollPosition(WIDX_MASTER_VOLUME, 0, gConfigSound.MasterVolume);
+            InitializeScrollPosition(WIDX_SOUND_VOLUME, 1, gConfigSound.SoundVolume);
+            InitializeScrollPosition(WIDX_MUSIC_VOLUME, 2, gConfigSound.AudioFocus);
         }
     }
 

@@ -459,7 +459,7 @@ namespace OpenRCT2
                 Init();
                 PopulateDevices();
                 InitRideSoundsAndInfo();
-                gGameSoundsOff = !gConfigSound.master_sound_enabled;
+                gGameSoundsOff = !gConfigSound.MasterSoundEnabled;
             }
 
             chat_init();

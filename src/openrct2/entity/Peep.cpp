@@ -1249,7 +1249,7 @@ void peep_update_crowd_noise()
     if (OpenRCT2::Audio::gGameSoundsOff)
         return;
 
-    if (!gConfigSound.sound_enabled)
+    if (!gConfigSound.SoundEnabled)
         return;
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
