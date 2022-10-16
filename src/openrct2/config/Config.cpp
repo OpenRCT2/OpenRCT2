@@ -407,26 +407,26 @@ namespace Config
             playerName = String::Trim(playerName);
 
             auto model = &gConfigNetwork;
-            model->player_name = std::move(playerName);
-            model->default_port = reader->GetInt32("default_port", NETWORK_DEFAULT_PORT);
-            model->listen_address = reader->GetString("listen_address", "");
-            model->default_password = reader->GetString("default_password", "");
-            model->stay_connected = reader->GetBoolean("stay_connected", true);
-            model->advertise = reader->GetBoolean("advertise", true);
-            model->advertise_address = reader->GetString("advertise_address", "");
-            model->maxplayers = reader->GetInt32("maxplayers", 16);
-            model->server_name = reader->GetString("server_name", "Server");
-            model->server_description = reader->GetString("server_description", "");
-            model->server_greeting = reader->GetString("server_greeting", "");
-            model->master_server_url = reader->GetString("master_server_url", "");
-            model->provider_name = reader->GetString("provider_name", "");
-            model->provider_email = reader->GetString("provider_email", "");
-            model->provider_website = reader->GetString("provider_website", "");
-            model->known_keys_only = reader->GetBoolean("known_keys_only", false);
-            model->log_chat = reader->GetBoolean("log_chat", false);
-            model->log_server_actions = reader->GetBoolean("log_server_actions", false);
-            model->pause_server_if_no_clients = reader->GetBoolean("pause_server_if_no_clients", false);
-            model->desync_debugging = reader->GetBoolean("desync_debugging", false);
+            model->PlayerName = std::move(playerName);
+            model->DefaultPort = reader->GetInt32("default_port", NETWORK_DEFAULT_PORT);
+            model->ListenAddress = reader->GetString("listen_address", "");
+            model->DefaultPassword = reader->GetString("default_password", "");
+            model->StayConnected = reader->GetBoolean("stay_connected", true);
+            model->Advertise = reader->GetBoolean("advertise", true);
+            model->AdvertiseAddress = reader->GetString("advertise_address", "");
+            model->Maxplayers = reader->GetInt32("maxplayers", 16);
+            model->ServerName = reader->GetString("server_name", "Server");
+            model->ServerDescription = reader->GetString("server_description", "");
+            model->ServerGreeting = reader->GetString("server_greeting", "");
+            model->MasterServerUrl = reader->GetString("master_server_url", "");
+            model->ProviderName = reader->GetString("provider_name", "");
+            model->ProviderEmail = reader->GetString("provider_email", "");
+            model->ProviderWebsite = reader->GetString("provider_website", "");
+            model->KnownKeysOnly = reader->GetBoolean("known_keys_only", false);
+            model->LogChat = reader->GetBoolean("log_chat", false);
+            model->LogServerActions = reader->GetBoolean("log_server_actions", false);
+            model->PauseServerIfNoClients = reader->GetBoolean("pause_server_if_no_clients", false);
+            model->DesyncDebugging = reader->GetBoolean("desync_debugging", false);
         }
     }
 
@@ -434,26 +434,26 @@ namespace Config
     {
         auto model = &gConfigNetwork;
         writer->WriteSection("network");
-        writer->WriteString("player_name", model->player_name);
-        writer->WriteInt32("default_port", model->default_port);
-        writer->WriteString("listen_address", model->listen_address);
-        writer->WriteString("default_password", model->default_password);
-        writer->WriteBoolean("stay_connected", model->stay_connected);
-        writer->WriteBoolean("advertise", model->advertise);
-        writer->WriteString("advertise_address", model->advertise_address);
-        writer->WriteInt32("maxplayers", model->maxplayers);
-        writer->WriteString("server_name", model->server_name);
-        writer->WriteString("server_description", model->server_description);
-        writer->WriteString("server_greeting", model->server_greeting);
-        writer->WriteString("master_server_url", model->master_server_url);
-        writer->WriteString("provider_name", model->provider_name);
-        writer->WriteString("provider_email", model->provider_email);
-        writer->WriteString("provider_website", model->provider_website);
-        writer->WriteBoolean("known_keys_only", model->known_keys_only);
-        writer->WriteBoolean("log_chat", model->log_chat);
-        writer->WriteBoolean("log_server_actions", model->log_server_actions);
-        writer->WriteBoolean("pause_server_if_no_clients", model->pause_server_if_no_clients);
-        writer->WriteBoolean("desync_debugging", model->desync_debugging);
+        writer->WriteString("player_name", model->PlayerName);
+        writer->WriteInt32("default_port", model->DefaultPort);
+        writer->WriteString("listen_address", model->ListenAddress);
+        writer->WriteString("default_password", model->DefaultPassword);
+        writer->WriteBoolean("stay_connected", model->StayConnected);
+        writer->WriteBoolean("advertise", model->Advertise);
+        writer->WriteString("advertise_address", model->AdvertiseAddress);
+        writer->WriteInt32("maxplayers", model->Maxplayers);
+        writer->WriteString("server_name", model->ServerName);
+        writer->WriteString("server_description", model->ServerDescription);
+        writer->WriteString("server_greeting", model->ServerGreeting);
+        writer->WriteString("master_server_url", model->MasterServerUrl);
+        writer->WriteString("provider_name", model->ProviderName);
+        writer->WriteString("provider_email", model->ProviderEmail);
+        writer->WriteString("provider_website", model->ProviderWebsite);
+        writer->WriteBoolean("known_keys_only", model->KnownKeysOnly);
+        writer->WriteBoolean("log_chat", model->LogChat);
+        writer->WriteBoolean("log_server_actions", model->LogServerActions);
+        writer->WriteBoolean("pause_server_if_no_clients", model->PauseServerIfNoClients);
+        writer->WriteBoolean("desync_debugging", model->DesyncDebugging);
     }
 
     static void ReadNotifications(IIniReader* reader)

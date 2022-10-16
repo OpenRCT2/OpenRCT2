@@ -1879,7 +1879,7 @@ private:
                 Invalidate();
                 break;
             case WIDX_STAY_CONNECTED_AFTER_DESYNC:
-                gConfigNetwork.stay_connected = !gConfigNetwork.stay_connected;
+                gConfigNetwork.StayConnected = !gConfigNetwork.StayConnected;
                 config_save_default();
                 Invalidate();
                 break;
@@ -1992,7 +1992,7 @@ private:
     {
         SetCheckboxValue(WIDX_DEBUGGING_TOOLS, gConfigGeneral.DebuggingTools);
         SetCheckboxValue(WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.SavePluginData);
-        SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
+        SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.StayConnected);
         SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.UseNativeBrowseDialog);
         widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[gConfigGeneral.AutosaveFrequency];
     }

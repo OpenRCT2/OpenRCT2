@@ -152,26 +152,26 @@ struct SoundConfiguration
 
 struct NetworkConfiguration
 {
-    std::string player_name;
-    int32_t default_port;
-    std::string listen_address;
-    std::string default_password;
-    bool stay_connected;
-    bool advertise;
-    std::string advertise_address;
-    int32_t maxplayers;
-    std::string server_name;
-    std::string server_description;
-    std::string server_greeting;
-    std::string master_server_url;
-    std::string provider_name;
-    std::string provider_email;
-    std::string provider_website;
-    bool known_keys_only;
-    bool log_chat;
-    bool log_server_actions;
-    bool pause_server_if_no_clients;
-    bool desync_debugging;
+    std::string PlayerName;
+    int32_t DefaultPort;
+    std::string ListenAddress;
+    std::string DefaultPassword;
+    bool StayConnected;
+    bool Advertise;
+    std::string AdvertiseAddress;
+    int32_t Maxplayers;
+    std::string ServerName;
+    std::string ServerDescription;
+    std::string ServerGreeting;
+    std::string MasterServerUrl;
+    std::string ProviderName;
+    std::string ProviderEmail;
+    std::string ProviderWebsite;
+    bool KnownKeysOnly;
+    bool LogChat;
+    bool LogServerActions;
+    bool PauseServerIfNoClients;
+    bool DesyncDebugging;
 };
 
 struct NotificationConfiguration

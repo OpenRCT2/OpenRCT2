@@ -936,17 +936,17 @@ namespace OpenRCT2
                     {
                         if (gNetworkStartPort == 0)
                         {
-                            gNetworkStartPort = gConfigNetwork.default_port;
+                            gNetworkStartPort = gConfigNetwork.DefaultPort;
                         }
 
                         if (gNetworkStartAddress.empty())
                         {
-                            gNetworkStartAddress = gConfigNetwork.listen_address;
+                            gNetworkStartAddress = gConfigNetwork.ListenAddress;
                         }
 
                         if (gCustomPassword.empty())
                         {
-                            _network.SetPassword(gConfigNetwork.default_password.c_str());
+                            _network.SetPassword(gConfigNetwork.DefaultPassword.c_str());
                         }
                         else
                         {
@@ -981,7 +981,7 @@ namespace OpenRCT2
             {
                 if (gNetworkStartPort == 0)
                 {
-                    gNetworkStartPort = gConfigNetwork.default_port;
+                    gNetworkStartPort = gConfigNetwork.DefaultPort;
                 }
                 _network.BeginClient(gNetworkStartHost, gNetworkStartPort);
             }

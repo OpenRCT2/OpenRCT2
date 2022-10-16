@@ -84,10 +84,10 @@ public:
         page = 0;
         list_information_type = 0;
 
-        snprintf(_port, 7, "%u", gConfigNetwork.default_port);
-        safe_strcpy(_name, gConfigNetwork.server_name.c_str(), sizeof(_name));
-        safe_strcpy(_description, gConfigNetwork.server_description.c_str(), sizeof(_description));
-        safe_strcpy(_greeting, gConfigNetwork.server_greeting.c_str(), sizeof(_greeting));
+        snprintf(_port, 7, "%u", gConfigNetwork.DefaultPort);
+        safe_strcpy(_name, gConfigNetwork.ServerName.c_str(), sizeof(_name));
+        safe_strcpy(_description, gConfigNetwork.ServerDescription.c_str(), sizeof(_description));
+        safe_strcpy(_greeting, gConfigNetwork.ServerGreeting.c_str(), sizeof(_greeting));
     }
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
@@ -112,23 +112,23 @@ public:
                 window_start_textbox(*this, widgetIndex, STR_STRING, _password, 32);
                 break;
             case WIDX_MAXPLAYERS_INCREASE:
-                if (gConfigNetwork.maxplayers < 255)
+                if (gConfigNetwork.Maxplayers < 255)
                 {
-                    gConfigNetwork.maxplayers++;
+                    gConfigNetwork.Maxplayers++;
                 }
                 config_save_default();
                 Invalidate();
                 break;
             case WIDX_MAXPLAYERS_DECREASE:
-                if (gConfigNetwork.maxplayers > 1)
+                if (gConfigNetwork.Maxplayers > 1)
                 {
-                    gConfigNetwork.maxplayers--;
+                    gConfigNetwork.Maxplayers--;
                 }
                 config_save_default();
                 Invalidate();
                 break;
             case WIDX_ADVERTISE_CHECKBOX:
-                gConfigNetwork.advertise = !gConfigNetwork.advertise;
+                gConfigNetwork.Advertise = !gConfigNetwork.Advertise;
                 config_save_default();
                 Invalidate();
                 break;
@@ -149,10 +149,10 @@ public:
     {
         ColourSchemeUpdateByClass(this, WindowClass::ServerList);
 
-        WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
+        WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.Advertise);
         auto ft = Formatter::Common();
         ft.Increment(18);
-        ft.Add<uint16_t>(gConfigNetwork.maxplayers);
+        ft.Add<uint16_t>(gConfigNetwork.Maxplayers);
     }
     void OnUpdate() override
     {
@@ -184,7 +184,7 @@ public:
                     safe_strcpy(_port, temp.c_str(), sizeof(_port));
                 }
 
-                gConfigNetwork.default_port = atoi(_port);
+                gConfigNetwork.DefaultPort = atoi(_port);
                 config_save_default();
 
                 widget_invalidate(*this, WIDX_NAME_INPUT);
@@ -201,7 +201,7 @@ public:
 
                 if (_name[0] != '\0')
                 {
-                    gConfigNetwork.server_name = _name;
+                    gConfigNetwork.ServerName = _name;
                     config_save_default();
                 }
 
@@ -219,7 +219,7 @@ public:
 
                 if (_description[0] != '\0')
                 {
-                    gConfigNetwork.server_description = _description;
+                    gConfigNetwork.ServerDescription = _description;
                     config_save_default();
                 }
 
@@ -237,7 +237,7 @@ public:
 
                 if (_greeting[0] != '\0')
                 {
-                    gConfigNetwork.server_greeting = _greeting;
+                    gConfigNetwork.ServerGreeting = _greeting;
                     config_save_default();
                 }
 
@@ -284,7 +284,7 @@ private:
         game_notify_map_change();
         if (GetContext()->LoadParkFromFile(path, false, true))
         {
-            network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
+            network_begin_server(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }
     }
 
@@ -294,7 +294,7 @@ private:
         {
             game_notify_map_change();
             GetContext()->LoadParkFromFile(path);
-            network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
+            network_begin_server(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }
     }
 };
