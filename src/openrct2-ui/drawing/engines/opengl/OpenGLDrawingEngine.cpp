@@ -804,7 +804,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId
 {
     CalculcateClipping(dpi);
 
-    assert((colour & 0xFF) > 0U);
+    assert((colour & 0xFF) > 0u);
 
     auto g1Element = gfx_get_g1_element(image);
     if (g1Element == nullptr)

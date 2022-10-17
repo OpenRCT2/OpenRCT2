@@ -136,7 +136,7 @@ protected:
 
     static ::testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
-        const uint32_t expectedSurfaceStyle = 11U;
+        const uint32_t expectedSurfaceStyle = 11u;
         const uint32_t style = MapGetSurfaceElementAt(location.ToCoordsXYZ())->GetSurfaceStyle();
 
         if (style != expectedSurfaceStyle)
@@ -150,7 +150,7 @@ protected:
 
     static ::testing::AssertionResult AssertIsNotForbiddenPosition(const char*, const TileCoordsXYZ& location)
     {
-        const uint32_t forbiddenSurfaceStyle = 8U;
+        const uint32_t forbiddenSurfaceStyle = 8u;
 
         const uint32_t style = MapGetSurfaceElementAt(location.ToCoordsXYZ())->GetSurfaceStyle();
 

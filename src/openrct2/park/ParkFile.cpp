@@ -2277,7 +2277,7 @@ enum : uint32_t
 {
     S6_SAVE_FLAG_EXPORT = 1 << 0,
     S6_SAVE_FLAG_SCENARIO = 1 << 1,
-    S6_SAVE_FLAG_AUTOMATIC = 1U << 31,
+    S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
 };
 
 int32_t scenario_save(u8string_view path, int32_t flags)

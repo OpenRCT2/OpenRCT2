@@ -136,7 +136,7 @@ size_t RideManager::size() const
 RideManager::Iterator RideManager::begin()
 {
     const auto endIndex = static_cast<RideId::UnderlyingType>(_rides.size());
-    return RideManager::Iterator(*this, 0U, endIndex);
+    return RideManager::Iterator(*this, 0u, endIndex);
 }
 
 RideManager::Iterator RideManager::end()

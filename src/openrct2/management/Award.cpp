@@ -385,7 +385,7 @@ static bool award_is_deserved_best_toilets([[maybe_unused]] int32_t activeAwardT
         return false;
 
     // At least one open toilet for every 128 guests
-    if (numToilets < gNumGuestsInPark / 128U)
+    if (numToilets < gNumGuestsInPark / 128u)
         return false;
 
     // Count number of guests who are thinking they need the toilet
@@ -630,7 +630,7 @@ void award_update_all()
             if (award_is_deserved(awardType, activeAwardTypes))
             {
                 // Add award
-                _currentAwards.push_back(Award{ 5U, awardType });
+                _currentAwards.push_back(Award{ 5u, awardType });
                 if (gConfigNotifications.ParkAward)
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});

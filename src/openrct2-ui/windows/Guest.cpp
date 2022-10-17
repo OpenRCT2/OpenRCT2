@@ -430,7 +430,7 @@ private:
             InitScrollWidgets();
         }
 
-        pressed_widgets |= 1ULL << (page + WIDX_TAB_1);
+        pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
 
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -467,17 +467,17 @@ private:
         }
         else
         {
-            newDisabledWidgets = (1ULL << WIDX_PICKUP);
+            newDisabledWidgets = (1uLL << WIDX_PICKUP);
             if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                 Invalidate();
         }
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
         {
-            newDisabledWidgets |= (1ULL << WIDX_TAB_4); // Disable finance tab if no money
+            newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
         }
         if (!gConfigGeneral.DebuggingTools)
         {
-            newDisabledWidgets |= (1ULL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
+            newDisabledWidgets |= (1uLL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
         }
         disabled_widgets = newDisabledWidgets;
     }
@@ -827,10 +827,10 @@ private:
         {
             return;
         }
-        pressed_widgets &= ~(1ULL << WIDX_TRACK);
+        pressed_widgets &= ~(1uLL << WIDX_TRACK);
         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
-            pressed_widgets |= (1ULL << WIDX_TRACK);
+            pressed_widgets |= (1uLL << WIDX_TRACK);
         }
 
         widgets[WIDX_VIEWPORT].right = width - 26;

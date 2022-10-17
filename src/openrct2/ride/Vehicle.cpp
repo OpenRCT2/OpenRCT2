@@ -2959,7 +2959,7 @@ static void test_finish(Ride& ride)
         totalTime += rideStations[i].SegmentTime;
     }
 
-    totalTime = std::max(totalTime, 1U);
+    totalTime = std::max(totalTime, 1u);
     ride.average_speed = ride.average_speed / totalTime;
     window_invalidate_by_number(WindowClass::Ride, ride.id.ToUnderlying());
 }
@@ -6800,7 +6800,7 @@ void Vehicle::UpdateAdditionalAnimation()
             UpdateAnimationAnimalFlying();
             // makes animation play faster with vehicle speed
             targetFrame = abs(_vehicleVelocityF64E08) >> 24;
-            animationState = std::max(animationState - targetFrame, 0U);
+            animationState = std::max(animationState - targetFrame, 0u);
             break;
     }
 }
@@ -6949,7 +6949,7 @@ void Vehicle::UpdateGoKartAttemptSwitchLanes()
     if ((scenario_rand() & 0xFFFF) <= probability)
     {
         // This changes "riding left" to "moving to right lane" and "riding right" to "moving to left lane".
-        TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) + 2U) };
+        TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) + 2u) };
     }
 }
 
@@ -8282,7 +8282,7 @@ loc_6DC476:
         }
         if (TrackSubposition != VehicleTrackSubposition::MiniGolfStart9)
         {
-            TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) - 1U) };
+            TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) - 1u) };
         }
     }
 

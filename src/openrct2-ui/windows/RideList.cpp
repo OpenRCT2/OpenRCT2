@@ -446,9 +446,9 @@ public:
         widgets[WIDX_TITLE].text = page_names[page];
 
         if (_quickDemolishMode)
-            pressed_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
+            pressed_widgets |= (1uLL << WIDX_QUICK_DEMOLISH);
         else
-            pressed_widgets &= ~(1ULL << WIDX_QUICK_DEMOLISH);
+            pressed_widgets &= ~(1uLL << WIDX_QUICK_DEMOLISH);
 
         widgets[WIDX_BACKGROUND].right = width - 1;
         widgets[WIDX_BACKGROUND].bottom = height - 1;

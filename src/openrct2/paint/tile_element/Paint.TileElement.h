@@ -73,8 +73,8 @@ enum
 
 namespace PaintSessionFlags
 {
-    constexpr uint8_t PassedSurface = 1U << 0;
-    constexpr uint8_t IsTrackPiecePreview = 1U << 1;
+    constexpr uint8_t PassedSurface = 1u << 0;
+    constexpr uint8_t IsTrackPiecePreview = 1u << 1;
 } // namespace PaintSessionFlags
 
 extern const int32_t SEGMENTS_ALL;

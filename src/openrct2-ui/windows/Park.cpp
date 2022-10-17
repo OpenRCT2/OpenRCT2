@@ -155,8 +155,8 @@ static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
     0,
     0,
     0,
-    (1ULL << WIDX_INCREASE_PRICE) |
-    (1ULL << WIDX_DECREASE_PRICE),
+    (1uLL << WIDX_INCREASE_PRICE) |
+    (1uLL << WIDX_DECREASE_PRICE),
     0,
     0,
     0,
@@ -394,7 +394,7 @@ private:
     void SetDisabledTabs()
     {
         // Disable price tab if money is disabled
-        disabled_widgets = (gParkFlags & PARK_FLAGS_NO_MONEY) ? (1ULL << WIDX_TAB_4) : 0;
+        disabled_widgets = (gParkFlags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
     }
 
     void PrepareWindowTitleText()
@@ -522,9 +522,9 @@ private:
 
         // Only allow closing of park for guest / rating objective
         if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
-            disabled_widgets |= (1ULL << WIDX_OPEN_OR_CLOSE) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT);
+            disabled_widgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
         else
-            disabled_widgets &= ~((1ULL << WIDX_OPEN_OR_CLOSE) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT));
+            disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
 
         // Only allow purchase of land when there is money
         if (gParkFlags & PARK_FLAGS_NO_MONEY)

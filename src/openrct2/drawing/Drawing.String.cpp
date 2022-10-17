@@ -37,7 +37,7 @@ enum : uint32_t
     TEXT_DRAW_FLAG_NO_FORMATTING = 1 << 28,
     TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
     TEXT_DRAW_FLAG_TTF = 1 << 30,
-    TEXT_DRAW_FLAG_NO_DRAW = 1U << 31
+    TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
 };
 
 static int32_t ttf_get_string_width(std::string_view text, FontStyle fontStyle, bool noFormatting);

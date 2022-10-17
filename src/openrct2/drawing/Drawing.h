@@ -159,7 +159,7 @@ enum : uint32_t
     IMAGE_TYPE_DEFAULT = 0,
     IMAGE_TYPE_REMAP = (1 << 29),
     IMAGE_TYPE_TRANSPARENT = (1 << 30),
-    IMAGE_TYPE_REMAP_2_PLUS = (1U << 31)
+    IMAGE_TYPE_REMAP_2_PLUS = (1u << 31)
     // REMAP_2_PLUS + REMAP = REMAP 2
     // REMAP_2_PLUS = REMAP 3
 };

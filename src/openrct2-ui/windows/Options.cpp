@@ -649,7 +649,7 @@ private:
         auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
         if (!hasFilePicker)
         {
-            disabled_widgets |= (1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE);
+            disabled_widgets |= (1uLL << WIDX_ALWAYS_NATIVE_LOADSAVE);
             widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WindowWidgetType::Empty;
         }
     }
@@ -865,35 +865,35 @@ private:
         // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
         if (gConfigGeneral.FullscreenMode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
         {
-            disabled_widgets |= (1ULL << WIDX_RESOLUTION_DROPDOWN);
-            disabled_widgets |= (1ULL << WIDX_RESOLUTION);
-            disabled_widgets |= (1ULL << WIDX_RESOLUTION_LABEL);
+            disabled_widgets |= (1uLL << WIDX_RESOLUTION_DROPDOWN);
+            disabled_widgets |= (1uLL << WIDX_RESOLUTION);
+            disabled_widgets |= (1uLL << WIDX_RESOLUTION_LABEL);
         }
         else
         {
-            disabled_widgets &= ~(1ULL << WIDX_RESOLUTION_DROPDOWN);
-            disabled_widgets &= ~(1ULL << WIDX_RESOLUTION);
-            disabled_widgets &= ~(1ULL << WIDX_RESOLUTION_LABEL);
+            disabled_widgets &= ~(1uLL << WIDX_RESOLUTION_DROPDOWN);
+            disabled_widgets &= ~(1uLL << WIDX_RESOLUTION);
+            disabled_widgets &= ~(1uLL << WIDX_RESOLUTION_LABEL);
         }
 
         // Disable Steam Overlay checkbox when using software or OpenGL rendering.
         if (gConfigGeneral.DrawingEngine == DrawingEngine::Software || gConfigGeneral.DrawingEngine == DrawingEngine::OpenGL)
         {
-            disabled_widgets |= (1ULL << WIDX_STEAM_OVERLAY_PAUSE);
+            disabled_widgets |= (1uLL << WIDX_STEAM_OVERLAY_PAUSE);
         }
         else
         {
-            disabled_widgets &= ~(1ULL << WIDX_STEAM_OVERLAY_PAUSE);
+            disabled_widgets &= ~(1uLL << WIDX_STEAM_OVERLAY_PAUSE);
         }
 
         // Disable changing VSync for Software engine, as we can't control its use of VSync
         if (gConfigGeneral.DrawingEngine == DrawingEngine::Software)
         {
-            disabled_widgets |= (1ULL << WIDX_USE_VSYNC_CHECKBOX);
+            disabled_widgets |= (1uLL << WIDX_USE_VSYNC_CHECKBOX);
         }
         else
         {
-            disabled_widgets &= ~(1ULL << WIDX_USE_VSYNC_CHECKBOX);
+            disabled_widgets &= ~(1uLL << WIDX_USE_VSYNC_CHECKBOX);
         }
 
         SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.UncapFPS);
@@ -1041,11 +1041,11 @@ private:
         SetCheckboxValue(WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.EnableLightFx);
         if (gConfigGeneral.DayNightCycle && gConfigGeneral.DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay)
         {
-            disabled_widgets &= ~(1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+            disabled_widgets &= ~(1uLL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
         }
         else
         {
-            disabled_widgets |= (1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+            disabled_widgets |= (1uLL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
             gConfigGeneral.EnableLightFx = false;
         }
 
@@ -1053,11 +1053,11 @@ private:
         if (gConfigGeneral.DayNightCycle && gConfigGeneral.DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay
             && gConfigGeneral.EnableLightFx)
         {
-            disabled_widgets &= ~(1ULL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+            disabled_widgets &= ~(1uLL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
         }
         else
         {
-            disabled_widgets |= (1ULL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+            disabled_widgets |= (1uLL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
             gConfigGeneral.EnableLightFxForVehicles = false;
         }
 
@@ -1068,11 +1068,11 @@ private:
         if (!gConfigGeneral.RenderWeatherEffects && !gConfigGeneral.RenderWeatherGloom)
         {
             SetCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
-            disabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+            disabled_widgets |= (1uLL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         }
         else
         {
-            disabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+            disabled_widgets &= ~(1uLL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         }
     }
 
@@ -1825,14 +1825,14 @@ private:
         // and the server cannot change the setting during gameplay to prevent desyncs
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
+            disabled_widgets |= (1uLL << WIDX_REAL_NAME_CHECKBOX);
             widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
             // Disable the use of the allow_early_completion option during network play on clients.
             // This is to prevent confusion on clients because changing this setting during network play wouldn't change
             // the way scenarios are completed during this network-session
             if (network_get_mode() == NETWORK_MODE_CLIENT)
             {
-                disabled_widgets |= (1ULL << WIDX_ALLOW_EARLY_COMPLETION);
+                disabled_widgets |= (1uLL << WIDX_ALLOW_EARLY_COMPLETION);
                 widgets[WIDX_ALLOW_EARLY_COMPLETION].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
             }
         }
@@ -1851,11 +1851,11 @@ private:
 
         if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
         {
-            disabled_widgets &= ~(1ULL << WIDX_SCENARIO_UNLOCKING);
+            disabled_widgets &= ~(1uLL << WIDX_SCENARIO_UNLOCKING);
         }
         else
         {
-            disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
+            disabled_widgets |= (1uLL << WIDX_SCENARIO_UNLOCKING);
         }
 
         widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames[gConfigGeneral.DefaultInspectionInterval];

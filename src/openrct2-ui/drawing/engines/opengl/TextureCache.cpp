@@ -247,7 +247,7 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
         }
 
         // Initial capacity will be 12 which covers most cases of a fully visible park.
-        _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1UL;
+        _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1uL;
 
         glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
         glTexImage3D(

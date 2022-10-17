@@ -1022,7 +1022,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192U : 2184U))
+        if ((scenario_rand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192u : 2184u))
         {
             PickRideToGoOn();
         }
@@ -2839,7 +2839,7 @@ static void peep_update_ride_nausea_growth(Guest* peep, Ride* ride)
     uint32_t nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
     nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), peep->Hunger) / 64;
     nauseaGrowthRateChange >>= (EnumValue(peep->NauseaTolerance) & 3);
-    peep->NauseaTarget = static_cast<uint8_t>(std::min(peep->NauseaTarget + nauseaGrowthRateChange, 255U));
+    peep->NauseaTarget = static_cast<uint8_t>(std::min(peep->NauseaTarget + nauseaGrowthRateChange, 255u));
 }
 
 static bool peep_should_go_on_ride_again(Guest* peep, Ride* ride)
@@ -5795,7 +5795,7 @@ void Guest::UpdateUsingBin()
 
             for (uint8_t curContainer = 0; curContainer < 64; curContainer++)
             {
-                if (!(emptyContainers & (1ULL << curContainer)))
+                if (!(emptyContainers & (1uLL << curContainer)))
                     continue;
 
                 auto item = ShopItem(curContainer);

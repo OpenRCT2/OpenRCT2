@@ -170,7 +170,7 @@ private:
         pressed_widgets = 0;
         widgets = _windowAboutPageWidgets[p];
 
-        pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
+        pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1uLL << WIDX_TAB_ABOUT_RCT2) : (1uLL << WIDX_TAB_ABOUT_OPENRCT2);
         WindowInitScrollWidgets(*this);
         Invalidate();
     }

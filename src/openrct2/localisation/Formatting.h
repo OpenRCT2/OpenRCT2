@@ -33,7 +33,7 @@ namespace OpenRCT2
         uint32_t _capacity;
         TTraits _traits;
 
-        static constexpr uint32_t FlagLocalStorage = (1U << 31);
+        static constexpr uint32_t FlagLocalStorage = (1u << 31);
 
     public:
         explicit FormatBufferBase()

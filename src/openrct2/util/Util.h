@@ -65,7 +65,7 @@ size_t strcatftime(char* buffer, size_t bufferSize, const char* format, const st
 template<typename T> [[nodiscard]] constexpr uint64_t EnumToFlag(T v)
 {
     static_assert(std::is_enum_v<T>);
-    return 1ULL << static_cast<std::underlying_type_t<T>>(v);
+    return 1uLL << static_cast<std::underlying_type_t<T>>(v);
 }
 
 template<typename... T> [[nodiscard]] constexpr uint64_t EnumsToFlags(T... types)

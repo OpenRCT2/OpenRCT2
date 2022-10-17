@@ -228,7 +228,7 @@ enum PeepFlags : uint32_t
     PEEP_FLAGS_INTAMIN_DEPRECATED = (1 << 27),   // Used to make the peep think "I'm so excited - It's an Intamin ride!" while
                                                  // riding on a Intamin ride.
     PEEP_FLAGS_HERE_WE_ARE = (1 << 28),          // Makes the peep think  "...and here we are on X!" while riding a ride
-    PEEP_FLAGS_TWITCH_DEPRECATED = (1U << 31),   // Formerly used for twitch integration
+    PEEP_FLAGS_TWITCH_DEPRECATED = (1u << 31),   // Formerly used for twitch integration
 };
 
 enum PeepNextFlags
