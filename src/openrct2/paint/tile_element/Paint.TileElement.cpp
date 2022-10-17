@@ -312,7 +312,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     for (std::size_t sy = 0; sy < std::size(segmentPositions); sy++)
     {
-        for (std::size_t sx = 0; sx < std::size(*segmentPositions); sx++)
+        for (std::size_t sx = 0; sx < std::size(segmentPositions[sy]); sx++)
         {
             uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].height;
             auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::PaletteDarken3);
