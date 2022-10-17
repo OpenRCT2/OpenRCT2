@@ -904,7 +904,7 @@ public:
 
         rct_widget* dropdownWidget = &widgets[widgetIndex - 1];
 
-        for (int32_t i = 0; i < 4; i++)
+        for (std::size_t i = 0; i < std::size(ResearchFundingLevelNames); i++)
         {
             gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
             gDropdownItems[i].Args = ResearchFundingLevelNames[i];

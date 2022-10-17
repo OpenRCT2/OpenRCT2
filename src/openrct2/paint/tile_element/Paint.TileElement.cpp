@@ -310,9 +310,9 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         { 1, 7, 3 },
     };
 
-    for (int32_t sy = 0; sy < 3; sy++)
+    for (std::size_t sy = 0; sy < std::size(segmentPositions); sy++)
     {
-        for (int32_t sx = 0; sx < 3; sx++)
+        for (std::size_t sx = 0; sx < std::size(segmentPositions[sy]); sx++)
         {
             uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].height;
             auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::PaletteDarken3);
@@ -328,8 +328,8 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (segmentHeight > gClipHeight))
                 continue;
 
-            int32_t xOffset = sy * 10;
-            int32_t yOffset = -22 + sx * 10;
+            int32_t xOffset = static_cast<int32_t>(sy) * 10;
+            int32_t yOffset = -22 + static_cast<int32_t>(sx) * 10;
             PaintStruct* ps = PaintAddImageAsParent(
                 session, imageColourFlats, { xOffset, yOffset, segmentHeight }, { 10, 10, 1 },
                 { xOffset + 1, yOffset + 16, segmentHeight });
@@ -389,7 +389,7 @@ const uint16_t segment_offsets[9] = {
 void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
 {
     SupportHeight* supportSegments = session.SupportSegments;
-    for (int32_t s = 0; s < 9; s++)
+    for (std::size_t s = 0; s < std::size(segment_offsets); s++)
     {
         if (segments & segment_offsets[s])
         {

@@ -1047,7 +1047,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     tile_descriptor tileDescriptors[5];
     tileDescriptors[0] = selfDescriptor;
 
-    for (int32_t i = 0; i < 4; i++)
+    for (std::size_t i = 0; i < std::size(viewport_surface_paint_data); i++)
     {
         const CoordsXY& offset = viewport_surface_paint_data[i][rotation];
         const CoordsXY position = base + offset;

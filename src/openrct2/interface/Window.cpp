@@ -1306,9 +1306,8 @@ void window_resize(rct_window& w, int32_t dw, int32_t dh)
     window_event_invalidate_call(&w);
 
     // Update scroll widgets
-    for (int32_t i = 0; i < 3; i++)
+    for (auto& scroll : w.scrolls)
     {
-        auto& scroll = w.scrolls[i];
         scroll.h_right = WINDOW_SCROLL_UNDEFINED;
         scroll.v_bottom = WINDOW_SCROLL_UNDEFINED;
     }

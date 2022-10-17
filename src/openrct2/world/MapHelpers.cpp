@@ -25,7 +25,7 @@ static uint8_t GetBaseHeightOrZero(int32_t x, int32_t y)
  */
 int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b)
 {
-    int32_t i, x, y, count, doubleCorner, raisedLand = 0;
+    int32_t x, y, count, doubleCorner, raisedLand = 0;
     uint8_t highest, cornerHeights[4];
     for (y = t; y < b; y++)
     {
@@ -55,14 +55,14 @@ int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b)
             cornerHeights[2] = GetBaseHeightOrZero(x + 1, y + 1);
             cornerHeights[3] = GetBaseHeightOrZero(x - 1, y + 1);
             highest = surfaceElement->base_height;
-            for (i = 0; i < 4; i++)
+            for (std::size_t i = 0; i < std::size(cornerHeights); i++)
                 highest = std::max(highest, cornerHeights[i]);
 
             if (highest >= surfaceElement->base_height + 4)
             {
                 count = 0;
                 int32_t canCompensate = 1;
-                for (i = 0; i < 4; i++)
+                for (std::size_t i = 0; i < std::size(cornerHeights); i++)
                     if (cornerHeights[i] == highest)
                     {
                         count++;

@@ -842,7 +842,8 @@ static void WindowLoadsavePopulateList(
     {
         // List Windows drives
         w->disabled_widgets |= (1ULL << WIDX_NEW_FILE) | (1ULL << WIDX_NEW_FOLDER) | (1ULL << WIDX_UP);
-        for (int32_t x = 0; x < 26; x++)
+        static constexpr auto NumDriveLetters = 26;
+        for (int32_t x = 0; x < NumDriveLetters; x++)
         {
             if (drives & (1 << x))
             {

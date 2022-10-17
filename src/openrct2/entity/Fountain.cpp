@@ -15,6 +15,7 @@
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../world/Footpath.h"
+#include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "EntityRegistry.h"
@@ -93,7 +94,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
     {
         case PATTERN::CYCLIC_SQUARES:
             // 0, 1, 2, 3
-            for (int32_t i = 0; i < 4; i++)
+            for (int32_t i = 0; i < NumOrthogonalDirections; i++)
             {
                 JumpingFountain::Create(
                     newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],
@@ -103,7 +104,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
         case PATTERN::BOUNCING_PAIRS:
             // random [0, 2 or 1, 3]
             randomIndex = scenario_rand() & 1;
-            for (int32_t i = randomIndex; i < 4; i += 2)
+            for (int32_t i = randomIndex; i < NumOrthogonalDirections; i += 2)
             {
                 JumpingFountain::Create(
                     newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],

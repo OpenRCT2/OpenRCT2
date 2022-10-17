@@ -804,11 +804,11 @@ public:
 
         // Land tool mode (4 checkboxes)
         int checkboxY = height - 55;
-        for (int32_t i = 0; i < 4; i++)
+        for (int32_t i = WIDX_LAND_OWNED_CHECKBOX; i <= WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX; i++)
         {
-            widgets[WIDX_LAND_OWNED_CHECKBOX + i].top = checkboxY;
+            widgets[i].top = checkboxY;
             checkboxY += 11;
-            widgets[WIDX_LAND_OWNED_CHECKBOX + i].bottom = checkboxY;
+            widgets[i].bottom = checkboxY;
             checkboxY += 2;
         }
 
@@ -844,8 +844,8 @@ public:
                     widgets[WIDX_LAND_TOOL_SMALLER].type = WindowWidgetType::TrnBtn;
                     widgets[WIDX_LAND_TOOL_LARGER].type = WindowWidgetType::TrnBtn;
 
-                    for (int32_t i = 0; i < 4; i++)
-                        widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WindowWidgetType::Checkbox;
+                    for (int32_t i = WIDX_LAND_OWNED_CHECKBOX; i <= WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX; i++)
+                        widgets[i].type = WindowWidgetType::Checkbox;
 
                     widgets[WIDX_LAND_TOOL].image = LandTool::SizeToSpriteIndex(_landRightsToolSize);
                 }
