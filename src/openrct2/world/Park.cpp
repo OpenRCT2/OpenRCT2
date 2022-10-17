@@ -403,7 +403,7 @@ int32_t Park::CalculateParkRating() const
         result -= 500;
         if (gNumGuestsInPark > 0)
         {
-            result += 2 * std::min(250u, (happyGuestCount * 300) / gNumGuestsInPark);
+            result += 2 * std::min(250U, (happyGuestCount * 300) / gNumGuestsInPark);
         }
 
         // Up to 25 guests can be lost without affecting the park rating.

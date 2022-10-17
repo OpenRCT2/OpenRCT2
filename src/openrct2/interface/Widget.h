@@ -41,7 +41,7 @@ enum class WindowWidgetType : uint8_t
 };
 
 constexpr const auto WIDGETS_END = rct_widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
-#define BAR_BLINK (1u << 31)
+#define BAR_BLINK (1U << 31)
 
 enum
 {

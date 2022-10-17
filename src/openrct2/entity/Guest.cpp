@@ -2839,7 +2839,7 @@ static void peep_update_ride_nausea_growth(Guest* peep, Ride* ride)
     uint32_t nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
     nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), peep->Hunger) / 64;
     nauseaGrowthRateChange >>= (EnumValue(peep->NauseaTolerance) & 3);
-    peep->NauseaTarget = static_cast<uint8_t>(std::min(peep->NauseaTarget + nauseaGrowthRateChange, 255u));
+    peep->NauseaTarget = static_cast<uint8_t>(std::min(peep->NauseaTarget + nauseaGrowthRateChange, 255U));
 }
 
 static bool peep_should_go_on_ride_again(Guest* peep, Ride* ride)

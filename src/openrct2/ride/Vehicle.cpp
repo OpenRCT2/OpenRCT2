@@ -2959,7 +2959,7 @@ static void test_finish(Ride& ride)
         totalTime += rideStations[i].SegmentTime;
     }
 
-    totalTime = std::max(totalTime, 1u);
+    totalTime = std::max(totalTime, 1U);
     ride.average_speed = ride.average_speed / totalTime;
     window_invalidate_by_number(WindowClass::Ride, ride.id.ToUnderlying());
 }
@@ -6800,7 +6800,7 @@ void Vehicle::UpdateAdditionalAnimation()
             UpdateAnimationAnimalFlying();
             // makes animation play faster with vehicle speed
             targetFrame = abs(_vehicleVelocityF64E08) >> 24;
-            animationState = std::max(animationState - targetFrame, 0u);
+            animationState = std::max(animationState - targetFrame, 0U);
             break;
     }
 }

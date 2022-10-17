@@ -630,7 +630,7 @@ void award_update_all()
             if (award_is_deserved(awardType, activeAwardTypes))
             {
                 // Add award
-                _currentAwards.push_back(Award{ 5u, awardType });
+                _currentAwards.push_back(Award{ 5U, awardType });
                 if (gConfigNotifications.ParkAward)
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});

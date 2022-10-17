@@ -27,7 +27,7 @@ namespace OpenRCT2
             template<size_t TNumBits> static constexpr size_t ByteAlignBits()
             {
                 const auto reminder = TNumBits % BitsPerByte;
-                if constexpr (reminder == 0u)
+                if constexpr (reminder == 0U)
                 {
                     return TNumBits;
                 }
@@ -57,10 +57,10 @@ namespace OpenRCT2
                 else
                 {
                     const auto numBytes = numBits / BitsPerByte;
-                    auto mask = 1u;
+                    auto mask = 1U;
                     while (mask < numBytes)
                     {
-                        mask <<= 1u;
+                        mask <<= 1U;
                     }
                     return mask;
                 }
@@ -93,11 +93,11 @@ namespace OpenRCT2
             {
                 size_t res = 0;
                 auto x = static_cast<std::make_unsigned_t<T>>(val);
-                while (x > 0u)
+                while (x > 0U)
                 {
-                    if (x & 1u)
+                    if (x & 1U)
                         res++;
-                    x >>= 1u;
+                    x >>= 1U;
                 }
                 return res;
             }
@@ -142,8 +142,8 @@ namespace OpenRCT2
         static constexpr size_t BlockCount = Detail::BitSet::ComputeBlockCount<ByteAlignedBitSize, BlockByteSize>();
         static constexpr size_t CapacityBits = BlockCount * BlockBitSize;
 
-        static constexpr StorageBlockType BlockValueZero = StorageBlockType{ 0u };
-        static constexpr StorageBlockType BlockValueOne = StorageBlockType{ 1u };
+        static constexpr StorageBlockType BlockValueZero = StorageBlockType{ 0U };
+        static constexpr StorageBlockType BlockValueOne = StorageBlockType{ 1U };
         static constexpr StorageBlockType BlockValueMask = static_cast<StorageBlockType>(~BlockValueZero);
 
         static constexpr bool RequiresTrim = TBitSize != CapacityBits;

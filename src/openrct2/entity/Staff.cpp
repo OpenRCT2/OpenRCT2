@@ -154,7 +154,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
         total++;
 
         /* Check if path has an edge in adjac_dir */
-        if (!(path->AsPath()->GetEdges() & (1u << adjac_dir)))
+        if (!(path->AsPath()->GetEdges() & (1U << adjac_dir)))
         {
             continue;
         }

@@ -70,7 +70,7 @@ enum : uint32_t
     CAR_ENTRY_FLAG_CHAIRLIFT = 1 << 28,
     CAR_ENTRY_FLAG_WATER_RIDE = 1 << 29, // Set on rides where water would provide continuous propulsion.
     CAR_ENTRY_FLAG_GO_KART = 1 << 30,
-    CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT = 1u << 31,
+    CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT = 1U << 31,
 };
 
 enum : uint32_t

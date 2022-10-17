@@ -66,7 +66,7 @@ int32_t bitscanforward(int32_t source)
     // any intrinsic.
     // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
     for (int32_t i = 0; i < 32; i++)
-        if (source & (1u << i))
+        if (source & (1U << i))
             return i;
 
     return -1;
@@ -88,7 +88,7 @@ int32_t bitscanforward(int64_t source)
     // any intrinsic.
     // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
     for (int32_t i = 0; i < 64; i++)
-        if (source & (1ull << i))
+        if (source & (1ULL << i))
             return i;
 
     return -1;

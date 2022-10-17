@@ -48,7 +48,7 @@ void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stre
     if (identifier == "XXWLBR03")
     {
         _legacyType.flags2 &= ~WALL_SCENERY_2_DOOR_SOUND_MASK;
-        _legacyType.flags2 |= (1u << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
+        _legacyType.flags2 |= (1U << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
     }
 }
 
