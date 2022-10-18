@@ -201,8 +201,8 @@ void TitleScreen::ChangePresetSequence(size_t preset)
     }
 
     const utf8* configId = title_sequence_manager_get_config_id(preset);
-    SafeFree(gConfigInterface.current_title_sequence_preset);
-    gConfigInterface.current_title_sequence_preset = _strdup(configId);
+    SafeFree(gConfigInterface.CurrentTitleSequencePreset);
+    gConfigInterface.CurrentTitleSequencePreset = _strdup(configId);
 
     if (!_previewingSequence)
         _currentSequence = preset;
@@ -229,7 +229,7 @@ void TitleScreen::TitleInitialise()
     {
         _sequencePlayer = GetContext()->GetUiContext()->GetTitleSequencePlayer();
     }
-    if (gConfigInterface.random_title_sequence)
+    if (gConfigInterface.RandomTitleSequence)
     {
         bool RCT1Installed = false, RCT1AAInstalled = false, RCT1LLInstalled = false;
         int RCT1Count = 0;
@@ -319,8 +319,8 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
                     {
                         // Forcefully change the preset to a preset that works.
                         const utf8* configId = title_sequence_manager_get_config_id(targetSequence);
-                        SafeFree(gConfigInterface.current_title_sequence_preset);
-                        gConfigInterface.current_title_sequence_preset = _strdup(configId);
+                        SafeFree(gConfigInterface.CurrentTitleSequencePreset);
+                        gConfigInterface.CurrentTitleSequencePreset = _strdup(configId);
                     }
                     _currentSequence = targetSequence;
                     gfx_invalidate_screen();
@@ -397,7 +397,7 @@ void title_set_hide_version_info(bool value)
 
 size_t title_get_config_sequence()
 {
-    return title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
+    return title_sequence_manager_get_index_for_config_id(gConfigInterface.CurrentTitleSequencePreset);
 }
 
 size_t title_get_current_sequence()

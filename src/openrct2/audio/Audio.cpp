@@ -65,7 +65,7 @@ namespace OpenRCT2::Audio
             return false;
         if (gGameSoundsOff)
             return false;
-        if (!gConfigSound.sound_enabled)
+        if (!gConfigSound.SoundEnabled)
             return false;
         if (gOpenRCT2Headless)
             return false;
@@ -75,19 +75,19 @@ namespace OpenRCT2::Audio
     void Init()
     {
         auto audioContext = GetContext()->GetAudioContext();
-        if (gConfigSound.device.empty())
+        if (gConfigSound.Device.empty())
         {
             audioContext->SetOutputDevice("");
             _currentAudioDevice = 0;
         }
         else
         {
-            audioContext->SetOutputDevice(gConfigSound.device);
+            audioContext->SetOutputDevice(gConfigSound.Device);
 
             PopulateDevices();
             for (int32_t i = 0; i < GetDeviceCount(); i++)
             {
-                if (_audioDevices[i] == gConfigSound.device)
+                if (_audioDevices[i] == gConfigSound.Device)
                 {
                     _currentAudioDevice = i;
                 }
@@ -256,7 +256,7 @@ namespace OpenRCT2::Audio
 
     static ObjectEntryDescriptor GetTitleMusicDescriptor()
     {
-        switch (gConfigSound.title_music)
+        switch (gConfigSound.TitleMusic)
         {
             default:
                 return {};
@@ -365,7 +365,7 @@ namespace OpenRCT2::Audio
         }
 
         _currentAudioDevice = device;
-        config_save_default();
+        ConfigSaveDefault();
     }
 
     void Close()
@@ -379,8 +379,8 @@ namespace OpenRCT2::Audio
 
     void ToggleAllSounds()
     {
-        gConfigSound.master_sound_enabled = !gConfigSound.master_sound_enabled;
-        if (gConfigSound.master_sound_enabled)
+        gConfigSound.MasterSoundEnabled = !gConfigSound.MasterSoundEnabled;
+        if (gConfigSound.MasterSoundEnabled)
         {
             Resume();
             PlayTitleMusic();

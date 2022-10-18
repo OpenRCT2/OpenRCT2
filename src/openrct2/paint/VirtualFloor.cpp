@@ -402,7 +402,7 @@ void VirtualFloorPaint(PaintSession& session)
             { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) });
     }
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Glassy)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Glassy)
         return;
 
     if (!weAreOccupied && !weAreLit && weAreAboveGround && weAreOwned)

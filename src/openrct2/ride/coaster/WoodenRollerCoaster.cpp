@@ -7242,7 +7242,7 @@ static void wooden_rc_track_water_splash(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const bool transparent = gConfigGeneral.transparent_water || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+    const bool transparent = gConfigGeneral.TransparentWater || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
     const auto waterMask = ImageId(SPR_WATER_MASK).WithRemap(FilterPaletteID::PaletteWater).WithBlended(true);
     const auto waterOverlay = ImageId(transparent ? SPR_WATER_OVERLAY : SPR_RCT1_WATER_OVERLAY);
 

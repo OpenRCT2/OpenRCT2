@@ -269,7 +269,7 @@ public:
 
         widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
-        _filter_flags = gConfigInterface.object_selection_filter_flags;
+        _filter_flags = gConfigInterface.ObjectSelectionFilterFlags;
         std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
         WindowInitScrollWidgets(*this);
@@ -367,8 +367,8 @@ public:
                 break;
             case WIDX_FILTER_RIDE_TAB_ALL:
                 _filter_flags |= FILTER_RIDES;
-                gConfigInterface.object_selection_filter_flags = _filter_flags;
-                config_save_default();
+                gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
+                ConfigSaveDefault();
 
                 FilterUpdateCounts();
                 VisibleListRefresh();
@@ -385,8 +385,8 @@ public:
             case WIDX_FILTER_RIDE_TAB_STALL:
                 _filter_flags &= ~FILTER_RIDES;
                 _filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + _numSourceGameItems));
-                gConfigInterface.object_selection_filter_flags = _filter_flags;
-                config_save_default();
+                gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
+                ConfigSaveDefault();
 
                 FilterUpdateCounts();
                 VisibleListRefresh();
@@ -546,8 +546,8 @@ public:
                 {
                     _filter_flags ^= (1 << dropdownIndex);
                 }
-                gConfigInterface.object_selection_filter_flags = _filter_flags;
-                config_save_default();
+                gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
+                ConfigSaveDefault();
 
                 FilterUpdateCounts();
                 scrolls->v_top = 0;

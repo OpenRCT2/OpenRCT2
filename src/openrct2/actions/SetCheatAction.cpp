@@ -250,7 +250,7 @@ GameActions::Result SetCheatAction::Execute() const
 
     if (network_get_mode() == NETWORK_MODE_NONE)
     {
-        config_save_default();
+        ConfigSaveDefault();
     }
 
     window_invalidate_by_class(WindowClass::Cheats);

@@ -666,7 +666,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, std::string_view tex
 
     dst = dst_orig;
     src = src_orig;
-    bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold > 0;
+    bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold > 0;
     for (int32_t yy = 0; yy < height; yy++)
     {
         for (int32_t xx = 0; xx < width; xx++)

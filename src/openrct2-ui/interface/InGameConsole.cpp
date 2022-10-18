@@ -28,7 +28,7 @@ static InGameConsole _inGameConsole;
 
 static FontSpriteBase InGameConsoleGetFontSpriteBase()
 {
-    return (gConfigInterface.console_small_font ? FontSpriteBase::SMALL : FontSpriteBase::MEDIUM);
+    return (gConfigInterface.ConsoleSmallFont ? FontSpriteBase::SMALL : FontSpriteBase::MEDIUM);
 }
 
 static int32_t InGameConsoleGetLineHeight()

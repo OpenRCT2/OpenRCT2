@@ -466,7 +466,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
 
 static bool IsServerPlayerInvisible()
 {
-    return network_is_server_player_invisible() && !gConfigGeneral.debugging_tools;
+    return network_is_server_player_invisible() && !gConfigGeneral.DebuggingTools;
 }
 
 static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetIndex)
@@ -958,16 +958,16 @@ static void WindowMultiplayerOptionsMouseup(rct_window* w, WidgetIndex widgetInd
             }
             break;
         case WIDX_LOG_CHAT_CHECKBOX:
-            gConfigNetwork.log_chat = !gConfigNetwork.log_chat;
-            config_save_default();
+            gConfigNetwork.LogChat = !gConfigNetwork.LogChat;
+            ConfigSaveDefault();
             break;
         case WIDX_LOG_SERVER_ACTIONS_CHECKBOX:
-            gConfigNetwork.log_server_actions = !gConfigNetwork.log_server_actions;
-            config_save_default();
+            gConfigNetwork.LogServerActions = !gConfigNetwork.LogServerActions;
+            ConfigSaveDefault();
             break;
         case WIDX_KNOWN_KEYS_ONLY_CHECKBOX:
-            gConfigNetwork.known_keys_only = !gConfigNetwork.known_keys_only;
-            config_save_default();
+            gConfigNetwork.KnownKeysOnly = !gConfigNetwork.KnownKeysOnly;
+            ConfigSaveDefault();
             break;
     }
 }
@@ -994,9 +994,9 @@ static void WindowMultiplayerOptionsInvalidate(rct_window* w)
         w->widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WindowWidgetType::Empty;
     }
 
-    WidgetSetCheckboxValue(*w, WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.log_chat);
-    WidgetSetCheckboxValue(*w, WIDX_LOG_SERVER_ACTIONS_CHECKBOX, gConfigNetwork.log_server_actions);
-    WidgetSetCheckboxValue(*w, WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.known_keys_only);
+    WidgetSetCheckboxValue(*w, WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.LogChat);
+    WidgetSetCheckboxValue(*w, WIDX_LOG_SERVER_ACTIONS_CHECKBOX, gConfigNetwork.LogServerActions);
+    WidgetSetCheckboxValue(*w, WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.KnownKeysOnly);
 }
 
 static void WindowMultiplayerOptionsPaint(rct_window* w, rct_drawpixelinfo* dpi)

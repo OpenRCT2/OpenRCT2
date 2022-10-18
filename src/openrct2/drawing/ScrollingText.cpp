@@ -159,7 +159,7 @@ static int32_t scrolling_text_get_matching_or_oldest(
 
 static void scrolling_text_format(utf8* dst, size_t size, rct_draw_scroll_text* scrollText)
 {
-    if (gConfigGeneral.upper_case_banners)
+    if (gConfigGeneral.UpperCaseBanners)
     {
         format_string_to_upper(dst, size, scrollText->string_id, scrollText->string_args);
     }
@@ -1601,7 +1601,7 @@ static void scrolling_text_set_bitmap_for_ttf(
     int32_t min_vpos = -fontDesc->offset_y;
     int32_t max_vpos = std::min(surface->h - 2, min_vpos + 7);
 
-    bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold > 0;
+    bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold > 0;
 
     for (int32_t x = 0;; x++)
     {

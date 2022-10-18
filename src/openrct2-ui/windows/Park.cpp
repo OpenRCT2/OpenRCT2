@@ -622,7 +622,7 @@ private:
         int32_t viewportFlags{};
         if (viewport == nullptr)
         {
-            viewportFlags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+            viewportFlags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         }
         else
         {
@@ -962,7 +962,7 @@ private:
         // Draw park size
         auto parkSize = gParkSize * 10;
         auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
-        if (gConfigGeneral.measurement_format == MeasurementFormat::Imperial)
+        if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         {
             stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
             parkSize = squaredmetres_to_squaredfeet(parkSize);

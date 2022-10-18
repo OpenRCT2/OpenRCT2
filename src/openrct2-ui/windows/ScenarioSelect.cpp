@@ -204,7 +204,7 @@ static void WindowScenarioselectInitTabs(rct_window* w)
     for (size_t i = 0; i < numScenarios; i++)
     {
         const scenario_index_entry* scenario = scenario_repository_get_by_index(i);
-        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
             if (_titleEditor && scenario->source_game == ScenarioSource::Other)
                 continue;
@@ -221,9 +221,9 @@ static void WindowScenarioselectInitTabs(rct_window* w)
         }
     }
 
-    if (showPages & (1 << gConfigInterface.scenarioselect_last_tab))
+    if (showPages & (1 << gConfigInterface.ScenarioselectLastTab))
     {
-        w->selected_tab = gConfigInterface.scenarioselect_last_tab;
+        w->selected_tab = gConfigInterface.ScenarioselectLastTab;
     }
     else
     {
@@ -271,8 +271,8 @@ static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex
     {
         w->selected_tab = widgetIndex - 4;
         w->highlighted_scenario = nullptr;
-        gConfigInterface.scenarioselect_last_tab = w->selected_tab;
-        config_save_default();
+        gConfigInterface.ScenarioselectLastTab = w->selected_tab;
+        ConfigSaveDefault();
         InitialiseListItems(w);
         w->Invalidate();
         window_event_resize_call(w);
@@ -424,7 +424,7 @@ static void WindowScenarioselectInvalidate(rct_window* w)
     window_scenarioselect_widgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
     window_scenarioselect_widgets[WIDX_TABCONTENT].bottom = windowHeight - 1;
 
-    const int32_t bottomMargin = gConfigGeneral.debugging_tools ? 17 : 5;
+    const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? 17 : 5;
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
 }
 
@@ -446,7 +446,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
             continue;
 
         auto ft = Formatter();
-        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
             ft.Add<StringId>(ScenarioOriginStringIds[i]);
         }
@@ -486,7 +486,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Scenario path
-    if (gConfigGeneral.debugging_tools)
+    if (gConfigGeneral.DebuggingTools)
     {
         utf8 path[MAX_PATH];
 
@@ -711,7 +711,7 @@ static void InitialiseListItems(rct_window* w)
 
         // Category heading
         StringId headingStringId = STR_NONE;
-        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
             if (w->selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->category)
             {
@@ -790,7 +790,7 @@ static void InitialiseListItems(rct_window* w)
     {
         bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
         _listItems[megaParkListItemIndex].scenario.is_locked = megaParkLocked;
-        if (megaParkLocked && gConfigGeneral.scenario_hide_mega_park)
+        if (megaParkLocked && gConfigGeneral.ScenarioHideMegaPark)
         {
             // Remove mega park
             _listItems.pop_back();
@@ -816,7 +816,7 @@ static void InitialiseListItems(rct_window* w)
 
 static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenario)
 {
-    if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+    if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
     {
         if (static_cast<uint8_t>(scenario->source_game) != w->selected_tab)
         {
@@ -840,9 +840,9 @@ static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenari
 
 static bool IsLockingEnabled(rct_window* w)
 {
-    if (gConfigGeneral.scenario_select_mode != SCENARIO_SELECT_MODE_ORIGIN)
+    if (gConfigGeneral.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
         return false;
-    if (!gConfigGeneral.scenario_unlocking_enabled)
+    if (!gConfigGeneral.ScenarioUnlockingEnabled)
         return false;
     if (w->selected_tab >= 6)
         return false;

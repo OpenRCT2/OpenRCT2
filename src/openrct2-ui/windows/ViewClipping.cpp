@@ -298,7 +298,7 @@ public:
             case DisplayType::DisplayUnits:
             {
                 // Print the value in the configured height label type:
-                if (gConfigGeneral.show_height_as_units)
+                if (gConfigGeneral.ShowHeightAsUnits)
                 {
                     // Height label is Units.
                     auto ft = Formatter();
@@ -311,7 +311,7 @@ public:
                 {
                     // Height label is Real Values.
                     // Print the value in the configured measurement units.
-                    switch (gConfigGeneral.measurement_format)
+                    switch (gConfigGeneral.MeasurementFormat)
                     {
                         case MeasurementFormat::Metric:
                         case MeasurementFormat::SI:

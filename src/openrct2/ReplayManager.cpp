@@ -655,7 +655,7 @@ namespace OpenRCT2
         {
             serialiser << _guestGenerationProbability;
             serialiser << _suggestedGuestMaximum;
-            serialiser << gConfigGeneral.show_real_names_of_guests;
+            serialiser << gConfigGeneral.ShowRealNamesOfGuests;
 
             // To make this a little bit less volatile against updates
             // we reserve some space for future additions.

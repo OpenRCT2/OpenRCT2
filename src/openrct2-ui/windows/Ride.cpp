@@ -1572,7 +1572,7 @@ static void WindowRideInitViewport(rct_window* w)
         viewport_flags = w->viewport->flags;
         w->RemoveViewport();
     }
-    else if (gConfigGeneral.always_show_gridlines)
+    else if (gConfigGeneral.AlwaysShowGridlines)
     {
         viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
     }
@@ -4074,7 +4074,7 @@ static void WindowRideMaintenanceInvalidate(rct_window* w)
     WindowRideAnchorBorderWidgets(w);
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 
-    if (gConfigGeneral.debugging_tools && network_get_mode() == NETWORK_MODE_NONE)
+    if (gConfigGeneral.DebuggingTools && network_get_mode() == NETWORK_MODE_NONE)
     {
         window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WindowWidgetType::FlatBtn;
     }

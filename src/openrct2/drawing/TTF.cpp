@@ -76,7 +76,7 @@ template<typename T> class FontLockHelper
 public:
     FontLockHelper(T& mutex)
         : _mutex(mutex)
-        , _enabled(gConfigGeneral.multithreading)
+        , _enabled(gConfigGeneral.MultiThreading)
     {
         if (_enabled)
             _mutex.lock();
@@ -98,7 +98,7 @@ static void ttf_toggle_hinting(bool)
     for (int32_t i = 0; i < FONT_SIZE_COUNT; i++)
     {
         TTFFontDescriptor* fontDesc = &(gCurrentTTFFontSet->size[i]);
-        bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold;
+        bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold;
         TTF_SetFontHinting(fontDesc->font, use_hinting ? 1 : 0);
     }
 

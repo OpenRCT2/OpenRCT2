@@ -451,7 +451,7 @@ private:
         }
         if (GetContext()->GetUiContext()->GetScaleQuality() == ScaleQuality::SmoothNearestNeighbour)
         {
-            uint32_t scale = std::ceil(gConfigGeneral.window_scale);
+            uint32_t scale = std::ceil(gConfigGeneral.WindowScale);
             _smoothScaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width * scale, _height * scale, false, false);
         }
     }
