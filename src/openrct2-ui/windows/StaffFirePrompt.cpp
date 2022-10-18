@@ -18,13 +18,9 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
-#pragma region WINDOW CONSTANTS
-
 static constexpr const StringId WINDOW_TITLE = STR_SACK_STAFF;
 static constexpr const int32_t WW = 200;
 static constexpr const int32_t WH = 100;
-
-#pragma endregion
 
 // clang-format off
 enum WindowStaffFireWidgetIdx {
@@ -48,10 +44,9 @@ static rct_widget window_staff_fire_widgets[] = {
 class StaffFirePromptWindow final : public Window
 {
 public:
-    void Init(rct_windownumber windownumber)
+    void SetWindowNumber(rct_windownumber windownumber)
     {
         number = windownumber;
-        frame_no = 0;
     }
 
     void OnOpen() override
@@ -85,7 +80,7 @@ public:
         auto ft = Formatter();
         peep->FormatNameTo(ft);
 
-        ScreenCoordsXY textCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
+        ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ WW / 2, (WH / 2) - 3 });
         DrawTextWrapped(&dpi, textCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
     }
 };
@@ -93,7 +88,7 @@ public:
 rct_window* WindowStaffFirePromptOpen(Peep* peep)
 {
     // Check if the confirm window already exists
-    auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(WindowClass::FirePrompt, WW, WH, WF_CENTRE_SCREEN);
-    window->Init(peep->sprite_index.ToUnderlying());
+    auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(WindowClass::FirePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+    window->SetWindowNumber(peep->sprite_index.ToUnderlying());
     return window;
 }
