@@ -1,6 +1,10 @@
 0.4.3 (in development)
 ------------------------------------------------------------------------
 - Feature: [#17782] The Flying Coaster now has access to boosters and can draw outside loops.
+- Improved: [#18192] Tycoon Park has been added Extras tab.
+- Improved: [#18214] Competition scenarios have received their own section.
+- Improved: [#18250] Added modern style file and folder pickers on Windows.
+- Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 - Fix: [#14312] Research ride type message incorrect.
 - Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17763] Missing validation on invalid characters in file name.
@@ -11,9 +15,6 @@
 - Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
 - Fix: [#18134] Underground on-ride photo section partially clips through adjacent terrain edge.
 - Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
-- Improved: [#18192, #18214] Tycoon Park has been added Extras tab, Competition scenarios have received their own section.
-- Improved: [#18250] Added modern style file and folder pickers on Windows.
-- Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 
 0.4.2 (2022-10-05)
 ------------------------------------------------------------------------
