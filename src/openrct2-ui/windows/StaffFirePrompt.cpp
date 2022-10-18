@@ -88,7 +88,8 @@ public:
 rct_window* WindowStaffFirePromptOpen(Peep* peep)
 {
     // Check if the confirm window already exists
-    auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(WindowClass::FirePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+    auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(
+        WindowClass::FirePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
     window->SetWindowNumber(peep->sprite_index.ToUnderlying());
     return window;
 }
