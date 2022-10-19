@@ -219,6 +219,7 @@ The following people are not part of the development team, but have been contrib
 * (MaxBareiss)
 * Mithun Hunsur (Philpax)
 * (RollingStar)
+* (That Human Being)
 
 ## Translation
 * Extracting from original files: Ted John (IntelOrca)
