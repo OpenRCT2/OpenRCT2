@@ -114,6 +114,9 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
   - cmake
   - benchmark (optional)
   - innoextract (optional runtime dependency; used for GOG installer extraction during setup)
+  - libogg
+  - libvorbis
+  - flac
  
 See the wiki for [the actual package names used in pacman](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-MSYS2-MinGW).
 
