@@ -5,7 +5,7 @@
 - Improved: [#18214] Competition scenarios have received their own section.
 - Improved: [#18250] Added modern style file and folder pickers on Windows.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
-- Change: [#00000] Convert custom paths to invisible path: PATHINVS, PATHCLR , PAT25MKY, JAINVSFP.
+- Change: [#18381] Convert custom paths to invisible path, when converting from SV6: PATHINVS, PATHCLR , PAT25MKY, JAINVSFP.
 - Fix: [#14312] Research ride type message incorrect.
 - Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17763] Missing validation on invalid characters in file name.
