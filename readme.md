@@ -98,6 +98,24 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 ### Windows:
 - Visual Studio 2022 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
   - Desktop development with C++
+- MSYS2 MinGW Toolchain. The toolchains with supported dependencies are `mingw-x86_64`, `mingw-xi686`, `ucrt-x86_64`, `clang-x86_64`, and `clang-xi686`, each of these require the `$MINGW_PACKAGE_PREFIX` and `msys` and `clangarm-64` are lacking packages for some dependencies
+  - sdl2 (only for UI client)
+  - freetype (can be disabled)
+  - fontconfig (can be disabled)
+  - libzip (>= 1.0)
+  - libpng (>= 1.2)
+  - speexdsp (only for UI client)
+  - curl (only if building with http support)
+  - nlohmann-json (>= 3.6.0)
+  - openssl (>= 1.0; only if building with multiplayer support)
+  - icu (>= 59.0)
+  - zlib
+  - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
+  - cmake
+  - benchmark (optional)
+  - innoextract (optional runtime dependency; used for GOG installer extraction during setup)
+ 
+See the wiki for [the actual package names used in pacman](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-MSYS2-MinGW).
 
 ### macOS:
 - Xcode Command Line Tools
