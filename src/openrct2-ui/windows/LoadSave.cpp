@@ -608,12 +608,12 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
             const u8string path = Path::WithExtension(
                 Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
 
-            if (FILE *file = fopen(path.c_str(), "r")) 
+            if (FILE *file = fopen(path.c_str(), "r"))
             {
                 fclose(file);
                 overwrite = true;
             } 
-            else 
+            else
             {
                 overwrite = false;
             }
