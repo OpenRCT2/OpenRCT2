@@ -608,16 +608,7 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
             const u8string path = Path::WithExtension(
                 Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
 
-            overwrite = false;
-            int32_t lowerCase = Platform::GetDrives();
-            for (auto& item : _listItems)
-            {
-                if (String::Equals(item.path, path, lowerCase))
-                {
-                    overwrite = true;
-                    break;
-                }
-            }
+            overwrite = std::filesystem::exists(path);
 
             if (overwrite)
                 WindowOverwritePromptOpen(text, path.c_str());
