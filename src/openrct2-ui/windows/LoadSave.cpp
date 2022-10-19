@@ -608,7 +608,15 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
             const u8string path = Path::WithExtension(
                 Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
 
-            overwrite = std::filesystem::exists(path);
+            if (FILE *file = fopen(path.c_str(), "r")) 
+            {
+                fclose(file);
+                overwrite = true;
+            } 
+            else 
+            {
+                overwrite = false;
+            }
 
             if (overwrite)
                 WindowOverwritePromptOpen(text, path.c_str());
