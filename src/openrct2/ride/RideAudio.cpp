@@ -257,7 +257,7 @@ namespace OpenRCT2::RideAudio
             return;
 
         // TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
-        if (gGameSoundsOff || !gConfigSound.ride_music_enabled)
+        if (gGameSoundsOff || !gConfigSound.RideMusicEnabled)
             return;
 
         StopInactiveRideMusicChannels();

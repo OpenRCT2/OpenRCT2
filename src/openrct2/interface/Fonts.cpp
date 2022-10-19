@@ -14,6 +14,7 @@
 #include "../drawing/TTF.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
+#include "../util/Util.h"
 #include "FontFamilies.h"
 
 using namespace OpenRCT2::Localisation;
@@ -25,81 +26,81 @@ uint8_t const HINTING_THRESHOLD_MEDIUM = 60;
 
 // clang-format off
 TTFFontSetDescriptor TTFFontMSGothic = { {
+    { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "msgothic.ttc", "MS PGothic",  9, 1,  1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontNotoSansMono = { {
+    { "NotoSansCJK-Regular.ttc", "Noto Sans Mono CJK JP", 12, 1, -3, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "NotoSansCJK-Regular.ttc", "Noto Sans Mono CJK JP", 12, 1, -3, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "NotoSansCJK-Regular.ttc", "Noto Sans Mono CJK JP",  9, 1, -2,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "NotoSansCJK-Regular.ttc", "Noto Sans Mono CJK JP", 12, 1, -3, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "NotoSansCJK-Regular.ttc", "Noto Sans Mono CJK JP", 12, 1, -3, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontHiragano = { {
+    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Maru Gothic ProN", 11, 1,  0, 13, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Maru Gothic ProN", 11, 1,  0, 13, HINTING_THRESHOLD_MEDIUM, nullptr },
     { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Maru Gothic ProN",  9, 1,  1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Maru Gothic ProN", 11, 1,  0, 13, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Maru Gothic ProN", 11, 1,  0, 13, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontMingLiu = { {
-    {    "msjh.ttc", "JhengHei",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "mingliu.ttc",  "MingLiU", 11,  1,  1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "mingliu.ttc",  "MingLiU", 12,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    {    "msjh.ttc", "JhengHei",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontHeiti = { {
-    { u8"华文黑体.ttf", "STHeiti",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
     { u8"华文黑体.ttf", "STHeiti", 11,  1,  1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { u8"华文黑体.ttf", "STHeiti", 12,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"华文黑体.ttf", "STHeiti",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontSimSun = { {
-    {   "msyh.ttc",  "Microsoft YaHei",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "simsun.ttc", "SimSun", 11,  1, -1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "simsun.ttc", "SimSun", 12,  1, -2, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    {   "msyh.ttc",  "Microsoft YaHei",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontLiHeiPro = { {
-    { u8"儷黑 Pro.ttf", "LiHei Pro",  9, 1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
     { u8"儷黑 Pro.ttf", "LiHei Pro", 11, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { u8"儷黑 Pro.ttf", "LiHei Pro", 12, 1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"儷黑 Pro.ttf", "LiHei Pro",  9, 1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontGulim = { {
+    { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "gulim.ttc", "Gulim", 10, 1, 0, 10, HINTING_DISABLED,         nullptr },
-    { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontMalgun = { {
+    { "malgun.ttf", "Malgun Gothic", 12, 1, -3, 15, HINTING_THRESHOLD_LOW, nullptr },
+    { "malgun.ttf", "Malgun Gothic", 12, 1, -3, 15, HINTING_THRESHOLD_LOW, nullptr },
     { "malgun.ttf", "Malgun Gothic", 10, 1, -3, 10, HINTING_THRESHOLD_LOW, nullptr },
-    { "malgun.ttf", "Malgun Gothic", 12, 1, -3, 15, HINTING_THRESHOLD_LOW, nullptr },
-    { "malgun.ttf", "Malgun Gothic", 12, 1, -3, 15, HINTING_THRESHOLD_LOW, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontNanum = { {
+    { "NanumGothic.ttf", "Nanum Gothic", 12, 1, -2, 15, HINTING_THRESHOLD_LOW, nullptr },
+    { "NanumGothic.ttf", "Nanum Gothic", 12, 1, -2, 15, HINTING_THRESHOLD_LOW, nullptr },
     { "NanumGothic.ttf", "Nanum Gothic", 10, 1, -2, 10, HINTING_DISABLED, nullptr },
-    { "NanumGothic.ttf", "Nanum Gothic", 12, 1, -2, 15, HINTING_THRESHOLD_LOW, nullptr },
-    { "NanumGothic.ttf", "Nanum Gothic", 12, 1, -2, 15, HINTING_THRESHOLD_LOW, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontArial = { {
+    { "arial.ttf", "Arial", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
     { "arial.ttf", "Arial", 10, 0, -1,  9, HINTING_THRESHOLD_LOW, nullptr },
-    { "arial.ttf", "Arial", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
-    { "arial.ttf", "Arial", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontArialUnicode = { {
+    { "arialuni.ttf", "Arial Unicode MS", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arialuni.ttf", "Arial Unicode MS", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
     { "arialuni.ttf", "Arial Unicode MS", 10, 0, -1,  9, HINTING_THRESHOLD_LOW, nullptr },
-    { "arialuni.ttf", "Arial Unicode MS", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
-    { "arialuni.ttf", "Arial Unicode MS", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontMicroHei = { {
-    { "wqy-microhei.ttc", "WenQuanYi Micro Hei", 10, -1, -1,  10, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "wqy-microhei.ttc", "WenQuanYi Micro Hei", 11,  1, -1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "wqy-microhei.ttc", "WenQuanYi Micro Hei", 11,  1, -2, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "wqy-microhei.ttc", "WenQuanYi Micro Hei", 10, -1, -1,  10, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 // clang-format on
 #endif // NO_TTF
@@ -127,12 +128,12 @@ static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescrip
 static bool LoadCustomConfigFont(LocalisationService& localisationService)
 {
     static TTFFontSetDescriptor TTFFontCustom = { {
-        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_tiny, gConfigFonts.x_offset, gConfigFonts.y_offset,
-          gConfigFonts.height_tiny, gConfigFonts.hinting_threshold, nullptr },
-        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_small, gConfigFonts.x_offset, gConfigFonts.y_offset,
-          gConfigFonts.height_small, gConfigFonts.hinting_threshold, nullptr },
-        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_medium, gConfigFonts.x_offset,
-          gConfigFonts.y_offset, gConfigFonts.height_medium, gConfigFonts.hinting_threshold, nullptr },
+        { gConfigFonts.FileName, gConfigFonts.FontName, gConfigFonts.SizeTiny, gConfigFonts.OffsetX, gConfigFonts.OffsetY,
+          gConfigFonts.HeightTiny, gConfigFonts.HintingThreshold, nullptr },
+        { gConfigFonts.FileName, gConfigFonts.FontName, gConfigFonts.SizeSmall, gConfigFonts.OffsetX, gConfigFonts.OffsetY,
+          gConfigFonts.HeightSmall, gConfigFonts.HintingThreshold, nullptr },
+        { gConfigFonts.FileName, gConfigFonts.FontName, gConfigFonts.SizeMedium, gConfigFonts.OffsetX, gConfigFonts.OffsetY,
+          gConfigFonts.HeightMedium, gConfigFonts.HintingThreshold, nullptr },
     } };
 
     ttf_dispose();
@@ -152,7 +153,7 @@ void TryLoadFonts(LocalisationService& localisationService)
 
     if (fontFamily != FAMILY_OPENRCT2_SPRITE)
     {
-        if (!String::IsNullOrEmpty(gConfigFonts.file_name))
+        if (!String::IsNullOrEmpty(gConfigFonts.FileName))
         {
             if (LoadCustomConfigFont(localisationService))
             {
@@ -168,7 +169,7 @@ void TryLoadFonts(LocalisationService& localisationService)
                 return;
             }
 
-            TTFFontDescriptor smallFont = font->size[FONT_SIZE_SMALL];
+            TTFFontDescriptor smallFont = font->size[EnumValue(FontStyle::Small)];
             log_verbose("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
         }
 
@@ -183,7 +184,7 @@ void TryLoadFonts(LocalisationService& localisationService)
                     return;
                 }
 
-                TTFFontDescriptor smallFont = font->size[FONT_SIZE_SMALL];
+                TTFFontDescriptor smallFont = font->size[EnumValue(FontStyle::Small)];
                 log_verbose("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
             }
 

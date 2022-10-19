@@ -52,17 +52,17 @@ private:
     void SetViewportFlags()
     {
         viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-        if (gConfigGeneral.invisible_rides)
+        if (gConfigGeneral.InvisibleRides)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_RIDES;
-        if (gConfigGeneral.invisible_vehicles)
+        if (gConfigGeneral.InvisibleVehicles)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-        if (gConfigGeneral.invisible_trees)
+        if (gConfigGeneral.InvisibleTrees)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-        if (gConfigGeneral.invisible_scenery)
+        if (gConfigGeneral.InvisibleScenery)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_SCENERY;
-        if (gConfigGeneral.invisible_paths)
+        if (gConfigGeneral.InvisiblePaths)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_PATHS;
-        if (gConfigGeneral.invisible_supports)
+        if (gConfigGeneral.InvisibleSupports)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
     }
 };

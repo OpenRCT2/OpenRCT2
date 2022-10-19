@@ -131,12 +131,12 @@ void lightfx_set_available(bool available)
 
 bool lightfx_is_available()
 {
-    return _lightfxAvailable && gConfigGeneral.enable_light_fx != 0;
+    return _lightfxAvailable && gConfigGeneral.EnableLightFx != 0;
 }
 
 bool lightfx_for_vehicles_is_available()
 {
-    return lightfx_is_available() && gConfigGeneral.enable_light_fx_for_vehicles != 0;
+    return lightfx_is_available() && gConfigGeneral.EnableLightFxForVehicles != 0;
 }
 
 void lightfx_init()

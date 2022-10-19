@@ -294,14 +294,15 @@ public:
             // TODO: this parameter by itself produces very light text.
             // It needs a {BLACK} token in the string to work properly.
             colour_t colour = COLOUR_BLACK;
-            FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
+            FontStyle fontStyle = FontStyle::Medium;
+            auto darkness = TextDarkness::Regular;
 
             if (researchItem.IsAlwaysResearched())
             {
                 if (_selectedResearchItem == &researchItem && dragItem == nullptr)
-                    fontSpriteBase = FontSpriteBase::MEDIUM_EXTRA_DARK;
+                    darkness = TextDarkness::ExtraDark;
                 else
-                    fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
+                    darkness = TextDarkness::Dark;
                 colour = colours[1] | COLOUR_FLAG_INSET;
             }
 
@@ -318,21 +319,21 @@ public:
                 ft.Add<StringId>(rideTypeName);
                 DrawTextEllipsised(
                     &dpi, { 1, itemY }, columnSplitOffset - 11, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, ft,
-                    { colour, fontSpriteBase });
+                    { colour, fontStyle, darkness });
 
                 // Draw vehicle name
                 ft = Formatter();
                 ft.Add<StringId>(itemNameId);
                 DrawTextEllipsised(
                     &dpi, { columnSplitOffset + 1, itemY }, columnSplitOffset - 11, STR_BLACK_STRING, ft,
-                    { colour, fontSpriteBase });
+                    { colour, fontStyle, darkness });
             }
             else
             {
                 // Scenery group, flat ride or shop
                 auto ft = Formatter();
                 ft.Add<StringId>(itemNameId);
-                DrawTextEllipsised(&dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, { colour, fontSpriteBase });
+                DrawTextEllipsised(&dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, { colour, fontStyle, darkness });
             }
         }
     }
@@ -664,7 +665,7 @@ public:
             format_string(buffer, 256, stringId, nullptr);
         }
 
-        auto stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
+        auto stringWidth = gfx_get_string_width(buffer, FontStyle::Medium);
         widgets[0].right = stringWidth;
 
         Invalidate();

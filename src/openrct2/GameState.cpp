@@ -141,7 +141,7 @@ void GameState::Tick()
     }
 
     bool isPaused = game_is_paused();
-    if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.pause_server_if_no_clients)
+    if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.PauseServerIfNoClients)
     {
         // If we are headless we always have 1 player (host), pause if no one else is around.
         if (gOpenRCT2Headless && network_get_num_players() == 1)

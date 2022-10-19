@@ -218,8 +218,8 @@ rct_window* WindowEditorObjectiveOptionsOpen()
 static void WindowEditorObjectiveOptionsSetPressedTab(rct_window* w)
 {
     int32_t i;
-    for (i = 0; i < 2; i++)
-        w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+    for (i = WIDX_TAB_1; i <= WIDX_TAB_2; i++)
+        w->pressed_widgets &= ~(1 << i);
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
@@ -1084,11 +1084,10 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
             {
-                FontSpriteBase fontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FontSpriteBase::MEDIUM_EXTRA_DARK
-                                                                                         : FontSpriteBase::MEDIUM_DARK;
+                auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                 gfx_draw_string(
                     dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
-                    { static_cast<colour_t>(w->colours[1] & 0x7F), fontSpriteBase });
+                    { static_cast<colour_t>(w->colours[1] & 0x7F), FontStyle::Medium, darkness });
             }
 
             // Ride name

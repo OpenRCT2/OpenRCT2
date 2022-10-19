@@ -198,7 +198,7 @@ static bool OnCrash(
     }
 
     auto configFilePathUTF8 = String::ToUtf8(configFilePath);
-    if (config_save(configFilePathUTF8))
+    if (ConfigSave(configFilePathUTF8))
     {
         _uploadFiles[L"attachment_config.ini"] = configFilePath;
     }

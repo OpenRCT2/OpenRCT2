@@ -146,8 +146,8 @@ void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
         else
         {
             auto group = channel->GetGroup();
-            if ((group != MixerGroup::Sound || gConfigSound.sound_enabled) && gConfigSound.master_sound_enabled
-                && gConfigSound.master_volume != 0)
+            if ((group != MixerGroup::Sound || gConfigSound.SoundEnabled) && gConfigSound.MasterSoundEnabled
+                && gConfigSound.MasterVolume != 0)
             {
                 MixChannel(channel.get(), dst, length);
             }
@@ -159,14 +159,14 @@ void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
 void AudioMixer::UpdateAdjustedSound()
 {
     // Did the volume level get changed? Recalculate level in this case.
-    if (_settingSoundVolume != gConfigSound.sound_volume)
+    if (_settingSoundVolume != gConfigSound.SoundVolume)
     {
-        _settingSoundVolume = gConfigSound.sound_volume;
+        _settingSoundVolume = gConfigSound.SoundVolume;
         _adjustSoundVolume = powf(static_cast<float>(_settingSoundVolume) / 100.f, 10.f / 6.f);
     }
-    if (_settingMusicVolume != gConfigSound.ride_music_volume)
+    if (_settingMusicVolume != gConfigSound.AudioFocus)
     {
-        _settingMusicVolume = gConfigSound.ride_music_volume;
+        _settingMusicVolume = gConfigSound.AudioFocus;
         _adjustMusicVolume = powf(static_cast<float>(_settingMusicVolume) / 100.f, 10.f / 6.f);
     }
 }
@@ -297,7 +297,7 @@ void AudioMixer::ApplyPan(const IAudioChannel* channel, void* buffer, size_t len
 int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size_t len)
 {
     float volumeAdjust = _volume;
-    volumeAdjust *= gConfigSound.master_sound_enabled ? (static_cast<float>(gConfigSound.master_volume) / 100.0f) : 0.0f;
+    volumeAdjust *= gConfigSound.MasterSoundEnabled ? (static_cast<float>(gConfigSound.MasterVolume) / 100.0f) : 0.0f;
 
     switch (channel->GetGroup())
     {

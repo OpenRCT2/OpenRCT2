@@ -120,7 +120,7 @@ void InputManager::HandleViewScrolling()
     InputScrollViewport(_viewScroll);
 
     // Mouse edge scrolling
-    if (gConfigGeneral.edge_scrolling)
+    if (gConfigGeneral.EdgeScrolling)
     {
         if (input_get_state() != InputState::Normal)
             return;
@@ -155,7 +155,7 @@ void InputManager::HandleModifiers()
     }
 #endif
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
         if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
             VirtualFloorEnable();

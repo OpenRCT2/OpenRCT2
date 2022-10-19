@@ -30,20 +30,28 @@ enum class TextUnderline
     On,
 };
 
+enum class TextDarkness
+{
+    Regular = 0,
+    Dark = 1,
+    ExtraDark = 2,
+};
+
 struct TextPaint
 {
     colour_t Colour = COLOUR_BLACK;
-    FontSpriteBase SpriteBase = FontSpriteBase::MEDIUM;
+    ::FontStyle FontStyle = FontStyle::Medium;
     TextUnderline UnderlineText = TextUnderline::Off;
     TextAlignment Alignment = TextAlignment::LEFT;
+    TextDarkness Darkness = TextDarkness::Regular;
 
     TextPaint() = default;
     TextPaint(colour_t colour)
         : Colour(colour)
     {
     }
-    TextPaint(FontSpriteBase spriteBase)
-        : SpriteBase(spriteBase)
+    TextPaint(::FontStyle fontStyle)
+        : FontStyle(fontStyle)
     {
     }
     TextPaint(TextUnderline underlineText)
@@ -55,9 +63,9 @@ struct TextPaint
     {
     }
 
-    TextPaint(colour_t colour, FontSpriteBase spriteBase)
+    TextPaint(colour_t colour, ::FontStyle fontStyle)
         : Colour(colour)
-        , SpriteBase(spriteBase)
+        , FontStyle(fontStyle)
     {
     }
     TextPaint(colour_t colour, TextUnderline underlineText)
@@ -71,13 +79,13 @@ struct TextPaint
     {
     }
 
-    TextPaint(FontSpriteBase spriteBase, TextUnderline underlineText)
-        : SpriteBase(spriteBase)
+    TextPaint(::FontStyle fontStyle, TextUnderline underlineText)
+        : FontStyle(fontStyle)
         , UnderlineText(underlineText)
     {
     }
-    TextPaint(FontSpriteBase spriteBase, TextAlignment alignment)
-        : SpriteBase(spriteBase)
+    TextPaint(::FontStyle fontStyle, TextAlignment alignment)
+        : FontStyle(fontStyle)
         , Alignment(alignment)
     {
     }
@@ -87,16 +95,22 @@ struct TextPaint
     {
     }
 
-    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextUnderline underlineText)
+    TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText)
         : Colour(colour)
-        , SpriteBase(spriteBase)
+        , FontStyle(fontStyle)
         , UnderlineText(underlineText)
     {
     }
-    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextAlignment alignment)
+    TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment)
         : Colour(colour)
-        , SpriteBase(spriteBase)
+        , FontStyle(fontStyle)
         , Alignment(alignment)
+    {
+    }
+    TextPaint(colour_t colour, ::FontStyle fontStyle, TextDarkness darkness)
+        : Colour(colour)
+        , FontStyle(fontStyle)
+        , Darkness(darkness)
     {
     }
     TextPaint(colour_t colour, TextUnderline underlineText, TextAlignment alignment)
@@ -105,18 +119,25 @@ struct TextPaint
         , Alignment(alignment)
     {
     }
-    TextPaint(FontSpriteBase spriteBase, TextUnderline underlineText, TextAlignment alignment)
-        : SpriteBase(spriteBase)
+    TextPaint(::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
+        : FontStyle(fontStyle)
         , UnderlineText(underlineText)
         , Alignment(alignment)
     {
     }
 
-    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextUnderline underlineText, TextAlignment alignment)
+    TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
         : Colour(colour)
-        , SpriteBase(spriteBase)
+        , FontStyle(fontStyle)
         , UnderlineText(underlineText)
         , Alignment(alignment)
+    {
+    }
+    TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment, TextDarkness darkness)
+        : Colour(colour)
+        , FontStyle(fontStyle)
+        , Alignment(alignment)
+        , Darkness(darkness)
     {
     }
 };

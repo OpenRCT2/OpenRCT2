@@ -16,6 +16,8 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
+#include <iterator>
+
 enum
 {
     SPR_CHAIRLIFT_CABLE_FLAT_SW_NE = 20500,
@@ -79,7 +81,7 @@ static void chairlift_paint_util_draw_supports(PaintSession& session, int32_t se
 {
     bool success = false;
 
-    for (int32_t s = 0; s < 9; s++)
+    for (uint8_t s = 0; s < std::size(segment_offsets); s++)
     {
         if (!(segments & segment_offsets[s]))
         {
@@ -98,7 +100,7 @@ static void chairlift_paint_util_draw_supports(PaintSession& session, int32_t se
     }
 
     SupportHeight* supportSegments = session.SupportSegments;
-    for (int32_t s = 0; s < 9; s++)
+    for (uint8_t s = 0; s < std::size(segment_offsets); s++)
     {
         if (!(segments & segment_offsets[s]))
         {

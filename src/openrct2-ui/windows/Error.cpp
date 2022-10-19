@@ -84,14 +84,14 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
     if (buffer.size() <= 1)
         return nullptr;
 
-    width = gfx_get_string_width_new_lined(buffer.data(), FontSpriteBase::MEDIUM);
+    width = gfx_get_string_width_new_lined(buffer.data(), FontStyle::Medium);
     width = std::clamp(width, 64, 196);
 
-    gfx_wrap_string(buffer.data(), width + 1, FontSpriteBase::MEDIUM, &numLines);
+    gfx_wrap_string(buffer.data(), width + 1, FontStyle::Medium, &numLines);
 
     _window_error_num_lines = numLines;
     width = width + 3;
-    height = (numLines + 1) * font_get_line_height(FontSpriteBase::MEDIUM) + 4;
+    height = (numLines + 1) * font_get_line_height(FontStyle::Medium) + 4;
 
     window_error_widgets[WIDX_BACKGROUND].right = width;
     window_error_widgets[WIDX_BACKGROUND].bottom = height;
@@ -175,5 +175,5 @@ static void WindowErrorPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     draw_string_centred_raw(
         dpi, { leftTop + ScreenCoordsXY{ (w->width + 1) / 2 - 1, 1 } }, _window_error_num_lines, _window_error_text.data(),
-        FontSpriteBase::MEDIUM);
+        FontStyle::Medium);
 }

@@ -254,7 +254,7 @@ static void scenario_entrance_fee_too_high_check()
             auto y = entrance.y + 16;
 
             uint32_t packed_xy = (y << 16) | x;
-            if (gConfigNotifications.park_warnings)
+            if (gConfigNotifications.ParkWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy, {});
             }
@@ -271,7 +271,7 @@ void scenario_autosave_check()
     uint32_t timeSinceSave = Platform::GetTicks() - gLastAutoSaveUpdate;
 
     bool shouldSave = false;
-    switch (gConfigGeneral.autosave_frequency)
+    switch (gConfigGeneral.AutosaveFrequency)
     {
         case AUTOSAVE_EVERY_MINUTE:
             shouldSave = timeSinceSave >= 1 * 60 * 1000;
@@ -367,7 +367,7 @@ static void scenario_update_daynight_cycle()
     float currentDayNightCycle = gDayNightCycle;
     gDayNightCycle = 0;
 
-    if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle)
+    if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.DayNightCycle)
     {
         float monthFraction = gDateMonthTicks / static_cast<float>(TICKS_PER_MONTH);
         if (monthFraction < (1 / 8.0f))
@@ -700,28 +700,28 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         gScenarioParkRatingWarningDays++;
         if (gScenarioParkRatingWarningDays == 1)
         {
-            if (gConfigNotifications.park_rating_warnings)
+            if (gConfigNotifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gScenarioParkRatingWarningDays == 8)
         {
-            if (gConfigNotifications.park_rating_warnings)
+            if (gConfigNotifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gScenarioParkRatingWarningDays == 15)
         {
-            if (gConfigNotifications.park_rating_warnings)
+            if (gConfigNotifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gScenarioParkRatingWarningDays == 22)
         {
-            if (gConfigNotifications.park_rating_warnings)
+            if (gConfigNotifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
             }
@@ -862,7 +862,7 @@ bool AllowEarlyCompletion()
         case NETWORK_MODE_NONE:
         case NETWORK_MODE_SERVER:
         default:
-            return gConfigGeneral.allow_early_completion;
+            return gConfigGeneral.AllowEarlyCompletion;
     }
 }
 

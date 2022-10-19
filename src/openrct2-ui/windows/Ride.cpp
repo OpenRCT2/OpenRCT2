@@ -1572,7 +1572,7 @@ static void WindowRideInitViewport(rct_window* w)
         viewport_flags = w->viewport->flags;
         w->RemoveViewport();
     }
-    else if (gConfigGeneral.always_show_gridlines)
+    else if (gConfigGeneral.AlwaysShowGridlines)
     {
         viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
     }
@@ -2907,7 +2907,7 @@ static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Intensity Factor
     if (rideEntry->intensity_multiplier > 0)
     {
-        int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+        int32_t lineHeight = font_get_line_height(FontStyle::Medium);
         if (lineHeight != 10)
             screenCoords.x += 150;
         else
@@ -4074,7 +4074,7 @@ static void WindowRideMaintenanceInvalidate(rct_window* w)
     WindowRideAnchorBorderWidgets(w);
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 
-    if (gConfigGeneral.debugging_tools && network_get_mode() == NETWORK_MODE_NONE)
+    if (gConfigGeneral.DebuggingTools && network_get_mode() == NETWORK_MODE_NONE)
     {
         window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WindowWidgetType::FlatBtn;
     }
@@ -6183,7 +6183,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         auto ft = Formatter();
         ft.Add<int16_t>(scaled_yUnit);
 
-        DrawTextBasic(dpi, { w->scrolls[0].h_left + 1, y - 4 }, stringID, ft, { FontSpriteBase::SMALL });
+        DrawTextBasic(dpi, { w->scrolls[0].h_left + 1, y - 4 }, stringID, ft, { FontStyle::Small });
     }
 
     // Time marks
@@ -6193,7 +6193,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         auto ft = Formatter();
         ft.Add<int32_t>(time);
         if (x + 80 >= dpi->x)
-            DrawTextBasic(dpi, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontSpriteBase::SMALL });
+            DrawTextBasic(dpi, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontStyle::Small });
         time += 5;
     }
 
