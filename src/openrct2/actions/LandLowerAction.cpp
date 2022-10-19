@@ -122,6 +122,11 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
             else
             {
                 result.ErrorTitle = STR_CANT_LOWER_LAND_HERE;
+                if (result.Error == GameActions::Status::TooLow)
+                {
+                    result.ErrorMessage = STR_TOO_LOW;
+                }
+                
                 return result;
             }
         }
