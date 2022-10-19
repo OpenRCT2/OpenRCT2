@@ -721,15 +721,14 @@ public:
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & ObjectSelectionFlags::Selected))
                 {
                     screenCoords.x = 2;
-                    FontSpriteBase fontSpriteBase = highlighted ? FontSpriteBase::MEDIUM_EXTRA_DARK
-                                                                : FontSpriteBase::MEDIUM_DARK;
+                    auto darkness = highlighted ? TextDarkness::ExtraDark : TextDarkness::Dark;
                     colour_t colour2 = NOT_TRANSLUCENT(colours[1]);
                     if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
                         colour2 |= COLOUR_FLAG_INSET;
 
                     gfx_draw_string(
                         &dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
-                        { static_cast<colour_t>(colour2), fontSpriteBase });
+                        { static_cast<colour_t>(colour2), FontStyle::Medium, darkness });
                 }
 
                 screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
@@ -738,11 +737,11 @@ public:
                 auto buffer = strchr(bufferWithColour, '\0');
 
                 colour_t colour = COLOUR_BLACK;
-                FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
+                auto darkness = TextDarkness::Regular;
                 if (*listItem.flags & ObjectSelectionFlags::Flag6)
                 {
                     colour = colours[1] & 0x7F;
-                    fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
+                    darkness = TextDarkness::Dark;
                 }
 
                 int32_t width_limit = widgets[WIDX_LIST].width() - screenCoords.x;
@@ -755,7 +754,8 @@ public:
                     safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
                     auto ft = Formatter();
                     ft.Add<const char*>(gCommonStringFormatBuffer);
-                    DrawTextEllipsised(&dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, fontSpriteBase });
+                    DrawTextEllipsised(
+                        &dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                     screenCoords.x = widgets[WIDX_LIST_SORT_RIDE].left - widgets[WIDX_LIST].left;
                 }
 
@@ -770,7 +770,7 @@ public:
                 }
                 auto ft = Formatter();
                 ft.Add<const char*>(gCommonStringFormatBuffer);
-                DrawTextEllipsised(&dpi, screenCoords, width_limit, STR_STRING, ft, { colour, fontSpriteBase });
+                DrawTextEllipsised(&dpi, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
             }
             screenCoords.y += SCROLLABLE_ROW_HEIGHT;
         }

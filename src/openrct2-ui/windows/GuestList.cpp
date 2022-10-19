@@ -716,7 +716,7 @@ private:
 
                             ft = Formatter();
                             peep_thought_set_format_args(&thought, ft);
-                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, { FontSpriteBase::SMALL });
+                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, { FontStyle::Small });
                             break;
                         }
                         break;
@@ -761,7 +761,7 @@ private:
                 // Draw small font if displaying guests
                 if (_selectedView == GuestViewType::Thoughts)
                 {
-                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, { FontSpriteBase::SMALL });
+                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, { FontStyle::Small });
                 }
                 else
                 {

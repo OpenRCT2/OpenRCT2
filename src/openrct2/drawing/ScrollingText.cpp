@@ -58,7 +58,8 @@ void scrolling_text_initialise_bitmaps()
     for (int32_t i = 0; i < FONT_SPRITE_GLYPH_COUNT; i++)
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        gfx_draw_sprite_software(&dpi, ImageId(SPR_CHAR_START + static_cast<uint32_t>(FontSpriteBase::TINY) + i), { -1, 0 });
+        gfx_draw_sprite_software(
+            &dpi, ImageId(SPR_CHAR_START + (EnumValue(FontStyle::Tiny) * FONT_SPRITE_GLYPH_COUNT) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -79,7 +80,8 @@ void scrolling_text_initialise_bitmaps()
     for (int32_t i = 0; i < SPR_G2_GLYPH_COUNT; i++)
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        gfx_draw_sprite_software(&dpi, ImageId(SPR_G2_CHAR_BEGIN + (FONT_SIZE_TINY * SPR_G2_GLYPH_COUNT) + i), { -1, 0 });
+        gfx_draw_sprite_software(
+            &dpi, ImageId(SPR_G2_CHAR_BEGIN + (EnumValue(FontStyle::Tiny) * SPR_G2_GLYPH_COUNT) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -1508,7 +1510,7 @@ static void scrolling_text_set_bitmap_for_sprite(
                 CodepointView codepoints(token.text);
                 for (auto codepoint : codepoints)
                 {
-                    auto characterWidth = font_sprite_get_codepoint_width(FontSpriteBase::TINY, codepoint);
+                    auto characterWidth = font_sprite_get_codepoint_width(FontStyle::Tiny, codepoint);
                     auto characterBitmap = font_sprite_get_codepoint_bitmap(codepoint);
                     for (; characterWidth != 0; characterWidth--, characterBitmap++)
                     {
@@ -1556,7 +1558,7 @@ static void scrolling_text_set_bitmap_for_ttf(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
 #ifndef NO_TTF
-    auto fontDesc = ttf_get_font_from_sprite_base(FontSpriteBase::TINY);
+    auto fontDesc = ttf_get_font_from_sprite_base(FontStyle::Tiny);
     if (fontDesc->font == nullptr)
     {
         scrolling_text_set_bitmap_for_sprite(text, scroll, bitmap, scrollPositionOffsets, colour);
