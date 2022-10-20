@@ -20,6 +20,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/File.h>
 #include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
@@ -37,7 +38,6 @@
 #include <openrct2/world/Park.h>
 #include <string>
 #include <vector>
-#include <openrct2/core/File.h>
 
 #pragma region Widgets
 
