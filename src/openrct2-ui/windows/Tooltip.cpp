@@ -69,7 +69,7 @@ public:
 
     void OnOpen() override
     {
-        widgets = window_tooltip_widgets;    
+        widgets = window_tooltip_widgets;
     }
 
     void OnUpdate() override
@@ -112,14 +112,14 @@ private:
     {
         utf8 tempBuffer[sizeof(gCommonStringFormatBuffer)];
         format_string(tempBuffer, sizeof(tempBuffer), message.str, message.args.Data());
-    
+
         OpenRCT2String formattedMessage{ STR_STRING_TOOLTIP, Formatter() };
         formattedMessage.args.Add<const char*>(tempBuffer);
         format_string(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
-    
+
         auto textWidth = gfx_get_string_width_new_lined(_tooltipText, FontStyle::Small);
         textWidth = std::min(textWidth, 196);
-        
+
         int32_t numLines;
         textWidth = gfx_wrap_string(_tooltipText, textWidth + 1, FontStyle::Small, &numLines);
         _tooltipNumLines = numLines;
