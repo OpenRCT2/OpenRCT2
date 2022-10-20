@@ -56,7 +56,8 @@ public:
         ScreenCoordsXY rightTop{ rightBottom.x, leftTop.y };
 
         gfx_filter_rect(
-            &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, FilterPaletteID::Palette45);
+            &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
+            FilterPaletteID::Palette45);
         gfx_filter_rect(&dpi, ScreenRect{ leftTop, rightBottom }, FilterPaletteID::PaletteGlassSaturatedRed);
 
         gfx_filter_rect(
@@ -147,8 +148,8 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
         windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
     }
 
-    return WindowCreate<ErrorWindow>(WindowClass::Error, windowPosition, width, height,
-        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
+    return WindowCreate<ErrorWindow>(
+        WindowClass::Error, windowPosition, width, height, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
 }
 
 rct_window* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
