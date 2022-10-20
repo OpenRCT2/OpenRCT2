@@ -75,13 +75,47 @@ static void WindowSavePromptCallback(int32_t result, const utf8* path)
     }
 }
 
-class SavePromptWindow final : public rct_window
+class SavePromptWindow final : public Window
 {
+private:
+    PromptMode _promptMode;
+
 public:
-    /**
-     *
-     *  rct2: 0x0066DF17
-     */
+    SavePromptWindow(PromptMode promptMode)
+        : _promptMode(promptMode)
+    {
+    }
+
+    void OnOpen() override
+    {
+        if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        {
+            widgets = window_quit_prompt_widgets;
+        }
+        else
+        {
+            widgets = window_save_prompt_widgets;
+        }
+        InitScrollWidgets();
+
+        // Pause the game if not network play.
+        if (network_get_mode() == NETWORK_MODE_NONE)
+        {
+            gGamePaused |= GAME_PAUSED_MODAL;
+            OpenRCT2::Audio::StopAll();
+        }
+
+        window_invalidate_by_class(WindowClass::TopToolbar);
+
+        StringId stringId = window_save_prompt_labels[EnumValue(_promptMode)][0];
+        if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
+        else if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            stringId = STR_QUIT_SCENARIO_EDITOR;
+        window_save_prompt_widgets[WIDX_TITLE].text = stringId;
+        window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[EnumValue(_promptMode)][1];
+    }
+
     void OnClose() override
     {
         // Unpause the game
@@ -94,10 +128,6 @@ public:
         window_invalidate_by_class(WindowClass::TopToolbar);
     }
 
-    /**
-     *
-     *  rct2: 0x0066DDF2
-     */
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
         if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
@@ -109,7 +139,7 @@ public:
                     break;
                 case WQIDX_CLOSE:
                 case WQIDX_CANCEL:
-                    window_close(*this);
+                    Close();
                     break;
             }
             return;
@@ -131,7 +161,7 @@ public:
                 {
                     intent = create_save_game_as_intent();
                 }
-                window_close(*this);
+                Close();
                 intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
                 context_open_intent(intent.get());
                 break;
@@ -141,30 +171,20 @@ public:
                 return;
             case WIDX_CLOSE:
             case WIDX_CANCEL:
-                window_close(*this);
+                Close();
                 return;
         }
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        DrawWidgets(dpi);
     }
 };
 
-/**
- *
- *  rct2: 0x0066DCBE
- */
 rct_window* WindowSavePromptOpen()
 {
-    int32_t width, height;
-    StringId stringId;
-    rct_window* window;
-    PromptMode prompt_mode;
-    rct_widget* widgets;
-
-    prompt_mode = gSavePromptMode;
+    PromptMode prompt_mode = gSavePromptMode;
     if (prompt_mode == PromptMode::Quit)
         prompt_mode = PromptMode::SaveBeforeQuit;
 
@@ -191,23 +211,10 @@ rct_window* WindowSavePromptOpen()
     }
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WindowClass::SavePrompt);
+    rct_window* window = window_bring_to_front_by_class(WindowClass::SavePrompt);
     if (window != nullptr)
     {
         window_close(*window);
-    }
-
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-    {
-        widgets = window_quit_prompt_widgets;
-        width = WW_QUIT;
-        height = WH_QUIT;
-    }
-    else
-    {
-        widgets = window_save_prompt_widgets;
-        width = WW_SAVE;
-        height = WH_SAVE;
     }
 
     if (EnumValue(prompt_mode) >= std::size(window_save_prompt_labels))
@@ -215,28 +222,17 @@ rct_window* WindowSavePromptOpen()
         log_warning("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
     }
-    window = WindowCreate<SavePromptWindow>(
-        WindowClass::SavePrompt, width, height, WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN);
 
-    window->widgets = widgets;
-    WindowInitScrollWidgets(*window);
-
-    // Pause the game if not network play.
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    int32_t width = WW_SAVE;
+    int32_t height = WH_SAVE;
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
     {
-        gGamePaused |= GAME_PAUSED_MODAL;
-        OpenRCT2::Audio::StopAll();
+        width = WW_QUIT;
+        height = WH_QUIT;
     }
 
-    window_invalidate_by_class(WindowClass::TopToolbar);
-
-    stringId = window_save_prompt_labels[EnumValue(prompt_mode)][0];
-    if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
-    if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        stringId = STR_QUIT_SCENARIO_EDITOR;
-    window_save_prompt_widgets[WIDX_TITLE].text = stringId;
-    window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[EnumValue(prompt_mode)][1];
-
-    return window;
+    auto savePromptWindow = std::make_unique<SavePromptWindow>(prompt_mode);
+    return static_cast<SavePromptWindow*>(WindowCreate(
+        std::move(savePromptWindow), WindowClass::SavePrompt, {}, width, height,
+        WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN));
 }
