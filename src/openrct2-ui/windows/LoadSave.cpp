@@ -609,9 +609,7 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
             const u8string path = Path::WithExtension(
                 Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
 
-            overwrite = File::Exists(path);
-
-            if (overwrite)
+            if (File::Exists(path))
                 WindowOverwritePromptOpen(text, path.c_str());
             else
                 WindowLoadsaveSelect(w, path.c_str());
