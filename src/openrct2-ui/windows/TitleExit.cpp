@@ -28,10 +28,12 @@ static rct_widget window_title_exit_widgets[] = {
 
 class TitleExitWindow final : public Window
 {
-    /**
-     *
-     *  rct2: 0x0066B83C
-     */
+    void OnOpen() override
+    {
+        widgets = window_title_exit_widgets;
+        InitScrollWidgets();
+    }
+
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
         if (gIntroState != IntroState::None)
@@ -46,13 +48,9 @@ class TitleExitWindow final : public Window
         };
     }
 
-    /**
-     *
-     *  rct2: 0x0066B836
-     */
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        DrawWidgets(dpi);
     }
 };
 
@@ -62,13 +60,7 @@ class TitleExitWindow final : public Window
  */
 rct_window* WindowTitleExitOpen()
 {
-    rct_window* window;
-
-    window = WindowCreate<TitleExitWindow>(
+    return WindowCreate<TitleExitWindow>(
         WindowClass::TitleExit, ScreenCoordsXY(context_get_width() - 40, context_get_height() - 64), 40, 64,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
-    window->widgets = window_title_exit_widgets;
-    WindowInitScrollWidgets(*window);
-
-    return window;
 }
