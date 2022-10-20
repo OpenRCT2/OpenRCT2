@@ -669,7 +669,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "console_small_font")
         {
-            console.WriteFormatLine("console_small_font %d", gConfigInterface.console_small_font);
+            console.WriteFormatLine("console_small_font %d", gConfigInterface.ConsoleSmallFont);
         }
         else if (argv[0] == "location")
         {
@@ -686,19 +686,19 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "window_scale")
         {
-            console.WriteFormatLine("window_scale %.3f", gConfigGeneral.window_scale);
+            console.WriteFormatLine("window_scale %.3f", gConfigGeneral.WindowScale);
         }
         else if (argv[0] == "window_limit")
         {
-            console.WriteFormatLine("window_limit %d", gConfigGeneral.window_limit);
+            console.WriteFormatLine("window_limit %d", gConfigGeneral.WindowLimit);
         }
         else if (argv[0] == "render_weather_effects")
         {
-            console.WriteFormatLine("render_weather_effects %d", gConfigGeneral.render_weather_effects);
+            console.WriteFormatLine("render_weather_effects %d", gConfigGeneral.RenderWeatherEffects);
         }
         else if (argv[0] == "render_weather_gloom")
         {
-            console.WriteFormatLine("render_weather_gloom %d", gConfigGeneral.render_weather_gloom);
+            console.WriteFormatLine("render_weather_gloom %d", gConfigGeneral.RenderWeatherGloom);
         }
         else if (argv[0] == "cheat_sandbox_mode")
         {
@@ -723,7 +723,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting")
         {
-            console.WriteFormatLine("enable_hinting %d", gConfigFonts.enable_hinting);
+            console.WriteFormatLine("enable_hinting %d", gConfigFonts.EnableHinting);
         }
 #endif
         else
@@ -1047,8 +1047,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "console_small_font" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigInterface.console_small_font = (int_val[0] != 0);
-            config_save_default();
+            gConfigInterface.ConsoleSmallFont = (int_val[0] != 0);
+            ConfigSaveDefault();
             console.Execute("get console_small_font");
         }
         else if (argv[0] == "location" && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
@@ -1066,8 +1066,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "window_scale" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
-            gConfigGeneral.window_scale = std::clamp(newScale, 0.5f, 5.0f);
-            config_save_default();
+            gConfigGeneral.WindowScale = std::clamp(newScale, 0.5f, 5.0f);
+            ConfigSaveDefault();
             gfx_invalidate_screen();
             context_trigger_resize();
             context_update_cursor_scale();
@@ -1080,14 +1080,14 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "render_weather_effects" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigGeneral.render_weather_effects = (int_val[0] != 0);
-            config_save_default();
+            gConfigGeneral.RenderWeatherEffects = (int_val[0] != 0);
+            ConfigSaveDefault();
             console.Execute("get render_weather_effects");
         }
         else if (argv[0] == "render_weather_gloom" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigGeneral.render_weather_gloom = (int_val[0] != 0);
-            config_save_default();
+            gConfigGeneral.RenderWeatherGloom = (int_val[0] != 0);
+            ConfigSaveDefault();
             console.Execute("get render_weather_gloom");
         }
         else if (argv[0] == "cheat_sandbox_mode" && invalidArguments(&invalidArgs, int_valid[0]))
@@ -1170,8 +1170,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigFonts.enable_hinting = (int_val[0] != 0);
-            config_save_default();
+            gConfigFonts.EnableHinting = (int_val[0] != 0);
+            ConfigSaveDefault();
             console.Execute("get enable_hinting");
             ttf_toggle_hinting();
         }

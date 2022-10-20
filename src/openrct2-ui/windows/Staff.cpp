@@ -1158,7 +1158,7 @@ private:
         else
         {
             viewport_flags = 0;
-            if (gConfigGeneral.always_show_gridlines)
+            if (gConfigGeneral.AlwaysShowGridlines)
                 viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
         }
 

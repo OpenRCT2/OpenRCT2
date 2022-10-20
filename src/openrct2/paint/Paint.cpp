@@ -918,7 +918,7 @@ void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, PaintStringStruct* ps)
 
         // Use sprite font unless the currency contains characters unsupported by the sprite font
         auto forceSpriteFont = false;
-        const auto& currencyDesc = CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
+        const auto& currencyDesc = CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
         if (LocalisationService_UseTrueTypeFont() && font_supports_string_sprite(currencyDesc.symbol_unicode))
         {
             forceSpriteFont = true;
@@ -926,7 +926,7 @@ void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, PaintStringStruct* ps)
 
         gfx_draw_string_with_y_offsets(
             dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
-            FontSpriteBase::MEDIUM);
+            FontStyle::Medium);
     } while ((ps = ps->next) != nullptr);
 }
 

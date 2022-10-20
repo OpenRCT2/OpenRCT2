@@ -219,8 +219,8 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, rct_wind
     WidgetScrollUpdateThumbs(*w, widgetIndex);
     window_invalidate_by_number(w->classification, w->number);
 
-    ScreenCoordsXY fixedCursorPosition = { static_cast<int32_t>(std::ceil(gInputDragLast.x * gConfigGeneral.window_scale)),
-                                           static_cast<int32_t>(std::ceil(gInputDragLast.y * gConfigGeneral.window_scale)) };
+    ScreenCoordsXY fixedCursorPosition = { static_cast<int32_t>(std::ceil(gInputDragLast.x * gConfigGeneral.WindowScale)),
+                                           static_cast<int32_t>(std::ceil(gInputDragLast.y * gConfigGeneral.WindowScale)) };
 
     context_set_cursor_position(fixedCursorPosition);
 }
@@ -471,7 +471,7 @@ static void InputWindowPositionContinue(
 {
     int32_t snapProximity;
 
-    snapProximity = (w.flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
+    snapProximity = (w.flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.WindowSnapProximity;
     window_move_and_snap(w, newScreenCoords - lastScreenCoords, snapProximity);
 }
 
@@ -570,7 +570,7 @@ static void InputViewportDragContinue()
 
             differentialCoords.x = (viewport->zoom + 1).ApplyTo(differentialCoords.x);
             differentialCoords.y = (viewport->zoom + 1).ApplyTo(differentialCoords.y);
-            if (gConfigGeneral.invert_viewport_drag)
+            if (gConfigGeneral.InvertViewportDrag)
             {
                 w->savedViewPos -= differentialCoords;
             }
@@ -1599,7 +1599,7 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
     rct_window* mainWindow = window_get_main();
     rct_viewport* viewport = mainWindow->viewport;
 
-    const int32_t speed = gConfigGeneral.edge_scrolling_speed;
+    const int32_t speed = gConfigGeneral.EdgeScrollingSpeed;
 
     int32_t multiplier = viewport->zoom.ApplyTo(speed);
     int32_t dx = scrollScreenCoords.x * multiplier;

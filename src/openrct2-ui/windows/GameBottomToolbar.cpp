@@ -111,7 +111,7 @@ rct_window* WindowGameBottomToolbarOpen()
     int32_t screenHeight = context_get_height();
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
+    uint32_t line_height = font_get_line_height(FontStyle::Medium);
     uint32_t toolbar_height = line_height * 2 + 12;
 
     rct_window* window = WindowCreate(
@@ -220,7 +220,7 @@ static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const Widget
 static void WindowGameBottomToolbarInvalidate(rct_window* w)
 {
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
+    uint32_t line_height = font_get_line_height(FontStyle::Medium);
 
     // Reset dimensions as appropriate -- in case we're switching languages.
     w->height = line_height * 2 + 12;
@@ -396,7 +396,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
     gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
+    uint32_t line_height = font_get_line_height(FontStyle::Medium);
 
     // Draw money
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -505,7 +505,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
         = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_DATE
                ? COLOUR_WHITE
                : NOT_TRANSLUCENT(w->colours[0]));
-    StringId stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
+    StringId stringId = DateFormatStringFormatIds[gConfigGeneral.DateFormat];
     auto ft = Formatter();
     ft.Add<StringId>(DateDayNames[day]);
     ft.Add<int16_t>(month);
@@ -513,7 +513,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
     DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
+    uint32_t line_height = font_get_line_height(FontStyle::Medium);
 
     // Temperature
     screenCoords = { w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
@@ -521,7 +521,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
 
     int32_t temperature = gClimateCurrent.Temperature;
     StringId format = STR_CELSIUS_VALUE;
-    if (gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit)
+    if (gConfigGeneral.TemperatureFormat == TemperatureUnit::Fahrenheit)
     {
         temperature = ClimateCelsiusToFahrenheit(temperature);
         format = STR_FAHRENHEIT_VALUE;
@@ -662,7 +662,7 @@ static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo* dpi, rct_w
         w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
+    uint32_t line_height = font_get_line_height(FontStyle::Medium);
 
     ScreenCoordsXY middleWidgetCoords(
         w->windowPos.x + middleOutsetWidget->midX(), w->windowPos.y + middleOutsetWidget->top + line_height + 1);
