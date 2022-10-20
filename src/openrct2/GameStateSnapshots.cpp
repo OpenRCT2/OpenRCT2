@@ -294,7 +294,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, PathfindGoal.y);
         COMPARE_FIELD(Peep, PathfindGoal.z);
         COMPARE_FIELD(Peep, PathfindGoal.direction);
-        for (int i = 0; i < 4; i++)
+        for (std::size_t i = 0; i < spriteCmp.PathfindHistory.size(); i++)
         {
             COMPARE_FIELD(Peep, PathfindHistory[i].x);
             COMPARE_FIELD(Peep, PathfindHistory[i].y);
@@ -349,7 +349,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, RejoinQueueTimeout);
         COMPARE_FIELD(Guest, PreviousRide);
         COMPARE_FIELD(Guest, PreviousRideTimeOut);
-        for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
+        for (std::size_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
         {
             COMPARE_FIELD(Guest, Thoughts[i].type);
             COMPARE_FIELD(Guest, Thoughts[i].item);
@@ -412,11 +412,11 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, SwingSpeed);
         COMPARE_FIELD(Vehicle, status);
         COMPARE_FIELD(Vehicle, sub_state);
-        for (int i = 0; i < 32; i++)
+        for (std::size_t i = 0; i < sizeof(Vehicle::peep) / sizeof(*Vehicle::peep); i++)
         {
             COMPARE_FIELD(Vehicle, peep[i]);
         }
-        for (int i = 0; i < 32; i++)
+        for (std::size_t i = 0; i < sizeof(Vehicle::peep_tshirt_colours) / sizeof(*Vehicle::peep_tshirt_colours); i++)
         {
             COMPARE_FIELD(Vehicle, peep_tshirt_colours[i]);
         }
@@ -437,7 +437,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, powered_acceleration);
         COMPARE_FIELD(Vehicle, CollisionDetectionTimer);
         COMPARE_FIELD(Vehicle, animation_frame);
-        for (int i = 0; i < 2; i++)
+        for (std::size_t i = 0; i < sizeof(Vehicle::pad_C6) / sizeof(*Vehicle::pad_C6); i++)
         {
             COMPARE_FIELD(Vehicle, pad_C6[i]);
         }
@@ -489,7 +489,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     {
         COMPARE_FIELD(VehicleCrashParticle, frame);
         COMPARE_FIELD(VehicleCrashParticle, time_to_live);
-        for (int i = 0; i < 2; i++)
+        for (std::size_t i = 0; i < sizeof(VehicleCrashParticle::colour) / sizeof(*VehicleCrashParticle::colour); i++)
         {
             COMPARE_FIELD(VehicleCrashParticle, colour[i]);
         }

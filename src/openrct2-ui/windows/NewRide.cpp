@@ -343,8 +343,8 @@ public:
                 context_open_window_view(WV_FINANCES_RESEARCH);
                 break;
             case WIDX_GROUP_BY_TRACK_TYPE:
-                gConfigInterface.list_ride_vehicles_separately = !gConfigInterface.list_ride_vehicles_separately;
-                config_save_default();
+                gConfigInterface.ListRideVehiclesSeparately = !gConfigInterface.ListRideVehiclesSeparately;
+                ConfigSaveDefault();
                 SetPage(_currentTab);
                 break;
         }
@@ -362,7 +362,7 @@ public:
     {
         SetPressedTab();
 
-        if (!gConfigInterface.list_ride_vehicles_separately)
+        if (!gConfigInterface.ListRideVehiclesSeparately)
             pressed_widgets |= (1LL << WIDX_GROUP_BY_TRACK_TYPE);
         else
             pressed_widgets &= ~(1LL << WIDX_GROUP_BY_TRACK_TYPE);
@@ -386,7 +386,7 @@ public:
 
         const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
         auto string = ls.GetString(STR_GROUP_BY_TRACK_TYPE);
-        auto strWidth = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
+        auto strWidth = gfx_get_string_width(string, FontStyle::Medium);
         auto localizedGroupByTrackTypeWidth = strWidth + 14;
         widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - localizedGroupByTrackTypeWidth;
     }
@@ -646,7 +646,7 @@ private:
             rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
             // Skip if the vehicle isn't the preferred vehicle for this generic track type
-            if (!gConfigInterface.list_ride_vehicles_separately
+            if (!gConfigInterface.ListRideVehiclesSeparately
                 && !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
                 && highestVehiclePriority > rideEntry->BuildMenuPriority)
             {
@@ -656,7 +656,7 @@ private:
             highestVehiclePriority = rideEntry->BuildMenuPriority;
 
             // Determines how and where to draw a button for this ride type/vehicle.
-            if (gConfigInterface.list_ride_vehicles_separately
+            if (gConfigInterface.ListRideVehiclesSeparately
                 || GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
                 // Separate, draw apart
@@ -843,7 +843,7 @@ private:
 
         if (!_vehicleAvailability.empty())
         {
-            if (gConfigInterface.list_ride_vehicles_separately)
+            if (gConfigInterface.ListRideVehiclesSeparately)
             {
                 ft = Formatter();
                 ft.Add<StringId>(rideEntry->naming.Name);

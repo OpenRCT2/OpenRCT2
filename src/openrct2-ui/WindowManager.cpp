@@ -159,7 +159,7 @@ public:
             case WV_FINANCES_RESEARCH:
                 return WindowFinancesResearchOpen();
             case WV_RIDE_RESEARCH:
-                if (gConfigInterface.toolbar_show_research)
+                if (gConfigInterface.ToolbarShowResearch)
                 {
                     return this->OpenWindow(WindowClass::Research);
                 }
@@ -252,7 +252,7 @@ public:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
                 close_callback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
-                return WindowNetworkStatusOpen(message.c_str(), callback);
+                return WindowNetworkStatusOpen(message, callback);
             }
             case WindowClass::ObjectLoadError:
             {

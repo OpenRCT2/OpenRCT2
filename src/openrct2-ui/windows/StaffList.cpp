@@ -501,7 +501,7 @@ private:
      */
     void HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
     {
-        bool autoPosition = gConfigGeneral.auto_staff_placement;
+        bool autoPosition = gConfigGeneral.AutoStaffPlacement;
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
             autoPosition = autoPosition ^ 1;
@@ -512,7 +512,7 @@ private:
         if (staffType == StaffType::Handyman)
         {
             staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
-            if (gConfigGeneral.handymen_mow_default)
+            if (gConfigGeneral.HandymenMowByDefault)
             {
                 staffOrders |= STAFF_ORDERS_MOWING;
             }

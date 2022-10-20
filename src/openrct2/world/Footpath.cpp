@@ -33,6 +33,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../util/Util.h"
+#include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
@@ -509,7 +510,7 @@ static void FootpathConnectCorners(const CoordsXY& footpathPos, PathElement* ini
 
     std::get<0>(tileElements) = { initialTileElement, footpathPos };
     int32_t z = initialTileElement->GetBaseZ();
-    for (int32_t initialDirection = 0; initialDirection < 4; initialDirection++)
+    for (int32_t initialDirection = 0; initialDirection < NumOrthogonalDirections; initialDirection++)
     {
         int32_t direction = initialDirection;
         auto currentPos = footpathPos + CoordsDirectionDelta[direction];
@@ -1862,8 +1863,7 @@ void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos)
         // pathList is a list of elements, set by sub_6A8ACF adjacent to x,y
         // Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
         std::array<TileElement*, 8> pathList;
-
-        for (int32_t direction = 0; direction < 8; ++direction)
+        for (std::size_t direction = 0; direction < pathList.size(); ++direction)
         {
             auto footpathLoc = CoordsXYZ(footpathPos + CoordsDirectionDelta[direction], height);
             pathList[direction] = FootpathCanBeWide(footpathLoc);
@@ -2030,7 +2030,7 @@ void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement*
         if (tileElement->AsPath()->IsQueue())
         {
             FootpathQueueChainPush(tileElement->AsPath()->GetRideIndex());
-            for (int32_t direction = 0; direction < 4; direction++)
+            for (int32_t direction = 0; direction < NumOrthogonalDirections; direction++)
             {
                 if (tileElement->AsPath()->GetEdges() & (1 << direction))
                 {
@@ -2284,7 +2284,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
     FootpathUpdateQueueEntranceBanner(footpathPos, tileElement);
 
     bool fixCorners = false;
-    for (uint8_t direction = 0; direction < 4; direction++)
+    for (uint8_t direction = 0; direction < NumOrthogonalDirections; direction++)
     {
         int32_t z1 = tileElement->base_height;
         if (tileElement->GetType() == TileElementType::Path)

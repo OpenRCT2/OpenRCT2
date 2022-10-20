@@ -177,6 +177,14 @@ STR_0600    :Selvkørende togvogne kører igennem en sen snoet bane af spor
 STR_0602    :Rutsjebanetog accelereres ud af stationen af lineære induktionsmotorer for at suse gennem snoede inversioner
 STR_0603    :En rutsjebane i træ stil, med stål spor, Med stejle fald og hurtige sving.
 STR_0604    :Gæster sider i en enkelt række, på et smalt monorail spor, imens de suser igennem skarpe sving ,snoninger og hurtige vridninger.
+STR_6520    :Materiel pakker
+STR_6521    :Lav prioritet
+STR_6522    :Høj prioritet
+STR_6523    :Sænk prioriteten for den valgte materiel pakke.
+STR_6524    :Øg prioriteten for den valgte materiel pakke.
+STR_6525    :Genindlæs alle aktiver i spillet med de aktiverede materiel pakker.
+STR_6526    :(basis grafik, musik og lydeffekter)
+STR_6527    :Konkurrencer 
 STR_0767    :Gæst {INT32}
 STR_0768    :Handymand {INT32}
 STR_0769    :Mekaniker {INT32}

@@ -52,7 +52,7 @@ static void PaintBannerScrollingText(
     banner.FormatTextTo(ft, true);
 
     char text[256];
-    if (gConfigGeneral.upper_case_banners)
+    if (gConfigGeneral.UpperCaseBanners)
     {
         format_string_to_upper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
@@ -61,7 +61,7 @@ static void PaintBannerScrollingText(
         format_string(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
 
-    auto stringWidth = gfx_get_string_width(text, FontSpriteBase::TINY);
+    auto stringWidth = gfx_get_string_width(text, FontStyle::Tiny);
     auto scroll = (gCurrentTicks / 2) % stringWidth;
     auto imageId = scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { 1, 1, 21 }, bbOffset);
