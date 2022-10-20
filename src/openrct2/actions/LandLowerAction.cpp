@@ -126,7 +126,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
                 {
                     result.ErrorMessage = STR_TOO_LOW;
                 }
-                
+
                 return result;
             }
         }

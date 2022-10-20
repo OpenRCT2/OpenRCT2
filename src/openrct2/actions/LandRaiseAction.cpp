@@ -122,7 +122,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
                 {
                     result.ErrorMessage = STR_TOO_HIGH;
                 }
-                
+
                 return result;
             }
         }
