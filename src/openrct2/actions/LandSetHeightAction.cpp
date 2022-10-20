@@ -52,18 +52,10 @@ GameActions::Result LandSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, STR_NONE);
     }
 
-    StringId errorTitle = CheckParameters();
-    if (errorTitle != STR_NONE)
+    StringId errorMessage = CheckParameters();
+    if (errorMessage != STR_NONE)
     {
-        if (errorTitle == STR_TOO_LOW)
-        {
-            return GameActions::Result(GameActions::Status::TooLow, errorTitle, STR_NONE);
-        }
-        if (errorTitle == STR_TOO_HIGH)
-        {
-            return GameActions::Result(GameActions::Status::TooHigh, errorTitle, STR_NONE);
-        }
-        return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, errorMessage);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
@@ -94,20 +86,11 @@ GameActions::Result LandSetHeightAction::Query() const
     // Check for ride support limits
     if (!gCheatsDisableSupportLimits)
     {
-        errorTitle = CheckRideSupports();
-        if (errorTitle != STR_NONE)
+        errorMessage = CheckRideSupports();
+        if (errorMessage != STR_NONE)
         {
-            return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_NONE);
+            return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, errorMessage);
         }
-        if (errorTitle == STR_TOO_LOW)
-        {
-            return GameActions::Result(GameActions::Status::TooLow, errorTitle, STR_NONE);
-        }
-        if (errorTitle == STR_TOO_HIGH)
-        {
-            return GameActions::Result(GameActions::Status::TooHigh, errorTitle, STR_NONE);
-        }
-        return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_NONE);
     }
 
     auto* surfaceElement = MapGetSurfaceElementAt(_coords);
