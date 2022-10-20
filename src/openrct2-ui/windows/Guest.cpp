@@ -475,7 +475,7 @@ private:
         {
             newDisabledWidgets |= (1ULL << WIDX_TAB_4); // Disable finance tab if no money
         }
-        if (!gConfigGeneral.debugging_tools)
+        if (!gConfigGeneral.DebuggingTools)
         {
             newDisabledWidgets |= (1ULL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
         }
@@ -816,7 +816,7 @@ private:
         {
             auto ft = Formatter();
             peep_thought_set_format_args(&peep->Thoughts[i], ft);
-            DrawTextBasic(&dpiMarquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontSpriteBase::SMALL });
+            DrawTextBasic(&dpiMarquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontStyle::Small });
         }
     }
 
@@ -1040,7 +1040,7 @@ private:
     void StatsBarsDraw(int32_t value, const ScreenCoordsXY& origCoords, rct_drawpixelinfo& dpi, int32_t colour, bool blinkFlag)
     {
         auto coords = origCoords;
-        if (font_get_line_height(FontSpriteBase::MEDIUM) > 10)
+        if (font_get_line_height(FontStyle::Medium) > 10)
         {
             coords.y += 1;
         }
@@ -1594,7 +1594,7 @@ private:
 
             auto ft = Formatter();
             peep_thought_set_format_args(&thought, ft);
-            screenCoords.y += DrawTextWrapped(&dpi, screenCoords, widgWidth, STR_BLACK_STRING, ft, { FontSpriteBase::SMALL });
+            screenCoords.y += DrawTextWrapped(&dpi, screenCoords, widgWidth, STR_BLACK_STRING, ft, { FontStyle::Small });
 
             // If this is the last visible line end drawing.
             if (screenCoords.y > windowPos.y + widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
@@ -1929,7 +1929,7 @@ rct_window* WindowGuestOpen(Peep* peep)
     if (window == nullptr)
     {
         int32_t windowWidth = 192;
-        if (gConfigGeneral.debugging_tools)
+        if (gConfigGeneral.DebuggingTools)
             windowWidth += TabWidth;
 
         window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);

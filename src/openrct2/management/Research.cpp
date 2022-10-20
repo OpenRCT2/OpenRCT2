@@ -272,7 +272,7 @@ void research_finish_item(ResearchItem* researchItem)
 
             if (!gSilentResearch)
             {
-                if (gConfigNotifications.ride_researched)
+                if (gConfigNotifications.RideResearched)
                 {
                     News::AddItemToQueue(News::ItemType::Research, availabilityString, researchItem->rawValue, ft);
                 }
@@ -294,7 +294,7 @@ void research_finish_item(ResearchItem* researchItem)
 
             if (!gSilentResearch)
             {
-                if (gConfigNotifications.ride_researched)
+                if (gConfigNotifications.RideResearched)
                 {
                     News::AddItemToQueue(
                         News::ItemType::Research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, researchItem->rawValue, ft);

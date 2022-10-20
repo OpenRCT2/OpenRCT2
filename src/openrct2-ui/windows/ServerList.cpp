@@ -144,7 +144,7 @@ rct_window* WindowServerListOpen()
 
     window_set_resize(*window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
-    safe_strcpy(_playerName, gConfigNetwork.player_name.c_str(), sizeof(_playerName));
+    safe_strcpy(_playerName, gConfigNetwork.PlayerName.c_str(), sizeof(_playerName));
 
     window->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
@@ -322,8 +322,8 @@ static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, ch
 
             if (_playerName[0] != '\0')
             {
-                gConfigNetwork.player_name = _playerName;
-                config_save_default();
+                gConfigNetwork.PlayerName = _playerName;
+                ConfigSaveDefault();
             }
 
             widget_invalidate(*w, WIDX_PLAYER_NAME_INPUT);
@@ -441,7 +441,7 @@ static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         {
             snprintf(players, sizeof(players), "%d/%d", serverDetails.Players, serverDetails.MaxPlayers);
         }
-        const int16_t numPlayersStringWidth = gfx_get_string_width(players, FontSpriteBase::MEDIUM);
+        const int16_t numPlayersStringWidth = gfx_get_string_width(players, FontStyle::Medium);
 
         // How much space we have for the server info depends on the size of everything rendered after.
         const int16_t spaceAvailableForInfo = width - numPlayersStringWidth - SCROLLBAR_WIDTH - 35;

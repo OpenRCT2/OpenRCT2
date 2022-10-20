@@ -138,7 +138,7 @@ public:
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
-            uint32_t scale = std::ceil(gConfigGeneral.window_scale);
+            uint32_t scale = std::ceil(gConfigGeneral.WindowScale);
             _scaledScreenTexture = SDL_CreateTexture(
                 _sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
         }
@@ -163,7 +163,7 @@ public:
                 _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
             }
 
-            if (gConfigGeneral.enable_light_fx)
+            if (gConfigGeneral.EnableLightFx)
             {
                 auto& lightPalette = lightfx_get_palette();
                 for (int32_t i = 0; i < 256; i++)
@@ -204,7 +204,7 @@ protected:
 private:
     void Display()
     {
-        if (gConfigGeneral.enable_light_fx)
+        if (gConfigGeneral.EnableLightFx)
         {
             void* pixels;
             int32_t pitch;
@@ -238,14 +238,14 @@ private:
         }
 
         bool isSteamOverlayActive = GetContext()->GetUiContext()->IsSteamOverlayActive();
-        if (isSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
+        if (isSteamOverlayActive && gConfigGeneral.SteamOverlayPause)
         {
             OverlayPreRenderCheck();
         }
 
         SDL_RenderPresent(_sdlRenderer);
 
-        if (isSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
+        if (isSteamOverlayActive && gConfigGeneral.SteamOverlayPause)
         {
             OverlayPostRenderCheck();
         }
@@ -337,8 +337,8 @@ private:
 
     void RenderDirtyVisuals()
     {
-        float scaleX = gConfigGeneral.window_scale;
-        float scaleY = gConfigGeneral.window_scale;
+        float scaleX = gConfigGeneral.WindowScale;
+        float scaleY = gConfigGeneral.WindowScale;
 
         SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
         for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)

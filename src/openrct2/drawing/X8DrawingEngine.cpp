@@ -123,7 +123,7 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
     _drawingContext = new X8DrawingContext(this);
     _bitsDPI.DrawingEngine = this;
     lightfx_set_available(true);
-    _lastLightFXenabled = (gConfigGeneral.enable_light_fx != 0);
+    _lastLightFXenabled = (gConfigGeneral.EnableLightFx != 0);
 }
 
 X8DrawingEngine::~X8DrawingEngine()
@@ -189,7 +189,7 @@ void X8DrawingEngine::BeginDraw()
     if (gIntroState == IntroState::None)
     {
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
-        if (_lastLightFXenabled != (gConfigGeneral.enable_light_fx != 0))
+        if (_lastLightFXenabled != (gConfigGeneral.EnableLightFx != 0))
         {
             Resize(_width, _height);
         }

@@ -173,8 +173,8 @@ namespace OpenRCT2::Scripting
                     DukObject obj(ctx);
                     if (ns == "general")
                     {
-                        obj.Set("general.language", gConfigGeneral.language);
-                        obj.Set("general.showFps", gConfigGeneral.show_fps);
+                        obj.Set("general.language", gConfigGeneral.Language);
+                        obj.Set("general.showFps", gConfigGeneral.ShowFPS);
                     }
                     result = obj.Take();
                 }
@@ -205,7 +205,7 @@ namespace OpenRCT2::Scripting
                 }
                 if (key == "general.showFps")
                 {
-                    duk_push_boolean(ctx, gConfigGeneral.show_fps);
+                    duk_push_boolean(ctx, gConfigGeneral.ShowFPS);
                     return DukValue::take_from_stack(ctx);
                 }
             }
@@ -246,7 +246,7 @@ namespace OpenRCT2::Scripting
                 {
                     if (key == "general.showFps")
                     {
-                        gConfigGeneral.show_fps = value.as_bool();
+                        gConfigGeneral.ShowFPS = value.as_bool();
                     }
                     else
                     {

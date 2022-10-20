@@ -194,7 +194,7 @@ private:
         auto const& versionPlaceholder = widgets[WIDX_VERSION];
         auto versionPlaceHolderWidth = versionPlaceholder.right - versionPlaceholder.left;
         auto centreX = versionPlaceholder.left + versionPlaceHolderWidth / 2;
-        auto centreY = (versionPlaceholder.top + versionPlaceholder.bottom - font_get_line_height(FontSpriteBase::MEDIUM)) / 2;
+        auto centreY = (versionPlaceholder.top + versionPlaceholder.bottom - font_get_line_height(FontStyle::Medium)) / 2;
         auto centrePos = windowPos + ScreenCoordsXY(centreX, centreY);
         DrawTextWrapped(&dpi, centrePos, versionPlaceHolderWidth, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
 
@@ -215,7 +215,7 @@ private:
 
         auto screenCoords = ScreenCoordsXY{ windowPos.x + 200, yPage + 5 };
 
-        int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+        int32_t lineHeight = font_get_line_height(FontStyle::Medium);
 
         // Credits
         DrawTextBasic(&dpi, screenCoords, STR_COPYRIGHT_CS, {}, { TextAlignment::CENTRE });

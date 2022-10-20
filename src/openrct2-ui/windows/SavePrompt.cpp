@@ -103,7 +103,7 @@ rct_window* WindowSavePromptOpen()
         return nullptr;
     }
 
-    if (!gConfigGeneral.confirmation_prompt)
+    if (!gConfigGeneral.ConfirmationPrompt)
     {
         /* game_load_or_quit_no_save_prompt() will exec requested task and close this window
          * immediately again.

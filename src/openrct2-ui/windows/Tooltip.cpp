@@ -136,6 +136,7 @@ void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
     input_set_state(InputState::Normal);
     input_set_flag(INPUT_FLAG_4, false);
 }
+
 void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
 {
     auto* w = window_find_by_class(WindowClass::Error);
