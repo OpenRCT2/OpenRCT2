@@ -37,6 +37,7 @@
 #include <openrct2/world/Park.h>
 #include <string>
 #include <vector>
+#include <openrct2/core/File.h>
 
 #pragma region Widgets
 
@@ -608,15 +609,7 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
             const u8string path = Path::WithExtension(
                 Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
 
-            if (FILE* file = fopen(path.c_str(), "r"))
-            {
-                fclose(file);
-                overwrite = true;
-            }
-            else
-            {
-                overwrite = false;
-            }
+            overwrite = File::Exists(path);
 
             if (overwrite)
                 WindowOverwritePromptOpen(text, path.c_str());
