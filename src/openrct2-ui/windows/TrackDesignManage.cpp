@@ -146,14 +146,12 @@ void TrackDesignManageWindow::OnTextInput(WidgetIndex widgetIndex, std::string_v
     {
         return;
     }
-
-    if (text.empty())
+    else if (text.empty())
     {
         context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE, {});
         return;
     }
-
-    if (!Platform::IsFilenameValid(text))
+    else if (!Platform::IsFilenameValid(text))
     {
         context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS, {});
         return;
