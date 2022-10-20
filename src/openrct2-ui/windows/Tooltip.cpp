@@ -127,7 +127,6 @@ private:
     }
 };
 
-
 void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 {
     gTooltipCursor = screenCoords;
@@ -147,6 +146,7 @@ void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoord
     window->SetMessage(message, screenCoords);
     reset_tooltip_not_shown();
 }
+
 void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetWindow == nullptr || widgetIndex == -1)
@@ -186,6 +186,7 @@ void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const 
 
     WindowTooltipShow(result, screenCoords);
 }
+
 void WindowTooltipClose()
 {
     window_close_by_class(WindowClass::Tooltip);
