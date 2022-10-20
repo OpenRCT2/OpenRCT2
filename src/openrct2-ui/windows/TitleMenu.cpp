@@ -84,14 +84,16 @@ static void InvokeCustomToolboxMenuItem(size_t index)
 #endif
 }
 
-class TitleMenuWindow final : public Window {
+class TitleMenuWindow final : public Window
+{
 public:
-    void OnOpen() override {
+    void OnOpen() override
+    {
         widgets = window_title_menu_widgets;
 
-    #ifdef DISABLE_NETWORK
+#ifdef DISABLE_NETWORK
         widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
-    #endif
+#endif
 
         WidgetIndex i = 0;
         int32_t x = 0;
@@ -178,7 +180,7 @@ public:
             gDropdownItems[i++].Format = STR_TRACK_DESIGNS_MANAGER;
             gDropdownItems[i++].Format = STR_OPEN_USER_CONTENT_FOLDER;
 
-    #ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING
             auto hasCustomItems = false;
             const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
             if (!customMenuItems.empty())
@@ -201,7 +203,7 @@ public:
                     }
                 }
             }
-    #endif
+#endif
 
             int32_t yOffset = 0;
             if (i > 5)
@@ -248,12 +250,11 @@ public:
         }
     }
 
-    CursorID OnCursor(
-        WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
+    CursorID OnCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
     {
         gTooltipTimeout = 2000;
         return cursorId;
-    }   
+    }
 
     void OnUpdate() override
     {
