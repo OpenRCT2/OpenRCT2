@@ -142,12 +142,11 @@ void TrackDesignManageWindow::OnMouseUp(WidgetIndex widgetIndex)
 
 void TrackDesignManageWindow::OnTextInput(WidgetIndex widgetIndex, std::string_view text)
 {
-    if (widgetIndex != WIDX_RENAME || text.empty())
+    if (widgetIndex != WIDX_RENAME)
     {
         return;
     }
 
-    // TODO: This branch doesn't make a lot of sense, since it would have left above
     if (text.empty())
     {
         context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE, {});
