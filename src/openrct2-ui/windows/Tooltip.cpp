@@ -28,7 +28,7 @@ static rct_widget window_tooltip_widgets[] = {
 
 // clang-format on
 
-class WindowTooltip final : public Window
+class TooltipWindow final : public Window
 {
 private:
     utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)]{};
@@ -142,7 +142,7 @@ void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoord
     if (w != nullptr)
         return;
 
-    auto window = WindowCreate<WindowTooltip>(WindowClass::Tooltip, screenCoords, 0, 0, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+    auto window = WindowCreate<TooltipWindow>(WindowClass::Tooltip, screenCoords, 0, 0, WF_TRANSPARENT | WF_STICK_TO_FRONT);
     window->SetMessage(message, screenCoords);
     reset_tooltip_not_shown();
 }
