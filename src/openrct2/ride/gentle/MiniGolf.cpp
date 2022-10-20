@@ -1074,11 +1074,11 @@ static void PaintMiniGolfHoleE(
     switch ((direction << 4) | trackSequence)
     {
         case 0x00:
-        case 0x12:
+        case 0x32:
             PaintUtilPushTunnelLeft(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
 
-        case 0x02:
+        case 0x22:
         case 0x30:
             PaintUtilPushTunnelRight(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
