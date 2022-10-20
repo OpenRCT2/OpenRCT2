@@ -31,8 +31,8 @@ static rct_widget window_tooltip_widgets[] = {
 class WindowTooltip final : public Window
 {
 private:
-    utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
-    int16_t _tooltipNumLines;
+    utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)]{};
+    int16_t _tooltipNumLines = 1;
 
 public:
     void SetMessage(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
