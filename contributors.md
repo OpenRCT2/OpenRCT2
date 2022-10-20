@@ -199,6 +199,7 @@ The following people are not part of the development team, but have been contrib
 * Dan Stevens (MajeureX)
 * 73 (733737)
 * Raymond Zhao (rzhao271)
+* Xixiang Chen (jacknull1991)
 
 ## Toolchain
 * (Balletie) - macOS
