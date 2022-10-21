@@ -3375,6 +3375,14 @@ STR_6267    :Zemin deneticisini aç
 STR_6268    :Bir sonraki tick’e atla		
 STR_6269    :Geçersiz hava ID’si
 STR_6360    :{BLACK}{COMMA32}
+STR_6520    :Varlık paketleri
+STR_6521    :Düşük öncelik
+STR_6522    :Yüksek öncelik
+STR_6523    :Seçili varlık paketinin önceliğini düşür.
+STR_6524    :Seçili varlık paketinin önceliğini yükselt.
+STR_6525    :Etkinleştirilmiş varlık paketleri ile beraber oyundaki tüm varlıkları yeniden yükleyin.
+STR_6526    :(ana grafikler, müzik ve ses efektleri)
+STR_6527    :Yarışmalar
 
 #############
 # Scenarios #
