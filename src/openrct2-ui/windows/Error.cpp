@@ -37,7 +37,8 @@ private:
 
 public:
     ErrorWindow(std::string text, uint16_t numLines)
-        : _text(text), _numLines(numLines)
+        : _text(text)
+        , _numLines(numLines)
     {
     }
 
@@ -93,8 +94,7 @@ public:
             FilterPaletteID::PaletteDarken3);
 
         draw_string_centred_raw(
-            &dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(),
-            FontStyle::Medium);
+            &dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(), FontStyle::Medium);
     }
 
     void OnUnknown5() override
