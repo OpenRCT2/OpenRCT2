@@ -29,12 +29,18 @@ static rct_widget window_error_widgets[] = {
 };
 // clang-format on
 
-static std::string _window_error_text;
-static uint16_t _window_error_num_lines;
-
 class ErrorWindow final : public Window
 {
+private:
+    std::string _text;
+    uint16_t _numLines;
+
 public:
+    ErrorWindow(std::string text, uint16_t numLines)
+        : _text(text), _numLines(numLines)
+    {
+    }
+
     void OnOpen() override
     {
         window_error_widgets[WIDX_BACKGROUND].right = width;
@@ -87,8 +93,8 @@ public:
             FilterPaletteID::PaletteDarken3);
 
         draw_string_centred_raw(
-            &dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _window_error_num_lines, _window_error_text.data(),
-            FontSpriteBase::MEDIUM);
+            &dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(),
+            FontStyle::Medium);
     }
 
     void OnUnknown5() override
@@ -101,11 +107,9 @@ public:
 
 rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
 {
-    int32_t numLines, width, height, maxY;
-
     window_close_by_class(WindowClass::Error);
-    auto& buffer = _window_error_text;
-    buffer.assign("{BLACK}");
+
+    std::string buffer = "{BLACK}";
     buffer.append(title);
 
     // Format the message
@@ -127,29 +131,30 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
     if (buffer.size() <= 1)
         return nullptr;
 
-    width = gfx_get_string_width_new_lined(buffer.data(), FontStyle::Medium);
+    int32_t width = gfx_get_string_width_new_lined(buffer.data(), FontStyle::Medium);
     width = std::clamp(width, 64, 196);
 
+    int32_t numLines = 1;
     gfx_wrap_string(buffer.data(), width + 1, FontStyle::Medium, &numLines);
 
-    _window_error_num_lines = numLines;
     width = width + 3;
-    height = (numLines + 1) * font_get_line_height(FontStyle::Medium) + 4;
-
+    int32_t height = (numLines + 1) * font_get_line_height(FontStyle::Medium) + 4;
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
     const CursorState* state = context_get_cursor_state();
     ScreenCoordsXY windowPosition = state->position - ScreenCoordsXY(width / 2, -26);
     windowPosition.x = std::clamp(windowPosition.x, 0, screenWidth);
     windowPosition.y = std::max(22, windowPosition.y);
-    maxY = screenHeight - height;
+    int32_t maxY = screenHeight - height;
     if (windowPosition.y > maxY)
     {
         windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
     }
 
-    return WindowCreate<ErrorWindow>(
-        WindowClass::Error, windowPosition, width, height, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
+    auto errorWindow = std::make_unique<ErrorWindow>(buffer, numLines);
+    return static_cast<ErrorWindow*>(WindowCreate(
+        std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
+        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE));
 }
 
 rct_window* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
