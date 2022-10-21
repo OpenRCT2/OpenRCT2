@@ -256,7 +256,7 @@ public:
         return cursorId;
     }
 
-    void OnUpdate() override
+    void OnPrepareDraw() override
     {
         _filterRect = { windowPos.x, windowPos.y + UpdateButtonDims.height, windowPos.x + width - 1,
                         windowPos.y + MenuButtonDims.height + UpdateButtonDims.height - 1 };
