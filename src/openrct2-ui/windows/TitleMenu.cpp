@@ -42,7 +42,6 @@ enum
     DDIDX_CUSTOM_BEGIN = 6,
 };
 
-static ScreenRect _filterRect;
 static constexpr ScreenSize MenuButtonDims = { 82, 82 };
 static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
 
@@ -86,6 +85,9 @@ static void InvokeCustomToolboxMenuItem(size_t index)
 
 class TitleMenuWindow final : public Window
 {
+private:
+    ScreenRect _filterRect;
+
 public:
     void OnOpen() override
     {
