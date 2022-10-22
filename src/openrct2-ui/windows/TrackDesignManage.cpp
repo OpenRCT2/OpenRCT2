@@ -54,212 +54,180 @@ static rct_widget window_track_delete_prompt_widgets[] = {
 
 #pragma endregion
 
-#pragma region Events
-
-static void WindowTrackManageClose(rct_window *w);
-static void WindowTrackManageMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowTrackManageTextinput(rct_window *w, WidgetIndex widgetIndex, char *text);
-static void WindowTrackManagePaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-static void WindowTrackDeletePromptMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowTrackDeletePromptPaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-// 0x009940EC
-static WindowEventList window_track_manage_events([](auto& events)
-{
-    events.close = &WindowTrackManageClose;
-    events.mouse_up = &WindowTrackManageMouseup;
-    events.text_input = &WindowTrackManageTextinput;
-    events.paint = &WindowTrackManagePaint;
-});
-
-// 0x0099415C
-static WindowEventList window_track_delete_prompt_events([](auto& events)
-{
-    events.mouse_up = &WindowTrackDeletePromptMouseup;
-    events.paint = &WindowTrackDeletePromptPaint;
-});
 // clang-format on
 
-#pragma endregion
+class TrackDesignManageWindow final : public Window
+{
+private:
+    TrackDesignFileRef* _trackDesignFileReference = nullptr;
 
-static TrackDesignFileRef* _trackDesignFileReference;
+public:
+    void SetFileReference(TrackDesignFileRef* tdFileRef)
+    {
+        _trackDesignFileReference = tdFileRef;
+    }
 
-static void WindowTrackDeletePromptOpen();
-static void WindowTrackDesignListReloadTracks();
+    void OnOpen() override
+    {
+        widgets = window_track_manage_widgets;
+        WindowInitScrollWidgets(*this);
+    }
 
-/**
- *
- *  rct2: 0x006D348F
- */
+    void OnClose() override
+    {
+        rct_window* trackDesignListWindow = window_find_by_class(WindowClass::TrackDesignList);
+        if (trackDesignListWindow != nullptr)
+        {
+            trackDesignListWindow->track_list.track_list_being_updated = false;
+        }
+    }
+
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                window_close_by_class(WindowClass::TrackDeletePrompt);
+                Close();
+                break;
+            case WIDX_RENAME:
+                WindowTextInputRawOpen(
+                    this, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, {},
+                    _trackDesignFileReference->name.c_str(), TrackDesignNameMaxLength);
+                break;
+            case WIDX_DELETE:
+                WindowTrackDeletePromptOpen();
+                break;
+        }
+    }
+
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+    {
+        if (widgetIndex != WIDX_RENAME || str_is_null_or_empty(std::string(text).c_str()))
+        {
+            return;
+        }
+
+        if (str_is_null_or_empty(std::string(text).c_str()))
+        {
+            context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE, {});
+            return;
+        }
+
+        if (!Platform::IsFilenameValid(text))
+        {
+            context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS, {});
+            return;
+        }
+
+        if (track_repository_rename(_trackDesignFileReference->path, std::string(text).c_str()))
+        {
+            window_close_by_class(WindowClass::TrackDeletePrompt);
+            Close();
+            WindowTrackDesignListReloadTracks();
+        }
+        else
+        {
+            context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED, {});
+        }
+    }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        Formatter::Common().Add<const utf8*>(_trackDesignFileReference->name.c_str());
+        DrawWidgets(dpi);
+    }
+
+private:
+    class TrackDeletePromptWindow final : public Window
+    {
+    private:
+        TrackDesignFileRef* _trackDesignFileReference = nullptr;
+
+    public:
+        void SetFileReference(TrackDesignFileRef* tdFileRef)
+        {
+            _trackDesignFileReference = tdFileRef;
+        }
+
+        void OnOpen() override
+        {
+            widgets = window_track_delete_prompt_widgets;
+            WindowInitScrollWidgets(*this);
+        }
+
+        void OnMouseUp(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_CLOSE:
+                case WIDX_PROMPT_CANCEL:
+                    Close();
+                    break;
+                case WIDX_PROMPT_DELETE:
+                    if (track_repository_delete(_trackDesignFileReference->path))
+                    {
+                        WindowTrackDesignListReloadTracks();
+                        window_close_by_class(WindowClass::ManageTrackDesign);
+                    }
+                    else
+                    {
+                        context_show_error(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED, {});
+                    }
+                    Close();
+                    break;
+            }
+        }
+
+        void OnDraw(rct_drawpixelinfo& dpi) override
+        {
+            DrawWidgets(dpi);
+
+            auto ft = Formatter();
+            ft.Add<const utf8*>(_trackDesignFileReference->name.c_str());
+            DrawTextWrapped(
+                &dpi, { windowPos.x + (WW_DELETE_PROMPT / 2), windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) },
+                (WW_DELETE_PROMPT - 4), STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });
+        }
+    };
+
+    static void WindowTrackDesignListReloadTracks()
+    {
+        rct_window* trackListWindow = window_find_by_class(WindowClass::TrackDesignList);
+        if (trackListWindow != nullptr)
+        {
+            trackListWindow->track_list.reload_track_designs = true;
+        }
+    }
+
+    void WindowTrackDeletePromptOpen()
+    {
+        window_close_by_class(WindowClass::TrackDeletePrompt);
+
+        int32_t screenWidth = context_get_width();
+        int32_t screenHeight = context_get_height();
+        auto screenCoords = ScreenCoordsXY(
+            std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2);
+
+        auto window = WindowCreate<TrackDeletePromptWindow>(
+            WindowClass::TrackDeletePrompt, screenCoords, WW_DELETE_PROMPT, WH_DELETE_PROMPT,
+            WF_STICK_TO_FRONT | WF_TRANSPARENT);
+        window->SetFileReference(_trackDesignFileReference);
+    }
+};
+
 rct_window* WindowTrackManageOpen(TrackDesignFileRef* tdFileRef)
 {
     window_close_by_class(WindowClass::ManageTrackDesign);
 
-    rct_window* w = WindowCreateCentred(
-        WW, WH, &window_track_manage_events, WindowClass::ManageTrackDesign, WF_STICK_TO_FRONT | WF_TRANSPARENT);
-    w->widgets = window_track_manage_widgets;
-    WindowInitScrollWidgets(*w);
+    auto window = WindowFocusOrCreate<TrackDesignManageWindow>(
+        WindowClass::ManageTrackDesign, WW, WH, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+    window->SetFileReference(tdFileRef);
 
     rct_window* trackDesignListWindow = window_find_by_class(WindowClass::TrackDesignList);
     if (trackDesignListWindow != nullptr)
     {
         trackDesignListWindow->track_list.track_list_being_updated = true;
     }
-
-    _trackDesignFileReference = tdFileRef;
-
-    return w;
-}
-
-/**
- *
- *  rct2: 0x006D364C
- */
-static void WindowTrackManageClose(rct_window* w)
-{
-    rct_window* trackDesignListWindow = window_find_by_class(WindowClass::TrackDesignList);
-    if (trackDesignListWindow != nullptr)
-    {
-        trackDesignListWindow->track_list.track_list_being_updated = false;
-    }
-}
-
-/**
- *
- *  rct2: 0x006D3523
- */
-static void WindowTrackManageMouseup(rct_window* w, WidgetIndex widgetIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-            window_close_by_class(WindowClass::TrackDeletePrompt);
-            window_close(*w);
-            break;
-        case WIDX_RENAME:
-            WindowTextInputRawOpen(
-                w, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, {},
-                _trackDesignFileReference->name.c_str(), TrackDesignNameMaxLength);
-            break;
-        case WIDX_DELETE:
-            WindowTrackDeletePromptOpen();
-            break;
-    }
-}
-
-/**
- *
- *  rct2: 0x006D3523
- */
-static void WindowTrackManageTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
-{
-    if (widgetIndex != WIDX_RENAME || str_is_null_or_empty(text))
-    {
-        return;
-    }
-
-    if (str_is_null_or_empty(text))
-    {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE, {});
-        return;
-    }
-
-    if (!Platform::IsFilenameValid(text))
-    {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS, {});
-        return;
-    }
-
-    if (track_repository_rename(_trackDesignFileReference->path, text))
-    {
-        window_close_by_class(WindowClass::TrackDeletePrompt);
-        window_close(*w);
-        WindowTrackDesignListReloadTracks();
-    }
-    else
-    {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED, {});
-    }
-}
-
-/**
- *
- *  rct2: 0x006D3523
- */
-static void WindowTrackManagePaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    Formatter::Common().Add<const utf8*>(_trackDesignFileReference->name.c_str());
-    WindowDrawWidgets(*w, dpi);
-}
-
-/**
- *
- *  rct2: 0x006D35CD
- */
-static void WindowTrackDeletePromptOpen()
-{
-    window_close_by_class(WindowClass::TrackDeletePrompt);
-
-    int32_t screenWidth = context_get_width();
-    int32_t screenHeight = context_get_height();
-    rct_window* w = WindowCreate(
-        ScreenCoordsXY(
-            std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2),
-        WW_DELETE_PROMPT, WH_DELETE_PROMPT, &window_track_delete_prompt_events, WindowClass::TrackDeletePrompt,
-        WF_STICK_TO_FRONT);
-    w->widgets = window_track_delete_prompt_widgets;
-    WindowInitScrollWidgets(*w);
-    w->flags |= WF_TRANSPARENT;
-}
-
-/**
- *
- *  rct2: 0x006D3823
- */
-static void WindowTrackDeletePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-        case WIDX_PROMPT_CANCEL:
-            window_close(*w);
-            break;
-        case WIDX_PROMPT_DELETE:
-            window_close(*w);
-            if (track_repository_delete(_trackDesignFileReference->path))
-            {
-                window_close_by_class(WindowClass::ManageTrackDesign);
-                WindowTrackDesignListReloadTracks();
-            }
-            else
-            {
-                context_show_error(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED, {});
-            }
-            break;
-    }
-}
-
-/**
- *
- *  rct2: 0x006D37EE
- */
-static void WindowTrackDeletePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(*w, dpi);
-
-    auto ft = Formatter();
-    ft.Add<const utf8*>(_trackDesignFileReference->name.c_str());
-    DrawTextWrapped(
-        dpi, { w->windowPos.x + (WW_DELETE_PROMPT / 2), w->windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) }, (WW_DELETE_PROMPT - 4),
-        STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });
-}
-
-static void WindowTrackDesignListReloadTracks()
-{
-    rct_window* trackListWindow = window_find_by_class(WindowClass::TrackDesignList);
-    if (trackListWindow != nullptr)
-    {
-        trackListWindow->track_list.reload_track_designs = true;
-    }
+    return window;
 }
