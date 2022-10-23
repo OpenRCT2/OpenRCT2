@@ -4,6 +4,7 @@
 - Improved: [#18192] Tycoon Park has been added Extras tab.
 - Improved: [#18214] Competition scenarios have received their own section.
 - Improved: [#18250] Added modern style file and folder pickers on Windows.
+- Improved: [#18332] Allow Invert RC to draw booster.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 - Change: [#18381] Convert custom invisible paths to the built-in ones.
 - Fix: [#14312] Research ride type message incorrect.
@@ -16,10 +17,6 @@
 - Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
 - Fix: [#18134] Underground on-ride photo section partially clips through adjacent terrain edge.
 - Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
-- Improved: [#18192, #18214] Tycoon Park has been added Extras tab, Competition scenarios have received their own section.
-- Improved: [#18250] Added modern style file and folder pickers on Windows.
-- Improved: [#18332] Allow Invert RC to draw booster.
-- Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 - Fix: [#18379] Tunnel entrances for underground Mini Golf Hole E are not rendered correctly.
 
 0.4.2 (2022-10-05)
