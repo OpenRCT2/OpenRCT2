@@ -32,7 +32,7 @@ enum
 
 /** rct2: 0x008B0E40 */
 static void paint_boat_hire_track_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -62,7 +62,7 @@ static void paint_boat_hire_track_flat(
 
 /** rct2: 0x008B0E50 */
 static void paint_boat_hire_station(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     const auto* stationObj = ride.GetStationObject();
@@ -86,7 +86,7 @@ static void paint_boat_hire_station(
 
 /** rct2: 0x008B0E80 */
 static void paint_boat_hire_track_left_quarter_turn_1_tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -130,7 +130,7 @@ static void paint_boat_hire_track_left_quarter_turn_1_tile(
 
 /** rct2: 0x008B0E90 */
 static void paint_boat_hire_track_right_quarter_turn_1_tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_boat_hire_track_left_quarter_turn_1_tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);

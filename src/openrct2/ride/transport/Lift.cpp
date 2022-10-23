@@ -34,7 +34,7 @@ static constexpr const uint32_t lift_cage_sprites[][2] = {
     { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },
 };
 
-static void paint_lift_cage(paint_session& session, int8_t index, ImageId colourFlags, int32_t height, uint8_t rotation)
+static void paint_lift_cage(PaintSession& session, int8_t index, ImageId colourFlags, int32_t height, uint8_t rotation)
 {
     ImageId imageId;
 
@@ -47,7 +47,7 @@ static void paint_lift_cage(paint_session& session, int8_t index, ImageId colour
 
 /** rct2: 0x0076C6CC */
 static void paint_lift_base(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -112,7 +112,7 @@ static void paint_lift_base(
 
 /** rct2: 0x0076C6DC */
 static void paint_lift_tower_section(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence == 1)

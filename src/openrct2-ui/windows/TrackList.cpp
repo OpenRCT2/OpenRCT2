@@ -407,7 +407,7 @@ public:
         }
 
         // When debugging tools are on, shift everything up a bit to make room for displaying the path.
-        const int32_t bottomMargin = gConfigGeneral.debugging_tools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT) : WINDOW_PADDING;
+        const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT) : WINDOW_PADDING;
         window_track_list_widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
         window_track_list_widgets[WIDX_ROTATE].bottom = height - bottomMargin;
         window_track_list_widgets[WIDX_ROTATE].top = window_track_list_widgets[WIDX_ROTATE].bottom
@@ -461,11 +461,11 @@ public:
         u8string path = _trackDesigns[trackIndex].path;
 
         // Show track file path (in debug mode)
-        if (gConfigGeneral.debugging_tools)
+        if (gConfigGeneral.DebuggingTools)
         {
             utf8 pathBuffer[MAX_PATH];
             const utf8* pathPtr = pathBuffer;
-            shorten_path(pathBuffer, sizeof(pathBuffer), path.c_str(), width, FontSpriteBase::MEDIUM);
+            shorten_path(pathBuffer, sizeof(pathBuffer), path.c_str(), width, FontStyle::Medium);
             auto ft = Formatter();
             ft.Add<utf8*>(pathPtr);
             DrawTextBasic(

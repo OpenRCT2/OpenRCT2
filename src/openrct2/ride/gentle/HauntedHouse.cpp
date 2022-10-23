@@ -24,7 +24,7 @@ static constexpr BoundBoxXY HauntedHouseData[] = {
 };
 
 static void PaintHauntedHouseStructure(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
 {
     uint8_t frameNum = 0;
 
@@ -61,7 +61,7 @@ static void PaintHauntedHouseStructure(
 }
 
 static void PaintHauntedHouse(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];

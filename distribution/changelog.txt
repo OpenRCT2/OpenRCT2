@@ -1,6 +1,11 @@
 0.4.3 (in development)
 ------------------------------------------------------------------------
 - Feature: [#17782] The Flying Coaster now has access to boosters and can draw outside loops.
+- Improved: [#18192] Tycoon Park has been added Extras tab.
+- Improved: [#18214] Competition scenarios have received their own section.
+- Improved: [#18250] Added modern style file and folder pickers on Windows.
+- Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
+- Change: [#18381] Convert custom invisible paths to the built-in ones.
 - Fix: [#14312] Research ride type message incorrect.
 - Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17763] Missing validation on invalid characters in file name.
@@ -15,6 +20,7 @@
 - Improved: [#18250] Added modern style file and folder pickers on Windows.
 - Improved: [#18332] Allow Invert RC to draw booster.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
+- Fix: [#18379] Tunnel entrances for underground Mini Golf Hole E are not rendered correctly.
 
 0.4.2 (2022-10-05)
 ------------------------------------------------------------------------

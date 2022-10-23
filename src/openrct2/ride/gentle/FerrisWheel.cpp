@@ -42,7 +42,7 @@ static constexpr BoundBoxXY FerrisWheelData[] = {
 };
 
 static void PaintFerrisWheelRiders(
-    paint_session& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
+    PaintSession& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
     const BoundBoxXYZ& bb)
 {
     for (int32_t i = 0; i < 32; i += 2)
@@ -59,7 +59,7 @@ static void PaintFerrisWheelRiders(
 }
 
 static void PaintFerrisWheelStructure(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -102,7 +102,7 @@ static void PaintFerrisWheelStructure(
 }
 
 static void PaintFerrisWheel(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];

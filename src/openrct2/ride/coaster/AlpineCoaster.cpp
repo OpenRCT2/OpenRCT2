@@ -27,7 +27,7 @@
 namespace AlpineRC
 {
     static void TrackFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackElement.HasChain())
@@ -93,7 +93,7 @@ namespace AlpineRC
     }
 
     static void TrackStation(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         static constexpr const uint32_t imageIds[4][3] = {
@@ -126,7 +126,7 @@ namespace AlpineRC
     }
 
     static void Track25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackElement.HasChain())
@@ -209,7 +209,7 @@ namespace AlpineRC
     }
 
     static void TrackFlatTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackElement.HasChain())
@@ -290,7 +290,7 @@ namespace AlpineRC
     }
 
     static void Track25DegUpToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackElement.HasChain())
@@ -371,28 +371,28 @@ namespace AlpineRC
     }
 
     static void Track25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         Track25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackFlatTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         Track25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftQuarterTurn3(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -519,7 +519,7 @@ namespace AlpineRC
     }
 
     static void TrackRightQuarterTurn3(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -527,7 +527,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftQuarterTurn5(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -727,7 +727,7 @@ namespace AlpineRC
     }
 
     static void TrackRightQuarterTurn5(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -735,7 +735,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftEighthToDiag(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -899,7 +899,7 @@ namespace AlpineRC
     }
 
     static void TrackRightEighthToDiag(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1063,7 +1063,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftEighthToOrthogonal(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -1071,7 +1071,7 @@ namespace AlpineRC
     }
 
     static void TrackRightEighthToOrthogonal(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -1079,7 +1079,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1232,7 +1232,7 @@ namespace AlpineRC
     }
 
     static void TrackDiag25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1385,7 +1385,7 @@ namespace AlpineRC
     }
 
     static void TrackDiag25DegUpToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1538,7 +1538,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagFlatTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1691,7 +1691,7 @@ namespace AlpineRC
     }
 
     static void TrackDiag25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1844,7 +1844,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagFlatTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -1995,7 +1995,7 @@ namespace AlpineRC
     }
 
     static void TrackDiag25DegDownToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2148,7 +2148,7 @@ namespace AlpineRC
     }
 
     static void TrackFlatToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2193,7 +2193,7 @@ namespace AlpineRC
     }
 
     static void TrackFlatToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2240,21 +2240,21 @@ namespace AlpineRC
     }
 
     static void TrackLeftBankToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackFlatToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBankToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackFlatToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftBankTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2312,7 +2312,7 @@ namespace AlpineRC
     }
 
     static void TrackRightBankTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2370,7 +2370,7 @@ namespace AlpineRC
     }
 
     static void Track25DegUpToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2428,7 +2428,7 @@ namespace AlpineRC
     }
 
     static void Track25DegUpToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2486,35 +2486,35 @@ namespace AlpineRC
     }
 
     static void TrackLeftBankTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         Track25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBankTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         Track25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -2557,14 +2557,14 @@ namespace AlpineRC
     }
 
     static void TrackRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackDiagFlatToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2647,7 +2647,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagFlatToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2730,7 +2730,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagLeftBankToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2813,7 +2813,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagRightBankToFlat(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2896,7 +2896,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagLeftBankTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -2979,7 +2979,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagRightBankTo25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3062,7 +3062,7 @@ namespace AlpineRC
     }
 
     static void TrackDiag25DegUpToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3145,7 +3145,7 @@ namespace AlpineRC
     }
 
     static void TrackDiag25DegUpToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3228,7 +3228,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagLeftBankTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3309,7 +3309,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagRightBankTo25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3390,7 +3390,7 @@ namespace AlpineRC
     }
 
     static void TrackDiag25DegDownToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3473,7 +3473,7 @@ namespace AlpineRC
     }
 
     static void TrackDiag25DegDownToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3556,7 +3556,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3635,7 +3635,7 @@ namespace AlpineRC
     }
 
     static void TrackDiagRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3714,7 +3714,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftQuarterTurn3Bank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -3849,7 +3849,7 @@ namespace AlpineRC
     }
 
     static void TrackRightQuarterTurn3Bank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3857,7 +3857,7 @@ namespace AlpineRC
     }
 
     static void TrackBankedLeftQuarterTurn5(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4065,7 +4065,7 @@ namespace AlpineRC
     }
 
     static void TrackBankedRightQuarterTurn5(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -4073,7 +4073,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftEighthBankToDiag(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4237,7 +4237,7 @@ namespace AlpineRC
     }
 
     static void TrackRightEighthBankToDiag(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4401,7 +4401,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftEighthBankToOrthogonal(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -4409,7 +4409,7 @@ namespace AlpineRC
     }
 
     static void TrackRightEighthBankToOrthogonal(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -4417,7 +4417,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftQuarterTurn3Tile25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4515,7 +4515,7 @@ namespace AlpineRC
     }
 
     static void TrackRightQuarterTurn3Tile25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4618,7 +4618,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftQuarterTurn3Tile25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -4626,7 +4626,7 @@ namespace AlpineRC
     }
 
     static void TrackRightQuarterTurn3Tile25DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -4634,7 +4634,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftQuarterTurn525DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -4834,7 +4834,7 @@ namespace AlpineRC
     }
 
     static void TrackRightQuarterTurn525DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -5034,7 +5034,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftQuarterTurn525DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -5042,7 +5042,7 @@ namespace AlpineRC
     }
 
     static void TrackRightQuarterTurn525DegDown(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -5050,7 +5050,7 @@ namespace AlpineRC
     }
 
     static void TrackSBendLeft(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -5204,7 +5204,7 @@ namespace AlpineRC
     }
 
     static void TrackSBendRight(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -5358,7 +5358,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftHalfBankedHelixUpSmall(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -5623,7 +5623,7 @@ namespace AlpineRC
     }
 
     static void TrackRightHalfBankedHelixUpSmall(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -5888,7 +5888,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftHalfBankedHelixDownSmall(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackSequence >= 4)
@@ -5901,7 +5901,7 @@ namespace AlpineRC
     }
 
     static void TrackRightHalfBankedHelixDownSmall(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackSequence >= 4)
@@ -5914,7 +5914,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftHalfBankedHelixUpLarge(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -6324,7 +6324,7 @@ namespace AlpineRC
         }
     }
     static void TrackRightHalfBankedHelixUpLarge(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -6745,7 +6745,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftHalfBankedHelixDownLarge(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackSequence >= 7)
@@ -6758,7 +6758,7 @@ namespace AlpineRC
     }
 
     static void TrackRightHalfBankedHelixDownLarge(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         if (trackSequence >= 7)
@@ -6771,7 +6771,7 @@ namespace AlpineRC
     }
 
     static void TrackBrakes(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (direction)
@@ -6802,7 +6802,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftBankToLeftQuarterTurn3Tile25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -6904,7 +6904,7 @@ namespace AlpineRC
     }
 
     static void TrackRightBankToRightQuarterTurn3Tile25DegUp(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -7006,7 +7006,7 @@ namespace AlpineRC
     }
 
     static void TrackLeftQuarterTurn3Tile25DegDownToLeftBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)
@@ -7108,7 +7108,7 @@ namespace AlpineRC
     }
 
     static void TrackRightQuarterTurn3Tile25DegDownToRightBank(
-        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         switch (trackSequence)

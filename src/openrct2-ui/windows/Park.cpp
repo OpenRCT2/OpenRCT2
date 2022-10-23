@@ -622,7 +622,7 @@ private:
         int32_t viewportFlags{};
         if (viewport == nullptr)
         {
-            viewportFlags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+            viewportFlags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         }
         else
         {
@@ -713,7 +713,7 @@ private:
             ft.Add<uint32_t>(axisValue);
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+                { FontStyle::Small, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
@@ -786,7 +786,7 @@ private:
             ft.Add<uint32_t>(axisValue);
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+                { FontStyle::Small, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
@@ -962,7 +962,7 @@ private:
         // Draw park size
         auto parkSize = gParkSize * 10;
         auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
-        if (gConfigGeneral.measurement_format == MeasurementFormat::Imperial)
+        if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         {
             stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
             parkSize = squaredmetres_to_squaredfeet(parkSize);
@@ -1213,8 +1213,8 @@ private:
 
     void SetPressedTab()
     {
-        for (auto i = 0; i < 7; i++)
-            pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+        for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
+            pressed_widgets &= ~(1 << i);
         pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
     }
 

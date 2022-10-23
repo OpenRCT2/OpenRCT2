@@ -1590,7 +1590,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 
     if (isThin)
     {
-        for (int32_t i = 0; i < 4; ++i)
+        for (std::size_t i = 0; i < peep.PathfindHistory.size(); ++i)
         {
             if (peep.PathfindHistory[i] == loc)
             {
@@ -1604,7 +1604,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
                 if (_pathFindDebug)
                 {
                     log_verbose(
-                        "Updating existing pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i,
+                        "Updating existing pf_history (in index: %u) for %d,%d,%d without entry edge %d & exit edge %d.", i,
                         loc.x, loc.y, loc.z, DirectionReverse(peep.PeepDirection), chosen_edge);
                 }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

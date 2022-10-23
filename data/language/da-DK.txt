@@ -3592,6 +3592,20 @@ STR_6490    :Advarsel: Semi-kompatibel Park Version
 STR_6491    :Denne park blev gemt i en nyere version af OpenRCT2. Parken er v{INT32} og kræver mindst v{INT32}.
 STR_6492    :Denne park er gemt i en ældre version af OpenRCT2, og kan ikke åbnes med denne version af OpenRCT2. Parken er v{INT32}.
 STR_6493    :Denne park blev gemt i en nyere version af OpenRCT2, nogle data kan gå tabt. Parken er v{INT32} og kræver mindst v{INT32}.
+STR_6501    :Tilfældig farve
+STR_6502    :Indtast en værdi mellem {COMMA16} og {COMMA16}
+STR_6503    :Der skal vælges mindst ét station objekt
+STR_6504    :Der skal vælges mindst én terræn overflade
+STR_6505    :Der skal vælges mindst én terræn kant
+STR_6514    :Ugyldig højde!
+STR_6520    :Materiel pakker
+STR_6521    :Lav prioritet
+STR_6522    :Høj prioritet
+STR_6523    :Sænk prioriteten for den valgte materiel pakke.
+STR_6524    :Øg prioriteten for den valgte materiel pakke.
+STR_6525    :Genindlæs alle aktiver i spillet med de aktiverede materiel pakker.
+STR_6526    :(basis grafik, musik og lydeffekter)
+STR_6527    :Konkurrencer 
 
 #############
 # Scenarios #

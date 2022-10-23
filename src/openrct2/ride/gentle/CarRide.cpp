@@ -157,7 +157,7 @@ static constexpr const uint32_t CarRideTrackPiecesQuarterTurn3Tiles[4][3] = {
 
 /** rct2: 0x006F72C8 */
 static void PaintCarRideTrackFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesFlat[direction]);
@@ -188,7 +188,7 @@ static void PaintCarRideTrackFlat(
 
 /** rct2: 0x006F72D8 */
 static void PaintCarRideTrack25DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces25DegUp[direction]);
@@ -226,7 +226,7 @@ static void PaintCarRideTrack25DegUp(
 
 /** rct2: 0x006F72E8 */
 static void PaintCarRideTrackFlatTo25DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesFlatTo25DegUp[direction]);
@@ -264,7 +264,7 @@ static void PaintCarRideTrackFlatTo25DegUp(
 
 /** rct2: 0x006F72F8 */
 static void PaintCarRideTrack25DegUpToFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces25DegUpToFlat[direction]);
@@ -302,7 +302,7 @@ static void PaintCarRideTrack25DegUpToFlat(
 
 /** rct2: 0x006F7308 */
 static void PaintCarRideTrack25DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintCarRideTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -310,7 +310,7 @@ static void PaintCarRideTrack25DegDown(
 
 /** rct2: 0x006F7318 */
 static void PaintCarRideTrackFlatTo25DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintCarRideTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -318,7 +318,7 @@ static void PaintCarRideTrackFlatTo25DegDown(
 
 /** rct2: 0x006F7328 */
 static void PaintCarRideTrack25DegDownToFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintCarRideTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -326,7 +326,7 @@ static void PaintCarRideTrack25DegDownToFlat(
 
 /** rct2: 0x006F7338, 0x006F7348, 0x006F7358 */
 static void PaintCarRideStation(
-    paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -380,7 +380,7 @@ static void PaintCarRideStation(
 
 /** rct2: 0x006F7378 */
 static void PaintCarRideTrackRightQuarterTurn3Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_3_tiles_paint(
@@ -416,7 +416,7 @@ static void PaintCarRideTrackRightQuarterTurn3Tiles(
 
 /** rct2: 0x006F7368 */
 static void PaintCarRideTrackLeftQuarterTurn3Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -425,7 +425,7 @@ static void PaintCarRideTrackLeftQuarterTurn3Tiles(
 
 /** rct2: 0x006F7388 */
 static void PaintCarRideTrackLeftQuarterTurn1Tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesLeftQuarterTurn1Tile[direction]);
@@ -456,7 +456,7 @@ static void PaintCarRideTrackLeftQuarterTurn1Tile(
 
 /** rct2: 0x006F7398 */
 static void PaintCarRideTrackRightQuarterTurn1Tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintCarRideTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
@@ -464,7 +464,7 @@ static void PaintCarRideTrackRightQuarterTurn1Tile(
 
 /** rct2: 0x006F73A8 */
 static void PaintCarRideTrackSpinningTunnel(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesFlat[direction]);
@@ -497,7 +497,7 @@ static void PaintCarRideTrackSpinningTunnel(
 
 /** rct2: 0x006F73B8 */
 static void PaintCarRideTrack60DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces60DegUp[direction]);
@@ -546,7 +546,7 @@ static void PaintCarRideTrack60DegUp(
 
 /** rct2: 0x006F73C8 */
 static void PaintCarRideTrack25DegUpTo60DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces25DegUpTo60DegUp[direction][0]);
@@ -602,7 +602,7 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
 
 /** rct2: 0x006F73D8 */
 static void PaintCarRideTrack60DegUpTo25DegUp(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPieces60DegUpTo25DegUp[direction][0]);
@@ -658,7 +658,7 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
 
 /** rct2: 0x006F73E8 */
 static void PaintCarRideTrack60DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintCarRideTrack60DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -666,7 +666,7 @@ static void PaintCarRideTrack60DegDown(
 
 /** rct2: 0x006F73F8 */
 static void PaintCarRideTrack25DegDownTo60DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintCarRideTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -674,7 +674,7 @@ static void PaintCarRideTrack25DegDownTo60DegDown(
 
 /** rct2: 0x006F7408 */
 static void PaintCarRideTrack60DegDownTo25DegDown(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintCarRideTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -682,7 +682,7 @@ static void PaintCarRideTrack60DegDownTo25DegDown(
 
 /** rct2: 0x006F7418 */
 static void PaintCarRideTrackLogBumps(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesLogBumps[direction]);

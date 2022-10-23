@@ -18,18 +18,18 @@ struct FootpathPaintInfo;
 constexpr const uint8_t NumVanillaWoodenSupportTypes = 49;
 
 bool WoodenASupportsPaintSetup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
 bool WoodenBSupportsPaintSetup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
 bool MetalASupportsPaintSetup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate);
+    PaintSession& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate);
 bool MetalBSupportsPaintSetup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate);
+    PaintSession& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate);
 bool PathASupportsPaintSetup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo, bool* underground);
 bool PathBSupportsPaintSetup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);
 
 // There are 13 types of metal supports. A graphic showing all of them is available here:

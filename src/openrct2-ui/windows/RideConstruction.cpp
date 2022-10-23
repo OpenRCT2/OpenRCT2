@@ -272,7 +272,7 @@ public:
         if (ride_try_get_origin_element(currentRide, nullptr))
         {
             // Auto open shops if required.
-            if (currentRide->mode == RideMode::ShopStall && gConfigGeneral.auto_open_shops)
+            if (currentRide->mode == RideMode::ShopStall && gConfigGeneral.AutoOpenShops)
             {
                 // HACK: Until we find a good a way to defer the game command for opening the shop, stop this
                 //       from getting stuck in an infinite loop as opening the currentRide will try to close this window
@@ -2628,7 +2628,7 @@ private:
         TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         TileElement tempTrackTileElement{};
         TileElement* backupTileElementArrays[5]{};
-        paint_session* session = PaintSessionAlloc(dpi, 0);
+        PaintSession* session = PaintSessionAlloc(dpi, 0);
         trackDirection &= 3;
 
         auto currentRide = get_ride(rideIndex);

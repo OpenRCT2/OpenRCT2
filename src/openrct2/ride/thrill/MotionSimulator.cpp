@@ -31,7 +31,7 @@ enum
 };
 
 static void PaintMotionSimulatorVehicle(
-    paint_session& session, const Ride& ride, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto rideEntry = ride.GetRideEntry();
@@ -102,7 +102,7 @@ static void PaintMotionSimulatorVehicle(
 }
 
 static void PaintMotionSimulator(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];

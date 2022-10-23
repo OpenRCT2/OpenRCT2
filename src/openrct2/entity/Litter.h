@@ -14,7 +14,7 @@
 class DataSerialiser;
 struct CoordsXYZ;
 struct CoordsXYZD;
-struct paint_session;
+struct PaintSession;
 
 struct Litter : EntityBase
 {
@@ -42,5 +42,5 @@ struct Litter : EntityBase
     void Serialise(DataSerialiser& stream);
     StringId GetName() const;
     uint32_t GetAge() const;
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 };

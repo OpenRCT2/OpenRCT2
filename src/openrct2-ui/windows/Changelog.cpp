@@ -182,7 +182,7 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
-        const int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+        const int32_t lineHeight = font_get_line_height(FontStyle::Medium);
 
         ScreenCoordsXY screenCoords(3, 3 - lineHeight);
         for (const auto& line : _changelogLines)
@@ -199,7 +199,7 @@ public:
     {
         return ScreenSize(
             _changelogLongestLineWidth + 4,
-            static_cast<int32_t>(_changelogLines.size()) * font_get_line_height(FontSpriteBase::MEDIUM));
+            static_cast<int32_t>(_changelogLines.size()) * font_get_line_height(FontStyle::Medium));
     }
 
     // TODO: This probably should be a utility function defined elsewhere for reusability
@@ -301,7 +301,7 @@ private:
         _changelogLongestLineWidth = 0;
         for (const auto& line : _changelogLines)
         {
-            int32_t linewidth = gfx_get_string_width(line.c_str(), FontSpriteBase::MEDIUM);
+            int32_t linewidth = gfx_get_string_width(line.c_str(), FontStyle::Medium);
             _changelogLongestLineWidth = std::max(linewidth, _changelogLongestLineWidth);
         }
     }

@@ -159,8 +159,8 @@ static constexpr const uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4
     },
 };
 
-static paint_struct* PaintMonorailCyclesUtil7C(
-    paint_session& session, bool flip, ImageId imageId, int8_t xOffset, int8_t yOffset, int16_t boundBoxLengthX,
+static PaintStruct* PaintMonorailCyclesUtil7C(
+    PaintSession& session, bool flip, ImageId imageId, int8_t xOffset, int8_t yOffset, int16_t boundBoxLengthX,
     int16_t boundBoxLengthY, int8_t boundBoxLengthZ, int16_t zOffset, int16_t boundBoxOffsetX, int16_t boundBoxOffsetY,
     int16_t boundBoxOffsetZ, uint32_t rotation)
 {
@@ -178,7 +178,7 @@ static paint_struct* PaintMonorailCyclesUtil7C(
 
 /** rct2: 0x0088AD48 */
 static void PaintMonorailCyclesTrackFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MonorailCyclesTrackPiecesFlat[(direction & 1)]);
@@ -205,7 +205,7 @@ static void PaintMonorailCyclesTrackFlat(
 
 /** rct2: 0x0088ADD8 */
 static void PaintMonorailCyclesStation(
-    paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -243,7 +243,7 @@ static void PaintMonorailCyclesStation(
 
 /** rct2: 0x0088AD88 */
 static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
@@ -281,7 +281,7 @@ static constexpr const uint8_t monorail_cycles_right_quarter_turn_3_tiles_to_lef
 
 /** rct2: 0x0088AD98 */
 static void PaintMonorailCyclesTrackRightQuarterTurn3Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
@@ -304,7 +304,7 @@ static constexpr const int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportSp
 
 /** rct2: 0x0088ADB8 */
 static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
@@ -417,7 +417,7 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
 
 /** rct2: 0x0088ADA8 */
 static void PaintMonorailCyclesTrackLeftQuarterTurn5Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -426,7 +426,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn5Tiles(
 
 /** rct2: 0x0088ADC8 */
 static void PaintMonorailCyclesTrackSBendLeft(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction == 2 || direction == 3)
@@ -530,7 +530,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
 
 /** rct2: 0x*/
 static void PaintMonorailCyclesTrackSBendRight(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction == 2 || direction == 3)

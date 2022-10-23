@@ -43,25 +43,25 @@ static void fixup_pointers(std::vector<RecordedPaintSession>& s)
         auto& quadrants = s[i].Session.Quadrants;
         for (size_t j = 0; j < entries.size(); j++)
         {
-            if (entries[j].AsBasic()->next_quadrant_ps == reinterpret_cast<paint_struct*>(-1))
+            if (entries[j].AsBasic()->next_quadrant_ps == reinterpret_cast<PaintStruct*>(-1))
             {
                 entries[j].AsBasic()->next_quadrant_ps = nullptr;
             }
             else
             {
-                auto nextQuadrantPs = reinterpret_cast<size_t>(entries[j].AsBasic()->next_quadrant_ps) / sizeof(paint_entry);
+                auto nextQuadrantPs = reinterpret_cast<size_t>(entries[j].AsBasic()->next_quadrant_ps) / sizeof(PaintEntry);
                 entries[j].AsBasic()->next_quadrant_ps = s[i].Entries[nextQuadrantPs].AsBasic();
             }
         }
         for (size_t j = 0; j < std::size(quadrants); j++)
         {
-            if (quadrants[j] == reinterpret_cast<paint_struct*>(-1))
+            if (quadrants[j] == reinterpret_cast<PaintStruct*>(-1))
             {
                 quadrants[j] = nullptr;
             }
             else
             {
-                auto ps = reinterpret_cast<size_t>(quadrants[j]) / sizeof(paint_entry);
+                auto ps = reinterpret_cast<size_t>(quadrants[j]) / sizeof(PaintEntry);
                 quadrants[j] = entries[ps].AsBasic();
             }
         }
@@ -160,11 +160,11 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
         std::vector<RecordedPaintSession> sessions(1);
         for (auto& ps : sessions[0].Entries)
         {
-            ps.AsBasic()->next_quadrant_ps = reinterpret_cast<paint_struct*>(-1);
+            ps.AsBasic()->next_quadrant_ps = reinterpret_cast<PaintStruct*>(-1);
         }
         for (auto& quad : sessions[0].Session.Quadrants)
         {
-            quad = reinterpret_cast<paint_struct*>(-1);
+            quad = reinterpret_cast<PaintStruct*>(-1);
         }
         benchmark::RegisterBenchmark("baseline", BM_paint_session_arrange, sessions);
     }

@@ -38,12 +38,12 @@ currency_descriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
 
 void currency_load_custom_currency_config()
 {
-    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = gConfigGeneral.custom_currency_rate;
-    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = gConfigGeneral.custom_currency_affix;
-    if (gConfigGeneral.custom_currency_symbol != nullptr)
+    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = gConfigGeneral.CustomCurrencyRate;
+    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = gConfigGeneral.CustomCurrencyAffix;
+    if (gConfigGeneral.CustomCurrencySymbol != nullptr)
     {
         safe_strcpy(
-            CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, gConfigGeneral.custom_currency_symbol,
+            CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, gConfigGeneral.CustomCurrencySymbol,
             CURRENCY_SYMBOL_MAX_SIZE);
     }
 }

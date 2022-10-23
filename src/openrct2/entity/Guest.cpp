@@ -46,6 +46,7 @@
 #include "../world/Climate.h"
 #include "../world/Footpath.h"
 #include "../world/LargeScenery.h"
+#include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -1651,7 +1652,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
         auto ft = Formatter();
         FormatNameTo(ft);
         ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
-        if (gConfigNotifications.guest_bought_item)
+        if (gConfigNotifications.GuestBoughtItem)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
         }
@@ -2296,7 +2297,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
     finance_payment(-amount, expenditure);
 
-    if (gConfigGeneral.show_guest_purchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (gConfigGeneral.ShowGuestPurchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
         // HACK Currently disabled for multiplayer due to limitation of all sprites
         //      needing to be synchronised
@@ -3568,7 +3569,7 @@ void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride* ride, CoordsXYZD& ent
 
         auto ft = Formatter();
         ride->FormatNameTo(ft);
-        if (gConfigNotifications.ride_warnings)
+        if (gConfigNotifications.RideWarnings)
         {
             News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, peep->CurrentRide.ToUnderlying(), ft);
         }
@@ -3855,7 +3856,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         else
             msg_string = STR_PEEP_TRACKING_PEEP_IS_ON_X;
 
-        if (gConfigNotifications.guest_on_ride)
+        if (gConfigNotifications.GuestOnRide)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, sprite_index, ft);
         }
@@ -4842,7 +4843,7 @@ void Guest::UpdateRideMazePathfinding()
     uint8_t hedges[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
     uint8_t openCount = 0;
     uint8_t mazeReverseLastEdge = DirectionReverse(MazeLastEdge);
-    for (uint8_t i = 0; i < 4; ++i)
+    for (uint8_t i = 0; i < NumOrthogonalDirections; ++i)
     {
         if (!(mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][i])) && i != mazeReverseLastEdge)
         {
@@ -4953,7 +4954,7 @@ void Guest::UpdateRideLeaveExit()
         FormatNameTo(ft);
         ride->FormatNameTo(ft);
 
-        if (gConfigNotifications.guest_left_ride)
+        if (gConfigNotifications.GuestLeftRide)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, sprite_index, ft);
         }
@@ -5065,7 +5066,7 @@ void Guest::UpdateRideShopLeave()
             return;
     }
 
-    //#11758 Previously SetState(PeepState::Walking) caused Peeps to double-back to exit point of shop
+    // #11758 Previously SetState(PeepState::Walking) caused Peeps to double-back to exit point of shop
     SetState(PeepState::Falling);
 
     auto ride = get_ride(CurrentRide);

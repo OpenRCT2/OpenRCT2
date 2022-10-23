@@ -53,7 +53,7 @@ const DrawWeatherFunc DrawSnowFunctions[] = {
  */
 void DrawWeather(rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer)
 {
-    if (gConfigGeneral.render_weather_effects)
+    if (gConfigGeneral.RenderWeatherEffects)
     {
         uint32_t viewFlags = 0;
 

@@ -49,7 +49,7 @@ enum
 };
 
 static void SpiralSlidePaintTileRight(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto rideEntry = ride.GetRideEntry();
@@ -71,7 +71,7 @@ static void SpiralSlidePaintTileRight(
 }
 
 static void SpiralSlidePaintTileLeft(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto rideEntry = ride.GetRideEntry();
@@ -93,7 +93,7 @@ static void SpiralSlidePaintTileLeft(
 }
 
 static void SpiralSlidePaintTileFront(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto rideEntry = ride.GetRideEntry();
@@ -194,7 +194,7 @@ static void SpiralSlidePaintTileFront(
  * rct: 0x007485C8
  */
 static void PaintSpiralSlide(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto rideEntry = ride.GetRideEntry();

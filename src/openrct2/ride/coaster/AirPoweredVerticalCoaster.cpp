@@ -164,7 +164,7 @@ enum
     SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0 = 22333,
 };
 
-static ImageId air_powered_vertical_rc_get_support_colour(paint_session& session)
+static ImageId air_powered_vertical_rc_get_support_colour(PaintSession& session)
 {
     auto colourFlags = session.TrackColours[SCHEME_SUPPORTS];
     auto trackColour = session.TrackColours[SCHEME_TRACK];
@@ -177,7 +177,7 @@ static ImageId air_powered_vertical_rc_get_support_colour(paint_session& session
 
 /** rct2: 0x008AFAD4 */
 static void air_powered_vertical_rc_track_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4] = {
@@ -199,7 +199,7 @@ static void air_powered_vertical_rc_track_flat(
 }
 
 static void air_powered_vertical_rc_track_station(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
@@ -227,10 +227,10 @@ static void air_powered_vertical_rc_track_station(
 }
 
 static void air_powered_vertical_rc_track_right_quarter_turn_5(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb imageIds[4][5] = {
+    static constexpr const SpriteBb imageIds[4][5] = {
         {
             { SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_0, { 0, 2, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
             { SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_1, { 0, 16, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
@@ -308,7 +308,7 @@ static void air_powered_vertical_rc_track_right_quarter_turn_5(
 }
 
 static void air_powered_vertical_rc_track_left_quarter_turn_5(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -317,7 +317,7 @@ static void air_powered_vertical_rc_track_left_quarter_turn_5(
 
 /** rct2: 0x008AFB74 */
 static void air_powered_vertical_rc_track_flat_to_left_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
@@ -346,7 +346,7 @@ static void air_powered_vertical_rc_track_flat_to_left_bank(
 
 /** rct2: 0x008AFB84 */
 static void air_powered_vertical_rc_track_flat_to_right_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
@@ -374,7 +374,7 @@ static void air_powered_vertical_rc_track_flat_to_right_bank(
 }
 
 static void air_powered_vertical_rc_track_left_bank_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     air_powered_vertical_rc_track_flat_to_right_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -382,17 +382,17 @@ static void air_powered_vertical_rc_track_left_bank_to_flat(
 
 /** rct2: 0x008AFBA4 */
 static void air_powered_vertical_rc_track_right_bank_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     air_powered_vertical_rc_track_flat_to_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb imageIds[4][5] = {
+    static constexpr const SpriteBb imageIds[4][5] = {
         {
             { SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 3 } },
             { SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_SW_SE_PART_1, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 3 } },
@@ -484,7 +484,7 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
 }
 
 static void air_powered_vertical_rc_track_banked_left_quarter_turn_5(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -494,7 +494,7 @@ static void air_powered_vertical_rc_track_banked_left_quarter_turn_5(
 
 /** rct2: 0x008AFBD4 */
 static void air_powered_vertical_rc_track_left_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4] = {
@@ -523,14 +523,14 @@ static void air_powered_vertical_rc_track_left_bank(
 }
 
 static void air_powered_vertical_rc_track_right_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     air_powered_vertical_rc_track_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 static void air_powered_vertical_rc_track_brakes(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4] = {
@@ -552,7 +552,7 @@ static void air_powered_vertical_rc_track_brakes(
 }
 
 static void air_powered_vertical_rc_track_vertical_slope_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t trackImageIds[7][4] = {
@@ -774,7 +774,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
 }
 
 static void air_powered_vertical_rc_track_vertical_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
@@ -811,7 +811,7 @@ static void air_powered_vertical_rc_track_vertical_up(
 }
 
 static void air_powered_vertical_rc_track_vertical_top(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction == 2 || direction == 3)
@@ -901,14 +901,14 @@ static void air_powered_vertical_rc_track_vertical_top(
 }
 
 static void air_powered_vertical_rc_track_vertical_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     air_powered_vertical_rc_track_vertical_up(session, ride, trackSequence ^ 1, (direction + 2) & 3, height, trackElement);
 }
 
 static void air_powered_vertical_rc_track_vertical_slope_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     air_powered_vertical_rc_track_vertical_slope_up(
@@ -916,7 +916,7 @@ static void air_powered_vertical_rc_track_vertical_slope_down(
 }
 
 static void air_powered_vertical_rc_track_booster(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     // The booster piece is borrowed from the Reverse Freefall Colour.
@@ -946,7 +946,7 @@ static void air_powered_vertical_rc_track_booster(
 }
 
 static void air_powered_vertical_rc_track_onride_photo(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4] = {

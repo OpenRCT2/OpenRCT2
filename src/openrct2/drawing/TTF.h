@@ -26,7 +26,7 @@ struct TTFSurface
     int32_t pitch;
 };
 
-TTFFontDescriptor* ttf_get_font_from_sprite_base(FontSpriteBase spriteBase);
+TTFFontDescriptor* ttf_get_font_from_sprite_base(FontStyle fontStyle);
 void ttf_toggle_hinting();
 TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, std::string_view text);
 uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, std::string_view text);

@@ -178,7 +178,7 @@ static constexpr const uint32_t river_rapids_track_pieces_25_deg_down_to_flat[][
  *  rct2: 0x006D5889
  */
 void vehicle_visual_river_rapids(
-    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
     imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
@@ -277,7 +277,7 @@ void vehicle_visual_river_rapids(
 
 /** rct2: 0x00757650 */
 static void paint_river_rapids_track_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -320,7 +320,7 @@ static void paint_river_rapids_track_flat(
 
 /** rct2: 0x007576C0 */
 static void paint_river_rapids_station(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_flat(session, ride, trackSequence, direction, height, trackElement);
@@ -329,10 +329,10 @@ static void paint_river_rapids_station(
 }
 
 static void paint_river_rapids_track_25_deg(
-    paint_session& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
+    PaintSession& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
 {
     ImageId imageId;
-    paint_struct* ps;
+    PaintStruct* ps;
 
     switch (direction)
     {
@@ -388,10 +388,10 @@ static void paint_river_rapids_track_25_deg(
 }
 
 static void paint_river_rapids_track_25_deg_to_flat_a(
-    paint_session& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
+    PaintSession& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
 {
     ImageId imageId;
-    paint_struct* ps;
+    PaintStruct* ps;
 
     switch (direction)
     {
@@ -448,10 +448,10 @@ static void paint_river_rapids_track_25_deg_to_flat_a(
 }
 
 static void paint_river_rapids_track_25_deg_to_flat_b(
-    paint_session& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
+    PaintSession& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
 {
     ImageId imageId;
-    paint_struct* ps;
+    PaintStruct* ps;
 
     switch (direction)
     {
@@ -508,7 +508,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(
 
 /** rct2: 0x00757660 */
 static void paint_river_rapids_track_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_25_deg(session, direction, height, river_rapids_track_pieces_25_deg_up);
@@ -516,7 +516,7 @@ static void paint_river_rapids_track_25_deg_up(
 
 /** rct2: 0x00757670 */
 static void paint_river_rapids_track_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_25_deg_to_flat_b(session, direction, height, river_rapids_track_pieces_flat_to_25_deg_up);
@@ -524,7 +524,7 @@ static void paint_river_rapids_track_flat_to_25_deg_up(
 
 /** rct2: 0x00757680 */
 static void paint_river_rapids_track_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_25_deg_to_flat_a(session, direction, height, river_rapids_track_pieces_25_deg_up_to_flat);
@@ -532,7 +532,7 @@ static void paint_river_rapids_track_25_deg_up_to_flat(
 
 /** rct2: 0x00757690 */
 static void paint_river_rapids_track_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_25_deg(session, (direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down);
@@ -540,7 +540,7 @@ static void paint_river_rapids_track_25_deg_down(
 
 /** rct2: 0x007576A0 */
 static void paint_river_rapids_track_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_25_deg_to_flat_a(
@@ -549,7 +549,7 @@ static void paint_river_rapids_track_flat_to_25_deg_down(
 
 /** rct2: 0x007576B0 */
 static void paint_river_rapids_track_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_25_deg_to_flat_b(
@@ -558,7 +558,7 @@ static void paint_river_rapids_track_25_deg_down_to_flat(
 
 /** rct2: 0x007576F0 */
 static void paint_river_rapids_track_left_quarter_turn_1_tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -614,7 +614,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
 
 /** rct2: 0x00757700 */
 static void paint_river_rapids_track_right_quarter_turn_1_tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -671,7 +671,7 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(
 
 /** rct2: 0x00757710 */
 static void paint_river_rapids_track_waterfall(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -734,7 +734,7 @@ static void paint_river_rapids_track_waterfall(
 
 /** rct2: 0x00757720 */
 static void paint_river_rapids_track_rapids(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -775,7 +775,7 @@ static void paint_river_rapids_track_rapids(
 
 /** rct2: 0x00757740 */
 static void paint_river_rapids_track_on_ride_photo(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_flat(session, ride, trackSequence, direction, height, trackElement);
@@ -785,7 +785,7 @@ static void paint_river_rapids_track_on_ride_photo(
 
 /** rct2: 0x */
 static void paint_river_rapids_track_whirlpool(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;

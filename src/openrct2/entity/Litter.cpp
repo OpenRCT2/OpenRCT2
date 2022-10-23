@@ -170,7 +170,7 @@ static constexpr const LitterSprite _litterSprites[] = {
     { SPR_LITTER_EMPTY_BOWL_BLUE, 0x3 },
 };
 
-void Litter::Paint(paint_session& session, int32_t imageDirection) const
+void Litter::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 

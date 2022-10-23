@@ -89,10 +89,10 @@ static constexpr const uint8_t byte_98D8A4[] = {
 // clang-format on
 
 void PathPaintBoxSupport(
-    paint_session& session, const PathElement& pathElement, int32_t height, const FootpathPaintInfo& pathPaintInfo,
+    PaintSession& session, const PathElement& pathElement, int32_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate);
 void PathPaintPoleSupport(
-    paint_session& session, const PathElement& pathElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
+    PaintSession& session, const PathElement& pathElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate);
 
 static ImageIndex GetEdgeImageOffset(edge_t edge)
@@ -140,7 +140,7 @@ static ImageIndex GetFootpathBenchImage(const PathBitEntry& pathBitEntry, edge_t
 
 /* rct2: 0x006A5AE5 */
 static void PathBitLightsPaint(
-    paint_session& session, const PathBitEntry& pathBitEntry, const PathElement& pathElement, int32_t height, uint8_t edges,
+    PaintSession& session, const PathBitEntry& pathBitEntry, const PathElement& pathElement, int32_t height, uint8_t edges,
     ImageId imageTemplate)
 {
     if (pathElement.IsSloped())
@@ -173,7 +173,7 @@ static void PathBitLightsPaint(
     }
 }
 
-static bool IsBinFull(paint_session& session, const PathElement& pathElement, edge_t edge)
+static bool IsBinFull(PaintSession& session, const PathElement& pathElement, edge_t edge)
 {
     switch (edge)
     {
@@ -192,7 +192,7 @@ static bool IsBinFull(paint_session& session, const PathElement& pathElement, ed
 
 /* rct2: 0x006A5C94 */
 static void PathBitBinsPaint(
-    paint_session& session, const PathBitEntry& pathBitEntry, const PathElement& pathElement, int32_t height, uint8_t edges,
+    PaintSession& session, const PathBitEntry& pathBitEntry, const PathElement& pathElement, int32_t height, uint8_t edges,
     ImageId imageTemplate)
 {
     if (pathElement.IsSloped())
@@ -237,7 +237,7 @@ static void PathBitBinsPaint(
 
 /* rct2: 0x006A5E81 */
 static void PathBitBenchesPaint(
-    paint_session& session, const PathBitEntry& pathBitEntry, const PathElement& pathElement, int32_t height, uint8_t edges,
+    PaintSession& session, const PathBitEntry& pathBitEntry, const PathElement& pathElement, int32_t height, uint8_t edges,
     ImageId imageTemplate)
 {
     auto isBroken = pathElement.IsBroken();
@@ -271,7 +271,7 @@ static void PathBitBenchesPaint(
 
 /* rct2: 0x006A6008 */
 static void PathBitJumpingFountainsPaint(
-    paint_session& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, rct_drawpixelinfo* dpi)
+    PaintSession& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, rct_drawpixelinfo* dpi)
 {
     if (dpi->zoom_level > ZoomLevel{ 0 })
         return;
@@ -288,7 +288,7 @@ static void PathBitJumpingFountainsPaint(
  * @param tile_element (esi)
  */
 static void sub_6A4101(
-    paint_session& session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
+    PaintSession& session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
     const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate)
 {
     PROFILED_FUNCTION();
@@ -455,7 +455,7 @@ static void sub_6A4101(
             {
                 ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
             }
-            if (gConfigGeneral.upper_case_banners)
+            if (gConfigGeneral.UpperCaseBanners)
             {
                 format_string_to_upper(
                     gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
@@ -465,7 +465,7 @@ static void sub_6A4101(
                 format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
 
-            uint16_t stringWidth = gfx_get_string_width(gCommonStringFormatBuffer, FontSpriteBase::TINY);
+            uint16_t stringWidth = gfx_get_string_width(gCommonStringFormatBuffer, FontStyle::Tiny);
             uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
             PaintAddImageAsChild(
@@ -709,7 +709,7 @@ static void sub_6A4101(
  * @param sceneryImageFlags (0x00F3EF74)
  */
 static void sub_6A3F61(
-    paint_session& session, const PathElement& pathElement, uint16_t connectedEdges, uint16_t height,
+    PaintSession& session, const PathElement& pathElement, uint16_t connectedEdges, uint16_t height,
     const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate, ImageId sceneryImageTemplate, bool hasSupports)
 {
     // eax --
@@ -866,7 +866,7 @@ static FootpathPaintInfo GetFootpathPaintInfo(const PathElement& pathEl)
     return pathPaintInfo;
 }
 
-static bool ShouldDrawSupports(paint_session& session, const PathElement& pathEl, uint16_t height)
+static bool ShouldDrawSupports(PaintSession& session, const PathElement& pathEl, uint16_t height)
 {
     auto surface = MapGetSurfaceElementAt(session.MapPosition);
     if (surface == nullptr)
@@ -896,7 +896,7 @@ static bool ShouldDrawSupports(paint_session& session, const PathElement& pathEl
     return false;
 }
 
-static void PaintPatrolAreas(paint_session& session, const PathElement& pathEl)
+static void PaintPatrolAreas(PaintSession& session, const PathElement& pathEl)
 {
     auto colour = GetPatrolAreaTileColour(session.MapPosition);
     if (colour)
@@ -914,7 +914,7 @@ static void PaintPatrolAreas(paint_session& session, const PathElement& pathEl)
     }
 }
 
-static void PaintHeightMarkers(paint_session& session, const PathElement& pathEl)
+static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
 {
     PROFILED_FUNCTION();
 
@@ -935,7 +935,7 @@ static void PaintHeightMarkers(paint_session& session, const PathElement& pathEl
     }
 }
 
-static void PaintLampLightEffects(paint_session& session, const PathElement& pathEl, uint16_t height)
+static void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uint16_t height)
 {
     PROFILED_FUNCTION();
 
@@ -970,7 +970,7 @@ static void PaintLampLightEffects(paint_session& session, const PathElement& pat
 /**
  * rct2: 0x0006A3590
  */
-void PaintPath(paint_session& session, uint16_t height, const PathElement& tileElement)
+void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileElement)
 {
     PROFILED_FUNCTION();
 
@@ -1042,7 +1042,7 @@ void PaintPath(paint_session& session, uint16_t height, const PathElement& tileE
 }
 
 void PathPaintBoxSupport(
-    paint_session& session, const PathElement& pathElement, int32_t height, const FootpathPaintInfo& pathPaintInfo,
+    PaintSession& session, const PathElement& pathElement, int32_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate)
 {
     PROFILED_FUNCTION();
@@ -1180,7 +1180,7 @@ void PathPaintBoxSupport(
 }
 
 void PathPaintPoleSupport(
-    paint_session& session, const PathElement& pathElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
+    PaintSession& session, const PathElement& pathElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate)
 {
     PROFILED_FUNCTION();
