@@ -92,6 +92,7 @@ void JobPool::Join(std::function<void()> reportFn)
 
 size_t JobPool::CountPending()
 {
+    unique_lock lock(_mutex);
     return _pending.size();
 }
 
