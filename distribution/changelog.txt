@@ -16,6 +16,7 @@
 - Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
 - Fix: [#18134] Underground on-ride photo section partially clips through adjacent terrain edge.
 - Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
+- Fix: [#18379] Tunnel entrances for underground Mini Golf Hole E are not rendered correctly.
 
 0.4.2 (2022-10-05)
 ------------------------------------------------------------------------
