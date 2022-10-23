@@ -49,6 +49,8 @@ private:
     MusicNiceFactor _niceFactor;
     AudioSampleTable _sampleTable;
     AudioSampleTable _loadedSampleTable;
+    bool _hasPreview{};
+    uint32_t _previewImageId{};
 
 public:
     StringId NameStringId{};
