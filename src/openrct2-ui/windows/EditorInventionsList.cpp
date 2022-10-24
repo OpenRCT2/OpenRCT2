@@ -521,6 +521,13 @@ public:
         _selectedResearchItem = nullptr;
         Invalidate();
 
+        uint32_t beforeItemRawValue = 0;
+        if (beforeItem != nullptr)
+            beforeItemRawValue = beforeItem->rawValue;
+
+        if (item.rawValue == beforeItemRawValue)
+            return;
+
         ResearchRemove(item);
 
         auto& researchList = isInvented ? gResearchItemsInvented : gResearchItemsUninvented;
@@ -528,7 +535,7 @@ public:
         {
             for (size_t i = 0; i < researchList.size(); i++)
             {
-                if (researchList[i] == *beforeItem)
+                if (researchList[i].rawValue == beforeItemRawValue)
                 {
                     researchList.insert((researchList.begin() + i), item);
                     return;
