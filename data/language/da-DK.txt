@@ -96,6 +96,7 @@ STR_0091    :Ukendt Forlystelse (59)
 STR_0092    :LIM Accelereret Rutschebane
 STR_0093    :Hybrid Rutschebane
 STR_0094    :Enkelt skinde rutchebane
+STR_0096    :Klassisk træ rutsjebane
 STR_0512    :En kompakt rutschebane med en spiral stigning og bløde, snoede fald.
 STR_0513    :En loopende rutschebane hvor passagerne er i en stående position
 STR_0514    :Vogne suspenderet under rutschebane sporet, svinger ud til siden i svingene
@@ -177,6 +178,7 @@ STR_0600    :Selvkørende togvogne kører igennem en sen snoet bane af spor
 STR_0602    :Rutsjebanetog accelereres ud af stationen af lineære induktionsmotorer for at suse gennem snoede inversioner
 STR_0603    :En rutsjebane i træ stil, med stål spor, Med stejle fald og hurtige sving.
 STR_0604    :Gæster sider i en enkelt række, på et smalt monorail spor, imens de suser igennem skarpe sving ,snoninger og hurtige vridninger.
+STR_0606    :En ældre stils trærutsjebane med en hurtig og ujævn tur med masser af luft tid, laterale G'er, og designet til at føles som ‘ude-af-kontrol’
 STR_0767    :Gæst {INT32}
 STR_0768    :Handymand {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -750,7 +752,7 @@ STR_1363    :For højt til understøttelse!
 STR_1364    :Understøttelse til banen kan ikke forlænges yderligere!
 STR_1365    :In-line Twist (venstre)
 STR_1366    :In-line Twist (højre)
-STR_1367    :Halvt Loop
+STR_1367    :Lille halvt Loop
 STR_1368    :Halvt Corkscrew (venstre)
 STR_1369    :Halvt Corkscrew (højre)
 STR_1370    :Tønderul (venstre)
@@ -3592,12 +3594,29 @@ STR_6490    :Advarsel: Semi-kompatibel Park Version
 STR_6491    :Denne park blev gemt i en nyere version af OpenRCT2. Parken er v{INT32} og kræver mindst v{INT32}.
 STR_6492    :Denne park er gemt i en ældre version af OpenRCT2, og kan ikke åbnes med denne version af OpenRCT2. Parken er v{INT32}.
 STR_6493    :Denne park blev gemt i en nyere version af OpenRCT2, nogle data kan gå tabt. Parken er v{INT32} og kræver mindst v{INT32}.
+STR_6497    :Klik på et felt for at vise dets felt elementer.{NEWLINE}Ctrl + Klik et felt element for at vælge det direkte.
+STR_6498    :Aktiver for at fastholde kvadratisk kortfacon.
+STR_6499    :Køretøjstype understøttes ikke af spor design formatet
+STR_6500    :Spor elementerne understøttes ikke af spor design formatet
 STR_6501    :Tilfældig farve
 STR_6502    :Indtast en værdi mellem {COMMA16} og {COMMA16}
 STR_6503    :Der skal vælges mindst ét station objekt
 STR_6504    :Der skal vælges mindst én terræn overflade
 STR_6505    :Der skal vælges mindst én terræn kant
+STR_6506    :Stor halv proptrækker (venstre)
+STR_6507    :Stor halv proptrækker (højre)
+STR_6508    :Mellem halv loop (left)
+STR_6509    :Mellem halv loop (right)
+STR_6510    :Nul G Rul (venstre)
+STR_6511    :Nul G Rul (højre)
+STR_6512    :Stor nul G Rul (venstre)
+STR_6513    :Stor nul G Rul (højre)
 STR_6514    :Ugyldig højde!
+STR_6515    :{BLACK}RCT1 er ikke linket - Reserve billeder vil blive brugt.
+STR_6516    :Et eller flere objekter tilføjet kræver at RCT1 er linket for ordenlig visning. Reserve billeder vil blive brugt.
+STR_6517    :Et eller flere objekter i denne park kræver at RCT1 er linket for ordenlig visning. Reserve billeder vil blive brugt.
+STR_6518    :{BLACK}Hold over et scenarie for at se beskrivelse og mål. Klik for at starte med at spille.
+STR_6519    :Ekstra
 STR_6520    :Materiel pakker
 STR_6521    :Lav prioritet
 STR_6522    :Høj prioritet
