@@ -80,6 +80,7 @@ public:
 
     void OnClose() override
     {
+        hide_gridlines();
         if (gLandRemainingConstructionSales == 0)
         {
             hide_construction_rights();
@@ -318,7 +319,6 @@ public:
 
     void OnToolAbort(WidgetIndex widgetIndex) override
     {
-        hide_gridlines();
         if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
         {
             hide_land_rights();
