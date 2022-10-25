@@ -179,6 +179,14 @@ You can also use Ninja in place of Make using `-G Ninja` in the first command, i
 
 Detailed instructions can be found on [Building OpenRCT2 on Linux](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
 
+Note: the `cmake -S . -B build` syntax is available for CMake >= 3.14. For older versions use:
+```
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=. # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake --build . --target install
+```
+
 ---
 
 # 4. Contributing
