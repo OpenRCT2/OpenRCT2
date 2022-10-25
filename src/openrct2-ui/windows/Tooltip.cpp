@@ -35,41 +35,37 @@ private:
     int16_t _tooltipNumLines = 1;
 
 public:
-    void SetMessage(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
+    TooltipWindow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
     {
         int32_t textWidth = FormatTextForTooltip(message);
-        int32_t _width = textWidth + 3;
-        int32_t _height = ((_tooltipNumLines + 1) * font_get_line_height(FontStyle::Small)) + 4;
+        width = textWidth + 3;
+        height = ((_tooltipNumLines + 1) * font_get_line_height(FontStyle::Small)) + 4;
 
-        window_tooltip_widgets[WIDX_BACKGROUND].right = _width;
-        window_tooltip_widgets[WIDX_BACKGROUND].bottom = _height;
+        window_tooltip_widgets[WIDX_BACKGROUND].right = width;
+        window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
         int32_t screenWidth = context_get_width();
         int32_t screenHeight = context_get_height();
-        screenCoords.x = std::clamp(screenCoords.x - (_width / 2), 0, screenWidth - _width);
+        screenCoords.x = std::clamp(screenCoords.x - (width / 2), 0, screenWidth - width);
 
         // TODO The cursor size will be relative to the window DPI.
         //      The amount to offset the y should be adjusted.
 
-        int32_t max_y = screenHeight - _height;
+        int32_t max_y = screenHeight - height;
         screenCoords.y += 26; // Normally, we'd display the tooltip 26 lower
         if (screenCoords.y > max_y)
             // If y is too large, the tooltip could be forced below the cursor if we'd just clamped y,
             // so we'll subtract a bit more
-            screenCoords.y -= _height + 40;
+            screenCoords.y -= height + 40;
         screenCoords.y = std::clamp(screenCoords.y, 22, max_y);
 
-        // resize and reposition
-        Invalidate();
         windowPos = screenCoords;
-        width = _width;
-        height = _height;
-        Invalidate();
     }
 
     void OnOpen() override
     {
         widgets = window_tooltip_widgets;
+        reset_tooltip_not_shown();
     }
 
     void OnUpdate() override
@@ -142,9 +138,10 @@ void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoord
     if (w != nullptr)
         return;
 
-    auto window = WindowCreate<TooltipWindow>(WindowClass::Tooltip, screenCoords, 0, 0, WF_TRANSPARENT | WF_STICK_TO_FRONT);
-    window->SetMessage(message, screenCoords);
-    reset_tooltip_not_shown();
+    auto tooltipWindow = std::make_unique<TooltipWindow>(message, screenCoords);
+    WindowCreate(
+        std::move(tooltipWindow), WindowClass::Tooltip, tooltipWindow->windowPos, tooltipWindow->width, tooltipWindow->height,
+        WF_TRANSPARENT | WF_STICK_TO_FRONT);
 }
 
 void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
