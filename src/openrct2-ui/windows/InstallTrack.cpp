@@ -123,12 +123,12 @@ public:
 
     void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
-        if (widgetIndex != WIDX_INSTALL || str_is_null_or_empty(std::string(text).c_str()))
+        if (widgetIndex != WIDX_INSTALL || text.empty())
         {
             return;
         }
 
-        _trackName = static_cast<std::string>(text);
+        _trackName = std::string(text);
 
         window_event_mouse_up_call(this, WIDX_INSTALL);
     }
@@ -402,7 +402,7 @@ private:
 
 rct_window* WindowInstallTrackOpen(const utf8* path)
 {
-    std::unique_ptr<TrackDesign> trackDesign = TrackDesignImport(path);
+    auto trackDesign = TrackDesignImport(path);
     if (trackDesign == nullptr)
     {
         context_show_error(STR_UNABLE_TO_LOAD_FILE, STR_NONE, {});
@@ -429,10 +429,9 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
 
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
-    int32_t x = screenWidth / 2 - 201;
-    int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
+    auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200) };
 
-    auto* window = WindowFocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, ScreenCoordsXY(x, y), WW, WH, 0);
+    auto* window = WindowFocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, screenPos, WW, WH, 0);
     window->SetupTrack(path, std::move(trackDesign));
 
     return window;
