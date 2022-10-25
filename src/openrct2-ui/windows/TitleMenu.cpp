@@ -174,7 +174,6 @@ public:
     {
         if (widgetIndex == WIDX_GAME_TOOLS)
         {
-            rct_widget* widget = &widgets[widgetIndex];
             int32_t i = 0;
             gDropdownItems[i++].Format = STR_SCENARIO_EDITOR;
             gDropdownItems[i++].Format = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
@@ -207,6 +206,7 @@ public:
             }
 #endif
 
+            rct_widget* widget = &widgets[widgetIndex];
             int32_t yOffset = 0;
             if (i > 5)
             {
@@ -214,7 +214,7 @@ public:
             }
 
             WindowDropdownShowText(
-                { windowPos.x + widget->left, windowPos.y + widget->top + yOffset }, widget->height() + 1,
+                windowPos + ScreenCoordsXY{ widget->left, widget->top + yOffset }, widget->height() + 1,
                 TRANSLUCENT(colours[0]), Dropdown::Flag::StayOpen, i);
         }
     }
@@ -252,7 +252,7 @@ public:
         }
     }
 
-    CursorID OnCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
+    CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
     {
         gTooltipTimeout = 2000;
         return cursorId;
@@ -260,8 +260,8 @@ public:
 
     void OnPrepareDraw() override
     {
-        _filterRect = { windowPos.x, windowPos.y + UpdateButtonDims.height, windowPos.x + width - 1,
-                        windowPos.y + MenuButtonDims.height + UpdateButtonDims.height - 1 };
+        _filterRect = { windowPos + ScreenCoordsXY{ 0, UpdateButtonDims.height },
+                        windowPos + ScreenCoordsXY{ width - 1, MenuButtonDims.height + UpdateButtonDims.height - 1 } };
         if (OpenRCT2::GetContext()->HasNewVersionInfo())
         {
             widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
@@ -278,7 +278,6 @@ public:
 
 /**
  * Creates the window containing the menu buttons on the title screen.
- *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
  */
 rct_window* WindowTitleMenuOpen()
 {
