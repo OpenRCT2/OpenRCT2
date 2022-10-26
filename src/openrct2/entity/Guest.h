@@ -334,7 +334,7 @@ public:
     void StopPurchaseThought(ride_type_t rideType);
     void TryGetUpFromSitting();
     bool ShouldRideWhileRaining(const Ride& ride);
-    void ChooseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
+    void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
     void PickRideToGoOn();
     void ReadMap();
     bool ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, bool thinking);
