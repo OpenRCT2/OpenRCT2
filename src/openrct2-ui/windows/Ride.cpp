@@ -2075,7 +2075,7 @@ static void WindowRideShowVehicleTypeDropdown(rct_window* w, rct_widget* widget)
     rct_widget* dropdownWidget = widget - 1;
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->right - dropdownWidget->left - 96);
+        w->colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->right - dropdownWidget->left - 30);
 
     // Find the current vehicle type in the ordered list.
     int32_t pos = 0;
