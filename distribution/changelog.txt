@@ -8,6 +8,7 @@
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 - Change: [#18381] Convert custom invisible paths to the built-in ones.
 - Fix: [#14312] Research ride type message incorrect.
+- Fix: [#15969] Guests heading for ride use vanilla behaviour
 - Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17657] When switching from buying land rights to buying construction rights, grid disables and won't re-enable afterwards.
 - Fix: [#17763] Missing validation on invalid characters in file name.
