@@ -102,7 +102,7 @@ namespace OpenRCT2::Scripting
                     case WindowWidgetType::Caption:
                         return "caption";
                     case WindowWidgetType::Scroll:
-                        return "scroll_view";
+                        return "listview";
                     case WindowWidgetType::Checkbox:
                         return "checkbox";
                     case WindowWidgetType::TextBox:
