@@ -571,8 +571,6 @@ static void WindowLoadsaveScrollmouseover(rct_window* w, int32_t scrollIndex, co
 
 static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
-    bool overwrite;
-
     if (text == nullptr || text[0] == 0)
         return;
 
