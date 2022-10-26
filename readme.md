@@ -105,6 +105,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 - CMake (available through Homebrew)
 
 ### Linux:
+- gcc (>= 7.1)
 - sdl2 (only for UI client)
 - freetype (can be disabled)
 - fontconfig (can be disabled)
