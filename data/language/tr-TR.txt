@@ -2984,7 +2984,7 @@ STR_5832    :Yükseklik birimin “Mesafe ve Hız” bölümünde seçdiğiniz g
 STR_5833    :Kullanmak istediğiniz tarih formatını seçiniz
 STR_5834    :Kullanmak istediğiniz ses aygıtını seçiniz
 STR_5835    :Oyun penceresi simge durumuna getirildiğinde oyununu sesini kıs
-STR_5836    :Ana ekran müziğini.{NEWLINE}RCT1 seçildiğinde ya RCT 1’in ‘data’ adlı klasöründen ‘css17.dat’ dosyasını RCT2’nin ‘data’ adlı klasörüne ‘css50.dat’ olarak kopyalamanız yada ‘Diğer Ayarlar’ penceresinden RCT1 klasörünü belirlemeniz gereklidir
+STR_5836    :Ana ekran müziğini.{NEWLINE}RCT1 temasını seçmek için ‘Diğer Ayarlar’ penceresinden RCT1 klasörünü belirlemeniz gereklidir.
 STR_5837    :Arayüzü temları değiştiriniz veya oluşturunuz
 STR_5838    :Üst araç çubuğunda ‘Finansal Bakış’ simgesini göster/gizle
 STR_5839    :Üst araç çubuğunda ‘Araştırma’ simgesini göster/gizle
@@ -3375,6 +3375,11 @@ STR_6267    :Zemin deneticisini aç
 STR_6268    :Bir sonraki tick’e atla		
 STR_6269    :Geçersiz hava ID’si
 STR_6360    :{BLACK}{COMMA32}
+STR_6515    :{BLACK}RCT1 bağlı değil - yedek görüntüler kullanılacak.
+STR_6516    :Eklenen bir veya daha fazla nesne, uygun görüntüleme için RCT1'in bağlanmasını gerektirir. Yedek görüntüler kullanılacak.
+STR_6517    :Bu parktaki bir veya daha fazla nesne, düzgün görüntüleme için RCT1'in bağlanmasını gerektirir. Yedek görüntüler kullanılacak.
+STR_6518    :{BLACK}Açıklamasını ve amacını görüntülemek için bir senaryonun üzerine gelin. Oynamaya başlamak için tıklayın.
+STR_6519    :Ekstralar
 STR_6520    :Varlık paketleri
 STR_6521    :Düşük öncelik
 STR_6522    :Yüksek öncelik

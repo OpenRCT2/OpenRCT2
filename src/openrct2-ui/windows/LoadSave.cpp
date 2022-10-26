@@ -20,6 +20,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/File.h>
 #include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
@@ -570,8 +571,6 @@ static void WindowLoadsaveScrollmouseover(rct_window* w, int32_t scrollIndex, co
 
 static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
 {
-    bool overwrite;
-
     if (text == nullptr || text[0] == 0)
         return;
 
@@ -608,17 +607,7 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
             const u8string path = Path::WithExtension(
                 Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
 
-            overwrite = false;
-            for (auto& item : _listItems)
-            {
-                if (String::Equals(item.path, path))
-                {
-                    overwrite = true;
-                    break;
-                }
-            }
-
-            if (overwrite)
+            if (File::Exists(path))
                 WindowOverwritePromptOpen(text, path.c_str());
             else
                 WindowLoadsaveSelect(w, path.c_str());

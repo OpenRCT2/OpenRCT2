@@ -9,12 +9,16 @@
 
 #pragma once
 
+#include "String.hpp"
+
 #include <functional>
 #include <string>
 #include <thread>
 #include <vector>
 
 #ifdef _WIN32
+#    include "FileSystem.hpp"
+
 typedef void* HANDLE;
 #endif
 
@@ -26,7 +30,7 @@ class FileWatcher
 private:
     std::thread _watchThread;
 #if defined(_WIN32)
-    std::string _path;
+    fs::path _path;
     HANDLE _directoryHandle{};
 #elif defined(__linux__)
     struct FileDescriptor
@@ -53,9 +57,9 @@ private:
 #endif
 
 public:
-    std::function<void(const std::string& path)> OnFileChanged;
+    std::function<void(u8string_view path)> OnFileChanged;
 
-    FileWatcher(const std::string& directoryPath);
+    FileWatcher(u8string_view directoryPath);
     ~FileWatcher();
 
 private:

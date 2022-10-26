@@ -2998,7 +2998,7 @@ STR_5832    :Mostra les alçades com a unitats genèriques (-2, -1, 0, +1, +2…
 STR_5833    :Canvia el format de les dates.
 STR_5834    :Trieu quin dispositiu de so ha de fer servir l’OpenRCT2.
 STR_5835    :Silencia el joc si la finestra perd el focus.
-STR_5836    :Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema de l’RCT1, cal que copieu «data/css17.dat» de la carpeta del RCT1 al directori del RCT2 com a «data/css50.dat», o bé establiu correctament la carpeta del RCT1 a la pestanya d’altres opcions.
+STR_5836    :Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema del RCT1, cal que establiu correctament la carpeta del RCT1 a la pestanya d’altres opcions.
 STR_5837    :Crea i gestiona els temes de la interfície personalitzats.
 STR_5838    :Mostra el botó de la finestra de finances a la barra d’eines.
 STR_5839    :Mostra el botó de la finestra de recerques a la barra d’eines.
@@ -3508,10 +3508,10 @@ STR_6396    :Desactiva el protector de pantalla i l’estalviador d’energia
 STR_6397    :Si es selecciona, el protector de pantalla i altres funcions d’estalvi d’energia seran inhibides mentre s’executa l’OpenRCT2.
 STR_6398    :El fitxer conté atraccions incompatibles. Si us plau, actualitzeu l’OpenRCT2.
 STR_6399    :OpenRCT2 necessita fitxers del joc original RollerCoaster Tycoon 2 per a poder funcionar. Si us plau, establiu la variable «game_path» al config.ini apuntant al directori on vau instal·lar RollerCoaster Tycoon 2 i reinicieu l’OpenRCT2.
-STR_6400    :Tinc descarregat l’instal·lador del GOG sense connexió a Internet del RollerCoaster Tycoon 2, però no l’he instal·lat
-STR_6401    :Ja tinc el RollerCoaster Tycoon 2 instal·lat
+STR_6400    :Tinc descarregat l’instal·lador del GOG sense connexió a Internet del RollerCoaster Tycoon 2, però no l’he instal·lat.
+STR_6401    :Ja tinc el RollerCoaster Tycoon 2 instal·lat.
 STR_6402    :Configuració de dades de l’OpenRCT2
-STR_6403    :Trieu quina opció us escau més
+STR_6403    :Trieu quina opció us escau més:
 STR_6404    :Selecciona l’instal·lador del GOG del RollerCoaster Tycoon 2.
 STR_6405    :Selecciona l’instal·lador del GOG
 STR_6406    :Instal·lador del GOG del RollerCoaster Tycoon 2
@@ -3631,6 +3631,14 @@ STR_6516    :Un o més objectes que s’han afegit necessiten l’enllaç al RCT
 STR_6517    :Un o més objectes d’aquest parc necessiten l’enllaç al RCT1 per a veure’ls correctament. Es faran servir imatges alternatives.
 STR_6518    :{BLACK}Situeu el ratolí damunt d’un escenari per a veure la seva descripció i els seus objectius. Feu clic per a començar a jugar.
 STR_6519    :Extres
+STR_6520    :Paquets de recursos
+STR_6521    :Prioritat baixa
+STR_6522    :Prioritat alta
+STR_6523    :Redueix la prioritat del paquet de recursos.
+STR_6524    :Augmenta la prioritat del paquet de recursos.
+STR_6525    :Recarrega tots els recursos del joc amb els paquets de recursos activats.
+STR_6526    :(gràfics base, música i efectes de so)
+STR_6527    :Competicions
 
 #############
 # Scenarios #

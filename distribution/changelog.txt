@@ -5,10 +5,12 @@
 - Improved: [#18214] Competition scenarios have received their own section.
 - Improved: [#18250] Added modern style file and folder pickers on Windows.
 - Improved: [#18332] Allow Invert RC to draw booster.
+- Improved: [#18422] Allow adding images to music objects.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 - Change: [#18381] Convert custom invisible paths to the built-in ones.
 - Fix: [#14312] Research ride type message incorrect.
 - Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
+- Fix: [#17657] When switching from buying land rights to buying construction rights, grid disables and won't re-enable afterwards.
 - Fix: [#17763] Missing validation on invalid characters in file name.
 - Fix: [#17853] Invention name tears while being dragged.
 - Fix: [#18064] Unable to dismiss notification messages.
@@ -17,7 +19,9 @@
 - Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
 - Fix: [#18134] Underground on-ride photo section partially clips through adjacent terrain edge.
 - Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
+- Fix: [#18354] Overwrite alert does not show when save name has different casing on Windows.
 - Fix: [#18379] Tunnel entrances for underground Mini Golf Hole E are not rendered correctly.
+- Fix: [#18449] [Plugin] Change type of listview widgets from 'scroll_view' to 'listview'.
 
 0.4.2 (2022-10-05)
 ------------------------------------------------------------------------
