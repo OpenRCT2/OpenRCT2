@@ -109,9 +109,13 @@ public:
 
         StringId stringId = window_save_prompt_labels[EnumValue(_promptMode)][0];
         if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        {
             stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
+        }
         else if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        {
             stringId = STR_QUIT_SCENARIO_EDITOR;
+        }
         window_save_prompt_widgets[WIDX_TITLE].text = stringId;
         window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[EnumValue(_promptMode)][1];
     }
@@ -186,7 +190,9 @@ rct_window* WindowSavePromptOpen()
 {
     PromptMode prompt_mode = gSavePromptMode;
     if (prompt_mode == PromptMode::Quit)
+    {
         prompt_mode = PromptMode::SaveBeforeQuit;
+    }
 
     // do not show save prompt if we're in the title demo and click on load game
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
@@ -232,7 +238,7 @@ rct_window* WindowSavePromptOpen()
     }
 
     auto savePromptWindow = std::make_unique<SavePromptWindow>(prompt_mode);
-    return static_cast<SavePromptWindow*>(WindowCreate(
+    return WindowCreate(
         std::move(savePromptWindow), WindowClass::SavePrompt, {}, width, height,
-        WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN));
+        WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
 }
