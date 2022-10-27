@@ -1982,11 +1982,11 @@ void Vehicle::UpdateMovingToEndOfStation()
         case RideMode::RotatingLift:
         case RideMode::DownwardLaunch:
         case RideMode::FreefallDrop:
-            if (velocity >= -2.01324_mph)
+            if (velocity >= -131940)
             {
                 acceleration = -3298;
             }
-            if (velocity < -2.01324_mph)
+            if (velocity < -131940)
             {
                 velocity -= velocity / 16;
                 acceleration = 0;
@@ -2029,12 +2029,12 @@ void Vehicle::UpdateMovingToEndOfStation()
 
             if (!(carEntry->flags & CAR_ENTRY_FLAG_POWERED))
             {
-                if (velocity <= 2.01324_mph)
+                if (velocity <= 131940)
                 {
                     acceleration = 3298;
                 }
             }
-            if (velocity > 2.01324_mph)
+            if (velocity > 131940)
             {
                 velocity -= velocity / 16;
                 acceleration = 0;
@@ -2056,7 +2056,7 @@ void Vehicle::UpdateMovingToEndOfStation()
             }
             else
             {
-                if (velocity > 1.50993_mph)
+                if (velocity > 98955)
                 {
                     sub_state = 0;
                 }
@@ -3165,7 +3165,7 @@ void Vehicle::UpdateDeparting()
     switch (curRide->mode)
     {
         case RideMode::ReverseInclineLaunchedShuttle:
-            if (velocity >= -2.01324_mph)
+            if (velocity >= -131940)
                 acceleration = -3298;
             break;
         case RideMode::PoweredLaunchPasstrough:
@@ -3194,7 +3194,7 @@ void Vehicle::UpdateDeparting()
             if (carEntry->flags & CAR_ENTRY_FLAG_POWERED)
                 break;
 
-            if (velocity <= 2.01324_mph)
+            if (velocity <= 131940)
                 acceleration = 3298;
             break;
         default:
@@ -3696,9 +3696,9 @@ void Vehicle::UpdateTravelling()
     {
         if (sub_state == 0)
         {
-            if (velocity >= -2.01324_mph)
+            if (velocity >= -131940)
                 acceleration = -3298;
-            velocity = std::max(velocity, -2.01324_mph);
+            velocity = std::max(velocity, -131940);
         }
         else
         {
@@ -3710,7 +3710,7 @@ void Vehicle::UpdateTravelling()
             }
             else
             {
-                if (velocity <= 2.01324_mph)
+                if (velocity <= 131940)
                     acceleration = 3298;
             }
         }
@@ -3789,7 +3789,7 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
             return;
         }
 
-        if (velocity <= 2.01324_mph)
+        if (velocity <= 131940)
         {
             acceleration = 3298;
             return;
@@ -3818,12 +3818,12 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
     }
     else
     {
-        if (!(carEntry.flags & CAR_ENTRY_FLAG_POWERED) && velocity >= -2.01324_mph)
+        if (!(carEntry.flags & CAR_ENTRY_FLAG_POWERED) && velocity >= -131940)
         {
             acceleration = -3298;
         }
 
-        if (velocity >= -2.01324_mph)
+        if (velocity >= -131940)
         {
             return;
         }
@@ -3937,7 +3937,7 @@ void Vehicle::UpdateArriving()
           & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION | VEHICLE_UPDATE_MOTION_TRACK_FLAG_1
              | VEHICLE_UPDATE_MOTION_TRACK_FLAG_5)))
     {
-        if (velocity > 1.50993_mph)
+        if (velocity > 98955)
             var_C0 = 0;
         return;
     }
@@ -4174,7 +4174,7 @@ void Vehicle::UpdateTravellingCableLift()
         }
     }
 
-    if (velocity <= 6.71082_mph)
+    if (velocity <= 439800)
     {
         acceleration = 4398;
     }
