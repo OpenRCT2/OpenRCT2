@@ -101,7 +101,9 @@ public:
     {
         error.var_480++;
         if (error.var_480 >= 8)
+        {
             Close();
+        }
     }
 };
 
@@ -129,12 +131,14 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
 
     // Check if there is any text to display
     if (buffer.size() <= 1)
+    {
         return nullptr;
+    }
 
     int32_t width = gfx_get_string_width_new_lined(buffer.data(), FontStyle::Medium);
     width = std::clamp(width, 64, 196);
 
-    int32_t numLines = 1;
+    int32_t numLines{};
     gfx_wrap_string(buffer.data(), width + 1, FontStyle::Medium, &numLines);
 
     width = width + 3;
@@ -152,9 +156,9 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
     }
 
     auto errorWindow = std::make_unique<ErrorWindow>(buffer, numLines);
-    return static_cast<ErrorWindow*>(WindowCreate(
+    return WindowCreate(
         std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
-        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE));
+        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
 }
 
 rct_window* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
