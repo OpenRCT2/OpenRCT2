@@ -323,13 +323,13 @@ bool Peep::CheckForPath()
 
 bool Peep::ShouldWaitForLevelCrossing()
 {
-    auto curPos = TileCoordsXYZ(GetLocation());
-    if (FootpathIsBlockedByVehicle(curPos))
+    if (IsOnPathBlockedByVehicle())
     {
-        // If current position is blocked, try to get out of the way
+        // Try to get out of the way
         return false;
     }
 
+    auto curPos = TileCoordsXYZ(GetLocation());
     auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
     if ((curPos.x != dstPos.x || curPos.y != dstPos.y) && FootpathIsBlockedByVehicle(dstPos))
     {
@@ -343,6 +343,12 @@ bool Peep::IsOnLevelCrossing()
 {
     auto trackElement = MapGetTrackElementAt(GetLocation());
     return trackElement != nullptr;
+}
+
+bool Peep::IsOnPathBlockedByVehicle()
+{
+    auto curPos = TileCoordsXYZ(GetLocation());
+    return FootpathIsBlockedByVehicle(curPos);
 }
 
 PeepActionSpriteType Peep::GetActionSpriteType()
@@ -982,6 +988,10 @@ void Peep::Update()
         if (State == PeepState::Queuing)
             stepsToTake += stepsToTake / 2;
     }
+    // Ensure guests make it across a level crossing in time
+    constexpr auto minStepsForCrossing = 55;
+    if (stepsToTake < minStepsForCrossing && IsOnPathBlockedByVehicle())
+        stepsToTake = minStepsForCrossing;
 
     uint32_t carryCheck = StepProgress + stepsToTake;
     StepProgress = carryCheck;
