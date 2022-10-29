@@ -20,6 +20,7 @@
 - Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
 - Fix: [#18354] Overwrite alert does not show when save name has different casing on Windows.
 - Fix: [#18379] Tunnel entrances for underground Mini Golf Hole E are not rendered correctly.
+- Fix: [#18442] About window background is clickable.
 - Fix: [#18449] [Plugin] Change type of listview widgets from 'scroll_view' to 'listview'.
 
 0.4.2 (2022-10-05)
