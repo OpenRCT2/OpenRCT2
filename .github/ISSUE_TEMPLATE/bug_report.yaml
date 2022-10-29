@@ -25,8 +25,8 @@ body:
 
 - type: dropdown
   attributes:
-    label: Basegame
-    description: With what basegame do you have OpenRCT2 loaded? Did you test it with the other (select both if so)?
+    label: Base game
+    description: With what base game do you have OpenRCT2 loaded? Did you test it with the other (select both if so)?
     multiple: true
     options:
       - RollerCoaster Tycoon 2
@@ -43,7 +43,7 @@ body:
       - The bug also exists in the original game (RCT2/RCTC)
       - This bug is specific to multiplayer
       - This bug is a graphical glitch or error
-      - This issue has to do with parkobjects and/or asset packs
+      - This issue has to do with park objects and/or asset packs
       - Issues building the game
   validations:
     required: false
