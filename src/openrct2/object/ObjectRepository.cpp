@@ -567,7 +567,7 @@ private:
         auto fileName = GetFileNameForNewObject(generation, name);
         auto extension = (generation == ObjectGeneration::DAT ? u8".DAT" : u8".parkobj");
         auto fullPath = Path::Combine(userObjPath, fileName + extension);
-        auto counter = 1U;
+        auto counter = 1u;
         while (File::Exists(fullPath))
         {
             counter++;

@@ -91,7 +91,7 @@ constexpr uint64_t GetAllShopItemsWithFlag(uint16_t flag)
         const auto& sid = ShopItems[i];
         if (sid.HasFlag(flag))
         {
-            ret |= (1ULL << i);
+            ret |= (1uLL << i);
         }
     }
     return ret;

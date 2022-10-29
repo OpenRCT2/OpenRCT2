@@ -1022,7 +1022,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192U : 2184U))
+        if ((scenario_rand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192u : 2184u))
         {
             PickRideToGoOn();
         }
@@ -5795,7 +5795,7 @@ void Guest::UpdateUsingBin()
 
             for (uint8_t curContainer = 0; curContainer < 64; curContainer++)
             {
-                if (!(emptyContainers & (1ULL << curContainer)))
+                if (!(emptyContainers & (1uLL << curContainer)))
                     continue;
 
                 auto item = ShopItem(curContainer);

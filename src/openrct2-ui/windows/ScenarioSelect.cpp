@@ -407,8 +407,8 @@ static void WindowScenarioselectScrollmouseover(rct_window* w, int32_t scrollInd
 static void WindowScenarioselectInvalidate(rct_window* w)
 {
     w->pressed_widgets &= ~(
-        (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4)
-        | (1ULL << WIDX_TAB5) | (1ULL << WIDX_TAB6) | (1ULL << WIDX_TAB7) | (1ULL << WIDX_TAB8) | (1ULL << WIDX_TAB9));
+        (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
+        | (1uLL << WIDX_TAB5) | (1uLL << WIDX_TAB6) | (1uLL << WIDX_TAB7) | (1uLL << WIDX_TAB8) | (1uLL << WIDX_TAB9));
 
     w->pressed_widgets |= 1LL << (w->selected_tab + WIDX_TAB1);
 

@@ -288,7 +288,7 @@ rct_window* WindowLoadsaveOpen(
 
         if (!hasFilePicker)
         {
-            w->disabled_widgets |= (1ULL << WIDX_BROWSE);
+            w->disabled_widgets |= (1uLL << WIDX_BROWSE);
             window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
         }
     }
@@ -830,7 +830,7 @@ static void WindowLoadsavePopulateList(
     if (directory.empty() && drives)
     {
         // List Windows drives
-        w->disabled_widgets |= (1ULL << WIDX_NEW_FILE) | (1ULL << WIDX_NEW_FOLDER) | (1ULL << WIDX_UP);
+        w->disabled_widgets |= (1uLL << WIDX_NEW_FILE) | (1uLL << WIDX_NEW_FOLDER) | (1uLL << WIDX_UP);
         static constexpr auto NumDriveLetters = 26;
         for (int32_t x = 0; x < NumDriveLetters; x++)
         {
@@ -875,13 +875,13 @@ static void WindowLoadsavePopulateList(
 
         // Disable the Up button if the current directory is the root directory
         if (str_is_null_or_empty(_parentDirectory) && !drives)
-            w->disabled_widgets |= (1ULL << WIDX_UP);
+            w->disabled_widgets |= (1uLL << WIDX_UP);
         else
-            w->disabled_widgets &= ~(1ULL << WIDX_UP);
+            w->disabled_widgets &= ~(1uLL << WIDX_UP);
 
         // Re-enable the "new" buttons if these were disabled
-        w->disabled_widgets &= ~(1ULL << WIDX_NEW_FILE);
-        w->disabled_widgets &= ~(1ULL << WIDX_NEW_FOLDER);
+        w->disabled_widgets &= ~(1uLL << WIDX_NEW_FILE);
+        w->disabled_widgets &= ~(1uLL << WIDX_NEW_FOLDER);
 
         // List all directories
         auto subDirectories = Path::GetDirectories(absoluteDirectory);

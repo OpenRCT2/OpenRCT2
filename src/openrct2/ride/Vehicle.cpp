@@ -6949,7 +6949,7 @@ void Vehicle::UpdateGoKartAttemptSwitchLanes()
     if ((scenario_rand() & 0xFFFF) <= probability)
     {
         // This changes "riding left" to "moving to right lane" and "riding right" to "moving to left lane".
-        TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) + 2U) };
+        TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) + 2u) };
     }
 }
 
@@ -8282,7 +8282,7 @@ loc_6DC476:
         }
         if (TrackSubposition != VehicleTrackSubposition::MiniGolfStart9)
         {
-            TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) - 1U) };
+            TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) - 1u) };
         }
     }
 
