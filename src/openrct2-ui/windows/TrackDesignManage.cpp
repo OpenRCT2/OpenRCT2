@@ -172,7 +172,7 @@ void TrackDesignManageWindow::OnTextInput(WidgetIndex widgetIndex, std::string_v
 void TrackDesignManageWindow::OnDraw(rct_drawpixelinfo& dpi)
 {
     Formatter::Common().Add<const utf8*>(_trackDesignFileReference->name.c_str());
-    WindowDrawWidgets(*this, &dpi);
+    DrawWidgets(dpi);
 }
 
 /**
@@ -225,7 +225,7 @@ void TrackDeletePromptWindow::OnMouseUp(WidgetIndex widgetIndex)
 
 void TrackDeletePromptWindow::OnDraw(rct_drawpixelinfo& dpi)
 {
-    WindowDrawWidgets(*this, &dpi);
+    DrawWidgets(dpi);
 
     auto ft = Formatter();
     ft.Add<const utf8*>(_trackDesignFileReference->name.c_str());
