@@ -729,8 +729,6 @@ static void sub_6A3F61(
 
     if (dpi->zoom_level <= ZoomLevel{ 1 })
     {
-        bool paintScenery = true;
-
         if (!gTrackDesignSaveMode)
         {
             if (pathElement.HasAddition())
@@ -743,19 +741,16 @@ static void sub_6A3F61(
 
                 // Draw additional path bits (bins, benches, lamps, queue screens)
                 auto* pathAddEntry = pathElement.GetAdditionEntry();
-
+                bool drawAddition = true;
                 // Can be null if the object is not loaded.
-                if (pathAddEntry == nullptr)
+                if (pathAddEntry == nullptr
+                    || ((session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(pathElement.IsBroken())
+                        && pathAddEntry->draw_type != PathBitDrawType::Bin))
                 {
-                    paintScenery = false;
+                    drawAddition = false;
                 }
-                else if (
-                    (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(pathElement.IsBroken())
-                    && pathAddEntry->draw_type != PathBitDrawType::Bin)
-                {
-                    paintScenery = false;
-                }
-                else
+
+                if (drawAddition)
                 {
                     switch (pathAddEntry->draw_type)
                     {
@@ -791,9 +786,7 @@ static void sub_6A3F61(
 
         // Redundant zoom-level check removed
 
-        if (paintScenery)
-            PathPaintFencesAndQueueBanners(
-                session, pathElement, height, connectedEdges, hasSupports, pathPaintInfo, imageTemplate);
+        PathPaintFencesAndQueueBanners(session, pathElement, height, connectedEdges, hasSupports, pathPaintInfo, imageTemplate);
     }
 
     // This is about tunnel drawing
