@@ -2018,6 +2018,61 @@ declare global {
         readonly elements: TrackSegmentElement[];
 
         /**
+         * The curve direction of the suggested following piece, or if the suggested following piece is a TrackElement
+         */
+        readonly chainNextCurve: TrackCurveType;
+
+        /**
+         * The curve direction of the suggested preceding piece, or if the suggested preceding piece is a TrackElement
+         */
+        readonly chainPrevCurve: TrackCurveType;
+
+        /**
+         * The track element for the following piece. Only valid if chainNextCurve is trackElement.
+         */
+        readonly chainNextElement: number | null;
+
+        /**
+         * The track element for the preceding piece. Only valid if chainPrevCurve is trackElement.
+         */
+        readonly chainPrevElement: number | null;
+
+        /**
+         * The base price of the track element.
+         */
+        readonly priceModifier: number;
+
+        /**
+         * Track element representing the mirror image of the track element.
+         */
+        readonly mirrorElement: number | null;
+
+        /**
+         * Track element representing the covered/flume variant of the track element.
+         */
+        readonly alternateType: number | null;
+
+        /**
+         * Which direction the track curves
+         */
+        readonly turnDirection: TrackCurveType;
+
+        /**
+         * Which way the track slopes
+         */
+        readonly slopeDirection: TrackSlopeType;
+
+        readonly onlyAllowedUnderwater: boolean;
+        readonly onlyAllowedAboveGround: boolean;
+        readonly allowsChainLift: boolean;
+        readonly isBanked: boolean;
+        readonly isGolfHole: boolean;
+        readonly isHelix: boolean;
+        readonly startsHalfHeightUp: boolean;
+        readonly isSteepUp: boolean;
+        readonly isInversion: boolean;
+        
+        /**
          * Gets a length of the subpositions list for this track segment.
          */
         getSubpositionLength(subpositionType: number, direction: Direction): number;
@@ -2045,6 +2100,9 @@ declare global {
         Right = 4,
         UpsideDown = 15
     }
+
+    type TrackCurveType = "straight" | "left" | "right" | "trackElement";
+    type TrackSlopeType = "flat" | "up" | "down";
 
     interface TrackSegmentElement extends Readonly<CoordsXYZ> {
     }

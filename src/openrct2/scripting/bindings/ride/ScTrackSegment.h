@@ -58,6 +58,16 @@ namespace OpenRCT2::Scripting
         DukValue elements_get() const;
         uint16_t getSubpositionLength(uint8_t trackSubposition, uint8_t direction) const;
         std::vector<DukValue> getSubpositions(uint8_t trackSubposition, uint8_t direction) const;
+        template<uint8_t position> std::string trackCurveType() const;
+        template<uint8_t position> DukValue trackCurveElement() const;
+        DukValue getMirrorElement() const;
+        DukValue getAlternativeElement() const;
+        int32_t getPriceModifier() const;
+        int32_t getPreviewZOffset() const;
+        int32_t getTrackGroup() const;
+        template<uint16_t flag> bool getTrackFlag() const;
+        std::string getTrackCurvature() const;
+        std::string getTrackSlopeDirection() const;
     };
 
 } // namespace OpenRCT2::Scripting

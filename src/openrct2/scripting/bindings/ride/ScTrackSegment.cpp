@@ -29,13 +29,48 @@ void ScTrackSegment::Register(duk_context* ctx)
     dukglue_register_property(ctx, &ScTrackSegment::type_get, nullptr, "type");
     dukglue_register_property(ctx, &ScTrackSegment::description_get, nullptr, "description");
     dukglue_register_property(ctx, &ScTrackSegment::elements_get, nullptr, "elements");
-    dukglue_register_property(ctx, &ScTrackSegment::beginZ_get, nullptr, "beginZ");
     dukglue_register_property(ctx, &ScTrackSegment::beginDirection_get, nullptr, "beginDirection");
+    dukglue_register_property(ctx, &ScTrackSegment::endDirection_get, nullptr, "endDirection");
+    dukglue_register_property(ctx, &ScTrackSegment::beginAngle_get, nullptr, "beginAngle");
+    dukglue_register_property(ctx, &ScTrackSegment::endAngle_get, nullptr, "endAngle");
+    dukglue_register_property(ctx, &ScTrackSegment::beginBank_get, nullptr, "beginBank");
+    dukglue_register_property(ctx, &ScTrackSegment::endBank_get, nullptr, "endBank");
+    dukglue_register_property(ctx, &ScTrackSegment::beginZ_get, nullptr, "beginZ");
+    dukglue_register_property(ctx, &ScTrackSegment::endZ_get, nullptr, "endZ");
     dukglue_register_property(ctx, &ScTrackSegment::endX_get, nullptr, "endX");
     dukglue_register_property(ctx, &ScTrackSegment::endY_get, nullptr, "endY");
-    dukglue_register_property(ctx, &ScTrackSegment::endZ_get, nullptr, "endZ");
-    dukglue_register_property(ctx, &ScTrackSegment::endDirection_get, nullptr, "endDirection");
     dukglue_register_property(ctx, &ScTrackSegment::length_get, nullptr, "length");
+    dukglue_register_property(ctx, &ScTrackSegment::trackCurveType<0>, nullptr, "chainNextCurve");
+    dukglue_register_property(ctx, &ScTrackSegment::trackCurveType<1>, nullptr, "chainPrevCurve");
+    dukglue_register_property(ctx, &ScTrackSegment::trackCurveElement<0>, nullptr, "chainNextElement");
+    dukglue_register_property(ctx, &ScTrackSegment::trackCurveElement<1>, nullptr, "chainPrevElement");
+    dukglue_register_property(ctx, &ScTrackSegment::getMirrorElement, nullptr, "mirrorElement");
+    dukglue_register_property(ctx, &ScTrackSegment::getAlternativeElement, nullptr, "alternateType");
+    dukglue_register_property(ctx, &ScTrackSegment::getPriceModifier, nullptr, "priceModifier");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackGroup, nullptr, "trackGroup");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackCurvature, nullptr, "turnDirection");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackSlopeDirection, nullptr, "slopeDirection");
+
+    dukglue_register_property(
+        ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_ONLY_UNDERWATER>, nullptr, "onlyAllowedUnderwater");
+    dukglue_register_property(
+        ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND>, nullptr, "onlyAllowedAboveGround");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_ALLOW_LIFT_HILL>, nullptr, "allowsChainLift");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_BANKED>, nullptr, "isBanked");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_IS_GOLF_HOLE>, nullptr, "isGolfHole");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_HELIX>, nullptr, "isHelix");
+    dukglue_register_property(
+        ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT>, nullptr, "startsHalfHeightUp");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_IS_STEEP_UP>, nullptr, "isSteepUp");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_INVERSION_TO_NORMAL>, nullptr, "isInversion");
+    /*
+    Flags not included:
+    TRACK_ELEM_FLAG_NORMAL_TO_INVERSION -> adds to inversion counter, implies TRACK_ELEM_FLAG_INVERSION_TO_NORMAL
+    TRACK_ELEM_FLAG_TURN_BANKED -> counts as banked turn (implied by turn field and banked flag)
+    TRACK_ELEM_FLAG_TURN_SLOPED -> counts as sloped turn (implied by turn field and slope field)
+    TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT -> implied by turn field and chain flag
+    */
+
     dukglue_register_method(ctx, &ScTrackSegment::getSubpositionLength, "getSubpositionLength");
     dukglue_register_method(ctx, &ScTrackSegment::getSubpositions, "getSubpositions");
 }
@@ -163,6 +198,114 @@ std::vector<DukValue> ScTrackSegment::getSubpositions(uint8_t trackSubposition, 
             ToDuk<VehicleInfo>(ctx, gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->info[idx]));
     }
     return result;
+}
+
+template<uint8_t position> std::string ScTrackSegment::trackCurveType() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+
+    int32_t curve = 0;
+    switch (position)
+    {
+        case 0:
+            curve = ted.CurveChain.next;
+            break;
+        case 1:
+            curve = ted.CurveChain.previous;
+            break;
+    }
+    if (curve & RideConstructionSpecialPieceSelected)
+    {
+        return "trackElement";
+    }
+    switch (curve)
+    {
+        case 1:
+            return "left";
+        case 2:
+            return "right";
+        default:
+            return "straight";
+    }
+}
+
+template<uint8_t position> DukValue ScTrackSegment::trackCurveElement() const
+{
+    const auto ctx = GetContext()->GetScriptEngine().GetContext();
+    const auto& ted = GetTrackElementDescriptor(_type);
+
+    int32_t curve = 0;
+    switch (position)
+    {
+        case 0:
+            curve = ted.CurveChain.next;
+            break;
+        case 1:
+            curve = ted.CurveChain.previous;
+            break;
+    }
+    if (curve & RideConstructionSpecialPieceSelected)
+        return ToDuk<int32_t>(ctx, curve & (~RideConstructionSpecialPieceSelected));
+    return ToDuk(ctx, nullptr);
+}
+
+DukValue ScTrackSegment::getMirrorElement() const
+{
+    const auto ctx = GetContext()->GetScriptEngine().GetContext();
+    const auto& ted = GetTrackElementDescriptor(_type);
+    if (ted.MirrorElement == TrackElemType::None)
+        return ToDuk(ctx, nullptr);
+    return ToDuk<int32_t>(ctx, ted.MirrorElement);
+}
+
+DukValue ScTrackSegment::getAlternativeElement() const
+{
+    const auto ctx = GetContext()->GetScriptEngine().GetContext();
+    const auto& ted = GetTrackElementDescriptor(_type);
+    if (ted.AlternativeType == TrackElemType::None)
+        return ToDuk(ctx, nullptr);
+    return ToDuk<int32_t>(ctx, ted.AlternativeType);
+}
+
+int32_t ScTrackSegment::getPriceModifier() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+
+    return ted.PriceModifier;
+}
+
+template<uint16_t flag> bool ScTrackSegment::getTrackFlag() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+
+    return ted.Flags & flag;
+}
+
+int32_t ScTrackSegment::getTrackGroup() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+
+    return ted.Definition.type;
+}
+
+std::string ScTrackSegment::getTrackCurvature() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    if (ted.Flags & TRACK_ELEM_FLAG_TURN_LEFT)
+        return "left";
+    if (ted.Flags & TRACK_ELEM_FLAG_TURN_RIGHT)
+        return "right";
+    return "straight";
+}
+
+std::string ScTrackSegment::getTrackSlopeDirection() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    if (ted.Flags & TRACK_ELEM_FLAG_UP)
+        return "up";
+    if (ted.Flags & TRACK_ELEM_FLAG_DOWN)
+        return "down";
+    return "flat";
 }
 
 #endif
