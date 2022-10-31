@@ -132,7 +132,7 @@ public:
                     tool_cancel();
                 }
                 gClipSelectionA = { 0, 0 };
-                gClipSelectionB = gMapSize.ToCoordsXY();
+                gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
                 gfx_invalidate_screen();
                 break;
         }
