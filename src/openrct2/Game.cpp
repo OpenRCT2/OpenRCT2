@@ -504,7 +504,6 @@ void game_load_init()
     gGameSpeed = 1;
     gClipSelectionA = { 0, 0 };
     gClipSelectionB = gMapSize.ToCoordsXY();
-    printf("a\n");
 }
 
 void game_load_scripts()
