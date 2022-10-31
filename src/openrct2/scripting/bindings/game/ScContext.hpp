@@ -233,7 +233,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::vector<DukValue> getTrackSegments()
+        std::vector<DukValue> getAllTrackSegments()
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -243,7 +243,7 @@ namespace OpenRCT2::Scripting
                 auto obj = std::make_shared<ScTrackSegment>(type);
                 if (obj != nullptr)
                 {
-                    result.push_back(GetObjectAsDukValue(ctx, std::make_shared<ScTrackSegment>(type)));
+                    result.push_back(GetObjectAsDukValue(ctx, obj));
                 }
             }
             return result;
@@ -471,7 +471,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::getObject, "getObject");
             dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");
             dukglue_register_method(ctx, &ScContext::getTrackSegment, "getTrackSegment");
-            dukglue_register_method(ctx, &ScContext::getTrackSegments, "getTrackSegments");
+            dukglue_register_method(ctx, &ScContext::getAllTrackSegments, "getAllTrackSegments");
             dukglue_register_method(ctx, &ScContext::getRandom, "getRandom");
             dukglue_register_method_varargs(ctx, &ScContext::formatString, "formatString");
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");

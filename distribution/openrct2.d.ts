@@ -234,6 +234,8 @@ declare global {
          */
         getTrackSegment(type: number): TrackSegment | null;
 
+        getAllTrackSegments(): TrackSegment[];
+
         /**
          * Gets the image number for the given icon.
          * @param iconName The name of the icon.
@@ -1953,7 +1955,7 @@ declare global {
         readonly description: string;
 
         /**
-         * The relative starting Z position.
+         * The relative starting Z position from the base of the first track sequence block.
          */
         readonly beginZ: number;
 
@@ -1984,7 +1986,7 @@ declare global {
         readonly endY: number;
 
         /**
-         * The relative ending Z position.
+         * The relative ending Z position from the base of the first track sequence block.
          */
         readonly endZ: number;
 
@@ -2005,9 +2007,7 @@ declare global {
         readonly endBank: TrackBanking;
 
         /**
-         * The length of the segment in RCT track length units.
-         *
-         * *1 metre = 1 / (2 ^ 16)*
+         * The rough length of the segment.
          */
         readonly length: number;
 
