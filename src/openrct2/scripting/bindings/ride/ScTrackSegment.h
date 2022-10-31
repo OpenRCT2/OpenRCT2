@@ -58,8 +58,10 @@ namespace OpenRCT2::Scripting
         DukValue elements_get() const;
         uint16_t getSubpositionLength(uint8_t trackSubposition, uint8_t direction) const;
         std::vector<DukValue> getSubpositions(uint8_t trackSubposition, uint8_t direction) const;
-        template<uint8_t position> std::string trackCurveType() const;
-        template<uint8_t position> DukValue trackCurveElement() const;
+        std::string nextCurveDirection_get() const;
+        std::string previousCurveDirection_get() const;
+        DukValue nextCurveElement_get() const;
+        DukValue previousCurveElement_get() const;
         DukValue getMirrorElement() const;
         DukValue getAlternativeElement() const;
         int32_t getPriceModifier() const;

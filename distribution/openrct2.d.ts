@@ -2017,24 +2017,26 @@ declare global {
         readonly elements: TrackSegmentElement[];
 
         /**
-         * The curve direction of the suggested following piece, or if the suggested following piece is a track segment
+         * The curve direction of the suggested following piece, or if the suggested following piece
+         * is a track segment
          */
-        readonly chainNextCurve: TrackCurveType;
+        readonly nextCurve: TrackCurveType;
 
         /**
-         * The curve direction of the suggested preceding piece, or if the suggested preceding piece is a track segment
+         * The curve direction of the suggested preceding piece, or if the suggested preceding piece
+         * is a track segment
          */
-        readonly chainPrevCurve: TrackCurveType;
+        readonly previousCurve: TrackCurveType;
 
         /**
-         * The track segment for the following piece. Only valid if chainNextCurve is trackSegment.
+         * The track segment for the following piece. Only valid if chainEndCurve is trackSegment.
          */
-        readonly chainNextElement: number | null;
+        readonly nextElement: number | null;
 
         /**
-         * The track segment for the preceding piece. Only valid if chainPrevCurve is trackSegment.
+         * The track segment for the preceding piece. Only valid if chainBeginCurve is trackSegment.
          */
-        readonly chainPrevElement: number | null;
+        readonly previousElement: number | null;
 
         /**
          * The base price of the track segment.
@@ -2052,12 +2054,12 @@ declare global {
         readonly alternateType: number | null;
 
         /**
-         * Which direction the track curves
+         * Which direction the track curves towards.
          */
         readonly turnDirection: TrackCurveType;
 
         /**
-         * Which way the track slopes
+         * Which direction the track slopes towards.
          */
         readonly slopeDirection: TrackSlopeType;
 
@@ -2072,7 +2074,8 @@ declare global {
         readonly isInversion: boolean;
         
         /**
-         * Gets a length of the subpositions list for this track segment.
+         * Gets a length of the subpositions list for this track segment. Note that subpositions
+         * are not rotated and are not equal length.
          */
         getSubpositionLength(subpositionType: number, direction: Direction): number;
 

@@ -40,10 +40,10 @@ void ScTrackSegment::Register(duk_context* ctx)
     dukglue_register_property(ctx, &ScTrackSegment::endX_get, nullptr, "endX");
     dukglue_register_property(ctx, &ScTrackSegment::endY_get, nullptr, "endY");
     dukglue_register_property(ctx, &ScTrackSegment::length_get, nullptr, "length");
-    dukglue_register_property(ctx, &ScTrackSegment::trackCurveType<0>, nullptr, "chainNextCurve");
-    dukglue_register_property(ctx, &ScTrackSegment::trackCurveType<1>, nullptr, "chainPrevCurve");
-    dukglue_register_property(ctx, &ScTrackSegment::trackCurveElement<0>, nullptr, "chainNextElement");
-    dukglue_register_property(ctx, &ScTrackSegment::trackCurveElement<1>, nullptr, "chainPrevElement");
+    dukglue_register_property(ctx, &ScTrackSegment::nextCurveDirection_get, nullptr, "nextCurve");
+    dukglue_register_property(ctx, &ScTrackSegment::previousCurveDirection_get, nullptr, "previousCurve");
+    dukglue_register_property(ctx, &ScTrackSegment::nextCurveElement_get, nullptr, "nextElement");
+    dukglue_register_property(ctx, &ScTrackSegment::previousCurveElement_get, nullptr, "previousElement");
     dukglue_register_property(ctx, &ScTrackSegment::getMirrorElement, nullptr, "mirrorElement");
     dukglue_register_property(ctx, &ScTrackSegment::getAlternativeElement, nullptr, "alternateType");
     dukglue_register_property(ctx, &ScTrackSegment::getPriceModifier, nullptr, "priceModifier");
@@ -200,20 +200,30 @@ std::vector<DukValue> ScTrackSegment::getSubpositions(uint8_t trackSubposition, 
     return result;
 }
 
-template<uint8_t position> std::string ScTrackSegment::trackCurveType() const
+std::string ScTrackSegment::nextCurveDirection_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
 
-    int32_t curve = 0;
-    switch (position)
+    int32_t curve = ted.CurveChain.next;
+    if (curve & RideConstructionSpecialPieceSelected)
     {
-        case 0:
-            curve = ted.CurveChain.next;
-            break;
-        case 1:
-            curve = ted.CurveChain.previous;
-            break;
+        return "trackElement";
     }
+    switch (curve)
+    {
+        case 1:
+            return "left";
+        case 2:
+            return "right";
+        default:
+            return "straight";
+    }
+}
+std::string ScTrackSegment::previousCurveDirection_get() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+
+    int32_t curve = ted.CurveChain.previous;
     if (curve & RideConstructionSpecialPieceSelected)
     {
         return "trackElement";
@@ -229,21 +239,23 @@ template<uint8_t position> std::string ScTrackSegment::trackCurveType() const
     }
 }
 
-template<uint8_t position> DukValue ScTrackSegment::trackCurveElement() const
+DukValue ScTrackSegment::nextCurveElement_get() const
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
     const auto& ted = GetTrackElementDescriptor(_type);
 
-    int32_t curve = 0;
-    switch (position)
-    {
-        case 0:
-            curve = ted.CurveChain.next;
-            break;
-        case 1:
-            curve = ted.CurveChain.previous;
-            break;
-    }
+    int32_t curve = ted.CurveChain.next;
+    if (curve & RideConstructionSpecialPieceSelected)
+        return ToDuk<int32_t>(ctx, curve & (~RideConstructionSpecialPieceSelected));
+    return ToDuk(ctx, nullptr);
+}
+
+DukValue ScTrackSegment::previousCurveElement_get() const
+{
+    const auto ctx = GetContext()->GetScriptEngine().GetContext();
+    const auto& ted = GetTrackElementDescriptor(_type);
+
+    int32_t curve = ted.CurveChain.previous;
     if (curve & RideConstructionSpecialPieceSelected)
         return ToDuk<int32_t>(ctx, curve & (~RideConstructionSpecialPieceSelected));
     return ToDuk(ctx, nullptr);
