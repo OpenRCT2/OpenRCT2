@@ -2062,16 +2062,43 @@ declare global {
         readonly onlyAllowedAboveGround: boolean;
         readonly allowsChainLift: boolean;
         readonly isBanked: boolean;
-        readonly isGolfHole: boolean;
-        readonly isHelix: boolean;
-        readonly startsHalfHeightUp: boolean;
         readonly isInversion: boolean;
 
         /**
-         * Used to prevent steep forward chainlifts but allows steep reverse chainlifts for
-         * reverse incline shuttle mode for ride types which do not normally allow steep chainlifts.
+         * Pevents steep forward chainlifts but allows steep reverse chainlifts for reverse incline
+         * shuttle mode for ride types which do not normally allow steep chainlifts.
          */
         readonly isSteepUp: boolean;
+
+        /**
+         * The track segment begins one height unit above normal track height units.
+         */
+        readonly startsHalfHeightUp: boolean;
+
+        /**
+         * The track segment adds to golf hole counter.
+         */
+        readonly countsAsGolfHole: boolean;
+
+        /**
+         * The track segment adds to banked turn counter.
+         */
+        readonly countsAsBankedTurn: boolean;
+
+        /**
+         * The track segment adds to sloped turn counter.
+         */
+        readonly countsAsSlopedTurn: boolean;
+
+        /**
+         * The track segment adds to helix counter.
+         */
+        readonly countsAsHelix: boolean;
+
+        /**
+         * The track segment adds to inversion counter. Usually applied to the first half of inversions.
+         */
+        readonly countsAsInversion: boolean;
         
         /**
          * Gets a length of the subpositions list for this track segment. Note that subpositions
