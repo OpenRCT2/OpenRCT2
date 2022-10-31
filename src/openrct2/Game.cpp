@@ -432,7 +432,7 @@ void game_fix_save_vars()
             // At this point, we can be sure that surfaceElement is not NULL.
             if (x == 0 || x == gMapSize.x - 1 || y == 0 || y == gMapSize.y - 1)
             {
-                surfaceElement->SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
+             gMapSize.toCoords   surfaceElement->SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
                 surfaceElement->SetClearanceZ(MINIMUM_LAND_HEIGHT_BIG);
                 surfaceElement->SetSlope(0);
                 surfaceElement->SetWaterHeight(0);
@@ -503,7 +503,7 @@ void game_load_init()
     OpenRCT2::Audio::StopTitleMusic();
     gGameSpeed = 1;
     gClipSelectionA = { 0, 0 };
-    gClipSelectionB = gMapSize.ToCoordsXY();
+    gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
 }
 
 void game_load_scripts()
