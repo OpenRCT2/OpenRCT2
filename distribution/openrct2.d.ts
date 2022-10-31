@@ -2017,26 +2017,15 @@ declare global {
         readonly elements: TrackSegmentElement[];
 
         /**
-         * The curve direction of the suggested following piece, or if the suggested following piece
+         * The curve direction of the suggested following piece, or track segment if it is specified.
          * is a track segment
          */
-        readonly nextCurve: TrackCurveType;
+        readonly nextSuggestedSegment: TrackCurveType | number;
 
         /**
-         * The curve direction of the suggested preceding piece, or if the suggested preceding piece
-         * is a track segment
+         * The curve direction of the suggested preceding piece, or track segment if it is specified.
          */
-        readonly previousCurve: TrackCurveType;
-
-        /**
-         * The track segment for the following piece. Only valid if chainEndCurve is trackSegment.
-         */
-        readonly nextElement: number | null;
-
-        /**
-         * The track segment for the preceding piece. Only valid if chainBeginCurve is trackSegment.
-         */
-        readonly previousElement: number | null;
+        readonly previousSuggestedSegment: TrackCurveType | number;
 
         /**
          * The base price of the track segment.
@@ -2046,12 +2035,18 @@ declare global {
         /**
          * Track segment representing the mirror image of the track segment.
          */
-        readonly mirrorElement: number | null;
+        readonly mirrorSegment: number | null;
 
         /**
          * Track segment representing the covered/flume variant of the track segment.
          */
-        readonly alternateType: number | null;
+        readonly alternateTypeSegment: number | null;
+
+        /**
+         * The group the track element belongs to. Ride types allow or disallow track groups to limit the
+         * buildable track segments.
+         */
+        readonly trackGroup: number;
 
         /**
          * Which direction the track curves towards.
@@ -2103,7 +2098,7 @@ declare global {
         UpsideDown = 15
     }
 
-    type TrackCurveType = "straight" | "left" | "right" | "trackElement";
+    type TrackCurveType = "straight" | "left" | "right";
     type TrackSlopeType = "flat" | "up" | "down";
 
     interface TrackSegmentElement extends Readonly<CoordsXYZ> {
