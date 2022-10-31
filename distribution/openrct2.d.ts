@@ -1984,8 +1984,7 @@ declare global {
         readonly endY: number;
 
         /**
-         * The relative ending Z position. Negative numbers indicate
-         * that the track ends upside down.
+         * The relative ending Z position.
          */
         readonly endZ: number;
 
@@ -2018,37 +2017,37 @@ declare global {
         readonly elements: TrackSegmentElement[];
 
         /**
-         * The curve direction of the suggested following piece, or if the suggested following piece is a TrackElement
+         * The curve direction of the suggested following piece, or if the suggested following piece is a track segment
          */
         readonly chainNextCurve: TrackCurveType;
 
         /**
-         * The curve direction of the suggested preceding piece, or if the suggested preceding piece is a TrackElement
+         * The curve direction of the suggested preceding piece, or if the suggested preceding piece is a track segment
          */
         readonly chainPrevCurve: TrackCurveType;
 
         /**
-         * The track element for the following piece. Only valid if chainNextCurve is trackElement.
+         * The track segment for the following piece. Only valid if chainNextCurve is trackSegment.
          */
         readonly chainNextElement: number | null;
 
         /**
-         * The track element for the preceding piece. Only valid if chainPrevCurve is trackElement.
+         * The track segment for the preceding piece. Only valid if chainPrevCurve is trackSegment.
          */
         readonly chainPrevElement: number | null;
 
         /**
-         * The base price of the track element.
+         * The base price of the track segment.
          */
         readonly priceModifier: number;
 
         /**
-         * Track element representing the mirror image of the track element.
+         * Track segment representing the mirror image of the track segment.
          */
         readonly mirrorElement: number | null;
 
         /**
-         * Track element representing the covered/flume variant of the track element.
+         * Track segment representing the covered/flume variant of the track segment.
          */
         readonly alternateType: number | null;
 
