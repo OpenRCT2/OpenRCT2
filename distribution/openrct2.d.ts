@@ -2065,8 +2065,13 @@ declare global {
         readonly isGolfHole: boolean;
         readonly isHelix: boolean;
         readonly startsHalfHeightUp: boolean;
-        readonly isSteepUp: boolean;
         readonly isInversion: boolean;
+
+        /**
+         * Used to prevent steep forward chainlifts but allows steep reverse chainlifts for
+         * reverse incline shuttle mode for ride types which do not normally allow steep chainlifts.
+         */
+        readonly isSteepUp: boolean;
         
         /**
          * Gets a length of the subpositions list for this track segment. Note that subpositions
