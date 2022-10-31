@@ -2018,7 +2018,6 @@ declare global {
 
         /**
          * The curve direction of the suggested following piece, or track segment if it is specified.
-         * is a track segment
          */
         readonly nextSuggestedSegment: TrackCurveType | number;
 
@@ -2101,8 +2100,7 @@ declare global {
         readonly countsAsInversion: boolean;
         
         /**
-         * Gets a length of the subpositions list for this track segment. Note that subpositions
-         * are not rotated and are not equal length.
+         * Gets a length of the subpositions list for this track segment.
          */
         getSubpositionLength(subpositionType: number, direction: Direction): number;
 
