@@ -139,9 +139,10 @@ void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoord
         return;
 
     auto tooltipWindow = std::make_unique<TooltipWindow>(message, screenCoords);
-    WindowCreate(
-        std::move(tooltipWindow), WindowClass::Tooltip, tooltipWindow->windowPos, tooltipWindow->width, tooltipWindow->height,
-        WF_TRANSPARENT | WF_STICK_TO_FRONT);
+    auto windowPos = tooltipWindow->windowPos;
+    auto width = tooltipWindow->width;
+    auto height = tooltipWindow->height;
+    WindowCreate(std::move(tooltipWindow), WindowClass::Tooltip, windowPos, width, height, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 }
 
 void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
