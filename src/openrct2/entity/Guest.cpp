@@ -5293,6 +5293,8 @@ void Guest::UpdateWalking()
     if (ShouldWaitForLevelCrossing())
     {
         // Wait for vehicle to pass
+        UpdateWaitingAtCrossing();
+
         return;
     }
 
@@ -5443,6 +5445,44 @@ void Guest::UpdateWalking()
     {
         InsertNewThought(PeepThoughtType::Scenery);
     }
+}
+
+void Guest::UpdateWaitingAtCrossing()
+{
+    if (!IsActionInterruptable())
+    {
+        UpdateAction();
+        Invalidate();
+        if (!IsActionWalking())
+            return;
+    }
+
+    Action = PeepActionType::Idle;
+    NextActionSpriteType = PeepActionSpriteType::WatchRide;
+    SwitchNextActionSpriteType();
+
+    if (HasFoodOrDrink())
+    {
+        if ((scenario_rand() & 0xFFFF) <= 1310)
+        {
+            Action = PeepActionType::EatFood;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
+        }
+
+        UpdateCurrentActionSpriteType();
+
+        return;
+    }
+
+    if ((scenario_rand() & 0xFFFF) <= 64)
+    {
+        Action = PeepActionType::Wave2;
+        ActionFrame = 0;
+        ActionSpriteImageOffset = 0;
+    }
+
+    UpdateCurrentActionSpriteType();
 }
 
 /**
