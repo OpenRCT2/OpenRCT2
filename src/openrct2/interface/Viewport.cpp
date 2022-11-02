@@ -53,17 +53,17 @@ static std::list<rct_viewport> _viewports;
 rct_viewport* g_music_tracking_viewport;
 
 static std::unique_ptr<JobPool> _paintJobs;
-static std::vector<paint_session*> _paintColumns;
+static std::vector<PaintSession*> _paintColumns;
 
 ScreenCoordsXY gSavedView;
 ZoomLevel gSavedViewZoom;
 uint8_t gSavedViewRotation;
 
-paint_entry* gNextFreePaintStruct;
+PaintEntry* gNextFreePaintStruct;
 uint8_t gCurrentRotation;
 
 static uint32_t _currentImageType;
-InteractionInfo::InteractionInfo(const paint_struct* ps)
+InteractionInfo::InteractionInfo(const PaintStruct* ps)
     : Loc(ps->map_x, ps->map_y)
     , Element(ps->tileElement)
     , Entity(ps->entity)
@@ -117,7 +117,7 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
         return std::nullopt;
     }
 
-    auto screenCoord = translate_3d_to_2d_with_z(get_current_rotation(), loc);
+    auto screenCoord = Translate3DTo2DWithZ(get_current_rotation(), loc);
     screenCoord.x -= viewport->view_width / 2;
     screenCoord.y -= viewport->view_height / 2;
     return { screenCoord };
@@ -186,7 +186,7 @@ void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t 
     viewport->zoom = zoom;
     viewport->flags = 0;
 
-    if (gConfigGeneral.always_show_gridlines)
+    if (gConfigGeneral.AlwaysShowGridlines)
         viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
     w->viewport = viewport;
 
@@ -248,7 +248,7 @@ CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
     for (int32_t i = 0; i < 6; i++)
     {
         pos = viewport_coord_to_map_coord(startCoords, height);
-        height = tile_element_height(pos);
+        height = TileElementHeight(pos);
 
         // HACK: This is to prevent the x and y values being set to values outside
         // of the map. This can happen when the height is larger than the map size.
@@ -673,7 +673,7 @@ void viewport_update_sprite_follow(rct_window* window)
 
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
-            int32_t height = (tile_element_height({ sprite->x, sprite->y })) - 16;
+            int32_t height = (TileElementHeight({ sprite->x, sprite->y })) - 16;
             int32_t underground = sprite->z < height;
             viewport_set_underground_flag(underground, window, window->viewport);
         }
@@ -761,7 +761,7 @@ void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep)
             CoordsXYZ coordFocus;
             coordFocus.x = xy.x;
             coordFocus.y = xy.y;
-            coordFocus.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
+            coordFocus.z = TileElementHeight(xy) + (4 * COORDS_Z_STEP);
             focus = Focus(coordFocus);
             window->viewport_target_sprite = EntityId::GetNull();
         }
@@ -842,7 +842,7 @@ void viewport_render(
 }
 
 static void record_session(
-    const paint_session& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
+    const PaintSession& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
 {
     // Perform a deep copy of the paint session, use relative offsets.
     // This is done to extract the session for benchmark.
@@ -853,7 +853,7 @@ static void record_session(
     recordedSession.Entries.resize(session.PaintEntryChain.GetCount());
 
     // Mind the offset needs to be calculated against the original `session`, not `session_copy`
-    std::unordered_map<paint_struct*, paint_struct*> entryRemap;
+    std::unordered_map<PaintStruct*, PaintStruct*> entryRemap;
 
     // Copy all entries
     auto paintIndex = 0;
@@ -865,11 +865,11 @@ static void record_session(
             auto& src = chain->PaintStructs[i];
             auto& dst = recordedSession.Entries[paintIndex++];
             dst = src;
-            entryRemap[src.AsBasic()] = reinterpret_cast<paint_struct*>(i * sizeof(paint_entry));
+            entryRemap[src.AsBasic()] = reinterpret_cast<PaintStruct*>(i * sizeof(PaintEntry));
         }
         chain = chain->Next;
     }
-    entryRemap[nullptr] = reinterpret_cast<paint_struct*>(-1);
+    entryRemap[nullptr] = reinterpret_cast<PaintStruct*>(-1);
 
     // Remap all entries
     for (auto& ps : recordedSession.Entries)
@@ -902,7 +902,7 @@ static void record_session(
 }
 
 static void viewport_fill_column(
-    paint_session& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
+    PaintSession& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
 {
     PROFILED_FUNCTION();
 
@@ -914,7 +914,7 @@ static void viewport_fill_column(
     PaintSessionArrange(session);
 }
 
-static void viewport_paint_column(paint_session& session)
+static void viewport_paint_column(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
@@ -933,7 +933,7 @@ static void viewport_paint_column(paint_session& session)
 
     PaintDrawStructs(session);
 
-    if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
+    if (gConfigGeneral.RenderWeatherGloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         viewport_paint_weather_gloom(&session.DPI);
@@ -999,7 +999,7 @@ void viewport_paint(
 
     _paintColumns.clear();
 
-    bool useMultithreading = gConfigGeneral.multithreading;
+    bool useMultithreading = gConfigGeneral.MultiThreading;
     if (useMultithreading && _paintJobs == nullptr)
     {
         _paintJobs = std::make_unique<JobPool>();
@@ -1027,7 +1027,7 @@ void viewport_paint(
     // Generate and sort columns.
     for (x = alignedX; x < rightBorder; x += 32, index++)
     {
-        paint_session* session = PaintSessionAlloc(&dpi1, viewFlags);
+        PaintSession* session = PaintSessionAlloc(&dpi1, viewFlags);
         _paintColumns.push_back(session);
 
         rct_drawpixelinfo& dpi2 = session->DPI;
@@ -1169,7 +1169,7 @@ void rct_viewport::Invalidate() const
 
 CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z)
 {
-    // Reverse of translate_3d_to_2d_with_z
+    // Reverse of Translate3DTo2DWithZ
     CoordsXY ret = { coords.y - coords.x / 2 + z, coords.y + coords.x / 2 + z };
     auto inverseRotation = DirectionFlipXAxis(get_current_rotation());
     return ret.Rotate(inverseRotation);
@@ -1208,7 +1208,7 @@ void hide_gridlines()
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            if (!gConfigGeneral.always_show_gridlines)
+            if (!gConfigGeneral.AlwaysShowGridlines)
             {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
                 mainWindow->Invalidate();
@@ -1404,7 +1404,7 @@ static bool IsTileElementVegetation(const TileElement* tileElement)
     return false;
 }
 
-VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFlags)
+VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags)
 {
     switch (ps->sprite_type)
     {
@@ -1484,9 +1484,9 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
 }
 
 /**
- * Checks if a paint_struct sprite type is in the filter mask.
+ * Checks if a PaintStruct sprite type is in the filter mask.
  */
-static bool PSSpriteTypeIsInFilter(paint_struct* ps, uint16_t filter)
+static bool PSSpriteTypeIsInFilter(PaintStruct* ps, uint16_t filter)
 {
     if (ps->sprite_type != ViewportInteractionItem::None && ps->sprite_type != ViewportInteractionItem::Label
         && ps->sprite_type <= ViewportInteractionItem::Banner)
@@ -1804,18 +1804,18 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, ImageId imageId, c
  *
  *  rct2: 0x0068862C
  */
-InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint32_t viewFlags, uint16_t filter)
+InteractionInfo set_interaction_info_from_paint_session(PaintSession* session, uint32_t viewFlags, uint16_t filter)
 {
     PROFILED_FUNCTION();
 
-    paint_struct* ps = &session->PaintHead;
+    PaintStruct* ps = &session->PaintHead;
     rct_drawpixelinfo* dpi = &session->DPI;
     InteractionInfo info{};
 
     while ((ps = ps->next_quadrant_ps) != nullptr)
     {
-        paint_struct* old_ps = ps;
-        paint_struct* next_ps = ps;
+        PaintStruct* old_ps = ps;
+        PaintStruct* next_ps = ps;
         while (next_ps != nullptr)
         {
             ps = next_ps;
@@ -1831,7 +1831,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnull-dereference"
-        for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
+        for (AttachedPaintStruct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
             if (is_sprite_interacted_with(dpi, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
             {
@@ -1895,7 +1895,7 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
         dpi.zoom_level = myviewport->zoom;
         dpi.width = 1;
 
-        paint_session* session = PaintSessionAlloc(&dpi, myviewport->flags);
+        PaintSession* session = PaintSessionAlloc(&dpi, myviewport->flags);
         PaintSessionGenerate(*session);
         PaintSessionArrange(*session);
         info = set_interaction_info_from_paint_session(session, myviewport->flags, flags & 0xFFFF);
@@ -1998,7 +1998,7 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
     // Iterates the cursor location to work out exactly where on the tile it is
     for (int32_t i = 0; i < 5; i++)
     {
-        int32_t z = tile_element_height(cursorMapPos);
+        int32_t z = TileElementHeight(cursorMapPos);
         cursorMapPos = viewport_coord_to_map_coord(start_vp_pos, z);
         cursorMapPos.x = std::clamp(cursorMapPos.x, info.Loc.x, info.Loc.x + 31);
         cursorMapPos.y = std::clamp(cursorMapPos.y, info.Loc.y, info.Loc.y + 31);
@@ -2024,7 +2024,7 @@ std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoo
 
     auto vpCoords = viewport->ScreenToViewportCoord(screenCoords);
     auto mapPosition = viewport_coord_to_map_coord(vpCoords, z);
-    if (!map_is_location_valid(mapPosition))
+    if (!MapIsLocationValid(mapPosition))
     {
         return std::nullopt;
     }
@@ -2042,7 +2042,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenC
     if (!mapCoords.has_value())
         return std::nullopt;
 
-    *quadrant = map_get_tile_quadrant(*mapCoords);
+    *quadrant = MapGetTileQuadrant(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
@@ -2056,7 +2056,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& 
     if (!mapCoords.has_value())
         return std::nullopt;
 
-    *quadrant = map_get_tile_quadrant(*mapCoords);
+    *quadrant = MapGetTileQuadrant(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
@@ -2070,7 +2070,7 @@ std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoord
     if (!mapCoords.has_value())
         return std::nullopt;
 
-    *side = map_get_tile_side(*mapCoords);
+    *side = MapGetTileSide(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
@@ -2084,7 +2084,7 @@ std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& scre
     if (!mapCoords.has_value())
         return std::nullopt;
 
-    *side = map_get_tile_side(*mapCoords);
+    *side = MapGetTileSide(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
@@ -2114,11 +2114,11 @@ uint8_t get_current_rotation()
 int32_t get_height_marker_offset()
 {
     // Height labels in units
-    if (gConfigGeneral.show_height_as_units)
+    if (gConfigGeneral.ShowHeightAsUnits)
         return 0;
 
     // Height labels in feet
-    if (gConfigGeneral.measurement_format == MeasurementFormat::Imperial)
+    if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         return 1 * 256;
 
     // Height labels in metres

@@ -46,6 +46,7 @@
 #include "../world/Climate.h"
 #include "../world/Footpath.h"
 #include "../world/LargeScenery.h"
+#include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -449,7 +450,7 @@ static bool IsValidLocation(const CoordsXYZ& coords)
 {
     if (coords.x != LOCATION_NULL)
     {
-        if (map_is_location_valid(coords))
+        if (MapIsLocationValid(coords))
         {
             return true;
         }
@@ -1021,7 +1022,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192U : 2184U))
+        if ((scenario_rand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192u : 2184u))
         {
             PickRideToGoOn();
         }
@@ -1651,7 +1652,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
         auto ft = Formatter();
         FormatNameTo(ft);
         ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
-        if (gConfigNotifications.guest_bought_item)
+        if (gConfigNotifications.GuestBoughtItem)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
         }
@@ -1885,7 +1886,7 @@ BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
             for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += COORDS_XY_STEP)
             {
                 auto location = CoordsXY{ tileX, tileY };
-                if (!map_is_location_valid(location))
+                if (!MapIsLocationValid(location))
                     continue;
 
                 for (auto* trackElement : TileElementsView<TrackElement>(location))
@@ -1932,7 +1933,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
         {
             if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
             {
-                ChoseNotToGoOnRide(ride, peepAtRide, false);
+                ChooseNotToGoOnRide(ride, peepAtRide, false);
                 return false;
             }
         }
@@ -1993,7 +1994,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
         {
             if (PreviousRide == ride->id)
             {
-                ChoseNotToGoOnRide(ride, peepAtRide, false);
+                ChooseNotToGoOnRide(ride, peepAtRide, false);
                 return false;
             }
 
@@ -2013,7 +2014,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                             InsertNewThought(PeepThoughtType::CantAffordRide, ride->id);
                         }
                     }
-                    ChoseNotToGoOnRide(ride, peepAtRide, true);
+                    ChooseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
                 }
             }
@@ -2030,7 +2031,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                     }
                     ride->UpdatePopularity(0);
                 }
-                ChoseNotToGoOnRide(ride, peepAtRide, true);
+                ChooseNotToGoOnRide(ride, peepAtRide, true);
                 return false;
             }
 
@@ -2058,7 +2059,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                         }
                         ride->UpdatePopularity(0);
                     }
-                    ChoseNotToGoOnRide(ride, peepAtRide, true);
+                    ChooseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
                 }
 
@@ -2080,7 +2081,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                             }
                             ride->UpdatePopularity(0);
                         }
-                        ChoseNotToGoOnRide(ride, peepAtRide, true);
+                        ChooseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
                     }
                     if (ride->intensity > maxIntensity)
@@ -2103,14 +2104,14 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                             }
                             ride->UpdatePopularity(0);
                         }
-                        ChoseNotToGoOnRide(ride, peepAtRide, true);
+                        ChooseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
                     }
 
                     // Very nauseous peeps will only go on very gentle rides.
                     if (ride->nausea >= FIXED_2DP(1, 40) && Nausea > 160)
                     {
-                        ChoseNotToGoOnRide(ride, peepAtRide, false);
+                        ChooseNotToGoOnRide(ride, peepAtRide, false);
                         return false;
                     }
                 }
@@ -2122,7 +2123,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
             {
                 if ((scenario_rand() & 0xFFFF) > 0x1999U)
                 {
-                    ChoseNotToGoOnRide(ride, peepAtRide, false);
+                    ChooseNotToGoOnRide(ride, peepAtRide, false);
                     return false;
                 }
 
@@ -2131,7 +2132,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                     if (ride->max_positive_vertical_g > FIXED_2DP(5, 00) || ride->max_negative_vertical_g < FIXED_2DP(-4, 00)
                         || ride->max_lateral_g > FIXED_2DP(4, 00))
                     {
-                        ChoseNotToGoOnRide(ride, peepAtRide, false);
+                        ChooseNotToGoOnRide(ride, peepAtRide, false);
                         return false;
                     }
                 }
@@ -2159,7 +2160,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                         }
                         ride->UpdatePopularity(0);
                     }
-                    ChoseNotToGoOnRide(ride, peepAtRide, true);
+                    ChooseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
                 }
 
@@ -2192,7 +2193,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
         return true;
     }
 
-    ChoseNotToGoOnRide(ride, peepAtRide, false);
+    ChooseNotToGoOnRide(ride, peepAtRide, false);
     return false;
 }
 
@@ -2201,7 +2202,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
     // Peeps won't go to the same shop twice in a row.
     if (ride->id == PreviousRide)
     {
-        ChoseNotToGoOnRide(ride, peepAtShop, true);
+        ChooseNotToGoOnRide(ride, peepAtShop, true);
         return false;
     }
 
@@ -2210,7 +2211,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
     {
         if (Toilet < 70)
         {
-            ChoseNotToGoOnRide(ride, peepAtShop, true);
+            ChooseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
 
@@ -2227,7 +2228,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
                 }
                 ride->UpdatePopularity(0);
             }
-            ChoseNotToGoOnRide(ride, peepAtShop, true);
+            ChooseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
     }
@@ -2236,7 +2237,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
     {
         if (Nausea < 128)
         {
-            ChoseNotToGoOnRide(ride, peepAtShop, true);
+            ChooseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
     }
@@ -2256,7 +2257,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
                 InsertNewThought(PeepThoughtType::CantAffordRide, ride->id);
             }
         }
-        ChoseNotToGoOnRide(ride, peepAtShop, true);
+        ChooseNotToGoOnRide(ride, peepAtShop, true);
         return false;
     }
 
@@ -2296,7 +2297,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
     finance_payment(-amount, expenditure);
 
-    if (gConfigGeneral.show_guest_purchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (gConfigGeneral.ShowGuestPurchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
         // HACK Currently disabled for multiplayer due to limitation of all sprites
         //      needing to be synchronised
@@ -2360,7 +2361,7 @@ bool Guest::ShouldRideWhileRaining(const Ride& ride)
     return false;
 }
 
-void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
+void Guest::ChooseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 {
     if (peepAtRide && updateLastRide)
     {
@@ -2424,7 +2425,7 @@ static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
         }
         ride->UpdatePopularity(0);
     }
-    peep->ChoseNotToGoOnRide(ride, peepAtRide, true);
+    peep->ChooseNotToGoOnRide(ride, peepAtRide, true);
 }
 
 /**
@@ -2903,7 +2904,7 @@ static bool peep_really_liked_ride(Guest* peep, Ride* ride)
  */
 static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z)
 {
-    if ((tile_element_height({ centre_x, centre_y })) > centre_z)
+    if ((TileElementHeight({ centre_x, centre_y })) > centre_z)
         return PeepThoughtType::None;
 
     uint16_t num_scenery = 0;
@@ -3158,7 +3159,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
             for (auto y = cy - searchRadius; y <= cy + searchRadius; y += COORDS_XY_STEP)
             {
                 auto location = CoordsXY{ x, y };
-                if (!map_is_location_valid(location))
+                if (!MapIsLocationValid(location))
                     continue;
 
                 for (auto* trackElement : TileElementsView<TrackElement>(location))
@@ -3568,7 +3569,7 @@ void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride* ride, CoordsXYZD& ent
 
         auto ft = Formatter();
         ride->FormatNameTo(ft);
-        if (gConfigNotifications.ride_warnings)
+        if (gConfigNotifications.RideWarnings)
         {
             News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, peep->CurrentRide.ToUnderlying(), ft);
         }
@@ -3855,7 +3856,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         else
             msg_string = STR_PEEP_TRACKING_PEEP_IS_ON_X;
 
-        if (gConfigNotifications.guest_on_ride)
+        if (gConfigNotifications.GuestOnRide)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, sprite_index, ft);
         }
@@ -4831,7 +4832,7 @@ void Guest::UpdateRideMazePathfinding()
     auto stationBaseZ = ride->GetStation().GetBaseZ();
 
     // Find the station track element
-    auto trackElement = map_get_track_element_at({ targetLoc, stationBaseZ });
+    auto trackElement = MapGetTrackElementAt({ targetLoc, stationBaseZ });
     if (trackElement == nullptr)
     {
         return;
@@ -4842,7 +4843,7 @@ void Guest::UpdateRideMazePathfinding()
     uint8_t hedges[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
     uint8_t openCount = 0;
     uint8_t mazeReverseLastEdge = DirectionReverse(MazeLastEdge);
-    for (uint8_t i = 0; i < 4; ++i)
+    for (uint8_t i = 0; i < NumOrthogonalDirections; ++i)
     {
         if (!(mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][i])) && i != mazeReverseLastEdge)
         {
@@ -4872,7 +4873,7 @@ void Guest::UpdateRideMazePathfinding()
     };
     maze_type mazeType = maze_type::invalid;
 
-    auto tileElement = map_get_first_element_at(targetLoc);
+    auto tileElement = MapGetFirstElementAt(targetLoc);
     if (tileElement == nullptr)
         return;
     do
@@ -4953,7 +4954,7 @@ void Guest::UpdateRideLeaveExit()
         FormatNameTo(ft);
         ride->FormatNameTo(ft);
 
-        if (gConfigNotifications.guest_left_ride)
+        if (gConfigNotifications.GuestLeftRide)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, sprite_index, ft);
         }
@@ -4967,7 +4968,7 @@ void Guest::UpdateRideLeaveExit()
     // Find the station track element
     for (auto* pathElement : TileElementsView<PathElement>(targetLoc))
     {
-        int16_t height = map_height_from_slope(targetLoc, pathElement->GetSlopeDirection(), pathElement->IsSloped());
+        int16_t height = MapHeightFromSlope(targetLoc, pathElement->GetSlopeDirection(), pathElement->IsSloped());
         height += pathElement->GetBaseZ();
 
         int16_t z_diff = z - height;
@@ -5065,7 +5066,7 @@ void Guest::UpdateRideShopLeave()
             return;
     }
 
-    //#11758 Previously SetState(PeepState::Walking) caused Peeps to double-back to exit point of shop
+    // #11758 Previously SetState(PeepState::Walking) caused Peeps to double-back to exit point of shop
     SetState(PeepState::Falling);
 
     auto ride = get_ride(CurrentRide);
@@ -5289,9 +5290,11 @@ void Guest::UpdateWalking()
         }
     }
 
-    if (PathIsBlockedByVehicle())
+    if (ShouldWaitForLevelCrossing())
     {
         // Wait for vehicle to pass
+        UpdateWaitingAtCrossing();
+
         return;
     }
 
@@ -5302,7 +5305,7 @@ void Guest::UpdateWalking()
 
     if (GetNextIsSurface())
     {
-        auto surfaceElement = map_get_surface_element_at(NextLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
 
         if (surfaceElement != nullptr)
         {
@@ -5351,7 +5354,7 @@ void Guest::UpdateWalking()
     if (GetNextIsSurface() || GetNextIsSloped())
         return;
 
-    TileElement* tileElement = map_get_first_element_at(NextLoc);
+    TileElement* tileElement = MapGetFirstElementAt(NextLoc);
     if (tileElement == nullptr)
         return;
 
@@ -5442,6 +5445,44 @@ void Guest::UpdateWalking()
     {
         InsertNewThought(PeepThoughtType::Scenery);
     }
+}
+
+void Guest::UpdateWaitingAtCrossing()
+{
+    if (!IsActionInterruptable())
+    {
+        UpdateAction();
+        Invalidate();
+        if (!IsActionWalking())
+            return;
+    }
+
+    Action = PeepActionType::Idle;
+    NextActionSpriteType = PeepActionSpriteType::WatchRide;
+    SwitchNextActionSpriteType();
+
+    if (HasFoodOrDrink())
+    {
+        if ((scenario_rand() & 0xFFFF) <= 1310)
+        {
+            Action = PeepActionType::EatFood;
+            ActionFrame = 0;
+            ActionSpriteImageOffset = 0;
+        }
+
+        UpdateCurrentActionSpriteType();
+
+        return;
+    }
+
+    if ((scenario_rand() & 0xFFFF) <= 64)
+    {
+        Action = PeepActionType::Wave2;
+        ActionFrame = 0;
+        ActionSpriteImageOffset = 0;
+    }
+
+    UpdateCurrentActionSpriteType();
 }
 
 /**
@@ -5794,7 +5835,7 @@ void Guest::UpdateUsingBin()
 
             for (uint8_t curContainer = 0; curContainer < 64; curContainer++)
             {
-                if (!(emptyContainers & (1ULL << curContainer)))
+                if (!(emptyContainers & (1uLL << curContainer)))
                     continue;
 
                 auto item = ShopItem(curContainer);
@@ -5830,7 +5871,7 @@ void Guest::UpdateUsingBin()
             additionStatus |= spaceLeftInBin << selectedBin;
             foundElement->SetAdditionStatus(additionStatus);
 
-            map_invalidate_tile_zoom0({ NextLoc, foundElement->GetBaseZ(), foundElement->GetClearanceZ() });
+            MapInvalidateTileZoom0({ NextLoc, foundElement->GetBaseZ(), foundElement->GetClearanceZ() });
             StateReset();
             break;
         }
@@ -6127,7 +6168,7 @@ static void peep_update_walking_break_scenery(Guest* peep)
 
     tileElement->SetIsBroken(true);
 
-    map_invalidate_tile_zoom1({ peep->NextLoc, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 32 });
+    MapInvalidateTileZoom1({ peep->NextLoc, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 32 });
 
     peep->Angriness = 16;
 }
@@ -6242,7 +6283,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
 {
     TileElement* tileElement;
 
-    auto surfaceElement = map_get_surface_element_at(peep->NextLoc);
+    auto surfaceElement = MapGetSurfaceElementAt(peep->NextLoc);
 
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
@@ -6276,12 +6317,12 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
 
     uint16_t x = peep->NextLoc.x + CoordsDirectionDelta[edge].x;
     uint16_t y = peep->NextLoc.y + CoordsDirectionDelta[edge].y;
-    if (!map_is_location_valid({ x, y }))
+    if (!MapIsLocationValid({ x, y }))
     {
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
@@ -6393,12 +6434,12 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
-    if (!map_is_location_valid({ x, y }))
+    if (!MapIsLocationValid({ x, y }))
     {
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
     // TODO: extract loop A
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6510,12 +6551,12 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
-    if (!map_is_location_valid({ x, y }))
+    if (!MapIsLocationValid({ x, y }))
     {
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
 
     // TODO: extract loop A
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6699,9 +6740,9 @@ void Guest::UpdateSpriteType()
     if (ClimateIsRaining() && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
-        if (map_is_location_valid(loc.ToTileStart()))
+        if (MapIsLocationValid(loc.ToTileStart()))
         {
-            TileElement* tileElement = map_get_first_element_at(loc);
+            TileElement* tileElement = MapGetFirstElementAt(loc);
             while (true)
             {
                 if (tileElement == nullptr)

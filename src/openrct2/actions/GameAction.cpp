@@ -133,7 +133,7 @@ namespace GameActions
                 case GameCommand::PlaceLargeScenery:
                 case GameCommand::PlaceBanner:
                 case GameCommand::PlaceScenery:
-                    scenery_remove_ghost_tool_placement();
+                    SceneryRemoveGhostToolPlacement();
                     break;
                 default:
                     break;
@@ -471,7 +471,7 @@ const char* GameAction::GetName() const
 
 bool GameAction::LocationValid(const CoordsXY& coords) const
 {
-    auto result = map_is_location_valid(coords);
+    auto result = MapIsLocationValid(coords);
     if (!result)
         return false;
 #ifdef ENABLE_SCRIPTING

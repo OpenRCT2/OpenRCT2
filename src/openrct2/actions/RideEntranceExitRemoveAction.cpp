@@ -138,13 +138,13 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     auto res = GameActions::Result();
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
-    res.Position.z = tile_element_height(res.Position);
+    res.Position.z = TileElementHeight(res.Position);
 
     FootpathQueueChainReset();
     MazeEntranceHedgeReplacement({ _loc, entranceElement });
     FootpathRemoveEdgesAt(_loc, entranceElement);
 
-    tile_element_remove(entranceElement);
+    TileElementRemove(entranceElement);
 
     auto& station = ride->GetStation(_stationNum);
     if (_isExit)
@@ -158,6 +158,6 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
 
     FootpathUpdateQueueChains();
 
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
     return res;
 }

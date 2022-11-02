@@ -18,10 +18,35 @@ body:
 - type: input
   attributes:
     label: OpenRCT2 build
-    placeholder: e.g. OpenRCT2, v0.3.4.1 (d76611e on develop) provided by GitHub
+    placeholder: e.g. OpenRCT2, v0.4.2-53-g3fa7d59 (3fa7d59 on develop) provided by GitHub
     description: You can see the version by running `openrct2 --version` or copy it from the About window. Open the "Disk and game options" menu (floppy disk on the top toolbar), choose "About 'OpenRCT2'" and click the copy button next to the version information.
   validations:
     required: true
+
+- type: dropdown
+  attributes:
+    label: Base game
+    description: With what base game do you have OpenRCT2 loaded? Did you test it with the other (select both if so)?
+    multiple: true
+    options:
+      - RollerCoaster Tycoon 2
+      - RollerCoaster Tycoon Classic
+  validations:
+    required: true
+
+- type: dropdown
+  attributes:
+    label: Area(s) with this issue?
+    description: What things had an issue? Check all that apply.
+    multiple: true
+    options:
+      - The bug also exists in the original game (RCT2/RCTC)
+      - This bug is specific to multiplayer
+      - This bug is a graphical glitch or error
+      - This issue has to do with park objects and/or asset packs
+      - Issues building the game
+  validations:
+    required: false
 
 - type: textarea
   attributes:
@@ -29,19 +54,6 @@ body:
     description: Please describe the issue you are experiencing here.
   validations:
     required: true
-
-- type: dropdown
-  attributes:
-    label: Area(s) with issue?
-    description: What things had an issue? Check all that apply.
-    multiple: true
-    options:
-      - New Save Format (NSF)
-      - The bug also exists in RCT2 (vanilla)
-      - This bug is specific to multiplayer
-      - Building the game
-  validations:
-    required: false
 
 - type: textarea
   attributes:

@@ -651,7 +651,7 @@ private:
         if (widgetIndex != WIDX_PICKUP)
             return;
 
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
@@ -662,7 +662,7 @@ private:
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords;
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
         }
 
         gPickupPeepImage = ImageId();
@@ -1158,7 +1158,7 @@ private:
         else
         {
             viewport_flags = 0;
-            if (gConfigGeneral.always_show_gridlines)
+            if (gConfigGeneral.AlwaysShowGridlines)
                 viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
         }
 

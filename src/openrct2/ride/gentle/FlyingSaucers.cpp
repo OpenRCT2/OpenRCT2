@@ -35,14 +35,14 @@ static constexpr const uint32_t FlyingSaucersFenceSprites[] = {
  * rct2: 0x008873D8
  */
 static void paint_flying_saucers(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
     int32_t edges = edges_4x4[relativeTrackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 

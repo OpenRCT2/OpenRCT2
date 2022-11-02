@@ -490,7 +490,7 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
         auto ft = Formatter();
         ft.Add<utf8*>(buffer);
         DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });
-        textRight = l + gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) + 1;
+        textRight = l + gfx_get_string_width(buffer, FontStyle::Medium) + 1;
     }
 
     // Border
@@ -1078,11 +1078,11 @@ void WidgetSetDisabled(rct_window& w, WidgetIndex widgetIndex, bool value)
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_DISABLED, value);
     if (value)
     {
-        w.disabled_widgets |= (1ULL << widgetIndex);
+        w.disabled_widgets |= (1uLL << widgetIndex);
     }
     else
     {
-        w.disabled_widgets &= ~(1ULL << widgetIndex);
+        w.disabled_widgets &= ~(1uLL << widgetIndex);
     }
 }
 
@@ -1091,11 +1091,11 @@ void WidgetSetHoldable(rct_window& w, WidgetIndex widgetIndex, bool value)
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HOLDABLE, value);
     if (value)
     {
-        w.hold_down_widgets |= (1ULL << widgetIndex);
+        w.hold_down_widgets |= (1uLL << widgetIndex);
     }
     else
     {
-        w.hold_down_widgets &= ~(1ULL << widgetIndex);
+        w.hold_down_widgets &= ~(1uLL << widgetIndex);
     }
 }
 
@@ -1108,9 +1108,9 @@ void WidgetSetPressed(rct_window& w, WidgetIndex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_PRESSED, value);
     if (value)
-        w.pressed_widgets |= (1ULL << widgetIndex);
+        w.pressed_widgets |= (1uLL << widgetIndex);
     else
-        w.pressed_widgets &= ~(1ULL << widgetIndex);
+        w.pressed_widgets &= ~(1uLL << widgetIndex);
 }
 
 void WidgetSetCheckboxValue(rct_window& w, WidgetIndex widgetIndex, bool value)
@@ -1147,9 +1147,9 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
         if (widget.text != 0)
         {
             safe_strcpy(wrapped_string, widget.string, 512);
-            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, FontSpriteBase::MEDIUM, &no_lines);
+            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &no_lines);
             gfx_draw_string_no_formatting(
-                dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontSpriteBase::MEDIUM });
+                dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
         }
         return;
     }
@@ -1158,16 +1158,16 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
 
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
-    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, FontSpriteBase::MEDIUM, &no_lines);
+    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &no_lines);
 
-    gfx_draw_string_no_formatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontSpriteBase::MEDIUM });
+    gfx_draw_string_no_formatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
 
     size_t string_length = get_string_size(wrapped_string) - 1;
 
     // Make a copy of the string for measuring the width.
     char temp_string[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(temp_string, wrapped_string, std::min(string_length, gTextInput->SelectionStart));
-    int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM) + 3;
+    int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string, FontStyle::Medium) + 3;
 
     int32_t width = 6;
     if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
@@ -1176,7 +1176,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
         // of the character that the cursor is under.
         temp_string[1] = '\0';
         temp_string[0] = gTextBoxInput[gTextInput->SelectionStart];
-        width = std::max(gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM) - 2, 4);
+        width = std::max(gfx_get_string_width_no_formatting(temp_string, FontStyle::Medium) - 2, 4);
     }
 
     if (gTextBoxFrameNo <= 15)
@@ -1187,7 +1187,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     }
 }
 
-uint32_t GetColourButtonImage(colour_t colour)
+ImageId GetColourButtonImage(colour_t colour)
 {
-    return SPRITE_ID_PALETTE_COLOUR_1(colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+    return ImageId(SPR_PALETTE_BTN, colour).WithBlended(true);
 }

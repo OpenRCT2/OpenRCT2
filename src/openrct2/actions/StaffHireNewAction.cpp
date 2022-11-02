@@ -231,7 +231,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
             if (guest->State == PeepState::Walking)
             {
                 // Check the walking guest's tile. Only count them if they're on a path tile.
-                guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
+                guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->NextLoc });
                 if (guest_tile != nullptr)
                     ++count;
             }
@@ -249,7 +249,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
         {
             if (guest->State == PeepState::Walking)
             {
-                guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
+                guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->NextLoc });
                 if (guest_tile != nullptr)
                 {
                     if (rand == 0)

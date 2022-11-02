@@ -55,7 +55,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -93,7 +93,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
 
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        auto* pathBitEntry = GetFootpathItemEntry(_pathItemType - 1);
         if (pathBitEntry == nullptr)
         {
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -163,7 +163,7 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
 
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        auto* pathBitEntry = GetFootpathItemEntry(_pathItemType - 1);
         if (pathBitEntry == nullptr)
         {
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -191,12 +191,12 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     pathElement->SetIsBroken(false);
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        auto* pathBitEntry = GetFootpathItemEntry(_pathItemType - 1);
         if (pathBitEntry != nullptr && pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
         {
             pathElement->SetAdditionStatus(255);
         }
     }
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
     return res;
 }

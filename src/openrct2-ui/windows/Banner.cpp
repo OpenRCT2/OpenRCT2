@@ -83,7 +83,7 @@ private:
             (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, Focus(_bannerViewPos));
 
         if (viewport != nullptr)
-            viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+            viewport->flags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
     }
 
@@ -100,7 +100,7 @@ private:
             return nullptr;
         }
 
-        TileElement* tileElement = map_get_first_element_at(banner->position);
+        TileElement* tileElement = MapGetFirstElementAt(banner->position);
         if (tileElement == nullptr)
         {
             return nullptr;
@@ -274,21 +274,21 @@ public:
         rct_widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
         colourBtn->type = WindowWidgetType::Empty;
 
-        auto* bannerEntry = get_banner_entry(banner->type);
+        auto* bannerEntry = GetBannerEntry(banner->type);
         if (bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
         {
             colourBtn->type = WindowWidgetType::ColourBtn;
         }
-        pressed_widgets &= ~(1ULL << WIDX_BANNER_NO_ENTRY);
+        pressed_widgets &= ~(1uLL << WIDX_BANNER_NO_ENTRY);
         disabled_widgets &= ~(
-            (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
+            (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
         if (banner->flags & BANNER_FLAG_NO_ENTRY)
         {
-            pressed_widgets |= (1ULL << WIDX_BANNER_NO_ENTRY);
-            disabled_widgets |= (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN)
-                | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
+            pressed_widgets |= (1uLL << WIDX_BANNER_NO_ENTRY);
+            disabled_widgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
+                | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
         }
-        colourBtn->image = SPRITE_ID_PALETTE_COLOUR_1(banner->colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        colourBtn->image = GetColourButtonImage(banner->colour).ToUInt32();
         rct_widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
         dropDownWidget->text = BannerColouredTextFormats[banner->text_colour];
     }

@@ -215,7 +215,7 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
 static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)
 {
     int32_t z = 0;
-    auto element = map_get_first_element_at(location);
+    auto element = MapGetFirstElementAt(location);
     if (element != nullptr)
     {
         do
@@ -241,7 +241,7 @@ static int32_t GetTallestVisibleTileTop(
         {
             auto location = TileCoordsXY(x, y).ToCoordsXY();
             int32_t z = GetHighestBaseClearanceZ(location, useViewClipping);
-            int32_t viewY = translate_3d_to_2d_with_z(rotation, CoordsXYZ(location.ToTileCentre(), z)).y;
+            int32_t viewY = Translate3DTo2DWithZ(rotation, CoordsXYZ(location.ToTileCentre(), z)).y;
             minViewY = std::min(minViewY, viewY);
         }
     }
@@ -304,10 +304,10 @@ static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 
     // Calculate the viewport bounds
     auto corners = cornerCoords[useViewClipping ? 1 : 0];
-    auto screenCoords1 = translate_3d_to_2d_with_z(rotation, { corners[0].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords2 = translate_3d_to_2d_with_z(rotation, { corners[1].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords3 = translate_3d_to_2d_with_z(rotation, { corners[2].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords4 = translate_3d_to_2d_with_z(rotation, { corners[3].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords1 = Translate3DTo2DWithZ(rotation, { corners[0].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords2 = Translate3DTo2DWithZ(rotation, { corners[1].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords3 = Translate3DTo2DWithZ(rotation, { corners[2].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords4 = Translate3DTo2DWithZ(rotation, { corners[3].ToCoordsXY().ToTileCentre(), 0 });
 
     auto left = std::min({ screenCoords1.x, screenCoords2.x, screenCoords3.x, screenCoords4.x }) - 32;
     auto top = GetTallestVisibleTileTop(rotation, corners[0], corners[1], useViewClipping);
@@ -364,7 +364,7 @@ void screenshot_giant()
         {
             viewport.flags = vp->flags;
         }
-        if (gConfigGeneral.transparent_screenshot)
+        if (gConfigGeneral.TransparentScreenshot)
         {
             viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
         }
@@ -556,7 +556,7 @@ static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewpor
         CheatsSet(CheatType::RemoveLitter);
     }
 
-    if (options->transparent || gConfigGeneral.transparent_screenshot)
+    if (options->transparent || gConfigGeneral.TransparentScreenshot)
     {
         viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
     }
@@ -667,10 +667,10 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
                 if (centreMapY)
                     customY = (mapSize.y / 2) * 32 + 16;
 
-                int32_t z = tile_element_height({ customX, customY });
+                int32_t z = TileElementHeight({ customX, customY });
                 CoordsXYZ coords3d = { customX, customY, z };
 
-                auto coords2d = translate_3d_to_2d_with_z(customRotation, coords3d);
+                auto coords2d = Translate3DTo2DWithZ(customRotation, coords3d);
 
                 viewport.viewPos = { coords2d.x - ((viewport.view_width << customZoom) / 2),
                                      coords2d.y - ((viewport.view_height << customZoom) / 2) };
@@ -763,9 +763,9 @@ void CaptureImage(const CaptureOptions& options)
         viewport.view_width = viewport.width;
         viewport.view_height = viewport.height;
 
-        auto z = tile_element_height(options.View->Position);
+        auto z = TileElementHeight(options.View->Position);
         CoordsXYZ coords3d(options.View->Position, z);
-        auto coords2d = translate_3d_to_2d_with_z(options.Rotation, coords3d);
+        auto coords2d = Translate3DTo2DWithZ(options.Rotation, coords3d);
         viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.view_width)) / 2),
                              coords2d.y - ((options.Zoom.ApplyTo(viewport.view_height)) / 2) };
         viewport.zoom = options.Zoom;

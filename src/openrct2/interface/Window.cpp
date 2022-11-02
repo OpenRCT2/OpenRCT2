@@ -186,10 +186,10 @@ static void window_close_surplus(int32_t cap, WindowClass avoid_classification)
  */
 void window_set_window_limit(int32_t value)
 {
-    int32_t prev = gConfigGeneral.window_limit;
+    int32_t prev = gConfigGeneral.WindowLimit;
     int32_t val = std::clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
-    gConfigGeneral.window_limit = val;
-    config_save_default();
+    gConfigGeneral.WindowLimit = val;
+    ConfigSaveDefault();
     // Checks if value decreases and then closes surplus
     // windows if one sets a limit lower than the number of windows open
     if (val < prev)
@@ -820,7 +820,7 @@ void window_scroll_to_location(rct_window& w, const CoordsXYZ& coords)
     window_unfollow_sprite(w);
     if (w.viewport != nullptr)
     {
-        int16_t height = tile_element_height(coords);
+        int16_t height = TileElementHeight(coords);
         if (coords.z < height - 16)
         {
             if (!(w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
@@ -838,7 +838,7 @@ void window_scroll_to_location(rct_window& w, const CoordsXYZ& coords)
             }
         }
 
-        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords);
+        auto screenCoords = Translate3DTo2DWithZ(get_current_rotation(), coords);
 
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
@@ -932,7 +932,7 @@ void window_rotate_camera(rct_window& w, int32_t direction)
     {
         coords.x = mapXYCoords->x;
         coords.y = mapXYCoords->y;
-        coords.z = tile_element_height(coords);
+        coords.z = TileElementHeight(coords);
     }
 
     gCurrentRotation = (get_current_rotation() + direction) & 3;
@@ -965,7 +965,7 @@ void window_viewport_get_map_coords_by_cursor(
     *map_y = mapCoords.y;
 
     // Get viewport coordinates centring around the tile.
-    int32_t z = tile_element_height(mapCoords);
+    int32_t z = TileElementHeight(mapCoords);
 
     auto centreLoc = centre_2d_coordinates({ mapCoords.x, mapCoords.y, z }, w.viewport);
     if (!centreLoc)
@@ -986,7 +986,7 @@ void window_viewport_get_map_coords_by_cursor(
 void window_viewport_centre_tile_around_cursor(rct_window& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
 {
     // Get viewport coordinates centring around the tile.
-    int32_t z = tile_element_height({ map_x, map_y });
+    int32_t z = TileElementHeight({ map_x, map_y });
     auto centreLoc = centre_2d_coordinates({ map_x, map_y, z }, w.viewport);
 
     if (!centreLoc.has_value())
@@ -1035,7 +1035,7 @@ void window_zoom_set(rct_window& w, ZoomLevel zoomLevel, bool atCursor)
     int32_t saved_map_y = 0;
     int32_t offset_x = 0;
     int32_t offset_y = 0;
-    if (gConfigGeneral.zoom_to_cursor && atCursor)
+    if (gConfigGeneral.ZoomToCursor && atCursor)
     {
         window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
     }
@@ -1061,7 +1061,7 @@ void window_zoom_set(rct_window& w, ZoomLevel zoomLevel, bool atCursor)
     }
 
     // Zooming to cursor? Centre around the tile we were hovering over just now.
-    if (gConfigGeneral.zoom_to_cursor && atCursor)
+    if (gConfigGeneral.ZoomToCursor && atCursor)
     {
         window_viewport_centre_tile_around_cursor(w, saved_map_x, saved_map_y, offset_x, offset_y);
     }
@@ -1306,9 +1306,8 @@ void window_resize(rct_window& w, int32_t dw, int32_t dh)
     window_event_invalidate_call(&w);
 
     // Update scroll widgets
-    for (int32_t i = 0; i < 3; i++)
+    for (auto& scroll : w.scrolls)
     {
-        auto& scroll = w.scrolls[i];
         scroll.h_right = WINDOW_SCROLL_UNDEFINED;
         scroll.v_bottom = WINDOW_SCROLL_UNDEFINED;
     }
@@ -1380,8 +1379,8 @@ void tool_cancel()
     {
         input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
 
-        map_invalidate_selection_rect();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateSelectionRect();
+        MapInvalidateMapSelectionTiles();
 
         // Reset map selection
         gMapSelectFlags = 0;
@@ -1449,9 +1448,14 @@ void window_event_dropdown_call(rct_window* w, WidgetIndex widgetIndex, int32_t 
 
 void window_event_unknown_05_call(rct_window* w)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->unknown_05 != nullptr)
-            w->event_handlers->unknown_05(w);
+    if (w->event_handlers == nullptr)
+    {
+        w->OnUnknown5();
+    }
+    else if (w->event_handlers->unknown_05 != nullptr)
+    {
+        w->event_handlers->unknown_05(w);
+    }
 }
 
 void window_event_update_call(rct_window* w)

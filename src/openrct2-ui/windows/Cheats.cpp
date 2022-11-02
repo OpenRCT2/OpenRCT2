@@ -320,20 +320,20 @@ static rct_widget *window_cheats_page_widgets[] =
 };
 
 static uint64_t window_cheats_page_hold_down_widgets[] = {
-    (1ULL << WIDX_MONEY_SPINNER_INCREMENT) |
-    (1ULL << WIDX_MONEY_SPINNER_DECREMENT) |
-    (1ULL << WIDX_ADD_MONEY) |
-    (1ULL << WIDX_YEAR_UP) |
-    (1ULL << WIDX_YEAR_DOWN) |
-    (1ULL << WIDX_MONTH_UP) |
-    (1ULL << WIDX_MONTH_DOWN) |
-    (1ULL << WIDX_DAY_UP) |
-    (1ULL << WIDX_DAY_DOWN),
+    (1uLL << WIDX_MONEY_SPINNER_INCREMENT) |
+    (1uLL << WIDX_MONEY_SPINNER_DECREMENT) |
+    (1uLL << WIDX_ADD_MONEY) |
+    (1uLL << WIDX_YEAR_UP) |
+    (1uLL << WIDX_YEAR_DOWN) |
+    (1uLL << WIDX_MONTH_UP) |
+    (1uLL << WIDX_MONTH_DOWN) |
+    (1uLL << WIDX_DAY_UP) |
+    (1uLL << WIDX_DAY_DOWN),
 
     0,
 
-    (1ULL << WIDX_INCREASE_PARK_RATING) |
-    (1ULL << WIDX_DECREASE_PARK_RATING),
+    (1uLL << WIDX_INCREASE_PARK_RATING) |
+    (1uLL << WIDX_DECREASE_PARK_RATING),
 
     0,
 };
@@ -361,7 +361,7 @@ public:
     void OnOpen() override
     {
         SetPage(WINDOW_CHEATS_PAGE_MONEY);
-        _parkRatingSpinnerValue = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
+        _parkRatingSpinnerValue = ParkGetForcedRating() >= 0 ? ParkGetForcedRating() : 999;
     }
 
     void OnUpdate() override
@@ -471,7 +471,7 @@ public:
             case WINDOW_CHEATS_PAGE_MISC:
                 widgets[WIDX_OPEN_CLOSE_PARK].text = (gParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
                                                                                          : STR_CHEAT_OPEN_PARK;
-                SetCheckboxValue(WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
+                SetCheckboxValue(WIDX_FORCE_PARK_RATING, ParkGetForcedRating() >= 0);
                 SetCheckboxValue(WIDX_FREEZE_WEATHER, gCheatsFreezeWeather);
                 SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
                 SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
@@ -789,7 +789,7 @@ private:
             case WIDX_INCREASE_PARK_RATING:
                 _parkRatingSpinnerValue = std::min(999, 10 * (_parkRatingSpinnerValue / 10 + 1));
                 InvalidateWidget(WIDX_PARK_RATING_SPINNER);
-                if (get_forced_park_rating() >= 0)
+                if (ParkGetForcedRating() >= 0)
                 {
                     auto setCheatAction = SetCheatAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                     GameActions::Execute(&setCheatAction);
@@ -798,7 +798,7 @@ private:
             case WIDX_DECREASE_PARK_RATING:
                 _parkRatingSpinnerValue = std::max(0, 10 * (_parkRatingSpinnerValue / 10 - 1));
                 InvalidateWidget(WIDX_PARK_RATING_SPINNER);
-                if (get_forced_park_rating() >= 0)
+                if (ParkGetForcedRating() >= 0)
                 {
                     CheatsSet(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                 }
@@ -887,7 +887,7 @@ private:
                 CheatsSet(CheatType::NeverEndingMarketing, !gCheatsNeverendingMarketing);
                 break;
             case WIDX_FORCE_PARK_RATING:
-                if (get_forced_park_rating() >= 0)
+                if (ParkGetForcedRating() >= 0)
                 {
                     CheatsSet(CheatType::SetForcedParkRating, -1);
                 }

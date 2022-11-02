@@ -2713,8 +2713,6 @@ STR_5503    :Escribe el nombre del host o la IP:
 STR_5504    :Mostrar estado multijugador
 STR_5505    :No se pudo conectar al servidor.
 STR_5506    :Visitantes ignoran intensidad de atracc.
-STR_5508    :Permitir cargar ficheros dañados
-STR_5509    :Permite cargar escenarios y partidas que tengan una suma de comprobación incorrecta, como los escenarios de la demo o partidas dañadas.
 STR_5510    :Dispositivo de sonido predeterminado
 STR_5511    :(DESCONOCIDO)
 STR_5512    :Guardar Partida como…
@@ -2999,7 +2997,7 @@ STR_5832    :Mostrar marcas de altura con{NEWLINE}valores relativos{NEWLINE}(+1,
 STR_5833    :Cambiar el formato de fecha a usar en el juego.
 STR_5834    :Selecciona el dispositivo de sonido que OpenRCT2 debe usar.
 STR_5835    :Silenciar el juego si la ventana pierde el foco.
-STR_5836    :Selecciona la música usada en el menú principal.{NEWLINE}Seleccionar el tema de RCT1 requiere copiar el archivo ‘data/css17.dat’ de la carpeta de RCT1 a ‘data/css50.dat’ en la carpeta de RCT2, o establece la ruta de RCT1 en ‘Otras Opciones’.
+STR_5836    :Selecciona la música usada en el menú principal.{NEWLINE}Seleccionar el tema de RCT1 requiere establecer la ruta a RCT1 en ‘Otras Opciones’.
 STR_5837    :Crea y gestiona tus temas personalizados de la interfaz.
 STR_5838    :Mostrar un botón separado para las finanzas en la barra de herramienta superior.
 STR_5839    :Mostrar un botón separado para la investigación y desarrollo en la barra de herramienta superior.
@@ -3481,7 +3479,7 @@ STR_6368    :Por razones de compatibilidad, no se recomienda correr OpenRCT2 sob
 STR_6369    :Permitir construir en alturas inválidas
 STR_6370    :Permite construir rieles y piezas en cualquier intervalo de alturas
 STR_6371    :La ruta especificada contiene una instalación de RCT1, pero el archivo ‘csg1i.dat’ no existe. Este archivo NECESITA ser copiado desde el CD de RCT Deluxe o Loopy Landscapes, a la carpeta “Data” dentro de la instalación de RollerCoaster Tycoon 1 en tu disco duro.
-STR_6372    :La ruta especificada contiene una instalación de RCT1, pero esta versión no es correcta. OpenRCT2 NECESITA una versión de RCT Deluxe o Loopy Landscapes para poder usar los archivos de Roller Coaster Tycoon 1.
+STR_6372    :La ruta especificada contiene una instalación de RCT1, pero esta versión no es correcta. OpenRCT2 NECESITA una versión de RCT Deluxe o Loopy Landscapes para poder usar los Recursos de Roller Coaster Tycoon 1.
 STR_6373    :Habilitar comprobación de gálibo
 STR_6374    :G
 STR_6375    :Paseo Desconocido
@@ -3628,6 +3626,14 @@ STR_6516    :Uno o más objetos añadidos requieren haber enlazado RTC1 para su 
 STR_6517    :Uno o más objetos de este parque requieren haber enlazado RTC1 para su correcta visualización. Se utilizarán imágenes alternativas.
 STR_6518    :{BLACK}Posa el ratón sobre un escenario para ver su descripción y objetivos. Haz click para empezar a jugar.
 STR_6519    :Extras
+STR_6520    :Paquetes de Recursos
+STR_6521    :Prioridad baja
+STR_6522    :Prioridad alta
+STR_6523    :Disminuir la prioridad del paquete de recursos seleccionado.
+STR_6524    :Aumentar la prioridad del paquete de recursos seleccionado.
+STR_6525    :Recargar todos los recursos del juego con los paquete de recursos activados.
+STR_6526    :(gráficos, música y efectos de sonido base)
+STR_6527    :Competiciones
 
 ##############
 # Escenarios #

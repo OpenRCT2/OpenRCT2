@@ -85,13 +85,13 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
 
 void ParkEntranceRemoveAction::ParkEntranceRemoveSegment(const CoordsXYZ& loc) const
 {
-    auto entranceElement = map_get_park_entrance_element_at(loc, true);
+    auto entranceElement = MapGetParkEntranceElementAt(loc, true);
     if (entranceElement == nullptr)
     {
         return;
     }
 
-    map_invalidate_tile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
+    MapInvalidateTile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
     entranceElement->Remove();
-    update_park_fences({ loc.x, loc.y });
+    ParkUpdateFences({ loc.x, loc.y });
 }

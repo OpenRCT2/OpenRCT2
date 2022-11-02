@@ -2711,8 +2711,6 @@ STR_5503    :Hostnamen oder IP-Adresse eingeben:
 STR_5504    :Mehrspielerstatus anzeigen
 STR_5505    :Verbindung zum Server konnte nicht hergestellt werden
 STR_5506    :Besucher ignorieren Bahnintensität
-STR_5508    :Laden von Dateien mit unzul. Prüfsummen erlauben
-STR_5509    :Erlaubt das Laden von Szenarios und gespeicherten Spielständen, die eine unzulässige Prüfsumme haben, wie Szenarios aus der Demo oder fehlerhafte Spielstände
 STR_5510    :Standard Audiogerät
 STR_5511    :(UNBEKANNT)
 STR_5512    :Spiel speichern unter
@@ -2992,7 +2990,7 @@ STR_5832    :Zeigt Höhen als generische Einheiten,{NEWLINE}anstelle der unter �
 STR_5833    :Verändert das verwendete Datumsformat
 STR_5834    :Das zu verwendende Audiogerät auswählen
 STR_5835    :Schaltet das Spiel stumm, wenn das{NEWLINE}Spiel nicht mehr im Vordergrund ist
-STR_5836    :Die im Hauptmenü verwendete{NEWLINE}Musik auswählen.{NEWLINE}{NEWLINE}Die RCT1-Musik erfordert das Kopieren von „data/css17.dat“,{NEWLINE}aus dem RCT1-Ordner, nach „data/css50.dat“ im{NEWLINE}RCT2-Ordner oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
+STR_5836    :Die im Hauptmenü verwendete Musik auswählen.{NEWLINE}Die Auswahl der RCT1-Musik erfordert, dass der Pfad zu RCT1 im Reiter „Sonstiges“ festgelegt wird.
 STR_5837    :Benutzerdefinierte GUIs{NEWLINE}erstellen und verwalten
 STR_5838    :Zeigt für die Finanzen in der Symbolleiste{NEWLINE}eine gesonderte Schaltfläche an
 STR_5839    :Zeigt für die Forschung & Entwicklung{NEWLINE}in der Symbolleiste eine gesonderte Schaltfläche an

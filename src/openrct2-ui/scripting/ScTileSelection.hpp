@@ -52,7 +52,7 @@ namespace OpenRCT2::Scripting
 
         void range_set(DukValue value)
         {
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
             if (value.type() == DukValue::Type::OBJECT)
             {
                 auto range = GetMapRange(value);
@@ -70,7 +70,7 @@ namespace OpenRCT2::Scripting
             {
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
             }
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
         }
 
         DukValue tiles_get() const
@@ -95,7 +95,7 @@ namespace OpenRCT2::Scripting
 
         void tiles_set(DukValue value)
         {
-            map_invalidate_map_selection_tiles();
+            MapInvalidateMapSelectionTiles();
             gMapSelectionTiles.clear();
             if (value.is_array())
             {
@@ -125,7 +125,7 @@ namespace OpenRCT2::Scripting
             {
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             }
-            map_invalidate_map_selection_tiles();
+            MapInvalidateMapSelectionTiles();
         }
 
         static void Register(duk_context* ctx)

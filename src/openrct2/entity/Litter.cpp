@@ -20,10 +20,10 @@ static bool isLocationLitterable(const CoordsXYZ& mapPos)
 {
     TileElement* tileElement;
 
-    if (!map_is_location_owned(mapPos))
+    if (!MapIsLocationOwned(mapPos))
         return false;
 
-    tileElement = map_get_first_element_at(mapPos);
+    tileElement = MapGetFirstElementAt(mapPos);
     if (tileElement == nullptr)
         return false;
     do
@@ -35,7 +35,7 @@ static bool isLocationLitterable(const CoordsXYZ& mapPos)
         if (pathZ < mapPos.z || pathZ >= mapPos.z + PATH_CLEARANCE)
             continue;
 
-        return !tile_element_is_underground(tileElement);
+        return !TileElementIsUnderground(tileElement);
     } while (!(tileElement++)->IsLastForTile());
     return false;
 }
@@ -170,7 +170,7 @@ static constexpr const LitterSprite _litterSprites[] = {
     { SPR_LITTER_EMPTY_BOWL_BLUE, 0x3 },
 };
 
-void Litter::Paint(paint_session& session, int32_t imageDirection) const
+void Litter::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 

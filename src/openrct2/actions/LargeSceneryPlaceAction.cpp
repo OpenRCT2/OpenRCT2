@@ -56,7 +56,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
     auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
     res.Expenditure = ExpenditureType::Landscaping;
-    int16_t surfaceHeight = tile_element_height(_loc);
+    int16_t surfaceHeight = TileElementHeight(_loc);
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = surfaceHeight;
@@ -148,12 +148,12 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
         resultData.GroundFlags = tempSceneryGroundFlags;
 
-        if (!LocationValid(curTile) || map_is_edge(curTile))
+        if (!LocationValid(curTile) || MapIsEdge(curTile))
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned({ curTile, zLow }) && !gCheatsSandboxMode)
+        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !MapIsLocationOwned({ curTile, zLow }) && !gCheatsSandboxMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -182,7 +182,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
     res.Expenditure = ExpenditureType::Landscaping;
 
-    int16_t surfaceHeight = tile_element_height(_loc);
+    int16_t surfaceHeight = TileElementHeight(_loc);
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = surfaceHeight;
@@ -277,7 +277,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
             FootpathRemoveLitter({ curTile, zLow });
             if (!gCheatsDisableClearanceChecks)
             {
-                wall_remove_at({ curTile, zLow, zHigh });
+                WallRemoveAt({ curTile, zLow, zHigh });
             }
         }
 
@@ -293,7 +293,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         }
 
         MapAnimationCreate(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
-        map_invalidate_tile_full(curTile);
+        MapInvalidateTileFull(curTile);
 
         if (tileNum == 0)
         {
@@ -346,12 +346,12 @@ int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(rct_large_scenery_tile* til
         curTile.x += _loc.x;
         curTile.y += _loc.y;
 
-        if (!map_is_location_valid(curTile))
+        if (!MapIsLocationValid(curTile))
         {
             continue;
         }
 
-        auto* surfaceElement = map_get_surface_element_at(curTile);
+        auto* surfaceElement = MapGetSurfaceElementAt(curTile);
         if (surfaceElement == nullptr)
             continue;
 

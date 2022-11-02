@@ -454,7 +454,7 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
     }
 
     auto loc = newLocation;
-    if (!map_is_location_valid(loc))
+    if (!MapIsLocationValid(loc))
     {
         loc.x = LOCATION_NULL;
     }
@@ -476,7 +476,7 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 
 void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
 {
-    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), entityPos);
+    auto screenCoords = Translate3DTo2DWithZ(get_current_rotation(), entityPos);
 
     entity->SpriteRect = ScreenRect(
         screenCoords - ScreenCoordsXY{ entity->sprite_width, entity->sprite_height_negative },

@@ -148,9 +148,9 @@ public:
     {
         widgets = window_map_widgets;
 
-        hold_down_widgets = (1ULL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
-            | (1ULL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_X_DOWN) | (1ULL << WIDX_LAND_TOOL_LARGER)
-            | (1ULL << WIDX_LAND_TOOL_SMALLER);
+        hold_down_widgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
+            | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN) | (1uLL << WIDX_LAND_TOOL_LARGER)
+            | (1uLL << WIDX_LAND_TOOL_SMALLER);
 
         InitScrollWidgets();
 
@@ -427,7 +427,7 @@ public:
 
     void SetLandRightsToolUpdate(const ScreenCoordsXY& screenCoords)
     {
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
         if (!mapCoords.has_value())
@@ -447,7 +447,7 @@ public:
         gMapSelectPositionA = *mapCoords;
         gMapSelectPositionB.x = mapCoords->x + size;
         gMapSelectPositionB.y = mapCoords->y + size;
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
     }
 
     CoordsXYZD PlaceParkEntranceGetMapPosition(const ScreenCoordsXY& screenCoords)
@@ -458,7 +458,7 @@ public:
         if (parkEntranceMapPosition.IsNull())
             return parkEntranceMapPosition;
 
-        auto surfaceElement = map_get_surface_element_at(mapCoords);
+        auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
         if (surfaceElement == nullptr)
         {
             parkEntranceMapPosition.SetNull();
@@ -484,8 +484,8 @@ public:
 
     void PlaceParkEntranceToolUpdate(const ScreenCoordsXY& screenCoords)
     {
-        map_invalidate_selection_rect();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateSelectionRect();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -508,7 +508,7 @@ public:
         gMapSelectArrowDirection = parkEntrancePosition.direction;
 
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT | MAP_SELECT_FLAG_ENABLE_ARROW;
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         if (gParkEntranceGhostExists && parkEntrancePosition == gParkEntranceGhostPosition)
         {
             return;
@@ -547,7 +547,7 @@ public:
     {
         int32_t direction;
         TileElement* tileElement;
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
@@ -570,7 +570,7 @@ public:
         gMapSelectPositionB = mapCoords;
         gMapSelectArrowPosition = CoordsXYZ{ mapCoords, mapZ };
         gMapSelectArrowDirection = DirectionReverse(direction);
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
     }
 
     void SetPeepSpawnToolDown(const ScreenCoordsXY& screenCoords)
@@ -648,7 +648,7 @@ public:
     {
         CoordsXY c = ScreenToMap(screenCoords);
         auto mapCoords = CoordsXY{ std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1), std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_BIG - 1) };
-        auto mapZ = tile_element_height(mapCoords);
+        auto mapZ = TileElementHeight(mapCoords);
 
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
@@ -664,12 +664,12 @@ public:
             int32_t radius = (landToolSize * 16) - 16;
 
             mapCoords = (mapCoords - CoordsXY{ radius, radius }).ToTileStart();
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords + CoordsXY{ size, size };
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             auto surfaceSetStyleAction = SurfaceSetStyleAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -684,12 +684,12 @@ public:
             int32_t radius = (landRightsToolSize * 16) - 16;
             mapCoords = (mapCoords - CoordsXY{ radius, radius }).ToTileStart();
 
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords + CoordsXY{ size, size };
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             auto landSetRightsAction = LandSetRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -733,20 +733,20 @@ public:
         // Set the pressed widgets
         pressed_widgets = 0;
         SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-        pressed_widgets |= (1ULL << (WIDX_PEOPLE_TAB + selected_tab));
-        pressed_widgets |= (1ULL << WIDX_LAND_TOOL);
+        pressed_widgets |= (1uLL << (WIDX_PEOPLE_TAB + selected_tab));
+        pressed_widgets |= (1uLL << WIDX_LAND_TOOL);
 
         if (_activeTool & (1 << 3))
-            pressed_widgets |= (1ULL << WIDX_LAND_SALE_CHECKBOX);
+            pressed_widgets |= (1uLL << WIDX_LAND_SALE_CHECKBOX);
 
         if (_activeTool & (1 << 2))
-            pressed_widgets |= (1ULL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
+            pressed_widgets |= (1uLL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
 
         if (_activeTool & (1 << 1))
-            pressed_widgets |= (1ULL << WIDX_LAND_OWNED_CHECKBOX);
+            pressed_widgets |= (1uLL << WIDX_LAND_OWNED_CHECKBOX);
 
         if (_activeTool & (1 << 0))
-            pressed_widgets |= (1ULL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
+            pressed_widgets |= (1uLL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
         // Set disabled widgets
         SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gMapSize.x != gMapSize.y);
@@ -804,11 +804,11 @@ public:
 
         // Land tool mode (4 checkboxes)
         int checkboxY = height - 55;
-        for (int32_t i = 0; i < 4; i++)
+        for (int32_t i = WIDX_LAND_OWNED_CHECKBOX; i <= WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX; i++)
         {
-            widgets[WIDX_LAND_OWNED_CHECKBOX + i].top = checkboxY;
+            widgets[i].top = checkboxY;
             checkboxY += 11;
-            widgets[WIDX_LAND_OWNED_CHECKBOX + i].bottom = checkboxY;
+            widgets[i].bottom = checkboxY;
             checkboxY += 2;
         }
 
@@ -844,8 +844,8 @@ public:
                     widgets[WIDX_LAND_TOOL_SMALLER].type = WindowWidgetType::TrnBtn;
                     widgets[WIDX_LAND_TOOL_LARGER].type = WindowWidgetType::TrnBtn;
 
-                    for (int32_t i = 0; i < 4; i++)
-                        widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WindowWidgetType::Checkbox;
+                    for (int32_t i = WIDX_LAND_OWNED_CHECKBOX; i <= WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX; i++)
+                        widgets[i].type = WindowWidgetType::Checkbox;
 
                     widgets[WIDX_LAND_TOOL].image = LandTool::SizeToSpriteIndex(_landRightsToolSize);
                 }
@@ -1037,7 +1037,7 @@ private:
 
         for (int32_t i = 0; i < MAXIMUM_MAP_SIZE_TECHNICAL; i++)
         {
-            if (!map_is_edge({ x, y }))
+            if (!MapIsEdge({ x, y }))
             {
                 uint16_t colour = 0;
                 switch (selected_tab)
@@ -1066,7 +1066,7 @@ private:
 
     uint16_t GetPixelColourPeep(const CoordsXY& c)
     {
-        auto* surfaceElement = map_get_surface_element_at(c);
+        auto* surfaceElement = MapGetSurfaceElementAt(c);
         if (surfaceElement == nullptr)
             return 0;
 
@@ -1109,7 +1109,7 @@ private:
         uint16_t colourB = MapColour(PALETTE_INDEX_13); // surface colour (dark grey)
 
         // as an improvement we could use first_element to show underground stuff?
-        TileElement* tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(c));
+        TileElement* tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(c));
         do
         {
             if (tileElement == nullptr)

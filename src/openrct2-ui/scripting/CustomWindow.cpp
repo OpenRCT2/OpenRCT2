@@ -1003,7 +1003,7 @@ namespace OpenRCT2::Ui::Windows
             else if (desc.Type == "colourpicker")
             {
                 widget.type = WindowWidgetType::ColourBtn;
-                widget.image = GetColourButtonImage(desc.Colour);
+                widget.image = GetColourButtonImage(desc.Colour).ToUInt32();
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "custom")
@@ -1238,7 +1238,7 @@ namespace OpenRCT2::Ui::Windows
                 if (lastColour != colour && colour < COLOUR_COUNT)
                 {
                     customWidgetInfo->Colour = colour;
-                    widget.image = GetColourButtonImage(colour);
+                    widget.image = GetColourButtonImage(colour).ToUInt32();
                     widget_invalidate(*w, widgetIndex);
 
                     std::vector<DukValue> args;

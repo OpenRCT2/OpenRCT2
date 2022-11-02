@@ -991,8 +991,8 @@ namespace OpenRCT2
                         SetTileElements(std::move(tileElements));
                         {
                             tile_element_iterator it;
-                            tile_element_iterator_begin(&it);
-                            while (tile_element_iterator_next(&it))
+                            TileElementIteratorBegin(&it);
+                            while (TileElementIteratorNext(&it))
                             {
                                 if (it.element->GetType() == TileElementType::Path)
                                 {
@@ -1034,7 +1034,7 @@ namespace OpenRCT2
             {
                 for (int32_t x = 0; x < gMapSize.x; x++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+                    TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
                         continue;
                     do

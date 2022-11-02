@@ -53,7 +53,7 @@ enum
  * rct: 0x004ACF4A
  */
 static void MazePaintSetup(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint16_t mazeEntry = trackElement.GetMazeEntry();
@@ -64,7 +64,7 @@ static void MazePaintSetup(
     auto imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_TERRAIN_DIRT);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 0 });
 
-    wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session.TrackColours[SCHEME_3]);
+    WoodenASupportsPaintSetup(session, (rotation & 1) ? 0 : 1, 0, height, session.TrackColours[SCHEME_3]);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
@@ -202,7 +202,7 @@ money64 MazeCalculateCost(money32 constructionCost, const Ride& ride, const Coor
     const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
     money64 price = (ride.GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16;
 
-    auto surfaceElement = map_get_surface_element_at(loc);
+    auto surfaceElement = MapGetSurfaceElementAt(loc);
     auto heightDifference = (loc.z - surfaceElement->GetBaseZ()) / COORDS_Z_PER_TINY_Z;
     money64 supportCost = heightDifference * ride.GetRideTypeDescriptor().BuildCosts.SupportPrice;
 

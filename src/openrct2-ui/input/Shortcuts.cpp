@@ -473,8 +473,8 @@ static void ShortcutOpenSceneryPicker()
 
 static void ShortcutScaleUp()
 {
-    gConfigGeneral.window_scale += 0.25f;
-    config_save_default();
+    gConfigGeneral.WindowScale += 0.25f;
+    ConfigSaveDefault();
     gfx_invalidate_screen();
     context_trigger_resize();
     context_update_cursor_scale();
@@ -482,9 +482,9 @@ static void ShortcutScaleUp()
 
 static void ShortcutScaleDown()
 {
-    gConfigGeneral.window_scale -= 0.25f;
-    gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
-    config_save_default();
+    gConfigGeneral.WindowScale -= 0.25f;
+    gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
+    ConfigSaveDefault();
     gfx_invalidate_screen();
     context_trigger_resize();
     context_update_cursor_scale();
@@ -520,7 +520,7 @@ static void ShortcutToggleVisibility()
         return;
 
     extern TileCoordsXY windowTileInspectorTile;
-    TileElement* tileElement = map_get_nth_element_at(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
+    TileElement* tileElement = MapGetNthElementAt(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
     if (tileElement != nullptr)
     {
         tileElement->SetInvisible(!tileElement->IsInvisible());
@@ -623,7 +623,7 @@ static void ShortcutToggleConsole()
     {
         console.Toggle();
     }
-    else if (gConfigGeneral.debugging_tools && !context_is_input_active())
+    else if (gConfigGeneral.DebuggingTools && !context_is_input_active())
     {
         window_cancel_textbox();
         console.Toggle();
@@ -730,8 +730,8 @@ static void ShortcutToggleTransparentWater()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    gConfigGeneral.transparent_water ^= 1;
-    config_save_default();
+    gConfigGeneral.TransparentWater ^= 1;
+    ConfigSaveDefault();
     gfx_invalidate_screen();
 }
 
@@ -832,7 +832,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
         }
     });
     RegisterShortcut(ShortcutId::InterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
-        if (gConfigInterface.toolbar_show_cheats)
+        if (gConfigInterface.ToolbarShowCheats)
         {
             OpenWindow(WindowClass::TileInspector);
         }

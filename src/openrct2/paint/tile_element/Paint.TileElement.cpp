@@ -34,8 +34,8 @@
 
 #include <algorithm>
 
-static void BlankTilesPaint(paint_session& session, int32_t x, int32_t y);
-static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoords);
+static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
+static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
 
 const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC
     | SEGMENT_D0 | SEGMENT_D4;
@@ -44,11 +44,11 @@ const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 |
  *
  *  rct2: 0x0068B35F
  */
-void TileElementPaintSetup(paint_session& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
+void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
 {
     PROFILED_FUNCTION();
 
-    if (!map_is_edge(mapCoords))
+    if (!MapIsEdge(mapCoords))
     {
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilForceSetGeneralSupportHeight(session, -1, 0);
@@ -67,7 +67,7 @@ void TileElementPaintSetup(paint_session& session, const CoordsXY& mapCoords, bo
  *
  *  rct2: 0x0068B60E
  */
-static void BlankTilesPaint(paint_session& session, int32_t x, int32_t y)
+static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
 {
     int32_t dx = 0;
     switch (session.CurrentRotation)
@@ -113,7 +113,7 @@ bool gShowSupportSegmentHeights = false;
  *
  *  rct2: 0x0068B3FB
  */
-static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoords)
+static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords)
 {
     PROFILED_FUNCTION();
 
@@ -136,16 +136,16 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     session.MapPosition.x = coords.x;
     session.MapPosition.y = coords.y;
 
-    auto* tile_element = map_get_first_element_at(session.MapPosition);
+    auto* tile_element = MapGetFirstElementAt(session.MapPosition);
     if (tile_element == nullptr)
         return;
     uint8_t rotation = session.CurrentRotation;
 
     bool partOfVirtualFloor = false;
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
-        partOfVirtualFloor = virtual_floor_tile_is_floor(session.MapPosition);
+        partOfVirtualFloor = VirtualFloorTileIsFloor(session.MapPosition);
     }
 
     switch (rotation)
@@ -164,7 +164,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
             break;
     }
 
-    int32_t screenMinY = translate_3d_to_2d_with_z(rotation, { coords, 0 }).y;
+    int32_t screenMinY = Translate3DTo2DWithZ(rotation, { coords, 0 }).y;
 
     // Display little yellow arrow when building footpaths?
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) && session.MapPosition.x == gMapSelectArrowPosition.x
@@ -204,7 +204,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     if (partOfVirtualFloor)
     {
         // We must pretend this tile is at least as tall as the virtual floor
-        max_height = std::max(max_height, virtual_floor_get_height());
+        max_height = std::max(max_height, VirtualFloorGetHeight());
     }
 
     if (screenMinY - (max_height + 32) >= dpi->y + dpi->height)
@@ -289,9 +289,9 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
         session.MapPosition = mapPosition;
     } while (!(tile_element++)->IsLastForTile());
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off && partOfVirtualFloor)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off && partOfVirtualFloor)
     {
-        virtual_floor_paint(session);
+        VirtualFloorPaint(session);
     }
 
     if (!gShowSupportSegmentHeights)
@@ -310,9 +310,9 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
         { 1, 7, 3 },
     };
 
-    for (int32_t sy = 0; sy < 3; sy++)
+    for (std::size_t sy = 0; sy < std::size(segmentPositions); sy++)
     {
-        for (int32_t sx = 0; sx < 3; sx++)
+        for (std::size_t sx = 0; sx < std::size(segmentPositions[sy]); sx++)
         {
             uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].height;
             auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::PaletteDarken3);
@@ -328,9 +328,9 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
             if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (segmentHeight > gClipHeight))
                 continue;
 
-            int32_t xOffset = sy * 10;
-            int32_t yOffset = -22 + sx * 10;
-            paint_struct* ps = PaintAddImageAsParent(
+            int32_t xOffset = static_cast<int32_t>(sy) * 10;
+            int32_t yOffset = -22 + static_cast<int32_t>(sx) * 10;
+            PaintStruct* ps = PaintAddImageAsParent(
                 session, imageColourFlats, { xOffset, yOffset, segmentHeight }, { 10, 10, 1 },
                 { xOffset + 1, yOffset + 16, segmentHeight });
             if (ps != nullptr)
@@ -341,7 +341,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     }
 }
 
-void PaintUtilPushTunnelLeft(paint_session& session, uint16_t height, uint8_t type)
+void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, uint8_t type)
 {
     session.LeftTunnels[session.LeftTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
     if (session.LeftTunnelCount < TUNNEL_MAX_COUNT - 1)
@@ -351,7 +351,7 @@ void PaintUtilPushTunnelLeft(paint_session& session, uint16_t height, uint8_t ty
     }
 }
 
-void PaintUtilPushTunnelRight(paint_session& session, uint16_t height, uint8_t type)
+void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, uint8_t type)
 {
     session.RightTunnels[session.RightTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
     if (session.RightTunnelCount < TUNNEL_MAX_COUNT - 1)
@@ -361,12 +361,12 @@ void PaintUtilPushTunnelRight(paint_session& session, uint16_t height, uint8_t t
     }
 }
 
-void PaintUtilSetVerticalTunnel(paint_session& session, uint16_t height)
+void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height)
 {
     session.VerticalTunnelHeight = height / 16;
 }
 
-void PaintUtilSetGeneralSupportHeight(paint_session& session, int16_t height, uint8_t slope)
+void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
 {
     if (session.Support.height >= height)
     {
@@ -376,7 +376,7 @@ void PaintUtilSetGeneralSupportHeight(paint_session& session, int16_t height, ui
     PaintUtilForceSetGeneralSupportHeight(session, height, slope);
 }
 
-void PaintUtilForceSetGeneralSupportHeight(paint_session& session, int16_t height, uint8_t slope)
+void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
 {
     session.Support.height = height;
     session.Support.slope = slope;
@@ -386,10 +386,10 @@ const uint16_t segment_offsets[9] = {
     SEGMENT_B4, SEGMENT_B8, SEGMENT_BC, SEGMENT_C0, SEGMENT_C4, SEGMENT_C8, SEGMENT_CC, SEGMENT_D0, SEGMENT_D4,
 };
 
-void PaintUtilSetSegmentSupportHeight(paint_session& session, int32_t segments, uint16_t height, uint8_t slope)
+void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
 {
-    support_height* supportSegments = session.SupportSegments;
-    for (int32_t s = 0; s < 9; s++)
+    SupportHeight* supportSegments = session.SupportSegments;
+    for (std::size_t s = 0; s < std::size(segment_offsets); s++)
     {
         if (segments & segment_offsets[s])
         {
@@ -410,7 +410,7 @@ uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
     return (segments & 0xFF00) | temp;
 }
 
-bool PaintShouldShowHeightMarkers(const paint_session& session, const uint32_t viewportFlag)
+bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag)
 {
     auto dpi = &session.DPI;
     return (session.ViewFlags & viewportFlag) && (dpi->zoom_level <= ZoomLevel{ 0 });

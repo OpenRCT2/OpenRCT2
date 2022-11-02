@@ -2711,8 +2711,6 @@ STR_5503    :Hostnaam of IP-adres invoeren:
 STR_5504    :Status multiplayer tonen
 STR_5505    :Kan niet met de server verbinden.
 STR_5506    :Bezoekers negeren intensiteit
-STR_5508    :Bestanden met incorrecte checksum toch laden
-STR_5509    :Maakt het mogelijk om scenario’s en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario’s uit de demo of beschadigde opgeslagen parken.
 STR_5510    :Standaard geluidsapparaat
 STR_5511    :(ONBEKEND)
 STR_5512    :Spel opslaan als…
@@ -2994,7 +2992,7 @@ STR_5832    :Toon hoogtes in eenheden in plaats van echte maten.
 STR_5833    :Stelt de datumindeling in.
 STR_5834    :Stelt in welk audioapparaat OpenRCT2 zal gebruiken.
 STR_5835    :Dempt het geluid als het venster de focus kwijtraakt.
-STR_5836    :Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je het bestand ‘data/css17.dat’ uit je RCT1-map kopiëren naar ‘data/css50.dat’ in je RCT2-map, of een pad naar je RCT1-bestanden instellen onder het tabblad ‘Overige instellingen’.
+STR_5836    :Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je een pad naar je RCT1-bestanden instellen onder het tabblad ‘Overige instellingen’.
 STR_5837    :Eigen thema’s voor de GUI aanmaken en beheren.
 STR_5838    :Toont een knop voor financiën in de werkbalk.
 STR_5839    :Toont een knop voor onderzoek en ontwikkeling in de werkbalk.

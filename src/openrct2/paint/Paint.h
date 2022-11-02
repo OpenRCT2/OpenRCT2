@@ -25,9 +25,9 @@ struct TileElement;
 enum class RailingEntrySupportType : uint8_t;
 enum class ViewportInteractionItem : uint8_t;
 
-struct attached_paint_struct
+struct AttachedPaintStruct
 {
-    attached_paint_struct* next;
+    AttachedPaintStruct* next;
     ImageId image_id;
     ImageId ColourImageId;
     int32_t x;
@@ -35,7 +35,7 @@ struct attached_paint_struct
     bool IsMasked;
 };
 
-struct paint_struct_bound_box
+struct PaintStructBoundBox
 {
     int32_t x;
     int32_t y;
@@ -45,12 +45,12 @@ struct paint_struct_bound_box
     int32_t z_end;
 };
 
-struct paint_struct
+struct PaintStruct
 {
-    paint_struct_bound_box bounds;
-    attached_paint_struct* attached_ps;
-    paint_struct* children;
-    paint_struct* next_quadrant_ps;
+    PaintStructBoundBox bounds;
+    AttachedPaintStruct* attached_ps;
+    PaintStruct* children;
+    PaintStruct* next_quadrant_ps;
     TileElement* tileElement;
     EntityBase* entity;
     ImageId image_id;
@@ -63,46 +63,46 @@ struct paint_struct
     ViewportInteractionItem sprite_type;
 };
 
-struct paint_string_struct
+struct PaintStringStruct
 {
     StringId string_id;
-    paint_string_struct* next;
+    PaintStringStruct* next;
     int32_t x;
     int32_t y;
     uint32_t args[4];
     uint8_t* y_offsets;
 };
 
-struct paint_entry
+struct PaintEntry
 {
 private:
-    std::array<uint8_t, std::max({ sizeof(paint_struct), sizeof(attached_paint_struct), sizeof(paint_string_struct) })> data;
+    std::array<uint8_t, std::max({ sizeof(PaintStruct), sizeof(AttachedPaintStruct), sizeof(PaintStringStruct) })> data;
 
 public:
-    paint_struct* AsBasic()
+    PaintStruct* AsBasic()
     {
-        auto* res = reinterpret_cast<paint_struct*>(data.data());
-        ::new (res) paint_struct();
+        auto* res = reinterpret_cast<PaintStruct*>(data.data());
+        ::new (res) PaintStruct();
         return res;
     }
-    attached_paint_struct* AsAttached()
+    AttachedPaintStruct* AsAttached()
     {
-        auto* res = reinterpret_cast<attached_paint_struct*>(data.data());
-        ::new (res) attached_paint_struct();
+        auto* res = reinterpret_cast<AttachedPaintStruct*>(data.data());
+        ::new (res) AttachedPaintStruct();
         return res;
     }
-    paint_string_struct* AsString()
+    PaintStringStruct* AsString()
     {
-        auto* res = reinterpret_cast<paint_string_struct*>(data.data());
-        ::new (res) paint_string_struct();
+        auto* res = reinterpret_cast<PaintStringStruct*>(data.data());
+        ::new (res) PaintStringStruct();
         return res;
     }
 };
-static_assert(sizeof(paint_entry) >= sizeof(paint_struct));
-static_assert(sizeof(paint_entry) >= sizeof(attached_paint_struct));
-static_assert(sizeof(paint_entry) >= sizeof(paint_string_struct));
+static_assert(sizeof(PaintEntry) >= sizeof(PaintStruct));
+static_assert(sizeof(PaintEntry) >= sizeof(AttachedPaintStruct));
+static_assert(sizeof(PaintEntry) >= sizeof(PaintStringStruct));
 
-struct sprite_bb
+struct SpriteBb
 {
     uint32_t sprite_id;
     CoordsXYZ offset;
@@ -110,14 +110,14 @@ struct sprite_bb
     CoordsXYZ bb_size;
 };
 
-struct support_height
+struct SupportHeight
 {
     uint16_t height;
     uint8_t slope;
     uint8_t pad;
 };
 
-struct tunnel_entry
+struct TunnelEntry
 {
     uint8_t height;
     uint8_t type;
@@ -130,7 +130,7 @@ static constexpr int32_t MaxPaintQuadrants = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 #define TUNNEL_MAX_COUNT 65
 
 /**
- * A pool of paint_entry instances that can be rented out.
+ * A pool of PaintEntry instances that can be rented out.
  * The internal implementation uses an unrolled linked list so that each
  * paint session can quickly allocate a new paint entry until it requires
  * another node / block of paint entries. Only the node allocation needs to
@@ -145,7 +145,7 @@ public:
     {
         Node* Next{};
         size_t Count{};
-        paint_entry PaintStructs[NodeSize]{};
+        PaintEntry PaintStructs[NodeSize]{};
     };
 
     struct Chain
@@ -161,7 +161,7 @@ public:
 
         Chain& operator=(Chain&& chain) noexcept;
 
-        paint_entry* Allocate();
+        PaintEntry* Allocate();
         void Clear();
         size_t GetCount() const;
     };
@@ -181,29 +181,29 @@ public:
 
 struct PaintSessionCore
 {
-    paint_struct PaintHead;
-    paint_struct* Quadrants[MaxPaintQuadrants];
-    paint_struct* LastPS;
-    paint_string_struct* PSStringHead;
-    paint_string_struct* LastPSString;
-    attached_paint_struct* LastAttachedPS;
+    PaintStruct PaintHead;
+    PaintStruct* Quadrants[MaxPaintQuadrants];
+    PaintStruct* LastPS;
+    PaintStringStruct* PSStringHead;
+    PaintStringStruct* LastPSString;
+    AttachedPaintStruct* LastAttachedPS;
     const TileElement* SurfaceElement;
     EntityBase* CurrentlyDrawnEntity;
     TileElement* CurrentlyDrawnTileElement;
     const TileElement* PathElementOnSameHeight;
     const TileElement* TrackElementOnSameHeight;
-    paint_struct* WoodenSupportsPrependTo;
+    PaintStruct* WoodenSupportsPrependTo;
     CoordsXY SpritePosition;
     CoordsXY MapPosition;
     uint32_t ViewFlags;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
     ImageId TrackColours[4];
-    support_height SupportSegments[9];
-    support_height Support;
+    SupportHeight SupportSegments[9];
+    SupportHeight Support;
     uint16_t WaterHeight;
-    tunnel_entry LeftTunnels[TUNNEL_MAX_COUNT];
-    tunnel_entry RightTunnels[TUNNEL_MAX_COUNT];
+    TunnelEntry LeftTunnels[TUNNEL_MAX_COUNT];
+    TunnelEntry RightTunnels[TUNNEL_MAX_COUNT];
     uint8_t LeftTunnelCount;
     uint8_t RightTunnelCount;
     uint8_t VerticalTunnelHeight;
@@ -212,12 +212,12 @@ struct PaintSessionCore
     ViewportInteractionItem InteractionType;
 };
 
-struct paint_session : public PaintSessionCore
+struct PaintSession : public PaintSessionCore
 {
     rct_drawpixelinfo DPI;
     PaintEntryPool::Chain PaintEntryChain;
 
-    paint_struct* AllocateNormalPaintEntry() noexcept
+    PaintStruct* AllocateNormalPaintEntry() noexcept
     {
         auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
@@ -228,7 +228,7 @@ struct paint_session : public PaintSessionCore
         return nullptr;
     }
 
-    attached_paint_struct* AllocateAttachedPaintEntry() noexcept
+    AttachedPaintStruct* AllocateAttachedPaintEntry() noexcept
     {
         auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
@@ -239,7 +239,7 @@ struct paint_session : public PaintSessionCore
         return nullptr;
     }
 
-    paint_string_struct* AllocateStringPaintEntry() noexcept
+    PaintStringStruct* AllocateStringPaintEntry() noexcept
     {
         auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
@@ -275,10 +275,10 @@ struct FootpathPaintInfo
 struct RecordedPaintSession
 {
     PaintSessionCore Session;
-    std::vector<paint_entry> Entries;
+    std::vector<PaintEntry> Entries;
 };
 
-extern paint_session gPaintSession;
+extern PaintSession gPaintSession;
 
 // Globals for paint clipping
 extern uint8_t gClipHeight;
@@ -294,42 +294,42 @@ extern bool gPaintBoundingBoxes;
 extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
 
-paint_struct* PaintAddImageAsParent(
-    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
-paint_struct* PaintAddImageAsParent(
-    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+PaintStruct* PaintAddImageAsParent(
+    PaintSession& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
+PaintStruct* PaintAddImageAsParent(
+    PaintSession& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset);
-paint_struct* PaintAddImageAsParent(
-    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
-[[nodiscard]] paint_struct* PaintAddImageAsOrphan(
-    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
-paint_struct* PaintAddImageAsChild(
-    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+PaintStruct* PaintAddImageAsParent(
+    PaintSession& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+[[nodiscard]] PaintStruct* PaintAddImageAsOrphan(
+    PaintSession& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+PaintStruct* PaintAddImageAsChild(
+    PaintSession& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset);
-paint_struct* PaintAddImageAsChild(
-    paint_session& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+PaintStruct* PaintAddImageAsChild(
+    PaintSession& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
-paint_struct* PaintAddImageAsChildRotated(
-    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
+PaintStruct* PaintAddImageAsChildRotated(
+    PaintSession& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
-paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
+PaintStruct* PaintAddImageAsParentRotated(
+    PaintSession& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize);
-paint_struct* PaintAddImageAsParentRotated(
-    paint_session& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
+PaintStruct* PaintAddImageAsParentRotated(
+    PaintSession& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
 
-void paint_util_push_tunnel_rotated(paint_session& session, uint8_t direction, uint16_t height, uint8_t type);
+void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type);
 
-bool PaintAttachToPreviousAttach(paint_session& session, const ImageId& imageId, int32_t x, int32_t y);
-bool PaintAttachToPreviousPS(paint_session& session, const ImageId& image_id, int32_t x, int32_t y);
+bool PaintAttachToPreviousAttach(PaintSession& session, const ImageId& imageId, int32_t x, int32_t y);
+bool PaintAttachToPreviousPS(PaintSession& session, const ImageId& image_id, int32_t x, int32_t y);
 void PaintFloatingMoneyEffect(
-    paint_session& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
+    PaintSession& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);
 
-paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
-void PaintSessionFree(paint_session* session);
-void PaintSessionGenerate(paint_session& session);
+PaintSession* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
+void PaintSessionFree(PaintSession* session);
+void PaintSessionGenerate(PaintSession& session);
 void PaintSessionArrange(PaintSessionCore& session);
-void PaintDrawStructs(paint_session& session);
-void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
+void PaintDrawStructs(PaintSession& session);
+void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, PaintStringStruct* ps);

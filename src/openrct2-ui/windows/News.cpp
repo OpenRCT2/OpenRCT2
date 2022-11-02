@@ -50,7 +50,7 @@ private:
     int32_t _pressedNewsItemIndex{}, _pressedButtonIndex{}, _suspendUpdateTicks{};
     static int32_t CalculateItemHeight()
     {
-        return 4 * font_get_line_height(FontSpriteBase::SMALL) + 2;
+        return 4 * font_get_line_height(FontStyle::Small) + 2;
     }
 
 public:
@@ -173,7 +173,7 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
-        int32_t lineHeight = font_get_line_height(FontSpriteBase::SMALL);
+        int32_t lineHeight = font_get_line_height(FontStyle::Small);
         int32_t itemHeight = CalculateItemHeight();
         int32_t y = 0;
         int32_t i = 0;
@@ -199,13 +199,13 @@ public:
                 auto ft = Formatter();
                 ft.Add<StringId>(DateDayNames[newsItem.Day - 1]);
                 ft.Add<StringId>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
-                DrawTextBasic(&dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontSpriteBase::SMALL });
+                DrawTextBasic(&dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::Small });
             }
             // Item text
             {
                 auto ft = Formatter();
                 ft.Add<const char*>(newsItem.Text.c_str());
-                DrawTextWrapped(&dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft, { FontSpriteBase::SMALL });
+                DrawTextWrapped(&dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft, { FontStyle::Small });
             }
             // Subject button
             if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))
@@ -258,11 +258,9 @@ public:
                             }
                         }
 
-                        uint32_t image_id = GetPeepAnimation(spriteType).base_image;
-                        image_id += 0xA0000001;
-                        image_id |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24);
-
-                        gfx_draw_sprite(&cliped_dpi, ImageId::FromUInt32(image_id), clipCoords);
+                        ImageIndex imageId = GetPeepAnimation(spriteType).base_image + 1;
+                        auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
+                        gfx_draw_sprite(&cliped_dpi, image, clipCoords);
                         break;
                     }
                     case News::ItemType::Money:

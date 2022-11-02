@@ -368,10 +368,10 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     // Update RCT2 path in config
     auto env = OpenRCT2::CreatePlatformEnvironment();
     auto configPath = env->GetFilePath(OpenRCT2::PATHID::CONFIG);
-    config_set_defaults();
-    config_open(configPath);
-    gConfigGeneral.rct2_path = path;
-    if (config_save(configPath))
+    ConfigSetDefaults();
+    ConfigOpen(configPath);
+    gConfigGeneral.RCT2Path = path;
+    if (ConfigSave(configPath))
     {
         Console::WriteFormat("Updating RCT2 path to '%s'.", path.c_str());
         Console::WriteLine();
@@ -397,7 +397,7 @@ static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumer
     auto context = OpenRCT2::CreateContext();
     auto env = context->GetPlatformEnvironment();
     auto objectRepository = CreateObjectRepository(env);
-    objectRepository->Construct(gConfigGeneral.language);
+    objectRepository->Construct(gConfigGeneral.Language);
     return EXITCODE_OK;
 }
 

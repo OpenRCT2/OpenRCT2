@@ -2711,8 +2711,6 @@ STR_5503    :Skriv in värdsnamn eller IP-adress:
 STR_5504    :Visa online-status
 STR_5505    :Kunde inte ansluta till servern.
 STR_5506    :Besökarna ignorerar intensitetsnivån
-STR_5508    :Tillåt filer med inkorrekta kontrollsummor att laddas
-STR_5509    :Tillåter spelet att ladda scenarion och sparfiler{NEWLINE}som har inkorrekta kontrollsummor,{NEWLINE}som scenarion från demon och skadade sparfiler.
 STR_5510    :Standardljudenhet
 STR_5511    :(OKÄND)
 STR_5512    :Spara spelet som

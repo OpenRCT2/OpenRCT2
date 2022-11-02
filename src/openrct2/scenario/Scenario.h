@@ -170,7 +170,6 @@ extern uint32_t gLastAutoSaveUpdate;
 
 extern std::string gScenarioFileName;
 
-void load_from_sc6(const char* path);
 void scenario_begin();
 void scenario_reset();
 void scenario_update();

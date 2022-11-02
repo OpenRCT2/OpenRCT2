@@ -93,7 +93,7 @@ GameActions::Result PlaceParkEntranceAction::Query() const
         }
 
         // Check that entrance element does not already exist at this location
-        EntranceElement* entranceElement = map_get_park_entrance_element_at(entranceLoc, false);
+        EntranceElement* entranceElement = MapGetParkEntranceElementAt(entranceLoc, false);
         if (entranceElement != nullptr)
         {
             return GameActions::Result(GameActions::Status::ItemAlreadyPlaced, STR_CANT_BUILD_THIS_HERE, STR_NONE);
@@ -131,7 +131,7 @@ GameActions::Result PlaceParkEntranceAction::Execute() const
 
         if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            SurfaceElement* surfaceElement = map_get_surface_element_at(entranceLoc);
+            SurfaceElement* surfaceElement = MapGetSurfaceElementAt(entranceLoc);
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
@@ -160,13 +160,13 @@ GameActions::Result PlaceParkEntranceAction::Execute() const
             FootpathConnectEdges(entranceLoc, entranceElement->as<TileElement>(), GAME_COMMAND_FLAG_APPLY);
         }
 
-        update_park_fences(entranceLoc);
-        update_park_fences({ entranceLoc.x - COORDS_XY_STEP, entranceLoc.y });
-        update_park_fences({ entranceLoc.x + COORDS_XY_STEP, entranceLoc.y });
-        update_park_fences({ entranceLoc.x, entranceLoc.y - COORDS_XY_STEP });
-        update_park_fences({ entranceLoc.x, entranceLoc.y + COORDS_XY_STEP });
+        ParkUpdateFences(entranceLoc);
+        ParkUpdateFences({ entranceLoc.x - COORDS_XY_STEP, entranceLoc.y });
+        ParkUpdateFences({ entranceLoc.x + COORDS_XY_STEP, entranceLoc.y });
+        ParkUpdateFences({ entranceLoc.x, entranceLoc.y - COORDS_XY_STEP });
+        ParkUpdateFences({ entranceLoc.x, entranceLoc.y + COORDS_XY_STEP });
 
-        map_invalidate_tile({ entranceLoc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
+        MapInvalidateTile({ entranceLoc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
 
         if (index == 0)
         {

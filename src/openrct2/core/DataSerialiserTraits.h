@@ -455,13 +455,13 @@ template<> struct DataSerializerTraits_t<TileElement>
         stream->WriteValue(tileElement.base_height);
         stream->WriteValue(tileElement.clearance_height);
         stream->WriteValue(tileElement.owner);
-        for (int i = 0; i < 3; ++i)
+        for (auto v : tileElement.pad_05)
         {
-            stream->WriteValue(tileElement.pad_05[i]);
+            stream->WriteValue(v);
         }
-        for (int i = 0; i < 8; ++i)
+        for (auto v : tileElement.pad_08)
         {
-            stream->WriteValue(tileElement.pad_08[i]);
+            stream->WriteValue(v);
         }
     }
     static void decode(OpenRCT2::IStream* stream, TileElement& tileElement)
@@ -471,13 +471,13 @@ template<> struct DataSerializerTraits_t<TileElement>
         tileElement.base_height = stream->ReadValue<uint8_t>();
         tileElement.clearance_height = stream->ReadValue<uint8_t>();
         tileElement.owner = stream->ReadValue<uint8_t>();
-        for (int i = 0; i < 3; ++i)
+        for (auto& v : tileElement.pad_05)
         {
-            tileElement.pad_05[i] = stream->ReadValue<uint8_t>();
+            v = stream->ReadValue<uint8_t>();
         }
-        for (int i = 0; i < 8; ++i)
+        for (auto& v : tileElement.pad_08)
         {
-            tileElement.pad_08[i] = stream->ReadValue<uint8_t>();
+            v = stream->ReadValue<uint8_t>();
         }
     }
     static void log(OpenRCT2::IStream* stream, const TileElement& tileElement)

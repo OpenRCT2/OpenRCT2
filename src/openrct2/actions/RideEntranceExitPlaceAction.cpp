@@ -92,7 +92,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     }
 
     auto z = ride->GetStation(_stationNum).GetBaseZ();
-    if (!LocationValid(_loc) || (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z })))
+    if (!LocationValid(_loc) || (!gCheatsSandboxMode && !MapIsLocationOwned({ _loc, z })))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -165,7 +165,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         FootpathRemoveLitter({ _loc, z });
-        wall_remove_at_z({ _loc, z });
+        WallRemoveAtZ({ _loc, z });
     }
 
     auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
@@ -215,7 +215,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     FootpathConnectEdges(_loc, entranceElement->as<TileElement>(), GetFlags());
     FootpathUpdateQueueChains();
 
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
 
     return res;
 }
@@ -225,7 +225,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
     const auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                    : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
 
-    if (!gCheatsSandboxMode && !map_is_location_owned(loc))
+    if (!gCheatsSandboxMode && !MapIsLocationOwned(loc))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -254,7 +254,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
         return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_TOO_HIGH);
     }
     auto res = GameActions::Result();
-    res.Position = { loc.ToTileCentre(), tile_element_height(loc) };
+    res.Position = { loc.ToTileCentre(), TileElementHeight(loc) };
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Cost += canBuild.Cost;
     return res;

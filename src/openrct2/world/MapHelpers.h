@@ -20,5 +20,5 @@ enum
     SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
 };
 
-int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b);
-int32_t tile_smooth(const TileCoordsXY& tileCoords);
+int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b);
+int32_t TileSmooth(const TileCoordsXY& tileCoords);

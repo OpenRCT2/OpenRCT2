@@ -196,7 +196,7 @@ namespace RCT1
             SetDefaultNames();
             determine_ride_entrance_and_exit_locations();
 
-            map_count_remaining_land_rights();
+            MapCountRemainingLandRights();
             research_determine_first_of_type();
 
             CheatsReset();
@@ -1519,7 +1519,7 @@ namespace RCT1
                     auto tileAdded = false;
                     if (coords.x < maxSize && coords.y < maxSize)
                     {
-                        // This is the equivalent of map_get_first_element_at(x, y), but on S4 data.
+                        // This is the equivalent of MapGetFirstElementAt(x, y), but on S4 data.
                         RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
                         do
                         {
@@ -2408,8 +2408,8 @@ namespace RCT1
         {
             gParkEntrances.clear();
             tile_element_iterator it;
-            tile_element_iterator_begin(&it);
-            while (tile_element_iterator_next(&it) && gParkEntrances.size() < Limits::MaxParkEntrances)
+            TileElementIteratorBegin(&it);
+            while (TileElementIteratorNext(&it) && gParkEntrances.size() < Limits::MaxParkEntrances)
             {
                 TileElement* element = it.element;
 
@@ -2538,9 +2538,9 @@ namespace RCT1
                     station.Entrance = entranceCoords;
                     station.Exit = exitCoords;
 
-                    auto entranceElement = map_get_ride_exit_element_at(entranceCoords.ToCoordsXYZD(), false);
+                    auto entranceElement = MapGetRideExitElementAt(entranceCoords.ToCoordsXYZD(), false);
                     entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
-                    auto exitElement = map_get_ride_entrance_element_at(exitCoords.ToCoordsXYZD(), false);
+                    auto exitElement = MapGetRideEntranceElementAt(exitCoords.ToCoordsXYZD(), false);
                     exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
 
                     // Trigger footpath update
@@ -2563,7 +2563,7 @@ namespace RCT1
             {
                 for (int32_t y = 0; y < Limits::MaxMapSize; y++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+                    TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
                         continue;
                     do
@@ -3081,22 +3081,4 @@ namespace RCT1
 std::unique_ptr<IParkImporter> ParkImporter::CreateS4()
 {
     return std::make_unique<RCT1::S4Importer>();
-}
-
-void load_from_sv4(const utf8* path)
-{
-    auto& objectMgr = GetContext()->GetObjectManager();
-    auto s4Importer = std::make_unique<RCT1::S4Importer>();
-    auto result = s4Importer->LoadSavedGame(path);
-    objectMgr.LoadObjects(result.RequiredObjects);
-    s4Importer->Import();
-}
-
-void load_from_sc4(const utf8* path)
-{
-    auto& objectMgr = GetContext()->GetObjectManager();
-    auto s4Importer = std::make_unique<RCT1::S4Importer>();
-    auto result = s4Importer->LoadScenario(path);
-    objectMgr.LoadObjects(result.RequiredObjects);
-    s4Importer->Import();
 }

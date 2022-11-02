@@ -555,7 +555,7 @@ void ScriptEngine::RefreshPlugins()
     }
 
     // Turn on hot reload if not already enabled
-    if (!_hotReloadingInitialised && gConfigPlugin.enable_hot_reloading && network_get_mode() == NETWORK_MODE_NONE)
+    if (!_hotReloadingInitialised && gConfigPlugin.EnableHotReloading && network_get_mode() == NETWORK_MODE_NONE)
     {
         SetupHotReloading();
     }
@@ -771,8 +771,8 @@ void ScriptEngine::SetupHotReloading()
         if (Path::DirectoryExists(base))
         {
             _pluginFileWatcher = std::make_unique<FileWatcher>(base);
-            _pluginFileWatcher->OnFileChanged = [this](const std::string& path) {
-                std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
+            _pluginFileWatcher->OnFileChanged = [this](u8string_view path) {
+                std::lock_guard guard(_changedPluginFilesMutex);
                 _changedPluginFiles.emplace(path);
             };
             _hotReloadingInitialised = true;
@@ -799,10 +799,10 @@ void ScriptEngine::DoAutoReloadPluginCheck()
 
 void ScriptEngine::AutoReloadPlugins()
 {
-    if (_changedPluginFiles.size() > 0)
+    if (!_changedPluginFiles.empty())
     {
-        std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
-        for (auto& path : _changedPluginFiles)
+        std::lock_guard guard(_changedPluginFilesMutex);
+        for (const auto& path : _changedPluginFiles)
         {
             auto findResult = std::find_if(_plugins.begin(), _plugins.end(), [&path](const std::shared_ptr<Plugin>& plugin) {
                 return Path::Equals(path, plugin->GetPath());

@@ -46,7 +46,7 @@ static constexpr const BoundBoxXY CrookedHouseData[] = {
  *  rct2: 0x0088ABA4
  */
 static void PaintCrookedHouseStructure(
-    paint_session& session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height)
+    PaintSession& session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height)
 {
     const auto* tileElement = session.CurrentlyDrawnTileElement;
     if (tileElement == nullptr)
@@ -81,14 +81,14 @@ static void PaintCrookedHouseStructure(
 }
 
 static void PaintCrookedHouse(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 

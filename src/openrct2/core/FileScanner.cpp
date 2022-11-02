@@ -254,8 +254,8 @@ private:
         else
         {
             result.Type = DIRECTORY_CHILD_TYPE::DC_FILE;
-            result.Size = (static_cast<uint64_t>(child->nFileSizeHigh) << 32ULL) | static_cast<uint64_t>(child->nFileSizeLow);
-            result.LastModified = (static_cast<uint64_t>(child->ftLastWriteTime.dwHighDateTime) << 32ULL)
+            result.Size = (static_cast<uint64_t>(child->nFileSizeHigh) << 32uLL) | static_cast<uint64_t>(child->nFileSizeLow);
+            result.LastModified = (static_cast<uint64_t>(child->ftLastWriteTime.dwHighDateTime) << 32uLL)
                 | static_cast<uint64_t>(child->ftLastWriteTime.dwLowDateTime);
         }
         return result;

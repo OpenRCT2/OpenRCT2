@@ -102,7 +102,7 @@ namespace OpenRCT2::Scripting
                     case WindowWidgetType::Caption:
                         return "caption";
                     case WindowWidgetType::Scroll:
-                        return "scroll_view";
+                        return "listview";
                     case WindowWidgetType::Checkbox:
                         return "checkbox";
                     case WindowWidgetType::TextBox:
@@ -448,6 +448,9 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScButtonWidget::border_get, &ScButtonWidget::border_set, "border");
             dukglue_register_property(ctx, &ScButtonWidget::isPressed_get, &ScButtonWidget::isPressed_set, "isPressed");
             dukglue_register_property(ctx, &ScButtonWidget::image_get, &ScButtonWidget::image_set, "image");
+            // Explicit template due to text being a base method
+            dukglue_register_property<ScButtonWidget, std::string, std::string>(
+                ctx, &ScButtonWidget::text_get, &ScButtonWidget::text_set, "text");
         }
 
     private:
@@ -524,6 +527,9 @@ namespace OpenRCT2::Scripting
         {
             dukglue_set_base_class<ScWidget, ScCheckBoxWidget>(ctx);
             dukglue_register_property(ctx, &ScCheckBoxWidget::isChecked_get, &ScCheckBoxWidget::isChecked_set, "isChecked");
+            // Explicit template due to text being a base method
+            dukglue_register_property<ScCheckBoxWidget, std::string, std::string>(
+                ctx, &ScCheckBoxWidget::text_get, &ScCheckBoxWidget::text_set, "text");
         }
 
     private:
@@ -596,6 +602,9 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScDropdownWidget::items_get, &ScDropdownWidget::items_set, "items");
             dukglue_register_property(
                 ctx, &ScDropdownWidget::selectedIndex_get, &ScDropdownWidget::selectedIndex_set, "selectedIndex");
+            // Explicit template due to text being a base method
+            dukglue_register_property<ScDropdownWidget, std::string, std::string>(
+                ctx, &ScDropdownWidget::text_get, &ScDropdownWidget::text_set, "text");
         }
 
     private:
@@ -648,7 +657,9 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScGroupBoxWidget>(ctx);
-            dukglue_register_property(ctx, &ScGroupBoxWidget::text_get, &ScGroupBoxWidget::text_set, "text");
+            // Explicit template due to text being a base method
+            dukglue_register_property<ScGroupBoxWidget, std::string, std::string>(
+                ctx, &ScGroupBoxWidget::text_get, &ScGroupBoxWidget::text_set, "text");
         }
     };
 
@@ -663,7 +674,9 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScLabelWidget>(ctx);
-            dukglue_register_property(ctx, &ScLabelWidget::text_get, &ScLabelWidget::text_set, "text");
+            // Explicit template due to text being a base method
+            dukglue_register_property<ScLabelWidget, std::string, std::string>(
+                ctx, &ScLabelWidget::text_get, &ScLabelWidget::text_set, "text");
             dukglue_register_property(ctx, &ScLabelWidget::textAlign_get, &ScLabelWidget::textAlign_set, "textAlign");
         }
 
@@ -896,7 +909,9 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScSpinnerWidget>(ctx);
-            dukglue_register_property(ctx, &ScSpinnerWidget::text_get, &ScSpinnerWidget::text_set, "text");
+            // Explicit template due to text being a base method
+            dukglue_register_property<ScSpinnerWidget, std::string, std::string>(
+                ctx, &ScSpinnerWidget::text_get, &ScSpinnerWidget::text_set, "text");
         }
     };
 
@@ -912,6 +927,9 @@ namespace OpenRCT2::Scripting
         {
             dukglue_set_base_class<ScWidget, ScTextBoxWidget>(ctx);
             dukglue_register_property(ctx, &ScTextBoxWidget::maxLength_get, &ScTextBoxWidget::maxLength_set, "maxLength");
+            // Explicit template due to text being a base method
+            dukglue_register_property<ScTextBoxWidget, std::string, std::string>(
+                ctx, &ScTextBoxWidget::text_get, &ScTextBoxWidget::text_set, "text");
         }
 
     private:

@@ -2708,8 +2708,6 @@ STR_5503    :Wprowadź IP lub hostname:
 STR_5504    :Pokaż status gry wieloosobowej
 STR_5505    :Nie można połączyć z serwerem.
 STR_5506    :Goście ignorują intensywność
-STR_5508    :Zezwól na pliki ze złymi sumami kontrolnymi
-STR_5509    :Zezwól na ładowanie scenariuszy i zapisanych gier z błędną sumą kontrolą, takich jak scenariusz z wersji demo czy z uszkodzonym zapisem gry.
 STR_5510    :Domyślne urządzenie audio
 STR_5511    :(UNKNOWN)
 STR_5512    :Zapisz grę jako

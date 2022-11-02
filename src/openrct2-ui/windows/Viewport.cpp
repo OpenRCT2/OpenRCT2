@@ -144,7 +144,7 @@ public:
                 {
                     auto info = get_map_coordinates_from_pos(
                         { windowPos.x + (width / 2), windowPos.y + (height / 2) }, ViewportInteractionItemAll);
-                    window_scroll_to_location(*mainWindow, { info.Loc, tile_element_height(info.Loc) });
+                    window_scroll_to_location(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
                 }
                 break;
         }
@@ -199,9 +199,9 @@ public:
         // Set disabled widgets
         disabled_widgets = 0;
         if (viewport != nullptr && viewport->zoom == ZoomLevel::min())
-            disabled_widgets |= 1ULL << WIDX_ZOOM_IN;
+            disabled_widgets |= 1uLL << WIDX_ZOOM_IN;
         if (viewport != nullptr && viewport->zoom >= ZoomLevel::max())
-            disabled_widgets |= 1ULL << WIDX_ZOOM_OUT;
+            disabled_widgets |= 1uLL << WIDX_ZOOM_OUT;
 
         if (viewport != nullptr)
         {

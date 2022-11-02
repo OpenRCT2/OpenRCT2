@@ -104,13 +104,13 @@ static bool OnCrash(
 {
     if (!succeeded)
     {
-        constexpr const char* DumpFailedMessage = "Failed to create the dump. Please file an issue with OpenRCT2 on GitHub and "
-                                                  "provide latest save, and provide "
-                                                  "information about what you did before the crash occurred.";
-        printf("%s\n", DumpFailedMessage);
+        constexpr const wchar_t* DumpFailedMessage = L"Failed to create the dump. Please file an issue with OpenRCT2 on GitHub "
+                                                     L"and provide latest save, and provide information about what you did "
+                                                     L"before the crash occurred.";
+        wprintf(L"%ls\n", DumpFailedMessage);
         if (!gOpenRCT2SilentBreakpad)
         {
-            MessageBoxA(nullptr, DumpFailedMessage, OPENRCT2_NAME, MB_OK | MB_ICONERROR);
+            MessageBoxW(nullptr, DumpFailedMessage, L"" OPENRCT2_NAME, MB_OK | MB_ICONERROR);
         }
         return succeeded;
     }
@@ -198,7 +198,7 @@ static bool OnCrash(
     }
 
     auto configFilePathUTF8 = String::ToUtf8(configFilePath);
-    if (config_save(configFilePathUTF8))
+    if (ConfigSave(configFilePathUTF8))
     {
         _uploadFiles[L"attachment_config.ini"] = configFilePath;
     }

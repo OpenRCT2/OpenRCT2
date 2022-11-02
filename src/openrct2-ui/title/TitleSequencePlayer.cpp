@@ -289,7 +289,7 @@ namespace OpenRCT2::Title
                 {
                     gLoadKeepWindowsOpen = true;
                     CloseParkSpecificWindows();
-                    context_load_park_from_file(path);
+                    GetContext()->LoadParkFromFile(path);
                 }
                 else
                 {
@@ -382,7 +382,7 @@ namespace OpenRCT2::Title
             reset_all_sprite_quadrant_placements();
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             context_broadcast_intent(&intent);
-            scenery_set_default_placement_configuration();
+            ScenerySetDefaultPlacementConfiguration();
             News::InitQueue();
             load_palette();
             gScreenAge = 0;

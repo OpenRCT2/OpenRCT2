@@ -139,7 +139,7 @@ void MazeEntranceHedgeReplacement(const CoordsXYE& entrance)
     int32_t z = entrance.element->GetBaseZ();
     RideId rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
-    auto tileElement = map_get_first_element_at(hedgePos);
+    auto tileElement = MapGetFirstElementAt(hedgePos);
     if (tileElement == nullptr)
         return;
     do
@@ -160,7 +160,7 @@ void MazeEntranceHedgeReplacement(const CoordsXYE& entrance)
         // Add the bottom outer wall
         tileElement->AsTrack()->MazeEntryAdd(1 << ((mazeSection + 12) & 0x0F));
 
-        map_invalidate_tile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+        MapInvalidateTile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
         return;
     } while (!(tileElement++)->IsLastForTile());
 }
@@ -176,7 +176,7 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
     int32_t z = entrance.element->GetBaseZ();
     RideId rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
-    auto tileElement = map_get_first_element_at(hedgePos);
+    auto tileElement = MapGetFirstElementAt(hedgePos);
     if (tileElement == nullptr)
         return;
     do
@@ -203,7 +203,7 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
         // Remove the bottom hedge section
         tileElement->AsTrack()->MazeEntrySubtract(1 << ((mazeSection + 15) & 0x0F));
 
-        map_invalidate_tile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+        MapInvalidateTile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
         return;
     } while (!(tileElement++)->IsLastForTile());
 }
@@ -214,7 +214,7 @@ void ParkEntranceFixLocations(void)
     gParkEntrances.erase(
         std::remove_if(
             gParkEntrances.begin(), gParkEntrances.end(),
-            [](const auto& entrance) { return map_get_park_entrance_element_at(entrance, false) == nullptr; }),
+            [](const auto& entrance) { return MapGetParkEntranceElementAt(entrance, false) == nullptr; }),
         gParkEntrances.end());
 }
 
@@ -222,8 +222,8 @@ void ParkEntranceUpdateLocations()
 {
     gParkEntrances.clear();
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
-    while (tile_element_iterator_next(&it))
+    TileElementIteratorBegin(&it);
+    while (TileElementIteratorNext(&it))
     {
         auto entranceElement = it.element->AsEntrance();
         if (entranceElement != nullptr && entranceElement->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE

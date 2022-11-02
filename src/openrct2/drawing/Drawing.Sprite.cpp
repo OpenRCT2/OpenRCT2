@@ -324,14 +324,14 @@ bool gfx_load_csg()
 {
     log_verbose("gfx_load_csg()");
 
-    if (gConfigGeneral.rct1_path.empty())
+    if (gConfigGeneral.RCT1Path.empty())
     {
         log_verbose("  unable to load CSG, RCT1 path not set");
         return false;
     }
 
-    auto pathHeaderPath = FindCsg1idatAtLocation(gConfigGeneral.rct1_path);
-    auto pathDataPath = FindCsg1datAtLocation(gConfigGeneral.rct1_path);
+    auto pathHeaderPath = FindCsg1idatAtLocation(gConfigGeneral.RCT1Path);
+    auto pathDataPath = FindCsg1datAtLocation(gConfigGeneral.RCT1Path);
     try
     {
         auto fileHeader = FileStream(pathHeaderPath, FILE_MODE_OPEN);
@@ -813,18 +813,6 @@ void gfx_set_g1_element(ImageIndex imageId, const rct_g1_element* g1)
 bool is_csg_loaded()
 {
     return _csgLoaded;
-}
-
-rct_size16 FASTCALL gfx_get_sprite_size(uint32_t image_id)
-{
-    const rct_g1_element* g1 = gfx_get_g1_element(image_id & 0X7FFFF);
-    rct_size16 size = {};
-    if (g1 != nullptr)
-    {
-        size.width = g1->width;
-        size.height = g1->height;
-    }
-    return size;
 }
 
 size_t g1_calculate_data_size(const rct_g1_element* g1)

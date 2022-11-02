@@ -10,7 +10,7 @@
     <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
     <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
 
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
 
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>

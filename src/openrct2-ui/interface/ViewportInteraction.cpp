@@ -356,7 +356,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             else
             {
                 // FIXME: Why does it *2 the value?
-                if (!gCheatsSandboxMode && !map_is_location_owned({ info.Loc, tileElement->GetBaseZ() * 2 }))
+                if (!gCheatsSandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
                 {
                     info.SpriteType = ViewportInteractionItem::None;
                     return info;
@@ -428,7 +428,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             auto banner = tileElement->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto* bannerEntry = get_banner_entry(banner->type);
+                auto* bannerEntry = GetBannerEntry(banner->type);
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
@@ -622,7 +622,7 @@ static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const Co
     if (w != nullptr)
         FootpathProvisionalUpdate();
 
-    tileElement2 = map_get_first_element_at(mapCoords);
+    tileElement2 = MapGetFirstElementAt(mapCoords);
     if (tileElement2 == nullptr)
         return;
     do
@@ -793,7 +793,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
         int16_t z = waterHeight;
         if (info.SpriteType != ViewportInteractionItem::Water)
         {
-            z = tile_element_height(mapPos);
+            z = TileElementHeight(mapPos);
         }
         mapPos = viewport_coord_to_map_coord(initialVPPos, z);
         mapPos.x = std::clamp(mapPos.x, initialPos.x, initialPos.x + 31);

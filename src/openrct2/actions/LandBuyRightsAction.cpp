@@ -74,7 +74,7 @@ GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
 
     CoordsXYZ centre{ (validRange.GetLeft() + validRange.GetRight()) / 2 + 16,
                       (validRange.GetTop() + validRange.GetBottom()) / 2 + 16, 0 };
-    centre.z = tile_element_height(centre);
+    centre.z = TileElementHeight(centre);
 
     res.Position = centre;
     res.Expenditure = ExpenditureType::LandPurchase;
@@ -95,7 +95,7 @@ GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
     }
     if (isExecuting)
     {
-        map_count_remaining_land_rights();
+        MapCountRemainingLandRights();
     }
     return res;
 }
@@ -108,7 +108,7 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
         return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
     }
 
-    SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
+    SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
@@ -133,7 +133,7 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
             if (isExecuting)
             {
                 surfaceElement->SetOwnership(OWNERSHIP_OWNED);
-                update_park_fences_around_tile(loc);
+                ParkUpdateFencesAroundTile(loc);
             }
             res.Cost = gLandPrice;
             return res;
@@ -155,7 +155,7 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
             {
                 surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                 uint16_t baseZ = surfaceElement->GetBaseZ();
-                map_invalidate_tile({ loc, baseZ, baseZ + 16 });
+                MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
             res.Cost = gConstructionRightsPrice;
             return res;

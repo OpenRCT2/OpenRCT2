@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
     DukValue ScTile::data_get() const
     {
         auto ctx = GetDukContext();
-        auto first = map_get_first_element_at(_coords);
+        auto first = MapGetFirstElementAt(_coords);
         auto dataLen = GetNumElements(first) * sizeof(TileElement);
         auto data = duk_push_fixed_buffer(ctx, dataLen);
         if (first != nullptr)
@@ -92,7 +92,7 @@ namespace OpenRCT2::Scripting
             auto numElements = dataLen / sizeof(TileElement);
             if (numElements == 0)
             {
-                map_set_tile_element(TileCoordsXY(_coords), nullptr);
+                MapSetTileElement(TileCoordsXY(_coords), nullptr);
             }
             else
             {
@@ -105,11 +105,11 @@ namespace OpenRCT2::Scripting
                     auto numToInsert = numElements - currentNumElements;
                     for (size_t i = 0; i < numToInsert; i++)
                     {
-                        tile_element_insert(pos, 0, TileElementType::Surface);
+                        TileElementInsert(pos, 0, TileElementType::Surface);
                     }
 
                     // Copy data to element span
-                    first = map_get_first_element_at(_coords);
+                    first = MapGetFirstElementAt(_coords);
                     currentNumElements = GetNumElements(first);
                     if (currentNumElements != 0)
                     {
@@ -125,7 +125,7 @@ namespace OpenRCT2::Scripting
                     first[numElements - 1].SetLastForTile(true);
                 }
             }
-            map_invalidate_tile_full(_coords);
+            MapInvalidateTileFull(_coords);
         }
     }
 
@@ -150,7 +150,7 @@ namespace OpenRCT2::Scripting
             std::vector<TileElement> data(first, first + origNumElements);
 
             auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0).ToCoordsXYZ();
-            auto newElement = tile_element_insert(pos, 0, TileElementType::Surface);
+            auto newElement = TileElementInsert(pos, 0, TileElementType::Surface);
             if (newElement == nullptr)
             {
                 auto ctx = GetDukContext();
@@ -177,7 +177,7 @@ namespace OpenRCT2::Scripting
                     first[i].SetLastForTile(false);
                 }
                 first[origNumElements].SetLastForTile(true);
-                map_invalidate_tile_full(_coords);
+                MapInvalidateTileFull(_coords);
                 result = std::make_shared<ScTileElement>(_coords, &first[index]);
             }
         }
@@ -195,14 +195,14 @@ namespace OpenRCT2::Scripting
         auto first = GetFirstElement();
         if (index < GetNumElements(first))
         {
-            tile_element_remove(&first[index]);
-            map_invalidate_tile_full(_coords);
+            TileElementRemove(&first[index]);
+            MapInvalidateTileFull(_coords);
         }
     }
 
     TileElement* ScTile::GetFirstElement() const
     {
-        return map_get_first_element_at(_coords);
+        return MapGetFirstElementAt(_coords);
     }
 
     size_t ScTile::GetNumElements(const TileElement* first)

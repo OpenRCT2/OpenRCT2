@@ -178,13 +178,13 @@ static bool award_is_deserved_best_value(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
-    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
+    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
         return false;
 
     if (gTotalRideValueForMoney < 10.00_GBP)
         return false;
 
-    if (park_get_entrance_fee() + 0.10_GBP >= gTotalRideValueForMoney / 2)
+    if (ParkGetEntranceFee() + 0.10_GBP >= gTotalRideValueForMoney / 2)
         return false;
 
     return true;
@@ -231,7 +231,7 @@ static bool award_is_deserved_worst_value(int32_t activeAwardTypes)
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
 
-    const auto parkEntranceFee = park_get_entrance_fee();
+    const auto parkEntranceFee = ParkGetEntranceFee();
     if (parkEntranceFee == 0.00_GBP)
         return false;
     if (parkEntranceFee <= gTotalRideValueForMoney)
@@ -385,7 +385,7 @@ static bool award_is_deserved_best_toilets([[maybe_unused]] int32_t activeAwardT
         return false;
 
     // At least one open toilet for every 128 guests
-    if (numToilets < gNumGuestsInPark / 128U)
+    if (numToilets < gNumGuestsInPark / 128u)
         return false;
 
     // Count number of guests who are thinking they need the toilet
@@ -631,7 +631,7 @@ void award_update_all()
             {
                 // Add award
                 _currentAwards.push_back(Award{ 5u, awardType });
-                if (gConfigNotifications.park_award)
+                if (gConfigNotifications.ParkAward)
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});
                 }

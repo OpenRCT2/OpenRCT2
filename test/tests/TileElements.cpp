@@ -32,7 +32,7 @@ protected:
         bool initialised = _context->Initialise();
         ASSERT_TRUE(initialised);
 
-        load_from_sv6(parkPath.c_str());
+        GetContext()->LoadParkFromFile(parkPath);
         game_load_init();
 
         // Changed in some tests. Store to restore its value
@@ -91,7 +91,7 @@ TEST_F(TileElementWantsFootpathConnection, Stall)
 {
     // Stalls usually have one path direction flag, but can have multiple (info kiosk for example)
     auto tileCoords = TileCoordsXYZ{ 19, 15, 14 };
-    const TrackElement* const stallElement = map_get_track_element_at(tileCoords.ToCoordsXYZ());
+    const TrackElement* const stallElement = MapGetTrackElementAt(tileCoords.ToCoordsXYZ());
     ASSERT_NE(stallElement, nullptr);
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 19, 15, 14, 0 }, nullptr));
     EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 15, 14, 1 }, nullptr));
@@ -103,8 +103,7 @@ TEST_F(TileElementWantsFootpathConnection, Stall)
 TEST_F(TileElementWantsFootpathConnection, RideEntrance)
 {
     // Ride entrances and exits want a connection in one direction
-    const EntranceElement* const entranceElement = map_get_ride_entrance_element_at(
-        TileCoordsXYZ{ 18, 8, 14 }.ToCoordsXYZ(), false);
+    const EntranceElement* const entranceElement = MapGetRideEntranceElementAt(TileCoordsXYZ{ 18, 8, 14 }.ToCoordsXYZ(), false);
     ASSERT_NE(entranceElement, nullptr);
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 8, 14, 0 }, nullptr));
     EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 8, 14, 1 }, nullptr));
@@ -116,7 +115,7 @@ TEST_F(TileElementWantsFootpathConnection, RideEntrance)
 TEST_F(TileElementWantsFootpathConnection, RideExit)
 {
     // The exit has been rotated; it wants a path connection in direction 1, but not 0 like the entrance
-    const EntranceElement* const exitElement = map_get_ride_exit_element_at(TileCoordsXYZ{ 18, 10, 14 }.ToCoordsXYZ(), false);
+    const EntranceElement* const exitElement = MapGetRideExitElementAt(TileCoordsXYZ{ 18, 10, 14 }.ToCoordsXYZ(), false);
     ASSERT_NE(exitElement, nullptr);
     EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 10, 14, 0 }, nullptr));
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 10, 14, 1 }, nullptr));

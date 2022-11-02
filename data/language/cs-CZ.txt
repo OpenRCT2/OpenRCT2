@@ -2707,8 +2707,6 @@ STR_5503    :Zadejte hostname, nebo IP adresu:
 STR_5504    :Zobrazit stav hry více hráčů
 STR_5505    :Nelze se připojit k serveru.
 STR_5506    :Návštěvníci ignorují intenzitu atrakcí
-STR_5508    :Povolit nahrávání souborů s chybným kontrolním součtem
-STR_5509    :Povolit nahrávání scénářů s neplatným{NEWLINE}kontrolním součtem - například{NEWLINE}scénáře demoverze, nebo{NEWLINE}poškozené uložené hry.
 STR_5510    :Výchozí zvukové zařízení
 STR_5511    :(UNKNOWN)
 STR_5512    :Uložit hru jako

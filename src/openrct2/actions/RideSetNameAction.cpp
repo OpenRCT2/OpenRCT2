@@ -92,7 +92,7 @@ GameActions::Result RideSetNameAction::Execute() const
 
     auto res = GameActions::Result();
     auto location = ride->overall_view.ToTileCentre();
-    res.Position = { location, tile_element_height(location) };
+    res.Position = { location, TileElementHeight(location) };
 
     return res;
 }

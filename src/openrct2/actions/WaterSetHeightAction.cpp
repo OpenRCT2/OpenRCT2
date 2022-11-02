@@ -58,13 +58,13 @@ GameActions::Result WaterSetHeightAction::Query() const
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
-        if (!map_is_location_in_park(_coords))
+        if (!MapIsLocationInPark(_coords))
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
         }
     }
 
-    SurfaceElement* surfaceElement = map_get_surface_element_at(_coords);
+    SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
@@ -104,12 +104,12 @@ GameActions::Result WaterSetHeightAction::Execute() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords, _height * COORDS_Z_STEP };
 
-    int32_t surfaceHeight = tile_element_height(_coords);
+    int32_t surfaceHeight = TileElementHeight(_coords);
     FootpathRemoveLitter({ _coords, surfaceHeight });
     if (!gCheatsDisableClearanceChecks)
-        wall_remove_at_z({ _coords, surfaceHeight });
+        WallRemoveAtZ({ _coords, surfaceHeight });
 
-    SurfaceElement* surfaceElement = map_get_surface_element_at(_coords);
+    SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
@@ -124,7 +124,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
     {
         surfaceElement->SetWaterHeight(0);
     }
-    map_invalidate_tile_full(_coords);
+    MapInvalidateTileFull(_coords);
 
     res.Cost = 250;
 

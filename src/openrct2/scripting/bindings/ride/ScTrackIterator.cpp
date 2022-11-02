@@ -22,7 +22,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 std::shared_ptr<ScTrackIterator> ScTrackIterator::FromElement(const CoordsXY& position, int32_t elementIndex)
 {
-    auto el = map_get_nth_element_at(position, elementIndex);
+    auto el = MapGetNthElementAt(position, elementIndex);
     auto origin = GetTrackSegmentOrigin(CoordsXYE(position, el));
     if (!origin)
         return nullptr;
@@ -75,7 +75,7 @@ DukValue ScTrackIterator::previousPosition_get() const
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return ToDuk(ctx, nullptr);
 
@@ -95,7 +95,7 @@ DukValue ScTrackIterator::nextPosition_get() const
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return ToDuk(ctx, nullptr);
 
@@ -114,7 +114,7 @@ bool ScTrackIterator::previous()
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return false;
 
@@ -140,7 +140,7 @@ bool ScTrackIterator::next()
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return false;
 

@@ -110,7 +110,7 @@ public:
                 const auto& stringIdx = widgets[widgetIndex].text;
                 auto string = ls.GetString(stringIdx);
                 Guard::ArgumentNotNull(string);
-                const auto strWidth = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
+                const auto strWidth = gfx_get_string_width(string, FontStyle::Medium);
                 newWidth = std::max<int16_t>(strWidth, newWidth);
             }
 

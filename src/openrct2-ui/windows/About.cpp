@@ -57,7 +57,7 @@ enum WindowAboutWidgetIdx {
 
 #define WIDGETS_MAIN \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::ImgBtn, WindowColour::Secondary               ), /* page background */       \
+    MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::Frame,  WindowColour::Secondary               ), /* page background */       \
     MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
     MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */
 
@@ -170,7 +170,7 @@ private:
         pressed_widgets = 0;
         widgets = _windowAboutPageWidgets[p];
 
-        pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
+        pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1uLL << WIDX_TAB_ABOUT_RCT2) : (1uLL << WIDX_TAB_ABOUT_OPENRCT2);
         WindowInitScrollWidgets(*this);
         Invalidate();
     }
@@ -194,7 +194,7 @@ private:
         auto const& versionPlaceholder = widgets[WIDX_VERSION];
         auto versionPlaceHolderWidth = versionPlaceholder.right - versionPlaceholder.left;
         auto centreX = versionPlaceholder.left + versionPlaceHolderWidth / 2;
-        auto centreY = (versionPlaceholder.top + versionPlaceholder.bottom - font_get_line_height(FontSpriteBase::MEDIUM)) / 2;
+        auto centreY = (versionPlaceholder.top + versionPlaceholder.bottom - font_get_line_height(FontStyle::Medium)) / 2;
         auto centrePos = windowPos + ScreenCoordsXY(centreX, centreY);
         DrawTextWrapped(&dpi, centrePos, versionPlaceHolderWidth, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
 
@@ -215,7 +215,7 @@ private:
 
         auto screenCoords = ScreenCoordsXY{ windowPos.x + 200, yPage + 5 };
 
-        int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+        int32_t lineHeight = font_get_line_height(FontStyle::Medium);
 
         // Credits
         DrawTextBasic(&dpi, screenCoords, STR_COPYRIGHT_CS, {}, { TextAlignment::CENTRE });

@@ -57,13 +57,13 @@ GameActions::Result FootpathPlaceFromTrackAction::Query() const
 
     gFootpathGroundFlags = 0;
 
-    if (!LocationValid(_loc) || map_is_edge(_loc))
+    if (!LocationValid(_loc) || MapIsEdge(_loc))
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -126,7 +126,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions
         zHigh += PATH_HEIGHT_STEP;
     }
 
-    auto entranceElement = map_get_park_entrance_element_at(_loc, false);
+    auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
     // Make sure the entrance part is the middle
     if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
     {
@@ -160,7 +160,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
     }
 
-    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         return GameActions::Result(
@@ -196,7 +196,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
         zHigh += PATH_HEIGHT_STEP;
     }
 
-    auto entranceElement = map_get_park_entrance_element_at(_loc, false);
+    auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
     // Make sure the entrance part is the middle
     if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
     {
@@ -224,7 +224,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
     const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     gFootpathGroundFlags = clearanceData.GroundFlags;
 
-    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         return GameActions::Result(
@@ -245,7 +245,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
             {
                 entranceElement->SetSurfaceEntryIndex(_type);
             }
-            map_invalidate_tile_full(_loc);
+            MapInvalidateTileFull(_loc);
         }
     }
     else
@@ -274,7 +274,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
         pathElement->SetCorners(0);
         pathElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
-        map_invalidate_tile_full(_loc);
+        MapInvalidateTileFull(_loc);
     }
 
     // Prevent the place sound from being spammed

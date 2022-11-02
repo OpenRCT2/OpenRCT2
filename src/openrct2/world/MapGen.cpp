@@ -118,14 +118,14 @@ static void SetHeight(int32_t x, int32_t y, int32_t height)
 void MapGenGenerateBlank(mapgen_settings* settings)
 {
     int32_t x, y;
-    map_clear_all_elements();
+    MapClearAllElements();
 
-    map_init(settings->mapSize);
+    MapInit(settings->mapSize);
     for (y = 1; y < settings->mapSize.y - 1; y++)
     {
         for (x = 1; x < settings->mapSize.x - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetSurfaceStyle(settings->floor);
@@ -181,15 +181,15 @@ void MapGenGenerate(mapgen_settings* settings)
     auto floorTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(floorTexture));
     auto edgeTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(edgeTexture));
 
-    map_clear_all_elements();
+    MapClearAllElements();
 
     // Initialise the base map
-    map_init(mapSize);
+    MapInit(mapSize);
     for (auto y = 1; y < mapSize.y - 1; y++)
     {
         for (auto x = 1; x < mapSize.x - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetSurfaceStyle(floorTextureId);
@@ -213,7 +213,7 @@ void MapGenGenerate(mapgen_settings* settings)
     delete[] _height;
 
     // Set the tile slopes so that there are no cliffs
-    while (map_smooth(1, 1, mapSize.x - 1, mapSize.y - 1))
+    while (MapSmooth(1, 1, mapSize.x - 1, mapSize.y - 1))
     {
     }
 
@@ -239,7 +239,7 @@ void MapGenGenerate(mapgen_settings* settings)
     {
         for (auto x = 1; x < mapSize.x - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
 
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel + 6)
                 surfaceElement->SetSurfaceStyle(beachTextureId);
@@ -253,13 +253,13 @@ void MapGenGenerate(mapgen_settings* settings)
 
 static void MapGenPlaceTree(ObjectEntryIndex type, const CoordsXY& loc)
 {
-    auto* sceneryEntry = get_small_scenery_entry(type);
+    auto* sceneryEntry = GetSmallSceneryEntry(type);
     if (sceneryEntry == nullptr)
     {
         return;
     }
 
-    int32_t surfaceZ = tile_element_height(loc.ToTileCentre());
+    int32_t surfaceZ = TileElementHeight(loc.ToTileCentre());
 
     auto* sceneryElement = TileElementInsert<SmallSceneryElement>({ loc, surfaceZ }, 0b1111);
     Guard::Assert(sceneryElement != nullptr);
@@ -311,7 +311,7 @@ static void MapGenPlaceTrees()
 
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
-        auto* sceneryEntry = get_small_scenery_entry(i);
+        auto* sceneryEntry = GetSmallSceneryEntry(i);
         auto entry = object_entry_get_object(ObjectType::SmallScenery, i);
 
         if (sceneryEntry == nullptr)
@@ -341,7 +341,7 @@ static void MapGenPlaceTrees()
             pos.x = x * COORDS_XY_STEP;
             pos.y = y * COORDS_XY_STEP;
 
-            auto* surfaceElement = map_get_surface_element_at(pos);
+            auto* surfaceElement = MapGetSurfaceElementAt(pos);
             if (surfaceElement == nullptr)
                 continue;
 
@@ -368,7 +368,7 @@ static void MapGenPlaceTrees()
                         neighbourPos.x = std::clamp(neighbourPos.x, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.x - 1));
                         neighbourPos.y = std::clamp(neighbourPos.y, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.y - 1));
 
-                        const auto neighboutSurface = map_get_surface_element_at(neighbourPos);
+                        const auto neighboutSurface = MapGetSurfaceElementAt(neighbourPos);
                         if (neighboutSurface->GetWaterHeight() > 0)
                         {
                             float distance = std::sqrt(offsetX * offsetX + offsetY * offsetY);
@@ -418,7 +418,7 @@ static void MapGenSetWaterLevel(int32_t waterLevel)
     {
         for (int32_t x = 1; x < gMapSize.x - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel)
                 surfaceElement->SetWaterHeight(waterLevel * COORDS_Z_STEP);
         }
@@ -479,7 +479,7 @@ static void MapGenSetHeight(mapgen_settings* settings)
 
             uint8_t baseHeight = (q00 + q01 + q10 + q11) / 4;
 
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
             surfaceElement->base_height = std::max(2, baseHeight * 2);
@@ -802,7 +802,7 @@ void MapGenGenerateFromHeightmap(mapgen_settings* settings)
     // Get technical map size, +2 for the black tiles around the map
     auto maxWidth = static_cast<int32_t>(_heightMapData.width + 2);
     auto maxHeight = static_cast<int32_t>(_heightMapData.height + 2);
-    map_init({ maxHeight, maxWidth });
+    MapInit({ maxHeight, maxWidth });
 
     if (settings->smooth_height_map)
     {
@@ -846,7 +846,7 @@ void MapGenGenerateFromHeightmap(mapgen_settings* settings)
         {
             // The x and y axis are flipped in the world, so this uses y for x and x for y.
             auto tileCoords = MapgenHeightmapCoordToTileCoordsXY(x, y);
-            auto* const surfaceElement = map_get_surface_element_at(tileCoords.ToCoordsXY());
+            auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
 
@@ -880,7 +880,7 @@ void MapGenGenerateFromHeightmap(mapgen_settings* settings)
                 for (uint32_t x = 0; x < _heightMapData.width; x++)
                 {
                     auto tileCoords = MapgenHeightmapCoordToTileCoordsXY(x, y);
-                    numTilesChanged += tile_smooth(tileCoords);
+                    numTilesChanged += TileSmooth(tileCoords);
                 }
             }
 

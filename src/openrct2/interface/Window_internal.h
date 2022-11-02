@@ -181,7 +181,7 @@ struct rct_window
     virtual void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
     }
-    virtual void OnToolUp(WidgetIndex, const ScreenCoordsXY&)
+    virtual void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&)
     {
     }
     virtual void OnToolAbort(WidgetIndex widgetIndex)
@@ -194,6 +194,9 @@ struct rct_window
     {
     }
     virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
+    virtual void OnUnknown5()
+    {
+    }
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

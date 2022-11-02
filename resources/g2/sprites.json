@@ -180,54 +180,6 @@
         "path": "icons/multiplayer.png"
     },
     {
-        "path": "track/junior/flat_to_steep_diagonal_1.png"
-    },
-    {
-        "path": "track/junior/flat_to_steep_diagonal_2.png"
-    },
-    {
-        "path": "track/junior/flat_to_steep_diagonal_3.png"
-    },
-    {
-        "path": "track/junior/flat_to_steep_diagonal_4.png"
-    },
-    {
-        "path": "track/junior/steep_to_flat_diagonal_1.png"
-    },
-    {
-        "path": "track/junior/steep_to_flat_diagonal_2.png"
-    },
-    {
-        "path": "track/junior/steep_to_flat_diagonal_3.png"
-    },
-    {
-        "path": "track/junior/steep_to_flat_diagonal_4.png"
-    },
-    {
-        "path": "track/junior/flat_to_steep_diagonal_lift_1.png"
-    },
-    {
-        "path": "track/junior/flat_to_steep_diagonal_lift_2.png"
-    },
-    {
-        "path": "track/junior/flat_to_steep_diagonal_lift_3.png"
-    },
-    {
-        "path": "track/junior/flat_to_steep_diagonal_lift_4.png"
-    },
-    {
-        "path": "track/junior/steep_to_flat_diagonal_lift_1.png"
-    },
-    {
-        "path": "track/junior/steep_to_flat_diagonal_lift_2.png"
-    },
-    {
-        "path": "track/junior/steep_to_flat_diagonal_lift_3.png"
-    },
-    {
-        "path": "track/junior/steep_to_flat_diagonal_lift_4.png"
-    },
-    {
         "path": "icons/sort.png"
     },
     {
@@ -15942,6 +15894,16 @@
         "path": "track/wooden/classic_wooden_preview_supports.png",
         "x_offset": 2,
         "y_offset": 1
+    },
+    {
+        "path": "track/bm_invert/booster_1.png",
+        "x_offset": -25,
+        "y_offset": -5
+    },
+    {
+        "path": "track/bm_invert/booster_2.png",
+        "x_offset": -25,
+        "y_offset": -5
     },
     {
         "path": "track/lim/barrel_roll_left_1_1.png",

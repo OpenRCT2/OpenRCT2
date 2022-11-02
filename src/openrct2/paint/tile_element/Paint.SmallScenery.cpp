@@ -31,7 +31,7 @@ static constexpr const CoordsXY lengths[] = {
 };
 
 static void PaintSmallScenerySupports(
-    paint_session& session, const SmallSceneryEntry& sceneryEntry, const SmallSceneryElement& sceneryElement,
+    PaintSession& session, const SmallSceneryEntry& sceneryEntry, const SmallSceneryElement& sceneryElement,
     Direction direction, int32_t height, ImageId imageTemplate)
 {
     PROFILED_FUNCTION();
@@ -61,11 +61,11 @@ static void PaintSmallScenerySupports(
     }
 
     auto supportType = (direction & 1) ? 1 : 0;
-    wooden_b_supports_paint_setup(session, supportType, special, supportHeight, supportImageTemplate);
+    WoodenBSupportsPaintSetup(session, supportType, special, supportHeight, supportImageTemplate);
 }
 
 static void SetSupportHeights(
-    paint_session& session, const SmallSceneryEntry& sceneryEntry, const SmallSceneryElement& sceneryElement, int32_t height)
+    PaintSession& session, const SmallSceneryEntry& sceneryEntry, const SmallSceneryElement& sceneryElement, int32_t height)
 {
     height += sceneryEntry.height;
 
@@ -104,7 +104,7 @@ static void SetSupportHeights(
 }
 
 static void PaintSmallSceneryBody(
-    paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement,
+    PaintSession& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement,
     const SmallSceneryEntry* sceneryEntry, ImageId imageTemplate)
 {
     PROFILED_FUNCTION();
@@ -317,7 +317,7 @@ static void PaintSmallSceneryBody(
     }
 }
 
-void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
+void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
 {
     PROFILED_FUNCTION();
 

@@ -2719,8 +2719,6 @@ STR_5503    :Saisir nom d’hôte ou adresse IP :
 STR_5504    :Afficher le statut multijoueur
 STR_5505    :Impossible de se connecter au serveur
 STR_5506    :Les visiteurs ignorent l’intensité
-STR_5508    :Autor. charg. de fichiers avec une empreinte incorrecte
-STR_5509    :Autorise le chargement de scénarios et sauvegardes ayant une empreinte incorrecte, par exemple les scénarios de la démo ou des sauvegardes corrompues
 STR_5510    :Périphérique audio par défaut
 STR_5511    :(UNKNOWN)
 STR_5512    :Sauvegarder partie sous
@@ -3004,7 +3002,7 @@ STR_5832    :Affiche les hauteurs comme des unités génériques au lieu des uni
 STR_5833    :Change le format de date utilisé
 STR_5834    :Sélectionne le périphérique audio que doit utiliser OpenRCT2
 STR_5835    :Coupe le son du jeu si la fenêtre passe à l’arrière-plan
-STR_5836    :Sélectionne la musique du menu principal.{NEWLINE}La musique RCT1 nécessite que vous copiiez et renommiez le fichier {SMALLFONT}data/css17.dat{MEDIUMFONT} de votre dossier RCT1 en data/{SMALLFONT}css50.dat{MEDIUMFONT} dans votre dossier RCT2, ou que vous ayez défini le chemin d’installation de RCT1 dans les options diverses.
+STR_5836    :Sélectionne la musique jouée dans le menu principal.{NEWLINE}Sélectionner le thème de RCT1 nécessite que le chemin d’installation de RCT1 soit défini dans les options diverses.
 STR_5837    :Créer et gérer des thèmes d’interface personnalisés
 STR_5838    :Affiche un bouton séparé pour les options financières dans la barre d’outils
 STR_5839    :Affiche un bouton séparé pour la recherche et développement dans la barre d’outils
@@ -3633,6 +3631,14 @@ STR_6516    :Un ou plusieurs des objets ajoutés nécessitent que RCT1 soit lié
 STR_6517    :Un ou plusieurs objets de ce parc nécessitent que RCT1 soit lié pour être affichés correctement. Des images de secours seront utilisées.
 STR_6518    :{BLACK}Survolez un scénario pour afficher sa description et son objectif. Cliquez pour commencer à jouer.
 STR_6519    :Extras
+STR_6520    :Packs de ressources
+STR_6521    :Priorité basse
+STR_6522    :Priorité haute
+STR_6523    :Réduit la priorité du pack de ressources sélectionné
+STR_6524    :Augmente la priorité du pack de ressources sélectionné
+STR_6525    :Recharge toutes les ressources du jeu avec les packs de ressources sélectionnés
+STR_6526    :(graphismes, musiques et effets sonores de base)
+STR_6527    :Compétitions
 
 #############
 # Scenarios #

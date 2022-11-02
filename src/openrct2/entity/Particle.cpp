@@ -109,8 +109,8 @@ void VehicleCrashParticle::Update()
     velocity_z = vz & 0xFFFF;
 
     // Check collision with land / water
-    int16_t landZ = tile_element_height(newLoc);
-    int16_t waterZ = tile_element_water_height(newLoc);
+    int16_t landZ = TileElementHeight(newLoc);
+    int16_t waterZ = TileElementWaterHeight(newLoc);
 
     if (waterZ != 0 && z >= waterZ && newLoc.z <= waterZ)
     {
@@ -151,7 +151,7 @@ void VehicleCrashParticle::Serialise(DataSerialiser& stream)
     stream << acceleration_z;
 }
 
-void VehicleCrashParticle::Paint(paint_session& session, int32_t imageDirection) const
+void VehicleCrashParticle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
@@ -203,7 +203,7 @@ void CrashSplashParticle::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void CrashSplashParticle::Paint(paint_session& session, int32_t imageDirection) const
+void CrashSplashParticle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
@@ -218,7 +218,7 @@ void CrashSplashParticle::Paint(paint_session& session, int32_t imageDirection) 
  */
 void SteamParticle::Create(const CoordsXYZ& coords)
 {
-    auto surfaceElement = map_get_surface_element_at(coords);
+    auto surfaceElement = MapGetSurfaceElementAt(coords);
     if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
     {
         SteamParticle* steam = CreateEntity<SteamParticle>();
@@ -262,7 +262,7 @@ void SteamParticle::Serialise(DataSerialiser& stream)
     stream << time_to_move;
 }
 
-void SteamParticle::Paint(paint_session& session, int32_t imageDirection) const
+void SteamParticle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
@@ -308,7 +308,7 @@ void ExplosionCloud::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void ExplosionCloud::Paint(paint_session& session, int32_t imageDirection) const
+void ExplosionCloud::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
@@ -353,7 +353,7 @@ void ExplosionFlare::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void ExplosionFlare::Paint(paint_session& session, int32_t imageDirection) const
+void ExplosionFlare::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 

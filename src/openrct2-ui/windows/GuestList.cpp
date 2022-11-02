@@ -267,7 +267,7 @@ public:
 
         // Current tab image animation
         _tabAnimationIndex++;
-        if (_tabAnimationIndex >= (_selectedTab == TabId::Individual ? 24UL : 32UL))
+        if (_tabAnimationIndex >= (_selectedTab == TabId::Individual ? 24uL : 32uL))
             _tabAnimationIndex = 0;
         InvalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_selectedTab));
 
@@ -649,9 +649,8 @@ private:
         // Tab 1 image
         auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
         i += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
-        i |= 0xA1600000;
         gfx_draw_sprite(
-            &dpi, ImageId::FromUInt32(i),
+            &dpi, ImageId(i, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN),
             windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });
 
         // Tab 2 image
@@ -717,7 +716,7 @@ private:
 
                             ft = Formatter();
                             peep_thought_set_format_args(&thought, ft);
-                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, { FontSpriteBase::SMALL });
+                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, { FontStyle::Small });
                             break;
                         }
                         break;
@@ -762,7 +761,7 @@ private:
                 // Draw small font if displaying guests
                 if (_selectedView == GuestViewType::Thoughts)
                 {
-                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, { FontSpriteBase::SMALL });
+                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, { FontStyle::Small });
                 }
                 else
                 {

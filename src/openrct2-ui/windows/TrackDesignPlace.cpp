@@ -93,7 +93,7 @@ public:
     {
         ClearProvisional();
         viewport_set_visibility(0);
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         hide_gridlines();
@@ -146,7 +146,7 @@ public:
         TrackDesignState tds{};
         int16_t mapZ;
 
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -209,7 +209,7 @@ public:
     void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         ClearProvisional();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -402,7 +402,7 @@ private:
 
     int32_t GetBaseZ(const CoordsXY& loc)
     {
-        auto surfaceElement = map_get_surface_element_at(loc);
+        auto surfaceElement = MapGetSurfaceElementAt(loc);
         if (surfaceElement == nullptr)
             return 0;
 

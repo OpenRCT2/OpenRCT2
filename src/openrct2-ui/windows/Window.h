@@ -146,7 +146,7 @@ void WindowMapTooltipUpdateVisibility();
 rct_window* WindowMazeConstructionOpen();
 void WindowMazeConstructionUpdatePressedWidgets();
 
-rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose);
+rct_window* WindowNetworkStatusOpen(const std::string& text, close_callback onClose);
 rct_window* WindowNetworkStatusOpenPassword();
 void WindowNetworkStatusClose();
 

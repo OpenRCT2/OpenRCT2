@@ -42,7 +42,7 @@ static uint32_t SubmarineVehicleGetBaseImageId(const Vehicle* vehicle, const Car
  *  rct2: 0x006D44D5
  */
 void vehicle_visual_submarine(
-    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
     auto baseImageId = SubmarineVehicleGetBaseImageId(vehicle, carEntry, imageDirection);
@@ -64,7 +64,7 @@ void vehicle_visual_submarine(
 }
 
 static void submarine_ride_paint_track_station(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     const auto* stationObj = ride.GetStationObject();
@@ -95,7 +95,7 @@ static void submarine_ride_paint_track_station(
 }
 
 static void submarine_ride_paint_track_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     int32_t heightLower = height - 16;
@@ -116,7 +116,7 @@ static void submarine_ride_paint_track_flat(
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(
+        MetalASupportsPaintSetup(
             session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, heightLower,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -127,7 +127,7 @@ static void submarine_ride_paint_track_flat(
 }
 
 static void submarine_ride_paint_track_left_quarter_turn_3_tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
@@ -138,8 +138,7 @@ static void submarine_ride_paint_track_left_quarter_turn_3_tiles(
     switch (trackSequence)
     {
         case 0:
-            metal_a_supports_paint_setup(
-                session, METAL_SUPPORTS_STICK, 4, -1, height - 16, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -1, height - 16, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
             break;
@@ -148,8 +147,7 @@ static void submarine_ride_paint_track_left_quarter_turn_3_tiles(
                 session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
             break;
         case 3:
-            metal_a_supports_paint_setup(
-                session, METAL_SUPPORTS_STICK, 4, -1, height - 16, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -1, height - 16, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
             break;
@@ -165,7 +163,7 @@ static constexpr const uint8_t submarine_ride_right_quarter_turn_3_tiles_to_left
     0,
 };
 static void submarine_ride_paint_track_right_quarter_turn_3_tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
@@ -174,7 +172,7 @@ static void submarine_ride_paint_track_right_quarter_turn_3_tiles(
 }
 
 static void submarine_ride_paint_track_left_quarter_turn_1_tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_1_tile_paint(
@@ -188,7 +186,7 @@ static void submarine_ride_paint_track_left_quarter_turn_1_tile(
 }
 
 static void submarine_ride_paint_track_right_quarter_turn_1_tile(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     submarine_ride_paint_track_left_quarter_turn_1_tile(

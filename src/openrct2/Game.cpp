@@ -102,7 +102,7 @@ void game_reset_speed()
 
 void game_increase_game_speed()
 {
-    gGameSpeed = std::min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
+    gGameSpeed = std::min(gConfigGeneral.DebuggingTools ? 5 : 4, gGameSpeed + 1);
     if (gGameSpeed == 5)
         gGameSpeed = 8;
     window_invalidate_by_class(WindowClass::TopToolbar);
@@ -204,7 +204,7 @@ void update_palette_effects()
 
         // Animate the water/lava/chain movement palette
         uint32_t shade = 0;
-        if (gConfigGeneral.render_weather_gloom)
+        if (gConfigGeneral.RenderWeatherGloom)
         {
             auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
@@ -413,7 +413,7 @@ void game_fix_save_vars()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
 
             if (surfaceElement == nullptr)
             {
@@ -482,7 +482,7 @@ void game_load_init()
     }
     ResetEntitySpatialIndices();
     reset_all_sprite_quadrant_placements();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
     context_broadcast_intent(&intent);
@@ -593,7 +593,7 @@ void save_game_cmd(u8string_view name /* = {} */)
 void save_game_with_name(u8string_view name)
 {
     log_verbose("Saving to %s", u8string(name).c_str());
-    if (scenario_save(name, gConfigGeneral.save_plugin_data ? 1 : 0))
+    if (scenario_save(name, gConfigGeneral.SavePluginData ? 1 : 0))
     {
         log_verbose("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -699,7 +699,7 @@ void game_autosave()
         timeName, sizeof(timeName), "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s", currentDate.year, currentDate.month,
         currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
 
-    int32_t autosavesToKeep = gConfigGeneral.autosave_amount;
+    int32_t autosavesToKeep = gConfigGeneral.AutosaveAmount;
     limit_autosave_count(autosavesToKeep - 1, (gScreenFlags & SCREEN_FLAGS_EDITOR));
 
     auto env = GetContext()->GetPlatformEnvironment();
@@ -726,7 +726,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
         game_notify_map_change();
         game_unload_scripts();
         window_close_by_class(WindowClass::EditorObjectSelection);
-        context_load_park_from_file(path);
+        GetContext()->LoadParkFromFile(path);
         game_load_scripts();
         game_notify_map_changed();
         gIsAutosaveLoaded = gIsAutosave;
