@@ -18004,5 +18004,53 @@
         "x_offset": -10,
         "y_offset": -29,
         "palette": "keep"
+    },
+    {
+        "path": "track/logflume/spin_1.png",
+        "x_offset": 0,
+        "y_offset": 0,
+        "palette": "keep"
+    },
+	{
+        "path": "track/logflume/spin_2.png",
+        "x_offset": 0,
+        "y_offset": 0,
+        "palette": "keep"
+    },
+		{
+        "path": "track/logflume/spin_3.png",
+        "x_offset": 0,
+        "y_offset": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/logflume/spin_4.png",
+        "x_offset": 0,
+        "y_offset": 0,
+        "palette": "keep"
+    },
+		{
+        "path": "track/logflume/spin2_1.png",
+        "x_offset": 0,
+        "y_offset": 0,
+        "palette": "keep"
+    },
+		{
+        "path": "track/logflume/spin2_2.png",
+        "x_offset": 0,
+        "y_offset": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/logflume/spin2_3.png",
+        "x_offset": 0,
+        "y_offset": 0,
+        "palette": "keep"
+    },
+		{
+        "path": "track/logflume/spin2_4.png",
+        "x_offset": 0,
+        "y_offset": 0,
+        "palette": "keep"
     }
 ]

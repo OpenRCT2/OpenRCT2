@@ -151,6 +151,9 @@ enum
     SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_2 = 21129,
     SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_1 = 21130,
     SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_0 = 21131,
+    SprLogFlumeSpinningTunnelTrackSwNe = 21132,
+    SprLogFlumeSpinningTunnelTrackNwSe = 21133,
+
 };
 
 static constexpr const uint32_t LogFlumeTrackFlatImageIds[4][2] = {
@@ -158,6 +161,13 @@ static constexpr const uint32_t LogFlumeTrackFlatImageIds[4][2] = {
     { SPR_LOG_FLUME_FLAT_NW_SE, SPR_LOG_FLUME_FLAT_FRONT_NW_SE },
     { SPR_LOG_FLUME_FLAT_NE_SW, SPR_LOG_FLUME_FLAT_FRONT_NE_SW },
     { SPR_LOG_FLUME_FLAT_SE_NW, SPR_LOG_FLUME_FLAT_FRONT_SE_NW },
+};
+
+static constexpr const uint32_t LogFlumeTrackPiecesSpinningTunnelTrack[4] = {
+    SprLogFlumeSpinningTunnelTrackSwNe,
+    SprLogFlumeSpinningTunnelTrackNwSe,
+    SprLogFlumeSpinningTunnelTrackSwNe,
+    SprLogFlumeSpinningTunnelTrackNwSe,
 };
 
 static void paint_log_flume_track_flat(
@@ -849,6 +859,22 @@ static void paint_log_flume_track_reverser(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
+static void PaintLogFlumeTrackSpinningTunnel(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackPiecesSpinningTunnelTrack[direction]);
+
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 28, 20, 3 }, { 2, 6, height });
+
+    track_paint_util_spinning_tunnel_paint(session, 3, height, direction);
+
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int32_t trackType)
 {
     switch (trackType)
@@ -884,6 +910,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int32_t trackType)
             return paint_log_flume_track_on_ride_photo;
         case TrackElemType::LogFlumeReverser:
             return paint_log_flume_track_reverser;
+        case TrackElemType::SpinningTunnel:
+            return PaintLogFlumeTrackSpinningTunnel;
     }
 
     return nullptr;
