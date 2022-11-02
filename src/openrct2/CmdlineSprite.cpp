@@ -346,7 +346,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             fprintf(stderr, "Could not export\n");
             return -1;
         }
-        fprintf(stdout, "{ \"x\": %u, \"y\": %u }\n", spriteHeader.x_offset, spriteHeader.y_offset);
+        fprintf(stdout, "{ \"x\": %d, \"y\": %d }\n", spriteHeader.x_offset, spriteHeader.y_offset);
         return 1;
     }
 
