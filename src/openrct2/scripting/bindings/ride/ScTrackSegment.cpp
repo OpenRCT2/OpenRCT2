@@ -54,13 +54,12 @@ void ScTrackSegment::Register(duk_context* ctx)
     dukglue_register_property(
         ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND>, nullptr, "onlyAllowedAboveGround");
     dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_ALLOW_LIFT_HILL>, nullptr, "allowsChainLift");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_BANKED>, nullptr, "segmentBanks");
-    dukglue_register_property(
-        ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_INVERSION_TO_NORMAL>, nullptr, "segmentInverts");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_BANKED>, nullptr, "isBanked");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_INVERSION_TO_NORMAL>, nullptr, "isInversion");
     dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_IS_STEEP_UP>, nullptr, "isSteepUp");
     dukglue_register_property(
         ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT>, nullptr, "startsHalfHeightUp");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_IS_GOLF_HOLE>, nullptr, "isGolfHole");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_IS_GOLF_HOLE>, nullptr, "countsAsInversion");
     dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_TURN_BANKED>, nullptr, "isBankedTurn");
     dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_TURN_SLOPED>, nullptr, "isSlopedTurn");
     dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_HELIX>, nullptr, "isHelix");

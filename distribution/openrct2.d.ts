@@ -2064,12 +2064,12 @@ declare global {
         /**
          * The track segment counts as banked for vehicles with "no banked track" behaviour.
          */
-        readonly segmentBanks: boolean;
+        readonly isBanked: boolean;
 
         /**
          * The track segment counts as an inversion for vehicles with "no inversions" behaviour.
          */
-        readonly segmentInverts: boolean;
+        readonly isInversion: boolean;
 
         /**
          * Pevents steep forward chainlifts but allows steep reverse chainlifts for reverse incline
@@ -2085,7 +2085,7 @@ declare global {
         /**
          * The track segment adds to golf hole counter.
          */
-        readonly isGolfHole: boolean;
+        readonly countsAsGolfHole: boolean;
 
         /**
          * The track segment adds to banked turn counter.
@@ -2105,7 +2105,7 @@ declare global {
         /**
          * The track segment adds to inversion counter. Usually applied to the first half of inversions.
          */
-        readonly isInversion: boolean;
+        readonly countsAsInversion: boolean;
         
         /**
          * Gets a length of the subpositions list for this track segment.
