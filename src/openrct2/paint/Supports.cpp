@@ -15,6 +15,7 @@
 #include "../util/Math.hpp"
 #include "../world/Surface.h"
 #include "Boundbox.h"
+#include "Paint.SessionFlags.h "
 #include "Paint.h"
 #include "tile_element/Paint.TileElement.h"
 

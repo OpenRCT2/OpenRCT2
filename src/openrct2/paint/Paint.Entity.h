@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "Paint.SessionFlags.h"
-
 struct PaintSession;
 struct CoordsXY;
 

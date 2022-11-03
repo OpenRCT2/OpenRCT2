@@ -19,6 +19,7 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
+#include "../../Paint/Paint.SessionFlags.h"
 #include "../VehiclePaint.h"
 
 #include <iterator>

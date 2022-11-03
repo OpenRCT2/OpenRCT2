@@ -11,7 +11,6 @@
 
 #include "../../common.h"
 #include "../../world/Map.h"
-#include "../Paint.SessionFlags.h"
 
 struct PaintSession;
 
