@@ -25,8 +25,6 @@
 - Fix: [#18442] About window background is clickable.
 - Fix: [#18449] [Plugin] Change type of listview widgets from 'scroll_view' to 'listview'.
 - Fix: [#18453] Slow walking guests don't get across level crossings in time.
-- Fix: [#18501] Restore vanilla logic for guests using rides in the rain and
-heading to rides.
 
 0.4.2 (2022-10-05)
 ------------------------------------------------------------------------
