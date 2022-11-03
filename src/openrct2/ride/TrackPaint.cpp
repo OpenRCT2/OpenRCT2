@@ -9,7 +9,7 @@
 
 #include "TrackPaint.h"
 
-#include "../../paint/Paint.SessionFlags.h"
+#include "../paint/Paint.SessionFlags.h"
 #include "../Game.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
