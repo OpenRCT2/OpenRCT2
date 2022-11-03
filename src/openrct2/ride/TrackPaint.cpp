@@ -9,7 +9,6 @@
 
 #include "TrackPaint.h"
 
-#include "../paint/Paint.SessionFlags.h"
 #include "../Game.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
@@ -18,6 +17,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../object/StationObject.h"
+#include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"
 #include "../paint/Supports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
