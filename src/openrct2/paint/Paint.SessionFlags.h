@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include "Paint.SessionFlags.h"
+#include "../common.h"
 
-struct PaintSession;
-struct CoordsXY;
-
-void EntityPaintSetup(PaintSession& session, const CoordsXY& pos);
+namespace PaintSessionFlags
+{
+    constexpr uint8_t PassedSurface = 1u << 0;
+    constexpr uint8_t IsTrackPiecePreview = 1u << 1;
+} // namespace PaintSessionFlags
