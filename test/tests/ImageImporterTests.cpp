@@ -54,5 +54,5 @@ TEST_F(ImageImporterTests, Import_Logo)
     // Update expected hash if change is expected.
     ASSERT_NE(nullptr, result.Buffer.data());
     auto hash = GetHash(result.Buffer.data(), result.Buffer.size());
-    ASSERT_EQ(0x212A99BC, hash);
+    ASSERT_EQ(uint32_t(0x212A99BC), hash);
 }
