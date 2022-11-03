@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../Paint/Paint.SessionFlags.h"
 #include "../../config/Config.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
@@ -19,7 +20,6 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
-#include "../../Paint/Paint.SessionFlags.h"
 #include "../VehiclePaint.h"
 
 #include <iterator>
