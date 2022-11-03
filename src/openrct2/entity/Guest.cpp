@@ -1933,7 +1933,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
         {
             if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
             {
-                ChooseNotToGoOnRide(ride, peepAtRide, false);
+                ChoseNotToGoOnRide(ride, peepAtRide, false);
                 return false;
             }
         }
@@ -1994,7 +1994,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
         {
             if (PreviousRide == ride->id)
             {
-                ChooseNotToGoOnRide(ride, peepAtRide, false);
+                ChoseNotToGoOnRide(ride, peepAtRide, false);
                 return false;
             }
 
@@ -2014,7 +2014,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                             InsertNewThought(PeepThoughtType::CantAffordRide, ride->id);
                         }
                     }
-                    ChooseNotToGoOnRide(ride, peepAtRide, true);
+                    ChoseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
                 }
             }
@@ -2031,7 +2031,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                     }
                     ride->UpdatePopularity(0);
                 }
-                ChooseNotToGoOnRide(ride, peepAtRide, true);
+                ChoseNotToGoOnRide(ride, peepAtRide, true);
                 return false;
             }
 
@@ -2059,7 +2059,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                         }
                         ride->UpdatePopularity(0);
                     }
-                    ChooseNotToGoOnRide(ride, peepAtRide, true);
+                    ChoseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
                 }
 
@@ -2081,7 +2081,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                             }
                             ride->UpdatePopularity(0);
                         }
-                        ChooseNotToGoOnRide(ride, peepAtRide, true);
+                        ChoseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
                     }
                     if (ride->intensity > maxIntensity)
@@ -2104,14 +2104,14 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                             }
                             ride->UpdatePopularity(0);
                         }
-                        ChooseNotToGoOnRide(ride, peepAtRide, true);
+                        ChoseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
                     }
 
                     // Very nauseous peeps will only go on very gentle rides.
                     if (ride->nausea >= FIXED_2DP(1, 40) && Nausea > 160)
                     {
-                        ChooseNotToGoOnRide(ride, peepAtRide, false);
+                        ChoseNotToGoOnRide(ride, peepAtRide, false);
                         return false;
                     }
                 }
@@ -2123,7 +2123,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
             {
                 if ((scenario_rand() & 0xFFFF) > 0x1999U)
                 {
-                    ChooseNotToGoOnRide(ride, peepAtRide, false);
+                    ChoseNotToGoOnRide(ride, peepAtRide, false);
                     return false;
                 }
 
@@ -2132,7 +2132,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                     if (ride->max_positive_vertical_g > FIXED_2DP(5, 00) || ride->max_negative_vertical_g < FIXED_2DP(-4, 00)
                         || ride->max_lateral_g > FIXED_2DP(4, 00))
                     {
-                        ChooseNotToGoOnRide(ride, peepAtRide, false);
+                        ChoseNotToGoOnRide(ride, peepAtRide, false);
                         return false;
                     }
                 }
@@ -2160,7 +2160,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                         }
                         ride->UpdatePopularity(0);
                     }
-                    ChooseNotToGoOnRide(ride, peepAtRide, true);
+                    ChoseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
                 }
 
@@ -2193,7 +2193,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
         return true;
     }
 
-    ChooseNotToGoOnRide(ride, peepAtRide, false);
+    ChoseNotToGoOnRide(ride, peepAtRide, false);
     return false;
 }
 
@@ -2202,7 +2202,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
     // Peeps won't go to the same shop twice in a row.
     if (ride->id == PreviousRide)
     {
-        ChooseNotToGoOnRide(ride, peepAtShop, true);
+        ChoseNotToGoOnRide(ride, peepAtShop, true);
         return false;
     }
 
@@ -2211,7 +2211,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
     {
         if (Toilet < 70)
         {
-            ChooseNotToGoOnRide(ride, peepAtShop, true);
+            ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
 
@@ -2228,7 +2228,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
                 }
                 ride->UpdatePopularity(0);
             }
-            ChooseNotToGoOnRide(ride, peepAtShop, true);
+            ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
     }
@@ -2237,7 +2237,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
     {
         if (Nausea < 128)
         {
-            ChooseNotToGoOnRide(ride, peepAtShop, true);
+            ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
     }
@@ -2257,7 +2257,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
                 InsertNewThought(PeepThoughtType::CantAffordRide, ride->id);
             }
         }
-        ChooseNotToGoOnRide(ride, peepAtShop, true);
+        ChoseNotToGoOnRide(ride, peepAtShop, true);
         return false;
     }
 
@@ -2361,7 +2361,7 @@ bool Guest::ShouldRideWhileRaining(const Ride& ride)
     return false;
 }
 
-void Guest::ChooseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
+void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 {
     if (peepAtRide && updateLastRide)
     {
@@ -2425,7 +2425,7 @@ static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
         }
         ride->UpdatePopularity(0);
     }
-    peep->ChooseNotToGoOnRide(ride, peepAtRide, true);
+    peep->ChoseNotToGoOnRide(ride, peepAtRide, true);
 }
 
 /**
