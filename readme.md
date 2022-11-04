@@ -126,7 +126,7 @@ See the wiki for [the actual package names used in pacman](https://github.com/Op
 - CMake (available through Homebrew)
 
 ### Linux:
-- gcc (>= 7.1) or clang (>= 5.0.0)
+- gcc (>= 7.1) or clang (>= 8.0.0)
 - sdl2 (only for UI client)
 - freetype (can be disabled)
 - fontconfig (can be disabled)
