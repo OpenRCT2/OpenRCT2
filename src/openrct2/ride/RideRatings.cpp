@@ -185,13 +185,14 @@ static void ride_ratings_update_state_0(RideRatingUpdateState& state)
         state.CurrentRide = {};
     }
 
-    auto nextRide = get_ride(GetNextRideToUpdate(state.CurrentRide));
+    auto nextRideId = GetNextRideToUpdate(state.CurrentRide);
+    auto nextRide = get_ride(nextRideId);
     if (nextRide != nullptr && nextRide->status != RideStatus::Closed
         && !(nextRide->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
     {
         state.State = RIDE_RATINGS_STATE_INITIALISE;
     }
-    state.CurrentRide = nextRide->id;
+    state.CurrentRide = nextRideId;
 }
 
 /**
