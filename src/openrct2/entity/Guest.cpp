@@ -2047,34 +2047,13 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                         return false;
                     }
                 }
-
-                if (ClimateIsRaining() && !ShouldRideWhileRaining(*ride))
+                else
                 {
-                    if (peepAtRide)
-                    {
-                        InsertNewThought(PeepThoughtType::NotWhileRaining, ride->id);
-                        if (HappinessTarget >= 64)
-                        {
-                            HappinessTarget -= 8;
-                        }
-                        ride->UpdatePopularity(0);
-                    }
-                    ChoseNotToGoOnRide(ride, peepAtRide, true);
-                    return false;
-                }
-
-                if (!gCheatsIgnoreRideIntensity)
-                {
-                    // Intensity calculations. Even though the max intensity can go up to 15, it's capped
-                    // at 10.0 (before happiness calculations). A full happiness bar will increase the max
-                    // intensity and decrease the min intensity by about 2.5.
-                    ride_rating maxIntensity = std::min(Intensity.GetMaximum() * 100, 1000) + Happiness;
-                    ride_rating minIntensity = (Intensity.GetMinimum() * 100) - Happiness;
-                    if (ride->intensity < minIntensity)
+                    if (ClimateIsRaining() && !ShouldRideWhileRaining(*ride))
                     {
                         if (peepAtRide)
                         {
-                            InsertNewThought(PeepThoughtType::MoreThrilling, ride->id);
+                            InsertNewThought(PeepThoughtType::NotWhileRaining, ride->id);
                             if (HappinessTarget >= 64)
                             {
                                 HappinessTarget -= 8;
@@ -2084,35 +2063,62 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                         ChoseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
                     }
-                    if (ride->intensity > maxIntensity)
+                    // If it is raining and the ride provides shelter skip the
+                    // ride intensity check and get me on a sheltered ride!
+                    if (!ClimateIsRaining() || !ShouldRideWhileRaining(*ride))
                     {
-                        peep_ride_is_too_intense(this, ride, peepAtRide);
-                        return false;
-                    }
-
-                    // Nausea calculations.
-                    ride_rating maxNausea = NauseaMaximumThresholds[(EnumValue(NauseaTolerance) & 3)] + Happiness;
-
-                    if (ride->nausea > maxNausea)
-                    {
-                        if (peepAtRide)
+                        if (!gCheatsIgnoreRideIntensity)
                         {
-                            InsertNewThought(PeepThoughtType::Sickening, ride->id);
-                            if (HappinessTarget >= 64)
+                            // Intensity calculations. Even though the max intensity can go up to 15, it's capped
+                            // at 10.0 (before happiness calculations). A full happiness bar will increase the max
+                            // intensity and decrease the min intensity by about 2.5.
+                            ride_rating maxIntensity = std::min(Intensity.GetMaximum() * 100, 1000) + Happiness;
+                            ride_rating minIntensity = (Intensity.GetMinimum() * 100) - Happiness;
+                            if (ride->intensity < minIntensity)
                             {
-                                HappinessTarget -= 8;
+                                if (peepAtRide)
+                                {
+                                    InsertNewThought(PeepThoughtType::MoreThrilling, ride->id);
+                                    if (HappinessTarget >= 64)
+                                    {
+                                        HappinessTarget -= 8;
+                                    }
+                                    ride->UpdatePopularity(0);
+                                }
+                                ChoseNotToGoOnRide(ride, peepAtRide, true);
+                                return false;
                             }
-                            ride->UpdatePopularity(0);
-                        }
-                        ChoseNotToGoOnRide(ride, peepAtRide, true);
-                        return false;
-                    }
+                            if (ride->intensity > maxIntensity)
+                            {
+                                peep_ride_is_too_intense(this, ride, peepAtRide);
+                                return false;
+                            }
 
-                    // Very nauseous peeps will only go on very gentle rides.
-                    if (ride->nausea >= FIXED_2DP(1, 40) && Nausea > 160)
-                    {
-                        ChoseNotToGoOnRide(ride, peepAtRide, false);
-                        return false;
+                            // Nausea calculations.
+                            ride_rating maxNausea = NauseaMaximumThresholds[(EnumValue(NauseaTolerance) & 3)] + Happiness;
+
+                            if (ride->nausea > maxNausea)
+                            {
+                                if (peepAtRide)
+                                {
+                                    InsertNewThought(PeepThoughtType::Sickening, ride->id);
+                                    if (HappinessTarget >= 64)
+                                    {
+                                        HappinessTarget -= 8;
+                                    }
+                                    ride->UpdatePopularity(0);
+                                }
+                                ChoseNotToGoOnRide(ride, peepAtRide, true);
+                                return false;
+                            }
+
+                            // Very nauseous peeps will only go on very gentle rides.
+                            if (ride->nausea >= FIXED_2DP(1, 40) && Nausea > 160)
+                            {
+                                ChoseNotToGoOnRide(ride, peepAtRide, false);
+                                return false;
+                            }
+                        }
                     }
                 }
             }
