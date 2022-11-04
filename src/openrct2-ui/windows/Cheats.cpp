@@ -320,20 +320,20 @@ static rct_widget *window_cheats_page_widgets[] =
 };
 
 static uint64_t window_cheats_page_hold_down_widgets[] = {
-    (1ULL << WIDX_MONEY_SPINNER_INCREMENT) |
-    (1ULL << WIDX_MONEY_SPINNER_DECREMENT) |
-    (1ULL << WIDX_ADD_MONEY) |
-    (1ULL << WIDX_YEAR_UP) |
-    (1ULL << WIDX_YEAR_DOWN) |
-    (1ULL << WIDX_MONTH_UP) |
-    (1ULL << WIDX_MONTH_DOWN) |
-    (1ULL << WIDX_DAY_UP) |
-    (1ULL << WIDX_DAY_DOWN),
+    (1uLL << WIDX_MONEY_SPINNER_INCREMENT) |
+    (1uLL << WIDX_MONEY_SPINNER_DECREMENT) |
+    (1uLL << WIDX_ADD_MONEY) |
+    (1uLL << WIDX_YEAR_UP) |
+    (1uLL << WIDX_YEAR_DOWN) |
+    (1uLL << WIDX_MONTH_UP) |
+    (1uLL << WIDX_MONTH_DOWN) |
+    (1uLL << WIDX_DAY_UP) |
+    (1uLL << WIDX_DAY_DOWN),
 
     0,
 
-    (1ULL << WIDX_INCREASE_PARK_RATING) |
-    (1ULL << WIDX_DECREASE_PARK_RATING),
+    (1uLL << WIDX_INCREASE_PARK_RATING) |
+    (1uLL << WIDX_DECREASE_PARK_RATING),
 
     0,
 };

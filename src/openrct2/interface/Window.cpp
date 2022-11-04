@@ -1448,9 +1448,14 @@ void window_event_dropdown_call(rct_window* w, WidgetIndex widgetIndex, int32_t 
 
 void window_event_unknown_05_call(rct_window* w)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->unknown_05 != nullptr)
-            w->event_handlers->unknown_05(w);
+    if (w->event_handlers == nullptr)
+    {
+        w->OnUnknown5();
+    }
+    else if (w->event_handlers->unknown_05 != nullptr)
+    {
+        w->event_handlers->unknown_05(w);
+    }
 }
 
 void window_event_update_call(rct_window* w)

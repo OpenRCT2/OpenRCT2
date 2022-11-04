@@ -311,9 +311,9 @@ template<> bool CheckBoundingBox<3>(const PaintStructBoundBox& initialBBox, cons
 namespace PaintSortFlags
 {
     static constexpr uint8_t None = 0;
-    static constexpr uint8_t PendingVisit = (1U << 0);
-    static constexpr uint8_t Neighbour = (1U << 1);
-    static constexpr uint8_t OutsideQuadrant = (1U << 7);
+    static constexpr uint8_t PendingVisit = (1u << 0);
+    static constexpr uint8_t Neighbour = (1u << 1);
+    static constexpr uint8_t OutsideQuadrant = (1u << 7);
 } // namespace PaintSortFlags
 
 template<uint8_t TRotation>

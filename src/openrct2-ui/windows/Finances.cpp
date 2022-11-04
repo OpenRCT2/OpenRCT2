@@ -209,7 +209,7 @@ static_assert(std::size(_windowFinancesTabAnimationFrames) == WINDOW_FINANCES_PA
 static constexpr const int32_t EXPENDITURE_COLUMN_WIDTH = 80;
 
 static constexpr const uint32_t _windowFinancesPageHoldDownWidgets[] = {
-    (1ULL << WIDX_LOAN_INCREASE) | (1ULL << WIDX_LOAN_DECREASE), // WINDOW_FINANCES_PAGE_SUMMARY
+    (1uLL << WIDX_LOAN_INCREASE) | (1uLL << WIDX_LOAN_DECREASE), // WINDOW_FINANCES_PAGE_SUMMARY
 
     0, // WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH
     0, // WINDOW_FINANCES_PAGE_VALUE_GRAPH
@@ -890,7 +890,7 @@ public:
         if (widgetIndex >= WIDX_TRANSPORT_RIDES && widgetIndex <= WIDX_SCENERY_AND_THEMING)
         {
             auto activeResearchTypes = gResearchPriorities;
-            activeResearchTypes ^= 1ULL << (widgetIndex - WIDX_TRANSPORT_RIDES);
+            activeResearchTypes ^= 1uLL << (widgetIndex - WIDX_TRANSPORT_RIDES);
 
             auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
             GameActions::Execute(&gameAction);
@@ -950,7 +950,7 @@ public:
         for (int32_t i = 0; i < 7; i++)
         {
             int32_t mask = 1 << i;
-            int32_t widgetMask = 1ULL << (i + WIDX_TRANSPORT_RIDES);
+            int32_t widgetMask = 1uLL << (i + WIDX_TRANSPORT_RIDES);
 
             // Set checkbox disabled if research type is complete
             if (uncompletedResearchTypes & mask)

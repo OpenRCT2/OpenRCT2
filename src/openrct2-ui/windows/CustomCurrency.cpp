@@ -52,7 +52,7 @@ public:
     void OnOpen() override
     {
         widgets = window_custom_currency_widgets;
-        hold_down_widgets = (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN);
+        hold_down_widgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
         WindowInitScrollWidgets(*this);
         colours[0] = COLOUR_LIGHT_BROWN;
         colours[1] = COLOUR_LIGHT_BROWN;

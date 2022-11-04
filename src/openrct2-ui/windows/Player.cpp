@@ -375,7 +375,7 @@ void WindowPlayerOverviewInvalidate(rct_window* w)
 
     w->pressed_widgets &= ~(WIDX_TAB_1);
     w->pressed_widgets &= ~(WIDX_TAB_2);
-    w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+    w->pressed_widgets |= 1uLL << (w->page + WIDX_TAB_1);
 
     WindowPlayerUpdateTitle(w);
 
@@ -468,7 +468,7 @@ void WindowPlayerStatisticsInvalidate(rct_window* w)
 
     w->pressed_widgets &= ~(WIDX_TAB_1);
     w->pressed_widgets &= ~(WIDX_TAB_2);
-    w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+    w->pressed_widgets |= 1uLL << (w->page + WIDX_TAB_1);
 
     WindowPlayerUpdateTitle(w);
 

@@ -524,7 +524,7 @@ namespace Platform
             FILETIME ftCreate, ftAccess, ftWrite;
             if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
             {
-                lastModified = (static_cast<uint64_t>(ftWrite.dwHighDateTime) << 32ULL)
+                lastModified = (static_cast<uint64_t>(ftWrite.dwHighDateTime) << 32uLL)
                     | static_cast<uint64_t>(ftWrite.dwLowDateTime);
             }
             CloseHandle(hFile);
@@ -838,7 +838,7 @@ namespace Platform
                 ULARGE_INTEGER ull{};
                 ull.LowPart = localFileTime.dwLowDateTime;
                 ull.HighPart = localFileTime.dwHighDateTime;
-                return ull.QuadPart / 10000000ULL - 11644473600ULL;
+                return ull.QuadPart / 10000000uLL - 11644473600uLL;
             }
         }
         return 0;
@@ -849,12 +849,12 @@ namespace Platform
         // Get file time
         FILETIME fileTime;
         GetSystemTimeAsFileTime(&fileTime);
-        uint64_t fileTime64 = (static_cast<uint64_t>(fileTime.dwHighDateTime) << 32ULL)
+        uint64_t fileTime64 = (static_cast<uint64_t>(fileTime.dwHighDateTime) << 32uLL)
             | (static_cast<uint64_t>(fileTime.dwLowDateTime));
 
         // File time starts from: 1601-01-01T00:00:00Z
         // Convert to start from: 0001-01-01T00:00:00Z
-        datetime64 utcNow = fileTime64 - 504911232000000000ULL;
+        datetime64 utcNow = fileTime64 - 504911232000000000uLL;
         return utcNow;
     }
 

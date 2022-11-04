@@ -242,7 +242,7 @@ GameActions::Result RideSetSettingAction::Execute() const
 
 bool RideSetSettingAction::ride_is_mode_valid(Ride* ride) const
 {
-    return ride->GetRideTypeDescriptor().RideModes & (1ULL << _value);
+    return ride->GetRideTypeDescriptor().RideModes & (1uLL << _value);
 }
 
 bool RideSetSettingAction::ride_is_valid_lift_hill_speed(Ride* ride) const

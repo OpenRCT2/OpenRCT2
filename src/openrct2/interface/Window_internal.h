@@ -194,6 +194,9 @@ struct rct_window
     {
     }
     virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
+    virtual void OnUnknown5()
+    {
+    }
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

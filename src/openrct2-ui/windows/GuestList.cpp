@@ -267,7 +267,7 @@ public:
 
         // Current tab image animation
         _tabAnimationIndex++;
-        if (_tabAnimationIndex >= (_selectedTab == TabId::Individual ? 24UL : 32UL))
+        if (_tabAnimationIndex >= (_selectedTab == TabId::Individual ? 24uL : 32uL))
             _tabAnimationIndex = 0;
         InvalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_selectedTab));
 

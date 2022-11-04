@@ -1078,11 +1078,11 @@ void WidgetSetDisabled(rct_window& w, WidgetIndex widgetIndex, bool value)
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_DISABLED, value);
     if (value)
     {
-        w.disabled_widgets |= (1ULL << widgetIndex);
+        w.disabled_widgets |= (1uLL << widgetIndex);
     }
     else
     {
-        w.disabled_widgets &= ~(1ULL << widgetIndex);
+        w.disabled_widgets &= ~(1uLL << widgetIndex);
     }
 }
 
@@ -1091,11 +1091,11 @@ void WidgetSetHoldable(rct_window& w, WidgetIndex widgetIndex, bool value)
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HOLDABLE, value);
     if (value)
     {
-        w.hold_down_widgets |= (1ULL << widgetIndex);
+        w.hold_down_widgets |= (1uLL << widgetIndex);
     }
     else
     {
-        w.hold_down_widgets &= ~(1ULL << widgetIndex);
+        w.hold_down_widgets &= ~(1uLL << widgetIndex);
     }
 }
 
@@ -1108,9 +1108,9 @@ void WidgetSetPressed(rct_window& w, WidgetIndex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_PRESSED, value);
     if (value)
-        w.pressed_widgets |= (1ULL << widgetIndex);
+        w.pressed_widgets |= (1uLL << widgetIndex);
     else
-        w.pressed_widgets &= ~(1ULL << widgetIndex);
+        w.pressed_widgets &= ~(1uLL << widgetIndex);
 }
 
 void WidgetSetCheckboxValue(rct_window& w, WidgetIndex widgetIndex, bool value)
