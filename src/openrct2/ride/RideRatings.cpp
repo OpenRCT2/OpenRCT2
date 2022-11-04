@@ -178,8 +178,8 @@ static RideId GetNextRideToUpdate(RideId currentRide)
 static void ride_ratings_update_state_0(RideRatingUpdateState& state)
 {
     // It is possible that the current ride being calculated has
-    // been removed or due to import is invalid. For both reset
-    // ratings check at the start
+    // been removed or due to import invalid. For both, reset
+    // ratings and start check at the start
     if (get_ride(state.CurrentRide) == nullptr)
     {
         state.CurrentRide = {};
