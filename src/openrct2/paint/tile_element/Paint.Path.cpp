@@ -37,6 +37,7 @@
 #include "../../world/Surface.h"
 #include "../../world/TileInspector.h"
 #include "../Boundbox.h"
+#include "../Paint.SessionFlags.h"
 #include "../Supports.h"
 #include "Paint.Surface.h"
 #include "Paint.TileElement.h"
