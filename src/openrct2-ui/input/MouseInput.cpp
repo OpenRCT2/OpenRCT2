@@ -526,7 +526,10 @@ static void InputViewportDragBegin(rct_window& w)
     _ticksSinceDragStart = 0;
     auto cursorPosition = context_get_cursor_position();
     gInputDragLast = cursorPosition;
-    context_hide_cursor();
+    if (!gConfigGeneral.InvertViewportDrag)
+    {
+        context_hide_cursor();
+    }
 
     window_unfollow_sprite(w);
     // gInputFlags |= INPUT_FLAG_5;
@@ -581,7 +584,7 @@ static void InputViewportDragContinue()
         }
     }
 
-    if (cursorState->touch)
+    if (cursorState->touch || gConfigGeneral.InvertViewportDrag)
     {
         gInputDragLast = newDragCoords;
     }
