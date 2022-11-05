@@ -25,6 +25,7 @@
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/Vehicle.h"
 #include "../ui/UiContext.h"
@@ -1414,12 +1415,29 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
                 switch (ps->entity->Type)
                 {
                     case EntityType::Vehicle:
+                    {
                         if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES)
                         {
                             return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? VisibilityKind::Hidden
                                                                                   : VisibilityKind::Partial;
                         }
+                        // Rides without track can technically have a 'vehicle':
+                        // these should be hidden if 'hide rides' is enabled
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES)
+                        {
+                            auto vehicle = ps->entity->As<Vehicle>();
+                            if (vehicle == nullptr)
+                                break;
+
+                            auto ride = vehicle->GetRide();
+                            if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+                            {
+                                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden
+                                                                                   : VisibilityKind::Partial;
+                            }
+                        }
                         break;
+                    }
                     case EntityType::Guest:
                         if (viewFlags & VIEWPORT_FLAG_HIDE_GUESTS)
                         {
