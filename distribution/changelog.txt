@@ -4,7 +4,7 @@
 - Improved: [#18192] Tycoon Park has been added Extras tab.
 - Improved: [#18214] Competition scenarios have received their own section.
 - Improved: [#18250] Added modern style file and folder pickers on Windows.
-- Improved: [#18332] Allow Invert RC to draw booster.
+- Improved: [#18332] Allow Inverted Roller Coaster to draw boosters.
 - Improved: [#18422] Allow adding images to music objects.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 - Change: [#18381] Convert custom invisible paths to the built-in ones.
