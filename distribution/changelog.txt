@@ -5,6 +5,7 @@
 - Improved: [#18214] Competition scenarios have received their own section.
 - Improved: [#18250] Added modern style file and folder pickers on Windows.
 - Improved: [#18422] Allow adding images to music objects.
+- Improved: [#18428] [Plugin] Add widget description interfaces to documentation.
 - Change: [#17998] Show cursor when using inverted mouse dragging.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 - Change: [#18381] Convert custom invisible paths to the built-in ones.

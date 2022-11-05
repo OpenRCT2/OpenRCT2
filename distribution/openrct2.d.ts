@@ -2539,16 +2539,16 @@ declare global {
         LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
 
     interface WidgetBase {
-        readonly window?: Window;
-        type: WidgetType;
+        readonly window: Window;
+        readonly type: WidgetType;
         x: number;
         y: number;
         width: number;
         height: number;
-        name?: string;
-        tooltip?: string;
-        isDisabled?: boolean;
-        isVisible?: boolean;
+        name: string;
+        tooltip: string;
+        isDisabled: boolean;
+        isVisible: boolean;
     }
 
     interface ButtonWidget extends WidgetBase {
@@ -2557,72 +2557,62 @@ declare global {
          * Whether the button has a 3D border.
          * By default, text buttons have borders and image buttons do not but it can be overridden.
          */
-        border?: boolean;
-        image?: number;
-        isPressed?: boolean;
-        text?: string;
-        onClick?: () => void;
+        border: boolean;
+        image: number;
+        isPressed: boolean;
+        text: string;
     }
 
     interface CheckboxWidget extends WidgetBase {
         type: "checkbox";
-        text?: string;
-        isChecked?: boolean;
-        onChange?: (isChecked: boolean) => void;
+        text: string;
+        isChecked: boolean;
     }
 
     interface ColourPickerWidget extends WidgetBase {
         type: "colourpicker";
-        colour?: number;
-        onChange?: (colour: number) => void;
+        colour: number;
     }
 
     interface CustomWidget extends WidgetBase {
         type: "custom";
-        onDraw?: (this: CustomWidget, g: GraphicsContext) => void;
     }
 
     interface DropdownWidget extends WidgetBase {
         type: "dropdown";
-        items?: string[];
-        selectedIndex?: number;
-        onChange?: (index: number) => void;
+        items: string[];
+        selectedIndex: number;
+        text: string;
     }
 
     interface GroupBoxWidget extends WidgetBase {
         type: "groupbox";
-        text?: string;
-    }
-
-    interface LabelWidget extends WidgetBase {
-        type: "label";
-        text?: string;
-        textAlign?: TextAlignment;
+        text: string;
     }
 
     type TextAlignment = "left" | "centred";
+
+    interface LabelWidget extends WidgetBase {
+        type: "label";
+        text: string;
+        textAlign: TextAlignment;
+    }
+
 
     type SortOrder = "none" | "ascending" | "descending";
 
     type ScrollbarType = "none" | "horizontal" | "vertical" | "both";
 
     interface ListViewColumn {
-        canSort?: boolean;
-        sortOrder?: SortOrder;
-        header?: string;
-        headerTooltip?: string;
-        width?: number;
-        ratioWidth?: number;
-        minWidth?: number;
-        maxWidth?: number;
+        canSort: boolean;
+        sortOrder: SortOrder;
+        header: string;
+        headerTooltip: string;
+        width: number;
+        ratioWidth: number;
+        minWidth: number;
+        maxWidth: number;
     }
-
-    interface ListViewItemSeperator {
-        type: "seperator";
-        text?: string;
-    }
-
-    type ListViewItem = ListViewItemSeperator | string[];
 
     interface RowColumn {
         row: number;
@@ -2631,38 +2621,30 @@ declare global {
 
     interface ListViewWidget extends WidgetBase {
         type: "listview";
-        scrollbars?: ScrollbarType;
-        isStriped?: boolean;
-        showColumnHeaders?: boolean;
-        columns?: ListViewColumn[];
-        items?: string[] | ListViewItem[];
-        selectedCell?: RowColumn;
-        readonly highlightedCell?: RowColumn;
-        canSelect?: boolean;
-
-        onHighlight?: (item: number, column: number) => void;
-        onClick?: (item: number, column: number) => void;
+        scrollbars: ScrollbarType;
+        isStriped: boolean;
+        showColumnHeaders: boolean;
+        columns: ListViewColumn[];
+        items: string[];
+        selectedCell: RowColumn;
+        readonly highlightedCell: RowColumn;
+        canSelect: boolean;
     }
 
     interface SpinnerWidget extends WidgetBase {
         type: "spinner";
-        text?: string;
-
-        onDecrement?: () => void;
-        onIncrement?: () => void;
-        onClick?: () => void;
+        text: string;
     }
 
     interface TextBoxWidget extends WidgetBase {
         type: "textbox";
-        text?: string;
-        maxLength?: number;
-        onChange?: (text: string) => void;
+        text: string;
+        maxLength: number;
     }
 
     interface ViewportWidget extends WidgetBase {
         type: "viewport";
-        viewport?: Viewport;
+        readonly viewport: Viewport;
     }
 
     interface Window {
@@ -2673,10 +2655,10 @@ declare global {
         /**
          * The window is resizable (by the user) if and only if minWidth !== maxWidth or minHeight !== maxHeight.
          * In that case, the window displays a small widget in the lower right corner that the user can use to resize the window by clicking and dragging.
-         * 
+         *
          * When writing to width (or height), if the window is resizable, the new value will be clamped to fit the corresponding min/max values.
          * Otherwise, if the window is not resizable, both the width (or height) and the corresponding min/max values are set to the new value.
-         * 
+         *
          * For the default min/max values, see {@link WindowDesc}.
          */
         width: number;
@@ -2696,6 +2678,115 @@ declare global {
         findWidget<T extends Widget>(name: string): T;
     }
 
+    type WidgetDesc =
+        ButtonDesc | CheckboxDesc | ColourPickerDesc | CustomDesc | DropdownDesc | GroupBoxDesc |
+        LabelDesc | ListViewDesc | SpinnerDesc | TextBoxDesc | ViewportDesc;
+
+    interface WidgetBaseDesc {
+        type: WidgetType;
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        name?: string;
+        tooltip?: string;
+        isDisabled?: boolean;
+        isVisible?: boolean;
+    }
+
+    interface ButtonDesc extends WidgetBaseDesc {
+        type: "button";
+        /**
+         * Whether the button has a 3D border.
+         * By default, text buttons have borders and image buttons do not but it can be overridden.
+         */
+        border?: boolean;
+        image?: number;
+        isPressed?: boolean;
+        text?: string;
+        onClick?: () => void;
+    }
+
+    interface CheckboxDesc extends WidgetBaseDesc {
+        type: "checkbox";
+        text?: string;
+        isChecked?: boolean;
+        onChange?: (isChecked: boolean) => void;
+    }
+
+    interface ColourPickerDesc extends WidgetBaseDesc {
+        type: "colourpicker";
+        colour?: number;
+        onChange?: (colour: number) => void;
+    }
+
+    interface CustomDesc extends WidgetBaseDesc {
+        type: "custom";
+        onDraw?: (this: CustomWidget, g: GraphicsContext) => void;
+    }
+
+    interface DropdownDesc extends WidgetBaseDesc {
+        type: "dropdown";
+        items?: string[];
+        selectedIndex?: number;
+        onChange?: (index: number) => void;
+    }
+
+    interface GroupBoxDesc extends WidgetBaseDesc {
+        type: "groupbox";
+        text?: string;
+    }
+
+    interface LabelDesc extends WidgetBaseDesc {
+        type: "label";
+        text?: string;
+        textAlign?: TextAlignment;
+    }
+
+    interface ListViewItemSeperator {
+        type: "seperator";
+        text?: string;
+    }
+
+    type ListViewItem = ListViewItemSeperator | string[];
+
+    interface RowColumn {
+        row: number;
+        column: number;
+    }
+
+    interface ListViewDesc extends WidgetBaseDesc {
+        type: "listview";
+        scrollbars?: ScrollbarType;
+        isStriped?: boolean;
+        showColumnHeaders?: boolean;
+        columns?: Partial<ListViewColumn>[];
+        items?: string[] | ListViewItem[];
+        selectedCell?: RowColumn;
+        canSelect?: boolean;
+        onHighlight?: (item: number, column: number) => void;
+        onClick?: (item: number, column: number) => void;
+    }
+
+    interface SpinnerDesc extends WidgetBaseDesc {
+        type: "spinner";
+        text?: string;
+        onDecrement?: () => void;
+        onIncrement?: () => void;
+        onClick?: () => void;
+    }
+
+    interface TextBoxDesc extends WidgetBaseDesc {
+        type: "textbox";
+        text?: string;
+        maxLength?: number;
+        onChange?: (text: string) => void;
+    }
+
+    interface ViewportDesc extends WidgetBaseDesc {
+        type: "viewport";
+    }
+
     interface WindowDesc {
         classification: string;
         x?: number;
@@ -2706,7 +2797,7 @@ declare global {
         id?: number;
         /**
          * See {@link Window} for information about the behaviour of min/max width/height after window creation.
-         * 
+         *
          * Behaviour during window creation:
          * If at least one of the parameters min/max width/height is present, the window is considered to be resizable.
          * In that case, the min values default to zero (if unspecified) and the max values default to 0xFFFF (if unspecified).
@@ -2716,7 +2807,7 @@ declare global {
         minHeight?: number;
         maxWidth?: number;
         maxHeight?: number;
-        widgets?: Widget[];
+        widgets?: WidgetDesc[];
         colours?: number[];
         tabs?: WindowTabDesc[];
         tabIndex?: number;
@@ -2735,7 +2826,7 @@ declare global {
 
     interface WindowTabDesc {
         image: number | ImageAnimation;
-        widgets?: Widget[];
+        widgets?: WidgetDesc[];
     }
 
     interface Viewport {
