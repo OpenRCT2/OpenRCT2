@@ -9,6 +9,7 @@
 - Change: [#17998] Show cursor when using inverted mouse dragging.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 - Change: [#18381] Convert custom invisible paths to the built-in ones.
+- Fix: [#11679] Facilities clipping issues.
 - Fix: [#14312] Research ride type message incorrect.
 - Fix: [#14425] Ride ratings do not skip unallocated ride ids.
 - Fix: [#15969] Guests heading for ride use vanilla behaviour
