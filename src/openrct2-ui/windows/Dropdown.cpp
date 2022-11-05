@@ -473,3 +473,8 @@ uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems)
 {
     return numItems < std::size(_appropriateImageDropdownItemsPerRow) ? _appropriateImageDropdownItemsPerRow[numItems] : 8;
 }
+
+bool WindowDropDownHasMultipleColumns(size_t numItems)
+{
+    return numItems > DROPDOWN_TEXT_MAX_ROWS;
+}
