@@ -225,13 +225,7 @@ static void WindowEditorObjectiveOptionsSetPressedTab(rct_window* w)
 
 static void WindowEditorObjectiveOptionsAnchorBorderWidgets(rct_window* w)
 {
-    w->widgets[WIDX_BACKGROUND].right = w->width - 1;
-    w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_TITLE].right = w->width - 2;
-    w->widgets[WIDX_CLOSE].left = w->width - 13;
-    w->widgets[WIDX_CLOSE].right = w->width - 3;
+    w->ResizeFrameWithPage();
 }
 
 static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi)

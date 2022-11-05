@@ -412,20 +412,11 @@ static void WindowScenarioselectInvalidate(rct_window* w)
 
     w->pressed_widgets |= 1LL << (w->selected_tab + WIDX_TAB1);
 
-    int32_t windowWidth = w->width;
-    window_scenarioselect_widgets[WIDX_BACKGROUND].right = windowWidth - 1;
-    window_scenarioselect_widgets[WIDX_TITLEBAR].right = windowWidth - 2;
-    window_scenarioselect_widgets[WIDX_CLOSE].left = windowWidth - 13;
-    window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
-    window_scenarioselect_widgets[WIDX_TABCONTENT].right = windowWidth - 1;
-    window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = windowWidth - 179;
-
-    int32_t windowHeight = w->height;
-    window_scenarioselect_widgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
-    window_scenarioselect_widgets[WIDX_TABCONTENT].bottom = windowHeight - 1;
+    w->ResizeFrameWithPage();
 
     const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? 17 : 5;
-    window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
+    window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = w->width - 179;
+    window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = w->height - bottomMargin;
 }
 
 static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)

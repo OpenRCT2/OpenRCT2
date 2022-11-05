@@ -762,18 +762,12 @@ private:
             Invalidate();
 
             // Resize widgets to new window size
-            widgets[WIDX_BACKGROUND].right = newWidth - 1;
-            widgets[WIDX_BACKGROUND].bottom = newHeight - 1;
-            widgets[WIDX_PAGE_BACKGROUND].right = newWidth - 1;
-            widgets[WIDX_PAGE_BACKGROUND].bottom = newHeight - 1;
-            widgets[WIDX_TITLE].right = newWidth - 2;
-            widgets[WIDX_CLOSE].left = newWidth - 13;
-            widgets[WIDX_CLOSE].right = newWidth - 3;
+            width = newWidth;
+            height = newHeight;
+            ResizeFrameWithPage();
             widgets[WIDX_GROUP_BY_TRACK_TYPE].left = newWidth - 8 - GroupByTrackTypeWidth;
             widgets[WIDX_GROUP_BY_TRACK_TYPE].right = newWidth - 8;
 
-            width = newWidth;
-            height = newHeight;
             Invalidate();
         }
 

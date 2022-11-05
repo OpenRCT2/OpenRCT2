@@ -654,16 +654,7 @@ static void WindowLoadsaveComputeMaxDateWidth()
 
 static void WindowLoadsaveInvalidate(rct_window* w)
 {
-    window_loadsave_widgets[WIDX_TITLE].right = w->width - 2;
-    // close button has to move if it's on the right side
-    window_loadsave_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_loadsave_widgets[WIDX_CLOSE].right = w->width - 3;
-
-    window_loadsave_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_loadsave_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    window_loadsave_widgets[WIDX_RESIZE].top = w->height - 1;
-    window_loadsave_widgets[WIDX_RESIZE].right = w->width - 1;
-    window_loadsave_widgets[WIDX_RESIZE].bottom = w->height - 1;
+    w->ResizeFrameWithPage();
 
     rct_widget* date_widget = &window_loadsave_widgets[WIDX_SORT_DATE];
     date_widget->right = w->width - 5;

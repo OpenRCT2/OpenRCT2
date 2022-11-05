@@ -414,13 +414,7 @@ public:
         if (_selectedTab == TabId::Individual && _selectedFilter)
             widgets[WIDX_MAP].type = WindowWidgetType::FlatBtn;
 
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TAB_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_TAB_CONTENT_PANEL].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
+        ResizeFrameWithPage();
         widgets[WIDX_GUEST_LIST].right = width - 4;
         widgets[WIDX_GUEST_LIST].bottom = height - 15;
         widgets[WIDX_MAP].left = 273 - 350 + width;

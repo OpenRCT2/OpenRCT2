@@ -752,13 +752,7 @@ public:
         SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gMapSize.x != gMapSize.y);
 
         // Resize widgets to window size
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_RESIZE].right = width - 1;
-        widgets[WIDX_RESIZE].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 2 - 11;
-        widgets[WIDX_CLOSE].right = width - 2 - 11 + 10;
+        ResizeFrameWithPage();
         widgets[WIDX_MAP].right = width - 4;
 
         if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)

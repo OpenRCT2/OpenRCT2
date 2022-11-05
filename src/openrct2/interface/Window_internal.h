@@ -197,6 +197,9 @@ struct rct_window
     virtual void OnUnknown5()
     {
     }
+
+    void ResizeFrame();
+    void ResizeFrameWithPage();
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

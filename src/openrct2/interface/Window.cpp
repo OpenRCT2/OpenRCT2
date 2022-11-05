@@ -2238,3 +2238,23 @@ void WidgetScrollUpdateThumbs(rct_window& w, WidgetIndex widget_index)
         }
     }
 }
+
+void rct_window::ResizeFrame()
+{
+    // Frame
+    widgets[0].right = width - 1;
+    widgets[0].bottom = height - 1;
+    // Title
+    widgets[1].right = width - 2;
+    // Close button
+    widgets[2].left = width - 13;
+    widgets[2].right = width - 3;
+}
+
+void rct_window::ResizeFrameWithPage()
+{
+    ResizeFrame();
+    // Page background
+    widgets[3].right = width - 1;
+    widgets[3].bottom = height - 1;
+}
