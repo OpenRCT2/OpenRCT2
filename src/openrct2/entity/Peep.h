@@ -414,6 +414,7 @@ public: // Peep
     [[nodiscard]] bool CheckForPath();
     bool ShouldWaitForLevelCrossing();
     bool IsOnLevelCrossing();
+    bool IsOnPathBlockedByVehicle();
     void PerformNextAction(uint8_t& pathing_result);
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);

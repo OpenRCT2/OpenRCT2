@@ -264,11 +264,11 @@ public:
 
         if (IsActive())
         {
-            this->pressed_widgets |= 1ULL << WIDX_CLIP_SELECTOR;
+            this->pressed_widgets |= 1uLL << WIDX_CLIP_SELECTOR;
         }
         else
         {
-            this->pressed_widgets &= ~(1ULL << WIDX_CLIP_SELECTOR);
+            this->pressed_widgets &= ~(1uLL << WIDX_CLIP_SELECTOR);
         }
     }
 
@@ -344,7 +344,7 @@ public:
     void OnOpen() override
     {
         this->widgets = window_view_clipping_widgets;
-        this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
+        this->hold_down_widgets = (1uLL << WIDX_CLIP_HEIGHT_INCREASE) | (1uL << WIDX_CLIP_HEIGHT_DECREASE);
         WindowInitScrollWidgets(*this);
 
         _clipHeightDisplayType = DisplayType::DisplayUnits;

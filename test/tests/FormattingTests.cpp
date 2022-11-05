@@ -318,7 +318,7 @@ TEST_F(FormattingTests, to_fixed_buffer)
     char buffer[16];
     std::memset(buffer, '\xFF', sizeof(buffer));
     auto len = FormatStringId(buffer, 8, STR_GUEST_X, 123);
-    ASSERT_EQ(len, 9U);
+    ASSERT_EQ(len, 9u);
     ASSERT_STREQ("Guest 1", buffer);
 
     // Ensure rest of the buffer was not overwritten
@@ -337,7 +337,7 @@ TEST_F(FormattingTests, using_legacy_buffer_args)
 
     char buffer[32]{};
     auto len = FormatStringLegacy(buffer, sizeof(buffer), STR_QUEUING_FOR, ft.Data());
-    ASSERT_EQ(len, 23U);
+    ASSERT_EQ(len, 23u);
     ASSERT_STREQ("Queuing for Boat Hire 2", buffer);
 }
 

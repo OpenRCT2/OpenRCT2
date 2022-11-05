@@ -436,8 +436,8 @@ public:
 
     void OnPrepareDraw() override
     {
-        pressed_widgets |= 1ULL << WIDX_PREVIEW;
-        pressed_widgets |= 1ULL << WIDX_TAB_1;
+        pressed_widgets |= 1uLL << WIDX_PREVIEW;
+        pressed_widgets |= 1uLL << WIDX_TAB_1;
 
         widgets[WIDX_CLOSE].type = gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WindowWidgetType::Empty
                                                                                : WindowWidgetType::CloseBox;

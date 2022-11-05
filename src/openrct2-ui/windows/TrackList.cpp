@@ -385,23 +385,23 @@ public:
 
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) || selected_list_item != 0)
         {
-            pressed_widgets |= 1ULL << WIDX_TRACK_PREVIEW;
-            disabled_widgets &= ~(1ULL << WIDX_TRACK_PREVIEW);
+            pressed_widgets |= 1uLL << WIDX_TRACK_PREVIEW;
+            disabled_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
             window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
             window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
             if (gTrackDesignSceneryToggle)
             {
-                pressed_widgets &= ~(1ULL << WIDX_TOGGLE_SCENERY);
+                pressed_widgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
             }
             else
             {
-                pressed_widgets |= (1ULL << WIDX_TOGGLE_SCENERY);
+                pressed_widgets |= (1uLL << WIDX_TOGGLE_SCENERY);
             }
         }
         else
         {
-            pressed_widgets &= ~(1ULL << WIDX_TRACK_PREVIEW);
-            disabled_widgets |= (1ULL << WIDX_TRACK_PREVIEW);
+            pressed_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
+            disabled_widgets |= (1uLL << WIDX_TRACK_PREVIEW);
             window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
             window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
         }

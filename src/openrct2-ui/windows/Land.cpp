@@ -70,7 +70,7 @@ public:
     void OnOpen() override
     {
         widgets = window_land_widgets;
-        hold_down_widgets = (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT);
+        hold_down_widgets = (1uLL << WIDX_DECREMENT) | (1uLL << WIDX_INCREMENT);
         WindowInitScrollWidgets(*this);
         window_push_others_below(*this);
 

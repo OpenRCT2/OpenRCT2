@@ -115,9 +115,9 @@ struct DrawRectCommand
 
     enum
     {
-        FLAG_NO_TEXTURE = (1U << 2U),
-        FLAG_MASK = (1U << 3U),
-        FLAG_CROSS_HATCH = (1U << 4U),
+        FLAG_NO_TEXTURE = (1u << 2u),
+        FLAG_MASK = (1u << 3u),
+        FLAG_CROSS_HATCH = (1u << 4u),
     };
 };
 

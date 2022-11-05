@@ -503,13 +503,13 @@ public:
         widgets[WIDX_SCENERY_TITLE].text = titleStringId;
 
         pressed_widgets = 0;
-        pressed_widgets |= 1ULL << (tabIndex + WIDX_SCENERY_TAB_1);
+        pressed_widgets |= 1uLL << (tabIndex + WIDX_SCENERY_TAB_1);
         if (gWindowSceneryPaintEnabled == 1)
-            pressed_widgets |= (1ULL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
+            pressed_widgets |= (1uLL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
         if (gWindowSceneryEyedropperEnabled)
-            pressed_widgets |= (1ULL << WIDX_SCENERY_EYEDROPPER_BUTTON);
+            pressed_widgets |= (1uLL << WIDX_SCENERY_EYEDROPPER_BUTTON);
         if (gWindowSceneryScatterEnabled)
-            pressed_widgets |= (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
+            pressed_widgets |= (1uLL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
         widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::Empty;
         widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WindowWidgetType::Empty;

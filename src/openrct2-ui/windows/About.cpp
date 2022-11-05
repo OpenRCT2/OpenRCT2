@@ -57,7 +57,7 @@ enum WindowAboutWidgetIdx {
 
 #define WIDGETS_MAIN \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::ImgBtn, WindowColour::Secondary               ), /* page background */       \
+    MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::Frame,  WindowColour::Secondary               ), /* page background */       \
     MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
     MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */
 
@@ -170,7 +170,7 @@ private:
         pressed_widgets = 0;
         widgets = _windowAboutPageWidgets[p];
 
-        pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
+        pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1uLL << WIDX_TAB_ABOUT_RCT2) : (1uLL << WIDX_TAB_ABOUT_OPENRCT2);
         WindowInitScrollWidgets(*this);
         Invalidate();
     }

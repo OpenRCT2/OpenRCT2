@@ -40,7 +40,7 @@ struct GlyphId
         {
             size_t hash = k.Image * 7;
             hash += (k.Palette & 0xFFFFFFFFUL) * 13;
-            hash += (k.Palette >> 32UL) * 23;
+            hash += (k.Palette >> 32uL) * 23;
             return hash;
         }
     };

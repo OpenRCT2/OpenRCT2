@@ -148,9 +148,9 @@ public:
     {
         widgets = window_map_widgets;
 
-        hold_down_widgets = (1ULL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
-            | (1ULL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_X_DOWN) | (1ULL << WIDX_LAND_TOOL_LARGER)
-            | (1ULL << WIDX_LAND_TOOL_SMALLER);
+        hold_down_widgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
+            | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN) | (1uLL << WIDX_LAND_TOOL_LARGER)
+            | (1uLL << WIDX_LAND_TOOL_SMALLER);
 
         InitScrollWidgets();
 
@@ -733,20 +733,20 @@ public:
         // Set the pressed widgets
         pressed_widgets = 0;
         SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-        pressed_widgets |= (1ULL << (WIDX_PEOPLE_TAB + selected_tab));
-        pressed_widgets |= (1ULL << WIDX_LAND_TOOL);
+        pressed_widgets |= (1uLL << (WIDX_PEOPLE_TAB + selected_tab));
+        pressed_widgets |= (1uLL << WIDX_LAND_TOOL);
 
         if (_activeTool & (1 << 3))
-            pressed_widgets |= (1ULL << WIDX_LAND_SALE_CHECKBOX);
+            pressed_widgets |= (1uLL << WIDX_LAND_SALE_CHECKBOX);
 
         if (_activeTool & (1 << 2))
-            pressed_widgets |= (1ULL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
+            pressed_widgets |= (1uLL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
 
         if (_activeTool & (1 << 1))
-            pressed_widgets |= (1ULL << WIDX_LAND_OWNED_CHECKBOX);
+            pressed_widgets |= (1uLL << WIDX_LAND_OWNED_CHECKBOX);
 
         if (_activeTool & (1 << 0))
-            pressed_widgets |= (1ULL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
+            pressed_widgets |= (1uLL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
         // Set disabled widgets
         SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gMapSize.x != gMapSize.y);

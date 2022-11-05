@@ -181,7 +181,7 @@ public:
             toolstripY += 24;
         }
 
-        SetWidgetDisabled(WIDX_MOVE_UP, !_selectedIndex || _selectedIndex == 0U);
+        SetWidgetDisabled(WIDX_MOVE_UP, !_selectedIndex || _selectedIndex == 0u);
         SetWidgetDisabled(WIDX_MOVE_DOWN, !_selectedIndex || _selectedIndex >= GetNumAssetPacks() - 1);
 
         widgets[WIDX_APPLY].bottom = widgets[WIDX_LIST].bottom;

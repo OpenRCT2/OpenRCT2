@@ -834,12 +834,12 @@ public:
         widgets[WIDX_FILTER_DROPDOWN].right = width - 137;
 
         // Set pressed widgets
-        pressed_widgets |= 1ULL << WIDX_PREVIEW;
+        pressed_widgets |= 1uLL << WIDX_PREVIEW;
         SetPressedTab();
         if (list_information_type & 1)
-            pressed_widgets |= (1ULL << WIDX_ADVANCED);
+            pressed_widgets |= (1uLL << WIDX_ADVANCED);
         else
-            pressed_widgets &= ~(1ULL << WIDX_ADVANCED);
+            pressed_widgets &= ~(1uLL << WIDX_ADVANCED);
 
         // Set window title and buttons
         auto ft = Formatter::Common();
@@ -919,13 +919,13 @@ public:
                 pressed_widgets &= ~(1 << i);
 
             if ((_filter_flags & FILTER_RIDES) == FILTER_RIDES)
-                pressed_widgets |= (1ULL << WIDX_FILTER_RIDE_TAB_ALL);
+                pressed_widgets |= (1uLL << WIDX_FILTER_RIDE_TAB_ALL);
             else
             {
                 for (int32_t i = 0; i < 6; i++)
                 {
                     if (_filter_flags & (1 << (_numSourceGameItems + i)))
-                        pressed_widgets |= 1ULL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i);
+                        pressed_widgets |= 1uLL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i);
                 }
             }
 

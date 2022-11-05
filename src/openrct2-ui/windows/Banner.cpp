@@ -279,14 +279,14 @@ public:
         {
             colourBtn->type = WindowWidgetType::ColourBtn;
         }
-        pressed_widgets &= ~(1ULL << WIDX_BANNER_NO_ENTRY);
+        pressed_widgets &= ~(1uLL << WIDX_BANNER_NO_ENTRY);
         disabled_widgets &= ~(
-            (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
+            (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
         if (banner->flags & BANNER_FLAG_NO_ENTRY)
         {
-            pressed_widgets |= (1ULL << WIDX_BANNER_NO_ENTRY);
-            disabled_widgets |= (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN)
-                | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
+            pressed_widgets |= (1uLL << WIDX_BANNER_NO_ENTRY);
+            disabled_widgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
+                | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
         }
         colourBtn->image = GetColourButtonImage(banner->colour).ToUInt32();
         rct_widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];

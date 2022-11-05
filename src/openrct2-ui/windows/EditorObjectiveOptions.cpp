@@ -177,10 +177,10 @@ static WindowEventList *window_editor_objective_options_page_events[] = {
 #pragma region Enabled widgets
 
 static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
-    (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_2_DECREASE),
+    (1uLL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
+    (1uLL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
+    (1uLL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
+    (1uLL << WIDX_OBJECTIVE_ARG_2_DECREASE),
 
     0,
 };
@@ -1109,10 +1109,10 @@ static void WindowEditorObjectiveOptionsUpdateDisabledWidgets(rct_window* w)
     const auto& rideManager = GetRideManager();
     if (std::any_of(rideManager.begin(), rideManager.end(), [](const Ride& ride) { return ride.IsRide(); }))
     {
-        w->disabled_widgets &= ~(1ULL << WIDX_TAB_2);
+        w->disabled_widgets &= ~(1uLL << WIDX_TAB_2);
     }
     else
     {
-        w->disabled_widgets |= (1ULL << WIDX_TAB_2);
+        w->disabled_widgets |= (1uLL << WIDX_TAB_2);
     }
 }

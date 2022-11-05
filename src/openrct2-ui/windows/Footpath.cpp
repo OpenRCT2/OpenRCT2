@@ -410,9 +410,9 @@ public:
     void OnPrepareDraw() override
     {
         // Press / unpress footpath and queue type buttons
-        pressed_widgets &= ~(1ULL << WIDX_FOOTPATH_TYPE);
-        pressed_widgets &= ~(1ULL << WIDX_QUEUELINE_TYPE);
-        pressed_widgets |= gFootpathSelection.IsQueueSelected ? (1ULL << WIDX_QUEUELINE_TYPE) : (1ULL << WIDX_FOOTPATH_TYPE);
+        pressed_widgets &= ~(1uLL << WIDX_FOOTPATH_TYPE);
+        pressed_widgets &= ~(1uLL << WIDX_QUEUELINE_TYPE);
+        pressed_widgets |= gFootpathSelection.IsQueueSelected ? (1uLL << WIDX_QUEUELINE_TYPE) : (1uLL << WIDX_FOOTPATH_TYPE);
 
         // Enable / disable construct button
         window_footpath_widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
@@ -1214,23 +1214,23 @@ private:
             int32_t slope = gFootpathConstructSlope;
             if (slope == TILE_ELEMENT_SLOPE_SE_SIDE_UP)
             {
-                pressedWidgets |= (1ULL << WIDX_SLOPEDOWN);
+                pressedWidgets |= (1uLL << WIDX_SLOPEDOWN);
             }
             else if (slope == TILE_ELEMENT_SLOPE_FLAT)
             {
-                pressedWidgets |= (1ULL << WIDX_LEVEL);
+                pressedWidgets |= (1uLL << WIDX_LEVEL);
             }
             else
             {
-                pressedWidgets |= (1ULL << WIDX_SLOPEUP);
+                pressedWidgets |= (1uLL << WIDX_SLOPEUP);
             }
 
             // Enable / disable directional widgets
             direction = _footpathConstructValidDirections;
             if (direction != INVALID_DIRECTION)
             {
-                disabledWidgets |= (1ULL << WIDX_DIRECTION_NW) | (1ULL << WIDX_DIRECTION_NE) | (1ULL << WIDX_DIRECTION_SW)
-                    | (1ULL << WIDX_DIRECTION_SE);
+                disabledWidgets |= (1uLL << WIDX_DIRECTION_NW) | (1uLL << WIDX_DIRECTION_NE) | (1uLL << WIDX_DIRECTION_SW)
+                    | (1uLL << WIDX_DIRECTION_SE);
 
                 direction = (direction + currentRotation) & 3;
                 disabledWidgets &= ~(1 << (WIDX_DIRECTION_NW + direction));
@@ -1239,10 +1239,10 @@ private:
         else
         {
             // Disable all bridge mode widgets
-            disabledWidgets |= (1ULL << WIDX_DIRECTION_GROUP) | (1ULL << WIDX_DIRECTION_NW) | (1ULL << WIDX_DIRECTION_NE)
-                | (1ULL << WIDX_DIRECTION_SW) | (1ULL << WIDX_DIRECTION_SE) | (1ULL << WIDX_SLOPE_GROUP)
-                | (1ULL << WIDX_SLOPEDOWN) | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPEUP) | (1ULL << WIDX_CONSTRUCT)
-                | (1ULL << WIDX_REMOVE);
+            disabledWidgets |= (1uLL << WIDX_DIRECTION_GROUP) | (1uLL << WIDX_DIRECTION_NW) | (1uLL << WIDX_DIRECTION_NE)
+                | (1uLL << WIDX_DIRECTION_SW) | (1uLL << WIDX_DIRECTION_SE) | (1uLL << WIDX_SLOPE_GROUP)
+                | (1uLL << WIDX_SLOPEDOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPEUP) | (1uLL << WIDX_CONSTRUCT)
+                | (1uLL << WIDX_REMOVE);
         }
 
         pressed_widgets = pressedWidgets;

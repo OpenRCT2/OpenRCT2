@@ -307,25 +307,25 @@ static void WindowGameBottomToolbarInvalidate(rct_window* w)
         window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 2;
-        w->disabled_widgets &= ~(1ULL << WIDX_NEWS_SUBJECT);
-        w->disabled_widgets &= ~(1ULL << WIDX_NEWS_LOCATE);
+        w->disabled_widgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
+        w->disabled_widgets &= ~(1uLL << WIDX_NEWS_LOCATE);
 
         // Find out if the news item is no longer valid
         auto subjectLoc = News::GetSubjectLocation(newsItem->Type, newsItem->Assoc);
 
         if (!subjectLoc.has_value())
-            w->disabled_widgets |= (1ULL << WIDX_NEWS_LOCATE);
+            w->disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
 
         if (!(newsItem->TypeHasSubject()))
         {
-            w->disabled_widgets |= (1ULL << WIDX_NEWS_SUBJECT);
+            w->disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
         }
 
         if (newsItem->HasButton())
         {
-            w->disabled_widgets |= (1ULL << WIDX_NEWS_SUBJECT);
-            w->disabled_widgets |= (1ULL << WIDX_NEWS_LOCATE);
+            w->disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
+            w->disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
         }
     }
 }
