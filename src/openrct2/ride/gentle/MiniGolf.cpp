@@ -11,6 +11,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
+#include "../../paint/Paint.SessionFlags.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Map.h"

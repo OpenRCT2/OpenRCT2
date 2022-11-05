@@ -37,6 +37,7 @@
 #include "../../world/Surface.h"
 #include "../../world/TileInspector.h"
 #include "../Boundbox.h"
+#include "../Paint.SessionFlags.h"
 #include "../Supports.h"
 #include "Paint.Surface.h"
 #include "Paint.TileElement.h"
@@ -287,7 +288,7 @@ static void PathBitJumpingFountainsPaint(
  * rct2: 0x006A4101
  * @param tile_element (esi)
  */
-static void sub_6A4101(
+static void PathPaintFencesAndQueueBanners(
     PaintSession& session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
     const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate)
 {
@@ -296,7 +297,6 @@ static void sub_6A4101(
     auto imageId = imageTemplate.WithIndex(pathPaintInfo.RailingsImageId);
     if (pathElement.IsQueue())
     {
-        uint8_t local_ebp = connectedEdges & 0x0F;
         if (pathElement.IsSloped())
         {
             switch ((pathElement.GetSlopeDirection() + session.CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
@@ -329,21 +329,22 @@ static void sub_6A4101(
         }
         else
         {
-            switch (local_ebp)
+            const auto pathEdges = connectedEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+            switch (pathEdges)
             {
-                case 1:
+                case 0b0001:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(17), { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(17), { 0, 28, height }, { 28, 1, 7 }, { 0, 28, height + 2 });
                     break;
-                case 2:
+                case 0b0010:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(18), { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(18), { 28, 0, height }, { 1, 28, 7 }, { 28, 0, height + 2 });
                     break;
-                case 3:
+                case 0b0011:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(17), { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
                     PaintAddImageAsParent(
@@ -352,19 +353,19 @@ static void sub_6A4101(
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(25), { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
                     break;
-                case 4:
+                case 0b0100:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(19), { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(19), { 0, 28, height }, { 28, 1, 7 }, { 0, 28, height + 2 });
                     break;
-                case 5:
+                case 0b0101:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(15), { 0, 4, height }, { 32, 1, 7 }, { 0, 4, height + 2 });
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(15), { 0, 28, height }, { 32, 1, 7 }, { 0, 28, height + 2 });
                     break;
-                case 6:
+                case 0b0110:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(18), { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
                     PaintAddImageAsParent(
@@ -372,13 +373,13 @@ static void sub_6A4101(
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(26), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
                     break;
-                case 8:
+                case 0b1000:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(16), { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(16), { 28, 0, height }, { 1, 28, 7 }, { 28, 0, height + 2 });
                     break;
-                case 9:
+                case 0b1001:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(16), { 28, 0, height }, { 1, 28, 7 }, { 28, 0, height + 2 });
                     PaintAddImageAsParent(
@@ -386,13 +387,13 @@ static void sub_6A4101(
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(24), { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
                     break;
-                case 10:
+                case 0b1010:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(14), { 4, 0, height }, { 1, 32, 7 }, { 4, 0, height + 2 });
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(14), { 28, 0, height }, { 1, 32, 7 }, { 28, 0, height + 2 });
                     break;
-                case 12:
+                case 0b1100:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(16), { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
                     PaintAddImageAsParent(
@@ -402,7 +403,7 @@ static void sub_6A4101(
                         session, imageId.WithIndexOffset(27), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                     break;
                 default:
-                    // purposely left empty
+                    // Purposely left empty, queues cannot have 3 or 4 connected edges
                     break;
             }
         }
@@ -418,7 +419,7 @@ static void sub_6A4101(
         if (pathElement.IsSloped())
         {
             if (pathElement.GetSlopeDirection() == direction)
-                height += 16;
+                height += COORDS_Z_STEP * 2;
         }
         direction += session.CurrentRotation;
         direction &= 3;
@@ -728,8 +729,6 @@ static void sub_6A3F61(
 
     if (dpi->zoom_level <= ZoomLevel{ 1 })
     {
-        bool paintScenery = true;
-
         if (!gTrackDesignSaveMode)
         {
             if (pathElement.HasAddition())
@@ -742,19 +741,16 @@ static void sub_6A3F61(
 
                 // Draw additional path bits (bins, benches, lamps, queue screens)
                 auto* pathAddEntry = pathElement.GetAdditionEntry();
-
+                bool drawAddition = true;
                 // Can be null if the object is not loaded.
-                if (pathAddEntry == nullptr)
+                if (pathAddEntry == nullptr
+                    || ((session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(pathElement.IsBroken())
+                        && pathAddEntry->draw_type != PathBitDrawType::Bin))
                 {
-                    paintScenery = false;
+                    drawAddition = false;
                 }
-                else if (
-                    (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(pathElement.IsBroken())
-                    && pathAddEntry->draw_type != PathBitDrawType::Bin)
-                {
-                    paintScenery = false;
-                }
-                else
+
+                if (drawAddition)
                 {
                     switch (pathAddEntry->draw_type)
                     {
@@ -790,8 +786,7 @@ static void sub_6A3F61(
 
         // Redundant zoom-level check removed
 
-        if (paintScenery)
-            sub_6A4101(session, pathElement, height, connectedEdges, hasSupports, pathPaintInfo, imageTemplate);
+        PathPaintFencesAndQueueBanners(session, pathElement, height, connectedEdges, hasSupports, pathPaintInfo, imageTemplate);
     }
 
     // This is about tunnel drawing

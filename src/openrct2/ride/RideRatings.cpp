@@ -154,24 +154,45 @@ static void ride_ratings_update_state(RideRatingUpdateState& state)
     }
 }
 
+static RideId GetNextRideToUpdate(RideId currentRide)
+{
+    auto rm = GetRideManager();
+    if (rm.size() == 0)
+    {
+        return RideId::GetNull();
+    }
+    // Skip all empty ride ids
+    auto nextRide = std::next(rm.get(currentRide));
+    // If at end, loop around
+    if (nextRide == rm.end())
+    {
+        nextRide = rm.begin();
+    }
+    return (*nextRide).id;
+}
+
 /**
  *
  *  rct2: 0x006B5A5C
  */
 static void ride_ratings_update_state_0(RideRatingUpdateState& state)
 {
-    auto nextRide = RideId::FromUnderlying(state.CurrentRide.ToUnderlying() + 1);
-    if (nextRide.ToUnderlying() >= OpenRCT2::Limits::MaxRidesInPark)
+    // It is possible that the current ride being calculated has
+    // been removed or due to import invalid. For both, reset
+    // ratings and start check at the start
+    if (get_ride(state.CurrentRide) == nullptr)
     {
-        nextRide = {};
+        state.CurrentRide = {};
     }
 
-    auto ride = get_ride(nextRide);
-    if (ride != nullptr && ride->status != RideStatus::Closed && !(ride->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
+    auto nextRideId = GetNextRideToUpdate(state.CurrentRide);
+    auto nextRide = get_ride(nextRideId);
+    if (nextRide != nullptr && nextRide->status != RideStatus::Closed
+        && !(nextRide->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
     {
         state.State = RIDE_RATINGS_STATE_INITIALISE;
     }
-    state.CurrentRide = nextRide;
+    state.CurrentRide = nextRideId;
 }
 
 /**

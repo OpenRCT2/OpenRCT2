@@ -145,6 +145,11 @@ RideManager::Iterator RideManager::end()
     return RideManager::Iterator(*this, endIndex, endIndex);
 }
 
+RideManager::Iterator RideManager::get(RideId rideId)
+{
+    return RideManager::Iterator(*this, rideId.ToUnderlying(), _rides.size());
+}
+
 RideId GetNextFreeRideId()
 {
     auto result = static_cast<RideId::UnderlyingType>(_rides.size());

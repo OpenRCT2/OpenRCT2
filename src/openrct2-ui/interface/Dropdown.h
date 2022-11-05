@@ -56,6 +56,7 @@ void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdow
 void WindowDropdownShowColourAvailable(
     rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
+bool WindowDropDownHasMultipleColumns(size_t numItems);
 
 namespace Dropdown
 {

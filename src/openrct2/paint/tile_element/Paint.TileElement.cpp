@@ -27,6 +27,7 @@
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/Surface.h"
+#include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "../VirtualFloor.h"
