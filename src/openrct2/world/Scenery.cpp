@@ -26,6 +26,7 @@
 #include "../object/FootpathItemObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/SmallSceneryObject.h"
 #include "../object/WallObject.h"
 #include "../scenario/Scenario.h"
 #include "Climate.h"

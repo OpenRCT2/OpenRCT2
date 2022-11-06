@@ -19,7 +19,7 @@
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../world/Park.h"
-#include "../world/SmallScenery.h"
+#include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
 
 using namespace OpenRCT2;

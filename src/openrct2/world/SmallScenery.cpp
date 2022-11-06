@@ -16,6 +16,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/ObjectManager.h"
+#include "../object/SmallSceneryObject.h"
 #include "../ride/TrackDesign.h"
 #include "Footpath.h"
 #include "Map.h"

@@ -43,6 +43,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/SmallSceneryObject.h"
 #include "../object/StationObject.h"
 #include "../rct1/RCT1.h"
 #include "../rct1/Tables.h"

@@ -14,6 +14,7 @@
 #include "../entity/EntityList.h"
 #include "../entity/Peep.h"
 #include "../interface/Viewport.h"
+#include "../object/SmallSceneryObject.h"
 #include "../object/StationObject.h"
 #include "../object/WallObject.h"
 #include "../profiling/Profiling.h"

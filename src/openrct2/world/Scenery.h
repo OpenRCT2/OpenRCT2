@@ -96,27 +96,6 @@ enum LARGE_SCENERY_FLAGS
     LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR = (1 << 6),  // 0x40
 };
 
-struct SmallSceneryEntry
-{
-    StringId name;
-    uint32_t image;
-    uint32_t flags;
-    uint8_t height;
-    CursorID tool_id;
-    money32 price;
-    money32 removal_price;
-    uint8_t* frame_offsets;
-    uint16_t animation_delay;
-    uint16_t animation_mask;
-    uint16_t num_frames;
-    ObjectEntryIndex scenery_tab_id;
-
-    constexpr bool HasFlag(const uint32_t _flags) const
-    {
-        return (flags & _flags) != 0;
-    }
-};
-
 #pragma pack(pop)
 
 struct LargeSceneryText

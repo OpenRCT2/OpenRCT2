@@ -23,6 +23,7 @@
 #include <openrct2/object/BannerObject.h>
 #include <openrct2/object/FootpathItemObject.h>
 #include <openrct2/object/ObjectList.h>
+#include <openrct2/object/SmallSceneryObject.h>
 #include <openrct2/object/WallObject.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/LargeScenery.h>

@@ -54,6 +54,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerObject.h>
+#include <openrct2/object/SmallSceneryObject.h>
 #include <openrct2/object/WallObject.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/scenario/Scenario.h>
