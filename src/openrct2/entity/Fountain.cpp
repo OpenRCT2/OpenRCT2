@@ -11,6 +11,7 @@
 
 #include "../Game.h"
 #include "../core/DataSerialiser.h"
+#include "../object/FootpathItemObject.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"

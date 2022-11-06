@@ -21,6 +21,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
+#include "../object/FootpathItemObject.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"

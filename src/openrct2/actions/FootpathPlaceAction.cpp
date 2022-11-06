@@ -15,6 +15,7 @@
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/FootpathItemObject.h"
 #include "../ride/RideConstruction.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"

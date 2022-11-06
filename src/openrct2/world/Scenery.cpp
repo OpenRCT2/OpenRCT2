@@ -23,6 +23,7 @@
 #include "../entity/Fountain.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
+#include "../object/FootpathItemObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/WallObject.h"

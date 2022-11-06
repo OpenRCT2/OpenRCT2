@@ -32,6 +32,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/BannerObject.h>
+#include <openrct2/object/FootpathItemObject.h>
 #include <openrct2/object/WallObject.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>

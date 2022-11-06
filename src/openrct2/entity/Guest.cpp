@@ -28,6 +28,7 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
+#include "../object/FootpathItemObject.h"
 #include "../object/MusicObject.h"
 #include "../object/WallObject.h"
 #include "../peep/GuestPathfinding.h"
