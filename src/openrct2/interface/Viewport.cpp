@@ -22,6 +22,7 @@
 #include "../entity/Guest.h"
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
+#include "../object/WallObject.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"

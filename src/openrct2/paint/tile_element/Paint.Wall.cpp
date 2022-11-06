@@ -16,6 +16,7 @@
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/WallObject.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"

@@ -15,6 +15,7 @@
 #include "../entity/Peep.h"
 #include "../interface/Viewport.h"
 #include "../object/StationObject.h"
+#include "../object/WallObject.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"

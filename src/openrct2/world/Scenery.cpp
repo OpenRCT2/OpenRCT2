@@ -25,6 +25,7 @@
 #include "../network/network.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/WallObject.h"
 #include "../scenario/Scenario.h"
 #include "Climate.h"
 #include "Footpath.h"

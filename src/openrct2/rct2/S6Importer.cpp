@@ -48,6 +48,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/WallObject.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct12/EntryList.h"
 #include "../rct12/RCT12.h"
