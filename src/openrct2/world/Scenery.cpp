@@ -394,22 +394,22 @@ static size_t GetMaxObjectsForSceneryType(const uint8_t sceneryType)
     }
 }
 
-static SceneryEntryBase* GetSceneryEntry(const ScenerySelection& item)
+static bool HasValidEntry(const ScenerySelection& item)
 {
     switch (item.SceneryType)
     {
         case SCENERY_TYPE_SMALL:
-            return GetSmallSceneryEntry(item.EntryIndex);
+            return GetSmallSceneryEntry(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_PATH_ITEM:
-            return GetFootpathItemEntry(item.EntryIndex);
+            return GetFootpathItemEntry(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_WALL:
-            return GetWallEntry(item.EntryIndex);
+            return GetWallEntry(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_LARGE:
-            return GetLargeSceneryEntry(item.EntryIndex);
+            return GetLargeSceneryEntry(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_BANNER:
-            return GetBannerEntry(item.EntryIndex);
+            return GetBannerEntry(item.EntryIndex) != nullptr;
         default:
-            return nullptr;
+            return false;
     }
 }
 
@@ -446,8 +446,7 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
         for (ObjectEntryIndex i = 0; i < maxObjects; i++)
         {
             const ScenerySelection sceneryItem = { sceneryType, i };
-            const auto* sceneryEntry = GetSceneryEntry(sceneryItem);
-            if (sceneryEntry != nullptr)
+            if (HasValidEntry(sceneryItem))
             {
                 if (std::find(std::begin(nonMiscScenery), std::end(nonMiscScenery), sceneryItem) == std::end(nonMiscScenery))
                 {

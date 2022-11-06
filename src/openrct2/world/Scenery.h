@@ -24,12 +24,6 @@ struct LargeSceneryText;
 
 #pragma pack(push, 1)
 
-struct SceneryEntryBase
-{
-    StringId name;
-    uint32_t image;
-};
-
 struct rct_large_scenery_tile
 {
     int16_t x_offset;
@@ -76,8 +70,10 @@ enum LARGE_SCENERY_TEXT_FLAGS
     LARGE_SCENERY_TEXT_FLAG_TWO_LINE = (1 << 1), // 0x2
 };
 
-struct LargeSceneryEntry : SceneryEntryBase
+struct LargeSceneryEntry
 {
+    StringId name;
+    uint32_t image;
     CursorID tool_id;
     uint8_t flags;
     money32 price;
@@ -121,8 +117,10 @@ enum WALL_SCENERY_2_FLAGS
     WALL_SCENERY_2_ANIMATED = (1 << 4),  // 0x10
 };
 
-struct SmallSceneryEntry : SceneryEntryBase
+struct SmallSceneryEntry
 {
+    StringId name;
+    uint32_t image;
     uint32_t flags;
     uint8_t height;
     CursorID tool_id;
@@ -140,8 +138,10 @@ struct SmallSceneryEntry : SceneryEntryBase
     }
 };
 
-struct WallSceneryEntry : SceneryEntryBase
+struct WallSceneryEntry
 {
+    StringId name;
+    uint32_t image;
     CursorID tool_id;
     uint8_t flags;
     uint8_t height;
@@ -152,8 +152,10 @@ struct WallSceneryEntry : SceneryEntryBase
 };
 enum class PathBitDrawType : uint8_t;
 
-struct PathBitEntry : SceneryEntryBase
+struct PathBitEntry
 {
+    StringId name;
+    uint32_t image;
     uint16_t flags;
     PathBitDrawType draw_type;
     CursorID tool_id;
@@ -161,8 +163,10 @@ struct PathBitEntry : SceneryEntryBase
     ObjectEntryIndex scenery_tab_id;
 };
 
-struct BannerSceneryEntry : SceneryEntryBase
+struct BannerSceneryEntry
 {
+    StringId name;
+    uint32_t image;
     uint8_t scrolling_mode;
     uint8_t flags;
     int16_t price;
