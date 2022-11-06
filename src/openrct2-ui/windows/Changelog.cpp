@@ -147,13 +147,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_CONTENT_PANEL].bottom = height - 1;
+        ResizeFrameWithPage();
         widgets[WIDX_SCROLL].right = width - 3;
         widgets[WIDX_SCROLL].bottom = height - 22;
         widgets[WIDX_OPEN_URL].bottom = height - 5;

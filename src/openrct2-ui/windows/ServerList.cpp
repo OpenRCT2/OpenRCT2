@@ -352,11 +352,7 @@ static OpenRCT2String WindowServerListTooltip(rct_window* const w, const WidgetI
 
 static void WindowServerListInvalidate(rct_window* w)
 {
-    window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    window_server_list_widgets[WIDX_TITLE].right = w->width - 2;
-    window_server_list_widgets[WIDX_CLOSE].left = w->width - 2 - 11;
-    window_server_list_widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
+    w->ResizeFrame();
 
     int32_t margin = 6;
     int32_t buttonHeight = 13;

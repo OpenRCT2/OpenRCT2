@@ -815,13 +815,7 @@ public:
     void OnPrepareDraw() override
     {
         // Resize widgets
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_TAB_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_TAB_CONTENT_PANEL].bottom = height - 1;
+        ResizeFrameWithPage();
         widgets[WIDX_ADVANCED].left = width - 130;
         widgets[WIDX_ADVANCED].right = width - 9;
         widgets[WIDX_LIST].right = width - 309;

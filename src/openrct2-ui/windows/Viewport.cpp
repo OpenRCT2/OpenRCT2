@@ -177,13 +177,7 @@ public:
     {
         rct_widget* viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
 
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_CONTENT_PANEL].bottom = height - 1;
+        ResizeFrameWithPage();
         widgets[WIDX_ZOOM_IN].left = width - 27;
         widgets[WIDX_ZOOM_IN].right = width - 2;
         widgets[WIDX_ZOOM_OUT].left = width - 27;
