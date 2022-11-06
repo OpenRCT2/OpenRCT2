@@ -20,6 +20,7 @@
 #include "../drawing/Image.h"
 #include "../entity/Staff.h"
 #include "../localisation/Language.h"
+#include "../world/Scenery.h"
 #include "ObjectLimits.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"

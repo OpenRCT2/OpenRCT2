@@ -24,6 +24,7 @@
 #include <openrct2/object/FootpathItemObject.h>
 #include <openrct2/object/LargeSceneryObject.h>
 #include <openrct2/object/ObjectList.h>
+#include <openrct2/object/SceneryGroupObject.h>
 #include <openrct2/object/SmallSceneryObject.h>
 #include <openrct2/object/WallObject.h>
 #include <openrct2/sprites.h>

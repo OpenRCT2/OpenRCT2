@@ -12,22 +12,12 @@
 #include "../common.h"
 #include "../world/Location.hpp"
 #include "../world/ScenerySelection.h"
-#include "TileElement.h"
 
 #include <limits>
 #include <string_view>
 
 #define SCENERY_WITHER_AGE_THRESHOLD_1 0x28
 #define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
-
-struct rct_scenery_group_entry
-{
-    StringId name;
-    uint32_t image;
-    std::vector<ScenerySelection> SceneryEntries;
-    uint8_t priority;
-    uint32_t entertainer_costumes;
-};
 
 enum
 {
@@ -88,6 +78,7 @@ void SceneryRemoveGhostToolPlacement();
 struct WallSceneryEntry;
 struct BannerSceneryEntry;
 struct PathBitEntry;
+struct rct_scenery_group_entry;
 
 WallSceneryEntry* GetWallEntry(ObjectEntryIndex entryIndex);
 BannerSceneryEntry* GetBannerEntry(ObjectEntryIndex entryIndex);

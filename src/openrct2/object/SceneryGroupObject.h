@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../world/Scenery.h"
+#include "../world/ScenerySelection.h"
 #include "Object.h"
 
 #include <vector>
@@ -17,6 +17,15 @@
 struct ObjectRepositoryItem;
 
 enum class EntertainerCostume : uint8_t;
+
+struct rct_scenery_group_entry
+{
+    StringId name;
+    uint32_t image;
+    std::vector<ScenerySelection> SceneryEntries;
+    uint8_t priority;
+    uint32_t entertainer_costumes;
+};
 
 class SceneryGroupObject final : public Object
 {

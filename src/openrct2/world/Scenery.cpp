@@ -27,6 +27,7 @@
 #include "../object/LargeSceneryObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/SceneryGroupObject.h"
 #include "../object/SmallSceneryObject.h"
 #include "../object/WallObject.h"
 #include "../scenario/Scenario.h"
