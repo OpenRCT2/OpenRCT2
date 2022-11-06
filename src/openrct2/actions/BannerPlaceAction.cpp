@@ -10,6 +10,7 @@
 #include "BannerPlaceAction.h"
 
 #include "../management/Finance.h"
+#include "../object/BannerObject.h"
 #include "../world/Banner.h"
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"

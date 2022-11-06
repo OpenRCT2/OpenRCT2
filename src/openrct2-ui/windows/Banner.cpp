@@ -17,6 +17,7 @@
 #include <openrct2/actions/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/BannerObject.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>

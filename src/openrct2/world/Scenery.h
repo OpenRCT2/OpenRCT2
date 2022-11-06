@@ -130,16 +130,6 @@ struct PathBitEntry
     ObjectEntryIndex scenery_tab_id;
 };
 
-struct BannerSceneryEntry
-{
-    StringId name;
-    uint32_t image;
-    uint8_t scrolling_mode;
-    uint8_t flags;
-    int16_t price;
-    ObjectEntryIndex scenery_tab_id;
-};
-
 #pragma pack(pop)
 
 struct LargeSceneryText
@@ -208,11 +198,6 @@ enum
     SCENERY_GHOST_FLAG_4 = (1 << SCENERY_TYPE_BANNER)
 };
 
-enum
-{
-    BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
-};
-
 enum class ScatterToolDensity : uint8_t
 {
     LowDensity,
@@ -250,6 +235,7 @@ void ScenerySetDefaultPlacementConfiguration();
 void SceneryRemoveGhostToolPlacement();
 
 struct WallSceneryEntry;
+struct BannerSceneryEntry;
 
 WallSceneryEntry* GetWallEntry(ObjectEntryIndex entryIndex);
 BannerSceneryEntry* GetBannerEntry(ObjectEntryIndex entryIndex);

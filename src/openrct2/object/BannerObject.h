@@ -10,8 +10,22 @@
 #pragma once
 
 #include "../core/IStream.hpp"
-#include "../world/Scenery.h"
 #include "SceneryObject.h"
+
+enum
+{
+    BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
+};
+
+struct BannerSceneryEntry
+{
+    StringId name;
+    uint32_t image;
+    uint8_t scrolling_mode;
+    uint8_t flags;
+    int16_t price;
+    ObjectEntryIndex scenery_tab_id;
+};
 
 class BannerObject final : public SceneryObject
 {
