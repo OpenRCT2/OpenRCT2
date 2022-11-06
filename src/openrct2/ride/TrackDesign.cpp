@@ -40,6 +40,7 @@
 #include "../network/network.h"
 #include "../object/FootpathObject.h"
 #include "../object/FootpathSurfaceObject.h"
+#include "../object/LargeSceneryObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"

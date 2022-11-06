@@ -9,10 +9,9 @@
 
 #pragma once
 
-#include "../common.h"
-#include "Map.h"
-#include "TileElement.h"
+#include "../object/Object.h"
 
+struct LargeSceneryEntry;
 LargeSceneryEntry* GetLargeSceneryEntry(ObjectEntryIndex entryIndex);
 
 enum

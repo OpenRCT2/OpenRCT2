@@ -27,6 +27,7 @@
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/LargeSceneryObject.h"
 #include "../object/ObjectManager.h"
 #include "../object/SmallSceneryObject.h"
 #include "../object/TerrainSurfaceObject.h"

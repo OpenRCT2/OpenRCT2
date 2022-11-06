@@ -20,6 +20,8 @@ struct LargeSceneryPlaceActionResult
     BannerIndex bannerId = BannerIndex::GetNull();
 };
 
+struct rct_large_scenery_tile;
+
 class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceLargeScenery>
 {
 private:
