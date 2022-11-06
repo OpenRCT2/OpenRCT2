@@ -131,7 +131,7 @@ void TitleScreen::Load()
     OpenRCT2::Audio::StopAll();
     GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
     viewport_init_all();
-    context_open_window(WindowClass::MainWindow);
+    ContextOpenWindow(WindowClass::MainWindow);
     CreateWindows();
     TitleInitialise();
     OpenRCT2::Audio::PlayTitleMusic();
@@ -139,7 +139,7 @@ void TitleScreen::Load()
     if (gOpenRCT2ShowChangelog)
     {
         gOpenRCT2ShowChangelog = false;
-        context_open_window(WindowClass::Changelog);
+        ContextOpenWindow(WindowClass::Changelog);
     }
 
     if (_sequencePlayer != nullptr)
@@ -182,12 +182,12 @@ void TitleScreen::Tick()
 
     input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
-    context_update_map_tooltip();
+    ContextUpdateMapTooltip();
     window_dispatch_update_all();
 
     gSavedAge++;
 
-    context_handle_input();
+    ContextHandleInput();
 
     gInUpdateCode = false;
 }
@@ -215,11 +215,11 @@ void TitleScreen::ChangePresetSequence(size_t preset)
  */
 void TitleScreen::CreateWindows()
 {
-    context_open_window(WindowClass::TitleMenu);
-    context_open_window(WindowClass::TitleExit);
-    context_open_window(WindowClass::TitleOptions);
-    context_open_window(WindowClass::TitleLogo);
-    window_resize_gui(context_get_width(), context_get_height());
+    ContextOpenWindow(WindowClass::TitleMenu);
+    ContextOpenWindow(WindowClass::TitleExit);
+    ContextOpenWindow(WindowClass::TitleOptions);
+    ContextOpenWindow(WindowClass::TitleLogo);
+    window_resize_gui(ContextGetWidth(), ContextGetHeight());
     _hideVersionInfo = false;
 }
 

@@ -129,7 +129,7 @@ public:
                 auto intent = Intent(WindowClass::TrackDesignList);
                 intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
                 intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
                 break;
         }
     }
@@ -241,7 +241,7 @@ public:
                         {
                             auto intent = Intent(WindowClass::Ride);
                             intent.putExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
-                            context_open_intent(&intent);
+                            ContextOpenIntent(&intent);
                             auto wnd = window_find_by_class(WindowClass::TrackDesignPlace);
                             window_close(*wnd);
                         }

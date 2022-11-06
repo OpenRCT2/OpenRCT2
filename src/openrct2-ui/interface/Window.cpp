@@ -61,17 +61,17 @@ static bool WindowFitsWithinSpace(const ScreenCoordsXY& loc, int32_t width, int3
         return false;
     if (loc.y <= TOP_TOOLBAR_HEIGHT && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         return false;
-    if (loc.x + width > context_get_width())
+    if (loc.x + width > ContextGetWidth())
         return false;
-    if (loc.y + height > context_get_height())
+    if (loc.y + height > ContextGetHeight())
         return false;
     return WindowFitsBetweenOthers(loc, width, height);
 }
 
 static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t height)
 {
-    uint16_t screenWidth = context_get_width();
-    uint16_t screenHeight = context_get_height();
+    uint16_t screenWidth = ContextGetWidth();
+    uint16_t screenHeight = ContextGetHeight();
     int32_t unk;
 
     unk = -(width / 4);
@@ -511,7 +511,7 @@ static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_
 void WindowAllWheelInput()
 {
     // Get wheel value
-    auto cursorState = context_get_cursor_state();
+    auto cursorState = ContextGetCursorState();
     int32_t absolute_wheel = cursorState->wheel;
     int32_t relative_wheel = absolute_wheel - _previousAbsoluteWheel;
     int32_t pixel_scroll = relative_wheel * WindowScrollPixels;

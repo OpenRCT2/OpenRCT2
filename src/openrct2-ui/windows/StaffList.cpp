@@ -147,7 +147,7 @@ public:
                 }
                 break;
             case WIDX_STAFF_LIST_MAP:
-                context_open_window(WindowClass::Map);
+                ContextOpenWindow(WindowClass::Map);
                 break;
             case WIDX_STAFF_LIST_QUICK_FIRE:
                 _quickFireMode = !_quickFireMode;
@@ -358,7 +358,7 @@ public:
                     {
                         auto intent = Intent(WindowClass::Peep);
                         intent.putExtra(INTENT_EXTRA_PEEP, peep);
-                        context_open_intent(&intent);
+                        ContextOpenIntent(&intent);
                     }
                 }
                 break;
@@ -462,7 +462,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<StringId>(GetStaffNamingConvention(GetSelectedStaffType()).Plural);
-                context_show_error(STR_NO_THING_IN_PARK_YET, STR_NONE, ft);
+                ContextShowError(STR_NO_THING_IN_PARK_YET, STR_NONE, ft);
             }
         }
     }
@@ -532,7 +532,7 @@ private:
             auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
             auto intent = Intent(WindowClass::Peep);
             intent.putExtra(INTENT_EXTRA_PEEP, staff);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
         });
 
         GameActions::Execute(&hireStaffAction);

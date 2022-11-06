@@ -324,7 +324,7 @@ namespace OpenRCT2
         void Quit() override
         {
             gSavePromptMode = PromptMode::Quit;
-            context_open_window(WindowClass::SavePrompt);
+            ContextOpenWindow(WindowClass::SavePrompt);
         }
 
         bool Initialise() final override
@@ -1355,12 +1355,12 @@ namespace OpenRCT2
 
 } // namespace OpenRCT2
 
-void context_init()
+void ContextInit()
 {
     GetContext()->GetUiContext()->GetWindowManager()->Init();
 }
 
-bool context_load_park_from_stream(void* stream)
+bool ContextLoadParkFromStream(void* stream)
 {
     return GetContext()->LoadParkFromStream(static_cast<IStream*>(stream), "");
 }
@@ -1375,170 +1375,170 @@ void openrct2_finish()
     GetContext()->Finish();
 }
 
-void context_setcurrentcursor(CursorID cursor)
+void ContextSetCurrentCursor(CursorID cursor)
 {
     GetContext()->GetUiContext()->SetCursor(cursor);
 }
 
-void context_update_cursor_scale()
+void ContextUpdateCursorScale()
 {
     GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8_t>(std::round(gConfigGeneral.WindowScale)));
 }
 
-void context_hide_cursor()
+void ContextHideCursor()
 {
     GetContext()->GetUiContext()->SetCursorVisible(false);
 }
 
-void context_show_cursor()
+void ContextShowCursor()
 {
     GetContext()->GetUiContext()->SetCursorVisible(true);
 }
 
-ScreenCoordsXY context_get_cursor_position()
+ScreenCoordsXY ContextGetCursorPosition()
 {
     return GetContext()->GetUiContext()->GetCursorPosition();
 }
 
-ScreenCoordsXY context_get_cursor_position_scaled()
+ScreenCoordsXY ContextGetCursorPositionScaled()
 {
-    auto cursorCoords = context_get_cursor_position();
+    auto cursorCoords = ContextGetCursorPosition();
     // Compensate for window scaling.
     return { static_cast<int32_t>(std::ceil(cursorCoords.x / gConfigGeneral.WindowScale)),
              static_cast<int32_t>(std::ceil(cursorCoords.y / gConfigGeneral.WindowScale)) };
 }
 
-void context_set_cursor_position(const ScreenCoordsXY& cursorPosition)
+void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition)
 {
     GetContext()->GetUiContext()->SetCursorPosition(cursorPosition);
 }
 
-const CursorState* context_get_cursor_state()
+const CursorState* ContextGetCursorState()
 {
     return GetContext()->GetUiContext()->GetCursorState();
 }
 
-const uint8_t* context_get_keys_state()
+const uint8_t* ContextGetKeysState()
 {
     return GetContext()->GetUiContext()->GetKeysState();
 }
 
-const uint8_t* context_get_keys_pressed()
+const uint8_t* ContextGetKeysPressed()
 {
     return GetContext()->GetUiContext()->GetKeysPressed();
 }
 
-TextInputSession* context_start_text_input(utf8* buffer, size_t maxLength)
+TextInputSession* ContextStartTextInput(utf8* buffer, size_t maxLength)
 {
     return GetContext()->GetUiContext()->StartTextInput(buffer, maxLength);
 }
 
-void context_stop_text_input()
+void ContextStopTextInput()
 {
     GetContext()->GetUiContext()->StopTextInput();
 }
 
-bool context_is_input_active()
+bool ContextIsInputActive()
 {
     return GetContext()->GetUiContext()->IsTextInputActive();
 }
 
-void context_trigger_resize()
+void ContextTriggerResize()
 {
     return GetContext()->GetUiContext()->TriggerResize();
 }
 
-void context_set_fullscreen_mode(int32_t mode)
+void ContextSetFullscreenMode(int32_t mode)
 {
     return GetContext()->GetUiContext()->SetFullscreenMode(static_cast<FULLSCREEN_MODE>(mode));
 }
 
-void context_recreate_window()
+void ContextRecreateWindow()
 {
     GetContext()->GetUiContext()->RecreateWindow();
 }
 
-int32_t context_get_width()
+int32_t ContextGetWidth()
 {
     return GetContext()->GetUiContext()->GetWidth();
 }
 
-int32_t context_get_height()
+int32_t ContextGetHeight()
 {
     return GetContext()->GetUiContext()->GetHeight();
 }
 
-bool context_has_focus()
+bool ContextHasFocus()
 {
     return GetContext()->GetUiContext()->HasFocus();
 }
 
-void context_set_cursor_trap(bool value)
+void ContextSetCursorTrap(bool value)
 {
     GetContext()->GetUiContext()->SetCursorTrap(value);
 }
 
-rct_window* context_open_window(WindowClass wc)
+rct_window* ContextOpenWindow(WindowClass wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenWindow(wc);
 }
 
-rct_window* context_open_window_view(uint8_t wc)
+rct_window* ContextOpenWindowView(uint8_t wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenView(wc);
 }
 
-rct_window* context_open_detail_window(uint8_t type, int32_t id)
+rct_window* ContextOpenDetailWindow(uint8_t type, int32_t id)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenDetails(type, id);
 }
 
-rct_window* context_open_intent(Intent* intent)
+rct_window* ContextOpenIntent(Intent* intent)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenIntent(intent);
 }
 
-void context_broadcast_intent(Intent* intent)
+void ContextBroadcastIntent(Intent* intent)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->BroadcastIntent(*intent);
 }
 
-void context_force_close_window_by_class(WindowClass windowClass)
+void ContextForceCloseWindowByClass(WindowClass windowClass)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->ForceClose(windowClass);
 }
 
-rct_window* context_show_error(StringId title, StringId message, const Formatter& args)
+rct_window* ContextShowError(StringId title, StringId message, const Formatter& args)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->ShowError(title, message, args);
 }
 
-void context_update_map_tooltip()
+void ContextUpdateMapTooltip()
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->UpdateMapTooltip();
 }
 
-void context_handle_input()
+void ContextHandleInput()
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->HandleInput();
 }
 
-void context_input_handle_keyboard(bool isTitle)
+void ContextInputHandleKeyboard(bool isTitle)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->HandleKeyboard(isTitle);
 }
 
-void context_quit()
+void ContextQuit()
 {
     GetContext()->Quit();
 }

@@ -282,7 +282,7 @@ public:
                 Close();
                 break;
             case WIDX_MAP:
-                context_open_window(WindowClass::Map);
+                ContextOpenWindow(WindowClass::Map);
                 break;
             case WIDX_TRACKING:
                 _trackingOnly = !_trackingOnly;

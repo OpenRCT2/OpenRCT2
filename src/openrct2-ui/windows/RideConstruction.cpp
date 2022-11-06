@@ -288,7 +288,7 @@ public:
             currentRide->SetToDefaultInspectionInterval();
             auto intent = Intent(WindowClass::Ride);
             intent.putExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
         }
         else
         {
@@ -2773,7 +2773,7 @@ rct_window* WindowRideConstructionOpen()
     switch (rtd.ConstructionWindowContext)
     {
         case RideConstructionWindowContext::Maze:
-            return context_open_window_view(WV_MAZE_CONSTRUCTION);
+            return ContextOpenWindowView(WV_MAZE_CONSTRUCTION);
         case RideConstructionWindowContext::Default:
             return WindowCreate<RideConstructionWindow>(
                 WindowClass::RideConstruction, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
@@ -3324,7 +3324,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
         MapInvalidateMapSelectionTiles();
         return;
     }
@@ -3466,7 +3466,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
  */
 void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 {
-    const CursorState* state = context_get_cursor_state();
+    const CursorState* state = ContextGetCursorState();
 
     rct_window* w;
 
@@ -3552,7 +3552,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             _currentTrackBegin.z = z;
             _currentTrackSelectionFlags = 0;
             auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
             w = window_find_by_class(WindowClass::RideConstruction);
             if (w == nullptr)
                 break;
@@ -3595,7 +3595,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                         _trackPlaceShiftState = false;
                     }
                     auto intent2 = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
-                    context_broadcast_intent(&intent2);
+                    ContextBroadcastIntent(&intent2);
                     break;
                 }
                 z += 16;

@@ -576,7 +576,7 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
 
     if (!Platform::IsFilenameValid(text))
     {
-        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+        ContextShowError(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
         return;
     }
 
@@ -587,7 +587,7 @@ static void WindowLoadsaveTextinput(rct_window* w, WidgetIndex widgetIndex, char
             const u8string path = Path::Combine(_directory, text);
             if (!Platform::EnsureDirectoryExists(path))
             {
-                context_show_error(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE, {});
+                ContextShowError(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE, {});
                 return;
             }
 
@@ -959,7 +959,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 {
     if (!IsValidPath(path))
     {
-        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+        ContextShowError(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
         return;
     }
 
@@ -991,7 +991,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_SAVE_GAME, STR_GAME_SAVE_FAILED, {});
+                ContextShowError(STR_SAVE_GAME, STR_GAME_SAVE_FAILED, {});
                 WindowLoadsaveInvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1007,7 +1007,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             else
             {
                 // Not the best message...
-                context_show_error(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
+                ContextShowError(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
                 WindowLoadsaveInvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1024,7 +1024,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED, {});
+                ContextShowError(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED, {});
                 WindowLoadsaveInvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1047,7 +1047,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
+                ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
                 gEditorStep = EditorStep::ObjectiveSelection;
                 WindowLoadsaveInvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
             }
@@ -1059,7 +1059,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             SetAndSaveConfigPath(gConfigGeneral.LastSaveTrackDirectory, pathBuffer);
             auto intent = Intent(WindowClass::InstallTrack);
             intent.putExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             window_close_by_class(WindowClass::Loadsave);
             WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             break;
@@ -1084,7 +1084,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED, {});
+                ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED, {});
                 WindowLoadsaveInvokeCallback(MODAL_RESULT_FAIL, path);
             }
             break;

@@ -113,10 +113,10 @@ public:
                 OpenRCT2::GetContext()->GetUiContext()->OpenURL("https://discord.gg/ZXZd8D8");
                 break;
             case WIDX_CHANGELOG:
-                context_open_window(WindowClass::Changelog);
+                ContextOpenWindow(WindowClass::Changelog);
                 break;
             case WIDX_NEW_VERSION:
-                context_open_window_view(WV_NEW_VERSION_INFO);
+                ContextOpenWindowView(WV_NEW_VERSION_INFO);
                 break;
             case WIDX_COPY_BUILD_INFO:
                 SDL_SetClipboardText(gVersionInfoFull);

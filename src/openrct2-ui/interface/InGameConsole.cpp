@@ -119,7 +119,7 @@ void InGameConsole::ClearInput()
     _consoleCurrentLine[0] = 0;
     if (_isOpen)
     {
-        context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+        ContextStartTextInput(_consoleCurrentLine, sizeof(_consoleCurrentLine));
     }
 }
 
@@ -181,7 +181,7 @@ void InGameConsole::Open()
     _isOpen = true;
     ScrollToEnd();
     RefreshCaret();
-    _consoleTextInputSession = context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+    _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, sizeof(_consoleCurrentLine));
 }
 
 void InGameConsole::Close()
@@ -189,7 +189,7 @@ void InGameConsole::Close()
     _consoleTextInputSession = nullptr;
     _isOpen = false;
     Invalidate();
-    context_stop_text_input();
+    ContextStopTextInput();
 }
 
 void InGameConsole::Hide()
@@ -243,7 +243,7 @@ void InGameConsole::Invalidate() const
 void InGameConsole::Update()
 {
     _consoleTopLeft = { 0, 0 };
-    _consoleBottomRight = { context_get_width(), 322 };
+    _consoleBottomRight = { ContextGetWidth(), 322 };
 
     if (_isOpen)
     {

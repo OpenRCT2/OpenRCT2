@@ -56,7 +56,7 @@ namespace OpenRCT2::Scripting
         {
             gCash = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
@@ -73,7 +73,7 @@ namespace OpenRCT2::Scripting
         {
             gParkRating = std::min(std::max(0, value), 999);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
@@ -89,7 +89,7 @@ namespace OpenRCT2::Scripting
         {
             gBankLoan = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
@@ -105,7 +105,7 @@ namespace OpenRCT2::Scripting
         {
             gMaxBankLoan = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
@@ -171,7 +171,7 @@ namespace OpenRCT2::Scripting
         {
             gParkValue = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
@@ -187,7 +187,7 @@ namespace OpenRCT2::Scripting
         {
             gCompanyValue = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 

@@ -340,7 +340,7 @@ public:
                 News::OpenSubject(News::ItemType::Research, gResearchLastItem->rawValue);
                 break;
             case WIDX_RESEARCH_FUNDING_BUTTON:
-                context_open_window_view(WV_FINANCES_RESEARCH);
+                ContextOpenWindowView(WV_FINANCES_RESEARCH);
                 break;
             case WIDX_GROUP_BY_TRACK_TYPE:
                 gConfigInterface.ListRideVehiclesSeparately = !gConfigInterface.ListRideVehiclesSeparately;
@@ -530,7 +530,7 @@ private:
             auto intent = Intent(WindowClass::TrackDesignList);
             intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
             intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.EntryIndex);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             return;
         }
 

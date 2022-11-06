@@ -122,10 +122,10 @@ void game_reduce_game_speed()
  */
 void game_create_windows()
 {
-    context_open_window(WindowClass::MainWindow);
-    context_open_window(WindowClass::TopToolbar);
-    context_open_window(WindowClass::BottomToolbar);
-    window_resize_gui(context_get_width(), context_get_height());
+    ContextOpenWindow(WindowClass::MainWindow);
+    ContextOpenWindow(WindowClass::TopToolbar);
+    ContextOpenWindow(WindowClass::BottomToolbar);
+    window_resize_gui(ContextGetWidth(), ContextGetHeight());
 }
 
 enum
@@ -327,7 +327,7 @@ static void load_landscape()
 {
     auto intent = Intent(WindowClass::Loadsave);
     intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
-    context_open_intent(&intent);
+    ContextOpenIntent(&intent);
 }
 
 void rct2_to_utf8_self(char* buffer, size_t length)
@@ -485,7 +485,7 @@ void game_load_init()
     ScenerySetDefaultPlacementConfiguration();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     gWindowUpdateTicks = 0;
 
@@ -494,7 +494,7 @@ void game_load_init()
     if (!gOpenRCT2Headless)
     {
         intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
         window_update_all();
     }
 
@@ -616,7 +616,7 @@ std::unique_ptr<Intent> create_save_game_as_intent()
 void save_game_as()
 {
     auto intent = create_save_game_as_intent();
-    context_open_intent(intent.get());
+    ContextOpenIntent(intent.get());
 }
 
 static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processLandscapeFolder)
@@ -756,7 +756,7 @@ void game_load_or_quit_no_save_prompt()
                 auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
                 intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(game_load_or_quit_no_save_prompt_callback));
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
             }
             break;
         }

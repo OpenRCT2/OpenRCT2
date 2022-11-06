@@ -167,7 +167,7 @@ public:
                 }
                 Close();
                 intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
-                context_open_intent(intent.get());
+                ContextOpenIntent(intent.get());
                 break;
             }
             case WIDX_DONT_SAVE:

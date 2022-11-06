@@ -686,7 +686,7 @@ int32_t editor_remove_unused_objects()
     editor_object_flags_free();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     return numUnselectedObjects;
 }

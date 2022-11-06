@@ -132,7 +132,7 @@ void ClimateUpdate()
             if (gClimateUpdateTimer == 960)
             {
                 auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
-                context_broadcast_intent(&intent);
+                ContextBroadcastIntent(&intent);
             }
             gClimateUpdateTimer--;
         }
@@ -151,7 +151,7 @@ void ClimateUpdate()
                         gClimateCurrent.Weather = gClimateNext.Weather;
                         ClimateDetermineFutureWeather(scenario_rand());
                         auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
-                        context_broadcast_intent(&intent);
+                        ContextBroadcastIntent(&intent);
                     }
                     else if (gClimateNext.Level <= WeatherLevel::Heavy)
                     {
@@ -170,7 +170,7 @@ void ClimateUpdate()
             {
                 gClimateCurrent.Temperature = ClimateStepWeatherLevel(gClimateCurrent.Temperature, gClimateNext.Temperature);
                 auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
-                context_broadcast_intent(&intent);
+                ContextBroadcastIntent(&intent);
             }
         }
     }

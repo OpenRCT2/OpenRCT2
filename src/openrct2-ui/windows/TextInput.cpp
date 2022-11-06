@@ -111,7 +111,7 @@ public:
         _buffer.resize(maxLength);
         safe_strcpy(_buffer.data(), std::string(text).c_str(), maxLength);
         _maxInputLength = maxLength;
-        gTextInput = context_start_text_input(_buffer.data(), maxLength);
+        gTextInput = ContextStartTextInput(_buffer.data(), maxLength);
     }
 
     void SetCallback(std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
@@ -124,7 +124,7 @@ public:
     {
         // Make sure that we take it out of the text input
         // mode otherwise problems may occur.
-        context_stop_text_input();
+        ContextStopTextInput();
     }
 
     void OnPeriodicUpdate() override
@@ -154,12 +154,12 @@ public:
         {
             case WIDX_CANCEL:
             case WIDX_CLOSE:
-                context_stop_text_input();
+                ContextStopTextInput();
                 ExecuteCallback(false);
                 window_close(*this);
                 break;
             case WIDX_OKAY:
-                context_stop_text_input();
+                ContextStopTextInput();
                 ExecuteCallback(true);
                 window_close(*this);
         }
@@ -298,7 +298,7 @@ public:
 
     void OnReturnPressed()
     {
-        context_stop_text_input();
+        ContextStopTextInput();
         ExecuteCallback(true);
         window_close(*this);
     }

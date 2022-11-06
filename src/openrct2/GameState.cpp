@@ -78,11 +78,11 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 
     gNextGuestNumber = 1;
 
-    context_init();
+    ContextInit();
     ScenerySetDefaultPlacementConfiguration();
 
     auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     load_palette();
 
@@ -228,9 +228,9 @@ void GameState::Tick()
             gWindowMapFlashingFlags |= MapFlashingFlags::FlashStaff;
         gWindowMapFlashingFlags &= ~MapFlashingFlags::StaffListOpen;
 
-        context_update_map_tooltip();
+        ContextUpdateMapTooltip();
 
-        context_handle_input();
+        ContextHandleInput();
     }
 
     // Always perform autosave check, even when paused

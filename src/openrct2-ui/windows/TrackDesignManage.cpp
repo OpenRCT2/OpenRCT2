@@ -148,12 +148,12 @@ void TrackDesignManageWindow::OnTextInput(WidgetIndex widgetIndex, std::string_v
     }
     else if (text.empty())
     {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE, {});
+        ContextShowError(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE, {});
         return;
     }
     else if (!Platform::IsFilenameValid(text))
     {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS, {});
+        ContextShowError(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS, {});
         return;
     }
 
@@ -165,7 +165,7 @@ void TrackDesignManageWindow::OnTextInput(WidgetIndex widgetIndex, std::string_v
     }
     else
     {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED, {});
+        ContextShowError(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED, {});
     }
 }
 
@@ -183,8 +183,8 @@ static void WindowTrackDeletePromptOpen(TrackDesignFileRef* tdFileRef)
 {
     window_close_by_class(WindowClass::TrackDeletePrompt);
 
-    int32_t screenWidth = context_get_width();
-    int32_t screenHeight = context_get_height();
+    int32_t screenWidth = ContextGetWidth();
+    int32_t screenHeight = ContextGetHeight();
     auto trackDeletePromptWindow = std::make_unique<TrackDeletePromptWindow>(tdFileRef);
     WindowCreate(
         std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt, ScreenCoordsXY(
@@ -217,7 +217,7 @@ void TrackDeletePromptWindow::OnMouseUp(WidgetIndex widgetIndex)
             }
             else
             {
-                context_show_error(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED, {});
+                ContextShowError(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED, {});
             }
             break;
     }

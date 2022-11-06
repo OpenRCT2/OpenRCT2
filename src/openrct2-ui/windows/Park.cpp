@@ -413,7 +413,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_BUY_LAND_RIGHTS:
-                context_open_window(WindowClass::LandRights);
+                ContextOpenWindow(WindowClass::LandRights);
                 break;
             case WIDX_LOCATE:
                 ScrollToViewport();
@@ -1336,8 +1336,8 @@ rct_window* WindowParkObjectiveOpen()
     if (wnd != nullptr)
     {
         wnd->Invalidate();
-        wnd->windowPos.x = context_get_width() / 2 - 115;
-        wnd->windowPos.y = context_get_height() / 2 - 87;
+        wnd->windowPos.x = ContextGetWidth() / 2 - 115;
+        wnd->windowPos.y = ContextGetHeight() / 2 - 87;
         wnd->Invalidate();
     }
     return wnd;

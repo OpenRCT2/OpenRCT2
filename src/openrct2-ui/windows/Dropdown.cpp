@@ -315,8 +315,8 @@ private:
         const auto ddWidth = ItemWidth * NumColumns + 3;
         const auto ddHeight = ItemHeight * NumRows + 3;
 
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
         auto boundedScreenPos = screenPos;
         if (screenPos.x + ddWidth > screenWidth)
             boundedScreenPos.x = std::max(0, screenWidth - ddWidth);

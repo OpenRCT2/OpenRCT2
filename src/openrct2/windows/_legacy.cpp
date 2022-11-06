@@ -120,7 +120,7 @@ money32 place_provisional_track_piece(
 static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_track_element()
 {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     uint8_t startSlope = _previousTrackSlopeEnd;
     uint8_t endSlope = _currentTrackSlopeEnd;
@@ -397,7 +397,7 @@ bool window_ride_construction_update_state(
 void window_ride_construction_update_active_elements()
 {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 /**
@@ -418,11 +418,11 @@ bool scenery_tool_is_active()
 void SceneryInit()
 {
     auto intent = Intent(INTENT_ACTION_INIT_SCENERY);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 void ScenerySetDefaultPlacementConfiguration()
 {
     auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }

@@ -186,7 +186,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 {
                     auto intent = Intent(WD_VEHICLE);
                     intent.putExtra(INTENT_EXTRA_VEHICLE, entity);
-                    context_open_intent(&intent);
+                    ContextOpenIntent(&intent);
                     break;
                 }
                 case EntityType::Guest:
@@ -194,7 +194,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 {
                     auto intent = Intent(WindowClass::Peep);
                     intent.putExtra(INTENT_EXTRA_PEEP, entity);
-                    context_open_intent(&intent);
+                    ContextOpenIntent(&intent);
                     break;
                 }
                 case EntityType::Balloon:
@@ -227,11 +227,11 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
         {
             auto intent = Intent(WD_TRACK);
             intent.putExtra(INTENT_EXTRA_TILE_ELEMENT, info.Element);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             return true;
         }
         case ViewportInteractionItem::ParkEntrance:
-            context_open_window(WindowClass::ParkInformation);
+            ContextOpenWindow(WindowClass::ParkInformation);
             return true;
         default:
             return false;
@@ -587,7 +587,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
             ViewportInteractionRemoveLargeScenery(info.Element, info.Loc);
             break;
         case ViewportInteractionItem::Banner:
-            context_open_detail_window(WD_BANNER, info.Element->AsBanner()->GetIndex().ToUnderlying());
+            ContextOpenDetailWindow(WD_BANNER, info.Element->AsBanner()->GetIndex().ToUnderlying());
             break;
     }
 
@@ -675,7 +675,7 @@ static void ViewportInteractionRemoveParkWall(TileElement* tileElement, const Co
     auto* wallEntry = tileElement->AsWall()->GetEntry();
     if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
-        context_open_detail_window(WD_SIGN_SMALL, tileElement->AsWall()->GetBannerIndex().ToUnderlying());
+        ContextOpenDetailWindow(WD_SIGN_SMALL, tileElement->AsWall()->GetBannerIndex().ToUnderlying());
     }
     else
     {
@@ -696,7 +696,7 @@ static void ViewportInteractionRemoveLargeScenery(TileElement* tileElement, cons
     if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         auto bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
-        context_open_detail_window(WD_SIGN, bannerIndex.ToUnderlying());
+        ContextOpenDetailWindow(WD_SIGN, bannerIndex.ToUnderlying());
     }
     else
     {

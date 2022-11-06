@@ -55,13 +55,13 @@ bool chat_available()
 void chat_open()
 {
     gChatOpen = true;
-    _chatTextInputSession = context_start_text_input(_chatCurrentLine, sizeof(_chatCurrentLine));
+    _chatTextInputSession = ContextStartTextInput(_chatCurrentLine, sizeof(_chatCurrentLine));
 }
 
 void chat_close()
 {
     gChatOpen = false;
-    context_stop_text_input();
+    ContextStopTextInput();
 }
 
 void chat_toggle()
@@ -99,9 +99,9 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
     }
 
     _chatLeft = 10;
-    _chatRight = std::min((context_get_width() - 10), CHAT_MAX_WINDOW_WIDTH);
+    _chatRight = std::min((ContextGetWidth() - 10), CHAT_MAX_WINDOW_WIDTH);
     _chatWidth = _chatRight - _chatLeft;
-    _chatBottom = context_get_height() - 45;
+    _chatBottom = ContextGetHeight() - 45;
     _chatTop = _chatBottom - 10;
 
     char* inputLine = _chatCurrentLine;

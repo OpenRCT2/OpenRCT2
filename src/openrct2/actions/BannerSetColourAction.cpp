@@ -95,7 +95,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
     {
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
         intent.putExtra(INTENT_EXTRA_BANNER_INDEX, index);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
 
         banner->colour = _primaryColour;
         MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 32 });

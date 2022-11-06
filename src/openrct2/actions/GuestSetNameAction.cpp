@@ -97,7 +97,7 @@ GameActions::Result GuestSetNameAction::Execute() const
     gfx_invalidate_screen();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     auto res = GameActions::Result();
     res.Position = guest->GetLocation();

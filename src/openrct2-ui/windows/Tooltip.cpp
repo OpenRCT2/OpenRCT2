@@ -44,8 +44,8 @@ public:
         window_tooltip_widgets[WIDX_BACKGROUND].right = width;
         window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
         screenCoords.x = std::clamp(screenCoords.x - (width / 2), 0, screenWidth - width);
 
         // TODO The cursor size will be relative to the window DPI.
