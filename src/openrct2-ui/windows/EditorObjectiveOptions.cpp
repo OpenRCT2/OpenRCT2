@@ -436,7 +436,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             if (gScenarioObjective.Currency >= 2000000.00_GBP)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -447,7 +447,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             if (gScenarioObjective.Currency >= 2000000.00_GBP)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -458,7 +458,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             if (gScenarioObjective.MinimumLength >= 5000)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -469,7 +469,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             if (gScenarioObjective.MinimumExcitement >= FIXED_2DP(9, 90))
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -480,7 +480,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         default:
             if (gScenarioObjective.NumGuests >= 5000)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -500,7 +500,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             if (gScenarioObjective.Currency <= 1000.00_GBP)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -511,7 +511,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             if (gScenarioObjective.Currency <= 1000.00_GBP)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -522,7 +522,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             if (gScenarioObjective.MinimumLength <= 1000)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -533,7 +533,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             if (gScenarioObjective.MinimumExcitement <= FIXED_2DP(4, 00))
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -544,7 +544,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         default:
             if (gScenarioObjective.NumGuests <= 250)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -559,7 +559,7 @@ static void WindowEditorObjectiveOptionsArg2Increase(rct_window* w)
 {
     if (gScenarioObjective.Year >= 25)
     {
-        context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
     }
     else
     {
@@ -572,7 +572,7 @@ static void WindowEditorObjectiveOptionsArg2Decrease(rct_window* w)
 {
     if (gScenarioObjective.Year <= 1)
     {
-        context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
     }
     else
     {

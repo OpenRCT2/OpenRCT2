@@ -792,16 +792,16 @@ private:
                 gConfigGeneral.WindowScale += 0.25f;
                 ConfigSaveDefault();
                 gfx_invalidate_screen();
-                context_trigger_resize();
-                context_update_cursor_scale();
+                ContextTriggerResize();
+                ContextUpdateCursorScale();
                 break;
             case WIDX_SCALE_DOWN:
                 gConfigGeneral.WindowScale -= 0.25f;
                 gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
                 ConfigSaveDefault();
                 gfx_invalidate_screen();
-                context_trigger_resize();
-                context_update_cursor_scale();
+                ContextTriggerResize();
+                ContextUpdateCursorScale();
                 break;
         }
     }
@@ -821,7 +821,7 @@ private:
                     gConfigGeneral.FullscreenHeight = resolution.Height;
 
                     if (gConfigGeneral.FullscreenMode == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-                        context_set_fullscreen_mode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
+                        ContextSetFullscreenMode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
 
                     ConfigSaveDefault();
                     gfx_invalidate_screen();
@@ -831,7 +831,7 @@ private:
             case WIDX_FULLSCREEN_DROPDOWN:
                 if (dropdownIndex != gConfigGeneral.FullscreenMode)
                 {
-                    context_set_fullscreen_mode(dropdownIndex);
+                    ContextSetFullscreenMode(dropdownIndex);
 
                     gConfigGeneral.FullscreenMode = static_cast<uint8_t>(dropdownIndex);
                     ConfigSaveDefault();
@@ -1188,7 +1188,7 @@ private:
                 if (dropdownIndex == EnumValue(CurrencyType::Custom) + 1)
                 { // Add 1 because the separator occupies a position
                     gConfigGeneral.CurrencyFormat = static_cast<CurrencyType>(dropdownIndex - 1);
-                    context_open_window(WindowClass::CustomCurrencyConfig);
+                    ContextOpenWindow(WindowClass::CustomCurrencyConfig);
                 }
                 else
                 {
@@ -1222,7 +1222,7 @@ private:
                         if (language_open(fallbackLanguage))
                         {
                             // It worked, so we can say it with error message in-game
-                            context_show_error(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
+                            ContextShowError(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
                         }
                         // report error to console regardless
                         log_error("Failed to open language file.");
@@ -1530,7 +1530,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_HOTKEY_DROPDOWN:
-                context_open_window(WindowClass::KeyboardShortcutList);
+                ContextOpenWindow(WindowClass::KeyboardShortcutList);
                 break;
             case WIDX_SCREEN_EDGE_SCROLLING:
                 gConfigGeneral.EdgeScrolling ^= 1;
@@ -1540,7 +1540,7 @@ private:
             case WIDX_TRAP_CURSOR:
                 gConfigGeneral.TrapCursor ^= 1;
                 ConfigSaveDefault();
-                context_set_cursor_trap(gConfigGeneral.TrapCursor);
+                ContextSetCursorTrap(gConfigGeneral.TrapCursor);
                 Invalidate();
                 break;
             case WIDX_ZOOM_TO_CURSOR:
@@ -1596,7 +1596,7 @@ private:
                 Invalidate();
                 break;
             case WIDX_THEMES_BUTTON:
-                context_open_window(WindowClass::Themes);
+                ContextOpenWindow(WindowClass::Themes);
                 Invalidate();
                 break;
         }
@@ -1904,21 +1904,21 @@ private:
                                 gConfigGeneral.RCT1Path = std::move(rct1path);
                                 gConfigInterface.ScenarioselectLastTab = 0;
                                 ConfigSaveDefault();
-                                context_show_error(STR_RESTART_REQUIRED, STR_NONE, {});
+                                ContextShowError(STR_RESTART_REQUIRED, STR_NONE, {});
                             }
                             else
                             {
-                                context_show_error(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE, {});
+                                ContextShowError(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE, {});
                             }
                         }
                         else
                         {
-                            context_show_error(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE, {});
+                            ContextShowError(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE, {});
                         }
                     }
                     else
                     {
-                        context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE, {});
+                        ContextShowError(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE, {});
                     }
                 }
                 Invalidate();
@@ -1933,7 +1933,7 @@ private:
                 Invalidate();
                 break;
             case WIDX_ASSET_PACKS:
-                context_open_window(WindowClass::AssetPacks);
+                ContextOpenWindow(WindowClass::AssetPacks);
                 break;
         }
     }

@@ -91,9 +91,9 @@ namespace Editor
 
     static rct_window* OpenEditorWindows()
     {
-        auto* main = context_open_window(WindowClass::MainWindow);
-        context_open_window(WindowClass::TopToolbar);
-        context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
+        auto* main = ContextOpenWindow(WindowClass::MainWindow);
+        ContextOpenWindow(WindowClass::TopToolbar);
+        ContextOpenWindowView(WV_EDITOR_BOTTOM_TOOLBAR);
         return main;
     }
 
@@ -128,7 +128,7 @@ namespace Editor
         auto intent = Intent(WindowClass::Loadsave);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
         intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(ConvertSaveToScenarioCallback));
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
     }
 
     static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path)
@@ -377,7 +377,7 @@ namespace Editor
                     object_manager_unload_all_objects();
                 }
 
-                context_open_window(WindowClass::EditorObjectSelection);
+                ContextOpenWindow(WindowClass::EditorObjectSelection);
                 break;
             case EditorStep::InventionsListSetUp:
                 if (window_find_by_class(WindowClass::EditorInventionList) != nullptr)
@@ -385,7 +385,7 @@ namespace Editor
                     return;
                 }
 
-                context_open_window(WindowClass::EditorInventionList);
+                ContextOpenWindow(WindowClass::EditorInventionList);
                 break;
             case EditorStep::OptionsSelection:
                 if (window_find_by_class(WindowClass::EditorScenarioOptions) != nullptr)
@@ -393,7 +393,7 @@ namespace Editor
                     return;
                 }
 
-                context_open_window(WindowClass::EditorScenarioOptions);
+                ContextOpenWindow(WindowClass::EditorScenarioOptions);
                 break;
             case EditorStep::ObjectiveSelection:
                 if (window_find_by_class(WindowClass::EditorObjectiveOptions) != nullptr)
@@ -401,7 +401,7 @@ namespace Editor
                     return;
                 }
 
-                context_open_window(WindowClass::EditorObjectiveOptions);
+                ContextOpenWindow(WindowClass::EditorObjectiveOptions);
                 break;
             case EditorStep::LandscapeEditor:
             case EditorStep::SaveScenario:

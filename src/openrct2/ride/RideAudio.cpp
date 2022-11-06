@@ -397,11 +397,11 @@ namespace OpenRCT2::RideAudio
             else
             {
                 auto x2 = (viewport->pos.x + viewport->zoom.ApplyInversedTo(rotatedCoords.x - viewport->viewPos.x)) * 0x10000;
-                auto screenWidth = std::max(context_get_width(), 64);
+                auto screenWidth = std::max(ContextGetWidth(), 64);
                 auto panX = ((x2 / screenWidth) - 0x8000) >> 4;
 
                 auto y2 = (viewport->pos.y + viewport->zoom.ApplyInversedTo(rotatedCoords.y - viewport->viewPos.y)) * 0x10000;
-                auto screenHeight = std::max(context_get_height(), 64);
+                auto screenHeight = std::max(ContextGetHeight(), 64);
                 auto panY = ((y2 / screenHeight) - 0x8000) >> 4;
 
                 auto volX = CalculateVolume(panX);

@@ -120,8 +120,8 @@ public:
 
     void OnResize() override
     {
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
 
         max_width = (screenWidth * 4) / 5;
         max_height = (screenHeight * 4) / 5;
@@ -307,8 +307,8 @@ rct_window* WindowChangelogOpen(int personality)
     if (window == nullptr)
     {
         // Create a new centred window
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
         int32_t width = (screenWidth * 4) / 5;
         int32_t height = (screenHeight * 4) / 5;
 

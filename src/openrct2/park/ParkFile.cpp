@@ -2326,7 +2326,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
 
         Formatter ft;
         ft.Add<const char*>(e.what());
-        context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
+        ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
         gfx_invalidate_screen();
 
         auto ctx = OpenRCT2::GetContext();

@@ -65,7 +65,7 @@ void WindowMapTooltipUpdateVisibility()
         return;
     }
 
-    const CursorState* state = context_get_cursor_state();
+    const CursorState* state = ContextGetCursorState();
     auto cursor = state->position;
     auto cursorChange = cursor - _lastCursor;
 
@@ -104,7 +104,7 @@ static void WindowMapTooltipOpen()
 
     constexpr int32_t width = 200;
     constexpr int32_t height = 44;
-    const CursorState* state = context_get_cursor_state();
+    const CursorState* state = ContextGetCursorState();
     ScreenCoordsXY pos = { state->position.x - (width / 2), state->position.y + 15 };
 
     w = window_find_by_class(WindowClass::MapTooltip);

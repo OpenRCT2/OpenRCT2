@@ -271,7 +271,7 @@ public:
                 _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
                 break;
             case WIDX_MAP_GENERATOR:
-                context_open_window(WindowClass::Mapgen);
+                ContextOpenWindow(WindowClass::Mapgen);
                 break;
             default:
                 if (widgetIndex >= WIDX_PEOPLE_TAB && widgetIndex <= WIDX_RIDES_TAB)

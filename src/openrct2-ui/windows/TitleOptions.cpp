@@ -39,7 +39,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_OPTIONS:
-                context_open_window(WindowClass::Options);
+                ContextOpenWindow(WindowClass::Options);
                 break;
         }
     }
@@ -59,7 +59,7 @@ rct_window* WindowTitleOptionsOpen()
     if (window == nullptr)
     {
         window = WindowCreate<TitleOptionsWindow>(
-            WindowClass::TitleOptions, ScreenCoordsXY(context_get_width() - 80, 0), 80, 15, WF_STICK_TO_BACK | WF_TRANSPARENT);
+            WindowClass::TitleOptions, ScreenCoordsXY(ContextGetWidth() - 80, 0), 80, 15, WF_STICK_TO_BACK | WF_TRANSPARENT);
     }
 
     return window;

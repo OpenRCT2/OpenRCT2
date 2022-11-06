@@ -143,9 +143,9 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
 
     width = width + 3;
     int32_t height = (numLines + 1) * font_get_line_height(FontStyle::Medium) + 4;
-    int32_t screenWidth = context_get_width();
-    int32_t screenHeight = context_get_height();
-    const CursorState* state = context_get_cursor_state();
+    int32_t screenWidth = ContextGetWidth();
+    int32_t screenHeight = ContextGetHeight();
+    const CursorState* state = ContextGetCursorState();
     ScreenCoordsXY windowPosition = state->position - ScreenCoordsXY(width / 2, -26);
     windowPosition.x = std::clamp(windowPosition.x, 0, screenWidth);
     windowPosition.y = std::max(22, windowPosition.y);

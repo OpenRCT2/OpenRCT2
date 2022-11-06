@@ -42,7 +42,7 @@ class TitleExitWindow final : public Window
         switch (widgetIndex)
         {
             case WIDX_EXIT:
-                context_quit();
+                ContextQuit();
                 // game_do_command(0, 1, 0, 0, 5, 3, 0);
                 break;
         };
@@ -61,6 +61,6 @@ class TitleExitWindow final : public Window
 rct_window* WindowTitleExitOpen()
 {
     return WindowCreate<TitleExitWindow>(
-        WindowClass::TitleExit, ScreenCoordsXY(context_get_width() - 40, context_get_height() - 64), 40, 64,
+        WindowClass::TitleExit, ScreenCoordsXY(ContextGetWidth() - 40, ContextGetHeight() - 64), 40, 64,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
 }

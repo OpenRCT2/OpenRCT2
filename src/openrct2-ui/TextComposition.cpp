@@ -178,7 +178,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && _session.Length)
                     {
                         SDL_SetClipboardText(_session.Buffer);
-                        context_show_error(STR_COPY_INPUT_TO_CLIPBOARD, STR_NONE, {});
+                        ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, STR_NONE, {});
                     }
                     break;
                 case SDLK_v:

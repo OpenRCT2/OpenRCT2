@@ -5639,7 +5639,7 @@ void Guest::UpdateEnteringPark()
     increment_guests_in_park();
     decrement_guests_heading_for_park();
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 /**
@@ -5668,7 +5668,7 @@ void Guest::UpdateLeavingPark()
     DestinationTolerance = 5;
     decrement_guests_in_park();
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
     Var37 = 1;
 
     window_invalidate_by_class(WindowClass::GuestList);

@@ -402,5 +402,5 @@ private:
 rct_window* WindowLandRightsOpen()
 {
     return WindowFocusOrCreate<LandRightsWindow>(
-        WindowClass::LandRights, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+        WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 }

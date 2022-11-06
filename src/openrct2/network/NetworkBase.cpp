@@ -566,7 +566,7 @@ void NetworkBase::UpdateClient()
                         auto intent = Intent(WindowClass::NetworkStatus);
                         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_resolving });
                         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
-                        context_open_intent(&intent);
+                        ContextOpenIntent(&intent);
                     }
                     break;
                 }
@@ -581,7 +581,7 @@ void NetworkBase::UpdateClient()
                         auto intent = Intent(WindowClass::NetworkStatus);
                         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_connecting });
                         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
-                        context_open_intent(&intent);
+                        ContextOpenIntent(&intent);
 
                         server_connect_time = Platform::GetTicks();
                     }
@@ -598,7 +598,7 @@ void NetworkBase::UpdateClient()
                     auto intent = Intent(WindowClass::NetworkStatus);
                     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
                     intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
-                    context_open_intent(&intent);
+                    ContextOpenIntent(&intent);
                     break;
                 }
                 default:
@@ -610,8 +610,8 @@ void NetworkBase::UpdateClient()
                     }
 
                     Close();
-                    context_force_close_window_by_class(WindowClass::NetworkStatus);
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
+                    ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
+                    ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
                     break;
                 }
             }
@@ -624,7 +624,7 @@ void NetworkBase::UpdateClient()
                 // Do not show disconnect message window when password window closed/canceled
                 if (_serverConnection->AuthStatus == NetworkAuth::RequirePassword)
                 {
-                    context_force_close_window_by_class(WindowClass::NetworkStatus);
+                    ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
                 }
                 else
                 {
@@ -642,7 +642,7 @@ void NetworkBase::UpdateClient()
 
                     auto intent = Intent(WindowClass::NetworkStatus);
                     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
-                    context_open_intent(&intent);
+                    ContextOpenIntent(&intent);
                 }
                 window_close_by_class(WindowClass::Multiplayer);
                 Close();
@@ -794,7 +794,7 @@ bool NetworkBase::CheckDesynchronizaton()
 
         auto intent = Intent(WindowClass::NetworkStatus);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
 
         if (!gConfigNetwork.StayConnected)
         {
@@ -2248,7 +2248,7 @@ void NetworkBase::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             connection.Disconnect();
             break;
         case NetworkAuth::RequirePassword:
-            context_open_window_view(WV_NETWORK_PASSWORD);
+            ContextOpenWindowView(WV_NETWORK_PASSWORD);
             break;
         case NetworkAuth::UnknownKeyDisallowed:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
@@ -2325,7 +2325,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         auto intent = Intent(WindowClass::NetworkStatus);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ objectListMsg });
         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
 
         uint8_t objectType{};
         packet >> objectType;
@@ -2462,7 +2462,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
 
                 auto intent = Intent(WindowClass::NetworkStatus);
                 intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
             }
         }
     }
@@ -2671,7 +2671,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
     auto intent = Intent(WindowClass::NetworkStatus);
     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_downloading_map });
     intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
-    context_open_intent(&intent);
+    ContextOpenIntent(&intent);
 
     std::memcpy(&chunk_buffer[offset], const_cast<void*>(static_cast<const void*>(packet.Read(chunksize))), chunksize);
     if (offset + chunksize == size)
@@ -2679,7 +2679,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         // Allow queue processing of game actions again.
         GameActions::ResumeQueue();
 
-        context_force_close_window_by_class(WindowClass::NetworkStatus);
+        ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
         game_unload_scripts();
         game_notify_map_change();
 
@@ -3063,7 +3063,7 @@ void NetworkBase::Client_Handle_SHOWERROR([[maybe_unused]] NetworkConnection& co
 {
     StringId title, message;
     packet >> title >> message;
-    context_show_error(title, message, {});
+    ContextShowError(title, message, {});
 }
 
 void NetworkBase::Client_Handle_GROUPLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)

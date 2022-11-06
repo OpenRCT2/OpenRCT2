@@ -464,8 +464,8 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
     {
         int32_t left = std::max<int32_t>(viewport->pos.x, 0);
         int32_t top = std::max<int32_t>(viewport->pos.y, 0);
-        int32_t right = std::min<int32_t>(viewport->pos.x + viewport->width, context_get_width());
-        int32_t bottom = std::min<int32_t>(viewport->pos.y + viewport->height, context_get_height());
+        int32_t right = std::min<int32_t>(viewport->pos.x + viewport->width, ContextGetWidth());
+        int32_t bottom = std::min<int32_t>(viewport->pos.y + viewport->height, ContextGetHeight());
 
         if (left >= right)
             return;
@@ -490,7 +490,7 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
         viewport->pos.x = 0;
     }
 
-    int32_t eax = viewport->pos.x + viewport->width - context_get_width();
+    int32_t eax = viewport->pos.x + viewport->width - ContextGetWidth();
     if (eax > 0)
     {
         viewport->width -= eax;
@@ -511,7 +511,7 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
         viewport->pos.y = 0;
     }
 
-    eax = viewport->pos.y + viewport->height - context_get_height();
+    eax = viewport->pos.y + viewport->height - ContextGetHeight();
     if (eax > 0)
     {
         viewport->height -= eax;

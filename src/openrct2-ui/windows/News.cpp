@@ -75,7 +75,7 @@ public:
                 Close();
                 break;
             case WIDX_SETTINGS:
-                context_open_window(WindowClass::NotificationOptions);
+                ContextOpenWindow(WindowClass::NotificationOptions);
                 break;
         }
     }

@@ -161,8 +161,8 @@ public:
 
     void OnResize() override
     {
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
 
         max_width = (screenWidth * 4) / 5;
         max_height = (screenHeight * 4) / 5;
@@ -210,8 +210,8 @@ public:
 
 rct_window* WindowViewportOpen()
 {
-    int32_t screenWidth = context_get_width();
-    int32_t screenHeight = context_get_height();
+    int32_t screenWidth = ContextGetWidth();
+    int32_t screenHeight = ContextGetHeight();
     int32_t width = (screenWidth / 2);
     int32_t height = (screenHeight / 2);
 

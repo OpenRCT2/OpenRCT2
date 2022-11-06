@@ -856,7 +856,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
     panX = g_music_tracking_viewport->zoom.ApplyInversedTo(panX);
     panX += g_music_tracking_viewport->pos.x;
 
-    uint16_t screenWidth = context_get_width();
+    uint16_t screenWidth = ContextGetWidth();
     if (screenWidth < 64)
     {
         screenWidth = 64;
@@ -867,7 +867,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
     panY = g_music_tracking_viewport->zoom.ApplyInversedTo(panY);
     panY += g_music_tracking_viewport->pos.y;
 
-    uint16_t screenHeight = context_get_height();
+    uint16_t screenHeight = ContextGetHeight();
     if (screenHeight < 64)
     {
         screenHeight = 64;
@@ -5219,7 +5219,7 @@ void Vehicle::KillPassengers(Ride* curRide)
         {
             decrement_guests_in_park();
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
         peep_sprite_remove(curPeep);
     }
@@ -5705,7 +5705,7 @@ void Vehicle::SetMapToolbar() const
         curRide->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
         intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 }
 
@@ -9152,7 +9152,7 @@ void Vehicle::InvalidateWindow()
 {
     auto intent = Intent(INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW);
     intent.putExtra(INTENT_EXTRA_VEHICLE, this);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 void Vehicle::UpdateCrossings() const

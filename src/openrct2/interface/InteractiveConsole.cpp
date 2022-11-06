@@ -1069,8 +1069,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             gConfigGeneral.WindowScale = std::clamp(newScale, 0.5f, 5.0f);
             ConfigSaveDefault();
             gfx_invalidate_screen();
-            context_trigger_resize();
-            context_update_cursor_scale();
+            ContextTriggerResize();
+            ContextUpdateCursorScale();
             console.Execute("get window_scale");
         }
         else if (argv[0] == "window_limit" && invalidArguments(&invalidArgs, int_valid[0]))
@@ -1262,7 +1262,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         ScenerySetDefaultPlacementConfiguration();
 
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
 
         gWindowUpdateTicks = 0;
         gfx_invalidate_screen();
@@ -1330,7 +1330,7 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             {
                 // Only this window should be open for safety reasons
                 window_close_all();
-                context_open_window(WindowClass::EditorObjectSelection);
+                ContextOpenWindow(WindowClass::EditorObjectSelection);
             }
         }
         else if (argv[0] == "inventions_list" && invalidArguments(&invalidTitle, !title))
@@ -1341,12 +1341,12 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             }
             else
             {
-                context_open_window(WindowClass::EditorInventionList);
+                ContextOpenWindow(WindowClass::EditorInventionList);
             }
         }
         else if (argv[0] == "scenario_options" && invalidArguments(&invalidTitle, !title))
         {
-            context_open_window(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::EditorScenarioOptions);
         }
         else if (argv[0] == "objective_options" && invalidArguments(&invalidTitle, !title))
         {
@@ -1356,16 +1356,16 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             }
             else
             {
-                context_open_window(WindowClass::EditorObjectiveOptions);
+                ContextOpenWindow(WindowClass::EditorObjectiveOptions);
             }
         }
         else if (argv[0] == "options")
         {
-            context_open_window(WindowClass::Options);
+            ContextOpenWindow(WindowClass::Options);
         }
         else if (argv[0] == "themes")
         {
-            context_open_window(WindowClass::Themes);
+            ContextOpenWindow(WindowClass::Themes);
         }
         else if (invalidTitle)
         {

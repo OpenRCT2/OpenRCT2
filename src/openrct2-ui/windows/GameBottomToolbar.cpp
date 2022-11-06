@@ -107,8 +107,8 @@ static void WindowGameBottomToolbarInvalidateDirtyWidgets(rct_window* w);
  */
 rct_window* WindowGameBottomToolbarOpen()
 {
-    int32_t screenWidth = context_get_width();
-    int32_t screenHeight = context_get_height();
+    int32_t screenWidth = ContextGetWidth();
+    int32_t screenHeight = ContextGetHeight();
 
     // Figure out how much line height we have to work with.
     uint32_t line_height = font_get_line_height(FontStyle::Medium);
@@ -142,18 +142,18 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, WidgetIndex widgetInde
         case WIDX_LEFT_OUTSET:
         case WIDX_MONEY:
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-                context_open_window(WindowClass::Finances);
+                ContextOpenWindow(WindowClass::Finances);
             break;
         case WIDX_GUESTS:
-            context_open_window_view(WV_PARK_GUESTS);
+            ContextOpenWindowView(WV_PARK_GUESTS);
             break;
         case WIDX_PARK_RATING:
-            context_open_window_view(WV_PARK_RATING);
+            ContextOpenWindowView(WV_PARK_RATING);
             break;
         case WIDX_MIDDLE_INSET:
             if (News::IsQueueEmpty())
             {
-                context_open_window(WindowClass::RecentNews);
+                ContextOpenWindow(WindowClass::RecentNews);
             }
             else
             {
@@ -183,7 +183,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, WidgetIndex widgetInde
             break;
         case WIDX_RIGHT_OUTSET:
         case WIDX_DATE:
-            context_open_window(WindowClass::RecentNews);
+            ContextOpenWindow(WindowClass::RecentNews);
             break;
     }
 }
@@ -224,7 +224,7 @@ static void WindowGameBottomToolbarInvalidate(rct_window* w)
 
     // Reset dimensions as appropriate -- in case we're switching languages.
     w->height = line_height * 2 + 12;
-    w->windowPos.y = context_get_height() - w->height;
+    w->windowPos.y = ContextGetHeight() - w->height;
 
     // Change height of widgets in accordance with line height.
     w->widgets[WIDX_LEFT_OUTSET].bottom = w->widgets[WIDX_MIDDLE_OUTSET].bottom = w->widgets[WIDX_RIGHT_OUTSET].bottom
@@ -255,7 +255,7 @@ static void WindowGameBottomToolbarInvalidate(rct_window* w)
     w->widgets[WIDX_DATE].bottom = line_height + 1;
 
     // Anchor the middle and right panel to the right
-    int32_t x = context_get_width();
+    int32_t x = ContextGetWidth();
     w->width = x;
     x--;
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;

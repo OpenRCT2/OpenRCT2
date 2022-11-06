@@ -382,7 +382,7 @@ private:
             {
                 auto intent = Intent(WindowClass::FirePrompt);
                 intent.putExtra(INTENT_EXTRA_PEEP, staff);
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
                 break;
             }
             case WIDX_RENAME:

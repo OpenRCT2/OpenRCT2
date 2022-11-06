@@ -112,7 +112,7 @@ public:
         }
         width = x;
         widgets[WIDX_NEW_VERSION].right = width;
-        windowPos.x = (context_get_width() - width) / 2;
+        windowPos.x = (ContextGetWidth() - width) / 2;
         colours[1] = TRANSLUCENT(COLOUR_LIGHT_ORANGE);
 
         InitScrollWidgets();
@@ -161,11 +161,11 @@ public:
                 {
                     window_close_by_class(WindowClass::ScenarioSelect);
                     window_close_by_class(WindowClass::Loadsave);
-                    context_open_window(WindowClass::ServerList);
+                    ContextOpenWindow(WindowClass::ServerList);
                 }
                 break;
             case WIDX_NEW_VERSION:
-                context_open_window_view(WV_NEW_VERSION_INFO);
+                ContextOpenWindowView(WV_NEW_VERSION_INFO);
                 break;
         }
     }
@@ -283,6 +283,6 @@ rct_window* WindowTitleMenuOpen()
 {
     const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
     return WindowCreate<TitleMenuWindow>(
-        WindowClass::TitleMenu, ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight,
+        WindowClass::TitleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), 0, windowHeight,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
 }

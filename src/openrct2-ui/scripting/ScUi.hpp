@@ -122,11 +122,11 @@ namespace OpenRCT2::Scripting
     private:
         int32_t width_get() const
         {
-            return context_get_width();
+            return ContextGetWidth();
         }
         int32_t height_get() const
         {
-            return context_get_height();
+            return ContextGetHeight();
         }
         int32_t windows_get() const
         {

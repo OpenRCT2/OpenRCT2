@@ -71,7 +71,7 @@ public:
             (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowClass::EditorScenarioBottomToolbar
                                                           : WindowClass::EditorTrackBottomToolbar);
 
-        uint16_t screenWidth = context_get_width();
+        uint16_t screenWidth = ContextGetWidth();
         widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
         widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
         widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
@@ -159,14 +159,14 @@ private:
         set_all_scenery_items_invented();
         ScenerySetDefaultPlacementConfiguration();
         gEditorStep = EditorStep::LandscapeEditor;
-        context_open_window(WindowClass::Map);
+        ContextOpenWindow(WindowClass::Map);
         gfx_invalidate_screen();
     }
 
     void JumpBackToInventionListSetUp() const
     {
         window_close_all();
-        context_open_window(WindowClass::EditorInventionList);
+        ContextOpenWindow(WindowClass::EditorInventionList);
         gEditorStep = EditorStep::InventionsListSetUp;
         gfx_invalidate_screen();
     }
@@ -174,7 +174,7 @@ private:
     void JumpBackToOptionsSelection() const
     {
         window_close_all();
-        context_open_window(WindowClass::EditorScenarioOptions);
+        ContextOpenWindow(WindowClass::EditorScenarioOptions);
         gEditorStep = EditorStep::OptionsSelection;
         gfx_invalidate_screen();
     }
@@ -190,7 +190,7 @@ private:
             return true;
         }
 
-        context_show_error(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
+        ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
         w = window_find_by_class(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {
@@ -208,11 +208,11 @@ private:
         finish_object_selection();
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         {
-            context_open_window(WindowClass::ConstructRide);
+            ContextOpenWindow(WindowClass::ConstructRide);
         }
         else
         {
-            context_open_window(WindowClass::Map);
+            ContextOpenWindow(WindowClass::Map);
         }
     }
 
@@ -222,12 +222,12 @@ private:
         if (checksPassed)
         {
             window_close_all();
-            context_open_window(WindowClass::EditorInventionList);
+            ContextOpenWindow(WindowClass::EditorInventionList);
             gEditorStep = EditorStep::InventionsListSetUp;
         }
         else
         {
-            context_show_error(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, errorString, {});
+            ContextShowError(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, errorString, {});
         }
 
         gfx_invalidate_screen();
@@ -236,7 +236,7 @@ private:
     void JumpForwardToOptionsSelection() const
     {
         window_close_all();
-        context_open_window(WindowClass::EditorScenarioOptions);
+        ContextOpenWindow(WindowClass::EditorScenarioOptions);
         gEditorStep = EditorStep::OptionsSelection;
         gfx_invalidate_screen();
     }
@@ -244,7 +244,7 @@ private:
     void JumpForwardToObjectiveSelection() const
     {
         window_close_all();
-        context_open_window(WindowClass::EditorObjectiveOptions);
+        ContextOpenWindow(WindowClass::EditorObjectiveOptions);
         gEditorStep = EditorStep::ObjectiveSelection;
         gfx_invalidate_screen();
     }
@@ -254,7 +254,7 @@ private:
         const auto savePrepareResult = scenario_prepare_for_save();
         if (!savePrepareResult.Successful)
         {
-            context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});
+            ContextShowError(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});
             gfx_invalidate_screen();
             return;
         }
@@ -263,7 +263,7 @@ private:
         auto intent = Intent(WindowClass::Loadsave);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
         intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
     }
 
     void HidePreviousStepButton()
@@ -393,7 +393,7 @@ private:
 rct_window* WindowEditorBottomToolbarOpen()
 {
     auto* window = WindowCreate<EditorBottomToolbarWindow>(
-        WindowClass::BottomToolbar, ScreenCoordsXY(0, context_get_height() - 32), context_get_width(), 32,
+        WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - 32), ContextGetWidth(), 32,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
     return window;
