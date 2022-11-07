@@ -21,6 +21,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Input.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/audio/AudioContext.h>
@@ -45,7 +46,6 @@
 #include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/Input.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;

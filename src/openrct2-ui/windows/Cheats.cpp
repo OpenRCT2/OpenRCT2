@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetDateAction.h>
 #include <openrct2/actions/SetCheatAction.h>
@@ -27,7 +28,6 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
-#include <openrct2/Input.h>
 
 constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
 constexpr auto CHEATS_MONEY_INCREMENT_DIV = 5000.00_GBP;

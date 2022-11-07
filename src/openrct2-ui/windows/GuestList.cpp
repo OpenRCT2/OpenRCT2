@@ -13,6 +13,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -26,7 +27,6 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 #include <vector>
-#include <openrct2/Input.h>
 
 static constexpr const StringId WINDOW_TITLE = STR_GUESTS;
 static constexpr const int32_t WH = 330;

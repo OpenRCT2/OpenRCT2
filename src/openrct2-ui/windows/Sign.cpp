@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
+#include <openrct2/Input.h>
 #include <openrct2/actions/LargeSceneryRemoveAction.h>
 #include <openrct2/actions/SignSetNameAction.h>
 #include <openrct2/actions/SignSetStyleAction.h>
@@ -24,7 +25,6 @@
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
-#include <openrct2/Input.h>
 
 static constexpr const StringId WINDOW_TITLE = STR_SIGN;
 static constexpr const int32_t WW = 113;

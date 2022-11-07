@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
+#include <openrct2/Input.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -22,7 +23,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/Input.h>
 
 static constexpr const int32_t WH_DEVELOPMENT = 196;
 static constexpr const int32_t WW_DEVELOPMENT = 300;

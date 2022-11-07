@@ -12,11 +12,11 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/Input.h>
 
 static constexpr const StringId WINDOW_TITLE = STR_WATER;
 static constexpr const int32_t WH = 77;

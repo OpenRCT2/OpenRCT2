@@ -15,6 +15,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/Input.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/config/Config.h>
@@ -27,7 +28,6 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/Input.h>
 
 static constexpr const StringId WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 240;

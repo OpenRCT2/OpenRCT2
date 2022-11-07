@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/Input.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/config/Config.h>
@@ -27,7 +28,6 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/Input.h>
 
 enum
 {

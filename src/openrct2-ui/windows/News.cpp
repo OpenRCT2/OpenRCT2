@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Input.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -20,7 +21,6 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
-#include <openrct2/Input.h>
 
 static constexpr const StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
 static constexpr const int32_t WH = 300;
