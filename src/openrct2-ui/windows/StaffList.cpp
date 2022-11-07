@@ -125,7 +125,14 @@ public:
         switch (widgetIndex)
         {
             case WIDX_STAFF_LIST_CLOSE:
-                Close();
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    CloseAllWindowsExceptNumberAndClass(number, classification);
+                }
+                else
+                {
+                    Close();
+                }
                 break;
             case WIDX_STAFF_LIST_HIRE_BUTTON:
             {

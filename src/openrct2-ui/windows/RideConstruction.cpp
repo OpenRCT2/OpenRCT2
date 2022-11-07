@@ -932,7 +932,14 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                Close();
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    CloseAllWindowsExceptNumberAndClass(number, classification);
+                }
+                else
+                {
+                    Close();
+                }
                 break;
             case WIDX_NEXT_SECTION:
                 ride_select_next_section();

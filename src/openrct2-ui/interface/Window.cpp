@@ -749,6 +749,16 @@ void Window::Close()
     window_close(*this);
 }
 
+void Window::CloseAllWindowsExceptNumberAndClass(rct_windownumber windowNumber, WindowClass windowClass)
+{
+    window_close_all_except_number_and_class(windowNumber, windowClass);
+}
+
+void Window::CloseByClass(WindowClass windowClassification)
+{
+    window_close_by_class(windowClassification);
+}
+
 void Window::TextInputOpen(
     WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
     uintptr_t existingArgs, int32_t maxLength)

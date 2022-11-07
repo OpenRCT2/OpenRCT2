@@ -601,6 +601,7 @@ rct_window* WindowCreateCentred(
     int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags);
 
 void window_close(rct_window& window);
+void window_close_all_except_number_and_class(rct_windownumber number, WindowClass cls);
 void window_close_by_class(WindowClass cls);
 void window_close_by_number(WindowClass cls, rct_windownumber number);
 void window_close_by_number(WindowClass cls, EntityId number);

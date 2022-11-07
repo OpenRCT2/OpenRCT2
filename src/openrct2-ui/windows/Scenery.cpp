@@ -184,7 +184,14 @@ public:
             case WIDX_SCENERY_CLOSE:
                 if (gWindowSceneryScatterEnabled)
                     window_close_by_class(WindowClass::SceneryScatter);
-                Close();
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    CloseAllWindowsExceptNumberAndClass(number, classification);
+                }
+                else
+                {
+                    Close();
+                }
                 break;
             case WIDX_SCENERY_ROTATE_OBJECTS_BUTTON:
                 gWindowSceneryRotation++;

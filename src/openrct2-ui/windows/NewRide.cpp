@@ -36,6 +36,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/Input.h>
 
 using namespace OpenRCT2::TrackMetaData;
 
@@ -334,7 +335,14 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                Close();
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    CloseAllWindowsExceptNumberAndClass(number, classification);
+                }
+                else
+                {
+                    Close();
+                }
                 break;
             case WIDX_LAST_DEVELOPMENT_BUTTON:
                 News::OpenSubject(News::ItemType::Research, gResearchLastItem->rawValue);

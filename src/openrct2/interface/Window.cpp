@@ -279,6 +279,19 @@ template<typename TPred> static void window_close_by_condition(TPred pred, uint3
 }
 
 /**
+ * Closes all windows except the specified window number and class.
+ * @param number (dx)
+ * @param cls (cl) without bit 15 set
+ */
+void window_close_all_except_number_and_class(rct_windownumber number, WindowClass cls)
+{
+    window_close_by_class(WindowClass::Dropdown);
+    window_close_by_condition([cls, number](rct_window* w) -> bool {
+        return (!(w->number == number && w->classification == cls) && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)));
+    });
+}
+
+/**
  * Closes all windows with the specified window class.
  *  rct2: 0x006ECCF4
  * @param cls (cl) with bit 15 set

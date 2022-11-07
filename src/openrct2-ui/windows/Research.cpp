@@ -22,6 +22,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/Input.h>
 
 static constexpr const int32_t WH_DEVELOPMENT = 196;
 static constexpr const int32_t WW_DEVELOPMENT = 300;
@@ -201,7 +202,14 @@ static void WindowResearchDevelopmentMouseup(rct_window* w, WidgetIndex widgetIn
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+            {
+                window_close_all_except_number_and_class(w->number, window_get_classification(*w));
+            }
+            else
+            {
+                window_close(*w);
+            }
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:

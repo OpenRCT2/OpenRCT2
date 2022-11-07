@@ -27,6 +27,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/Input.h>
 
 static constexpr const StringId WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 240;
@@ -217,7 +218,14 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    window_close_all_except_number_and_class(number, window_get_classification(*this));
+                }
+                else
+                {
+                    window_close(*this);
+                }
                 break;
             case WIDX_SORT:
                 list_information_type = _windowRideListInformationType;

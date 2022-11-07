@@ -18,6 +18,7 @@
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/Input.h>
 
 using namespace OpenRCT2;
 
@@ -97,7 +98,14 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                Close();
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    CloseAllWindowsExceptNumberAndClass(number, classification);
+                }
+                else
+                {
+                    Close();
+                }
                 break;
             case WIDX_MOUNTAINMODE:
                 gLandMountainMode ^= 1;

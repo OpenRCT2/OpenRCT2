@@ -219,7 +219,14 @@ public:
         switch (idx)
         {
             case WIDX_CLOSE:
-                Close();
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    CloseAllWindowsExceptNumberAndClass(number, classification);
+                }
+                else
+                {
+                    Close();
+                }
                 return;
             case WIDX_TAB_1:
             case WIDX_TAB_2:

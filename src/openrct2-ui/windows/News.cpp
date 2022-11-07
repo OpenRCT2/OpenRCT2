@@ -20,6 +20,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
+#include <openrct2/Input.h>
 
 static constexpr const StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
 static constexpr const int32_t WH = 300;
@@ -72,7 +73,14 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                Close();
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    CloseAllWindowsExceptNumberAndClass(number, classification);
+                }
+                else
+                {
+                    Close();
+                }
                 break;
             case WIDX_SETTINGS:
                 ContextOpenWindow(WindowClass::NotificationOptions);

@@ -45,6 +45,7 @@
 #include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/Input.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -622,7 +623,14 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    window_close_all_except_number_and_class(number, window_get_classification(*this));
+                }
+                else
+                {
+                    window_close(*this);
+                }
                 break;
             case WIDX_TAB_DISPLAY:
             case WIDX_TAB_RENDERING:

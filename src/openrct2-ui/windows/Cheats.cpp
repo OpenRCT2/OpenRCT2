@@ -27,6 +27,7 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
+#include <openrct2/Input.h>
 
 constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
 constexpr auto CHEATS_MONEY_INCREMENT_DIV = 5000.00_GBP;
@@ -394,7 +395,14 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                Close();
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    CloseAllWindowsExceptNumberAndClass(number, classification);
+                }
+                else
+                {
+                    Close();
+                }
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:

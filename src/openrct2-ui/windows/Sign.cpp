@@ -24,6 +24,7 @@
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
+#include <openrct2/Input.h>
 
 static constexpr const StringId WINDOW_TITLE = STR_SIGN;
 static constexpr const int32_t WW = 113;
@@ -152,7 +153,14 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                Close();
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    CloseAllWindowsExceptNumberAndClass(number, classification);
+                }
+                else
+                {
+                    Close();
+                }
                 break;
             case WIDX_SIGN_DEMOLISH:
             {

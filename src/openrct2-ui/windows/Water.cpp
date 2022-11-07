@@ -16,6 +16,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/Input.h>
 
 static constexpr const StringId WINDOW_TITLE = STR_WATER;
 static constexpr const int32_t WH = 77;
@@ -69,7 +70,14 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                Close();
+                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+                {
+                    CloseAllWindowsExceptNumberAndClass(number, classification);
+                }
+                else
+                {
+                    Close();
+                }
                 break;
             case WIDX_PREVIEW:
                 InputSize();
