@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -361,9 +361,9 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
     auto f = p->get_future();
 
     std::string masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
-    if (!gConfigNetwork.master_server_url.empty())
+    if (!gConfigNetwork.MasterServerUrl.empty())
     {
-        masterServerUrl = gConfigNetwork.master_server_url;
+        masterServerUrl = gConfigNetwork.MasterServerUrl;
     }
 
     Http::Request request;

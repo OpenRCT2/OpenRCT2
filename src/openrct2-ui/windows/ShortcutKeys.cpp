@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -234,13 +234,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_TAB_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_TAB_CONTENT_PANEL].bottom = height - 1;
+        ResizeFrameWithPage();
         widgets[WIDX_SCROLL].right = width - 5;
         widgets[WIDX_SCROLL].bottom = height - 19;
         widgets[WIDX_RESET].top = height - 16;

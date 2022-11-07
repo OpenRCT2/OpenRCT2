@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -65,7 +65,7 @@ namespace OpenRCT2::Audio
             return false;
         if (gGameSoundsOff)
             return false;
-        if (!gConfigSound.sound_enabled)
+        if (!gConfigSound.SoundEnabled)
             return false;
         if (gOpenRCT2Headless)
             return false;
@@ -75,19 +75,19 @@ namespace OpenRCT2::Audio
     void Init()
     {
         auto audioContext = GetContext()->GetAudioContext();
-        if (gConfigSound.device.empty())
+        if (gConfigSound.Device.empty())
         {
             audioContext->SetOutputDevice("");
             _currentAudioDevice = 0;
         }
         else
         {
-            audioContext->SetOutputDevice(gConfigSound.device);
+            audioContext->SetOutputDevice(gConfigSound.Device);
 
             PopulateDevices();
             for (int32_t i = 0; i < GetDeviceCount(); i++)
             {
-                if (_audioDevices[i] == gConfigSound.device)
+                if (_audioDevices[i] == gConfigSound.Device)
                 {
                     _currentAudioDevice = i;
                 }
@@ -109,7 +109,6 @@ namespace OpenRCT2::Audio
             baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2cBase);
             if (baseAudio != nullptr)
             {
-                baseAudio->SetIdentifier(AudioObjectIdentifiers::Rct2Base);
                 _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
             }
         }
@@ -164,14 +163,14 @@ namespace OpenRCT2::Audio
         params.volume = 0;
         params.pan = 0;
 
-        auto element = map_get_surface_element_at(location);
+        auto element = MapGetSurfaceElementAt(location);
         if (element != nullptr && (element->GetBaseZ()) - 5 > location.z)
         {
             volumeDown = 10;
         }
 
         uint8_t rotation = get_current_rotation();
-        auto pos2 = translate_3d_to_2d_with_z(rotation, location);
+        auto pos2 = Translate3DTo2DWithZ(rotation, location);
 
         rct_viewport* viewport = nullptr;
         while ((viewport = window_get_previous_viewport(viewport)) != nullptr)
@@ -257,7 +256,7 @@ namespace OpenRCT2::Audio
 
     static ObjectEntryDescriptor GetTitleMusicDescriptor()
     {
-        switch (gConfigSound.title_music)
+        switch (gConfigSound.TitleMusic)
         {
             default:
                 return {};
@@ -366,7 +365,7 @@ namespace OpenRCT2::Audio
         }
 
         _currentAudioDevice = device;
-        config_save_default();
+        ConfigSaveDefault();
     }
 
     void Close()
@@ -380,8 +379,8 @@ namespace OpenRCT2::Audio
 
     void ToggleAllSounds()
     {
-        gConfigSound.master_sound_enabled = !gConfigSound.master_sound_enabled;
-        if (gConfigSound.master_sound_enabled)
+        gConfigSound.MasterSoundEnabled = !gConfigSound.MasterSoundEnabled;
+        if (gConfigSound.MasterSoundEnabled)
         {
             Resume();
             PlayTitleMusic();

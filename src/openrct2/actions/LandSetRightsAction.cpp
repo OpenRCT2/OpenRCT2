@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -70,7 +70,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
     auto validRange = ClampRangeWithinMap(_range.Normalise());
     CoordsXYZ centre{ (validRange.GetLeft() + validRange.GetRight()) / 2 + 16,
                       (validRange.GetTop() + validRange.GetBottom()) / 2 + 16, 0 };
-    centre.z = tile_element_height(centre);
+    centre.z = TileElementHeight(centre);
 
     res.Position = centre;
     res.Expenditure = ExpenditureType::LandPurchase;
@@ -97,7 +97,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 
     if (isExecuting)
     {
-        map_count_remaining_land_rights();
+        MapCountRemainingLandRights();
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, centre);
     }
     return res;
@@ -105,7 +105,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 
 GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
 {
-    SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
+    SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
@@ -120,7 +120,7 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
             {
                 surfaceElement->SetOwnership(
                     surfaceElement->GetOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
-                update_park_fences_around_tile(loc);
+                ParkUpdateFencesAroundTile(loc);
             }
             return res;
         case LandSetRightSetting::UnownConstructionRights:
@@ -128,7 +128,7 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
             {
                 surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                 uint16_t baseZ = surfaceElement->GetBaseZ();
-                map_invalidate_tile({ loc, baseZ, baseZ + 16 });
+                MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
             return res;
         case LandSetRightSetting::SetForSale:
@@ -136,7 +136,7 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
             {
                 surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
                 uint16_t baseZ = surfaceElement->GetBaseZ();
-                map_invalidate_tile({ loc, baseZ, baseZ + 16 });
+                MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
             return res;
         case LandSetRightSetting::SetConstructionRightsForSale:
@@ -144,7 +144,7 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
             {
                 surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
                 uint16_t baseZ = surfaceElement->GetBaseZ();
-                map_invalidate_tile({ loc, baseZ, baseZ + 16 });
+                MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
             return res;
         case LandSetRightSetting::SetOwnershipWithChecks:
@@ -189,7 +189,7 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
                         gPeepSpawns.end());
                 }
                 surfaceElement->SetOwnership(_ownership);
-                update_park_fences_around_tile(loc);
+                ParkUpdateFencesAroundTile(loc);
                 gMapLandRightsUpdateSuccess = true;
             }
             return res;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -99,7 +99,7 @@ public:
         }
 
         auto signViewPosition = banner->position.ToCoordsXY().ToTileCentre();
-        auto* tileElement = banner_get_tile_element(GetBannerIndex());
+        auto* tileElement = BannerGetTileElement(GetBannerIndex());
         if (tileElement == nullptr)
             return false;
 
@@ -135,7 +135,7 @@ public:
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
             viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
-        viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+        viewport->flags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
 
         return true;
@@ -156,7 +156,7 @@ public:
                 break;
             case WIDX_SIGN_DEMOLISH:
             {
-                auto* tileElement = banner_get_tile_element(GetBannerIndex());
+                auto* tileElement = BannerGetTileElement(GetBannerIndex());
                 if (tileElement == nullptr)
                 {
                     Close();
@@ -244,7 +244,7 @@ public:
 
         if (_isSmall)
         {
-            auto* wallEntry = get_wall_entry(_sceneryEntry);
+            auto* wallEntry = GetWallEntry(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
@@ -260,7 +260,7 @@ public:
         }
         else
         {
-            auto* sceneryEntry = get_large_scenery_entry(_sceneryEntry);
+            auto* sceneryEntry = GetLargeSceneryEntry(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
@@ -275,8 +275,8 @@ public:
             }
         }
 
-        main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(_mainColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-        text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(_textColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        main_colour_btn->image = GetColourButtonImage(_mainColour).ToUInt32();
+        text_colour_btn->image = GetColourButtonImage(_textColour).ToUInt32();
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -307,7 +307,7 @@ public:
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
             viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
         if (viewport != nullptr)
-            viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+            viewport->flags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
     }
 };

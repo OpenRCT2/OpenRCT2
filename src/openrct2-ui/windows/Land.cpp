@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -70,7 +70,7 @@ public:
     void OnOpen() override
     {
         widgets = window_land_widgets;
-        hold_down_widgets = (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT);
+        hold_down_widgets = (1uLL << WIDX_DECREMENT) | (1uLL << WIDX_INCREMENT);
         WindowInitScrollWidgets(*this);
         window_push_others_below(*this);
 
@@ -340,5 +340,5 @@ private:
 
 rct_window* WindowLandOpen()
 {
-    return WindowFocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    return WindowFocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 }

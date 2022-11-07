@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,7 +60,7 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool verti
         auto [stringId, newValue] = moneyEffect->GetStringId();
         char buffer[128];
         format_string(buffer, 128, stringId, &newValue);
-        offsetX = -(gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2);
+        offsetX = -(gfx_get_string_width(buffer, FontStyle::Medium) / 2);
     }
     moneyEffect->OffsetX = offsetX;
     moneyEffect->Wiggle = 0;
@@ -93,7 +93,7 @@ void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
         if (!mapPositionXY.has_value())
             return;
 
-        offsetLoc = { mapPositionXY.value(), tile_element_height(*mapPositionXY) };
+        offsetLoc = { mapPositionXY.value(), TileElementHeight(*mapPositionXY) };
     }
     offsetLoc.z += 10;
     CreateAt(-value, offsetLoc, false);
@@ -167,7 +167,7 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
     stream << Wiggle;
 }
 
-void MoneyEffect::Paint(paint_session& session, int32_t imageDirection) const
+void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 

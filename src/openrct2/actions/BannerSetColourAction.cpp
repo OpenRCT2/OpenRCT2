@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -70,12 +70,12 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    if (!map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
+    if (!MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    auto bannerElement = map_get_banner_element_at(_loc, _loc.direction);
+    auto bannerElement = MapGetBannerElementAt(_loc, _loc.direction);
 
     if (bannerElement == nullptr)
     {
@@ -95,10 +95,10 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
     {
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
         intent.putExtra(INTENT_EXTRA_BANNER_INDEX, index);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
 
         banner->colour = _primaryColour;
-        map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
+        MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 32 });
     }
 
     return res;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -111,7 +111,7 @@ public:
         _buffer.resize(maxLength);
         safe_strcpy(_buffer.data(), std::string(text).c_str(), maxLength);
         _maxInputLength = maxLength;
-        gTextInput = context_start_text_input(_buffer.data(), maxLength);
+        gTextInput = ContextStartTextInput(_buffer.data(), maxLength);
     }
 
     void SetCallback(std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
@@ -124,7 +124,7 @@ public:
     {
         // Make sure that we take it out of the text input
         // mode otherwise problems may occur.
-        context_stop_text_input();
+        ContextStopTextInput();
     }
 
     void OnPeriodicUpdate() override
@@ -154,12 +154,12 @@ public:
         {
             case WIDX_CANCEL:
             case WIDX_CLOSE:
-                context_stop_text_input();
+                ContextStopTextInput();
                 ExecuteCallback(false);
                 window_close(*this);
                 break;
             case WIDX_OKAY:
-                context_stop_text_input();
+                ContextStopTextInput();
                 ExecuteCallback(true);
                 window_close(*this);
         }
@@ -223,7 +223,7 @@ public:
 
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
-        gfx_wrap_string(wrapped_string, WW - (24 + 13), FontSpriteBase::MEDIUM, &no_lines);
+        gfx_wrap_string(wrapped_string, WW - (24 + 13), FontStyle::Medium, &no_lines);
 
         gfx_fill_rect_inset(
             &dpi, { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
@@ -240,7 +240,7 @@ public:
         for (int32_t line = 0; line <= no_lines; line++)
         {
             screenCoords.x = windowPos.x + 12;
-            gfx_draw_string_no_formatting(&dpi, screenCoords, wrap_pointer, { colours[1], FontSpriteBase::MEDIUM });
+            gfx_draw_string_no_formatting(&dpi, screenCoords, wrap_pointer, { colours[1], FontStyle::Medium });
 
             size_t string_length = get_string_size(wrap_pointer) - 1;
 
@@ -249,7 +249,7 @@ public:
                 // Make a copy of the string for measuring the width.
                 char temp_string[TEXT_INPUT_SIZE] = { 0 };
                 std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
-                cursorX = windowPos.x + 13 + gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM);
+                cursorX = windowPos.x + 13 + gfx_get_string_width_no_formatting(temp_string, FontStyle::Medium);
                 cursorY = screenCoords.y;
 
                 int32_t textWidth = 6;
@@ -260,7 +260,7 @@ public:
                     utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
                     uint32_t codepoint = utf8_get_next(_buffer.data() + gTextInput->SelectionStart, nullptr);
                     utf8_write_codepoint(tmp, codepoint);
-                    textWidth = std::max(gfx_get_string_width_no_formatting(tmp, FontSpriteBase::MEDIUM) - 2, 4);
+                    textWidth = std::max(gfx_get_string_width_no_formatting(tmp, FontStyle::Medium) - 2, 4);
                 }
 
                 if (_cursorBlink > 15)
@@ -298,7 +298,7 @@ public:
 
     void OnReturnPressed()
     {
-        context_stop_text_input();
+        ContextStopTextInput();
         ExecuteCallback(true);
         window_close(*this);
     }
@@ -310,14 +310,14 @@ public:
 
         // String length needs to add 12 either side of box +13 for cursor when max length.
         int32_t numLines{};
-        gfx_wrap_string(wrappedString.data(), WW - (24 + 13), FontSpriteBase::MEDIUM, &numLines);
+        gfx_wrap_string(wrappedString.data(), WW - (24 + 13), FontStyle::Medium, &numLines);
         return numLines * 10 + WH;
     }
 
 private:
     static void DrawIMEComposition(rct_drawpixelinfo& dpi, int32_t cursorX, int32_t cursorY)
     {
-        int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer, FontSpriteBase::MEDIUM);
+        int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer, FontStyle::Medium);
         ScreenCoordsXY screenCoords(cursorX - (compositionWidth / 2), cursorY + 13);
         int width = compositionWidth;
         int height = 10;

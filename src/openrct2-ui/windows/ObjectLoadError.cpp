@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -110,7 +110,7 @@ private:
 
             if (_downloadStatusInfo == DownloadStatusInfo())
             {
-                context_force_close_window_by_class(WindowClass::NetworkStatus);
+                ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
             }
             else
             {
@@ -136,7 +136,7 @@ private:
                 auto intent = Intent(WindowClass::NetworkStatus);
                 intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
                 intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
             }
         }
     }

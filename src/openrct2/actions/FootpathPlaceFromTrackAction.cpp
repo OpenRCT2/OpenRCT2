@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,13 +57,13 @@ GameActions::Result FootpathPlaceFromTrackAction::Query() const
 
     gFootpathGroundFlags = 0;
 
-    if (!LocationValid(_loc) || map_is_edge(_loc))
+    if (!LocationValid(_loc) || MapIsEdge(_loc))
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -93,7 +93,7 @@ GameActions::Result FootpathPlaceFromTrackAction::Execute() const
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_interrupt_peeps(_loc);
+        FootpathInterruptPeeps(_loc);
     }
 
     gFootpathGroundFlags = 0;
@@ -126,7 +126,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions
         zHigh += PATH_HEIGHT_STEP;
     }
 
-    auto entranceElement = map_get_park_entrance_element_at(_loc, false);
+    auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
     // Make sure the entrance part is the middle
     if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
     {
@@ -143,7 +143,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions
     uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
                                                                           : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), crossingMode);
+        { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
     if (!entrancePath && canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -160,7 +160,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
     }
 
-    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         return GameActions::Result(
@@ -182,7 +182,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
 
     if (!(GetFlags() & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
     {
-        footpath_remove_litter(_loc);
+        FootpathRemoveLitter(_loc);
     }
 
     res.Cost = 12.00_GBP;
@@ -196,7 +196,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
         zHigh += PATH_HEIGHT_STEP;
     }
 
-    auto entranceElement = map_get_park_entrance_element_at(_loc, false);
+    auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
     // Make sure the entrance part is the middle
     if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
     {
@@ -213,8 +213,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
     uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
                                                                           : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     auto canBuild = MapCanConstructWithClearAt(
-        { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
-        crossingMode);
+        { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(), crossingMode);
     if (!entrancePath && canBuild.Error != GameActions::Status::Ok)
     {
         canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -225,7 +224,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
     const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     gFootpathGroundFlags = clearanceData.GroundFlags;
 
-    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         return GameActions::Result(
@@ -246,7 +245,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
             {
                 entranceElement->SetSurfaceEntryIndex(_type);
             }
-            map_invalidate_tile_full(_loc);
+            MapInvalidateTileFull(_loc);
         }
     }
     else
@@ -275,7 +274,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
         pathElement->SetCorners(0);
         pathElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
-        map_invalidate_tile_full(_loc);
+        MapInvalidateTileFull(_loc);
     }
 
     // Prevent the place sound from being spammed

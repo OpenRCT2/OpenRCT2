@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -430,7 +430,7 @@ private:
             InitScrollWidgets();
         }
 
-        pressed_widgets |= 1ULL << (page + WIDX_TAB_1);
+        pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
 
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -440,13 +440,7 @@ private:
         auto ft = Formatter::Common();
         peep->FormatNameTo(ft);
 
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_PAGE_BACKGROUND].right = width - 1;
-        widgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
+        ResizeFrameWithPage();
 
         window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
     }
@@ -467,17 +461,17 @@ private:
         }
         else
         {
-            newDisabledWidgets = (1ULL << WIDX_PICKUP);
+            newDisabledWidgets = (1uLL << WIDX_PICKUP);
             if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                 Invalidate();
         }
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
         {
-            newDisabledWidgets |= (1ULL << WIDX_TAB_4); // Disable finance tab if no money
+            newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
         }
-        if (!gConfigGeneral.debugging_tools)
+        if (!gConfigGeneral.DebuggingTools)
         {
-            newDisabledWidgets |= (1ULL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
+            newDisabledWidgets |= (1uLL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
         }
         disabled_widgets = newDisabledWidgets;
     }
@@ -816,7 +810,7 @@ private:
         {
             auto ft = Formatter();
             peep_thought_set_format_args(&peep->Thoughts[i], ft);
-            DrawTextBasic(&dpiMarquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontSpriteBase::SMALL });
+            DrawTextBasic(&dpiMarquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontStyle::Small });
         }
     }
 
@@ -827,10 +821,10 @@ private:
         {
             return;
         }
-        pressed_widgets &= ~(1ULL << WIDX_TRACK);
+        pressed_widgets &= ~(1uLL << WIDX_TRACK);
         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
-            pressed_widgets |= (1ULL << WIDX_TRACK);
+            pressed_widgets |= (1uLL << WIDX_TRACK);
         }
 
         widgets[WIDX_VIEWPORT].right = width - 26;
@@ -913,18 +907,18 @@ private:
         if (widgetIndex != WIDX_PICKUP)
             return;
 
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-        auto mapCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
+        auto mapCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
         if (!mapCoords.IsNull())
         {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords;
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
         }
 
         gPickupPeepImage = ImageId();
@@ -958,7 +952,7 @@ private:
             return;
 
         TileElement* tileElement;
-        auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
+        auto destCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
         if (destCoords.IsNull())
             return;
@@ -1040,7 +1034,7 @@ private:
     void StatsBarsDraw(int32_t value, const ScreenCoordsXY& origCoords, rct_drawpixelinfo& dpi, int32_t colour, bool blinkFlag)
     {
         auto coords = origCoords;
-        if (font_get_line_height(FontSpriteBase::MEDIUM) > 10)
+        if (font_get_line_height(FontStyle::Medium) > 10)
         {
             coords.y += 1;
         }
@@ -1295,7 +1289,7 @@ private:
 
         auto intent = Intent(WindowClass::Ride);
         intent.putExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
     }
 
     void OnScrollMouseOverRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
@@ -1594,7 +1588,7 @@ private:
 
             auto ft = Formatter();
             peep_thought_set_format_args(&thought, ft);
-            screenCoords.y += DrawTextWrapped(&dpi, screenCoords, widgWidth, STR_BLACK_STRING, ft, { FontSpriteBase::SMALL });
+            screenCoords.y += DrawTextWrapped(&dpi, screenCoords, widgWidth, STR_BLACK_STRING, ft, { FontStyle::Small });
 
             // If this is the last visible line end drawing.
             if (screenCoords.y > windowPos.y + widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
@@ -1652,7 +1646,7 @@ private:
         {
             case ShopItem::Balloon:
                 ft.Rewind();
-                ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest.BalloonColour) | GetShopItemDescriptor(item).Image);
+                ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.BalloonColour)).ToUInt32());
                 break;
             case ShopItem::Photo:
                 invRide = get_ride(guest.Photo1RideRef);
@@ -1666,7 +1660,7 @@ private:
                 break;
             case ShopItem::Umbrella:
                 ft.Rewind();
-                ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest.UmbrellaColour) | GetShopItemDescriptor(item).Image);
+                ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.UmbrellaColour)).ToUInt32());
                 break;
             case ShopItem::Voucher:
                 switch (guest.VoucherType)
@@ -1705,11 +1699,11 @@ private:
                 break;
             case ShopItem::Hat:
                 ft.Rewind();
-                ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest.HatColour) | GetShopItemDescriptor(item).Image);
+                ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.HatColour)).ToUInt32());
                 break;
             case ShopItem::TShirt:
                 ft.Rewind();
-                ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest.TshirtColour) | GetShopItemDescriptor(item).Image);
+                ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.TshirtColour)).ToUInt32());
                 break;
             case ShopItem::Photo2:
                 invRide = get_ride(guest.Photo2RideRef);
@@ -1929,7 +1923,7 @@ rct_window* WindowGuestOpen(Peep* peep)
     if (window == nullptr)
     {
         int32_t windowWidth = 192;
-        if (gConfigGeneral.debugging_tools)
+        if (gConfigGeneral.DebuggingTools)
             windowWidth += TabWidth;
 
         window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,7 +30,7 @@ namespace Graph
                 ft.Add<uint32_t>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
                     dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
-                    { FontSpriteBase::SMALL, TextAlignment::CENTRE });
+                    { FontStyle::Small, TextAlignment::CENTRE });
 
                 // Draw month mark
                 gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
@@ -167,7 +167,7 @@ namespace Graph
                 ft.Add<StringId>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
                     dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
-                    { FontSpriteBase::SMALL, TextAlignment::CENTRE });
+                    { FontStyle::Small, TextAlignment::CENTRE });
 
                 // Draw month mark
                 gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
@@ -239,7 +239,7 @@ namespace Graph
         rct_drawpixelinfo* dpi, const money64* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
-        const auto cursorPosition = context_get_cursor_position_scaled();
+        const auto cursorPosition = ContextGetCursorPositionScaled();
         const ScreenRect chartFrame{ screenCoords, screenCoords + ScreenCoordsXY{ ChartMaxWidth, ChartMaxHeight } };
 
         if (!chartFrame.Contains(cursorPosition))

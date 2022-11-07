@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../rct2/Limits.h"
 #include "../world/Map.h"
 #include "RideColour.h"
+#include "RideEntry.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
 #include "Track.h"
@@ -39,7 +40,6 @@ struct Vehicle;
 struct rct_ride_entry;
 struct ResultWithMessage;
 
-#define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
@@ -979,6 +979,7 @@ struct RideManager
     size_t size() const;
     Iterator begin();
     Iterator end();
+    Iterator get(RideId rideId);
     Iterator begin() const
     {
         return (const_cast<RideManager*>(this))->begin();
@@ -1057,7 +1058,7 @@ bool track_block_get_previous_from_zero(
 void ride_get_start_of_track(CoordsXYE* output);
 
 void window_ride_construction_update_active_elements();
-money32 ride_entrance_exit_place_ghost(
+money32 RideEntranceExitPlaceGhost(
     Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
 
 ResultWithMessage ride_are_all_possible_entrances_and_exits_built(Ride* ride);
@@ -1088,7 +1089,6 @@ bool ride_has_adjacent_station(Ride* ride);
 bool ride_has_station_shelter(Ride* ride);
 bool ride_has_ratings(const Ride* ride);
 
-ride_type_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry);
 int32_t get_booster_speed(ride_type_t rideType, int32_t rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -48,8 +48,8 @@ GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
     auto validRange = ClampRangeWithinMap(_range);
     res.Position.x = ((validRange.GetLeft() + validRange.GetRight()) / 2) + 16;
     res.Position.y = ((validRange.GetTop() + validRange.GetBottom()) / 2) + 16;
-    int16_t z = tile_element_height(res.Position);
-    int16_t waterHeight = tile_element_water_height(res.Position);
+    int16_t z = TileElementHeight(res.Position);
+    int16_t waterHeight = TileElementWaterHeight(res.Position);
     if (waterHeight != 0)
     {
         z = waterHeight;
@@ -67,13 +67,13 @@ GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
             if (!LocationValid({ x, y }))
                 continue;
 
-            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+            auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(CoordsXY{ x, y }))
+                if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
                     continue;
                 }
@@ -132,13 +132,13 @@ uint8_t WaterLowerAction::GetLowestHeight(const MapRange& validRange) const
         {
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(CoordsXY{ x, y }))
+                if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
                     continue;
                 }
             }
 
-            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+            auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 

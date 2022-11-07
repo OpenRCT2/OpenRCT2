@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -95,7 +95,7 @@ static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t in
 
 /**
  * This is a small hack function to keep calling the ride rating processor until
- * the given ride's ratings have been calculated. What ever is currently being
+ * the given ride's ratings have been calculated. Whatever is currently being
  * processed will be overwritten.
  * Only purpose of this function currently is for testing.
  */
@@ -124,8 +124,8 @@ void ride_ratings_update_all()
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
-    // NOTE: Until the new save format only one ride can be updated at once.
-    // The SV6 format can store only a single state.
+    // NOTE: With the new save format more than one ride can be updated at once, but this has not yet been implemented.
+    // The SV6 format could store only a single state.
     ride_ratings_update_state(gRideRatingUpdateState);
 }
 
@@ -154,24 +154,45 @@ static void ride_ratings_update_state(RideRatingUpdateState& state)
     }
 }
 
+static RideId GetNextRideToUpdate(RideId currentRide)
+{
+    auto rm = GetRideManager();
+    if (rm.size() == 0)
+    {
+        return RideId::GetNull();
+    }
+    // Skip all empty ride ids
+    auto nextRide = std::next(rm.get(currentRide));
+    // If at end, loop around
+    if (nextRide == rm.end())
+    {
+        nextRide = rm.begin();
+    }
+    return (*nextRide).id;
+}
+
 /**
  *
  *  rct2: 0x006B5A5C
  */
 static void ride_ratings_update_state_0(RideRatingUpdateState& state)
 {
-    auto nextRide = RideId::FromUnderlying(state.CurrentRide.ToUnderlying() + 1);
-    if (nextRide.ToUnderlying() >= OpenRCT2::Limits::MaxRidesInPark)
+    // It is possible that the current ride being calculated has
+    // been removed or due to import invalid. For both, reset
+    // ratings and start check at the start
+    if (get_ride(state.CurrentRide) == nullptr)
     {
-        nextRide = {};
+        state.CurrentRide = {};
     }
 
-    auto ride = get_ride(nextRide);
-    if (ride != nullptr && ride->status != RideStatus::Closed && !(ride->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
+    auto nextRideId = GetNextRideToUpdate(state.CurrentRide);
+    auto nextRide = get_ride(nextRideId);
+    if (nextRide != nullptr && nextRide->status != RideStatus::Closed
+        && !(nextRide->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
     {
         state.State = RIDE_RATINGS_STATE_INITIALISE;
     }
-    state.CurrentRide = nextRide;
+    state.CurrentRide = nextRideId;
 }
 
 /**
@@ -209,7 +230,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
     auto loc = state.Proximity;
     track_type_t trackType = state.ProximityTrackType;
 
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -315,7 +336,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
     auto loc = state.Proximity;
     track_type_t trackType = state.ProximityTrackType;
 
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -417,10 +438,10 @@ static void ride_ratings_score_close_proximity_in_direction(
     RideRatingUpdateState& state, TileElement* inputTileElement, int32_t direction)
 {
     auto scorePos = CoordsXY{ CoordsXY{ state.Proximity } + CoordsDirectionDelta[direction] };
-    if (!map_is_location_valid(scorePos))
+    if (!MapIsLocationValid(scorePos))
         return;
 
-    TileElement* tileElement = map_get_first_element_at(scorePos);
+    TileElement* tileElement = MapGetFirstElementAt(scorePos);
     if (tileElement == nullptr)
         return;
     do
@@ -476,7 +497,7 @@ static void ride_ratings_score_close_proximity_in_direction(
 
 static void ride_ratings_score_close_proximity_loops_helper(RideRatingUpdateState& state, const CoordsXYE& coordsElement)
 {
-    TileElement* tileElement = map_get_first_element_at(coordsElement);
+    TileElement* tileElement = MapGetFirstElementAt(coordsElement);
     if (tileElement == nullptr)
         return;
     do
@@ -544,7 +565,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
     }
 
     state.ProximityTotal++;
-    TileElement* tileElement = map_get_first_element_at(state.Proximity);
+    TileElement* tileElement = MapGetFirstElementAt(state.Proximity);
     if (tileElement == nullptr)
         return;
     do
@@ -1445,7 +1466,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
         location = ride->GetStation(stationIndex).Start;
     }
 
-    int32_t z = tile_element_height(location);
+    int32_t z = TileElementHeight(location);
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
     if (z > ride->GetStation(stationIndex).GetBaseZ())
@@ -1461,7 +1482,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
         for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, gMapSize.x - 1); xx++)
         {
             // Count scenery items on this tile
-            TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy });
+            TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ xx, yy });
             if (tileElement == nullptr)
                 continue;
             do
@@ -4349,6 +4370,44 @@ void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride, RideRatingUp
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
+void ride_ratings_calculate_classic_mini_roller_coaster(Ride* ride, RideRatingUpdateState& state)
+{
+    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+        return;
+
+    ride->unreliability_factor = 13;
+    set_unreliability_factor(ride);
+
+    RatingTuple ratings;
+    ride_ratings_set(&ratings, RIDE_RATING(2, 40), RIDE_RATING(2, 80), RIDE_RATING(1, 90));
+    ride_ratings_apply_length(&ratings, ride, 6000, 764);
+    ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
+    ride_ratings_apply_train_length(&ratings, ride, 187245);
+    ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+    ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+    ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+    ride_ratings_apply_gforces(&ratings, ride, 20480, 23831, 49648);
+    ride_ratings_apply_turns(&ratings, ride, 26749, 34767, 45749);
+    ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+    ride_ratings_apply_sheltered_ratings(&ratings, ride, 25700, 30583, 35108);
+    ride_ratings_apply_proximity(state, &ratings, 20130);
+    ride_ratings_apply_scenery(&ratings, ride, 9760);
+    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 6, 2, 2, 2);
+    ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
+    ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
+
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 20480, 23831, 49648);
+    ride_ratings_apply_intensity_penalty(&ratings);
+    ride_ratings_apply_adjustments(ride, &ratings);
+
+    ride->ratings = ratings;
+
+    ride->upkeep_cost = ride_compute_upkeep(state, ride);
+    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
+}
+
 void ride_ratings_calculate_hybrid_coaster(Ride* ride, RideRatingUpdateState& state)
 {
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
@@ -4463,6 +4522,46 @@ void ride_ratings_calculate_alpine_coaster(Ride* ride, RideRatingUpdateState& st
     ride_ratings_apply_scenery(&ratings, ride, 11155);
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x50000, 2, 2, 2);
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
+    ride_ratings_apply_intensity_penalty(&ratings);
+    ride_ratings_apply_adjustments(ride, &ratings);
+
+    ride->ratings = ratings;
+
+    ride->upkeep_cost = ride_compute_upkeep(state, ride);
+    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
+}
+
+void ride_ratings_calculate_classic_wooden_roller_coaster(Ride* ride, RideRatingUpdateState& state)
+{
+    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+        return;
+
+    ride->unreliability_factor = 19;
+    set_unreliability_factor(ride);
+
+    RatingTuple ratings;
+    ride_ratings_set(&ratings, RIDE_RATING(2, 80), RIDE_RATING(2, 60), RIDE_RATING(2, 00));
+    ride_ratings_apply_length(&ratings, ride, 6000, 873);
+    ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
+    ride_ratings_apply_train_length(&ratings, ride, 187245);
+    ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+    ride_ratings_apply_average_speed(&ratings, ride, 364088, 655360);
+    ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+    ride_ratings_apply_gforces(&ratings, ride, 40960, 34555, 49648);
+    ride_ratings_apply_turns(&ratings, ride, 26749, 43458, 45749);
+    ride_ratings_apply_drops(&ratings, ride, 40777, 46811, 49152);
+    ride_ratings_apply_sheltered_ratings(&ratings, ride, 16705, 30583, 35108);
+    ride_ratings_apply_proximity(state, &ratings, 22367);
+    ride_ratings_apply_scenery(&ratings, ride, 11155);
+    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 12, 2, 1, 2);
+    ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 1, 2);
+    ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 10), 2, 1, 2);
+    ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 1, 2);
+    ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 2);
+
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 40960, 34555, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 

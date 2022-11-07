@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -82,7 +82,7 @@ int32_t _guestGenerationProbability;
 /**
  * Choose a random peep spawn and iterates through until defined spawn is found.
  */
-static PeepSpawn* get_random_peep_spawn()
+static PeepSpawn* GetRandomPeepSpawn()
 {
     if (!gPeepSpawns.empty())
     {
@@ -92,7 +92,7 @@ static PeepSpawn* get_random_peep_spawn()
     return nullptr;
 }
 
-void park_set_open(bool open)
+void ParkSetOpen(bool open)
 {
     auto parkSetParameter = ParkSetParameterAction(open ? ParkParameter::Open : ParkParameter::Close);
     GameActions::Execute(&parkSetParameter);
@@ -102,12 +102,12 @@ void park_set_open(bool open)
  *
  *  rct2: 0x00664D05
  */
-void update_park_fences(const CoordsXY& coords)
+void ParkUpdateFences(const CoordsXY& coords)
 {
-    if (map_is_edge(coords))
+    if (MapIsEdge(coords))
         return;
 
-    auto surfaceElement = map_get_surface_element_at(coords);
+    auto surfaceElement = MapGetSurfaceElementAt(coords);
     if (surfaceElement == nullptr)
         return;
 
@@ -116,7 +116,7 @@ void update_park_fences(const CoordsXY& coords)
     {
         bool fenceRequired = true;
 
-        TileElement* tileElement = map_get_first_element_at(coords);
+        TileElement* tileElement = MapGetFirstElementAt(coords);
         if (tileElement == nullptr)
             return;
         // If an entrance element do not place flags around surface
@@ -137,22 +137,22 @@ void update_park_fences(const CoordsXY& coords)
 
         if (fenceRequired)
         {
-            if (map_is_location_in_park({ coords.x - COORDS_XY_STEP, coords.y }))
+            if (MapIsLocationInPark({ coords.x - COORDS_XY_STEP, coords.y }))
             {
                 newFences |= 0x8;
             }
 
-            if (map_is_location_in_park({ coords.x, coords.y - COORDS_XY_STEP }))
+            if (MapIsLocationInPark({ coords.x, coords.y - COORDS_XY_STEP }))
             {
                 newFences |= 0x4;
             }
 
-            if (map_is_location_in_park({ coords.x + COORDS_XY_STEP, coords.y }))
+            if (MapIsLocationInPark({ coords.x + COORDS_XY_STEP, coords.y }))
             {
                 newFences |= 0x2;
             }
 
-            if (map_is_location_in_park({ coords.x, coords.y + COORDS_XY_STEP }))
+            if (MapIsLocationInPark({ coords.x, coords.y + COORDS_XY_STEP }))
             {
                 newFences |= 0x1;
             }
@@ -163,48 +163,48 @@ void update_park_fences(const CoordsXY& coords)
     {
         int32_t baseZ = surfaceElement->GetBaseZ();
         int32_t clearZ = baseZ + 16;
-        map_invalidate_tile({ coords, baseZ, clearZ });
+        MapInvalidateTile({ coords, baseZ, clearZ });
         surfaceElement->SetParkFences(newFences);
     }
 }
 
-void update_park_fences_around_tile(const CoordsXY& coords)
+void ParkUpdateFencesAroundTile(const CoordsXY& coords)
 {
-    update_park_fences(coords);
-    update_park_fences({ coords.x + COORDS_XY_STEP, coords.y });
-    update_park_fences({ coords.x - COORDS_XY_STEP, coords.y });
-    update_park_fences({ coords.x, coords.y + COORDS_XY_STEP });
-    update_park_fences({ coords.x, coords.y - COORDS_XY_STEP });
+    ParkUpdateFences(coords);
+    ParkUpdateFences({ coords.x + COORDS_XY_STEP, coords.y });
+    ParkUpdateFences({ coords.x - COORDS_XY_STEP, coords.y });
+    ParkUpdateFences({ coords.x, coords.y + COORDS_XY_STEP });
+    ParkUpdateFences({ coords.x, coords.y - COORDS_XY_STEP });
 }
 
-void set_forced_park_rating(int32_t rating)
+void ParkSetForcedRating(int32_t rating)
 {
     _forcedParkRating = rating;
     auto& park = GetContext()->GetGameState()->GetPark();
     gParkRating = park.CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
-int32_t get_forced_park_rating()
+int32_t ParkGetForcedRating()
 {
     return _forcedParkRating;
 }
 
-money16 park_get_entrance_fee()
+money16 ParkGetEntranceFee()
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return 0;
     }
-    if (!park_entry_price_unlocked())
+    if (!ParkEntranceFeeUnlocked())
     {
         return 0;
     }
     return gParkEntranceFee;
 }
 
-bool park_ride_prices_unlocked()
+bool ParkRidePricesUnlocked()
 {
     if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
     {
@@ -217,7 +217,7 @@ bool park_ride_prices_unlocked()
     return false;
 }
 
-bool park_entry_price_unlocked()
+bool ParkEntranceFeeUnlocked()
 {
     if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
     {
@@ -278,7 +278,7 @@ void Park::Initialise()
     gParkEntranceFee = 10.00_GBP;
 
     gPeepSpawns.clear();
-    reset_park_entrance();
+    ParkEntranceReset();
 
     gResearchPriorities = EnumsToFlags(
         ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,
@@ -325,7 +325,7 @@ void Park::Update(const Date& date)
 
         window_invalidate_by_class(WindowClass::Finances);
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 
     // Every ~102 seconds
@@ -342,7 +342,7 @@ uint32_t Park::CalculateParkSize() const
 {
     uint32_t tiles = 0;
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() == TileElementType::Surface)
@@ -352,7 +352,7 @@ uint32_t Park::CalculateParkSize() const
                 tiles++;
             }
         }
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     if (tiles != gParkSize)
     {
@@ -519,7 +519,7 @@ money64 Park::CalculateCompanyValue() const
 money16 Park::CalculateTotalRideValueForMoney() const
 {
     money16 totalRideValue = 0;
-    bool ridePricesUnlocked = park_ride_prices_unlocked() && !(gParkFlags & PARK_FLAGS_NO_MONEY);
+    bool ridePricesUnlocked = ParkRidePricesUnlocked() && !(gParkFlags & PARK_FLAGS_NO_MONEY);
     for (auto& ride : GetRideManager())
     {
         if (ride.status != RideStatus::Open)
@@ -616,7 +616,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     }
 
     // Penalty for overpriced entrance fee relative to total ride value
-    money16 entranceFee = park_get_entrance_fee();
+    money16 entranceFee = ParkGetEntranceFee();
     if (entranceFee > gTotalRideValueForMoney)
     {
         probability /= 4;
@@ -704,10 +704,10 @@ Guest* Park::GenerateGuestFromCampaign(int32_t campaign)
 Guest* Park::GenerateGuest()
 {
     Guest* peep = nullptr;
-    const auto spawn = get_random_peep_spawn();
+    const auto spawn = GetRandomPeepSpawn();
     if (spawn != nullptr)
     {
-        auto direction = direction_reverse(spawn->direction);
+        auto direction = DirectionReverse(spawn->direction);
         peep = Guest::Generate({ spawn->x, spawn->y, spawn->z });
         if (peep != nullptr)
         {
@@ -773,17 +773,17 @@ void Park::UpdateHistories()
 
     // Invalidate relevant windows
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
     window_invalidate_by_class(WindowClass::ParkInformation);
     window_invalidate_by_class(WindowClass::Finances);
 }
 
-int32_t park_is_open()
+int32_t ParkIsOpen()
 {
     return GetContext()->GetGameState()->GetPark().IsOpen();
 }
 
-uint32_t park_calculate_size()
+uint32_t ParkCalculateSize()
 {
     auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
     if (tiles != gParkSize)
@@ -794,7 +794,7 @@ uint32_t park_calculate_size()
     return tiles;
 }
 
-uint8_t calculate_guest_initial_happiness(uint8_t percentage)
+uint8_t CalculateGuestInitialHappiness(uint8_t percentage)
 {
     return Park::CalculateGuestInitialHappiness(percentage);
 }

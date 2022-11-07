@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,7 +49,7 @@ GameActions::Result BannerRemoveAction::Query() const
     res.Position.z = _loc.z;
     res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
-    if (!LocationValid(_loc) || !map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
+    if (!LocationValid(_loc) || !MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -75,7 +75,7 @@ GameActions::Result BannerRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
-    auto* bannerEntry = get_banner_entry(banner->type);
+    auto* bannerEntry = GetBannerEntry(banner->type);
     if (bannerEntry != nullptr)
     {
         res.Cost = -((bannerEntry->price * 3) / 4);
@@ -114,14 +114,14 @@ GameActions::Result BannerRemoveAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
-    auto* bannerEntry = get_banner_entry(banner->type);
+    auto* bannerEntry = GetBannerEntry(banner->type);
     if (bannerEntry != nullptr)
     {
         res.Cost = -((bannerEntry->price * 3) / 4);
     }
 
     reinterpret_cast<TileElement*>(bannerElement)->RemoveBannerEntry();
-    map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
+    MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 32 });
     bannerElement->Remove();
 
     return res;

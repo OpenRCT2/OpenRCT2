@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -339,16 +339,7 @@ private:
         auto ft = Formatter::Common();
         staff->FormatNameTo(ft);
 
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-
-        widgets[WIDX_RESIZE].right = width - 1;
-        widgets[WIDX_RESIZE].bottom = height - 1;
-
-        widgets[WIDX_TITLE].right = width - 2;
-
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
+        ResizeFrameWithPage();
     }
 
     void CommonPrepareDrawAfter()
@@ -391,7 +382,7 @@ private:
             {
                 auto intent = Intent(WindowClass::FirePrompt);
                 intent.putExtra(INTENT_EXTRA_PEEP, staff);
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
                 break;
             }
             case WIDX_RENAME:
@@ -651,18 +642,18 @@ private:
         if (widgetIndex != WIDX_PICKUP)
             return;
 
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-        auto mapCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
+        auto mapCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
         if (!mapCoords.IsNull())
         {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords;
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
         }
 
         gPickupPeepImage = ImageId();
@@ -695,7 +686,7 @@ private:
 
         const auto staffEntityId = EntityId::FromUnderlying(number);
         TileElement* tileElement;
-        auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
+        auto destCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
         if (destCoords.IsNull())
             return;
@@ -1158,7 +1149,7 @@ private:
         else
         {
             viewport_flags = 0;
-            if (gConfigGeneral.always_show_gridlines)
+            if (gConfigGeneral.AlwaysShowGridlines)
                 viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
         }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -156,8 +156,8 @@ namespace OpenRCT2::Scripting
 
         DukValue measureText(const std::string& text)
         {
-            auto width = gfx_get_string_width(text, FontSpriteBase::MEDIUM);
-            auto height = string_get_height_raw(text.c_str(), FontSpriteBase::MEDIUM);
+            auto width = gfx_get_string_width(text, FontStyle::Medium);
+            auto height = string_get_height_raw(text.c_str(), FontStyle::Medium);
             return ToDuk<ScreenSize>(_ctx, { width, height });
         }
 

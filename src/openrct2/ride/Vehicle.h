@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,7 +30,7 @@ struct Ride;
 struct rct_ride_entry;
 struct CarEntry;
 class DataSerialiser;
-struct paint_session;
+struct PaintSession;
 
 struct GForces
 {
@@ -270,7 +270,7 @@ struct Vehicle : EntityBase
     }
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,13 +55,13 @@ bool chat_available()
 void chat_open()
 {
     gChatOpen = true;
-    _chatTextInputSession = context_start_text_input(_chatCurrentLine, sizeof(_chatCurrentLine));
+    _chatTextInputSession = ContextStartTextInput(_chatCurrentLine, sizeof(_chatCurrentLine));
 }
 
 void chat_close()
 {
     gChatOpen = false;
-    context_stop_text_input();
+    ContextStopTextInput();
 }
 
 void chat_toggle()
@@ -99,9 +99,9 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
     }
 
     _chatLeft = 10;
-    _chatRight = std::min((context_get_width() - 10), CHAT_MAX_WINDOW_WIDTH);
+    _chatRight = std::min((ContextGetWidth() - 10), CHAT_MAX_WINDOW_WIDTH);
     _chatWidth = _chatRight - _chatLeft;
-    _chatBottom = context_get_height() - 45;
+    _chatBottom = ContextGetHeight() - 45;
     _chatTop = _chatBottom - 10;
 
     char* inputLine = _chatCurrentLine;
@@ -198,10 +198,10 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         gfx_set_dirty_blocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
-        if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer, FontSpriteBase::MEDIUM) < (_chatWidth - 10))
+        if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer, FontStyle::Medium) < (_chatWidth - 10))
         {
             lineBuffer.assign(_chatCurrentLine, _chatTextInputSession->SelectionStart);
-            int32_t caretX = screenCoords.x + gfx_get_string_width(lineBuffer, FontSpriteBase::MEDIUM);
+            int32_t caretX = screenCoords.x + gfx_get_string_width(lineBuffer, FontStyle::Medium);
             int32_t caretY = screenCoords.y + 14;
 
             gfx_fill_rect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PALETTE_INDEX_56);
@@ -278,8 +278,8 @@ static int32_t chat_history_draw_string(
     FormatStringToBuffer(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), "{OUTLINE}{WHITE}{STRING}", text);
 
     int32_t numLines;
-    gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
-    auto lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+    gfx_wrap_string(buffer, width, FontStyle::Medium, &numLines);
+    auto lineHeight = font_get_line_height(FontStyle::Medium);
 
     int32_t expectedY = screenCoords.y - (numLines * lineHeight);
     if (expectedY < 50)
@@ -305,8 +305,8 @@ int32_t chat_string_wrapped_get_height(void* args, int32_t width)
     format_string(buffer, 256, STR_STRING, args);
 
     int32_t numLines;
-    gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
-    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+    gfx_wrap_string(buffer, width, FontStyle::Medium, &numLines);
+    int32_t lineHeight = font_get_line_height(FontStyle::Medium);
 
     int32_t lineY = 0;
     for (int32_t line = 0; line <= numLines; ++line)

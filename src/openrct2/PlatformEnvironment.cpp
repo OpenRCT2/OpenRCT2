@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -205,18 +205,18 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
 
     // Now load the config so we can get the RCT1 and RCT2 paths
     auto configPath = env->GetFilePath(PATHID::CONFIG);
-    config_set_defaults();
-    if (!config_open(configPath))
+    ConfigSetDefaults();
+    if (!ConfigOpen(configPath))
     {
-        config_save(configPath);
+        ConfigSave(configPath);
     }
     if (gCustomRCT1DataPath.empty())
     {
-        env->SetBasePath(DIRBASE::RCT1, gConfigGeneral.rct1_path);
+        env->SetBasePath(DIRBASE::RCT1, gConfigGeneral.RCT1Path);
     }
     if (gCustomRCT2DataPath.empty())
     {
-        env->SetBasePath(DIRBASE::RCT2, gConfigGeneral.rct2_path);
+        env->SetBasePath(DIRBASE::RCT2, gConfigGeneral.RCT2Path);
     }
 
     // Log base paths
@@ -268,6 +268,7 @@ const u8string PlatformEnvironment::DirectoryNamesOpenRCT2[] = {
     u8"replay",     // REPLAY
     u8"desyncs",    // DESYNCS
     u8"crash",      // CRASH
+    u8"assetpack",  // ASSET_PACK
 };
 
 const u8string PlatformEnvironment::FileNames[] = {

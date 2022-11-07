@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -103,7 +103,7 @@ void Duck::UpdateFlyToWater()
     auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
     int32_t manhattanDistanceN = abs(target_x - destination.x) + abs(target_y - destination.y);
 
-    auto surfaceElement = map_get_surface_element_at(CoordsXY{ target_x, target_y });
+    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ target_x, target_y });
     int32_t waterHeight = surfaceElement != nullptr ? surfaceElement->GetWaterHeight() : 0;
     if (waterHeight == 0)
     {
@@ -180,8 +180,8 @@ void Duck::UpdateSwim()
         else
         {
             Invalidate();
-            int16_t landZ = tile_element_height({ x, y });
-            int16_t waterZ = tile_element_water_height({ x, y });
+            int16_t landZ = TileElementHeight({ x, y });
+            int16_t waterZ = TileElementWaterHeight({ x, y });
 
             if (z < landZ || waterZ == 0)
             {
@@ -200,8 +200,8 @@ void Duck::UpdateSwim()
 
                 int32_t direction = sprite_direction >> 3;
                 auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
-                landZ = tile_element_height(destination);
-                waterZ = tile_element_water_height(destination);
+                landZ = TileElementHeight(destination);
+                waterZ = TileElementWaterHeight(destination);
 
                 if (z > landZ && z == waterZ)
                 {
@@ -259,7 +259,7 @@ void Duck::UpdateFlyAway()
         int32_t direction = sprite_direction >> 3;
         auto destination = CoordsXYZ{ x + (DuckMoveOffset[direction].x * 2), y + (DuckMoveOffset[direction].y * 2),
                                       std::min<int32_t>(z + 2, 496) };
-        if (map_is_location_valid(destination))
+        if (MapIsLocationValid(destination))
         {
             MoveTo(destination);
         }
@@ -365,7 +365,7 @@ void Duck::Serialise(DataSerialiser& stream)
     stream << state;
 }
 
-void Duck::Paint(paint_session& session, int32_t imageDirection) const
+void Duck::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
@@ -376,6 +376,6 @@ void Duck::Paint(paint_session& session, int32_t imageDirection) const
     uint32_t imageId = GetFrameImage(imageDirection);
     if (imageId != 0)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+        PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
     }
 }

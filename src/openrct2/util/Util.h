@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -65,7 +65,7 @@ size_t strcatftime(char* buffer, size_t bufferSize, const char* format, const st
 template<typename T> [[nodiscard]] constexpr uint64_t EnumToFlag(T v)
 {
     static_assert(std::is_enum_v<T>);
-    return 1ULL << static_cast<std::underlying_type_t<T>>(v);
+    return 1uLL << static_cast<std::underlying_type_t<T>>(v);
 }
 
 template<typename... T> [[nodiscard]] constexpr uint64_t EnumsToFlags(T... types)

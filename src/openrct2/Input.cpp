@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,7 +29,7 @@ widget_ref gCurrentToolWidget;
  */
 void title_handle_keyboard_input()
 {
-    context_input_handle_keyboard(true);
+    ContextInputHandleKeyboard(true);
 }
 
 /**
@@ -38,7 +38,7 @@ void title_handle_keyboard_input()
  */
 void game_handle_keyboard_input()
 {
-    context_input_handle_keyboard(false);
+    ContextInputHandleKeyboard(false);
 }
 
 void input_set_flag(INPUT_FLAGS flag, bool on)

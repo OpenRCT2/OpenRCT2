@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -180,28 +180,28 @@ static rct_widget *window_editor_scenario_options_widgets[] = {
 #pragma region Enabled widgets
 
 static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
-    (1ULL << WIDX_INITIAL_CASH_INCREASE) |
-        (1ULL << WIDX_INITIAL_CASH_DECREASE) |
-        (1ULL << WIDX_INITIAL_LOAN_INCREASE) |
-        (1ULL << WIDX_INITIAL_LOAN_DECREASE) |
-        (1ULL << WIDX_MAXIMUM_LOAN_INCREASE) |
-        (1ULL << WIDX_MAXIMUM_LOAN_DECREASE) |
-        (1ULL << WIDX_INTEREST_RATE_INCREASE) |
-        (1ULL << WIDX_INTEREST_RATE_DECREASE),
-    (1ULL << WIDX_CASH_PER_GUEST_INCREASE) |
-        (1ULL << WIDX_CASH_PER_GUEST_DECREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HAPPINESS_INCREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HAPPINESS_DECREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HUNGER_INCREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HUNGER_DECREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_THIRST_INCREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_THIRST_DECREASE),
-    (1ULL << WIDX_LAND_COST_INCREASE) |
-        (1ULL << WIDX_LAND_COST_DECREASE) |
-        (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE) |
-        (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE) |
-        (1ULL << WIDX_ENTRY_PRICE_INCREASE) |
-        (1ULL << WIDX_ENTRY_PRICE_DECREASE),
+    (1uLL << WIDX_INITIAL_CASH_INCREASE) |
+        (1uLL << WIDX_INITIAL_CASH_DECREASE) |
+        (1uLL << WIDX_INITIAL_LOAN_INCREASE) |
+        (1uLL << WIDX_INITIAL_LOAN_DECREASE) |
+        (1uLL << WIDX_MAXIMUM_LOAN_INCREASE) |
+        (1uLL << WIDX_MAXIMUM_LOAN_DECREASE) |
+        (1uLL << WIDX_INTEREST_RATE_INCREASE) |
+        (1uLL << WIDX_INTEREST_RATE_DECREASE),
+    (1uLL << WIDX_CASH_PER_GUEST_INCREASE) |
+        (1uLL << WIDX_CASH_PER_GUEST_DECREASE) |
+        (1uLL << WIDX_GUEST_INITIAL_HAPPINESS_INCREASE) |
+        (1uLL << WIDX_GUEST_INITIAL_HAPPINESS_DECREASE) |
+        (1uLL << WIDX_GUEST_INITIAL_HUNGER_INCREASE) |
+        (1uLL << WIDX_GUEST_INITIAL_HUNGER_DECREASE) |
+        (1uLL << WIDX_GUEST_INITIAL_THIRST_INCREASE) |
+        (1uLL << WIDX_GUEST_INITIAL_THIRST_DECREASE),
+    (1uLL << WIDX_LAND_COST_INCREASE) |
+        (1uLL << WIDX_LAND_COST_DECREASE) |
+        (1uLL << WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE) |
+        (1uLL << WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE) |
+        (1uLL << WIDX_ENTRY_PRICE_INCREASE) |
+        (1uLL << WIDX_ENTRY_PRICE_DECREASE),
 };
 // clang-format on
 
@@ -317,13 +317,7 @@ private:
 
     void AnchorBorderWidgets()
     {
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_PAGE_BACKGROUND].right = width - 1;
-        widgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
+        ResizeFrameWithPage();
     }
 
     void DrawTabImages(rct_drawpixelinfo& dpi)
@@ -438,7 +432,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_CASH, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_CASH, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -451,7 +445,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_CASH, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_CASH, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -464,7 +458,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_INIT_LOAN, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -477,7 +471,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_INIT_LOAN, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -490,7 +484,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_MAX_LOAN, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -503,7 +497,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_MAX_LOAN, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -516,7 +510,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -529,7 +523,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -702,7 +696,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -715,7 +709,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -728,7 +722,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -741,7 +735,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -754,7 +748,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -767,7 +761,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -780,7 +774,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -793,7 +787,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -976,7 +970,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -989,7 +983,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -1002,7 +996,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -1015,7 +1009,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -1028,7 +1022,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -1041,7 +1035,7 @@ private:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                    ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 Invalidate();
                 break;
@@ -1133,7 +1127,7 @@ private:
             widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
             widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
 
-            if (!park_entry_price_unlocked())
+            if (!ParkEntranceFeeUnlocked())
             {
                 widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
                 widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;

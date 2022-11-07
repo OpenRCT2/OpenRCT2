@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
 #include "../sprites.h"
+#include "../util/Util.h"
 #include "Drawing.h"
 #include "TTF.h"
 
@@ -20,14 +21,14 @@
 #include <limits>
 #include <unordered_map>
 
-static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = {
+static constexpr const int32_t SpriteFontLineHeight[FontStyleCount] = {
+    10,
+    10,
     6,
-    10,
-    10,
 };
 
-static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT][FONT_SPRITE_GLYPH_COUNT];
-static uint8_t _additionalSpriteFontCharacterWidth[FONT_SIZE_COUNT][SPR_G2_GLYPH_COUNT] = {};
+static uint8_t _spriteFontCharacterWidths[FontStyleCount][FONT_SPRITE_GLYPH_COUNT];
+static uint8_t _additionalSpriteFontCharacterWidth[FontStyleCount][SPR_G2_GLYPH_COUNT] = {};
 
 #ifndef NO_TTF
 TTFFontSetDescriptor* gCurrentTTFFontSet;
@@ -244,9 +245,9 @@ void font_sprite_initialise_characters()
         _biggestCodepointValue = std::max(_biggestCodepointValue, entry.first);
     }
 
-    for (int32_t fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++)
+    for (const auto& fontStyle : FontStyles)
     {
-        int32_t glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
+        int32_t glyphOffset = EnumValue(fontStyle) * FONT_SPRITE_GLYPH_COUNT;
         for (uint8_t glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++)
         {
             const rct_g1_element* g1 = gfx_get_g1_element(glyphIndex + SPR_CHAR_START + glyphOffset);
@@ -256,13 +257,13 @@ void font_sprite_initialise_characters()
                 width = g1->width + (2 * g1->x_offset) - 1;
             }
 
-            _spriteFontCharacterWidths[fontSize][glyphIndex] = static_cast<uint8_t>(width);
+            _spriteFontCharacterWidths[EnumValue(fontStyle)][glyphIndex] = static_cast<uint8_t>(width);
         }
     }
 
-    for (uint8_t fontSize : { FONT_SIZE_SMALL, FONT_SIZE_MEDIUM, FONT_SIZE_TINY })
+    for (const auto& fontStyle : FontStyles)
     {
-        int32_t glyphOffset = fontSize * SPR_G2_GLYPH_COUNT;
+        int32_t glyphOffset = EnumValue(fontStyle) * SPR_G2_GLYPH_COUNT;
         for (int32_t glyphIndex = 0; glyphIndex < SPR_G2_GLYPH_COUNT; glyphIndex++)
         {
             const rct_g1_element* g1 = gfx_get_g1_element(glyphIndex + SPR_G2_CHAR_BEGIN + glyphOffset);
@@ -272,7 +273,7 @@ void font_sprite_initialise_characters()
                 width = g1->width + (2 * g1->x_offset) - 1;
             }
 
-            _additionalSpriteFontCharacterWidth[fontSize][glyphIndex] = static_cast<uint8_t>(width);
+            _additionalSpriteFontCharacterWidth[EnumValue(fontStyle)][glyphIndex] = static_cast<uint8_t>(width);
         }
     }
 
@@ -296,15 +297,10 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
     return codepoint - 32;
 }
 
-int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t codepoint)
+int32_t font_sprite_get_codepoint_width(FontStyle fontStyle, int32_t codepoint)
 {
-    if (fontSpriteBase == FontSpriteBase::MEDIUM_DARK || fontSpriteBase == FontSpriteBase::MEDIUM_EXTRA_DARK)
-    {
-        fontSpriteBase = FontSpriteBase::MEDIUM;
-    }
-
     int32_t glyphIndex = font_sprite_get_codepoint_offset(codepoint);
-    int32_t baseFontIndex = font_get_font_index_from_sprite_base(fontSpriteBase);
+    auto baseFontIndex = EnumValue(fontStyle);
     if (glyphIndex >= FONT_SPRITE_GLYPH_COUNT)
     {
         glyphIndex = (SPR_CHAR_START + glyphIndex) - SPR_G2_CHAR_BEGIN;
@@ -325,49 +321,21 @@ int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t c
     return _spriteFontCharacterWidths[baseFontIndex][glyphIndex];
 }
 
-int32_t font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t codepoint)
+ImageId font_sprite_get_codepoint_sprite(FontStyle fontStyle, int32_t codepoint)
 {
-    int32_t offset = static_cast<int32_t>(fontSpriteBase);
+    int32_t offset = EnumValue(fontStyle) * FONT_SPRITE_GLYPH_COUNT;
     auto codePointOffset = font_sprite_get_codepoint_offset(codepoint);
     if (codePointOffset > FONT_SPRITE_GLYPH_COUNT)
     {
-        offset = font_get_font_index_from_sprite_base(fontSpriteBase) * SPR_G2_GLYPH_COUNT;
+        offset = EnumValue(fontStyle) * SPR_G2_GLYPH_COUNT;
     }
 
-    return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (offset + codePointOffset));
+    return ImageId(SPR_CHAR_START + offset + codePointOffset, COLOUR_BLACK);
 }
 
-int32_t font_get_font_index_from_sprite_base(FontSpriteBase spriteBase)
+int32_t font_get_line_height(FontStyle fontStyle)
 {
-    switch (spriteBase)
-    {
-        case FontSpriteBase::TINY:
-            return FONT_SIZE_TINY;
-        case FontSpriteBase::SMALL:
-            return FONT_SIZE_SMALL;
-        default:
-        case FontSpriteBase::MEDIUM:
-            return FONT_SIZE_MEDIUM;
-    }
-}
-
-int32_t font_get_size_from_sprite_base(FontSpriteBase spriteBase)
-{
-    switch (spriteBase)
-    {
-        case FontSpriteBase::TINY:
-            return 0;
-        case FontSpriteBase::SMALL:
-            return 1;
-        default:
-        case FontSpriteBase::MEDIUM:
-            return 2;
-    }
-}
-
-int32_t font_get_line_height(FontSpriteBase fontSpriteBase)
-{
-    int32_t fontSize = font_get_size_from_sprite_base(fontSpriteBase);
+    auto fontSize = EnumValue(fontStyle);
 #ifndef NO_TTF
     if (LocalisationService_UseTrueTypeFont())
     {
@@ -377,9 +345,9 @@ int32_t font_get_line_height(FontSpriteBase fontSpriteBase)
     return SpriteFontLineHeight[fontSize];
 }
 
-int32_t font_get_line_height_small(FontSpriteBase fontSpriteBase)
+int32_t font_get_line_height_small(FontStyle fontStyle)
 {
-    return font_get_line_height(fontSpriteBase) / 2;
+    return font_get_line_height(fontStyle) / 2;
 }
 
 bool font_supports_string_sprite(const utf8* text)
@@ -409,11 +377,11 @@ bool font_supports_string_sprite(const utf8* text)
     return true;
 }
 
-bool font_supports_string_ttf(const utf8* text, int32_t fontSize)
+bool font_supports_string_ttf(const utf8* text, FontStyle fontStyle)
 {
 #ifndef NO_TTF
     const utf8* src = text;
-    const TTF_Font* font = gCurrentTTFFontSet->size[fontSize].font;
+    const TTF_Font* font = gCurrentTTFFontSet->size[EnumValue(fontStyle)].font;
     if (font == nullptr)
     {
         return false;
@@ -434,11 +402,11 @@ bool font_supports_string_ttf(const utf8* text, int32_t fontSize)
 #endif // NO_TTF
 }
 
-bool font_supports_string(const utf8* text, int32_t fontSize)
+bool font_supports_string(const utf8* text, FontStyle fontStyle)
 {
     if (LocalisationService_UseTrueTypeFont())
     {
-        return font_supports_string_ttf(text, fontSize);
+        return font_supports_string_ttf(text, fontStyle);
     }
 
     return font_supports_string_sprite(text);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -417,7 +417,7 @@ namespace Platform
 
         // Epoch starts from: 1970-01-01T00:00:00Z
         // Convert to ticks from 0001-01-01T00:00:00Z
-        uint64_t utcEpochTicks = static_cast<uint64_t>(tv.tv_sec) * 10000000ULL + tv.tv_usec * 10;
+        uint64_t utcEpochTicks = static_cast<uint64_t>(tv.tv_sec) * 10000000uLL + tv.tv_usec * 10;
         datetime64 utcNow = epochAsTicks + utcEpochTicks;
         return utcNow;
     }

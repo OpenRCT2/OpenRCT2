@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,4 +55,4 @@ enum
     MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS = (1 << 5),
 };
 
-SmallSceneryEntry* get_small_scenery_entry(ObjectEntryIndex entryIndex);
+SmallSceneryEntry* GetSmallSceneryEntry(ObjectEntryIndex entryIndex);

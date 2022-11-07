@@ -2702,8 +2702,6 @@ STR_5503    :ホスト名またはIPアドレスを入力してください:
 STR_5504    :マルチプレイのステイタスの表示
 STR_5505    :サーバに接続できない
 STR_5506    :Guests ignore intensities
-STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
 STR_5510    :デフォルトのサウンドデバイス
 STR_5511    :(未知)
 STR_5512    :名前を保存
@@ -3937,15 +3935,6 @@ STR_NAME    :屋根
 
 [TTRFWD08]
 STR_NAME    :屋根
-
-[TTRFGL01]
-STR_NAME    :ガラス屋根
-
-[TTRFGL02]
-STR_NAME    :ガラス屋根
-
-[TTRFGL03]
-STR_NAME    :ガラス屋根
 
 [ACWW33]
 STR_NAME    :木製のポスト壁

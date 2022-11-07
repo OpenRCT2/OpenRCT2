@@ -23,7 +23,13 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.4.1
+  OPENRCT2_VERSION: 0.4.2
+
+# https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   lint-commit:
     name: Lint Commit Message
@@ -317,18 +323,6 @@ jobs:
           name: OpenRCT2-AppImage
           path: artifacts
           if-no-files-found: error
-  linux-flathub-beta:
-    name: Linux (Flathub beta channel)
-    if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send dispatch event to OpenRCT2 Flathub repository
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.OPENRCT2_FLATHUB_TOKEN }}
-          repository: flathub/io.openrct2.OpenRCT2
-          event-type: openrct2_develop_push
-          client-payload: '{ "commit": "${{ github.sha }}" }'
   linux-docker:
     name: Linux (docker)
     needs: check-code-formatting

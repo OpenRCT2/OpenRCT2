@@ -102,7 +102,7 @@ void game_reset_speed()
 
 void game_increase_game_speed()
 {
-    gGameSpeed = std::min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
+    gGameSpeed = std::min(gConfigGeneral.DebuggingTools ? 5 : 4, gGameSpeed + 1);
     if (gGameSpeed == 5)
         gGameSpeed = 8;
     window_invalidate_by_class(WindowClass::TopToolbar);
@@ -122,10 +122,10 @@ void game_reduce_game_speed()
  */
 void game_create_windows()
 {
-    context_open_window(WindowClass::MainWindow);
-    context_open_window(WindowClass::TopToolbar);
-    context_open_window(WindowClass::BottomToolbar);
-    window_resize_gui(context_get_width(), context_get_height());
+    ContextOpenWindow(WindowClass::MainWindow);
+    ContextOpenWindow(WindowClass::TopToolbar);
+    ContextOpenWindow(WindowClass::BottomToolbar);
+    window_resize_gui(ContextGetWidth(), ContextGetHeight());
 }
 
 enum
@@ -204,9 +204,9 @@ void update_palette_effects()
 
         // Animate the water/lava/chain movement palette
         uint32_t shade = 0;
-        if (gConfigGeneral.render_weather_gloom)
+        if (gConfigGeneral.RenderWeatherGloom)
         {
-            auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
+            auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
@@ -327,7 +327,7 @@ static void load_landscape()
 {
     auto intent = Intent(WindowClass::Loadsave);
     intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
-    context_open_intent(&intent);
+    ContextOpenIntent(&intent);
 }
 
 void rct2_to_utf8_self(char* buffer, size_t length)
@@ -413,7 +413,7 @@ void game_fix_save_vars()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
 
             if (surfaceElement == nullptr)
             {
@@ -441,16 +441,16 @@ void game_fix_save_vars()
     ResearchFix();
 
     // Fix banner list pointing to NULL map elements
-    banner_reset_broken_index();
+    BannerResetBrokenIndex();
 
     // Fix banners which share their index
-    fix_duplicated_banners();
+    BannerFixDuplicates();
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
-    fix_park_entrance_locations();
+    ParkEntranceFixLocations();
 
     UpdateConsolidatedPatrolAreas();
 }
@@ -482,10 +482,10 @@ void game_load_init()
     }
     ResetEntitySpatialIndices();
     reset_all_sprite_quadrant_placements();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     gWindowUpdateTicks = 0;
 
@@ -494,7 +494,7 @@ void game_load_init()
     if (!gOpenRCT2Headless)
     {
         intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
         window_update_all();
     }
 
@@ -593,7 +593,7 @@ void save_game_cmd(u8string_view name /* = {} */)
 void save_game_with_name(u8string_view name)
 {
     log_verbose("Saving to %s", u8string(name).c_str());
-    if (scenario_save(name, gConfigGeneral.save_plugin_data ? 1 : 0))
+    if (scenario_save(name, gConfigGeneral.SavePluginData ? 1 : 0))
     {
         log_verbose("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -616,7 +616,7 @@ std::unique_ptr<Intent> create_save_game_as_intent()
 void save_game_as()
 {
     auto intent = create_save_game_as_intent();
-    context_open_intent(intent.get());
+    ContextOpenIntent(intent.get());
 }
 
 static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processLandscapeFolder)
@@ -699,7 +699,7 @@ void game_autosave()
         timeName, sizeof(timeName), "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s", currentDate.year, currentDate.month,
         currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
 
-    int32_t autosavesToKeep = gConfigGeneral.autosave_amount;
+    int32_t autosavesToKeep = gConfigGeneral.AutosaveAmount;
     limit_autosave_count(autosavesToKeep - 1, (gScreenFlags & SCREEN_FLAGS_EDITOR));
 
     auto env = GetContext()->GetPlatformEnvironment();
@@ -726,7 +726,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
         game_notify_map_change();
         game_unload_scripts();
         window_close_by_class(WindowClass::EditorObjectSelection);
-        context_load_park_from_file(path);
+        GetContext()->LoadParkFromFile(path);
         game_load_scripts();
         game_notify_map_changed();
         gIsAutosaveLoaded = gIsAutosave;
@@ -756,7 +756,7 @@ void game_load_or_quit_no_save_prompt()
                 auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
                 intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(game_load_or_quit_no_save_prompt_callback));
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
             }
             break;
         }

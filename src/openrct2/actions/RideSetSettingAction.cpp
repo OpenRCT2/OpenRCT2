@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -234,7 +234,7 @@ GameActions::Result RideSetSettingAction::Execute() const
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res.Position = { location, tile_element_height(location) };
+        res.Position = { location, TileElementHeight(location) };
     }
     window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
     return res;
@@ -242,7 +242,7 @@ GameActions::Result RideSetSettingAction::Execute() const
 
 bool RideSetSettingAction::ride_is_mode_valid(Ride* ride) const
 {
-    return ride->GetRideTypeDescriptor().RideModes & (1ULL << _value);
+    return ride->GetRideTypeDescriptor().RideModes & (1uLL << _value);
 }
 
 bool RideSetSettingAction::ride_is_valid_lift_hill_speed(Ride* ride) const

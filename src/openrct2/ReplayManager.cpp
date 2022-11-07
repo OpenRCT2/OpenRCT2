@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -655,7 +655,7 @@ namespace OpenRCT2
         {
             serialiser << _guestGenerationProbability;
             serialiser << _suggestedGuestMaximum;
-            serialiser << gConfigGeneral.show_real_names_of_guests;
+            serialiser << gConfigGeneral.ShowRealNamesOfGuests;
 
             // To make this a little bit less volatile against updates
             // we reserve some space for future additions.

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -104,6 +104,11 @@ constexpr money32 ToMoney32FromGBP(int32_t money) noexcept
 }
 
 constexpr money32 ToMoney32FromGBP(double money) noexcept
+{
+    return money * 10;
+}
+
+constexpr money64 ToMoney64FromGBP(double money) noexcept
 {
     return money * 10;
 }

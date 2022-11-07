@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,7 +54,7 @@ static money32 RideEntranceExitPlaceGhost(
  *
  *  rct2: 0x00666F9E
  */
-void park_entrance_remove_ghost()
+void ParkEntranceRemoveGhost()
 {
     if (gParkEntranceGhostExists)
     {
@@ -65,7 +65,7 @@ void park_entrance_remove_ghost()
     }
 }
 
-int32_t park_entrance_get_index(const CoordsXYZ& entrancePos)
+int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 {
     int32_t i = 0;
     for (const auto& entrance : gParkEntrances)
@@ -79,12 +79,12 @@ int32_t park_entrance_get_index(const CoordsXYZ& entrancePos)
     return -1;
 }
 
-void reset_park_entrance()
+void ParkEntranceReset()
 {
     gParkEntrances.clear();
 }
 
-void ride_entrance_exit_place_provisional_ghost()
+void RideEntranceExitPlaceProvisionalGhost()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
@@ -94,7 +94,7 @@ void ride_entrance_exit_place_provisional_ghost()
     }
 }
 
-void ride_entrance_exit_remove_ghost()
+void RideEntranceExitRemoveGhost()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
@@ -111,7 +111,7 @@ void ride_entrance_exit_remove_ghost()
  *
  *  rct2: 0x006CA28C
  */
-money32 ride_entrance_exit_place_ghost(
+money32 RideEntranceExitPlaceGhost(
     Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
 {
     ride_construction_remove_ghosts();
@@ -132,14 +132,14 @@ money32 ride_entrance_exit_place_ghost(
  * Replaces the outer hedge walls for an entrance placement removal.
  *  rct2: 0x00666D6F
  */
-void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
+void MazeEntranceHedgeReplacement(const CoordsXYE& entrance)
 {
     int32_t direction = entrance.element->GetDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->GetBaseZ();
     RideId rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
-    auto tileElement = map_get_first_element_at(hedgePos);
+    auto tileElement = MapGetFirstElementAt(hedgePos);
     if (tileElement == nullptr)
         return;
     do
@@ -160,7 +160,7 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
         // Add the bottom outer wall
         tileElement->AsTrack()->MazeEntryAdd(1 << ((mazeSection + 12) & 0x0F));
 
-        map_invalidate_tile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+        MapInvalidateTile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
         return;
     } while (!(tileElement++)->IsLastForTile());
 }
@@ -169,14 +169,14 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
  * Removes the hedge walls for an entrance placement.
  *  rct2: 0x00666CBE
  */
-void maze_entrance_hedge_removal(const CoordsXYE& entrance)
+void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
 {
     int32_t direction = entrance.element->GetDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->GetBaseZ();
     RideId rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
-    auto tileElement = map_get_first_element_at(hedgePos);
+    auto tileElement = MapGetFirstElementAt(hedgePos);
     if (tileElement == nullptr)
         return;
     do
@@ -203,27 +203,27 @@ void maze_entrance_hedge_removal(const CoordsXYE& entrance)
         // Remove the bottom hedge section
         tileElement->AsTrack()->MazeEntrySubtract(1 << ((mazeSection + 15) & 0x0F));
 
-        map_invalidate_tile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+        MapInvalidateTile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
         return;
     } while (!(tileElement++)->IsLastForTile());
 }
 
-void fix_park_entrance_locations(void)
+void ParkEntranceFixLocations(void)
 {
     // Fix gParkEntrance locations for which the tile_element no longer exists
     gParkEntrances.erase(
         std::remove_if(
             gParkEntrances.begin(), gParkEntrances.end(),
-            [](const auto& entrance) { return map_get_park_entrance_element_at(entrance, false) == nullptr; }),
+            [](const auto& entrance) { return MapGetParkEntranceElementAt(entrance, false) == nullptr; }),
         gParkEntrances.end());
 }
 
-void UpdateParkEntranceLocations()
+void ParkEntranceUpdateLocations()
 {
     gParkEntrances.clear();
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
-    while (tile_element_iterator_next(&it))
+    TileElementIteratorBegin(&it);
+    while (TileElementIteratorNext(&it))
     {
         auto entranceElement = it.element->AsEntrance();
         if (entranceElement != nullptr && entranceElement->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -58,7 +58,7 @@ public:
     void OnOpen() override
     {
         widgets = window_scenery_scatter_widgets;
-        hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
+        hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
         window_push_others_below(*this);
 
@@ -154,21 +154,21 @@ public:
     void OnPrepareDraw() override
     {
         // Set the preview image button to be pressed down
-        pressed_widgets = (1ULL << WIDX_PREVIEW);
+        pressed_widgets = (1uLL << WIDX_PREVIEW);
 
         // Set density buttons' pressed state.
         switch (gWindowSceneryScatterDensity)
         {
             case ScatterToolDensity::LowDensity:
-                pressed_widgets |= (1ULL << WIDX_DENSITY_LOW);
+                pressed_widgets |= (1uLL << WIDX_DENSITY_LOW);
                 break;
 
             case ScatterToolDensity::MediumDensity:
-                pressed_widgets |= (1ULL << WIDX_DENSITY_MEDIUM);
+                pressed_widgets |= (1uLL << WIDX_DENSITY_MEDIUM);
                 break;
 
             case ScatterToolDensity::HighDensity:
-                pressed_widgets |= (1ULL << WIDX_DENSITY_HIGH);
+                pressed_widgets |= (1uLL << WIDX_DENSITY_HIGH);
                 break;
         }
 

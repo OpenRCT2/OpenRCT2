@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -109,20 +109,20 @@ extern uint32_t gGuestsInParkHistory[32];
 extern int32_t _guestGenerationProbability;
 extern uint32_t _suggestedGuestMaximum;
 
-void set_forced_park_rating(int32_t rating);
-int32_t get_forced_park_rating();
+void ParkSetForcedRating(int32_t rating);
+int32_t ParkGetForcedRating();
 
-int32_t park_is_open();
-uint32_t park_calculate_size();
+int32_t ParkIsOpen();
+uint32_t ParkCalculateSize();
 
-void update_park_fences(const CoordsXY& coords);
-void update_park_fences_around_tile(const CoordsXY& coords);
+void ParkUpdateFences(const CoordsXY& coords);
+void ParkUpdateFencesAroundTile(const CoordsXY& coords);
 
-uint8_t calculate_guest_initial_happiness(uint8_t percentage);
+uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
 
-void park_set_open(bool open);
-int32_t park_entrance_get_index(const CoordsXYZ& entrancePos);
-money16 park_get_entrance_fee();
+void ParkSetOpen(bool open);
+int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos);
+money16 ParkGetEntranceFee();
 
-bool park_ride_prices_unlocked();
-bool park_entry_price_unlocked();
+bool ParkRidePricesUnlocked();
+bool ParkEntranceFeeUnlocked();

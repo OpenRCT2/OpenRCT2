@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,13 +75,13 @@ GameActions::Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) 
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
-        if (!map_is_location_owned(_loc))
+        if (!MapIsLocationOwned(_loc))
         {
             return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
     }
 
-    auto sceneryElement = map_get_small_scenery_element_at(_loc, _sceneryType, _quadrant);
+    auto sceneryElement = MapGetSmallSceneryElementAt(_loc, _sceneryType, _quadrant);
 
     if (sceneryElement == nullptr)
     {
@@ -100,7 +100,7 @@ GameActions::Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) 
         sceneryElement->SetSecondaryColour(_secondaryColour);
         sceneryElement->SetTertiaryColour(_tertiaryColour);
 
-        map_invalidate_tile_full(_loc);
+        MapInvalidateTileFull(_loc);
     }
 
     return res;

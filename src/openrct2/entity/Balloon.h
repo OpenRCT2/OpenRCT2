@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,7 @@
 
 class DataSerialiser;
 struct CoordsXYZ;
-struct paint_session;
+struct PaintSession;
 
 struct Balloon : EntityBase
 {
@@ -27,5 +27,5 @@ struct Balloon : EntityBase
     void Pop();
     void Press();
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 };

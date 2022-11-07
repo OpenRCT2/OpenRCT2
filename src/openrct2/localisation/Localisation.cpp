@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -424,7 +424,7 @@ void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytes)
 money32 string_to_money(const char* string_to_monetise)
 {
     const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
     char processedString[128] = {};
 
     Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
@@ -521,7 +521,7 @@ void money_to_string(money32 amount, char* buffer_to_put_value_to, size_t buffer
         return;
     }
 
-    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
 
     int sign = amount >= 0 ? 1 : -1;
     int a = abs(amount) * currencyDesc->rate;

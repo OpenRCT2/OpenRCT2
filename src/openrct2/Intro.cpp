@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -69,7 +69,7 @@ void intro_update()
             _introStateCounter += 5;
 
             // Check if logo is off the screen...ish
-            if (_introStateCounter > context_get_height() - 120)
+            if (_introStateCounter > ContextGetHeight() - 120)
             {
                 _introStateCounter = -116;
                 gIntroState = IntroState::DeveloperBegin;
@@ -86,7 +86,7 @@ void intro_update()
             _introStateCounter += 5;
 
             // Check if logo is almost scrolled to the bottom
-            if (!_chainLiftFinished && _introStateCounter >= context_get_height() + 40 - 421)
+            if (!_chainLiftFinished && _introStateCounter >= ContextGetHeight() + 40 - 421)
             {
                 _chainLiftFinished = true;
 
@@ -102,7 +102,7 @@ void intro_update()
             }
 
             // Check if logo is off the screen...ish
-            if (_introStateCounter >= context_get_height() + 40)
+            if (_introStateCounter >= ContextGetHeight() + 40)
             {
                 // Stop the track friction sound
                 if (_soundChannel != nullptr)
@@ -170,7 +170,7 @@ void intro_update()
 
 void intro_draw(rct_drawpixelinfo* dpi)
 {
-    int32_t screenWidth = context_get_width();
+    int32_t screenWidth = ContextGetWidth();
 
     switch (gIntroState)
     {
@@ -242,7 +242,7 @@ void intro_draw(rct_drawpixelinfo* dpi)
 
 static void screen_intro_process_mouse_input()
 {
-    if (context_get_cursor_state()->any == CURSOR_PRESSED)
+    if (ContextGetCursorState()->any == CURSOR_PRESSED)
     {
         screen_intro_skip_part();
     }
@@ -254,7 +254,7 @@ static void screen_intro_process_mouse_input()
  */
 static void screen_intro_process_keyboard_input()
 {
-    const uint8_t* keys = context_get_keys_state();
+    const uint8_t* keys = ContextGetKeysState();
     for (int i = 0; i < 256; i++)
     {
         if (keys[i] != 0)
@@ -282,7 +282,7 @@ static void screen_intro_skip_part()
 
 static void screen_intro_draw_logo(rct_drawpixelinfo* dpi)
 {
-    int32_t screenWidth = context_get_width();
+    int32_t screenWidth = ContextGetWidth();
     int32_t imageWidth = 640;
     int32_t imageX = (screenWidth - imageWidth) / 2;
 

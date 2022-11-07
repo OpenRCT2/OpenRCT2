@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "MusicObject.h"
 
+#include "../AssetPackManager.h"
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
@@ -17,6 +18,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
+#include "../drawing/Image.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "RideObject.h"
@@ -24,6 +26,7 @@
 #include <memory>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Audio;
 
 constexpr size_t DEFAULT_BYTES_PER_TICK = 1378;
 
@@ -32,6 +35,18 @@ void MusicObject::Load()
     GetStringTable().Sort();
     NameStringId = language_allocate_object_string(GetName());
 
+    // Start with base images
+    _loadedSampleTable.LoadFrom(_sampleTable, 0, _sampleTable.GetCount());
+
+    // Override samples from asset packs
+    auto context = GetContext();
+    auto assetManager = context->GetAssetPackManager();
+    if (assetManager != nullptr)
+    {
+        assetManager->LoadSamplesForObject(GetIdentifier(), _loadedSampleTable);
+    }
+
+    // Load metadata of samples
     auto audioContext = GetContext()->GetAudioContext();
     for (auto& track : _tracks)
     {
@@ -57,6 +72,9 @@ void MusicObject::Load()
             track.Size = track.Asset.GetSize();
         }
     }
+
+    _hasPreview = !!GetImageTable().GetCount();
+    _previewImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 void MusicObject::Unload()
@@ -70,7 +88,10 @@ void MusicObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t hei
     // Write (no image)
     int32_t x = width / 2;
     int32_t y = height / 2;
-    DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
+    if (_hasPreview)
+        gfx_draw_sprite(dpi, ImageId(_previewImageId), { 0, 0 });
+    else
+        DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
 }
 
 void MusicObject::ReadJson(IReadObjectContext* context, json_t& root)
@@ -129,6 +150,7 @@ void MusicObject::ParseRideTypes(const json_t& jRideTypes)
 
 void MusicObject::ParseTracks(IReadObjectContext& context, json_t& jTracks)
 {
+    auto& entries = _sampleTable.GetEntries();
     for (auto& jTrack : jTracks)
     {
         if (jTrack.is_object())
@@ -143,7 +165,12 @@ void MusicObject::ParseTracks(IReadObjectContext& context, json_t& jTracks)
             }
             else
             {
-                track.Asset = GetAsset(context, source);
+                auto asset = GetAsset(context, source);
+
+                auto& entry = entries.emplace_back();
+                entry.Asset = asset;
+
+                track.Asset = asset;
                 _tracks.push_back(std::move(track));
             }
         }
@@ -179,6 +206,11 @@ const MusicObjectTrack* MusicObject::GetTrack(size_t trackIndex) const
         return &_tracks[trackIndex];
     }
     return {};
+}
+
+IAudioSource* MusicObject::GetTrackSample(size_t trackIndex) const
+{
+    return _loadedSampleTable.LoadSample(static_cast<uint32_t>(trackIndex));
 }
 
 ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view path)

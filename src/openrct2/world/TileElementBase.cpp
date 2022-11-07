@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -82,7 +82,7 @@ void TileElementBase::SetGhost(bool isGhost)
 
 void TileElementBase::Remove()
 {
-    tile_element_remove(static_cast<TileElement*>(this));
+    TileElementRemove(static_cast<TileElement*>(this));
 }
 
 uint8_t TileElementBase::GetOccupiedQuadrants() const

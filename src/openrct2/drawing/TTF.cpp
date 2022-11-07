@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -76,7 +76,7 @@ template<typename T> class FontLockHelper
 public:
     FontLockHelper(T& mutex)
         : _mutex(mutex)
-        , _enabled(gConfigGeneral.multithreading)
+        , _enabled(gConfigGeneral.MultiThreading)
     {
         if (_enabled)
             _mutex.lock();
@@ -95,10 +95,10 @@ static void ttf_toggle_hinting(bool)
         return;
     }
 
-    for (int32_t i = 0; i < FONT_SIZE_COUNT; i++)
+    for (int32_t i = 0; i < FontStyleCount; i++)
     {
         TTFFontDescriptor* fontDesc = &(gCurrentTTFFontSet->size[i]);
-        bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold;
+        bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold;
         TTF_SetFontHinting(fontDesc->font, use_hinting ? 1 : 0);
     }
 
@@ -121,7 +121,7 @@ bool ttf_initialise()
         return false;
     }
 
-    for (int32_t i = 0; i < FONT_SIZE_COUNT; i++)
+    for (int32_t i = 0; i < FontStyleCount; i++)
     {
         TTFFontDescriptor* fontDesc = &(gCurrentTTFFontSet->size[i]);
 
@@ -157,7 +157,7 @@ void ttf_dispose()
     ttf_surface_cache_dispose_all();
     ttf_getwidth_cache_dispose_all();
 
-    for (int32_t i = 0; i < FONT_SIZE_COUNT; i++)
+    for (int32_t i = 0; i < FontStyleCount; i++)
     {
         TTFFontDescriptor* fontDesc = &(gCurrentTTFFontSet->size[i]);
         if (fontDesc->font != nullptr)
@@ -347,10 +347,10 @@ uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, std::string_view text)
     return entry->width;
 }
 
-TTFFontDescriptor* ttf_get_font_from_sprite_base(FontSpriteBase spriteBase)
+TTFFontDescriptor* ttf_get_font_from_sprite_base(FontStyle fontStyle)
 {
     FontLockHelper<std::mutex> lock(_mutex);
-    return &gCurrentTTFFontSet->size[font_get_size_from_sprite_base(spriteBase)];
+    return &gCurrentTTFFontSet->size[EnumValue(fontStyle)];
 }
 
 bool ttf_provides_glyph(const TTF_Font* font, codepoint_t codepoint)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,7 +64,7 @@ public:
     void OnOpen() override
     {
         widgets = window_clear_scenery_widgets;
-        hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
+        hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
         window_push_others_below(*this);
 
@@ -164,8 +164,8 @@ public:
     void Invalidate()
     {
         // Set the preview image button to be pressed down
-        pressed_widgets = (1ULL << WIDX_PREVIEW) | (gClearSmallScenery ? (1ULL << WIDX_SMALL_SCENERY) : 0)
-            | (gClearLargeScenery ? (1ULL << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1ULL << WIDX_FOOTPATH) : 0);
+        pressed_widgets = (1uLL << WIDX_PREVIEW) | (gClearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
+            | (gClearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
 
         // Update the preview image (for tool sizes up to 7)
         window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
@@ -204,7 +204,7 @@ rct_window* WindowClearSceneryOpen()
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<CleanSceneryWindow>(WindowClass::ClearScenery, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    w = WindowCreate<CleanSceneryWindow>(WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 
     if (w != nullptr)
         return w;

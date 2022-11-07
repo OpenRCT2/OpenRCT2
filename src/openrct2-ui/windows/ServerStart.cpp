@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -84,10 +84,10 @@ public:
         page = 0;
         list_information_type = 0;
 
-        snprintf(_port, 7, "%u", gConfigNetwork.default_port);
-        safe_strcpy(_name, gConfigNetwork.server_name.c_str(), sizeof(_name));
-        safe_strcpy(_description, gConfigNetwork.server_description.c_str(), sizeof(_description));
-        safe_strcpy(_greeting, gConfigNetwork.server_greeting.c_str(), sizeof(_greeting));
+        snprintf(_port, 7, "%u", gConfigNetwork.DefaultPort);
+        safe_strcpy(_name, gConfigNetwork.ServerName.c_str(), sizeof(_name));
+        safe_strcpy(_description, gConfigNetwork.ServerDescription.c_str(), sizeof(_description));
+        safe_strcpy(_greeting, gConfigNetwork.ServerGreeting.c_str(), sizeof(_greeting));
     }
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
@@ -112,24 +112,24 @@ public:
                 window_start_textbox(*this, widgetIndex, STR_STRING, _password, 32);
                 break;
             case WIDX_MAXPLAYERS_INCREASE:
-                if (gConfigNetwork.maxplayers < 255)
+                if (gConfigNetwork.Maxplayers < 255)
                 {
-                    gConfigNetwork.maxplayers++;
+                    gConfigNetwork.Maxplayers++;
                 }
-                config_save_default();
+                ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_MAXPLAYERS_DECREASE:
-                if (gConfigNetwork.maxplayers > 1)
+                if (gConfigNetwork.Maxplayers > 1)
                 {
-                    gConfigNetwork.maxplayers--;
+                    gConfigNetwork.Maxplayers--;
                 }
-                config_save_default();
+                ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_ADVERTISE_CHECKBOX:
-                gConfigNetwork.advertise = !gConfigNetwork.advertise;
-                config_save_default();
+                gConfigNetwork.Advertise = !gConfigNetwork.Advertise;
+                ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_START_SERVER:
@@ -141,7 +141,7 @@ public:
                 auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
                 intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(LoadSaveCallback));
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
                 break;
         }
     }
@@ -149,10 +149,10 @@ public:
     {
         ColourSchemeUpdateByClass(this, WindowClass::ServerList);
 
-        WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
+        WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.Advertise);
         auto ft = Formatter::Common();
         ft.Increment(18);
-        ft.Add<uint16_t>(gConfigNetwork.maxplayers);
+        ft.Add<uint16_t>(gConfigNetwork.Maxplayers);
     }
     void OnUpdate() override
     {
@@ -184,8 +184,8 @@ public:
                     safe_strcpy(_port, temp.c_str(), sizeof(_port));
                 }
 
-                gConfigNetwork.default_port = atoi(_port);
-                config_save_default();
+                gConfigNetwork.DefaultPort = atoi(_port);
+                ConfigSaveDefault();
 
                 widget_invalidate(*this, WIDX_NAME_INPUT);
                 break;
@@ -201,8 +201,8 @@ public:
 
                 if (_name[0] != '\0')
                 {
-                    gConfigNetwork.server_name = _name;
-                    config_save_default();
+                    gConfigNetwork.ServerName = _name;
+                    ConfigSaveDefault();
                 }
 
                 widget_invalidate(*this, WIDX_NAME_INPUT);
@@ -219,8 +219,8 @@ public:
 
                 if (_description[0] != '\0')
                 {
-                    gConfigNetwork.server_description = _description;
-                    config_save_default();
+                    gConfigNetwork.ServerDescription = _description;
+                    ConfigSaveDefault();
                 }
 
                 widget_invalidate(*this, WIDX_DESCRIPTION_INPUT);
@@ -237,8 +237,8 @@ public:
 
                 if (_greeting[0] != '\0')
                 {
-                    gConfigNetwork.server_greeting = _greeting;
-                    config_save_default();
+                    gConfigNetwork.ServerGreeting = _greeting;
+                    ConfigSaveDefault();
                 }
 
                 widget_invalidate(*this, WIDX_GREETING_INPUT);
@@ -284,7 +284,7 @@ private:
         game_notify_map_change();
         if (GetContext()->LoadParkFromFile(path, false, true))
         {
-            network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
+            network_begin_server(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }
     }
 
@@ -293,8 +293,8 @@ private:
         if (result == MODAL_RESULT_OK)
         {
             game_notify_map_change();
-            context_load_park_from_file(path);
-            network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
+            GetContext()->LoadParkFromFile(path);
+            network_begin_server(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }
     }
 };

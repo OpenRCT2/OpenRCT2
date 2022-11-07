@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,7 +31,7 @@ enum
 };
 
 static void PaintMotionSimulatorVehicle(
-    paint_session& session, const Ride& ride, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto rideEntry = ride.GetRideEntry();
@@ -66,9 +66,9 @@ static void PaintMotionSimulatorVehicle(
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        imageTemplate = imageFlags;
     }
     auto simulatorImageId = imageTemplate.WithIndex(imageIndex);
     auto stairsImageId = imageTemplate.WithIndex(SPR_MOTION_SIMULATOR_STAIRS_R0 + direction);
@@ -102,14 +102,14 @@ static void PaintMotionSimulatorVehicle(
 }
 
 static void PaintMotionSimulator(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 
     int32_t edges = edges_2x2[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -132,8 +132,8 @@ static void PaintMotionSimulator(
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 128, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
 }
 
 /**

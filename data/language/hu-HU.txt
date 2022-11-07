@@ -907,7 +907,7 @@ STR_1522    :„{STRINGID} esernyője igazán megéri az árát”
 STR_1523    :„{STRINGID} üdítője igazán megéri az árát”
 STR_1524    :„{STRINGID} hamburgere igazán megéri az árát”
 STR_1525    :„{STRINGID} sült krumplija igazán megéri az árát”
-STR_1526    :„{STRINGID} jégkréme igazán megéri az árát”
+STR_1526    :„{STRINGID} jégkrémje igazán megéri az árát”
 STR_1527    :„{STRINGID} vattacukra igazán megéri az árát”
 STR_1528    :
 STR_1529    :
@@ -941,7 +941,7 @@ STR_1556    :„{STRINGID} esernyője túl sokba kerül számomra”
 STR_1557    :„{STRINGID} üdítője túl sokba kerül számomra”
 STR_1558    :„{STRINGID} hamburgere túl sokba kerül számomra”
 STR_1559    :„{STRINGID} sült krumplija túl sokba kerül számomra”
-STR_1560    :„{STRINGID} jégkréme túl sokba kerül számomra”
+STR_1560    :„{STRINGID} jégkrémje túl sokba kerül számomra”
 STR_1561    :„{STRINGID} vattacukra túl sokba kerül számomra”
 STR_1562    :
 STR_1563    :
@@ -2696,8 +2696,6 @@ STR_5503    :Add meg a gépnevet vagy IP-címet:
 STR_5504    :A többjátékos mód állapota
 STR_5505    :Nem lehet csatlakozni a szerverhez.
 STR_5506    :Vendégeket nem érdeklik az intenzitások
-STR_5508    :Hibás ellenőrző összegű fájlok engedélyezése
-STR_5509    :Engedélyezi a hibás ellenőrző összeggel{NEWLINE}rendelkező pályák és mentések{NEWLINE}betöltését, mint például a próbaverzió pályái vagy a sérült mentések.
 STR_5510    :Alapértelmezett hangeszköz
 STR_5511    :(ISMERETLEN)
 STR_5512    :Játék mentése másként
@@ -2933,7 +2931,7 @@ STR_5784    :{BLACK}Teljesíts korábbi pályákat a feloldásához.
 STR_5785    :A csoport nem nevezhető át…
 STR_5786    :Érvénytelen csoportnév
 STR_5787    :{COMMA32} játékos van online
-STR_5788    :Alapértelmezett ellenőrzési idő:
+STR_5788    :Alap ellenőrzési időköz:
 STR_5789    :Villámhatás kikapcsolása
 STR_5791    :Az összes játék megbízhatóságát 100%-ra{NEWLINE}állítja és visszaállítja az építési idejüket „idén”-re
 STR_5792    :Megjavítja az összes meghibásodott játékot
@@ -2976,7 +2974,7 @@ STR_5831    :A hőmérséklet kijelzéséhez{NEWLINE}használt mértékegység m
 STR_5833    :A játék által használt dátumformátum megváltoztatása
 STR_5834    :Az OpenRCT2 által használt hangeszköz kiválasztása
 STR_5835    :A játék némítása, ha az ablak elveszti a fókuszt
-STR_5836    :A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha az RCT1 játékmappájából a ’data/css17.dat’-ot átmásolod az RCT2 mappán belül a ’data/css50.dat’-ba, vagy megadod az RCT1 útvonalát az Egyéb fülön.
+STR_5836    :A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha megadod az RCT1 útvonalát az Egyéb fülön.
 STR_5838    :Külön gomb a pénzügyi ablak számára az eszköztáron
 STR_5839    :Külön gomb a kutatás-fejlesztés ablak számára az eszköztáron
 STR_5840    :Külön gomb a csalások ablak számára az eszköztáron
@@ -3061,7 +3059,7 @@ STR_5931    :Hirdetőtábla részletei
 STR_5932    :Sérült elem részletei
 STR_5933    :Tulajdonságok
 STR_5934    :Terep textúrája: {BLACK}{STRINGID}
-STR_5935    :Terep széle: {BLACK}{STRINGID}
+STR_5935    :Terepszegély: {BLACK}{STRINGID}
 STR_5936    :Földtulajdon: {BLACK}{STRINGID}
 STR_5937    :Nincs tulajdonban és nem eladó
 STR_5938    :Vízszint: {BLACK}{COMMA16}
@@ -3352,7 +3350,7 @@ STR_6267    :Mezővizsgáló megnyitása
 STR_6268    :Megállított játék léptetése
 STR_6269    :Érvénytelen éghajlati ID
 STR_6270    :Terepfelületek
-STR_6271    :Terep szélek
+STR_6271    :Terepszegélyek
 STR_6272    :Állomások
 STR_6273    :Zene
 STR_6274    :Nem állítható be színséma…
@@ -3473,7 +3471,7 @@ STR_6398    :A fájl nem támogatott játék-típusokat tartalmaz. Kérlek friss
 STR_6399    :Az OpenRCT2 működéséhez szükség van az eredeti RollerCoaster Tycoon 2 fájljaira. Kérlek állítsd be a „game_path” változót a config.ini-ben arra a mappára, amelybe telepítetted a RollerCoaster Tycoon 2-t, majd indítsd újra az OpenRCT2-t.
 STR_6400    :Letöltöttem a GOG RollerCoaster Tycoon 2 offline telepítőjét, de nincs telepítve
 STR_6401    :Már telepítettem a RollerCoaster Tycoon 2-t
-STR_6402    :OpenRCT2 adatok beállítása
+STR_6402    :OpenRCT2 adatok megadása
 STR_6403    :Válaszd ki a számodra legmegfelelőbbet
 STR_6404    :Kérlek válaszd ki a GOG RollerCoaster Tycoon 2 telepítőjét.
 STR_6405    :GOG telepítő kiválasztása
@@ -3509,7 +3507,7 @@ STR_6434    :A jelenlegi gyorsbillentyű összes hozzárendelésének törlése.
 STR_6435    :{WINDOW_COLOUR_2}Megállított vandálok: {BLACK}{COMMA32}
 STR_6436    :Láthatatlanság be/ki
 STR_6437    :Látható
-STR_6438    :L
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Mezővizsgáló: Láthatatlanság be/ki
 STR_6440    :Átlátszó víz
 STR_6441    :Legalább egy nem várósori útobjektum legyen kiválasztva.
@@ -3585,6 +3583,19 @@ STR_6511    :Zéró G orsó (jobbra)
 STR_6512    :Nagy Zéró G orsó (balra)
 STR_6513    :Nagy Zéró G orsó (jobbra)
 STR_6514    :Érvénytelen magasság!
+STR_6515    :{BLACK}Nincs összekapcsolódás az RCT1-el - tartalékképek lesznek használva.
+STR_6516    :Egy vagy több hozzáadott objektum RCT1 összekapcsolást igényel a megfelelő megjelenítéshez. Tartalékképek lesznek használva.
+STR_6517    :Egy vagy több objektum ebben a parkban RCT1 összekapcsolást igényel a megfelelő megjelenítéshez. Tartalékképek lesznek használva.
+STR_6518    :{BLACK}Vidd az egeret egy pálya fölé a leírás és a cél megtekintéséhez.  Kattints rá a játék elindításához.
+STR_6519    :Extrák
+STR_6520    :Asset csomagok
+STR_6521    :Alacsony prioritás
+STR_6522    :Magas prioritás
+STR_6523    :A kiválasztott asset csomag prioritásának csökkentése.
+STR_6524    :A kiválasztott asset csomag prioritásának növelése.
+STR_6525    :A játék összes assetjének újratöltése az engedélyezett asset csomagokkal.
+STR_6526    :(alap grafika, zene és hangeffektek)
+STR_6527    :Versenyek
 
 #############
 # Scenarios #
@@ -3967,7 +3978,7 @@ STR_DTLS    :Ez a néhány okosan tervezett hullámvasúttal rendelkező sivatag
 <Tiny Towers>
 STR_SCNR    :Törpe Tornyok
 STR_PARK    :Törpe Tornyok
-STR_DTLS    : Öt meglévő hullámvasutat kell befejezned ebben a kis parkban
+STR_DTLS    :Öt meglévő hullámvasutat kell befejezned ebben a kis parkban
 
 <Nevermore Park>
 STR_SCNR    :Sohamár Park
@@ -4059,15 +4070,6 @@ STR_NAME    :Tető
 
 [TTRFWD08]
 STR_NAME    :Tető
-
-[TTRFGL01]
-STR_NAME    :Üvegtető
-
-[TTRFGL02]
-STR_NAME    :Üvegtető
-
-[TTRFGL03]
-STR_NAME    :Üvegtető
 
 [ACWW33]
 STR_NAME    :Fa sánckerítés

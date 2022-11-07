@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -254,8 +254,8 @@ private:
         else
         {
             result.Type = DIRECTORY_CHILD_TYPE::DC_FILE;
-            result.Size = (static_cast<uint64_t>(child->nFileSizeHigh) << 32ULL) | static_cast<uint64_t>(child->nFileSizeLow);
-            result.LastModified = (static_cast<uint64_t>(child->ftLastWriteTime.dwHighDateTime) << 32ULL)
+            result.Size = (static_cast<uint64_t>(child->nFileSizeHigh) << 32uLL) | static_cast<uint64_t>(child->nFileSizeLow);
+            result.LastModified = (static_cast<uint64_t>(child->ftLastWriteTime.dwHighDateTime) << 32uLL)
                 | static_cast<uint64_t>(child->ftLastWriteTime.dwLowDateTime);
         }
         return result;

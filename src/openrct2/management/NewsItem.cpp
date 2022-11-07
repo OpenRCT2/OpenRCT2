@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -115,7 +115,7 @@ void News::InitQueue()
     }
 
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 uint16_t News::ItemQueues::IncrementTicks()
@@ -130,7 +130,7 @@ static void TickCurrent()
     if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
     {
         // Play sound
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::NewsItem, 0, context_get_width() / 2);
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::NewsItem, 0, ContextGetWidth() / 2);
     }
 }
 
@@ -161,7 +161,7 @@ void News::UpdateCurrentItem()
         return;
 
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     // Update the current news item
     TickCurrent();
@@ -196,7 +196,7 @@ void News::ItemQueues::ArchiveCurrent()
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 /**
@@ -219,7 +219,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
                 break;
             }
             auto rideViewCentre = ride->overall_view.ToTileCentre();
-            subjectLoc = CoordsXYZ{ rideViewCentre, tile_element_height(rideViewCentre) };
+            subjectLoc = CoordsXYZ{ rideViewCentre, TileElementHeight(rideViewCentre) };
             break;
         }
         case News::ItemType::PeepOnRide:
@@ -275,7 +275,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
                                        static_cast<int16_t>(subjectUnsigned >> 16) };
             if (!subjectXY.IsNull())
             {
-                subjectLoc = CoordsXYZ{ subjectXY, tile_element_height(subjectXY) };
+                subjectLoc = CoordsXYZ{ subjectXY, TileElementHeight(subjectXY) };
             }
             break;
         }
@@ -367,7 +367,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         {
             auto intent = Intent(WindowClass::Ride);
             intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             break;
         }
         case News::ItemType::PeepOnRide:
@@ -378,12 +378,12 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             {
                 auto intent = Intent(WindowClass::Peep);
                 intent.putExtra(INTENT_EXTRA_PEEP, peep);
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
             }
             break;
         }
         case News::ItemType::Money:
-            context_open_window(WindowClass::Finances);
+            ContextOpenWindow(WindowClass::Finances);
             break;
         case News::ItemType::Research:
         {
@@ -393,13 +393,13 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);
                 intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);
                 intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entryIndex);
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
                 break;
             }
 
             auto intent = Intent(INTENT_ACTION_NEW_SCENERY);
             intent.putExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX, item.entryIndex);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             break;
         }
         case News::ItemType::Peeps:
@@ -407,14 +407,14 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             auto intent = Intent(WindowClass::GuestList);
             intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingX));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             break;
         }
         case News::ItemType::Award:
-            context_open_window_view(WV_PARK_AWARDS);
+            ContextOpenWindowView(WV_PARK_AWARDS);
             break;
         case News::ItemType::Graph:
-            context_open_window_view(WV_PARK_RATING);
+            ContextOpenWindowView(WV_PARK_RATING);
             break;
         case News::ItemType::Null:
         case News::ItemType::Blank:
@@ -437,7 +437,7 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
             if (&newsItem == &gNewsItems.Current())
             {
                 auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-                context_broadcast_intent(&intent);
+                ContextBroadcastIntent(&intent);
             }
         }
     });

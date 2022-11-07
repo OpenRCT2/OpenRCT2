@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -93,7 +93,7 @@ public:
     {
         ClearProvisional();
         viewport_set_visibility(0);
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         hide_gridlines();
@@ -129,7 +129,7 @@ public:
                 auto intent = Intent(WindowClass::TrackDesignList);
                 intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
                 intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
                 break;
         }
     }
@@ -146,7 +146,7 @@ public:
         TrackDesignState tds{};
         int16_t mapZ;
 
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -209,7 +209,7 @@ public:
     void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         ClearProvisional();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -241,7 +241,7 @@ public:
                         {
                             auto intent = Intent(WindowClass::Ride);
                             intent.putExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
-                            context_open_intent(&intent);
+                            ContextOpenIntent(&intent);
                             auto wnd = window_find_by_class(WindowClass::TrackDesignPlace);
                             window_close(*wnd);
                         }
@@ -402,7 +402,7 @@ private:
 
     int32_t GetBaseZ(const CoordsXY& loc)
     {
-        auto surfaceElement = map_get_surface_element_at(loc);
+        auto surfaceElement = MapGetSurfaceElementAt(loc);
         if (surfaceElement == nullptr)
             return 0;
 

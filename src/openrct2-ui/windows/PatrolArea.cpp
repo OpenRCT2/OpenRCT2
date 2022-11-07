@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,7 +55,7 @@ public:
     void OnOpen() override
     {
         widgets = PatrolAreaWidgets;
-        hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
+        hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
         window_push_others_below(*this);
         gLandToolSize = 4;
@@ -176,14 +176,14 @@ public:
         if (stateChanged)
         {
             // Invalidate previous area
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             // Update and invalidate new area
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = posA;
             gMapSelectPositionB = posB;
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
         }
     }
 
@@ -280,7 +280,7 @@ private:
 
     std::optional<CoordsXY> GetBestCoordsFromPos(const ScreenCoordsXY& pos)
     {
-        auto coords = footpath_get_coordinates_from_pos(pos, nullptr, nullptr);
+        auto coords = FootpathGetCoordinatesFromPos(pos, nullptr, nullptr);
         return coords.IsNull() ? std::nullopt : std::make_optional(coords);
     }
 };
@@ -288,7 +288,7 @@ private:
 rct_window* WindowPatrolAreaOpen(EntityId staffId)
 {
     auto w = WindowFocusOrCreate<PatrolAreaWindow>(
-        WindowClass::PatrolArea, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+        WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     if (w != nullptr)
     {
         w->SetStaffId(staffId);

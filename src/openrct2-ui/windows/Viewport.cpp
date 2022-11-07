@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -144,7 +144,7 @@ public:
                 {
                     auto info = get_map_coordinates_from_pos(
                         { windowPos.x + (width / 2), windowPos.y + (height / 2) }, ViewportInteractionItemAll);
-                    window_scroll_to_location(*mainWindow, { info.Loc, tile_element_height(info.Loc) });
+                    window_scroll_to_location(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
                 }
                 break;
         }
@@ -161,8 +161,8 @@ public:
 
     void OnResize() override
     {
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
 
         max_width = (screenWidth * 4) / 5;
         max_height = (screenHeight * 4) / 5;
@@ -177,13 +177,7 @@ public:
     {
         rct_widget* viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
 
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_CONTENT_PANEL].bottom = height - 1;
+        ResizeFrameWithPage();
         widgets[WIDX_ZOOM_IN].left = width - 27;
         widgets[WIDX_ZOOM_IN].right = width - 2;
         widgets[WIDX_ZOOM_OUT].left = width - 27;
@@ -199,9 +193,9 @@ public:
         // Set disabled widgets
         disabled_widgets = 0;
         if (viewport != nullptr && viewport->zoom == ZoomLevel::min())
-            disabled_widgets |= 1ULL << WIDX_ZOOM_IN;
+            disabled_widgets |= 1uLL << WIDX_ZOOM_IN;
         if (viewport != nullptr && viewport->zoom >= ZoomLevel::max())
-            disabled_widgets |= 1ULL << WIDX_ZOOM_OUT;
+            disabled_widgets |= 1uLL << WIDX_ZOOM_OUT;
 
         if (viewport != nullptr)
         {
@@ -216,8 +210,8 @@ public:
 
 rct_window* WindowViewportOpen()
 {
-    int32_t screenWidth = context_get_width();
-    int32_t screenHeight = context_get_height();
+    int32_t screenWidth = ContextGetWidth();
+    int32_t screenHeight = ContextGetHeight();
     int32_t width = (screenWidth / 2);
     int32_t height = (screenHeight / 2);
 

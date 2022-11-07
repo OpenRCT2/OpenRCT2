@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,7 +46,7 @@ static constexpr const uint8_t* DirectionToDoorImageOffset[] = { DirectionToDoor
                                                                  DirectionToDoorImageOffset2, DirectionToDoorImageOffset3 };
 
 static void PaintWallDoor(
-    paint_session& session, const WallSceneryEntry& wallEntry, ImageId imageId, CoordsXYZ offset, BoundBoxXYZ bbR1,
+    PaintSession& session, const WallSceneryEntry& wallEntry, ImageId imageId, CoordsXYZ offset, BoundBoxXYZ bbR1,
     BoundBoxXYZ bbR2, BoundBoxXYZ bbL)
 {
     PROFILED_FUNCTION();
@@ -66,7 +66,7 @@ static void PaintWallDoor(
 }
 
 static void PaintWallDoor(
-    paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
+    PaintSession& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
     Direction direction, int32_t height)
 {
     PROFILED_FUNCTION();
@@ -130,7 +130,7 @@ static void PaintWallDoor(
 }
 
 static void PaintWallWall(
-    paint_session& session, const WallSceneryEntry& wallEntry, ImageId imageTemplate, uint32_t imageOffset, CoordsXYZ offset,
+    PaintSession& session, const WallSceneryEntry& wallEntry, ImageId imageTemplate, uint32_t imageOffset, CoordsXYZ offset,
     BoundBoxXYZ boundBox, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -140,13 +140,13 @@ static void PaintWallWall(
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
     if ((wallEntry.flags & WALL_SCENERY_HAS_GLASS) && !isGhost)
     {
-        auto glassImageId = ImageId(imageIndex + 6).WithTransparancy(imageTemplate.GetPrimary());
+        auto glassImageId = ImageId(imageIndex + 6).WithTransparency(imageTemplate.GetPrimary());
         PaintAddImageAsChild(session, glassImageId, offset, boundBox);
     }
 }
 
 static void PaintWallScrollingText(
-    paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, Direction direction,
+    PaintSession& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, Direction direction,
     int32_t height, const CoordsXYZ& boundsOffset, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -172,7 +172,7 @@ static void PaintWallScrollingText(
     auto ft = Formatter();
     banner->FormatTextTo(ft);
     char signString[256];
-    if (gConfigGeneral.upper_case_banners)
+    if (gConfigGeneral.UpperCaseBanners)
     {
         format_string_to_upper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
@@ -181,14 +181,14 @@ static void PaintWallScrollingText(
         format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
 
-    auto stringWidth = gfx_get_string_width(signString, FontSpriteBase::TINY);
+    auto stringWidth = gfx_get_string_width(signString, FontStyle::Tiny);
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
     auto imageId = scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollingMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 8 }, { 1, 1, 13 }, boundsOffset);
 }
 
 static void PaintWallWall(
-    paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
+    PaintSession& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
     Direction direction, int32_t height, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -296,7 +296,7 @@ static void PaintWallWall(
     PaintWallScrollingText(session, wallEntry, wallElement, direction, height, boundBox.offset, isGhost);
 }
 
-void PaintWall(paint_session& session, uint8_t direction, int32_t height, const WallElement& wallElement)
+void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const WallElement& wallElement)
 {
     PROFILED_FUNCTION();
 
@@ -322,7 +322,7 @@ void PaintWall(paint_session& session, uint8_t direction, int32_t height, const 
         imageTemplate = imageTemplate.WithTertiary(wallElement.GetTertiaryColour());
     }
 
-    paint_util_set_general_support_height(session, 8 * wallElement.clearance_height, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.clearance_height, 0x20);
 
     auto isGhost = false;
     if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))

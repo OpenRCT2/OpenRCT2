@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 #    include <emscripten.h>
 #endif // __EMSCRIPTEN__
 
+#include "AssetPackManager.h"
 #include "Context.h"
 #include "Editor.h"
 #include "FileClassifier.h"
@@ -107,6 +108,7 @@ namespace OpenRCT2
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
         std::unique_ptr<IReplayManager> _replayManager;
         std::unique_ptr<IGameStateSnapshots> _gameStateSnapshots;
+        std::unique_ptr<AssetPackManager> _assetPackManager;
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
@@ -197,7 +199,7 @@ namespace OpenRCT2
             gfx_unload_g2();
             gfx_unload_g1();
             Audio::Close();
-            config_release();
+            ConfigRelease();
 
             Instance = nullptr;
         }
@@ -264,6 +266,11 @@ namespace OpenRCT2
             return _gameStateSnapshots.get();
         }
 
+        AssetPackManager* GetAssetPackManager() override
+        {
+            return _assetPackManager.get();
+        }
+
         DrawingEngine GetDrawingEngineType() override
         {
             return _drawingEngineType;
@@ -317,7 +324,7 @@ namespace OpenRCT2
         void Quit() override
         {
             gSavePromptMode = PromptMode::Quit;
-            context_open_window(WindowClass::SavePrompt);
+            ContextOpenWindow(WindowClass::SavePrompt);
         }
 
         bool Initialise() final override
@@ -330,20 +337,20 @@ namespace OpenRCT2
 
             crash_init();
 
-            if (String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
+            if (String::Equals(gConfigGeneral.LastRunVersion, OPENRCT2_VERSION))
             {
                 gOpenRCT2ShowChangelog = false;
             }
             else
             {
                 gOpenRCT2ShowChangelog = true;
-                gConfigGeneral.last_run_version = OPENRCT2_VERSION;
-                config_save_default();
+                gConfigGeneral.LastRunVersion = OPENRCT2_VERSION;
+                ConfigSaveDefault();
             }
 
             try
             {
-                _localisationService->OpenLanguage(gConfigGeneral.language);
+                _localisationService->OpenLanguage(gConfigGeneral.Language);
             }
             catch (const std::exception& e)
             {
@@ -383,6 +390,10 @@ namespace OpenRCT2
             _scenarioRepository = CreateScenarioRepository(_env);
             _replayManager = CreateReplayManager();
             _gameStateSnapshots = CreateGameStateSnapshots();
+            if (!gOpenRCT2Headless)
+            {
+                _assetPackManager = std::make_unique<AssetPackManager>();
+            }
 #ifdef __ENABLE_DISCORD__
             if (!gOpenRCT2Headless)
             {
@@ -428,6 +439,13 @@ namespace OpenRCT2
             //      of the object cache.
             _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
 
+            if (!gOpenRCT2Headless)
+            {
+                _assetPackManager->Scan();
+                _assetPackManager->LoadEnabledAssetPacks();
+                _assetPackManager->Reload();
+            }
+
             // TODO Like objects, this can take a while if there are a lot of track designs
             //      its also really something really we might want to do in the background
             //      as its not required until the player wants to place a new ride.
@@ -441,7 +459,7 @@ namespace OpenRCT2
                 Init();
                 PopulateDevices();
                 InitRideSoundsAndInfo();
-                gGameSoundsOff = !gConfigSound.master_sound_enabled;
+                gGameSoundsOff = !gConfigSound.MasterSoundEnabled;
             }
 
             chat_init();
@@ -476,7 +494,7 @@ namespace OpenRCT2
         {
             assert(_drawingEngine == nullptr);
 
-            _drawingEngineType = gConfigGeneral.drawing_engine;
+            _drawingEngineType = gConfigGeneral.DrawingEngine;
 
             auto drawingEngineFactory = _uiContext->GetDrawingEngineFactory();
             auto drawingEngine = drawingEngineFactory->Create(_drawingEngineType, _uiContext);
@@ -494,8 +512,8 @@ namespace OpenRCT2
                     log_error("Unable to create drawing engine. Falling back to software.");
 
                     // Fallback to software
-                    gConfigGeneral.drawing_engine = DrawingEngine::Software;
-                    config_save_default();
+                    gConfigGeneral.DrawingEngine = DrawingEngine::Software;
+                    ConfigSaveDefault();
                     drawing_engine_init();
                 }
             }
@@ -504,7 +522,7 @@ namespace OpenRCT2
                 try
                 {
                     drawingEngine->Initialise();
-                    drawingEngine->SetVSync(gConfigGeneral.use_vsync);
+                    drawingEngine->SetVSync(gConfigGeneral.UseVSync);
                     _drawingEngine = std::move(drawingEngine);
                 }
                 catch (const std::exception& ex)
@@ -522,8 +540,8 @@ namespace OpenRCT2
                         log_error("Unable to initialise drawing engine. Falling back to software.");
 
                         // Fallback to software
-                        gConfigGeneral.drawing_engine = DrawingEngine::Software;
-                        config_save_default();
+                        gConfigGeneral.DrawingEngine = DrawingEngine::Software;
+                        ConfigSaveDefault();
                         drawing_engine_init();
                     }
                 }
@@ -632,7 +650,7 @@ namespace OpenRCT2
                 gCurrentLoadedPath = path;
                 gFirstTimeSaving = true;
                 game_fix_save_vars();
-                AutoCreateMapAnimations();
+                MapAnimationAutoCreate();
                 EntityTweener::Get().Reset();
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
@@ -672,7 +690,7 @@ namespace OpenRCT2
                 }
                 // This ensures that the newly loaded save reflects the user's
                 // 'show real names of guests' option, now that it's a global setting
-                peep_update_names(gConfigGeneral.show_real_names_of_guests);
+                peep_update_names(gConfigGeneral.ShowRealNamesOfGuests);
 #ifndef DISABLE_NETWORK
                 if (sendMap)
                 {
@@ -794,19 +812,19 @@ namespace OpenRCT2
             if (gCustomRCT2DataPath.empty())
             {
                 // Check install directory
-                if (gConfigGeneral.rct2_path.empty() || !Platform::OriginalGameDataExists(gConfigGeneral.rct2_path))
+                if (gConfigGeneral.RCT2Path.empty() || !Platform::OriginalGameDataExists(gConfigGeneral.RCT2Path))
                 {
                     log_verbose(
-                        "install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path.c_str());
-                    if (!config_find_or_browse_install_directory())
+                        "install directory does not exist or invalid directory selected, %s", gConfigGeneral.RCT2Path.c_str());
+                    if (!ConfigFindOrBrowseInstallDirectory())
                     {
-                        auto path = config_get_default_path();
+                        auto path = ConfigGetDefaultPath();
                         Console::Error::WriteLine(
                             "An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path.c_str());
                         return std::string();
                     }
                 }
-                result = gConfigGeneral.rct2_path;
+                result = gConfigGeneral.RCT2Path;
             }
             else
             {
@@ -854,7 +872,7 @@ namespace OpenRCT2
             }
             else
             {
-                if ((gOpenRCT2StartupAction == StartupAction::Title) && gConfigGeneral.play_intro)
+                if ((gOpenRCT2StartupAction == StartupAction::Title) && gConfigGeneral.PlayIntro)
                 {
                     gOpenRCT2StartupAction = StartupAction::Intro;
                 }
@@ -918,17 +936,17 @@ namespace OpenRCT2
                     {
                         if (gNetworkStartPort == 0)
                         {
-                            gNetworkStartPort = gConfigNetwork.default_port;
+                            gNetworkStartPort = gConfigNetwork.DefaultPort;
                         }
 
                         if (gNetworkStartAddress.empty())
                         {
-                            gNetworkStartAddress = gConfigNetwork.listen_address;
+                            gNetworkStartAddress = gConfigNetwork.ListenAddress;
                         }
 
                         if (gCustomPassword.empty())
                         {
-                            _network.SetPassword(gConfigNetwork.default_password.c_str());
+                            _network.SetPassword(gConfigNetwork.DefaultPassword.c_str());
                         }
                         else
                         {
@@ -963,7 +981,7 @@ namespace OpenRCT2
             {
                 if (gNetworkStartPort == 0)
                 {
-                    gNetworkStartPort = gConfigNetwork.default_port;
+                    gNetworkStartPort = gConfigNetwork.DefaultPort;
                 }
                 _network.BeginClient(gNetworkStartHost, gNetworkStartPort);
             }
@@ -986,7 +1004,7 @@ namespace OpenRCT2
         {
             if (!ShouldDraw())
                 return false;
-            if (!gConfigGeneral.uncap_fps)
+            if (!gConfigGeneral.UncapFPS)
                 return false;
             if (gGameSpeed > 4)
                 return false;
@@ -1337,17 +1355,12 @@ namespace OpenRCT2
 
 } // namespace OpenRCT2
 
-void context_init()
+void ContextInit()
 {
     GetContext()->GetUiContext()->GetWindowManager()->Init();
 }
 
-bool context_load_park_from_file(const utf8* path)
-{
-    return GetContext()->LoadParkFromFile(path);
-}
-
-bool context_load_park_from_stream(void* stream)
+bool ContextLoadParkFromStream(void* stream)
 {
     return GetContext()->LoadParkFromStream(static_cast<IStream*>(stream), "");
 }
@@ -1362,170 +1375,170 @@ void openrct2_finish()
     GetContext()->Finish();
 }
 
-void context_setcurrentcursor(CursorID cursor)
+void ContextSetCurrentCursor(CursorID cursor)
 {
     GetContext()->GetUiContext()->SetCursor(cursor);
 }
 
-void context_update_cursor_scale()
+void ContextUpdateCursorScale()
 {
-    GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8_t>(std::round(gConfigGeneral.window_scale)));
+    GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8_t>(std::round(gConfigGeneral.WindowScale)));
 }
 
-void context_hide_cursor()
+void ContextHideCursor()
 {
     GetContext()->GetUiContext()->SetCursorVisible(false);
 }
 
-void context_show_cursor()
+void ContextShowCursor()
 {
     GetContext()->GetUiContext()->SetCursorVisible(true);
 }
 
-ScreenCoordsXY context_get_cursor_position()
+ScreenCoordsXY ContextGetCursorPosition()
 {
     return GetContext()->GetUiContext()->GetCursorPosition();
 }
 
-ScreenCoordsXY context_get_cursor_position_scaled()
+ScreenCoordsXY ContextGetCursorPositionScaled()
 {
-    auto cursorCoords = context_get_cursor_position();
+    auto cursorCoords = ContextGetCursorPosition();
     // Compensate for window scaling.
-    return { static_cast<int32_t>(std::ceil(cursorCoords.x / gConfigGeneral.window_scale)),
-             static_cast<int32_t>(std::ceil(cursorCoords.y / gConfigGeneral.window_scale)) };
+    return { static_cast<int32_t>(std::ceil(cursorCoords.x / gConfigGeneral.WindowScale)),
+             static_cast<int32_t>(std::ceil(cursorCoords.y / gConfigGeneral.WindowScale)) };
 }
 
-void context_set_cursor_position(const ScreenCoordsXY& cursorPosition)
+void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition)
 {
     GetContext()->GetUiContext()->SetCursorPosition(cursorPosition);
 }
 
-const CursorState* context_get_cursor_state()
+const CursorState* ContextGetCursorState()
 {
     return GetContext()->GetUiContext()->GetCursorState();
 }
 
-const uint8_t* context_get_keys_state()
+const uint8_t* ContextGetKeysState()
 {
     return GetContext()->GetUiContext()->GetKeysState();
 }
 
-const uint8_t* context_get_keys_pressed()
+const uint8_t* ContextGetKeysPressed()
 {
     return GetContext()->GetUiContext()->GetKeysPressed();
 }
 
-TextInputSession* context_start_text_input(utf8* buffer, size_t maxLength)
+TextInputSession* ContextStartTextInput(utf8* buffer, size_t maxLength)
 {
     return GetContext()->GetUiContext()->StartTextInput(buffer, maxLength);
 }
 
-void context_stop_text_input()
+void ContextStopTextInput()
 {
     GetContext()->GetUiContext()->StopTextInput();
 }
 
-bool context_is_input_active()
+bool ContextIsInputActive()
 {
     return GetContext()->GetUiContext()->IsTextInputActive();
 }
 
-void context_trigger_resize()
+void ContextTriggerResize()
 {
     return GetContext()->GetUiContext()->TriggerResize();
 }
 
-void context_set_fullscreen_mode(int32_t mode)
+void ContextSetFullscreenMode(int32_t mode)
 {
     return GetContext()->GetUiContext()->SetFullscreenMode(static_cast<FULLSCREEN_MODE>(mode));
 }
 
-void context_recreate_window()
+void ContextRecreateWindow()
 {
     GetContext()->GetUiContext()->RecreateWindow();
 }
 
-int32_t context_get_width()
+int32_t ContextGetWidth()
 {
     return GetContext()->GetUiContext()->GetWidth();
 }
 
-int32_t context_get_height()
+int32_t ContextGetHeight()
 {
     return GetContext()->GetUiContext()->GetHeight();
 }
 
-bool context_has_focus()
+bool ContextHasFocus()
 {
     return GetContext()->GetUiContext()->HasFocus();
 }
 
-void context_set_cursor_trap(bool value)
+void ContextSetCursorTrap(bool value)
 {
     GetContext()->GetUiContext()->SetCursorTrap(value);
 }
 
-rct_window* context_open_window(WindowClass wc)
+rct_window* ContextOpenWindow(WindowClass wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenWindow(wc);
 }
 
-rct_window* context_open_window_view(uint8_t wc)
+rct_window* ContextOpenWindowView(uint8_t wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenView(wc);
 }
 
-rct_window* context_open_detail_window(uint8_t type, int32_t id)
+rct_window* ContextOpenDetailWindow(uint8_t type, int32_t id)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenDetails(type, id);
 }
 
-rct_window* context_open_intent(Intent* intent)
+rct_window* ContextOpenIntent(Intent* intent)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenIntent(intent);
 }
 
-void context_broadcast_intent(Intent* intent)
+void ContextBroadcastIntent(Intent* intent)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->BroadcastIntent(*intent);
 }
 
-void context_force_close_window_by_class(WindowClass windowClass)
+void ContextForceCloseWindowByClass(WindowClass windowClass)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->ForceClose(windowClass);
 }
 
-rct_window* context_show_error(StringId title, StringId message, const Formatter& args)
+rct_window* ContextShowError(StringId title, StringId message, const Formatter& args)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->ShowError(title, message, args);
 }
 
-void context_update_map_tooltip()
+void ContextUpdateMapTooltip()
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->UpdateMapTooltip();
 }
 
-void context_handle_input()
+void ContextHandleInput()
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->HandleInput();
 }
 
-void context_input_handle_keyboard(bool isTitle)
+void ContextInputHandleKeyboard(bool isTitle)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->HandleKeyboard(isTitle);
 }
 
-void context_quit()
+void ContextQuit()
 {
     GetContext()->Quit();
 }

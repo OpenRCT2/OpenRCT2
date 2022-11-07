@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -106,7 +106,7 @@ void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, const CoordsXY&
     }
 
     int32_t z = GetBaseZ();
-    map_invalidate_tile({ coords, z, z + 16 });
+    MapInvalidateTile({ coords, z, z + 16 });
 }
 
 /**
@@ -122,7 +122,7 @@ void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
     uint8_t grassLengthTmp = GrassLength & 7;
 
     // Check if grass is underwater or outside park
-    if (GetWaterHeight() > GetBaseZ() || !map_is_location_in_park(coords))
+    if (GetWaterHeight() > GetBaseZ() || !MapIsLocationInPark(coords))
     {
         if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)
             SetGrassLengthAndInvalidate(GRASS_LENGTH_CLEAR_0, coords);

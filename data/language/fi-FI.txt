@@ -2715,8 +2715,6 @@ STR_5503    :Anna isäntänimi tai IP-osoite:
 STR_5504    :Näytä moninpelin tilanne
 STR_5505    :Yhdistäminen ei onnistunut.
 STR_5506    :Kävijät eivät piittaa intensiteetistä
-STR_5508    :Salli lataus väärästä tarkistussummasta huolimatta
-STR_5509    :Sallii skenaarioiden ja tallennustiedostojen latauksen vaikka tarkistussumma olisi väärä, kuten esim. demoskenaariot tai vaurioituneet tallennukset.
 STR_5510    :Oletusäänilaite
 STR_5511    :(TUNTEMATON)
 STR_5512    :Tallenna peli nimellä
@@ -4083,15 +4081,6 @@ STR_NAME    :Katto
 
 [TTRFWD08]
 STR_NAME    :Katto
-
-[TTRFGL01]
-STR_NAME    :Lasikatto
-
-[TTRFGL02]
-STR_NAME    :Lasikatto
-
-[TTRFGL03]
-STR_NAME    :Lasikatto
 
 [ACWW33]
 STR_NAME    :Puinen tolppaseinä

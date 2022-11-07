@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -294,14 +294,15 @@ public:
             // TODO: this parameter by itself produces very light text.
             // It needs a {BLACK} token in the string to work properly.
             colour_t colour = COLOUR_BLACK;
-            FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
+            FontStyle fontStyle = FontStyle::Medium;
+            auto darkness = TextDarkness::Regular;
 
             if (researchItem.IsAlwaysResearched())
             {
                 if (_selectedResearchItem == &researchItem && dragItem == nullptr)
-                    fontSpriteBase = FontSpriteBase::MEDIUM_EXTRA_DARK;
+                    darkness = TextDarkness::ExtraDark;
                 else
-                    fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
+                    darkness = TextDarkness::Dark;
                 colour = colours[1] | COLOUR_FLAG_INSET;
             }
 
@@ -318,21 +319,21 @@ public:
                 ft.Add<StringId>(rideTypeName);
                 DrawTextEllipsised(
                     &dpi, { 1, itemY }, columnSplitOffset - 11, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, ft,
-                    { colour, fontSpriteBase });
+                    { colour, fontStyle, darkness });
 
                 // Draw vehicle name
                 ft = Formatter();
                 ft.Add<StringId>(itemNameId);
                 DrawTextEllipsised(
                     &dpi, { columnSplitOffset + 1, itemY }, columnSplitOffset - 11, STR_BLACK_STRING, ft,
-                    { colour, fontSpriteBase });
+                    { colour, fontStyle, darkness });
             }
             else
             {
                 // Scenery group, flat ride or shop
                 auto ft = Formatter();
                 ft.Add<StringId>(itemNameId);
-                DrawTextEllipsised(&dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, { colour, fontSpriteBase });
+                DrawTextEllipsised(&dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, { colour, fontStyle, darkness });
             }
         }
     }
@@ -435,19 +436,13 @@ public:
 
     void OnPrepareDraw() override
     {
-        pressed_widgets |= 1ULL << WIDX_PREVIEW;
-        pressed_widgets |= 1ULL << WIDX_TAB_1;
+        pressed_widgets |= 1uLL << WIDX_PREVIEW;
+        pressed_widgets |= 1uLL << WIDX_TAB_1;
 
         widgets[WIDX_CLOSE].type = gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WindowWidgetType::Empty
                                                                                : WindowWidgetType::CloseBox;
 
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_RESIZE].right = width - 1;
-        widgets[WIDX_RESIZE].bottom = height - 1;
+        ResizeFrameWithPage();
 
         int16_t scrollListHeight = (height - 88) / 2;
 
@@ -520,6 +515,13 @@ public:
         _selectedResearchItem = nullptr;
         Invalidate();
 
+        uint32_t beforeItemRawValue = 0;
+        if (beforeItem != nullptr)
+            beforeItemRawValue = beforeItem->rawValue;
+
+        if (item.rawValue == beforeItemRawValue)
+            return;
+
         ResearchRemove(item);
 
         auto& researchList = isInvented ? gResearchItemsInvented : gResearchItemsUninvented;
@@ -527,7 +529,7 @@ public:
         {
             for (size_t i = 0; i < researchList.size(); i++)
             {
-                if (researchList[i] == *beforeItem)
+                if (researchList[i].rawValue == beforeItemRawValue)
                 {
                     researchList.insert((researchList.begin() + i), item);
                     return;
@@ -655,16 +657,16 @@ public:
             const auto rideEntry = get_ride_entry(researchItem.entryIndex);
             const StringId rideTypeName = get_ride_naming(researchItem.baseRideType, rideEntry).Name;
             Formatter ft;
-            ft.Add<StringId>(stringId);
             ft.Add<StringId>(rideTypeName);
-            format_string(buffer, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &ft);
+            ft.Add<StringId>(stringId);
+            format_string(buffer, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG, &ft);
         }
         else
         {
             format_string(buffer, 256, stringId, nullptr);
         }
 
-        auto stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
+        auto stringWidth = gfx_get_string_width(buffer, FontStyle::Medium);
         widgets[0].right = stringWidth;
 
         Invalidate();

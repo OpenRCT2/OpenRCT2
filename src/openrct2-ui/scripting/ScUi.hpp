@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -48,6 +48,7 @@ namespace OpenRCT2::Scripting
         { "other", SCENARIO_CATEGORY_OTHER },
         { "dlc", SCENARIO_CATEGORY_DLC },
         { "build_your_own", SCENARIO_CATEGORY_BUILD_YOUR_OWN },
+        { "competitions", SCENARIO_CATEGORY_COMPETITIONS },
     });
 
     static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
@@ -121,11 +122,11 @@ namespace OpenRCT2::Scripting
     private:
         int32_t width_get() const
         {
-            return context_get_width();
+            return ContextGetWidth();
         }
         int32_t height_get() const
         {
-            return context_get_height();
+            return ContextGetHeight();
         }
         int32_t windows_get() const
         {

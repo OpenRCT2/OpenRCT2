@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@
 
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
     Vehicle* vehicle = nullptr;
@@ -51,9 +51,9 @@ static void paint_twist_structure(
 
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        imageTemplate = imageFlags;
     }
 
     auto baseImageId = rideEntry->Cars[0].base_image_id;
@@ -82,16 +82,16 @@ static void paint_twist_structure(
 
 /** rct2: 0x0076D858 */
 static void paint_twist(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     const uint8_t edges = edges_3x3[trackSequence];
 
-    uint32_t imageId;
+    ImageId imageId;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
     track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_MISC], height, floorSpritesCork, stationObject);
@@ -101,12 +101,12 @@ static void paint_twist(
         case 7:
             if (track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation))
             {
-                imageId = SPR_FENCE_ROPE_SW | session.TrackColours[SCHEME_MISC];
+                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_FENCE_ROPE_SW);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 3 });
             }
             if (track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation))
             {
-                imageId = SPR_FENCE_ROPE_SE | session.TrackColours[SCHEME_MISC];
+                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_FENCE_ROPE_SE);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
             }
             break;
@@ -156,9 +156,9 @@ static void paint_twist(
             break;
     }
 
-    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 64, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
 /**

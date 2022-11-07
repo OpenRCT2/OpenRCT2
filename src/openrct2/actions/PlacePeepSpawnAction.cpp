@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,7 +55,7 @@ GameActions::Result PlacePeepSpawnAction::Query() const
     }
 
     // Verify footpath exists at location, and retrieve coordinates
-    auto pathElement = map_get_path_element_at(TileCoordsXYZ{ _location });
+    auto pathElement = MapGetPathElementAt(TileCoordsXYZ{ _location });
     if (pathElement == nullptr)
     {
         return GameActions::Result(
@@ -63,7 +63,7 @@ GameActions::Result PlacePeepSpawnAction::Query() const
     }
 
     // Verify location is unowned
-    auto surfaceMapElement = map_get_surface_element_at(_location);
+    auto surfaceMapElement = MapGetSurfaceElementAt(_location);
     if (surfaceMapElement == nullptr)
     {
         return GameActions::Result(GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
@@ -108,7 +108,7 @@ GameActions::Result PlacePeepSpawnAction::Execute() const
         if (foundSpawn != std::end(gPeepSpawns))
         {
             gPeepSpawns.erase(foundSpawn);
-            map_invalidate_tile_full(spawn);
+            MapInvalidateTileFull(spawn);
             return res;
         }
     }
@@ -118,14 +118,14 @@ GameActions::Result PlacePeepSpawnAction::Execute() const
     {
         PeepSpawn oldestSpawn = *gPeepSpawns.begin();
         gPeepSpawns.erase(gPeepSpawns.begin());
-        map_invalidate_tile_full(oldestSpawn);
+        MapInvalidateTileFull(oldestSpawn);
     }
 
     // Set peep spawn
     gPeepSpawns.push_back(spawn);
 
     // Invalidate tile
-    map_invalidate_tile_full(_location);
+    MapInvalidateTileFull(_location);
 
     return res;
 }

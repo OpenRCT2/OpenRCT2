@@ -94,6 +94,8 @@ STR_0089    :Malá horská dráha
 STR_0090    :Mini dráha
 STR_0091    :Neznámá atrakce (59)
 STR_0092    :Horská dráha s elektromotorem
+STR_0093    :Hybridní horská dráha
+STR_0094    :Jednokolejná horská dráha
 STR_0512    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
 STR_0513    :Návštěvníci jedou po horské dráze s loopingy ve stoje
 STR_0514    :Vlaky zavěšené pod kolejí se v zatáčkách houpají do stran
@@ -173,6 +175,8 @@ STR_0598    :Vozy vyrazí vstříc jednomu konci trati, poté prosviští pozpá
 STR_0599    :Malá horská dráha, na které vozy po jednom projíždí trať s kroucenými pády
 STR_0600    :Horská dráha s vozy ve stylu důlních vagónů, které jedou po hladkých kolejnicích skrze propletenou dráhu
 STR_0602    :Horská dráha s vozy poháněnými elektromotorem, které sviští skrze propletenou dráhu
+STR_0603    :Dřevěná horská dráha s ocelovými kolejemi, umožňující strmé přepady a obraty.
+STR_0604    :Jezdci jedou v jednom radě na úzké, jednokolejové dráze, při závodě úzkými obrátkami a změnami směru.
 STR_0767    :Návštěvník {INT32}
 STR_0768    :Údržbář {INT32}
 STR_0769    :Mechanik {INT32}
@@ -407,7 +411,7 @@ STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vagónů na vlak
 STR_1024    :{COMMA16} vagon na vlak
 STR_1025    :{COMMA16} vagónů na vlak
 STR_1026    :Nástupiště je příliš dlouhé!
-STR_1027    :Najet na toto místo
+STR_1027    :Najet na toto místo v Hlavním Pohledu
 STR_1028    :Mimo mapu!
 STR_1029    :Nelze stavět částečně pod a nad vodní hladinou!
 STR_1030    :Tohle lze stavět jen pod vodou!
@@ -1962,7 +1966,7 @@ STR_2754    :Zalít květiny
 STR_2755    :Opravit vandalismy
 STR_2756    :Odebrat odpadky
 STR_2763    :???
-STR_2765    :Plná tramvaj
+STR_2765    :Velká tramvaj
 STR_2766    :Vyhrát scénář
 STR_2767    :Zakázat změny počasí
 STR_2769    :Otevřít park
@@ -2707,8 +2711,6 @@ STR_5503    :Zadejte hostname, nebo IP adresu:
 STR_5504    :Zobrazit stav hry více hráčů
 STR_5505    :Nelze se připojit k serveru.
 STR_5506    :Návštěvníci ignorují intenzitu atrakcí
-STR_5508    :Povolit nahrávání souborů s chybným kontrolním součtem
-STR_5509    :Povolit nahrávání scénářů s neplatným{NEWLINE}kontrolním součtem - například{NEWLINE}scénáře demoverze, nebo{NEWLINE}poškozené uložené hry.
 STR_5510    :Výchozí zvukové zařízení
 STR_5511    :(UNKNOWN)
 STR_5512    :Uložit hru jako
@@ -3022,7 +3024,7 @@ STR_5867    :{WINDOW_COLOUR_2}Jméno provozovatele: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mail provozovatele: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Web provozovatele: {BLACK}{STRING}
 STR_5870    :Zobrazovat informace o serveru
-STR_5871    :Nevadnoucí květiny.
+STR_5871    :Vypnout vadnutí květin.
 STR_5872    :Vypnout stárnutí a uvadání květin.
 STR_5873    :Povolit řetězové výtahy na všech částech trati
 STR_5874    :Umožní použít řetězový výtah na jakékoliv části dráhy
@@ -3168,18 +3170,18 @@ STR_6014    :Návštěvníci platí pouze za služby a atrakce. Vstup do parku j
 STR_6015    :Nakloněný
 STR_6016    :Upravit dlaždici
 STR_6017    :Zpomalte prosím
-STR_6018    :Stavba trati - zatáčka vlevo
-STR_6019    :Stavba trati - zatáčka vpravo
-STR_6020    :Stavba trati - použít výchozí díl
-STR_6021    :Stavba trati - svah dolů
-STR_6022    :Stavba trati - svah vzhůru
-STR_6023    :Stavba trati - řetězový vlek
-STR_6024    :Stavba trati - náklon vlevo
-STR_6025    :Stavba trati - náklon vpravo
-STR_6026    :Stavba trati - předchozí díl
-STR_6027    :Stavba trati - následující díl
-STR_6028    :Stavba trati - postavit aktivní část
-STR_6029    :Stavba trati - odebrat aktivní část
+STR_6018    :Stavba - zatáčka vlevo
+STR_6019    :Stavba - zatáčka vpravo
+STR_6020    :Stavba - použít výchozí díl
+STR_6021    :Stavba - svah dolů
+STR_6022    :Stavba - svah vzhůru
+STR_6023    :Stavba - řetězový vlek
+STR_6024    :Stavba - náklon vlevo
+STR_6025    :Stavba - náklon vpravo
+STR_6026    :Stavba - předchozí díl
+STR_6027    :Stavba - následující díl
+STR_6028    :Stavba - postavit aktivní část
+STR_6029    :Stavba - odebrat aktivní část
 STR_6030    :Výběr kulis. Klikněte na jakoukoliv kulisu na mapě pro postavení její kopie.
 STR_6031    :Popis serveru:
 STR_6032    :Uvítací zpráva serveru:
@@ -3433,7 +3435,7 @@ STR_6328    :Velké snímky obrazovky budou mít průhledné pozadí namísto v�
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Stahování [{STRING}] od {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Přivolat kachny
-STR_6332    :Zmizet kachny
+STR_6332    :Odstranit kachny
 STR_6333    :Zvýšit koeficient škálování
 STR_6334    :Snížit koeficient škálování
 STR_6336    :Průzkumník dlaždic: Kopírovat prvek
@@ -3493,6 +3495,74 @@ STR_6389    :Málo místa
 STR_6390    :OpenRCT2 potřebuje soubory originální hry RollerCoaster Tycoon 2. Zvolte prosím složku instalace RollerCoaster Tycoon 2.
 STR_6391    :Vyberte RCT2 složku
 STR_6392    :Ve zvolené složce se nepodařilo nalézt {STRING}.
+STR_6393    :Výběr cíle
+STR_6394    :Cíl
+STR_6395    :Údržba
+STR_6396    :Vypnout šetřič a úsporu energie monitoru
+STR_6397    :{SMALLFONT}{BLACK}Při zvolení, šetřič obrazovky a funkce úspory energie monitoru budou pozastaveny pokud je OpenRCT2 spuštěno.
+STR_6398    :Soubor obsahuje nepodporované atrakce. Prosím aktualizujte na novější verzi OpenRCT2.
+STR_6399    :OpenRCT2 vyžaduje k fungování soubory původního RollerCoaster Tycoon 2. Nastavte “game_path” hodnotu v config.ini na složku instalace RollerCoaster Tycoon 2, poté restartujte OpenRCT2.
+STR_6400    :Mám stažený GOG offline instalátor pro RollerCoaster Tycoon 2, ale není nainstalován
+STR_6401    :Mám už nainstalován RollerCoaster Tycoon 2
+STR_6402    :OpenRCT2 Data Nastavení
+STR_6403    :Vyberte co se na vás nejlépe vztahuje
+STR_6404    :Prosím vyberte GOG RollerCoaster Tycoon 2 instalátor.
+STR_6405    :Vyberte GOG Instalátor
+STR_6406    :GOG RollerCoaster Tycoon 2 Instalátor
+STR_6407    :Tohle může zabrat několik minut.
+STR_6408    :Prosím nainstalujte “innoextract” pro extrakci GOG Instalátoru, pak restartujte OpenRCT2.
+STR_6409    :Vybraný soubor není offline GOG Instalátor pro RollerCoaster Tycoon 2. Možná jste stáhnuli GOG Galaxy stahovací základ nebo vybrali špatný soubor.
+STR_6410    :Přiblížit /Oddálit
+STR_6411    :Zobrazit tlačítka přiblížení a oddálení na nástrojové liště
+STR_6412    :Číselník Enter
+STR_6413    :Shift
+STR_6414    :L Shift
+STR_6415    :P Shift
+STR_6416    :Ctrl
+STR_6417    :L Ctrl
+STR_6418    :P Ctrl
+STR_6419    :Alt
+STR_6420    :L Alt
+STR_6421    :P Alt
+STR_6422    :Cmd
+STR_6423    :L Cmd
+STR_6424    :P Cmd
+STR_6425    :Joy Levo
+STR_6426    :Joy Pravo
+STR_6427    :Joy Nahoru
+STR_6428    :Joy Dolů
+STR_6429    :Joy {INT32}
+STR_6430    :LTM
+STR_6431    :PTM
+STR_6432    :Myš {INT32}
+STR_6433    :Odstranit
+STR_6434    :Odstranit všechny vazby pro tuhle zkratku.
+STR_6435    :{WINDOW_COLOUR_2}Vandali zastaveni: {BLACK}{COMMA16}
+STR_6436    :Přepnout neviditelnost
+STR_6437    :Neviditelný
+STR_6438    :N
+STR_6439    :Inspektor dlaždic: Přepnout neviditelnost
+STR_6440    :Průhledná voda
+STR_6441    :Alespoň jeden chodník který není fronta musí být vybrán.
+STR_6442    :Alespoň jeden chodník fronty musí být vybrán.
+STR_6443    :Alespoň jedno zábradlí chodníku musí být vybráno.
+STR_6444    :Povrchy chodníků
+STR_6445    :Zábradlí chodníků
+STR_6446    :{WINDOW_COLOUR_2}Jméno povrchu: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Jméno zábradlí: {BLACK}{STRINGID}
+STR_6448    :Nepodporovaný formát objektu
+STR_6449    :{WINDOW_COLOUR_2}Skladby:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Prodává: {BLACK}{STRING}
+STR_6453    :Kopírovat informace o verzi
+STR_6454    :Nemožno přejmenovat transparent…
+STR_6455    :Nemožno přejmenovat nápis…
+STR_6456    :Gigantický snímek obrazovky
+STR_6457    :Nahlásit chybu na GitHub
+STR_6458    :Sledovat v Hlavním Pohledu
+STR_6460    :S
+STR_6461    :Směr
 
 ###############################################################################
 ## RCT2 Scenarios
@@ -3787,3 +3857,8 @@ STR_DTLS    :Obrovský každoroční hudební festival se bude konat na vašem p
 STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
 STR_PARK    :Rock ’n’ Roll Revival
 STR_DTLS    :Tento stárnoucí zábavní park už viděl lepší dny. Pomozte majiteli dát parku retro rock ’n’ roll vzhled a udělat z něho vyhledávané místo.
+
+<Panda World>
+STR_SCNR    :Panda World
+STR_PARK    :Panda World
+STR_DTLS    :Přidejte další atrakce a přilákejte více lidí do pandího zábavního parku.

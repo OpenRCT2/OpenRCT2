@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,7 +27,7 @@ CursorRepository::~CursorRepository()
 
 void CursorRepository::LoadCursors()
 {
-    SetCursorScale(static_cast<uint8_t>(round(gConfigGeneral.window_scale)));
+    SetCursorScale(static_cast<uint8_t>(round(gConfigGeneral.WindowScale)));
     SetCurrentCursor(CursorID::Arrow);
 }
 

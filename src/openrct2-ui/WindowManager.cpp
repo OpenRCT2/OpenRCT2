@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -136,6 +136,8 @@ public:
                 return WindowWaterOpen();
             case WindowClass::Transparency:
                 return WindowTransparencyOpen();
+            case WindowClass::AssetPacks:
+                return WindowAssetPacksOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -157,7 +159,7 @@ public:
             case WV_FINANCES_RESEARCH:
                 return WindowFinancesResearchOpen();
             case WV_RIDE_RESEARCH:
-                if (gConfigInterface.toolbar_show_research)
+                if (gConfigInterface.ToolbarShowResearch)
                 {
                     return this->OpenWindow(WindowClass::Research);
                 }
@@ -250,7 +252,7 @@ public:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
                 close_callback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
-                return WindowNetworkStatusOpen(message.c_str(), callback);
+                return WindowNetworkStatusOpen(message, callback);
             }
             case WindowClass::ObjectLoadError:
             {

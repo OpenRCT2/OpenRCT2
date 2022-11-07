@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -204,7 +204,7 @@ static void WindowScenarioselectInitTabs(rct_window* w)
     for (size_t i = 0; i < numScenarios; i++)
     {
         const scenario_index_entry* scenario = scenario_repository_get_by_index(i);
-        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
             if (_titleEditor && scenario->source_game == ScenarioSource::Other)
                 continue;
@@ -221,9 +221,9 @@ static void WindowScenarioselectInitTabs(rct_window* w)
         }
     }
 
-    if (showPages & (1 << gConfigInterface.scenarioselect_last_tab))
+    if (showPages & (1 << gConfigInterface.ScenarioselectLastTab))
     {
-        w->selected_tab = gConfigInterface.scenarioselect_last_tab;
+        w->selected_tab = gConfigInterface.ScenarioselectLastTab;
     }
     else
     {
@@ -271,8 +271,8 @@ static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex
     {
         w->selected_tab = widgetIndex - 4;
         w->highlighted_scenario = nullptr;
-        gConfigInterface.scenarioselect_last_tab = w->selected_tab;
-        config_save_default();
+        gConfigInterface.ScenarioselectLastTab = w->selected_tab;
+        ConfigSaveDefault();
         InitialiseListItems(w);
         w->Invalidate();
         window_event_resize_call(w);
@@ -288,10 +288,10 @@ static int32_t GetScenarioListItemSize()
         return 24;
 
     // Scenario title
-    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontStyle::Medium);
 
     // 'Completed by' line
-    lineHeight += font_get_line_height(FontSpriteBase::SMALL);
+    lineHeight += font_get_line_height(FontStyle::Small);
 
     return lineHeight;
 }
@@ -407,25 +407,16 @@ static void WindowScenarioselectScrollmouseover(rct_window* w, int32_t scrollInd
 static void WindowScenarioselectInvalidate(rct_window* w)
 {
     w->pressed_widgets &= ~(
-        (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4)
-        | (1ULL << WIDX_TAB5) | (1ULL << WIDX_TAB6) | (1ULL << WIDX_TAB7) | (1ULL << WIDX_TAB8) | (1ULL << WIDX_TAB9));
+        (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
+        | (1uLL << WIDX_TAB5) | (1uLL << WIDX_TAB6) | (1uLL << WIDX_TAB7) | (1uLL << WIDX_TAB8) | (1uLL << WIDX_TAB9));
 
     w->pressed_widgets |= 1LL << (w->selected_tab + WIDX_TAB1);
 
-    int32_t windowWidth = w->width;
-    window_scenarioselect_widgets[WIDX_BACKGROUND].right = windowWidth - 1;
-    window_scenarioselect_widgets[WIDX_TITLEBAR].right = windowWidth - 2;
-    window_scenarioselect_widgets[WIDX_CLOSE].left = windowWidth - 13;
-    window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
-    window_scenarioselect_widgets[WIDX_TABCONTENT].right = windowWidth - 1;
-    window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = windowWidth - 179;
+    w->ResizeFrameWithPage();
 
-    int32_t windowHeight = w->height;
-    window_scenarioselect_widgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
-    window_scenarioselect_widgets[WIDX_TABCONTENT].bottom = windowHeight - 1;
-
-    const int32_t bottomMargin = gConfigGeneral.debugging_tools ? 17 : 5;
-    window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
+    const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? 17 : 5;
+    window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = w->width - 179;
+    window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = w->height - bottomMargin;
 }
 
 static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -436,7 +427,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(*w, dpi);
 
     format = ScenarioSelectUseSmallFont() ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
-    FontSpriteBase fontSpriteBase = ScenarioSelectUseSmallFont() ? FontSpriteBase::SMALL : FontSpriteBase::MEDIUM;
+    FontStyle fontStyle = ScenarioSelectUseSmallFont() ? FontStyle::Small : FontStyle::Medium;
 
     // Text for each tab
     for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
@@ -446,7 +437,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
             continue;
 
         auto ft = Formatter();
-        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
             ft.Add<StringId>(ScenarioOriginStringIds[i]);
         }
@@ -456,7 +447,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
         }
 
         ScreenCoordsXY stringCoords(widget->midX() + w->windowPos.x, widget->midY() + w->windowPos.y - 3);
-        DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontSpriteBase, TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
     }
 
     // Return if no scenario highlighted
@@ -486,11 +477,11 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Scenario path
-    if (gConfigGeneral.debugging_tools)
+    if (gConfigGeneral.DebuggingTools)
     {
         utf8 path[MAX_PATH];
 
-        shorten_path(path, sizeof(path), scenario->path, w->width - 6 - TabWidth, FontSpriteBase::MEDIUM);
+        shorten_path(path, sizeof(path), scenario->path, w->width - 6 - TabWidth, FontStyle::Medium);
 
         const utf8* pathPtr = path;
         auto ft = Formatter();
@@ -571,7 +562,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
     const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
     // Scenario title
-    int32_t scenarioTitleHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+    int32_t scenarioTitleHeight = font_get_line_height(FontStyle::Medium);
 
     int32_t y = 0;
     for (const auto& listItem : _listItems)
@@ -613,10 +604,11 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<char*>(buffer);
                 colour_t colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
-                FontSpriteBase fontSpriteBase = isDisabled ? FontSpriteBase::MEDIUM_DARK : FontSpriteBase::MEDIUM;
+                auto darkness = isDisabled ? TextDarkness::Dark : TextDarkness::Regular;
                 const auto scrollCentre = window_scenarioselect_widgets[WIDX_SCENARIOLIST].width() / 2;
 
-                DrawTextBasic(dpi, { scrollCentre, y + 1 }, format, ft, { colour, fontSpriteBase, TextAlignment::CENTRE });
+                DrawTextBasic(
+                    dpi, { scrollCentre, y + 1 }, format, ft, { colour, FontStyle::Medium, TextAlignment::CENTRE, darkness });
 
                 // Check if scenario is completed
                 if (isCompleted)
@@ -639,7 +631,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                     ft.Add<char*>(buffer);
                     DrawTextBasic(
                         dpi, { scrollCentre, y + scenarioTitleHeight + 1 }, format, ft,
-                        { FontSpriteBase::SMALL, TextAlignment::CENTRE });
+                        { FontStyle::Small, TextAlignment::CENTRE });
                 }
 
                 y += scenarioItemHeight;
@@ -663,7 +655,7 @@ static void DrawCategoryHeading(
     // Get string dimensions
     utf8* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, stringId, nullptr);
-    int32_t categoryStringHalfWidth = (gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2) + 4;
+    int32_t categoryStringHalfWidth = (gfx_get_string_width(buffer, FontStyle::Medium) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;
 
@@ -711,7 +703,7 @@ static void InitialiseListItems(rct_window* w)
 
         // Category heading
         StringId headingStringId = STR_NONE;
-        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
             if (w->selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->category)
             {
@@ -790,7 +782,7 @@ static void InitialiseListItems(rct_window* w)
     {
         bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
         _listItems[megaParkListItemIndex].scenario.is_locked = megaParkLocked;
-        if (megaParkLocked && gConfigGeneral.scenario_hide_mega_park)
+        if (megaParkLocked && gConfigGeneral.ScenarioHideMegaPark)
         {
             // Remove mega park
             _listItems.pop_back();
@@ -816,7 +808,7 @@ static void InitialiseListItems(rct_window* w)
 
 static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenario)
 {
-    if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+    if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
     {
         if (static_cast<uint8_t>(scenario->source_game) != w->selected_tab)
         {
@@ -840,9 +832,9 @@ static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenari
 
 static bool IsLockingEnabled(rct_window* w)
 {
-    if (gConfigGeneral.scenario_select_mode != SCENARIO_SELECT_MODE_ORIGIN)
+    if (gConfigGeneral.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
         return false;
-    if (!gConfigGeneral.scenario_unlocking_enabled)
+    if (!gConfigGeneral.ScenarioUnlockingEnabled)
         return false;
     if (w->selected_tab >= 6)
         return false;

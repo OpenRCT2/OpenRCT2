@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -991,8 +991,8 @@ namespace OpenRCT2
                         SetTileElements(std::move(tileElements));
                         {
                             tile_element_iterator it;
-                            tile_element_iterator_begin(&it);
-                            while (tile_element_iterator_next(&it))
+                            TileElementIteratorBegin(&it);
+                            while (TileElementIteratorNext(&it))
                             {
                                 if (it.element->GetType() == TileElementType::Path)
                                 {
@@ -1013,7 +1013,7 @@ namespace OpenRCT2
                                 }
                             }
                         }
-                        UpdateParkEntranceLocations();
+                        ParkEntranceUpdateLocations();
                     }
                     else
                     {
@@ -1034,7 +1034,7 @@ namespace OpenRCT2
             {
                 for (int32_t x = 0; x < gMapSize.x; x++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+                    TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
                         continue;
                     do
@@ -2326,7 +2326,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
 
         Formatter ft;
         ft.Add<const char*>(e.what());
-        context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
+        ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
         gfx_invalidate_screen();
 
         auto ctx = OpenRCT2::GetContext();

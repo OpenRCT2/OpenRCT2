@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -350,7 +350,7 @@ static constexpr const uint32_t SplashBoats25DegDownToFlatFrontImageId[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_NW_SE,
 };
 
-static constexpr const sprite_bb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
+static constexpr const SpriteBb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 27, 2 },
         SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 },  { 32, 16, 2 },
@@ -381,7 +381,7 @@ static constexpr const sprite_bb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
     },
 };
 
-static constexpr const sprite_bb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
+static constexpr const SpriteBb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 27, 0 },
         SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 },  { 32, 16, 0 },
@@ -412,7 +412,7 @@ static constexpr const sprite_bb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
     },
 };
 
-static constexpr const sprite_bb RiverRaftsRightQuarterTurn5_Top[4][5] = {
+static constexpr const SpriteBb RiverRaftsRightQuarterTurn5_Top[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 32, 2 },
         SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 },
@@ -443,7 +443,7 @@ static constexpr const sprite_bb RiverRaftsRightQuarterTurn5_Top[4][5] = {
     },
 };
 
-static constexpr const sprite_bb RiverRaftsRightQuarterTurn5_Side[4][5] = {
+static constexpr const SpriteBb RiverRaftsRightQuarterTurn5_Side[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 32, 0 },
         SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 },
@@ -475,332 +475,332 @@ static constexpr const sprite_bb RiverRaftsRightQuarterTurn5_Side[4][5] = {
 };
 
 static void paint_splash_boats_track_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = SplashBoats25DegUpImageId[direction] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = SplashBoats25DegUpFrontImageId[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 50 }, { 0, 27, height });
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 9 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 9 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 static void paint_splash_boats_track_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = SplashBoats60DegUpImageId[direction] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = SplashBoats60DegUpFrontImageId[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats60DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats60DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 98 }, { 0, 27, height });
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 21 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 21 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_SQUARE_8);
+        PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 104, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 static void paint_splash_boats_track_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = SplashBoatsFlatTo25DegUpImageId[direction] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = SplashBoatsFlatTo25DegUpFrontImageId[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegUpFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height });
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 1 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 1 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 static void paint_splash_boats_track_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = SplashBoats25DegUpToFlatImageId[direction] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = SplashBoats25DegUpToFlatFrontImageId[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpToFlatImageId[direction]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpToFlatFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 5 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 5 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 static void paint_splash_boats_track_25_deg_up_to_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = SplashBoats25DegUpTo60DegUpImageId[direction] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = SplashBoats25DegUpTo60DegUpFrontImageId[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpTo60DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpTo60DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 13 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 13 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
 static void paint_splash_boats_track_60_deg_up_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = SplashBoats60DegUpTo25DegUpImageId[direction] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = SplashBoats60DegUpTo25DegUpFrontImageId[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats60DegUpTo25DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats60DegUpTo25DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 17 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 17 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
 static void paint_splash_boats_track_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = SplashBoats25DegDownImageId[direction] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = SplashBoats25DegDownFrontImageId[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownImageId[direction]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 50 }, { 0, 27, height });
 
     static constexpr const uint8_t specialSupport[] = { 11, 12, 9, 10 };
-    wooden_a_supports_paint_setup(
+    WoodenASupportsPaintSetup(
         session, (direction & 1), specialSupport[direction], height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 static void paint_splash_boats_track_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_splash_boats_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 static void paint_splash_boats_track_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = SplashBoatsFlatTo25DegDownImageId[direction] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = SplashBoatsFlatTo25DegDownFrontImageId[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegDownImageId[direction]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegDownFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
 
     static constexpr const uint8_t specialSupport[] = { 7, 8, 5, 6 };
-    wooden_a_supports_paint_setup(
+    WoodenASupportsPaintSetup(
         session, (direction & 1), specialSupport[direction], height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_14);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 static void paint_splash_boats_track_25_deg_down_to_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_splash_boats_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 static void paint_splash_boats_track_60_deg_down_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_splash_boats_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 static void paint_splash_boats_track_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = SplashBoats25DegDownToFlatImageId[direction] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = SplashBoats25DegDownToFlatFrontImageId[direction] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownToFlatImageId[direction]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownToFlatFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height });
 
     static constexpr const uint8_t specialSupport[] = { 3, 4, 1, 2 };
-    wooden_a_supports_paint_setup(
+    WoodenASupportsPaintSetup(
         session, (direction & 1), specialSupport[direction], height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_8);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     }
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** Start of elements originally from River Rafts */
 /** rct2: 0x0089B170 */
 static void paint_splash_boats_track_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction & 1)
     {
-        imageId = (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW)
-            | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+            (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 2 }, { 6, 0, height });
 
-        imageId = (direction == 1 ? SPR_SPLASH_BOATS_FLAT_SIDE_NW_SE : SPR_SPLASH_BOATS_FLAT_SIDE_SE_NW)
-            | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+            (direction == 1 ? SPR_SPLASH_BOATS_FLAT_SIDE_NW_SE : SPR_SPLASH_BOATS_FLAT_SIDE_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
     }
     else
     {
-        imageId = (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW)
-            | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+            (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
 
-        imageId = (direction == 0 ? SPR_SPLASH_BOATS_FLAT_SIDE_SW_NE : SPR_SPLASH_BOATS_FLAT_SIDE_NE_SW)
-            | session.TrackColours[SCHEME_TRACK];
+        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+            (direction == 0 ? SPR_SPLASH_BOATS_FLAT_SIDE_SW_NE : SPR_SPLASH_BOATS_FLAT_SIDE_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0089B1A0 */
 static void paint_splash_boats_station(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction & 1)
     {
-        uint32_t imageId = (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW)
-            | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+            (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height + 3 });
 
-        imageId = SPR_STATION_BASE_B_NW_SE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
     }
     else
     {
-        uint32_t imageId = (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW)
-            | session.TrackColours[SCHEME_TRACK];
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+            (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
 
-        imageId = SPR_STATION_BASE_B_SW_NE | session.TrackColours[SCHEME_MISC];
+        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 7, trackElement);
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0089B1D0 */
 static void paint_splash_boats_track_left_quarter_turn_5_tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
@@ -817,46 +817,44 @@ static void paint_splash_boats_track_left_quarter_turn_5_tiles(
             { 1, 0xFF, 4, 2, 0xFF, 4, 0 },
         };
         uint8_t supportType = supportTypes[direction][trackSequence];
-        wooden_a_supports_paint_setup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     switch (trackSequence)
     {
         case 0:
-            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
         case 1:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 2:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_C8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4 | SEGMENT_B8 | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4 | SEGMENT_B8 | SEGMENT_D0, direction),
                 0xFFFF, 0);
             break;
         case 3:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
+                PaintUtilRotateSegments(
                     SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_B4 | SEGMENT_C0 | SEGMENT_C8 | SEGMENT_D0,
                     direction),
                 0xFFFF, 0);
             break;
         case 4:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 5:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_B8, direction),
+                PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_B8, direction),
                 0xFFFF, 0);
             break;
         case 6:
-            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
     }
 
@@ -865,23 +863,23 @@ static void paint_splash_boats_track_left_quarter_turn_5_tiles(
         case 0:
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             break;
         case 6:
             if (direction == 2 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction ^ 1, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction ^ 1, height, TUNNEL_SQUARE_FLAT);
             }
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0089B1D0 */
 static void paint_splash_boats_track_right_quarter_turn_5_tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
@@ -898,46 +896,44 @@ static void paint_splash_boats_track_right_quarter_turn_5_tiles(
             { 1, 0xFF, 3, 5, 0xFF, 3, 0 },
         };
         uint8_t supportType = supportTypes[direction][trackSequence];
-        wooden_a_supports_paint_setup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     switch (trackSequence)
     {
         case 0:
-            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
         case 1:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
             break;
         case 2:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction),
+                PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction),
                 0xFFFF, 0);
             break;
         case 3:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
+                PaintUtilRotateSegments(
                     SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4,
                     direction),
                 0xFFFF, 0);
             break;
         case 4:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
             break;
         case 5:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction),
+                PaintUtilRotateSegments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction),
                 0xFFFF, 0);
             break;
         case 6:
-            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
     }
 
@@ -946,23 +942,23 @@ static void paint_splash_boats_track_right_quarter_turn_5_tiles(
         case 0:
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             break;
         case 6:
             if (direction == 0 || direction == 1)
             {
-                paint_util_push_tunnel_rotated(session, direction ^ 1, height, TUNNEL_SQUARE_FLAT);
+                PaintUtilPushTunnelRotated(session, direction ^ 1, height, TUNNEL_SQUARE_FLAT);
             }
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0089B180 */
 static void paint_splash_boats_track_s_bend_left(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][4][2] = {
@@ -992,8 +988,8 @@ static void paint_splash_boats_track_s_bend_left(
         },
     };
 
-    uint32_t imageId = imageIds[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
     static constexpr const int32_t supportTypes1[] = { 5, 2, 3, 4 };
     static constexpr const int32_t supportTypes2[] = { 3, 4, 5, 2 };
@@ -1004,8 +1000,8 @@ static void paint_splash_boats_track_s_bend_left(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
-            wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
@@ -1013,12 +1009,11 @@ static void paint_splash_boats_track_s_bend_left(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 26, 0 }, { 0, bboy, height + 27 });
 
-            wooden_a_supports_paint_setup(session, supportTypes1[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, supportTypes1[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             break;
         case 2:
@@ -1027,20 +1022,19 @@ static void paint_splash_boats_track_s_bend_left(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 26, 0 }, { 0, bboy, height + 27 });
 
-            wooden_a_supports_paint_setup(session, supportTypes2[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, supportTypes2[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             break;
         case 3:
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
-            wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
     }
 
@@ -1048,23 +1042,23 @@ static void paint_splash_boats_track_s_bend_left(
     {
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
     }
     else if (trackSequence == 3)
     {
         if (direction == 1 || direction == 2)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0089B190 */
 static void paint_splash_boats_track_s_bend_right(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][4][2] = {
@@ -1094,8 +1088,8 @@ static void paint_splash_boats_track_s_bend_right(
         },
     };
 
-    uint32_t imageId = imageIds[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
-    uint32_t frontImageId = imageIds[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
     static constexpr const int32_t supportTypes1[] = { 4, 5, 2, 3 };
     static constexpr const int32_t supportTypes2[] = { 2, 3, 4, 5 };
@@ -1106,8 +1100,8 @@ static void paint_splash_boats_track_s_bend_right(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
-            wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
@@ -1115,12 +1109,11 @@ static void paint_splash_boats_track_s_bend_right(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 26, 0 }, { 0, bboy, height + 27 });
 
-            wooden_a_supports_paint_setup(session, supportTypes1[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, supportTypes1[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             break;
         case 2:
@@ -1129,20 +1122,19 @@ static void paint_splash_boats_track_s_bend_right(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 26, 0 }, { 0, bboy, height + 27 });
 
-            wooden_a_supports_paint_setup(session, supportTypes2[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, supportTypes2[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             break;
         case 3:
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
-            wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
     }
 
@@ -1150,50 +1142,50 @@ static void paint_splash_boats_track_s_bend_right(
     {
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
     }
     else if (trackSequence == 3)
     {
         if (direction == 1 || direction == 2)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void paint_splash_boats_track_on_ride_photo(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 0, 1 });
+                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 0, 1 });
+                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 0, 1 });
+                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 0, 1 });
+                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
             break;
     }
 
     paint_splash_boats_track_flat(session, ride, trackSequence, direction, height, trackElement);
 
     track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType)
@@ -1255,7 +1247,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType)
  *  rct2: 0x006D4295
  */
 void vehicle_visual_splash_boats_or_water_coaster(
-    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
     auto* vehicleToPaint = vehicle->IsHead() ? GetEntity<Vehicle>(vehicle->next_vehicle_on_ride)

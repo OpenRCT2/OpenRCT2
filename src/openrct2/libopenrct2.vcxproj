@@ -146,6 +146,8 @@
     <ClInclude Include="actions\WaterLowerAction.h" />
     <ClInclude Include="actions\WaterRaiseAction.h" />
     <ClInclude Include="actions\WaterSetHeightAction.h" />
+    <ClInclude Include="AssetPack.h" />
+    <ClInclude Include="AssetPackManager.h" />
     <ClInclude Include="audio\audio.h" />
     <ClInclude Include="audio\AudioChannel.h" />
     <ClInclude Include="audio\AudioContext.h" />
@@ -300,11 +302,13 @@
     <ClInclude Include="object\LargeSceneryObject.h" />
     <ClInclude Include="object\MusicObject.h" />
     <ClInclude Include="object\Object.h" />
+    <ClInclude Include="object\ObjectAsset.h" />
     <ClInclude Include="object\ObjectFactory.h" />
     <ClInclude Include="object\ObjectLimits.h" />
     <ClInclude Include="object\ObjectList.h" />
     <ClInclude Include="object\ObjectManager.h" />
     <ClInclude Include="object\ObjectRepository.h" />
+    <ClInclude Include="object\ResourceTable.h" />
     <ClInclude Include="object\RideObject.h" />
     <ClInclude Include="object\SceneryGroupObject.h" />
     <ClInclude Include="object\SceneryObject.h" />
@@ -341,7 +345,6 @@
     <ClInclude Include="rct12\SawyerChunk.h" />
     <ClInclude Include="rct12\SawyerChunkReader.h" />
     <ClInclude Include="rct12\SawyerChunkWriter.h" />
-    <ClInclude Include="rct12\SawyerEncoding.h" />
     <ClInclude Include="rct1\Limits.h" />
     <ClInclude Include="rct1\RCT1.h" />
     <ClInclude Include="rct1\Tables.h" />
@@ -642,6 +645,8 @@
     <ClCompile Include="actions\WaterLowerAction.cpp" />
     <ClCompile Include="actions\WaterRaiseAction.cpp" />
     <ClCompile Include="actions\WaterSetHeightAction.cpp" />
+    <ClCompile Include="AssetPack.cpp" />
+    <ClCompile Include="AssetPackManager.cpp" />
     <ClCompile Include="audio\Audio.cpp" />
     <ClCompile Include="audio\DummyAudioContext.cpp" />
     <ClCompile Include="Cheats.cpp" />
@@ -791,6 +796,7 @@
     <ClCompile Include="object\ObjectList.cpp" />
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />
+    <ClCompile Include="object\ResourceTable.cpp" />
     <ClCompile Include="object\RideObject.cpp" />
     <ClCompile Include="object\SceneryGroupObject.cpp" />
     <ClCompile Include="object\SceneryObject.cpp" />
@@ -834,7 +840,6 @@
     <ClCompile Include="rct12\SawyerChunk.cpp" />
     <ClCompile Include="rct12\SawyerChunkReader.cpp" />
     <ClCompile Include="rct12\SawyerChunkWriter.cpp" />
-    <ClCompile Include="rct12\SawyerEncoding.cpp" />
     <ClCompile Include="rct1\S4Importer.cpp" />
     <ClCompile Include="rct1\T4Importer.cpp" />
     <ClCompile Include="rct1\Tables.cpp" />

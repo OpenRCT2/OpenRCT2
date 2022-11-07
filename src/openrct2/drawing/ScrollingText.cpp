@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,7 +59,7 @@ void scrolling_text_initialise_bitmaps()
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
         gfx_draw_sprite_software(
-            &dpi, ImageId::FromUInt32(SPR_CHAR_START + static_cast<uint32_t>(FontSpriteBase::TINY) + i), { -1, 0 });
+            &dpi, ImageId(SPR_CHAR_START + (EnumValue(FontStyle::Tiny) * FONT_SPRITE_GLYPH_COUNT) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -81,7 +81,7 @@ void scrolling_text_initialise_bitmaps()
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
         gfx_draw_sprite_software(
-            &dpi, ImageId::FromUInt32(SPR_G2_CHAR_BEGIN + (FONT_SIZE_TINY * SPR_G2_GLYPH_COUNT) + i), { -1, 0 });
+            &dpi, ImageId(SPR_G2_CHAR_BEGIN + (EnumValue(FontStyle::Tiny) * SPR_G2_GLYPH_COUNT) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -161,7 +161,7 @@ static int32_t scrolling_text_get_matching_or_oldest(
 
 static void scrolling_text_format(utf8* dst, size_t size, rct_draw_scroll_text* scrollText)
 {
-    if (gConfigGeneral.upper_case_banners)
+    if (gConfigGeneral.UpperCaseBanners)
     {
         format_string_to_upper(dst, size, scrollText->string_id, scrollText->string_args);
     }
@@ -1446,8 +1446,8 @@ void scrolling_text_invalidate()
     }
 }
 
-int32_t scrolling_text_setup(
-    paint_session& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
+ImageId scrolling_text_setup(
+    PaintSession& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
 
@@ -1456,13 +1456,13 @@ int32_t scrolling_text_setup(
     rct_drawpixelinfo* dpi = &session.DPI;
 
     if (dpi->zoom_level > ZoomLevel{ 0 })
-        return SPR_SCROLLING_TEXT_DEFAULT;
+        return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
 
     _drawSCrollNextIndex++;
     ft.Rewind();
     int32_t scrollIndex = scrolling_text_get_matching_or_oldest(stringId, ft, scroll, scrollingMode, colour);
     if (scrollIndex >= SPR_SCROLLING_TEXT_START)
-        return scrollIndex;
+        return ImageId(scrollIndex);
 
     // Setup scrolling text
     auto scrollText = &_drawScrollTextList[scrollIndex];
@@ -1491,7 +1491,7 @@ int32_t scrolling_text_setup(
 
     uint32_t imageId = SPR_SCROLLING_TEXT_START + scrollIndex;
     drawing_engine_invalidate_image(imageId);
-    return imageId;
+    return ImageId(imageId);
 }
 
 static void scrolling_text_set_bitmap_for_sprite(
@@ -1510,7 +1510,7 @@ static void scrolling_text_set_bitmap_for_sprite(
                 CodepointView codepoints(token.text);
                 for (auto codepoint : codepoints)
                 {
-                    auto characterWidth = font_sprite_get_codepoint_width(FontSpriteBase::TINY, codepoint);
+                    auto characterWidth = font_sprite_get_codepoint_width(FontStyle::Tiny, codepoint);
                     auto characterBitmap = font_sprite_get_codepoint_bitmap(codepoint);
                     for (; characterWidth != 0; characterWidth--, characterBitmap++)
                     {
@@ -1558,7 +1558,7 @@ static void scrolling_text_set_bitmap_for_ttf(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
 #ifndef NO_TTF
-    auto fontDesc = ttf_get_font_from_sprite_base(FontSpriteBase::TINY);
+    auto fontDesc = ttf_get_font_from_sprite_base(FontStyle::Tiny);
     if (fontDesc->font == nullptr)
     {
         scrolling_text_set_bitmap_for_sprite(text, scroll, bitmap, scrollPositionOffsets, colour);
@@ -1603,7 +1603,7 @@ static void scrolling_text_set_bitmap_for_ttf(
     int32_t min_vpos = -fontDesc->offset_y;
     int32_t max_vpos = std::min(surface->h - 2, min_vpos + 7);
 
-    bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold > 0;
+    bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold > 0;
 
     for (int32_t x = 0;; x++)
     {

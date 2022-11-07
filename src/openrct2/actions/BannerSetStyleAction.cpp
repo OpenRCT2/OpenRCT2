@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,9 +55,9 @@ GameActions::Result BannerSetStyleAction::Query() const
 
     res.Expenditure = ExpenditureType::Landscaping;
     auto location = banner->position.ToCoordsXY().ToTileCentre();
-    res.Position = { location, tile_element_height(location) };
+    res.Position = { location, TileElementHeight(location) };
 
-    TileElement* tileElement = banner_get_tile_element(_bannerIndex);
+    TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
     if (tileElement == nullptr)
     {
@@ -109,9 +109,9 @@ GameActions::Result BannerSetStyleAction::Execute() const
 
     res.Expenditure = ExpenditureType::Landscaping;
     auto location = banner->position.ToCoordsXY().ToTileCentre();
-    res.Position = { location, tile_element_height(location) };
+    res.Position = { location, TileElementHeight(location) };
 
-    TileElement* tileElement = banner_get_tile_element(_bannerIndex);
+    TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
     if (tileElement == nullptr)
     {
@@ -153,7 +153,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
 
     auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
     intent.putExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     return res;
 }

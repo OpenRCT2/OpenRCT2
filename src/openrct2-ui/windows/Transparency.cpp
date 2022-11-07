@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -151,8 +151,8 @@ public:
         // Locate mechanic button image
         const auto& widget = widgets[WIDX_HIDE_STAFF];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-        gfx_draw_sprite(
-            &dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, screenCoords, 0);
+        auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
+        gfx_draw_sprite(&dpi, image, screenCoords);
     }
 
 private:
@@ -234,13 +234,13 @@ private:
 
     void SaveInConfig(uint32_t wflags)
     {
-        gConfigGeneral.invisible_rides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
-        gConfigGeneral.invisible_vehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-        gConfigGeneral.invisible_scenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
-        gConfigGeneral.invisible_trees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-        gConfigGeneral.invisible_paths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
-        gConfigGeneral.invisible_supports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
-        config_save_default();
+        gConfigGeneral.InvisibleRides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
+        gConfigGeneral.InvisibleVehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+        gConfigGeneral.InvisibleScenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
+        gConfigGeneral.InvisibleTrees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
+        gConfigGeneral.InvisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
+        gConfigGeneral.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+        ConfigSaveDefault();
     }
 };
 

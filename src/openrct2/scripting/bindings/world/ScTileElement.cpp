@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -2005,7 +2005,7 @@ namespace OpenRCT2::Scripting
 
     void ScTileElement::Invalidate()
     {
-        map_invalidate_tile_full(_coords);
+        MapInvalidateTileFull(_coords);
     }
 
     void ScTileElement::Register(duk_context* ctx)

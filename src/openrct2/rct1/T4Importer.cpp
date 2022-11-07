@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,6 @@
 #include "../rct1/RCT1.h"
 #include "../rct1/Tables.h"
 #include "../rct12/SawyerChunkReader.h"
-#include "../rct12/SawyerEncoding.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
@@ -53,12 +52,6 @@ namespace RCT1
 
         bool LoadFromStream(OpenRCT2::IStream* stream) override
         {
-            auto checksumType = SawyerEncoding::ValidateTrackChecksum(stream);
-            if (!gConfigGeneral.allow_loading_with_incorrect_checksum && checksumType == RCT12TrackDesignVersion::unknown)
-            {
-                throw IOException("Invalid checksum.");
-            }
-
             auto chunkReader = SawyerChunkReader(stream);
             auto data = chunkReader.ReadChunkTrack();
             _stream.WriteArray<const uint8_t>(reinterpret_cast<const uint8_t*>(data->GetData()), data->GetLength());

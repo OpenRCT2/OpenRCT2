@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -109,8 +109,8 @@ void VehicleCrashParticle::Update()
     velocity_z = vz & 0xFFFF;
 
     // Check collision with land / water
-    int16_t landZ = tile_element_height(newLoc);
-    int16_t waterZ = tile_element_water_height(newLoc);
+    int16_t landZ = TileElementHeight(newLoc);
+    int16_t waterZ = TileElementWaterHeight(newLoc);
 
     if (waterZ != 0 && z >= waterZ && newLoc.z <= waterZ)
     {
@@ -151,7 +151,7 @@ void VehicleCrashParticle::Serialise(DataSerialiser& stream)
     stream << acceleration_z;
 }
 
-void VehicleCrashParticle::Paint(paint_session& session, int32_t imageDirection) const
+void VehicleCrashParticle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
@@ -162,8 +162,8 @@ void VehicleCrashParticle::Paint(paint_session& session, int32_t imageDirection)
     }
 
     uint32_t imageId = _VehicleCrashParticleSprites[crashed_sprite_base] + frame / 256;
-    imageId = imageId | (colour[0] << 19) | (colour[1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    auto image = ImageId(imageId, colour[0], colour[1]);
+    PaintAddImageAsParent(session, image, { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**
@@ -203,13 +203,13 @@ void CrashSplashParticle::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void CrashSplashParticle::Paint(paint_session& session, int32_t imageDirection) const
+void CrashSplashParticle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22927 + (frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**
@@ -218,7 +218,7 @@ void CrashSplashParticle::Paint(paint_session& session, int32_t imageDirection) 
  */
 void SteamParticle::Create(const CoordsXYZ& coords)
 {
-    auto surfaceElement = map_get_surface_element_at(coords);
+    auto surfaceElement = MapGetSurfaceElementAt(coords);
     if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
     {
         SteamParticle* steam = CreateEntity<SteamParticle>();
@@ -262,13 +262,13 @@ void SteamParticle::Serialise(DataSerialiser& stream)
     stream << time_to_move;
 }
 
-void SteamParticle::Paint(paint_session& session, int32_t imageDirection) const
+void SteamParticle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22637 + (frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**
@@ -308,12 +308,12 @@ void ExplosionCloud::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void ExplosionCloud::Paint(paint_session& session, int32_t imageDirection) const
+void ExplosionCloud::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
     uint32_t imageId = 22878 + (frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**
@@ -353,11 +353,11 @@ void ExplosionFlare::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void ExplosionFlare::Paint(paint_session& session, int32_t imageDirection) const
+void ExplosionFlare::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22896 + (frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }

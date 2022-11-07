@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,7 +53,7 @@ const DrawWeatherFunc DrawSnowFunctions[] = {
  */
 void DrawWeather(rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer)
 {
-    if (gConfigGeneral.render_weather_effects)
+    if (gConfigGeneral.RenderWeatherEffects)
     {
         uint32_t viewFlags = 0;
 
@@ -66,7 +66,7 @@ void DrawWeather(rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer)
         if (weatherLevel != WeatherLevel::None && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
             auto drawFunc = DrawRainFunctions[static_cast<int8_t>(weatherLevel)];
-            if (climate_is_snowing())
+            if (ClimateIsSnowing())
             {
                 drawFunc = DrawSnowFunctions[static_cast<int8_t>(weatherLevel)];
             }

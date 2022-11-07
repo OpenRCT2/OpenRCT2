@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,6 +53,7 @@ enum SCENARIO_CATEGORY
     // OpenRCT2 categories
     SCENARIO_CATEGORY_DLC,
     SCENARIO_CATEGORY_BUILD_YOUR_OWN,
+    SCENARIO_CATEGORY_COMPETITIONS,
 
     SCENARIO_CATEGORY_COUNT
 };
@@ -169,7 +170,6 @@ extern uint32_t gLastAutoSaveUpdate;
 
 extern std::string gScenarioFileName;
 
-void load_from_sc6(const char* path);
 void scenario_begin();
 void scenario_reset();
 void scenario_update();

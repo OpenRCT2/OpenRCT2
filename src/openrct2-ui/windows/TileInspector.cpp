@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -442,26 +442,26 @@ static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
 // clang-format off
 
 static uint64_t PageHoldDownWidgets[] = {
-    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE),
-    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE),
-    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE),
-    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE),
-    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE),
-    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
-    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE) | (1ULL << WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE),
-    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
-    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE),
+    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE),
+    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE),
+    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_PATH_SPINNER_HEIGHT_DECREASE),
+    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE),
+    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE),
+    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
+    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_WALL_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_WALL_SPINNER_HEIGHT_DECREASE) | (1uLL << WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE) | (1uLL << WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE),
+    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
+    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE),
 };
 
 static uint64_t PageDisabledWidgets[] = {
-    (1ULL << WIDX_BUTTON_MOVE_UP) | (1ULL << WIDX_BUTTON_MOVE_DOWN) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY),
+    (1uLL << WIDX_BUTTON_MOVE_UP) | (1uLL << WIDX_BUTTON_MOVE_DOWN) | (1uLL << WIDX_BUTTON_REMOVE) | (1uLL << WIDX_BUTTON_ROTATE) | (1uLL << WIDX_BUTTON_COPY),
     0,
     0,
     0,
     0,
     0,
     0,
-    (1ULL << WIDX_BUTTON_ROTATE),
+    (1uLL << WIDX_BUTTON_ROTATE),
     0,
 };
 // clang-format on
@@ -927,7 +927,7 @@ public:
 
     void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
 
         CoordsXY mapCoords;
@@ -957,7 +957,7 @@ public:
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
     }
 
     void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -1148,7 +1148,7 @@ public:
                     if (tileElement->AsPath()->HasAddition())
                     {
                         const auto pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
-                        const auto* pathBitEntry = get_footpath_item_entry(pathAdditionType);
+                        const auto* pathBitEntry = GetFootpathItemEntry(pathAdditionType);
                         StringId additionNameId = pathBitEntry != nullptr ? pathBitEntry->name
                                                                           : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
                         auto ft = Formatter();
@@ -1324,7 +1324,7 @@ public:
                     {
                         // TODO: Make this work with Left/Right park entrance parts
                         ft = Formatter();
-                        ft.Add<StringId>(park_entrance_get_index({ _toolMap, tileElement->GetBaseZ() }));
+                        ft.Add<StringId>(ParkEntranceGetIndex({ _toolMap, tileElement->GetBaseZ() }));
                         DrawTextBasic(
                             &dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, ft,
                             { colours[1] });
@@ -1463,7 +1463,7 @@ public:
                         { colours[1] });
 
                     // Banner info
-                    auto* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
+                    auto* largeSceneryEntry = GetLargeSceneryEntry(largeSceneryType);
                     if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         auto banner = sceneryElement->GetBanner();
@@ -1543,7 +1543,7 @@ public:
         {
             auto& listWidget = widgets[WIDX_LIST];
             auto centrePos = ScreenCoordsXY{ listWidget.width() / 2,
-                                             (listWidget.height() - font_get_line_height(FontSpriteBase::MEDIUM)) / 2 };
+                                             (listWidget.height() - font_get_line_height(FontStyle::Medium)) / 2 };
             auto ft = Formatter{};
             auto textPaint = TextPaint{ colours[1], TextAlignment::CENTRE };
             DrawTextWrapped(&dpi, centrePos, listWidth, STR_TILE_INSPECTOR_SELECT_TILE_HINT, ft, textPaint);
@@ -1555,7 +1555,7 @@ public:
         int32_t i = 0;
         char buffer[256];
 
-        const TileElement* tileElement = map_get_first_element_at(_toolMap);
+        const TileElement* tileElement = MapGetFirstElementAt(_toolMap);
 
         do
         {
@@ -1779,7 +1779,7 @@ private:
         windowTileInspectorSelectedIndex = -1;
         scrolls[0].v_top = 0;
 
-        TileElement* element = map_get_first_element_at(_toolMap);
+        TileElement* element = MapGetFirstElementAt(_toolMap);
         int16_t numItems = 0;
         do
         {
@@ -1971,7 +1971,7 @@ private:
         openrct2_assert(
             windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
             "Selected list item out of range");
-        return map_get_first_element_at(_toolMap) + windowTileInspectorSelectedIndex;
+        return MapGetFirstElementAt(_toolMap) + windowTileInspectorSelectedIndex;
     }
 
     void OnPrepareDraw() override

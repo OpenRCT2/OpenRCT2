@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,7 +46,7 @@ static constexpr const BoundBoxXY CrookedHouseData[] = {
  *  rct2: 0x0088ABA4
  */
 static void PaintCrookedHouseStructure(
-    paint_session& session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height)
+    PaintSession& session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height)
 {
     const auto* tileElement = session.CurrentlyDrawnTileElement;
     if (tileElement == nullptr)
@@ -71,7 +71,7 @@ static void PaintCrookedHouseStructure(
     }
 
     const auto& boundBox = CrookedHouseData[segment];
-    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
+    auto imageTemplate = session.TrackColours[SCHEME_MISC];
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsParent(
         session, imageTemplate.WithIndex(imageIndex), { x_offset, y_offset, height + 3 }, { boundBox.length, 127 },
@@ -81,14 +81,14 @@ static void PaintCrookedHouseStructure(
 }
 
 static void PaintCrookedHouse(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -132,12 +132,12 @@ static void PaintCrookedHouse(
             break;
     }
 
-    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 128, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

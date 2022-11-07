@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,25 +51,25 @@ GameActions::Result ChangeMapSizeAction::Execute() const
     while (_targetSize.x > gMapSize.x)
     {
         gMapSize.x++;
-        map_extend_boundary_surface_x();
+        MapExtendBoundarySurfaceX();
     }
     while (_targetSize.y > gMapSize.y)
     {
         gMapSize.y++;
-        map_extend_boundary_surface_y();
+        MapExtendBoundarySurfaceY();
     }
 
     // Shrink map
     if (_targetSize.x < gMapSize.x || _targetSize.y < gMapSize.y)
     {
         gMapSize = _targetSize;
-        map_remove_out_of_range_elements();
+        MapRemoveOutOfRangeElements();
     }
 
     auto* ctx = OpenRCT2::GetContext();
     auto uiContext = ctx->GetUiContext();
     auto* windowManager = uiContext->GetWindowManager();
-    park_calculate_size();
+    ParkCalculateSize();
 
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
     gfx_invalidate_screen();

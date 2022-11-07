@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -71,7 +71,7 @@ void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
             {
-                map_invalidate_tile_zoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
+                MapInvalidateTileZoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
             }
         }
     }
@@ -125,10 +125,10 @@ void SmallSceneryElement::SetNeedsSupports()
 
 SmallSceneryEntry* SmallSceneryElement::GetEntry() const
 {
-    return get_small_scenery_entry(entryIndex);
+    return GetSmallSceneryEntry(entryIndex);
 }
 
-SmallSceneryEntry* get_small_scenery_entry(ObjectEntryIndex entryIndex)
+SmallSceneryEntry* GetSmallSceneryEntry(ObjectEntryIndex entryIndex)
 {
     SmallSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();

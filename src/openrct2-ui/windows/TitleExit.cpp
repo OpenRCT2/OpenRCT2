@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,16 +24,35 @@ static rct_widget window_title_exit_widgets[] = {
     MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, SPR_MENU_EXIT, STR_EXIT),
     WIDGETS_END,
 };
-
-static void WindowTitleExitPaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowTitleExitMouseup(rct_window *w, WidgetIndex widgetIndex);
-
-static WindowEventList window_title_exit_events([](auto& events)
-{
-    events.mouse_up = &WindowTitleExitMouseup;
-    events.paint = &WindowTitleExitPaint;
-});
 // clang-format on
+
+class TitleExitWindow final : public Window
+{
+    void OnOpen() override
+    {
+        widgets = window_title_exit_widgets;
+        InitScrollWidgets();
+    }
+
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        if (gIntroState != IntroState::None)
+            return;
+
+        switch (widgetIndex)
+        {
+            case WIDX_EXIT:
+                ContextQuit();
+                // game_do_command(0, 1, 0, 0, 5, 3, 0);
+                break;
+        };
+    }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        DrawWidgets(dpi);
+    }
+};
 
 /**
  * Creates the window containing the exit button on the title screen.
@@ -41,40 +60,7 @@ static WindowEventList window_title_exit_events([](auto& events)
  */
 rct_window* WindowTitleExitOpen()
 {
-    rct_window* window;
-
-    window = WindowCreate(
-        ScreenCoordsXY(context_get_width() - 40, context_get_height() - 64), 40, 64, &window_title_exit_events,
-        WindowClass::TitleExit, WF_STICK_TO_BACK | WF_TRANSPARENT);
-    window->widgets = window_title_exit_widgets;
-    WindowInitScrollWidgets(*window);
-
-    return window;
-}
-
-/**
- *
- *  rct2: 0x0066B83C
- */
-static void WindowTitleExitMouseup(rct_window* w, WidgetIndex widgetIndex)
-{
-    if (gIntroState != IntroState::None)
-        return;
-
-    switch (widgetIndex)
-    {
-        case WIDX_EXIT:
-            context_quit();
-            // game_do_command(0, 1, 0, 0, 5, 3, 0);
-            break;
-    };
-}
-
-/**
- *
- *  rct2: 0x0066B836
- */
-static void WindowTitleExitPaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(*w, dpi);
+    return WindowCreate<TitleExitWindow>(
+        WindowClass::TitleExit, ScreenCoordsXY(ContextGetWidth() - 40, ContextGetHeight() - 64), 40, 64,
+        WF_STICK_TO_BACK | WF_TRANSPARENT);
 }

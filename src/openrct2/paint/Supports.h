@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,23 +17,19 @@ struct FootpathPaintInfo;
 
 constexpr const uint8_t NumVanillaWoodenSupportTypes = 49;
 
-bool wooden_a_supports_paint_setup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
-bool wooden_b_supports_paint_setup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
-bool wooden_a_supports_paint_setup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags);
-bool wooden_b_supports_paint_setup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags);
-bool metal_a_supports_paint_setup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags);
-bool metal_b_supports_paint_setup(
-    paint_session& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags);
-bool path_a_supports_paint_setup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
+bool WoodenASupportsPaintSetup(
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
+bool WoodenBSupportsPaintSetup(
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
+bool MetalASupportsPaintSetup(
+    PaintSession& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate);
+bool MetalBSupportsPaintSetup(
+    PaintSession& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate);
+bool PathASupportsPaintSetup(
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo, bool* underground);
-bool path_b_supports_paint_setup(
-    paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
+bool PathBSupportsPaintSetup(
+    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);
 
 // There are 13 types of metal supports. A graphic showing all of them is available here:

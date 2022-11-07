@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -76,7 +76,7 @@ void Painter::Paint(IDrawingEngine& de)
     if (text != nullptr)
         PaintReplayNotice(dpi, text);
 
-    if (gConfigGeneral.show_fps)
+    if (gConfigGeneral.ShowFPS)
     {
         PaintFPS(dpi);
     }
@@ -90,7 +90,7 @@ void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
     char buffer[64]{};
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{RED}{STRING}", text);
 
-    auto stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
+    auto stringWidth = gfx_get_string_width(buffer, FontStyle::Medium);
     screenCoords.x = screenCoords.x - stringWidth;
 
     if (((gCurrentTicks >> 1) & 0xF) > 4)
@@ -110,7 +110,7 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{INT32}", _currentFPS);
 
     // Draw Text
-    int32_t stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
+    int32_t stringWidth = gfx_get_string_width(buffer, FontStyle::Medium);
     screenCoords.x = screenCoords.x - (stringWidth / 2);
     gfx_draw_string(dpi, screenCoords, buffer);
 
@@ -131,11 +131,11 @@ void Painter::MeasureFPS()
     _lastSecond = currentTime;
 }
 
-paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags)
+PaintSession* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
     PROFILED_FUNCTION();
 
-    paint_session* session = nullptr;
+    PaintSession* session = nullptr;
 
     if (_freePaintSessions.empty() == false)
     {
@@ -148,7 +148,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     else
     {
         // Create new one in pool.
-        _paintSessionPool.emplace_back(std::make_unique<paint_session>());
+        _paintSessionPool.emplace_back(std::make_unique<PaintSession>());
         session = _paintSessionPool.back().get();
     }
 
@@ -172,7 +172,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     return session;
 }
 
-void Painter::ReleaseSession(paint_session* session)
+void Painter::ReleaseSession(PaintSession* session)
 {
     PROFILED_FUNCTION();
 

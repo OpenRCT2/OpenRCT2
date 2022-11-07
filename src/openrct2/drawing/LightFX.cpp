@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -131,12 +131,12 @@ void lightfx_set_available(bool available)
 
 bool lightfx_is_available()
 {
-    return _lightfxAvailable && gConfigGeneral.enable_light_fx != 0;
+    return _lightfxAvailable && gConfigGeneral.EnableLightFx != 0;
 }
 
 bool lightfx_for_vehicles_is_available()
 {
-    return lightfx_is_available() && gConfigGeneral.enable_light_fx_for_vehicles != 0;
+    return lightfx_is_available() && gConfigGeneral.EnableLightFxForVehicles != 0;
 }
 
 void lightfx_init()
@@ -305,7 +305,7 @@ void lightfx_prepare_light_list()
                     dpi.zoom_level = _current_view_zoom_front;
                     dpi.width = 1;
 
-                    paint_session* session = PaintSessionAlloc(&dpi, w->viewport->flags);
+                    PaintSession* session = PaintSessionAlloc(&dpi, w->viewport->flags);
                     PaintSessionGenerate(*session);
                     PaintSessionArrange(*session);
                     auto info = set_interaction_info_from_paint_session(
@@ -647,7 +647,7 @@ static void LightfxAdd3DLight(
             continue;
 
         entry->Position = loc;
-        entry->ViewCoords = translate_3d_to_2d_with_z(get_current_rotation(), loc);
+        entry->ViewCoords = Translate3DTo2DWithZ(get_current_rotation(), loc);
         entry->Type = lightType;
         entry->LightIntensity = 0xFF;
         entry->LightHash = lightHash;
@@ -661,7 +661,7 @@ static void LightfxAdd3DLight(
     LightListEntry* entry = &_LightListBack[LightListCurrentCountBack++];
 
     entry->Position = loc;
-    entry->ViewCoords = translate_3d_to_2d_with_z(get_current_rotation(), loc);
+    entry->ViewCoords = Translate3DTo2DWithZ(get_current_rotation(), loc);
     entry->Type = lightType;
     entry->LightIntensity = 0xFF;
     entry->LightHash = lightHash;

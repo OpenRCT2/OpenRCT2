@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -425,15 +426,12 @@ static void WindowResearchFundingMouseup(rct_window* w, WidgetIndex widgetIndex)
  */
 static void WindowResearchFundingMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
-    rct_widget* dropdownWidget;
-    int32_t i;
-
     if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
         return;
 
-    dropdownWidget = widget - 1;
+    rct_widget* dropdownWidget = widget - 1;
 
-    for (i = 0; i < 4; i++)
+    for (std::size_t i = 0; i < std::size(ResearchFundingLevelNames); i++)
     {
         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
         gDropdownItems[i].Args = ResearchFundingLevelNames[i];

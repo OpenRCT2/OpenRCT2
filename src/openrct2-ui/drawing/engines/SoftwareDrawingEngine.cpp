@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -122,7 +122,7 @@ private:
         }
 
         // Copy the surface to the window
-        if (gConfigGeneral.window_scale == 1 || gConfigGeneral.window_scale <= 0)
+        if (gConfigGeneral.WindowScale == 1 || gConfigGeneral.WindowScale <= 0)
         {
             SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
             if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,7 @@
 #include "../coaster/JuniorRollerCoaster.h"
 
 static void water_rc_track_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -24,7 +24,7 @@ static void water_rc_track_flat(
 }
 
 static void water_rc_track_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -34,7 +34,7 @@ static void water_rc_track_25_deg_up(
 }
 
 static void water_rc_track_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -44,7 +44,7 @@ static void water_rc_track_flat_to_25_deg_up(
 }
 
 static void water_rc_track_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -54,28 +54,28 @@ static void water_rc_track_25_deg_up_to_flat(
 }
 
 static void water_rc_track_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     water_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 static void water_rc_track_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     water_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 static void water_rc_track_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     water_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 static void water_rc_track_diag_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -85,7 +85,7 @@ static void water_rc_track_diag_flat(
 }
 
 static void water_rc_track_diag_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -95,7 +95,7 @@ static void water_rc_track_diag_25_deg_up(
 }
 
 static void water_rc_track_diag_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -105,7 +105,7 @@ static void water_rc_track_diag_flat_to_25_deg_up(
 }
 
 static void water_rc_track_diag_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -115,7 +115,7 @@ static void water_rc_track_diag_25_deg_up_to_flat(
 }
 
 static void water_rc_track_diag_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -125,7 +125,7 @@ static void water_rc_track_diag_25_deg_down(
 }
 
 static void water_rc_track_diag_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -135,7 +135,7 @@ static void water_rc_track_diag_flat_to_25_deg_down(
 }
 
 static void water_rc_track_diag_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
@@ -145,21 +145,21 @@ static void water_rc_track_diag_25_deg_down_to_flat(
 }
 
 static void water_rc_track_station(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_station(session, ride, trackSequence, direction, height, trackElement, false);
 }
 
 static void water_rc_track_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_60_deg_up(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
 static void water_rc_track_25_deg_up_to_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_25_deg_up_to_60_deg_up(
@@ -167,7 +167,7 @@ static void water_rc_track_25_deg_up_to_60_deg_up(
 }
 
 static void water_rc_track_60_deg_up_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_60_deg_up_to_25_deg_up(
@@ -175,21 +175,21 @@ static void water_rc_track_60_deg_up_to_25_deg_up(
 }
 
 static void water_rc_track_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     water_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 static void water_rc_track_25_deg_down_to_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     water_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 static void water_rc_track_60_deg_down_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     water_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -198,7 +198,7 @@ static void water_rc_track_60_deg_down_to_25_deg_down(
 // 5 tile turns
 
 static void water_rc_track_left_quarter_turn_5_tiles_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
@@ -206,7 +206,7 @@ static void water_rc_track_left_quarter_turn_5_tiles_25_deg_up(
 }
 
 static void water_rc_track_right_quarter_turn_5_tiles_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
@@ -218,7 +218,7 @@ static constexpr const uint8_t water_rc_left_quarter_turn_5_tiles_to_right_turn_
 };
 
 static void water_rc_track_left_quarter_turn_5_tiles_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     water_rc_track_right_quarter_turn_5_tiles_25_deg_up(
@@ -227,7 +227,7 @@ static void water_rc_track_left_quarter_turn_5_tiles_25_deg_down(
 }
 
 static void water_rc_track_right_quarter_turn_5_tiles_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     water_rc_track_left_quarter_turn_5_tiles_25_deg_up(
@@ -238,7 +238,7 @@ static void water_rc_track_right_quarter_turn_5_tiles_25_deg_down(
 // 3 tile turns
 
 static void water_rc_track_right_quarter_turn_3_tiles_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
@@ -246,7 +246,7 @@ static void water_rc_track_right_quarter_turn_3_tiles_25_deg_up(
 }
 
 static void water_rc_track_right_quarter_turn_3_tiles_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
@@ -261,7 +261,7 @@ static constexpr const uint8_t water_rc_left_quarter_turn_3_tiles_to_right_turn_
 };
 
 static void water_rc_track_left_quarter_turn_3_tiles_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = water_rc_left_quarter_turn_3_tiles_to_right_turn_map[trackSequence];
@@ -270,7 +270,7 @@ static void water_rc_track_left_quarter_turn_3_tiles_25_deg_up(
 }
 
 static void water_rc_track_left_quarter_turn_3_tiles_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = water_rc_left_quarter_turn_3_tiles_to_right_turn_map[trackSequence];
@@ -279,7 +279,7 @@ static void water_rc_track_left_quarter_turn_3_tiles_25_deg_down(
 }
 
 static void water_rc_track_diag_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_diag_60_deg_up(
@@ -287,7 +287,7 @@ static void water_rc_track_diag_60_deg_up(
 }
 
 static void water_rc_track_diag_25_deg_up_to_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
@@ -295,7 +295,7 @@ static void water_rc_track_diag_25_deg_up_to_60_deg_up(
 }
 
 static void water_rc_track_diag_60_deg_up_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
@@ -303,7 +303,7 @@ static void water_rc_track_diag_60_deg_up_to_25_deg_up(
 }
 
 static void water_rc_track_diag_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_diag_60_deg_down(
@@ -311,7 +311,7 @@ static void water_rc_track_diag_60_deg_down(
 }
 
 static void water_rc_track_diag_25_deg_down_to_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
@@ -319,7 +319,7 @@ static void water_rc_track_diag_25_deg_down_to_60_deg_down(
 }
 
 static void water_rc_track_diag_60_deg_down_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(

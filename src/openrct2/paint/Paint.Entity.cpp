@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,11 +34,11 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
+void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
 {
     PROFILED_FUNCTION();
 
-    if (!map_is_location_valid(pos))
+    if (!MapIsLocationValid(pos))
     {
         return;
     }
@@ -85,11 +85,11 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
             {
                 continue;
             }
-            if (entityPos.x < gClipSelectionA.x || entityPos.x > gClipSelectionB.x)
+            if (entityPos.x < gClipSelectionA.x || entityPos.x > (gClipSelectionB.x + COORDS_XY_STEP - 1))
             {
                 continue;
             }
-            if (entityPos.y < gClipSelectionA.y || entityPos.y > gClipSelectionB.y)
+            if (entityPos.y < gClipSelectionA.y || entityPos.y > (gClipSelectionB.y + COORDS_XY_STEP - 1))
             {
                 continue;
             }

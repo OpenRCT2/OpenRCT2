@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,11 +55,11 @@ extern std::vector<CoordsXYZD> gParkEntrances;
 extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern StationIndex gRideEntranceExitGhostStationIndex;
 
-void park_entrance_remove_ghost();
+void ParkEntranceRemoveGhost();
 
-void reset_park_entrance();
-void maze_entrance_hedge_replacement(const CoordsXYE& entrance);
-void maze_entrance_hedge_removal(const CoordsXYE& entrance);
+void ParkEntranceReset();
+void MazeEntranceHedgeReplacement(const CoordsXYE& entrance);
+void MazeEntranceHedgeRemoval(const CoordsXYE& entrance);
 
-void fix_park_entrance_locations();
-void UpdateParkEntranceLocations();
+void ParkEntranceFixLocations();
+void ParkEntranceUpdateLocations();

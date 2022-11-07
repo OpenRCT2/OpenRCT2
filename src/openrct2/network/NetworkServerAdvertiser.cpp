@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -89,7 +89,7 @@ public:
     {
         UpdateLAN();
 #    ifndef DISABLE_HTTP
-        if (gConfigNetwork.advertise)
+        if (gConfigNetwork.Advertise)
         {
             UpdateWAN();
         }
@@ -179,9 +179,9 @@ private:
             { "port", _port },
         };
 
-        if (!gConfigNetwork.advertise_address.empty())
+        if (!gConfigNetwork.AdvertiseAddress.empty())
         {
-            body["address"] = gConfigNetwork.advertise_address;
+            body["address"] = gConfigNetwork.AdvertiseAddress;
         }
 
         request.body = body.dump();
@@ -335,9 +335,9 @@ private:
     static std::string GetMasterServerUrl()
     {
         std::string result = OPENRCT2_MASTER_SERVER_URL;
-        if (!gConfigNetwork.master_server_url.empty())
+        if (!gConfigNetwork.MasterServerUrl.empty())
         {
-            result = gConfigNetwork.master_server_url;
+            result = gConfigNetwork.MasterServerUrl;
         }
         return result;
     }

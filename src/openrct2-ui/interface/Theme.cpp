@@ -129,6 +129,7 @@ static constexpr const WindowThemeDesc WindowThemeDescriptors[] =
     { WindowClass::Scenery,                     "WC_SCENERY",                        STR_THEMES_WINDOW_SCENERY,                        COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_GREEN,               COLOUR_DARK_GREEN                                  ) },
     { WindowClass::SceneryScatter,              "WC_SCENERY_SCATTER",                STR_THEMES_WINDOW_SCENERY_SCATTER,                COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_GREEN,               COLOUR_DARK_GREEN                                  ) },
     { WindowClass::Options,                     "WC_OPTIONS",                        STR_THEMES_WINDOW_OPTIONS,                        COLOURS_3(COLOUR_GREY,                     COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { WindowClass::AssetPacks,                  "WC_ASSET_PACKS",                    STR_ASSET_PACKS,                                  COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
     { WindowClass::Footpath,                    "WC_FOOTPATH",                       STR_THEMES_WINDOW_FOOTPATH,                       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
     { WindowClass::Land,                        "WC_LAND",                           STR_THEMES_WINDOW_LAND,                           COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
     { WindowClass::Water,                       "WC_WATER",                          STR_THEMES_WINDOW_WATER,                          COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
@@ -206,6 +207,7 @@ static constexpr const UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
     { WindowClass::TitleOptions,           COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),  TRANSLUCENT(COLOUR_GREY),   TRANSLUCENT(COLOUR_GREY),   COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
     { WindowClass::Staff,                  COLOURS_RCT1(COLOUR_DARK_GREEN,         COLOUR_LIGHT_PURPLE,        COLOUR_LIGHT_PURPLE,        COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
     { WindowClass::Options,                COLOURS_RCT1(COLOUR_GREY,               COLOUR_DARK_BROWN,          COLOUR_DARK_BROWN,          COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
+    { WindowClass::AssetPacks,             COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_DARK_BROWN,          COLOUR_DARK_BROWN,          COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
     { WindowClass::KeyboardShortcutList,   COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_DARK_BROWN,          COLOUR_DARK_BROWN,          COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
     { WindowClass::ChangeKeyboardShortcut, COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_DARK_BROWN,          COLOUR_DARK_BROWN,          COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
     { WindowClass::TrackDesignList,        COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_DARK_BROWN,          COLOUR_DARK_BROWN,          COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
@@ -615,9 +617,9 @@ namespace ThemeManager
         ActiveAvailableThemeIndex = 1;
 
         bool configValid = false;
-        if (!String::IsNullOrEmpty(gConfigInterface.current_theme_preset))
+        if (!String::IsNullOrEmpty(gConfigInterface.CurrentThemePreset))
         {
-            if (LoadThemeByConfigName(gConfigInterface.current_theme_preset))
+            if (LoadThemeByConfigName(gConfigInterface.CurrentThemePreset))
             {
                 configValid = true;
             }
@@ -625,7 +627,7 @@ namespace ThemeManager
 
         if (!configValid)
         {
-            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, ThemeManagerGetAvailableThemeConfigName(1));
+            String::DiscardDuplicate(&gConfigInterface.CurrentThemePreset, ThemeManagerGetAvailableThemeConfigName(1));
         }
     }
 
@@ -707,7 +709,7 @@ void ThemeManagerSetActiveAvailableTheme(size_t index)
         }
     }
     ThemeManager::ActiveAvailableThemeIndex = index;
-    String::DiscardDuplicate(&gConfigInterface.current_theme_preset, ThemeManagerGetAvailableThemeConfigName(index));
+    String::DiscardDuplicate(&gConfigInterface.CurrentThemePreset, ThemeManagerGetAvailableThemeConfigName(index));
 
     ColourSchemeUpdateAll();
 }
@@ -803,7 +805,7 @@ void ThemeRename(const utf8* name)
         if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
         {
             ThemeManager::ActiveAvailableThemeIndex = i;
-            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, ThemeManagerGetAvailableThemeConfigName(1));
+            String::DiscardDuplicate(&gConfigInterface.CurrentThemePreset, ThemeManagerGetAvailableThemeConfigName(1));
             break;
         }
     }
@@ -828,7 +830,7 @@ void ThemeDuplicate(const utf8* name)
         if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
         {
             ThemeManager::ActiveAvailableThemeIndex = i;
-            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, ThemeManagerGetAvailableThemeConfigName(i));
+            String::DiscardDuplicate(&gConfigInterface.CurrentThemePreset, ThemeManagerGetAvailableThemeConfigName(i));
             break;
         }
     }
@@ -839,7 +841,7 @@ void ThemeDelete()
     File::Delete(ThemeManager::CurrentThemePath);
     ThemeManager::LoadTheme(const_cast<UITheme*>(&PredefinedThemeRCT2));
     ThemeManager::ActiveAvailableThemeIndex = 1;
-    String::DiscardDuplicate(&gConfigInterface.current_theme_preset, ThemeManagerGetAvailableThemeConfigName(1));
+    String::DiscardDuplicate(&gConfigInterface.CurrentThemePreset, ThemeManagerGetAvailableThemeConfigName(1));
 }
 
 void ThemeManagerInitialise()

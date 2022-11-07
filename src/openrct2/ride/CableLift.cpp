@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -244,7 +244,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         uint16_t trackTotalProgress = GetTrackProgress();
         if (trackProgress >= trackTotalProgress)
         {
-            TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
+            TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
 
             CoordsXYE output;
             int32_t outputZ;
@@ -307,7 +307,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         if (static_cast<int16_t>(trackProgress) == -1)
         {
             auto trackType = GetTrackType();
-            TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
+            TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
             track_begin_end output;

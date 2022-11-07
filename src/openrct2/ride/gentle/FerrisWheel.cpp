@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,14 +19,14 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-static constexpr const uint8_t edges_1x4_ne_sw[] = {
+static constexpr const uint8_t Edges1X4NeSw[] = {
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_NE,
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_SW,
 };
 
-static constexpr const uint8_t edges_1x4_nw_se[] = {
+static constexpr const uint8_t Edges1X4NwSe[] = {
     EDGE_NE | EDGE_SW,
     EDGE_NE | EDGE_SW | EDGE_NW,
     EDGE_NE | EDGE_SW,
@@ -42,7 +42,7 @@ static constexpr BoundBoxXY FerrisWheelData[] = {
 };
 
 static void PaintFerrisWheelRiders(
-    paint_session& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
+    PaintSession& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
     const BoundBoxXYZ& bb)
 {
     for (int32_t i = 0; i < 32; i += 2)
@@ -59,7 +59,7 @@ static void PaintFerrisWheelRiders(
 }
 
 static void PaintFerrisWheelStructure(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -76,12 +76,12 @@ static void PaintFerrisWheelStructure(
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
     BoundBoxXYZ bb = { { boundBox.offset, height + 7 }, { boundBox.length, 127 } };
 
-    auto supportsImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto supportsImageTemplate = session.TrackColours[SCHEME_TRACK];
     auto wheelImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto wheelImageFlags = session.TrackColours[SCHEME_MISC];
-    if (wheelImageFlags != IMAGE_TYPE_REMAP)
+    if (!wheelImageFlags.HasPrimary())
     {
-        wheelImageTemplate = ImageId::FromUInt32(wheelImageFlags);
+        wheelImageTemplate = wheelImageFlags;
     }
 
     auto imageOffset = vehicle != nullptr ? vehicle->Pitch % 8 : 0;
@@ -102,7 +102,7 @@ static void PaintFerrisWheelStructure(
 }
 
 static void PaintFerrisWheel(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
@@ -110,42 +110,42 @@ static void PaintFerrisWheel(
     int32_t edges;
     if (direction & 1)
     {
-        edges = edges_1x4_nw_se[relativeTrackSequence];
+        edges = Edges1X4NwSe[relativeTrackSequence];
     }
     else
     {
-        edges = edges_1x4_ne_sw[relativeTrackSequence];
+        edges = Edges1X4NeSw[relativeTrackSequence];
     }
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    uint32_t imageId;
+    ImageId imageId;
     uint8_t rotation = session.CurrentRotation;
-    uint32_t colourFlags = session.TrackColours[SCHEME_MISC];
+    auto colourFlags = session.TrackColours[SCHEME_MISC];
 
     if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session.MapPosition, trackElement, ride, rotation))
     {
-        imageId = SPR_FENCE_ROPE_NW | colourFlags;
+        imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 2, height + 2 });
     }
     if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, session.MapPosition, trackElement, ride, rotation))
     {
-        imageId = SPR_FENCE_ROPE_NE | colourFlags;
+        imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 2, 0, height + 2 });
     }
     if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, rotation))
     {
         // Bound box is slightly different from track_paint_util_paint_fences
-        imageId = SPR_FENCE_ROPE_SE | colourFlags;
+        imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
     }
     if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, rotation))
     {
-        imageId = SPR_FENCE_ROPE_SW | colourFlags;
+        imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
     }
 
@@ -165,11 +165,11 @@ static void PaintFerrisWheel(
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 176, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 176, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFerrisWheel(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack1x4C)
     {

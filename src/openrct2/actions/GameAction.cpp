@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -133,7 +133,7 @@ namespace GameActions
                 case GameCommand::PlaceLargeScenery:
                 case GameCommand::PlaceBanner:
                 case GameCommand::PlaceScenery:
-                    scenery_remove_ghost_tool_placement();
+                    SceneryRemoveGhostToolPlacement();
                     break;
                 default:
                     break;
@@ -471,7 +471,7 @@ const char* GameAction::GetName() const
 
 bool GameAction::LocationValid(const CoordsXY& coords) const
 {
-    auto result = map_is_location_valid(coords);
+    auto result = MapIsLocationValid(coords);
     if (!result)
         return false;
 #ifdef ENABLE_SCRIPTING

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -147,7 +147,7 @@ public:
                 }
                 break;
             case WIDX_STAFF_LIST_MAP:
-                context_open_window(WindowClass::Map);
+                ContextOpenWindow(WindowClass::Map);
                 break;
             case WIDX_STAFF_LIST_QUICK_FIRE:
                 _quickFireMode = !_quickFireMode;
@@ -252,8 +252,9 @@ public:
         if (GetSelectedStaffType() != StaffType::Entertainer)
         {
             widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::ColourBtn;
-            auto spriteIdPalette = SPRITE_ID_PALETTE_COLOUR_1(static_cast<uint32_t>(staff_get_colour(GetSelectedStaffType())));
-            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = spriteIdPalette | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = GetColourButtonImage(
+                                                                       staff_get_colour(GetSelectedStaffType()))
+                                                                       .ToUInt32();
         }
         SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
 
@@ -357,7 +358,7 @@ public:
                     {
                         auto intent = Intent(WindowClass::Peep);
                         intent.putExtra(INTENT_EXTRA_PEEP, peep);
-                        context_open_intent(&intent);
+                        ContextOpenIntent(&intent);
                     }
                 }
                 break;
@@ -461,7 +462,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<StringId>(GetStaffNamingConvention(GetSelectedStaffType()).Plural);
-                context_show_error(STR_NO_THING_IN_PARK_YET, STR_NONE, ft);
+                ContextShowError(STR_NO_THING_IN_PARK_YET, STR_NONE, ft);
             }
         }
     }
@@ -500,7 +501,7 @@ private:
      */
     void HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
     {
-        bool autoPosition = gConfigGeneral.auto_staff_placement;
+        bool autoPosition = gConfigGeneral.AutoStaffPlacement;
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
             autoPosition = autoPosition ^ 1;
@@ -511,7 +512,7 @@ private:
         if (staffType == StaffType::Handyman)
         {
             staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
-            if (gConfigGeneral.handymen_mow_default)
+            if (gConfigGeneral.HandymenMowByDefault)
             {
                 staffOrders |= STAFF_ORDERS_MOWING;
             }
@@ -531,7 +532,7 @@ private:
             auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
             auto intent = Intent(WindowClass::Peep);
             intent.putExtra(INTENT_EXTRA_PEEP, staff);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
         });
 
         GameActions::Execute(&hireStaffAction);
@@ -590,7 +591,7 @@ private:
     {
         int32_t direction{};
         TileElement* tileElement{};
-        auto footpathCoords = footpath_get_coordinates_from_pos(screenCoords, &direction, &tileElement);
+        auto footpathCoords = FootpathGetCoordinatesFromPos(screenCoords, &direction, &tileElement);
         if (footpathCoords.IsNull())
             return nullptr;
 

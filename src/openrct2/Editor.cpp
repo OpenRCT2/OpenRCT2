@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,10 +61,8 @@ namespace Editor
 
     static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
     static void SetAllLandOwned();
-    static bool LoadLandscapeFromSV4(const char* path);
-    static bool LoadLandscapeFromSC4(const char* path);
     static void FinaliseMainView();
-    static bool ReadS6(const char* path);
+    static bool ReadS4OrS6(const char* path);
     static bool ReadPark(const char* path);
     static void ClearMapForEditing(bool fromSave);
 
@@ -93,9 +91,9 @@ namespace Editor
 
     static rct_window* OpenEditorWindows()
     {
-        auto* main = context_open_window(WindowClass::MainWindow);
-        context_open_window(WindowClass::TopToolbar);
-        context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
+        auto* main = ContextOpenWindow(WindowClass::MainWindow);
+        ContextOpenWindow(WindowClass::TopToolbar);
+        ContextOpenWindowView(WV_EDITOR_BOTTOM_TOOLBAR);
         return main;
     }
 
@@ -130,7 +128,7 @@ namespace Editor
         auto intent = Intent(WindowClass::Loadsave);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
         intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(ConvertSaveToScenarioCallback));
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
     }
 
     static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path)
@@ -140,7 +138,7 @@ namespace Editor
             return;
         }
 
-        if (!context_load_park_from_file(path))
+        if (!GetContext()->LoadParkFromFile(path))
         {
             return;
         }
@@ -230,11 +228,9 @@ namespace Editor
         {
             case FileExtension::SC6:
             case FileExtension::SV6:
-                return ReadS6(path);
             case FileExtension::SC4:
-                return LoadLandscapeFromSC4(path);
             case FileExtension::SV4:
-                return LoadLandscapeFromSV4(path);
+                return ReadS4OrS6(path);
             case FileExtension::PARK:
                 return ReadPark(path);
             default:
@@ -242,57 +238,8 @@ namespace Editor
         }
     }
 
-    /**
-     *
-     *  rct2: 0x006A2B02
-     */
-    static bool LoadLandscapeFromSV4(const char* path)
+    static void AfterLoadCleanup(bool loadedFromSave)
     {
-        load_from_sv4(path);
-        ClearMapForEditing(true);
-
-        gEditorStep = EditorStep::LandscapeEditor;
-        gScreenAge = 0;
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        viewport_init_all();
-        OpenEditorWindows();
-        FinaliseMainView();
-        return true;
-    }
-
-    static bool LoadLandscapeFromSC4(const char* path)
-    {
-        load_from_sc4(path);
-        ClearMapForEditing(false);
-
-        gEditorStep = EditorStep::LandscapeEditor;
-        gScreenAge = 0;
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        viewport_init_all();
-        OpenEditorWindows();
-        FinaliseMainView();
-        return true;
-    }
-
-    /**
-     *
-     *  rct2: 0x006758FE
-     */
-    static bool ReadS6(const char* path)
-    {
-        auto extensionS = Path::GetExtension(path);
-        const char* extension = extensionS.c_str();
-        auto loadedFromSave = false;
-        if (_stricmp(extension, ".sc6") == 0)
-        {
-            load_from_sc6(path);
-        }
-        else if (_stricmp(extension, ".sv6") == 0 || _stricmp(extension, ".sv7") == 0)
-        {
-            load_from_sv6(path);
-            loadedFromSave = true;
-        }
-
         ClearMapForEditing(loadedFromSave);
 
         gEditorStep = EditorStep::LandscapeEditor;
@@ -301,6 +248,27 @@ namespace Editor
         viewport_init_all();
         OpenEditorWindows();
         FinaliseMainView();
+    }
+
+    /**
+     *
+     *  rct2: 0x006758FE
+     */
+    static bool ReadS4OrS6(const char* path)
+    {
+        auto extensionS = Path::GetExtension(path);
+        const char* extension = extensionS.c_str();
+        auto loadedFromSave = false;
+        const auto loadSuccess = GetContext()->LoadParkFromFile(path);
+        if (!loadSuccess)
+            return false;
+
+        if (_stricmp(extension, ".sv4") == 0 || _stricmp(extension, ".sv6") == 0 || _stricmp(extension, ".sv7") == 0)
+        {
+            loadedFromSave = true;
+        }
+
+        AfterLoadCleanup(loadedFromSave);
         return true;
     }
 
@@ -315,13 +283,7 @@ namespace Editor
             objManager.LoadObjects(loadResult.RequiredObjects);
             importer->Import();
 
-            ClearMapForEditing(true);
-            gEditorStep = EditorStep::LandscapeEditor;
-            gScreenAge = 0;
-            gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-            viewport_init_all();
-            OpenEditorWindows();
-            FinaliseMainView();
+            AfterLoadCleanup(true);
             return true;
         }
         catch (const std::exception&)
@@ -332,7 +294,7 @@ namespace Editor
 
     static void ClearMapForEditing(bool fromSave)
     {
-        map_remove_all_rides();
+        MapRemoveAllRides();
         UnlinkAllRideBanners();
 
         ride_init_all();
@@ -381,7 +343,7 @@ namespace Editor
             gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
-        climate_reset(gClimate);
+        ClimateReset(gClimate);
 
         News::InitQueue();
     }
@@ -415,7 +377,7 @@ namespace Editor
                     object_manager_unload_all_objects();
                 }
 
-                context_open_window(WindowClass::EditorObjectSelection);
+                ContextOpenWindow(WindowClass::EditorObjectSelection);
                 break;
             case EditorStep::InventionsListSetUp:
                 if (window_find_by_class(WindowClass::EditorInventionList) != nullptr)
@@ -423,7 +385,7 @@ namespace Editor
                     return;
                 }
 
-                context_open_window(WindowClass::EditorInventionList);
+                ContextOpenWindow(WindowClass::EditorInventionList);
                 break;
             case EditorStep::OptionsSelection:
                 if (window_find_by_class(WindowClass::EditorScenarioOptions) != nullptr)
@@ -431,7 +393,7 @@ namespace Editor
                     return;
                 }
 
-                context_open_window(WindowClass::EditorScenarioOptions);
+                ContextOpenWindow(WindowClass::EditorScenarioOptions);
                 break;
             case EditorStep::ObjectiveSelection:
                 if (window_find_by_class(WindowClass::EditorObjectiveOptions) != nullptr)
@@ -439,7 +401,7 @@ namespace Editor
                     return;
                 }
 
-                context_open_window(WindowClass::EditorObjectiveOptions);
+                ContextOpenWindow(WindowClass::EditorObjectiveOptions);
                 break;
             case EditorStep::LandscapeEditor:
             case EditorStep::SaveScenario:
@@ -456,7 +418,7 @@ namespace Editor
         windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
 
         reset_all_sprite_quadrant_placements();
-        scenery_set_default_placement_configuration();
+        ScenerySetDefaultPlacementConfiguration();
 
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
 
@@ -530,7 +492,7 @@ namespace Editor
      */
     ResultWithMessage CheckPark()
     {
-        int32_t parkSize = park_calculate_size();
+        int32_t parkSize = ParkCalculateSize();
         if (parkSize == 0)
         {
             return { false, STR_PARK_MUST_OWN_SOME_LAND };
@@ -543,9 +505,9 @@ namespace Editor
 
         for (const auto& parkEntrance : gParkEntrances)
         {
-            int32_t direction = direction_reverse(parkEntrance.direction);
+            int32_t direction = DirectionReverse(parkEntrance.direction);
 
-            switch (footpath_is_connected_to_map_edge(parkEntrance, direction, 0))
+            switch (FootpathIsConnectedToMapEdge(parkEntrance, direction, 0))
             {
                 case FOOTPATH_SEARCH_NOT_FOUND:
                     return { false, STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH };
@@ -554,7 +516,7 @@ namespace Editor
                     return { false, STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX };
                 case FOOTPATH_SEARCH_SUCCESS:
                     // Run the search again and unown the path
-                    footpath_is_connected_to_map_edge(parkEntrance, direction, (1 << 5));
+                    FootpathIsConnectedToMapEdge(parkEntrance, direction, (1 << 5));
                     break;
             }
         }

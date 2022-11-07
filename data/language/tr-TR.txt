@@ -94,6 +94,7 @@ STR_0089    :Mini Tren
 STR_0090    :Küçük Maden Treni
 STR_0091    :Bilinmeyen Alet (59)
 STR_0092    :LIM Tren
+STR_0096    :Klasik Tahta Tren
 STR_0512    :Sardal şeklinde tırmanma zinciri rayı ile yükseğe çıkabilen çelik yapılı bir tren
 STR_0513    :Yolcuların ayakda durdukları koltuksuz tren
 STR_0514    :Trenin vagonları salıncak gibi yukarıdan aşağı asılı. Virajlarda vagonlar sağa veya sola doğru sallanıyor
@@ -173,6 +174,7 @@ STR_0598    :Vidaya benzeyen rayları ile 90 derece havaya fırlatılan ve aynı
 STR_0599    :Tekli vagonları ve hafif düşüşleri ile ölçülü bir tren
 STR_0600    :Maden vagonlarından oluşan bu tren ölçülü virajlardan ve düşüşlerden gitmekde
 STR_0602    :Lineer Indüksiyon Motoru ile 90 derece dikine fırlatılan tren, aynı şekilde 90 derece düşüş ile başlangıca dönüyor
+STR_0606    :Hızlı ve zor bir sürüşe sahip, açık havanın tadını çıkarabileceğiniz, bir miktar G kuvveti bulunan, ‘kontrolden-çıkmış’ gibi hissettirmek için tasarlanmış ahşap bir tren.
 STR_0767    :Müşteri {INT32}
 STR_0768    :Temizlikci {INT32}
 STR_0769    :Mühendis {INT32}
@@ -743,10 +745,10 @@ STR_1360    :{WINDOW_COLOUR_2}Bekleme süresi: {BLACK}{COMMA16} dakika
 STR_1361    :Hız değiştirilemiyor…
 STR_1362    :Başlangıç hızı değiştirilemiyor…
 STR_1363    :Direkler için çok yüksek!
-STR_1364    :Direkler üstedki yol için daha fazla yükseltilemiyor!
+STR_1364    :Direkler üsteki yol için daha fazla yükseltilemiyor!
 STR_1365    :Yuvarlama (sol)
 STR_1366    :Yuvarlama (sağ)
-STR_1367    :Yarı döngü
+STR_1367    :Küçük yarı döngü
 STR_1368    :Yarı kıvrılma (sol)
 STR_1369    :Yarı kıvrılma (sağ)
 STR_1370    :Kıvrık yuvarlama (sol)
@@ -2702,8 +2704,6 @@ STR_5503    :Host ismini veya IP-Adresini giriniz:
 STR_5504    :Multiplayer durumunu göster
 STR_5505    :Server’e bağlanamadı.
 STR_5506    :Müşteriler şiddet oranını aldırmasın
-STR_5508    :Checksum’ı yanlış olan dosyaların yüklenmesine izin ver
-STR_5509    :Bu ayar ile bozuk veya arızalı senrayolar ve oyun kayıdları yüklenebiliyor
 STR_5510    :Varasayılan aygıt
 STR_5511    :(BILINMIYOR)
 STR_5512    :Farklı kaydet
@@ -2986,7 +2986,7 @@ STR_5832    :Yükseklik birimin “Mesafe ve Hız” bölümünde seçdiğiniz g
 STR_5833    :Kullanmak istediğiniz tarih formatını seçiniz
 STR_5834    :Kullanmak istediğiniz ses aygıtını seçiniz
 STR_5835    :Oyun penceresi simge durumuna getirildiğinde oyununu sesini kıs
-STR_5836    :Ana ekran müziğini.{NEWLINE}RCT1 seçildiğinde ya RCT 1’in ‘data’ adlı klasöründen ‘css17.dat’ dosyasını RCT2’nin ‘data’ adlı klasörüne ‘css50.dat’ olarak kopyalamanız yada ‘Diğer Ayarlar’ penceresinden RCT1 klasörünü belirlemeniz gereklidir
+STR_5836    :Ana ekran müziğini.{NEWLINE}RCT1 temasını seçmek için ‘Diğer Ayarlar’ penceresinden RCT1 klasörünü belirlemeniz gereklidir.
 STR_5837    :Arayüzü temları değiştiriniz veya oluşturunuz
 STR_5838    :Üst araç çubuğunda ‘Finansal Bakış’ simgesini göster/gizle
 STR_5839    :Üst araç çubuğunda ‘Araştırma’ simgesini göster/gizle
@@ -3377,6 +3377,24 @@ STR_6267    :Zemin deneticisini aç
 STR_6268    :Bir sonraki tick’e atla		
 STR_6269    :Geçersiz hava ID’si
 STR_6360    :{BLACK}{COMMA32}
+STR_6502    :{COMMA16} ve {COMMA16} arasında değer giriniz.
+STR_6503    :En az bir istasyon nesnesi seçilmelidir
+STR_6504    :En az bir arazi yüzeyi seçilmelidir
+STR_6505    :En az bir arazi kenarı seçilmelidir
+STR_6514    :Geçersiz yükseklik!
+STR_6515    :{BLACK}RCT1 bağlı değil - yedek görüntüler kullanılacak.
+STR_6516    :Eklenen bir veya daha fazla nesne, uygun görüntüleme için RCT1'in bağlanmasını gerektirir. Yedek görüntüler kullanılacak.
+STR_6517    :Bu parktaki bir veya daha fazla nesne, düzgün görüntüleme için RCT1'in bağlanmasını gerektirir. Yedek görüntüler kullanılacak.
+STR_6518    :{BLACK}Açıklamasını ve amacını görüntülemek için bir senaryonun üzerine gelin. Oynamaya başlamak için tıklayın.
+STR_6519    :Ekstralar
+STR_6520    :Varlık paketleri
+STR_6521    :Düşük öncelik
+STR_6522    :Yüksek öncelik
+STR_6523    :Seçili varlık paketinin önceliğini düşür.
+STR_6524    :Seçili varlık paketinin önceliğini yükselt.
+STR_6525    :Etkinleştirilmiş varlık paketleri ile beraber oyundaki tüm varlıkları yeniden yükleyin.
+STR_6526    :(ana grafikler, müzik ve ses efektleri)
+STR_6527    :Yarışmalar
 
 #############
 # Scenarios #
@@ -3851,15 +3869,6 @@ STR_NAME    :Çatı
 
 [TTRFWD08]
 STR_NAME    :Çatı
-
-[TTRFGL01]
-STR_NAME    :Cam çatı
-
-[TTRFGL02]
-STR_NAME    :Cam çatı
-
-[TTRFGL03]
-STR_NAME    :Cam çatı
 
 [ACWW33]
 STR_NAME    :Direkli ahşap duvar

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -383,7 +383,7 @@ namespace OpenRCT2
 
     template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatCurrency(FormatBuffer& ss, T rawValue)
     {
-        auto currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
+        auto currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
         auto value = static_cast<int64_t>(rawValue) * currencyDesc->rate;
 
         // Negative sign
@@ -402,7 +402,7 @@ namespace OpenRCT2
         // Currency symbol
         auto symbol = currencyDesc->symbol_unicode;
         auto affix = currencyDesc->affix_unicode;
-        if (!font_supports_string(symbol, FONT_SIZE_MEDIUM))
+        if (!font_supports_string(symbol, FontStyle::Medium))
         {
             symbol = currencyDesc->symbol_ascii;
             affix = currencyDesc->affix_ascii;
@@ -533,7 +533,7 @@ namespace OpenRCT2
             case FormatToken::Velocity:
                 if constexpr (std::is_integral<T>())
                 {
-                    switch (gConfigGeneral.measurement_format)
+                    switch (gConfigGeneral.MeasurementFormat)
                     {
                         default:
                         case MeasurementFormat::Imperial:
@@ -563,7 +563,7 @@ namespace OpenRCT2
             case FormatToken::Length:
                 if constexpr (std::is_integral<T>())
                 {
-                    switch (gConfigGeneral.measurement_format)
+                    switch (gConfigGeneral.MeasurementFormat)
                     {
                         default:
                         case MeasurementFormat::Imperial:

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -340,11 +340,11 @@ public:
                 News::OpenSubject(News::ItemType::Research, gResearchLastItem->rawValue);
                 break;
             case WIDX_RESEARCH_FUNDING_BUTTON:
-                context_open_window_view(WV_FINANCES_RESEARCH);
+                ContextOpenWindowView(WV_FINANCES_RESEARCH);
                 break;
             case WIDX_GROUP_BY_TRACK_TYPE:
-                gConfigInterface.list_ride_vehicles_separately = !gConfigInterface.list_ride_vehicles_separately;
-                config_save_default();
+                gConfigInterface.ListRideVehiclesSeparately = !gConfigInterface.ListRideVehiclesSeparately;
+                ConfigSaveDefault();
                 SetPage(_currentTab);
                 break;
         }
@@ -362,7 +362,7 @@ public:
     {
         SetPressedTab();
 
-        if (!gConfigInterface.list_ride_vehicles_separately)
+        if (!gConfigInterface.ListRideVehiclesSeparately)
             pressed_widgets |= (1LL << WIDX_GROUP_BY_TRACK_TYPE);
         else
             pressed_widgets &= ~(1LL << WIDX_GROUP_BY_TRACK_TYPE);
@@ -386,7 +386,7 @@ public:
 
         const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
         auto string = ls.GetString(STR_GROUP_BY_TRACK_TYPE);
-        auto strWidth = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
+        auto strWidth = gfx_get_string_width(string, FontStyle::Medium);
         auto localizedGroupByTrackTypeWidth = strWidth + 14;
         widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - localizedGroupByTrackTypeWidth;
     }
@@ -530,7 +530,7 @@ private:
             auto intent = Intent(WindowClass::TrackDesignList);
             intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
             intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.EntryIndex);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             return;
         }
 
@@ -646,7 +646,7 @@ private:
             rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
             // Skip if the vehicle isn't the preferred vehicle for this generic track type
-            if (!gConfigInterface.list_ride_vehicles_separately
+            if (!gConfigInterface.ListRideVehiclesSeparately
                 && !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
                 && highestVehiclePriority > rideEntry->BuildMenuPriority)
             {
@@ -656,7 +656,7 @@ private:
             highestVehiclePriority = rideEntry->BuildMenuPriority;
 
             // Determines how and where to draw a button for this ride type/vehicle.
-            if (gConfigInterface.list_ride_vehicles_separately
+            if (gConfigInterface.ListRideVehiclesSeparately
                 || GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
                 // Separate, draw apart
@@ -762,18 +762,12 @@ private:
             Invalidate();
 
             // Resize widgets to new window size
-            widgets[WIDX_BACKGROUND].right = newWidth - 1;
-            widgets[WIDX_BACKGROUND].bottom = newHeight - 1;
-            widgets[WIDX_PAGE_BACKGROUND].right = newWidth - 1;
-            widgets[WIDX_PAGE_BACKGROUND].bottom = newHeight - 1;
-            widgets[WIDX_TITLE].right = newWidth - 2;
-            widgets[WIDX_CLOSE].left = newWidth - 13;
-            widgets[WIDX_CLOSE].right = newWidth - 3;
+            width = newWidth;
+            height = newHeight;
+            ResizeFrameWithPage();
             widgets[WIDX_GROUP_BY_TRACK_TYPE].left = newWidth - 8 - GroupByTrackTypeWidth;
             widgets[WIDX_GROUP_BY_TRACK_TYPE].right = newWidth - 8;
 
-            width = newWidth;
-            height = newHeight;
             Invalidate();
         }
 
@@ -843,7 +837,7 @@ private:
 
         if (!_vehicleAvailability.empty())
         {
-            if (gConfigInterface.list_ride_vehicles_separately)
+            if (gConfigInterface.ListRideVehiclesSeparately)
             {
                 ft = Formatter();
                 ft.Add<StringId>(rideEntry->naming.Name);
@@ -989,7 +983,9 @@ void WindowNewRideFocus(RideSelection rideItem)
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(rideItem.EntryIndex);
-    auto rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
+    if (rideEntry == nullptr)
+        return;
 
+    auto rideTypeIndex = rideEntry->GetFirstNonNullRideType();
     w->SetPage(GetRideTypeDescriptor(rideTypeIndex).Category);
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,7 +49,7 @@ static void OpenWindow(WindowClass wc)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
-        context_open_window(wc);
+        ContextOpenWindow(wc);
     }
 }
 
@@ -171,13 +171,13 @@ static void ShortcutRemoveTopBottomToolbarToggle()
         {
             if (gScreenFlags == 0)
             {
-                context_open_window(WindowClass::TopToolbar);
-                context_open_window(WindowClass::BottomToolbar);
+                ContextOpenWindow(WindowClass::TopToolbar);
+                ContextOpenWindow(WindowClass::BottomToolbar);
             }
             else
             {
-                context_open_window(WindowClass::TopToolbar);
-                context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
+                ContextOpenWindow(WindowClass::TopToolbar);
+                ContextOpenWindowView(WV_EDITOR_BOTTOM_TOOLBAR);
             }
         }
     }
@@ -269,7 +269,7 @@ static void ShortcutBuildNewRide()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            context_open_window(WindowClass::ConstructRide);
+            ContextOpenWindow(WindowClass::ConstructRide);
         }
     }
 }
@@ -281,7 +281,7 @@ static void ShortcutShowFinancialInformation()
 
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-            context_open_window(WindowClass::Finances);
+            ContextOpenWindow(WindowClass::Finances);
 }
 
 static void ShortcutShowResearchInformation()
@@ -291,7 +291,7 @@ static void ShortcutShowResearchInformation()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        context_open_window_view(WV_RIDE_RESEARCH);
+        ContextOpenWindowView(WV_RIDE_RESEARCH);
     }
 }
 
@@ -302,7 +302,7 @@ static void ShortcutShowRidesList()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        context_open_window(WindowClass::RideList);
+        ContextOpenWindow(WindowClass::RideList);
     }
 }
 
@@ -313,7 +313,7 @@ static void ShortcutShowParkInformation()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        context_open_window(WindowClass::ParkInformation);
+        ContextOpenWindow(WindowClass::ParkInformation);
     }
 }
 
@@ -324,7 +324,7 @@ static void ShortcutShowGuestList()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        context_open_window(WindowClass::GuestList);
+        ContextOpenWindow(WindowClass::GuestList);
     }
 }
 
@@ -335,7 +335,7 @@ static void ShortcutShowStaffList()
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
-        context_open_window(WindowClass::StaffList);
+        ContextOpenWindow(WindowClass::StaffList);
     }
 }
 
@@ -345,7 +345,7 @@ static void ShortcutShowRecentMessages()
         return;
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
-        context_open_window(WindowClass::RecentNews);
+        ContextOpenWindow(WindowClass::RecentNews);
 }
 
 static void ShortcutShowMap()
@@ -355,7 +355,7 @@ static void ShortcutShowMap()
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gEditorStep == EditorStep::LandscapeEditor)
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-            context_open_window(WindowClass::Map);
+            ContextOpenWindow(WindowClass::Map);
 }
 
 static void ShortcutReduceGameSpeed()
@@ -388,7 +388,7 @@ static void ShortcutOpenCheatWindow()
         window_close(*window);
         return;
     }
-    context_open_window(WindowClass::Cheats);
+    ContextOpenWindow(WindowClass::Cheats);
 }
 
 static void ShortcutOpenTransparencyWindow()
@@ -396,7 +396,7 @@ static void ShortcutOpenTransparencyWindow()
     if (gScreenFlags != SCREEN_FLAGS_PLAYING)
         return;
 
-    context_open_window(WindowClass::Transparency);
+    ContextOpenWindow(WindowClass::Transparency);
 }
 
 static void ShortcutClearScenery()
@@ -431,7 +431,7 @@ static void ShortcutQuickSaveGame()
         auto intent = Intent(WindowClass::Loadsave);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
         intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
     }
 }
 
@@ -473,21 +473,21 @@ static void ShortcutOpenSceneryPicker()
 
 static void ShortcutScaleUp()
 {
-    gConfigGeneral.window_scale += 0.25f;
-    config_save_default();
+    gConfigGeneral.WindowScale += 0.25f;
+    ConfigSaveDefault();
     gfx_invalidate_screen();
-    context_trigger_resize();
-    context_update_cursor_scale();
+    ContextTriggerResize();
+    ContextUpdateCursorScale();
 }
 
 static void ShortcutScaleDown()
 {
-    gConfigGeneral.window_scale -= 0.25f;
-    gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
-    config_save_default();
+    gConfigGeneral.WindowScale -= 0.25f;
+    gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
+    ConfigSaveDefault();
     gfx_invalidate_screen();
-    context_trigger_resize();
-    context_update_cursor_scale();
+    ContextTriggerResize();
+    ContextUpdateCursorScale();
 }
 
 // Tile inspector shortcuts
@@ -520,7 +520,7 @@ static void ShortcutToggleVisibility()
         return;
 
     extern TileCoordsXY windowTileInspectorTile;
-    TileElement* tileElement = map_get_nth_element_at(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
+    TileElement* tileElement = MapGetNthElementAt(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
     if (tileElement != nullptr)
     {
         tileElement->SetInvisible(!tileElement->IsInvisible());
@@ -623,7 +623,7 @@ static void ShortcutToggleConsole()
     {
         console.Toggle();
     }
-    else if (gConfigGeneral.debugging_tools && !context_is_input_active())
+    else if (gConfigGeneral.DebuggingTools && !ContextIsInputActive())
     {
         window_cancel_textbox();
         console.Toggle();
@@ -730,8 +730,8 @@ static void ShortcutToggleTransparentWater()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    gConfigGeneral.transparent_water ^= 1;
-    config_save_default();
+    gConfigGeneral.TransparentWater ^= 1;
+    ConfigSaveDefault();
     gfx_invalidate_screen();
 }
 
@@ -808,7 +808,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     });
     RegisterShortcut(ShortcutId::InterfaceSceneryPicker, STR_SHORTCUT_OPEN_SCENERY_PICKER, []() { ShortcutOpenSceneryPicker(); });
 
-    RegisterShortcut(ShortcutId::InterfaceShowOptions, STR_SHORTCUT_SHOW_OPTIONS, []() { context_open_window(WindowClass::Options); });
+    RegisterShortcut(ShortcutId::InterfaceShowOptions, STR_SHORTCUT_SHOW_OPTIONS, []() { ContextOpenWindow(WindowClass::Options); });
     RegisterShortcut(ShortcutId::InterfaceOpenTransparencyOptions, STR_SHORTCUT_OPEN_TRANSPARENCY_OPTIONS, "CTRL+T", []() { ShortcutOpenTransparencyWindow(); });
     RegisterShortcut(ShortcutId::InterfaceOpenCheats, STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", []() { ShortcutOpenCheatWindow(); });
     RegisterShortcut(ShortcutId::InterfaceOpenMap, STR_SHORTCUT_SHOW_MAP, "TAB", []() { ShortcutShowMap(); });
@@ -832,7 +832,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
         }
     });
     RegisterShortcut(ShortcutId::InterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
-        if (gConfigInterface.toolbar_show_cheats)
+        if (gConfigInterface.ToolbarShowCheats)
         {
             OpenWindow(WindowClass::TileInspector);
         }
@@ -913,7 +913,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
             }
             else
             {
-                context_open_window(WindowClass::DebugPaint);
+                ContextOpenWindow(WindowClass::DebugPaint);
             }
         }
     });

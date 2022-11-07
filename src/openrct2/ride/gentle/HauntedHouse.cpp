@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,7 +24,7 @@ static constexpr BoundBoxXY HauntedHouseData[] = {
 };
 
 static void PaintHauntedHouseStructure(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
 {
     uint8_t frameNum = 0;
 
@@ -41,7 +41,7 @@ static void PaintHauntedHouseStructure(
     }
 
     const auto& boundBox = HauntedHouseData[part];
-    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
+    auto imageTemplate = session.TrackColours[SCHEME_MISC];
     auto baseImageIndex = rideEntry->Cars[0].base_image_id;
     auto imageIndex = baseImageIndex + direction;
     PaintAddImageAsParent(
@@ -61,14 +61,14 @@ static void PaintHauntedHouseStructure(
 }
 
 static void PaintHauntedHouse(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -112,12 +112,12 @@ static void PaintHauntedHouse(
             break;
     }
 
-    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 128, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionHauntedHouse(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

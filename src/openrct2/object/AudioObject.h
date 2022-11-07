@@ -20,6 +20,7 @@ class AudioObject final : public Object
 {
 private:
     AudioSampleTable _sampleTable;
+    AudioSampleTable _loadedSampleTable;
 
 public:
     void ReadJson(IReadObjectContext* context, json_t& root) override;

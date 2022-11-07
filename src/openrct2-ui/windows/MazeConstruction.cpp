@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -104,7 +104,7 @@ public:
         ride_construction_invalidate_current_track();
         viewport_set_visibility(0);
 
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
@@ -130,7 +130,7 @@ public:
             {
                 auto intent = Intent(WindowClass::Ride);
                 intent.putExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
             }
         }
     }
@@ -161,14 +161,14 @@ public:
         if (_rideConstructionState == RideConstructionState::Place)
         {
             disabledWidgets
-                |= ((1ULL << WIDX_MAZE_BUILD_MODE) | (1ULL << WIDX_MAZE_MOVE_MODE) | (1ULL << WIDX_MAZE_FILL_MODE)
-                    | (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE) | (1ULL << WIDX_MAZE_DIRECTION_SW)
-                    | (1ULL << WIDX_MAZE_DIRECTION_SE));
+                |= ((1uLL << WIDX_MAZE_BUILD_MODE) | (1uLL << WIDX_MAZE_MOVE_MODE) | (1uLL << WIDX_MAZE_FILL_MODE)
+                    | (1uLL << WIDX_MAZE_DIRECTION_NW) | (1uLL << WIDX_MAZE_DIRECTION_NE) | (1uLL << WIDX_MAZE_DIRECTION_SW)
+                    | (1uLL << WIDX_MAZE_DIRECTION_SE));
         }
         else if (_rideConstructionState == RideConstructionState::EntranceExit)
         {
-            disabledWidgets = (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE)
-                | (1ULL << WIDX_MAZE_DIRECTION_SW) | (1ULL << WIDX_MAZE_DIRECTION_SE);
+            disabledWidgets = (1uLL << WIDX_MAZE_DIRECTION_NW) | (1uLL << WIDX_MAZE_DIRECTION_NE)
+                | (1uLL << WIDX_MAZE_DIRECTION_SW) | (1uLL << WIDX_MAZE_DIRECTION_SE);
         }
 
         // Set and invalidate the changed widgets
@@ -178,7 +178,7 @@ public:
 
         for (WidgetIndex i = 0; i < 64; i++)
         {
-            if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
+            if ((disabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
             {
                 widget_invalidate(*this, i);
             }
@@ -333,7 +333,7 @@ private:
     {
         ride_construction_invalidate_current_track();
 
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -348,7 +348,7 @@ private:
         RideId rideIndex = gRideEntranceExitPlaceRideIndex;
 
         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-            entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex,
+            entranceOrExitCoords, DirectionReverse(entranceOrExitCoords.direction), rideIndex,
             gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {

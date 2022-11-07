@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -56,6 +56,7 @@ void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdow
 void WindowDropdownShowColourAvailable(
     rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
+bool WindowDropDownHasMultipleColumns(size_t numItems);
 
 namespace Dropdown
 {

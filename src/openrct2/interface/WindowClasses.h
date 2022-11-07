@@ -86,6 +86,7 @@ enum class WindowClass : uint8_t
     ObjectLoadError = 132,
     PatrolArea = 133,
     Transparency = 134,
+    AssetPacks = 135,
 
     // Only used for colour schemes
     Staff = 220,

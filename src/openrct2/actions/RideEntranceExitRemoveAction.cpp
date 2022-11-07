@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -138,13 +138,13 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     auto res = GameActions::Result();
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
-    res.Position.z = tile_element_height(res.Position);
+    res.Position.z = TileElementHeight(res.Position);
 
-    footpath_queue_chain_reset();
-    maze_entrance_hedge_replacement({ _loc, entranceElement });
-    footpath_remove_edges_at(_loc, entranceElement);
+    FootpathQueueChainReset();
+    MazeEntranceHedgeReplacement({ _loc, entranceElement });
+    FootpathRemoveEdgesAt(_loc, entranceElement);
 
-    tile_element_remove(entranceElement);
+    TileElementRemove(entranceElement);
 
     auto& station = ride->GetStation(_stationNum);
     if (_isExit)
@@ -156,8 +156,8 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
         station.Entrance.SetNull();
     }
 
-    footpath_update_queue_chains();
+    FootpathUpdateQueueChains();
 
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
     return res;
 }

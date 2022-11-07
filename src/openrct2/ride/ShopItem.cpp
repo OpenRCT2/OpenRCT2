@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,7 +91,7 @@ constexpr uint64_t GetAllShopItemsWithFlag(uint16_t flag)
         const auto& sid = ShopItems[i];
         if (sid.HasFlag(flag))
         {
-            ret |= (1ULL << i);
+            ret |= (1uLL << i);
         }
     }
     return ret;

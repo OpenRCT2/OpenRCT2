@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -963,11 +963,8 @@ namespace OpenRCT2::Ui::Windows
             widget.bottom = desc.Y + desc.Height - 1;
             widget.content = std::numeric_limits<uint32_t>::max();
             widget.tooltip = STR_NONE;
-            if (!desc.Tooltip.empty())
-            {
-                widget.sztooltip = const_cast<utf8*>(desc.Tooltip.c_str());
-                widget.flags |= WIDGET_FLAGS::TOOLTIP_IS_STRING;
-            }
+            widget.sztooltip = const_cast<utf8*>(desc.Tooltip.c_str());
+            widget.flags |= WIDGET_FLAGS::TOOLTIP_IS_STRING;
             if (desc.IsDisabled)
                 widget.flags |= WIDGET_FLAGS::IS_DISABLED;
             if (!desc.IsVisible)
@@ -1006,7 +1003,7 @@ namespace OpenRCT2::Ui::Windows
             else if (desc.Type == "colourpicker")
             {
                 widget.type = WindowWidgetType::ColourBtn;
-                widget.image = GetColourButtonImage(desc.Colour);
+                widget.image = GetColourButtonImage(desc.Colour).ToUInt32();
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "custom")
@@ -1241,7 +1238,7 @@ namespace OpenRCT2::Ui::Windows
                 if (lastColour != colour && colour < COLOUR_COUNT)
                 {
                     customWidgetInfo->Colour = colour;
-                    widget.image = GetColourButtonImage(colour);
+                    widget.image = GetColourButtonImage(colour).ToUInt32();
                     widget_invalidate(*w, widgetIndex);
 
                     std::vector<DukValue> args;
@@ -1402,6 +1399,33 @@ namespace OpenRCT2::Ui::Windows
             if (customWidgetInfo != nullptr)
             {
                 customWidgetInfo->Name = std::string(name);
+            }
+        }
+    }
+
+    std::string GetWidgetTooltip(rct_window* w, WidgetIndex widgetIndex)
+    {
+        if (w->custom_info != nullptr)
+        {
+            const auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                return customWidgetInfo->Tooltip;
+            }
+        }
+        return {};
+    }
+
+    void SetWidgetTooltip(rct_window* w, WidgetIndex widgetIndex, std::string_view tooltip)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                customWidgetInfo->Tooltip = std::string(tooltip);
             }
         }
     }

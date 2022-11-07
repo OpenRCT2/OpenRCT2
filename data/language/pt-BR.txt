@@ -97,6 +97,7 @@ STR_0092    :Montanha-Russa de Indução Linear
 STR_0093    :Montanha-Russa Híbrida
 STR_0094    :Montanha-Russa de Trilho Único
 STR_0095    :Montanha-Russa Alpina
+STR_0096    :Montanha-Russa de Madeira Clássica
 STR_0512    :Uma montanha russa compacta com subida de elevação em espiral e quedas suaves e retorcidas
 STR_0513    :Uma montanha russa de looping onde passageiros andam em pé
 STR_0514    :Trens suspensos abaixo do trilho da montanha-russa balançam para fora nas curvas
@@ -179,6 +180,7 @@ STR_0602    :Trens da montanha-russa são acelerados para fora da estação por 
 STR_0603    :Uma montanha-russa com estilo semelhante à de madeira, mas trilhos de aço, permitindo quedas íngremes e inversões.
 STR_0604    :Passageiros andam numa fila única em uma pista estreita de monotrilho, enquanto correm por inversões apertadas e mudanças de direções.
 STR_0605    :Passageiros descem de tobogã por um trilho de aço sinuoso, freando para controlar suas velocidades
+STR_0606    :Uma montanha-russa de madeira de estilo mais antigo com um trajeto rápido e duro, com muito ‘tempo no ar’, alguma força G lateral e projetada para um sentimento de ‘perda de controle’
 STR_0767    :Visitante {INT32}
 STR_0768    :Faxineiro {INT32}
 STR_0769    :Mecânico {INT32}
@@ -2708,8 +2710,6 @@ STR_5503    :Digite o nome do servidor ou o endereço de IP:
 STR_5504    :Exibir o estado do multijogador
 STR_5505    :Impossível se conectar ao servidor.
 STR_5506    :Visitantes ignoram intensidades
-STR_5508    :Carregamento de arquivos com checksum incorreto
-STR_5509    :Permite carregar cenários e jogos salvos{NEWLINE}que possuam checksum incorreto, como os cenários do demo{NEWLINE}ou jogos salvos danificados.
 STR_5510    :Dispositivo de som padrão
 STR_5511    :(DESCONHECIDO)
 STR_5512    :Salvar Jogo Como
@@ -2993,7 +2993,7 @@ STR_5832    :Mostra altura como unidade genérica ao invés de formato de medida
 STR_5833    :Muda qual formato de data é usado
 STR_5834    :Seleciona qual dispositivo de áudio o OpenRCT2 irá usar
 STR_5835    :Deixa o jogo mudo se a janela perder foco
-STR_5836    :Seleciona música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT1 requer que você copie ‘data/css17.dat’ da pasta do seu RCT1 para ‘data/css50.dat’ da pasta do seu RCT2, ou definir o caminho para o RCT1 na aba Variados.
+STR_5836    :Selecione a música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT1 requer que você defina o caminho para o RCT1 na aba Variados.
 STR_5837    :Cria e gerencia temas de interface de usuário personalizadas
 STR_5838    :Mostra um botão separado para janela de finanças na barra de ferramentas
 STR_5839    :Mostra um botão separado para janela de pesquisa e desenvolvimento na barra de ferramentas
@@ -3617,6 +3617,19 @@ STR_6511    :Giro de Gravidade Zero (direita)
 STR_6512    :Giro de Gravidade Zero Grande (esquerda)
 STR_6513    :Giro de Gravidade Zero Grande (direita)
 STR_6514    :Altura inválida!
+STR_6515    :{BLACK}RCT1 não associado - imagens de reserva serão usadas.
+STR_6516    :Um ou mais objetos adicionados requerem o RCT1 associado para exibição correta. Imagens de reserva serão usadas.
+STR_6517    :Um ou mais objetos nesse parque requerem o RCT1 associado para exibição correta. Imagens de reserva serão usadas.
+STR_6518    :{BLACK}Coloque o mouse sobre um cenário para ver sua descrição e objetivo. Clique para começar a jogar.
+STR_6519    :Extras
+STR_6520    :Conjuntos de Recursos
+STR_6521    :Baixa Prioridade
+STR_6522    :Alta Prioridade
+STR_6523    :Diminuir a prioridade do conjunto de recursos selecionado.
+STR_6524    :Aumentar a prioridade do conjunto de recursos selecionado.
+STR_6525    :Recarregar todos os recursos do jogo com os conjuntos de recursos selecionados.
+STR_6526    :(gráficos, músicas e efeitos sonoros base)
+STR_6527    :Competições
 
 #############
 # Scenarios #
@@ -4091,15 +4104,6 @@ STR_NAME    :Telhado
 
 [TTRFWD08]
 STR_NAME    :Telhado
-
-[TTRFGL01]
-STR_NAME    :Telhado de Vidro
-
-[TTRFGL02]
-STR_NAME    :Telhado de Vidro
-
-[TTRFGL03]
-STR_NAME    :Telhado de Vidro
 
 [ACWW33]
 STR_NAME    :Parede de Poste de Madeira

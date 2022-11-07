@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -150,7 +150,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride* ride) const
     if (!ride->overall_view.IsNull())
     {
         auto xy = ride->overall_view.ToTileCentre();
-        res.Position = { xy, tile_element_height(xy) };
+        res.Position = { xy, TileElementHeight(xy) };
     }
 
     ride->Delete();
@@ -206,7 +206,7 @@ money32 RideDemolishAction::DemolishTracks() const
             while (!lastForTileReached)
             {
                 offset++;
-                auto* tileElement = map_get_first_element_at(tileCoords) + offset;
+                auto* tileElement = MapGetFirstElementAt(tileCoords) + offset;
                 if (tileElement == nullptr)
                     break;
 
@@ -229,7 +229,7 @@ money32 RideDemolishAction::DemolishTracks() const
                     auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
                     if (removRes.Error != GameActions::Status::Ok)
                     {
-                        tile_element_remove(tileElement);
+                        TileElementRemove(tileElement);
                     }
                     else
                     {
@@ -281,7 +281,7 @@ GameActions::Result RideDemolishAction::RefurbishRide(Ride* ride) const
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res.Position = { location, tile_element_height(location) };
+        res.Position = { location, TileElementHeight(location) };
     }
 
     window_close_by_number(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -216,6 +216,16 @@ namespace RCT2
           "rct2.footpath_railings.concrete" },
         { "PATHCRZY", "rct1ll.footpath_surface.tiles_green", "rct1aa.footpath_surface.queue_green",
           "rct2.footpath_railings.concrete" },
+
+        // Custom path mapping
+        { "PATHINVS", "openrct2.footpath_surface.invisible", "openrct2.footpath_surface.queue_invisible",
+          "openrct2.footpath_railings.invisible" },
+        { "PATHCLR ", "openrct2.footpath_surface.invisible", "openrct2.footpath_surface.queue_invisible",
+          "openrct2.footpath_railings.invisible" },
+        { "PAT25MKY", "openrct2.footpath_surface.invisible", "openrct2.footpath_surface.queue_invisible",
+          "openrct2.footpath_railings.invisible" },
+        { "JAINVSFP", "openrct2.footpath_surface.invisible", "openrct2.footpath_surface.queue_invisible",
+          "openrct2.footpath_railings.invisible" },
     };
 
     const FootpathMapping* GetFootpathSurfaceId(const ObjectEntryDescriptor& desc, bool ideallyLoaded, bool isQueue)

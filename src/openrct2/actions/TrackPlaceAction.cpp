@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -82,7 +82,7 @@ GameActions::Result TrackPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
-    if (!direction_valid(_origin.direction))
+    if (!DirectionValid(_origin.direction))
     {
         log_warning("Invalid direction for track placement, direction = %d", _origin.direction);
         return GameActions::Result(
@@ -171,7 +171,7 @@ GameActions::Result TrackPlaceAction::Query() const
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), 0 };
         auto tileCoords = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
-        if (!LocationValid(tileCoords) || (!map_is_location_owned(tileCoords) && !gCheatsSandboxMode))
+        if (!LocationValid(tileCoords) || (!MapIsLocationOwned(tileCoords) && !gCheatsSandboxMode))
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -250,7 +250,7 @@ GameActions::Result TrackPlaceAction::Query() const
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
         auto canBuild = MapCanConstructWithClearAt(
-            { mapLoc, baseZ, clearanceZ }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), crossingMode);
+            { mapLoc, baseZ, clearanceZ }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -261,7 +261,7 @@ GameActions::Result TrackPlaceAction::Query() const
         // When building a level crossing, remove any pre-existing path furniture.
         if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH)
         {
-            auto footpathElement = map_get_footpath_element(mapLoc);
+            auto footpathElement = MapGetFootpathElement(mapLoc);
             if (footpathElement != nullptr && footpathElement->AsPath()->HasAddition())
             {
                 footpathElement->AsPath()->SetAddition(0);
@@ -307,7 +307,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
         if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !_trackDesignDrawingPreview)
         {
-            auto surfaceElement = map_get_surface_element_at(mapLoc);
+            auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
             if (surfaceElement == nullptr)
             {
                 return GameActions::Result(
@@ -355,7 +355,7 @@ GameActions::Result TrackPlaceAction::Query() const
         }
 
         // 6c5648 12 push
-        auto surfaceElement = map_get_surface_element_at(mapLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
             return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
@@ -468,8 +468,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
         auto canBuild = MapCanConstructWithClearAt(
-            mapLocWithClearance, &map_place_non_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
-            crossingMode);
+            mapLocWithClearance, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY, crossingMode);
         if (canBuild.Error != GameActions::Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -479,10 +478,10 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
         {
-            footpath_remove_litter(mapLoc);
+            FootpathRemoveLitter(mapLoc);
             if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
             {
-                wall_remove_at(mapLocWithClearance);
+                WallRemoveAt(mapLocWithClearance);
             }
             else
             {
@@ -494,7 +493,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                 {
                     if (intersectingDirections & (1 << i))
                     {
-                        wall_remove_intersecting_walls(mapLocWithClearance, i);
+                        WallRemoveIntersectingWalls(mapLocWithClearance, i);
                     }
                 }
             }
@@ -512,7 +511,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         resultData.GroundFlags = mapGroundFlags;
 
         // 6c5648 12 push
-        auto surfaceElement = map_get_surface_element_at(mapLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
         if (surfaceElement == nullptr)
         {
             return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
@@ -615,16 +614,16 @@ GameActions::Result TrackPlaceAction::Execute() const
         switch (_trackType)
         {
             case TrackElemType::Waterfall:
-                map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
+                MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WATERFALL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
             case TrackElemType::Rapids:
-                map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
+                MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_RAPIDS, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
             case TrackElemType::Whirlpool:
-                map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
+                MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
             case TrackElemType::SpinningTunnel:
-                map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
+                MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
         }
         if (TrackTypeHasSpeedSetting(_trackType))
@@ -663,8 +662,8 @@ GameActions::Result TrackPlaceAction::Execute() const
                         int32_t tempDirection = (_origin.direction + chosenDirection) & 3;
                         tempLoc.x += CoordsDirectionDelta[tempDirection].x;
                         tempLoc.y += CoordsDirectionDelta[tempDirection].y;
-                        tempDirection = direction_reverse(tempDirection);
-                        wall_remove_intersecting_walls({ tempLoc, baseZ, clearanceZ }, tempDirection & 3);
+                        tempDirection = DirectionReverse(tempDirection);
+                        WallRemoveIntersectingWalls({ tempLoc, baseZ, clearanceZ }, tempDirection & 3);
                     }
                 }
             }
@@ -687,7 +686,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
         {
-            auto* waterSurfaceElement = map_get_surface_element_at(mapLoc);
+            auto* waterSurfaceElement = MapGetSurfaceElementAt(mapLoc);
             if (waterSurfaceElement != nullptr)
             {
                 waterSurfaceElement->SetHasTrackThatNeedsWater(true);
@@ -697,9 +696,9 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (!gCheatsDisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_connect_edges(mapLoc, tileElement, GetFlags());
+            FootpathConnectEdges(mapLoc, tileElement, GetFlags());
         }
-        map_invalidate_tile_full(mapLoc);
+        MapInvalidateTileFull(mapLoc);
     }
 
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;

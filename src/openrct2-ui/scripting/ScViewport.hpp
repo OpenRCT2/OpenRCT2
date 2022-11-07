@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -203,7 +203,7 @@ namespace OpenRCT2::Scripting
                     auto coords = GetCoordsFromObject(position);
                     if (coords)
                     {
-                        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), *coords);
+                        auto screenCoords = Translate3DTo2DWithZ(get_current_rotation(), *coords);
                         auto left = screenCoords.x - (viewport->view_width / 2);
                         auto top = screenCoords.y - (viewport->view_height / 2);
                         SetViewLeftTop(left, top);
@@ -294,7 +294,7 @@ namespace OpenRCT2::Scripting
                         return CoordsXYZ(x, y, dukZ.as_int());
                     }
 
-                    auto z = tile_element_height(CoordsXY(x, y));
+                    auto z = TileElementHeight(CoordsXY(x, y));
                     return CoordsXYZ(x, y, z);
                 }
             }
