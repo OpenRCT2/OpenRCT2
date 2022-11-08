@@ -3115,7 +3115,8 @@ static void VehiclePitchDown165(
 #pragma region CorkscrewSlopes
 
 // 6D51A5
-template<int32_t corkscrewFrame> void VehiclePitchCorkscrew(
+template<int32_t corkscrewFrame>
+void VehiclePitchCorkscrew(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
