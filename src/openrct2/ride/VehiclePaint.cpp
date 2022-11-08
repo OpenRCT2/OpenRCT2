@@ -3115,7 +3115,8 @@ static void VehiclePitchDown165(
 #pragma region CorkscrewSlopes
 
 // 6D51A5
-static void VehiclePitchCorkscrew(
+template<int32_t corkscrewFrame>
+void VehiclePitchCorkscrew(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
@@ -3124,8 +3125,6 @@ static void VehiclePitchCorkscrew(
     }
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-        // corkscrew slopes begin at pitch 24 and end at pitch 43
-        int32_t corkscrewFrame = vehicle->Pitch - 24;
         int32_t boundingBoxNum = (YawTo4(imageDirection)) + corkscrewFrame * 4 + 144;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, corkscrewFrame);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
@@ -3456,26 +3455,26 @@ static constexpr const vehicle_sprite_func PaintFunctionsByPitch[] = {
     VehiclePitchDown135,
     VehiclePitchDown150,
     VehiclePitchDown165,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew, 
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew<0>,
+    VehiclePitchCorkscrew<1>,
+    VehiclePitchCorkscrew<2>,
+    VehiclePitchCorkscrew<3>,
+    VehiclePitchCorkscrew<4>,
+    VehiclePitchCorkscrew<5>,
+    VehiclePitchCorkscrew<6>,
+    VehiclePitchCorkscrew<7>,
+    VehiclePitchCorkscrew<8>,
+    VehiclePitchCorkscrew<9>,
+    VehiclePitchCorkscrew<10>,
+    VehiclePitchCorkscrew<11>,
+    VehiclePitchCorkscrew<12>,
+    VehiclePitchCorkscrew<13>,
+    VehiclePitchCorkscrew<14>,
+    VehiclePitchCorkscrew<15>,
+    VehiclePitchCorkscrew<16>,
+    VehiclePitchCorkscrew<17>,
+    VehiclePitchCorkscrew<18>,
+    VehiclePitchCorkscrew<19>,
     VehiclePitchFlat, // Half Helix Up Large
     VehiclePitchFlat, // Half Helix Up Small
     VehiclePitchFlat, // Half Helix Down Large
