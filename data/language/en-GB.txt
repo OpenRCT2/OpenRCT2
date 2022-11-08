@@ -3426,7 +3426,7 @@ STR_6318    :Network desync detected.{NEWLINE}Log file: {STRING}
 STR_6319    :Block Brake Closed
 STR_6320    :Indestructible
 STR_6321    :Addition is broken
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entity ID: {BLACK}{INT32}
 STR_6323    :Simulating
 STR_6324    :Simulate
 STR_6325    :Simulate ride/attraction
