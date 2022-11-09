@@ -3425,7 +3425,7 @@ STR_6318    :Netwerkdesynchronisatie gedetecteerd.{NEWLINE}Logbestand: {STRING}
 STR_6319    :Blokrem is gesloten
 STR_6320    :Mag niet worden verwijderd
 STR_6321    :Straatmeubel is kapot
-STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entiteit-ID: {BLACK}{INT32}
 STR_6323    :Simulatie
 STR_6324    :Simuleren
 STR_6325    :Testrit simuleren
@@ -3621,6 +3621,14 @@ STR_6516    :Eén of meer toegevoegde objecten vereist een koppeling met RCT1 vo
 STR_6517    :Eén of meer objecten in dit park vereist een koppeling met RCT1 voor een juiste weergave. OpenRCT2 zal terugvallen op alternatieve afbeeldingen.
 STR_6518    :{BLACK}Beweeg de aanwijzer over een scenario om de beschrijving en doelstelling weer te geven. Klik erop om een spel te starten.
 STR_6519    :Extra’s
+STR_6520    :Assetpacks
+STR_6521    :Lage prioriteit
+STR_6522    :Hoge prioriteit
+STR_6523    :Prioriteit van het geselecteerde assetpack verlagen.
+STR_6524    :Prioriteit van het geselecteerde assetpack verhogen.
+STR_6525    :Assets in het spel opnieuw laden, op basis van de geselecteerde assetpacks.
+STR_6526    :(basisgraphics, -muziek en -geluidseffecten)
+STR_6527    :Wedstrijden
 
 #############
 # Scenarios #
