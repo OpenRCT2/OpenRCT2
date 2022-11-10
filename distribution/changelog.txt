@@ -22,6 +22,7 @@
 - Fix: [#14312] Research ride type message incorrect.
 - Fix: [#14425] Ride ratings do not skip unallocated ride ids.
 - Fix: [#15969] Guests heading for ride use vanilla behaviour
+- Fix: [#17067] Random Staff Patrol Area clicks
 - Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17657] When switching from buying land rights to buying construction rights, grid disables and won't re-enable afterwards.
 - Fix: [#17763] Missing validation on invalid characters in file name.
