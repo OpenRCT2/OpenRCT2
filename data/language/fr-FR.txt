@@ -3435,7 +3435,7 @@ STR_6318    :Desynchronisation réseau détectée.{NEWLINE}Fichier journal : {S
 STR_6319    :Bloc de frein fermé
 STR_6320    :Indestructible
 STR_6321    :L’ajout est cassé
-STR_6322    :{WINDOW_COLOUR_2}Identifiant image-objet : {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}ID de l’entité : {BLACK}{INT32}
 STR_6323    :Simulation
 STR_6324    :Simuler
 STR_6325    :Simule l’attraction

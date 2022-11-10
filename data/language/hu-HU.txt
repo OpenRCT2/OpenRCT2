@@ -3392,7 +3392,7 @@ STR_6318    :Hálózati szinkronizációs hiba észlelve.{NEWLINE}Naplófájl: {
 STR_6319    :Blokkolófék zárva
 STR_6320    :Elpusztíthatatlan
 STR_6321    :Törött hozzáadott elem
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entitás azonosító: {BLACK}{INT32}
 STR_6323    :Szimuláció folyamatban
 STR_6324    :Szimulálás
 STR_6325    :Játék/épület szimulálása
