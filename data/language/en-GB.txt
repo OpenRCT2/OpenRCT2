@@ -4106,12 +4106,6 @@ STR_NAME    :Roof
 [TTRFWD08]
 STR_NAME    :Roof
 
-[ACWW33]
-STR_NAME    :Wooden Post Wall
-
-[ACWWF32]
-STR_NAME    :Wooden Post Wall
-
 ## End OpenRCT2 Official
 
 ###############################################################################
