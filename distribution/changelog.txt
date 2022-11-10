@@ -8,6 +8,7 @@
 - Improved: [#18350] Changed ride vehicle list to have less padding.
 - Improved: [#18422] Allow adding images to music objects.
 - Improved: [#18428] [Plugin] Add widget description interfaces to documentation.
+- Improved: [#18487] Mini Helicopters track can now draw spinning tunnels.
 - Improved: [#18514] Add colour preset to Spiral Slide.
 - Change: [#17998] Show cursor when using inverted mouse dragging.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
