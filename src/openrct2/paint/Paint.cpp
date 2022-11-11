@@ -687,13 +687,13 @@ void PaintSessionFree([[maybe_unused]] PaintSession* session)
  * @return (ebp) PaintStruct on success (CF == 0), nullptr on failure (CF == 1)
  */
 PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
+    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
     return PaintAddImageAsParent(session, image_id, offset, { offset, boundBoxSize });
 }
 
 PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId& image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset)
 {
     return PaintAddImageAsParent(session, image_id, offset, { boundBoxOffset, boundBoxSize });
@@ -716,7 +716,7 @@ PaintStruct* PaintAddImageAsParent(
  */
 // Track Pieces, Shops.
 PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     session.LastPS = nullptr;
     session.LastAttachedPS = nullptr;
@@ -750,7 +750,7 @@ PaintStruct* PaintAddImageAsParent(
  * Creates a paint struct but does not allocate to a paint quadrant. Result cannot be ignored!
  */
 [[nodiscard]] PaintStruct* PaintAddImageAsOrphan(
-    PaintSession& session, const ImageId& imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+    PaintSession& session, const ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     session.LastPS = nullptr;
     session.LastAttachedPS = nullptr;
@@ -758,7 +758,7 @@ PaintStruct* PaintAddImageAsParent(
 }
 
 PaintStruct* PaintAddImageAsChild(
-    PaintSession& session, const ImageId& imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    PaintSession& session, const ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset)
 {
     return PaintAddImageAsChild(session, imageId, offset, { boundBoxOffset, boundBoxLength });
@@ -782,7 +782,7 @@ PaintStruct* PaintAddImageAsChild(
  * If there is no parent paint struct then image is added as a parent
  */
 PaintStruct* PaintAddImageAsChild(
-    PaintSession& session, const ImageId& image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     PaintStruct* parentPS = session.LastPS;
     if (parentPS == nullptr)
@@ -809,7 +809,7 @@ PaintStruct* PaintAddImageAsChild(
  * @param y (cx)
  * @return (!CF) success
  */
-bool PaintAttachToPreviousAttach(PaintSession& session, const ImageId& imageId, int32_t x, int32_t y)
+bool PaintAttachToPreviousAttach(PaintSession& session, const ImageId imageId, int32_t x, int32_t y)
 {
     auto* previousAttachedPS = session.LastAttachedPS;
     if (previousAttachedPS == nullptr)
@@ -842,7 +842,7 @@ bool PaintAttachToPreviousAttach(PaintSession& session, const ImageId& imageId, 
  * @param y (cx)
  * @return (!CF) success
  */
-bool PaintAttachToPreviousPS(PaintSession& session, const ImageId& image_id, int32_t x, int32_t y)
+bool PaintAttachToPreviousPS(PaintSession& session, const ImageId image_id, int32_t x, int32_t y)
 {
     auto* masterPs = session.LastPS;
     if (masterPs == nullptr)

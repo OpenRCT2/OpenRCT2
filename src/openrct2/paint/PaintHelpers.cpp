@@ -12,7 +12,7 @@
 #include "Paint.h"
 
 PaintStruct* PaintAddImageAsParentRotated(
-    PaintSession& session, const uint8_t direction, const ImageId& imageId, const CoordsXYZ& offset,
+    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {
     if (direction & 1)
@@ -26,7 +26,7 @@ PaintStruct* PaintAddImageAsParentRotated(
 }
 
 PaintStruct* PaintAddImageAsParentRotated(
-    PaintSession& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
+    PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize)
 {
     if (direction & 1)
@@ -39,7 +39,7 @@ PaintStruct* PaintAddImageAsParentRotated(
 }
 
 PaintStruct* PaintAddImageAsChildRotated(
-    PaintSession& session, const uint8_t direction, const ImageId& image_id, const CoordsXYZ& offset,
+    PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {
     if (direction & 1)
