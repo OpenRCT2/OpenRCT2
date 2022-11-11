@@ -21,6 +21,8 @@ Includes all git commit authors. Aliases are GitHub user names.
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
+* Edward Calver (X7123M3-256)
+* Karst van Galen Last (AuraSpecs)
 * Matte Andersson (Nubbie)
 * Kenton Boadway (Krutonium)
 * Joe Minor Jr (wolfreak99)
