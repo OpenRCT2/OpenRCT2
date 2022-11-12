@@ -288,4 +288,4 @@ public:
         return result;
     }
 };
-static_assert(sizeof(ImageId) == 8);
+static_assert(sizeof(ImageId) == 8, "The size of this struct is expected to fit in 64 bits for perfomance reasons. See #18555");
