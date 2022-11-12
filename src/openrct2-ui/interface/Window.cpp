@@ -784,7 +784,6 @@ CloseWindowModifier Window::closedWithModifier()
     last_close_modifier.modifier = CloseWindowModifier::CLOSE_WINDOW_MODIFIER_NONE;
 
     return lastModifier;
-
 }
 
 void Window::TextInputOpen(

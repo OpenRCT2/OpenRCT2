@@ -1222,7 +1222,6 @@ void InputStateWidgetPressed(
         if (w->widgets[widgetIndex].type == WindowWidgetType::CloseBox && cursor_w_class == w->classification
             && cursor_w_number == w->number && widgetIndex == cursor_widgetIndex)
         {
-
             if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
             {
                 last_close_modifier.window.number = w->number;
