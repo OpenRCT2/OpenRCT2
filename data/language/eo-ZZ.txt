@@ -3426,7 +3426,7 @@ STR_6318    :Dissinkronigo de reto detektita.{NEWLINE}Protokolo-dosiero: {STRING
 STR_6319    :Bremso de Blokparto Fermita
 STR_6320    :Nemalkonstruebla
 STR_6321    :Aldonaĵo difektas
-STR_6322    :{WINDOW_COLOUR_2}Identigilo de rastrumeto: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Identigilo de ento: {BLACK}{INT32}
 STR_6323    :Simulas
 STR_6324    :Simuli
 STR_6325    :Simuli atrakcion
