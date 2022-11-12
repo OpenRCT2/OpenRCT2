@@ -15,7 +15,6 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
-#include <openrct2/Input.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/config/Config.h>
@@ -218,14 +217,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
-                {
-                    window_close_all_except_number_and_class(number, window_get_classification(*this));
-                }
-                else
-                {
-                    window_close(*this);
-                }
+                window_close(*this);
                 break;
             case WIDX_SORT:
                 list_information_type = _windowRideListInformationType;

@@ -21,7 +21,6 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2/Input.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/audio/AudioContext.h>
@@ -623,14 +622,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
-                {
-                    window_close_all_except_number_and_class(number, window_get_classification(*this));
-                }
-                else
-                {
-                    window_close(*this);
-                }
+                window_close(*this);
                 break;
             case WIDX_TAB_DISPLAY:
             case WIDX_TAB_RENDERING:

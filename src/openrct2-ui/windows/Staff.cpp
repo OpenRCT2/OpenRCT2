@@ -308,18 +308,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
-                {
-                    CloseAllWindowsExceptNumberAndClass(number, classification);
-                }
-                else if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
-                {
-                    CloseByClass(classification);
-                }
-                else
-                {
-                    Close();
-                }
+                Close();
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:

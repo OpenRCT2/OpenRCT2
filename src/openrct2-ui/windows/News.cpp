@@ -11,7 +11,6 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2/Input.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -73,14 +72,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
-                {
-                    CloseAllWindowsExceptNumberAndClass(number, classification);
-                }
-                else
-                {
-                    Close();
-                }
+                Close();
                 break;
             case WIDX_SETTINGS:
                 ContextOpenWindow(WindowClass::NotificationOptions);

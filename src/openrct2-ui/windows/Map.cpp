@@ -192,14 +192,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
-                {
-                    CloseAllWindowsExceptNumberAndClass(number, classification);
-                }
-                else
-                {
-                    Close();
-                }
+                Close();
                 break;
             case WIDX_SET_LAND_RIGHTS:
                 Invalidate();

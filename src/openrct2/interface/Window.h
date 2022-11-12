@@ -33,6 +33,7 @@ struct scenario_index_entry;
 enum class VisibilityCache : uint8_t;
 enum class CursorID : uint8_t;
 enum class RideConstructionState : uint8_t;
+enum class CloseWindowModifier : uint8_t;
 
 #define SCROLLABLE_ROW_HEIGHT 12
 #define LIST_ROW_HEIGHT 12
@@ -499,6 +500,20 @@ enum class VisibilityCache : uint8_t
     Covered
 };
 
+enum class CloseWindowModifier : uint8_t
+{
+    CLOSE_WINDOW_MODIFIER_NONE,
+    CLOSE_WINDOW_MODIFIER_SHIFT,
+    CLOSE_WINDOW_MODIFIER_CONTROL
+};
+
+struct window_close_modifier
+{
+    window_identifier window;
+    CloseWindowModifier modifier;
+};
+
+extern window_close_modifier last_close_modifier;
 enum class GuestListFilterType : int32_t
 {
     GuestsOnRide,

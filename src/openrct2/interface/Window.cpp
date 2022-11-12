@@ -37,6 +37,7 @@
 #include <functional>
 #include <iterator>
 #include <list>
+window_close_modifier last_close_modifier = { WindowClass::Null, 0, CloseWindowModifier::CLOSE_WINDOW_MODIFIER_NONE };
 
 std::list<std::shared_ptr<rct_window>> g_window_list;
 rct_window* gWindowAudioExclusive;

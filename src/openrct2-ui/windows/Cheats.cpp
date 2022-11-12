@@ -14,7 +14,6 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
-#include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetDateAction.h>
 #include <openrct2/actions/SetCheatAction.h>
@@ -395,14 +394,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
-                {
-                    CloseAllWindowsExceptNumberAndClass(number, classification);
-                }
-                else
-                {
-                    Close();
-                }
+                Close();
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:

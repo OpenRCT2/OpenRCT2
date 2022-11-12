@@ -1217,6 +1217,27 @@ void InputStateWidgetPressed(
         return;
     }
 
+    if (w != nullptr && state == MouseState::LeftRelease)
+    {
+        if (w->widgets[widgetIndex].type == WindowWidgetType::CloseBox && cursor_w_class == w->classification
+            && cursor_w_number == w->number && widgetIndex == cursor_widgetIndex)
+        {
+
+            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+            {
+                last_close_modifier.window.number = w->number;
+                last_close_modifier.window.classification = w->classification;
+                last_close_modifier.modifier = CloseWindowModifier::CLOSE_WINDOW_MODIFIER_SHIFT;
+            }
+            else if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
+            {
+                last_close_modifier.window.number = w->number;
+                last_close_modifier.window.classification = w->classification;
+                last_close_modifier.modifier = CloseWindowModifier::CLOSE_WINDOW_MODIFIER_CONTROL;
+            }
+        }
+    }
+
     switch (state)
     {
         case MouseState::Released:

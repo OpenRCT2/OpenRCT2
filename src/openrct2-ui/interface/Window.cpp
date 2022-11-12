@@ -746,17 +746,45 @@ void Window::DrawWidgets(rct_drawpixelinfo& dpi)
 
 void Window::Close()
 {
-    window_close(*this);
+    CloseWindowModifier modifier = closedWithModifier();
+
+    if (modifier == CloseWindowModifier::CLOSE_WINDOW_MODIFIER_SHIFT)
+    {
+        CloseOthers();
+    }
+    else if (modifier == CloseWindowModifier::CLOSE_WINDOW_MODIFIER_CONTROL)
+    {
+        CloseOthersOfThisClass();
+    }
+    else
+    {
+        window_close(*this);
+    }
 }
 
-void Window::CloseAllWindowsExceptNumberAndClass(rct_windownumber windowNumber, WindowClass windowClass)
+void Window::CloseOthers()
 {
-    window_close_all_except_number_and_class(windowNumber, windowClass);
+    window_close_all_except_number_and_class(number, classification);
 }
 
-void Window::CloseByClass(WindowClass windowClassification)
+void Window::CloseOthersOfThisClass()
 {
-    window_close_by_class(windowClassification);
+    window_close_by_class(classification);
+}
+
+CloseWindowModifier Window::closedWithModifier()
+{
+    CloseWindowModifier lastModifier = CloseWindowModifier::CLOSE_WINDOW_MODIFIER_NONE;
+
+    if (last_close_modifier.window.number == number && last_close_modifier.window.classification == classification)
+    {
+        lastModifier = last_close_modifier.modifier;
+    }
+
+    last_close_modifier.modifier = CloseWindowModifier::CLOSE_WINDOW_MODIFIER_NONE;
+
+    return lastModifier;
+
 }
 
 void Window::TextInputOpen(

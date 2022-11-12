@@ -12,7 +12,6 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
-#include <openrct2/Input.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -202,14 +201,7 @@ static void WindowResearchDevelopmentMouseup(rct_window* w, WidgetIndex widgetIn
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
-            {
-                window_close_all_except_number_and_class(w->number, window_get_classification(*w));
-            }
-            else
-            {
-                window_close(*w);
-            }
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
