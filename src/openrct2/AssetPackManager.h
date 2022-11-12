@@ -36,6 +36,7 @@ namespace OpenRCT2
         size_t GetAssetPackIndex(std::string_view id);
 
         void Scan();
+        void Scan(const fs::path& directory);
         void Reload();
         void Swap(size_t index, size_t otherIndex);
 
