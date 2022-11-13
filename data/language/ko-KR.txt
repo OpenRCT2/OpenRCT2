@@ -3429,7 +3429,7 @@ STR_6318    :네트워크 비동기화가 감지되었습니다.{NEWLINE}로그 
 STR_6319    :블록 브레이크 닫기
 STR_6320    :파괴 불가
 STR_6321    :기물 부서짐
-STR_6322    :{WINDOW_COLOUR_2}스프라이트 ID: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}엔티티 ID: {BLACK}{INT32}
 STR_6323    :가상 운행 중
 STR_6324    :가상 운행
 STR_6325    :놀이기구 가상으로 운행합니다
