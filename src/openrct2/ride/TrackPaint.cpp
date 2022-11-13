@@ -293,7 +293,7 @@ void track_paint_util_paint_floor(
 
 void track_paint_util_paint_fences(
     PaintSession& session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride,
-    const ImageId& colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation)
+    const ImageId colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation)
 {
     if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, rotation))
     {
@@ -1005,7 +1005,7 @@ static constexpr const int8_t right_helix_up_small_quarter_tiles_sprite_map[] = 
 
 void track_paint_util_right_helix_up_small_quarter_tiles_paint(
     PaintSession& session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId& colourFlags, const uint32_t sprites[4][3][2], const CoordsXY offsets[4][3][2],
+    const ImageId colourFlags, const uint32_t sprites[4][3][2], const CoordsXY offsets[4][3][2],
     const CoordsXY boundsLengths[4][3][2], const CoordsXYZ boundsOffsets[4][3][2])
 {
     int32_t index = right_helix_up_small_quarter_tiles_sprite_map[trackSequence];
@@ -1105,7 +1105,7 @@ static constexpr const int8_t right_helix_up_large_quarter_sprite_map[] = {
 };
 void track_paint_util_right_helix_up_large_quarter_tiles_paint(
     PaintSession& session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId& colourFlags, const uint32_t sprites[4][5][2], const CoordsXY offsets[4][5][2],
+    const ImageId colourFlags, const uint32_t sprites[4][5][2], const CoordsXY offsets[4][5][2],
     const CoordsXY boundsLengths[4][5][2], const CoordsXYZ boundsOffsets[4][5][2])
 {
     int32_t index = right_helix_up_large_quarter_sprite_map[trackSequence];
@@ -1282,7 +1282,7 @@ static constexpr const int8_t eighth_to_diag_sprite_map[] = {
 };
 void track_paint_util_eighth_to_diag_tiles_paint(
     PaintSession& session, const int8_t thickness[4][4], int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId& colourFlags, const uint32_t sprites[4][4], const CoordsXY offsets[4][4], const CoordsXY boundsLengths[4][4],
+    const ImageId colourFlags, const uint32_t sprites[4][4], const CoordsXY offsets[4][4], const CoordsXY boundsLengths[4][4],
     const CoordsXYZ boundsOffsets[4][4])
 {
     int32_t index = eighth_to_diag_sprite_map[trackSequence];
@@ -1324,7 +1324,7 @@ static constexpr const int8_t diag_sprite_map[4][4] = {
 
 void track_paint_util_diag_tiles_paint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId& colourFlags, const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4],
+    const ImageId colourFlags, const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4],
     const CoordsXYZ boundsOffsets[4])
 {
     int32_t index = diag_sprite_map[direction][trackSequence];
@@ -1446,7 +1446,7 @@ static constexpr const int8_t right_quarter_turn_5_tiles_sprite_map[] = {
 
 void track_paint_util_right_quarter_turn_5_tiles_paint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId& colourFlags, const uint32_t sprites[4][5], const CoordsXY offsets[4][5], const CoordsXY boundsLengths[4][5],
+    const ImageId colourFlags, const uint32_t sprites[4][5], const CoordsXY offsets[4][5], const CoordsXY boundsLengths[4][5],
     const CoordsXYZ boundsOffsets[4][5])
 {
     int32_t index = right_quarter_turn_5_tiles_sprite_map[trackSequence];
@@ -1466,7 +1466,7 @@ void track_paint_util_right_quarter_turn_5_tiles_paint(
 }
 
 void track_paint_util_right_quarter_turn_5_tiles_paint_2(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId& colourFlags,
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[][5])
 {
     int8_t sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
@@ -1485,7 +1485,7 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_2(
 }
 
 void track_paint_util_right_quarter_turn_5_tiles_paint_3(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId& colourFlags,
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[][5])
 {
     int8_t sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
@@ -1622,7 +1622,7 @@ static constexpr const int8_t right_quarter_turn_3_tiles_sprite_map[] = {
 
 void track_paint_util_right_quarter_turn_3_tiles_paint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId& colourFlags, const uint32_t sprites[4][3], const CoordsXY offsets[4][3], const CoordsXY boundsLengths[4][3],
+    const ImageId colourFlags, const uint32_t sprites[4][3], const CoordsXY offsets[4][3], const CoordsXY boundsLengths[4][3],
     const CoordsXYZ boundsOffsets[4][3])
 {
     int32_t index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
@@ -1643,7 +1643,7 @@ void track_paint_util_right_quarter_turn_3_tiles_paint(
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_2(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId& colourFlags, const uint32_t sprites[4][3])
+    const ImageId colourFlags, const uint32_t sprites[4][3])
 {
     track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
         session, thickness, height, direction, trackSequence, colourFlags, sprites, 0);
@@ -1651,7 +1651,7 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2(
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId& colourFlags, const uint32_t sprites[4][3], int32_t heightOffset)
+    const ImageId colourFlags, const uint32_t sprites[4][3], int32_t heightOffset)
 {
     int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
     if (sprite < 0)
@@ -1738,7 +1738,7 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_3(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId& colourFlags,
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[4][3])
 {
     int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
@@ -1755,7 +1755,7 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_3(
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_4(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId& colourFlags,
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[4][3])
 {
     int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
@@ -1845,7 +1845,7 @@ static constexpr const int8_t left_quarter_turn_3_tiles_sprite_map[] = {
 
 void track_paint_util_left_quarter_turn_3_tiles_paint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId& colourFlags, const uint32_t sprites[4][3])
+    const ImageId colourFlags, const uint32_t sprites[4][3])
 {
     track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
         session, thickness, height, direction, trackSequence, colourFlags, sprites, 0);
@@ -1853,7 +1853,7 @@ void track_paint_util_left_quarter_turn_3_tiles_paint(
 
 void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId& colourFlags, const uint32_t sprites[4][3], int32_t heightOffset)
+    const ImageId colourFlags, const uint32_t sprites[4][3], int32_t heightOffset)
 {
     int8_t sprite = left_quarter_turn_3_tiles_sprite_map[trackSequence];
     if (sprite < 0)
@@ -1965,7 +1965,7 @@ void track_paint_util_left_quarter_turn_3_tiles_tunnel(
 
 void track_paint_util_left_quarter_turn_1_tile_paint(
     PaintSession& session, int8_t thickness, int16_t height, int16_t boundBoxZOffset, Direction direction,
-    const ImageId& colourFlags, const uint32_t* sprites)
+    const ImageId colourFlags, const uint32_t* sprites)
 {
     auto imageId = colourFlags.WithIndex(sprites[direction]);
 

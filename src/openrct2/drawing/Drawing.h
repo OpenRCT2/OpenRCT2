@@ -517,7 +517,7 @@ bool gfx_load_csg();
 void gfx_unload_g1();
 void gfx_unload_g2();
 void gfx_unload_csg();
-const rct_g1_element* gfx_get_g1_element(const ImageId& imageId);
+const rct_g1_element* gfx_get_g1_element(const ImageId imageId);
 const rct_g1_element* gfx_get_g1_element(ImageIndex image_id);
 void gfx_set_g1_element(ImageIndex imageId, const rct_g1_element* g1);
 std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
@@ -525,17 +525,17 @@ bool is_csg_loaded();
 void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_rle_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId& image_id, const ScreenCoordsXY& coords);
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId image_id, const ScreenCoordsXY& coords);
 void FASTCALL
-    gfx_draw_glyph(rct_drawpixelinfo* dpi, const ImageId& image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, const ImageId& image, const ScreenCoordsXY& coords, uint8_t colour);
+    gfx_draw_glyph(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
 void FASTCALL gfx_draw_sprite_raw_masked(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const ImageId& maskImage, const ImageId& colourImage);
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, const ImageId& imageId, const ScreenCoordsXY& spriteCoords);
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage);
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, const ImageId& imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+    rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL gfx_draw_sprite_raw_masked_software(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId& maskImage, const ImageId& colourImage);
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
 
 // string
 void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
