@@ -272,10 +272,11 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, FontStyle fontStyle, int32_t*
 void gfx_draw_string_left_centred(
     rct_drawpixelinfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords)
 {
-    char* buffer = gCommonStringFormatBuffer;
-    format_string(buffer, 256, format, args);
-    int32_t height = string_get_height_raw(buffer, FontStyle::Medium);
-    gfx_draw_string(dpi, coords - ScreenCoordsXY{ 0, (height / 2) }, buffer, { colour });
+    char buffer[CommonTextBufferSize];
+    auto bufferPtr = buffer;
+    format_string(bufferPtr, 256, format, args);
+    int32_t height = string_get_height_raw(bufferPtr, FontStyle::Medium);
+    gfx_draw_string(dpi, coords - ScreenCoordsXY{ 0, (height / 2) }, bufferPtr, { colour });
 }
 
 /**
