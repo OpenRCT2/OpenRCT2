@@ -54,6 +54,22 @@ GameActions::Result RideSetColourSchemeAction::Query() const
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
     }
+    // Find the relevant track piece, prefer sequence 0 (logic copied from GetTrackElementOriginAndApplyChanges)
+    auto trackElement = MapGetTrackElementAtOfTypeSeq(_loc, _trackType, 0);
+    if (trackElement == nullptr)
+    {
+        trackElement = MapGetTrackElementAtOfType(_loc, _trackType);
+        if (trackElement == nullptr)
+        {
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
+        }
+    }
+    if (_newColourScheme >= OpenRCT2::Limits::NumColourSchemes)
+    {
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_COLOUR_SCHEME_PARAMETER);
+    }
     return GameActions::Result();
 }
 
