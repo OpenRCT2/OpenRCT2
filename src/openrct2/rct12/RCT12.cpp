@@ -30,7 +30,25 @@ using namespace OpenRCT2;
 
 RCT12TileElementType RCT12TileElementBase::GetType() const
 {
-    return static_cast<RCT12TileElementType>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    auto elem_type = static_cast<RCT12TileElementType>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    switch (elem_type)
+    {
+        case RCT12TileElementType::Surface:
+        case RCT12TileElementType::Path:
+        case RCT12TileElementType::Track:
+        case RCT12TileElementType::SmallScenery:
+        case RCT12TileElementType::Entrance:
+        case RCT12TileElementType::Wall:
+        case RCT12TileElementType::LargeScenery:
+        case RCT12TileElementType::Banner:
+        case RCT12TileElementType::Corrupt:
+        case RCT12TileElementType::EightCarsCorrupt14:
+        case RCT12TileElementType::EightCarsCorrupt15:
+            return elem_type;
+        default:
+            // Most corrupt elements were set to 0x255, but not all. Fallback to corrupt element if encountered unknown type.
+            return RCT12TileElementType::Corrupt;
+    }
 }
 
 uint8_t RCT12TileElementBase::GetDirection() const
