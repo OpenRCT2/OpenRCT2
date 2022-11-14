@@ -655,7 +655,7 @@ static void DrawCategoryHeading(
     // Get string dimensions
     utf8 buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
-    format_string(bufferPtr, 256, stringId, nullptr);
+    format_string(bufferPtr, sizeof(buffer), stringId, nullptr);
     int32_t categoryStringHalfWidth = (gfx_get_string_width(bufferPtr, FontStyle::Medium) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;

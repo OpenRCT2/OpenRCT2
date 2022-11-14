@@ -274,7 +274,7 @@ void gfx_draw_string_left_centred(
 {
     char buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
-    format_string(bufferPtr, 256, format, args);
+    format_string(bufferPtr, sizeof(buffer), format, args);
     int32_t height = string_get_height_raw(bufferPtr, FontStyle::Medium);
     gfx_draw_string(dpi, coords - ScreenCoordsXY{ 0, (height / 2) }, bufferPtr, { colour });
 }
