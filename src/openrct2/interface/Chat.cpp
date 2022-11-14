@@ -274,11 +274,12 @@ static void chat_clear_input()
 static int32_t chat_history_draw_string(
     rct_drawpixelinfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
 {
-    auto buffer = gCommonStringFormatBuffer;
-    FormatStringToBuffer(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), "{OUTLINE}{WHITE}{STRING}", text);
+    char buffer[CommonTextBufferSize];
+    auto bufferPtr = buffer;
+    FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{STRING}", text);
 
     int32_t numLines;
-    gfx_wrap_string(buffer, width, FontStyle::Medium, &numLines);
+    gfx_wrap_string(bufferPtr, width, FontStyle::Medium, &numLines);
     auto lineHeight = font_get_line_height(FontStyle::Medium);
 
     int32_t expectedY = screenCoords.y - (numLines * lineHeight);
@@ -290,8 +291,8 @@ static int32_t chat_history_draw_string(
     auto lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        gfx_draw_string(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, buffer, { TEXT_COLOUR_254 });
-        buffer = get_string_end(buffer) + 1;
+        gfx_draw_string(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { TEXT_COLOUR_254 });
+        bufferPtr = get_string_end(bufferPtr) + 1;
         lineY += lineHeight;
     }
     return lineY - screenCoords.y;
@@ -301,17 +302,18 @@ static int32_t chat_history_draw_string(
 // Almost the same as gfx_draw_string_left_wrapped
 int32_t chat_string_wrapped_get_height(void* args, int32_t width)
 {
-    char* buffer = gCommonStringFormatBuffer;
-    format_string(buffer, 256, STR_STRING, args);
+    char buffer[CommonTextBufferSize];
+    auto bufferPtr = buffer;
+    format_string(bufferPtr, 256, STR_STRING, args);
 
     int32_t numLines;
-    gfx_wrap_string(buffer, width, FontStyle::Medium, &numLines);
+    gfx_wrap_string(bufferPtr, width, FontStyle::Medium, &numLines);
     int32_t lineHeight = font_get_line_height(FontStyle::Medium);
 
     int32_t lineY = 0;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        buffer = get_string_end(buffer) + 1;
+        bufferPtr = get_string_end(bufferPtr) + 1;
         lineY += lineHeight;
     }
 

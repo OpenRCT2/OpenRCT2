@@ -653,9 +653,10 @@ static void DrawCategoryHeading(
     DrawTextBasic(dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
 
     // Get string dimensions
-    utf8* buffer = gCommonStringFormatBuffer;
-    format_string(buffer, 256, stringId, nullptr);
-    int32_t categoryStringHalfWidth = (gfx_get_string_width(buffer, FontStyle::Medium) / 2) + 4;
+    utf8 buffer[CommonTextBufferSize];
+    auto bufferPtr = buffer;
+    format_string(bufferPtr, sizeof(buffer), stringId, nullptr);
+    int32_t categoryStringHalfWidth = (gfx_get_string_width(bufferPtr, FontStyle::Medium) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;
 

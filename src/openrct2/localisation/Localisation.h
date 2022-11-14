@@ -51,11 +51,13 @@ bool is_user_string_id(StringId stringId);
 #define REAL_NAME_START 0xA000
 #define REAL_NAME_END 0xDFFF
 
+constexpr const size_t CommonTextBufferSize = 512;
+
 // Real name data
 extern const char real_name_initials[16];
 extern const char* real_names[1024];
 
-extern thread_local char gCommonStringFormatBuffer[512];
+extern thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
 extern bool gDebugStringFormatting;
 
 extern const StringId SpeedNames[5];
