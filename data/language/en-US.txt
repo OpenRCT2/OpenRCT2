@@ -235,6 +235,7 @@ STR_6274    :Can’t set color scheme…
 STR_6307    :Color scheme: {BLACK}{STRINGID}
 STR_6328    :With this option enabled, giant screenshots will have a transparent background instead of the default black color.
 STR_6501    :Random color
+STR_6528    :Alternative Color Scheme 4
 
 #############
 # Scenarios #

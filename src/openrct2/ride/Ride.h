@@ -259,7 +259,7 @@ struct Ride
     uint8_t connected_message_throttle;
     money64 income_per_hour;
     money64 profit;
-    TrackColour track_colour[OpenRCT2::Limits::NumColourSchemes];
+    TrackColour track_colour[OpenRCT2::Limits::NumColourSchemesOpen];
     ObjectEntryIndex music;
     ObjectEntryIndex entrance_style;
     uint16_t vehicle_change_timeout;
@@ -768,6 +768,7 @@ enum
     RIDE_COLOUR_SCHEME_ADDITIONAL_1,
     RIDE_COLOUR_SCHEME_ADDITIONAL_2,
     RIDE_COLOUR_SCHEME_ADDITIONAL_3,
+    RIDE_COLOUR_SCHEME_ADDITIONAL_4,
 
     RIDE_COLOUR_SCHEME_COUNT,
 };
@@ -998,7 +999,7 @@ std::string_view get_ride_entry_name(ObjectEntryIndex index);
 
 extern money16 gTotalRideValueForMoney;
 
-extern const StringId ColourSchemeNames[4];
+extern const StringId ColourSchemeNames[5];
 
 extern ObjectEntryIndex gLastEntranceStyle;
 

@@ -23,7 +23,7 @@ namespace OpenRCT2::Limits
     constexpr const uint16_t MaxVehicleColours = MaxTrainsPerRide; // this should really be MaxTrainsPerRide * MaxCarsPerTrain
     constexpr const uint8_t MaxCircuitsPerRide = 20;
     constexpr const uint8_t MaxAwards = RCT12::Limits::MaxAwards;
-    constexpr const uint8_t NumColourSchemes = RCT12::Limits::NumColourSchemes;
+    constexpr const uint8_t NumColourSchemesOpen = 5;
     constexpr const uint8_t DowntimeHistorySize = RCT2::Limits::DowntimeHistorySize;
     constexpr const uint16_t MaxPeepSpawns = 256;
     constexpr const uint16_t MaxParkEntrances = 256;

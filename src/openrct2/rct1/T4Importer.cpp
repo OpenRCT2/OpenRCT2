@@ -104,7 +104,7 @@ namespace RCT1
             std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
             TD4 td4{};
             _stream.Read(&td4, sizeof(TD4));
-            for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
+            for (int32_t i = 0; i < Limits::NumColourSchemes; i++)
             {
                 td->track_spine_colour[i] = RCT1::GetColour(td4.track_spine_colour_v0);
                 td->track_rail_colour[i] = RCT1::GetColour(td4.track_rail_colour_v0);

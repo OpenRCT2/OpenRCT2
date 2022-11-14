@@ -743,6 +743,7 @@ const StringId ColourSchemeNames[] = {
     STR_ALTERNATIVE_COLOUR_SCHEME_1, // RIDE_COLOUR_SCHEME_ADDITIONAL_1
     STR_ALTERNATIVE_COLOUR_SCHEME_2, // RIDE_COLOUR_SCHEME_ADDITIONAL_2
     STR_ALTERNATIVE_COLOUR_SCHEME_3, // RIDE_COLOUR_SCHEME_ADDITIONAL_3
+    STR_ALTERNATIVE_COLOUR_SCHEME_4, // RIDE_COLOUR_SCHEME_ADDITIONAL_4
 };
 static_assert(std::size(ColourSchemeNames) == RIDE_COLOUR_SCHEME_COUNT);
 
@@ -4351,7 +4352,7 @@ static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, rc
     switch (widgetIndex)
     {
         case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
-            for (i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
+            for (i = 0; i < OpenRCT2::Limits::NumColourSchemesOpen; i++)
             {
                 gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItems[i].Args = ColourSchemeNames[i];
@@ -4359,7 +4360,7 @@ static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, rc
 
             WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                w->colours[1], 0, Dropdown::Flag::StayOpen, 4, widget->right - dropdownWidget->left);
+                w->colours[1], 0, Dropdown::Flag::StayOpen, 5, widget->right - dropdownWidget->left);
 
             Dropdown::SetChecked(colourSchemeIndex, true);
             break;
