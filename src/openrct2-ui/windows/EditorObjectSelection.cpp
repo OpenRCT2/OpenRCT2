@@ -926,7 +926,6 @@ public:
             }
 
             widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WindowWidgetType::ImgBtn;
-
             for (int32_t i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
                 widgets[i].type = WindowWidgetType::Tab;
 
