@@ -64,7 +64,6 @@ static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, Str
  */
 static void setup_track_manager_objects()
 {
-
 }
 
 /**
