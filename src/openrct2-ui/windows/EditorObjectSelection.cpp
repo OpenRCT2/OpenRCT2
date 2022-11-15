@@ -124,27 +124,28 @@ struct ObjectPageDesc
     StringId Caption;
     uint32_t Image;
     bool IsAdvanced;
+    bool EnabledForTrackDesigns;
 };
 
 // clang-format off
 // Order of which the object tabs are displayed.
 static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
-    { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, SPR_TAB_RIDE_16,            false },
-    { STR_OBJECT_SELECTION_STATIONS,                  SPR_G2_RIDE_STATION_TAB,    true  },
-    { STR_OBJECT_SELECTION_MUSIC,                     SPR_TAB_MUSIC_0,            true  },
-    { STR_OBJECT_SELECTION_SCENERY_GROUPS,            SPR_TAB_SCENERY_STATUES,    false },
-    { STR_OBJECT_SELECTION_SMALL_SCENERY,             SPR_TAB_SCENERY_TREES,      true  },
-    { STR_OBJECT_SELECTION_LARGE_SCENERY,             SPR_TAB_SCENERY_URBAN,      true  },
-    { STR_OBJECT_SELECTION_WALLS_FENCES,              SPR_TAB_SCENERY_WALLS,      true  },
-    { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         SPR_G2_PATH_SURFACE_TAB,    false },
-    { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS,         SPR_G2_PATH_RAILINGS_TAB,   false },
-    { STR_OBJECT_SELECTION_FOOTPATHS,                 SPR_G2_LEGACY_PATH_TAB,     true  },
-    { STR_OBJECT_SELECTION_PATH_EXTRAS,               SPR_TAB_SCENERY_PATH_ITEMS, false },
-    { STR_OBJECT_SELECTION_PATH_SIGNS,                SPR_TAB_SCENERY_SIGNAGE,    true  },
-    { STR_OBJECT_SELECTION_PARK_ENTRANCE,             SPR_TAB_PARK,               false },
-    { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          SPR_G2_TAB_LAND,            true  },
-    { STR_OBJECT_SELECTION_TERRAIN_EDGES,             SPR_G2_TERRAIN_EDGE_TAB,    true  },
-    { STR_OBJECT_SELECTION_WATER,                     SPR_TAB_WATER,              false },
+    { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, SPR_TAB_RIDE_16,            false, true  },
+    { STR_OBJECT_SELECTION_STATIONS,                  SPR_G2_RIDE_STATION_TAB,    true,  true  },
+    { STR_OBJECT_SELECTION_MUSIC,                     SPR_TAB_MUSIC_0,            true,  false },
+    { STR_OBJECT_SELECTION_SCENERY_GROUPS,            SPR_TAB_SCENERY_STATUES,    false, true  },
+    { STR_OBJECT_SELECTION_SMALL_SCENERY,             SPR_TAB_SCENERY_TREES,      true,  true  },
+    { STR_OBJECT_SELECTION_LARGE_SCENERY,             SPR_TAB_SCENERY_URBAN,      true,  true  },
+    { STR_OBJECT_SELECTION_WALLS_FENCES,              SPR_TAB_SCENERY_WALLS,      true,  true  },
+    { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         SPR_G2_PATH_SURFACE_TAB,    false, true  },
+    { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS,         SPR_G2_PATH_RAILINGS_TAB,   false, true  },
+    { STR_OBJECT_SELECTION_FOOTPATHS,                 SPR_G2_LEGACY_PATH_TAB,     true,  true  },
+    { STR_OBJECT_SELECTION_PATH_EXTRAS,               SPR_TAB_SCENERY_PATH_ITEMS, false, true  },
+    { STR_OBJECT_SELECTION_PATH_SIGNS,                SPR_TAB_SCENERY_SIGNAGE,    true,  true  },
+    { STR_OBJECT_SELECTION_PARK_ENTRANCE,             SPR_TAB_PARK,               false, false },
+    { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          SPR_G2_TAB_LAND,            true,  false },
+    { STR_OBJECT_SELECTION_TERRAIN_EDGES,             SPR_G2_TERRAIN_EDGE_TAB,    true,  false },
+    { STR_OBJECT_SELECTION_WATER,                     SPR_TAB_WATER,              false, false },
 };
 // clang-format on
 
@@ -856,14 +857,15 @@ public:
             installTrackWidget.type = WindowWidgetType::Empty;
         }
 
-        // Align tabs, hide advanced ones
+        // Align tabs, hide advanced ones, and disable non-applicable ones when in Track Designer
         bool advancedMode = (list_information_type & 1) != 0;
         int32_t x = 3;
         for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
         {
             auto& widget = widgets[WIDX_TAB_1 + i];
             if ((!advancedMode && ObjectSelectionPages[i].IsAdvanced)
-                || ObjectSelectionPages[i].Image == static_cast<uint32_t>(SPR_NONE))
+                || ObjectSelectionPages[i].Image == static_cast<uint32_t>(SPR_NONE)
+                || ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && !ObjectSelectionPages[i].EnabledForTrackDesigns))
             {
                 widget.type = WindowWidgetType::Empty;
             }
@@ -876,7 +878,7 @@ public:
             }
         }
 
-        if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER))
+        if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
             widgets[WIDX_ADVANCED].type = WindowWidgetType::Empty;
             for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
@@ -924,8 +926,14 @@ public:
             }
 
             widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WindowWidgetType::ImgBtn;
-            for (int32_t i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
+
+            // Setup ride tabs, but hide the stalls tab in Track Manager and Track Designer
+            for (int32_t i = WIDX_FILTER_RIDE_TAB_ALL; i < WIDX_FILTER_RIDE_TAB_STALL; i++)
                 widgets[i].type = WindowWidgetType::Tab;
+            if(gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER))
+                widgets[WIDX_FILTER_RIDE_TAB_STALL].type = WindowWidgetType::Empty;
+            else
+                widgets[WIDX_FILTER_RIDE_TAB_STALL].type = WindowWidgetType::Tab;
 
             int32_t width_limit = (widgets[WIDX_LIST].width() - 15) / 2;
 
