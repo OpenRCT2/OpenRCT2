@@ -64,6 +64,26 @@ static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, Str
  */
 static void setup_track_manager_objects()
 {
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
+    const ObjectRepositoryItem* items = object_repository_get_items();
+    for (int32_t i = 0; i < numObjects; i++)
+    {
+        uint8_t* selectionFlags = &_objectSelectionFlags[i];
+        const ObjectRepositoryItem* item = &items[i];
+        if (item->Type == ObjectType::Ride)
+        {
+            *selectionFlags |= ObjectSelectionFlags::Flag6;
+
+            for (auto rideType : item->RideInfo.RideType)
+            {
+                if (GetRideTypeDescriptor(rideType).Category != RIDE_CATEGORY_SHOP)
+                {
+                    *selectionFlags &= ~ObjectSelectionFlags::Flag6;
+                    break;
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -72,7 +92,30 @@ static void setup_track_manager_objects()
  */
 static void setup_track_designer_objects()
 {
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
+    const ObjectRepositoryItem* items = object_repository_get_items();
     SelectDesignerObjects();
+    for (int32_t i = 0; i < numObjects; i++)
+    {
+        uint8_t* selectionFlags = &_objectSelectionFlags[i];
+        const ObjectRepositoryItem* item = &items[i];
+        if (item->Type == ObjectType::Ride)
+        {
+            *selectionFlags |= ObjectSelectionFlags::Flag6;
+
+            for (auto rideType : item->RideInfo.RideType)
+            {
+                if (rideType != RIDE_TYPE_NULL)
+                {
+                    if (GetRideTypeDescriptor(rideType).Category != RIDE_CATEGORY_SHOP)
+                    {
+                        *selectionFlags &= ~ObjectSelectionFlags::Flag6;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 /**
