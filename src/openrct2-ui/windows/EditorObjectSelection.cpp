@@ -927,13 +927,8 @@ public:
 
             widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WindowWidgetType::ImgBtn;
 
-            // Setup ride tabs, but hide the stalls tab in Track Manager and Track Designer
-            for (int32_t i = WIDX_FILTER_RIDE_TAB_ALL; i < WIDX_FILTER_RIDE_TAB_STALL; i++)
+            for (int32_t i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
                 widgets[i].type = WindowWidgetType::Tab;
-            if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER))
-                widgets[WIDX_FILTER_RIDE_TAB_STALL].type = WindowWidgetType::Empty;
-            else
-                widgets[WIDX_FILTER_RIDE_TAB_STALL].type = WindowWidgetType::Tab;
 
             int32_t width_limit = (widgets[WIDX_LIST].width() - 15) / 2;
 
