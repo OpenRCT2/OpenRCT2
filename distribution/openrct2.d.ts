@@ -1960,35 +1960,25 @@ declare global {
         readonly beginZ: number;
 
         /**
-        * The relative starting direction. Usually 0, but will be 4
-        * for diagonal segments.
-        */
-        readonly beginDirection: Direction8;
-
-        /**
-         * The slope angle the segment starts with.
+         * The relative ending Z position from the base of the first track sequence block.
          */
-        readonly beginSlope: TrackSlope;
+        readonly endZ: number;
 
         /**
-         * The kind of banking the segment starts with.
-         */
-        readonly beginBank: TrackBanking;
-
-        /**
-         * The relative ending X position.
+         * The relative ending X position. BeginX is always 0.
          */
         readonly endX: number;
 
         /**
-         * The relative ending Y position.
+         * The relative ending Y position. BeginY is always 0.
          */
         readonly endY: number;
 
         /**
-         * The relative ending Z position from the base of the first track sequence block.
-         */
-        readonly endZ: number;
+        * The relative starting direction. Usually 0, but will be 4
+        * for diagonal segments.
+        */
+        readonly beginDirection: Direction8;
 
         /**
          * The relative ending direction.
@@ -1996,9 +1986,19 @@ declare global {
         readonly endDirection: Direction8;
 
         /**
+         * The slope angle the segment starts with.
+         */
+        readonly beginSlope: TrackSlope;
+
+        /**
          * The slope angle the segment ends with.
          */
         readonly endSlope: TrackSlope;
+
+        /**
+         * The kind of banking the segment starts with.
+         */
+        readonly beginBank: TrackBanking;
 
         /**
          * The kind of banking the segment ends with.
