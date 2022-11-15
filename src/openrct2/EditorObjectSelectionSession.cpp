@@ -107,7 +107,7 @@ static void setup_track_designer_objects()
             {
                 if (rideType != RIDE_TYPE_NULL)
                 {
-                    if (GetRideTypeDescriptor(rideType).Category != RIDE_CATEGORY_SHOP)
+                    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER))
                     {
                         *selectionFlags &= ~ObjectSelectionFlags::Flag6;
                         break;
