@@ -76,10 +76,13 @@ static void setup_track_manager_objects()
 
             for (auto rideType : item->RideInfo.RideType)
             {
-                if (GetRideTypeDescriptor(rideType).Category != RIDE_CATEGORY_SHOP)
+                if (rideType != RIDE_TYPE_NULL)
                 {
-                    *selectionFlags &= ~ObjectSelectionFlags::Flag6;
-                    break;
+                    if (GetRideTypeDescriptor(rideType).Category != RIDE_CATEGORY_SHOP)
+                    {
+                        *selectionFlags &= ~ObjectSelectionFlags::Flag6;
+                        break;
+                    }
                 }
             }
         }
