@@ -4,6 +4,7 @@
 - Feature: [#18312, objects#220, OpenSFX#13] New sound effects for the Hybrid and Single Rail roller coasters.
 - Feature: [objects#221] Add two extra jungle walls.
 - Feature: [OpenMusic#14, OpenMusic#15, OpenMusic#18] Added Galaxy, Acid and Dodgems ride music styles.
+- Improved: [#18013, #18016, #18018, #18019, #18514] Added colour presets to Spiral Slide, Dodgems, Boat Hire, Flying Saucers, and Car Ride.
 - Improved: [#18192] Tycoon Park has been added Extras tab.
 - Improved: [#18214] Competition scenarios have received their own section.
 - Improved: [#18250] Added modern style file and folder pickers on Windows.
@@ -12,7 +13,7 @@
 - Improved: [#18422] Allow adding images to music objects.
 - Improved: [#18428] [Plugin] Add widget description interfaces to documentation.
 - Improved: [#18487] Mini Helicopters track can now draw spinning tunnels.
-- Improved: [#18013, #18016, #18018, #18019, #18514] Added colour presets to Spiral Slide, Dodgems, Boat Hire, Flying Saucers, and Car Ride.
+- Improved: [#18607] Added a new tab for all UCES Scenarios.
 - Change: [#17998] Show cursor when using inverted mouse dragging.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
 - Change: [#18381] Convert custom invisible paths to the built-in ones.

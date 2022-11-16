@@ -35,7 +35,7 @@ static constexpr const int32_t TabHeight = 34;
 static constexpr const int32_t WidgetsStart = 17;
 static constexpr const int32_t TabsStart = WidgetsStart;
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
-constexpr const uint8_t NumTabs = 9;
+constexpr const uint8_t NumTabs = 10;
 
 // clang-format off
 enum class ListItemType : uint8_t
@@ -77,22 +77,24 @@ enum {
     WIDX_TAB7,
     WIDX_TAB8,
     WIDX_TAB9,
+    WIDX_TAB10,
     WIDX_SCENARIOLIST
 };
 
 static rct_widget window_scenarioselect_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({ TabWidth + 1, WidgetsStart }, { WW, 284}, WindowWidgetType::Resize, WindowColour::Secondary),                  // tab content panel
-    MakeRemapWidget({  3, TabsStart + (TabHeight * 0) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 1
-    MakeRemapWidget({  3, TabsStart + (TabHeight * 1) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 2
-    MakeRemapWidget({  3, TabsStart + (TabHeight * 2) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 3
-    MakeRemapWidget({  3, TabsStart + (TabHeight * 3) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 4
-    MakeRemapWidget({  3, TabsStart + (TabHeight * 4) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 5
-    MakeRemapWidget({  3, TabsStart + (TabHeight * 5) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 6
-    MakeRemapWidget({  3, TabsStart + (TabHeight * 6) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 7
-    MakeRemapWidget({  3, TabsStart + (TabHeight * 7) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 8
-    MakeRemapWidget({  3, TabsStart + (TabHeight * 8) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 9
-    MakeWidget     ({  TabWidth + 3, WidgetsStart + 1 }, { WW - SidebarWidth, 276 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
+    MakeWidget     ({ TabWidth + 1, WidgetsStart }, { WW, 284}, WindowWidgetType::Resize, WindowColour::Secondary),                                                 // tab content panel
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 0) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 01
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 1) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 02
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 2) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 03
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 3) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 04
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 4) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 05
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 5) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 06
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 6) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 07
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 7) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 08
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 8) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 09
+    MakeRemapWidget({  3, TabsStart + (TabHeight * 8) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 10
+    MakeWidget     ({  TabWidth + 3, WidgetsStart + 1 }, { WW - SidebarWidth, 276 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),    // level list
     WIDGETS_END,
 };
 
@@ -103,6 +105,7 @@ static constexpr const StringId ScenarioOriginStringIds[] = {
     STR_SCENARIO_CATEGORY_RCT2,
     STR_SCENARIO_CATEGORY_RCT2_WW,
     STR_SCENARIO_CATEGORY_RCT2_TT,
+    STR_SCENARIO_CATEGORY_UCES,
     STR_SCENARIO_CATEGORY_REAL_PARKS,
     STR_SCENARIO_CATEGORY_EXTRAS_PARKS,
     STR_SCENARIO_CATEGORY_OTHER_PARKS,
@@ -267,7 +270,7 @@ static void WindowScenarioselectMouseup(rct_window* w, WidgetIndex widgetIndex)
 
 static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
 {
-    if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB9)
+    if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
     {
         w->selected_tab = widgetIndex - 4;
         w->highlighted_scenario = nullptr;
@@ -408,7 +411,8 @@ static void WindowScenarioselectInvalidate(rct_window* w)
 {
     w->pressed_widgets &= ~(
         (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
-        | (1uLL << WIDX_TAB5) | (1uLL << WIDX_TAB6) | (1uLL << WIDX_TAB7) | (1uLL << WIDX_TAB8) | (1uLL << WIDX_TAB9));
+        | (1uLL << WIDX_TAB5) | (1uLL << WIDX_TAB6) | (1uLL << WIDX_TAB7) | (1uLL << WIDX_TAB8) | (1uLL << WIDX_TAB9)
+        | (1uLL << WIDX_TAB10));
 
     w->pressed_widgets |= 1LL << (w->selected_tab + WIDX_TAB1);
 

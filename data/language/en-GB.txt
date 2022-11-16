@@ -3630,6 +3630,9 @@ STR_6524    :Increase the priority of the selected asset pack.
 STR_6525    :Reload all assets in the game with the enabled asset packs.
 STR_6526    :(base graphics, music and sound effects)
 STR_6527    :Competitions
+STR_6528    :User Created Expansion Set
+STR_6529    :The Time Machine (2003)
+STR_6530    :Katy's Dreamworld (2003)
 
 #############
 # Scenarios #
@@ -4409,3 +4412,100 @@ STR_DTLS    :This aging theme park has seen better days. Help the owner give it 
 STR_SCNR    :Panda World
 STR_PARK    :Panda World
 STR_DTLS    :Add more rides and attract more people to this panda-themed park
+
+<UCES Halloween>
+STR_SCNR    :Cemetary Ridge
+STR_PARK    :Cemetary Ridge
+STR_DTLS    :This is Halloween, UCES Halloween, pumpkins scream in the dead of night! This graveyard is in trouble and it's up to you to save it, while letting the dead rest in peace! Can you keep the ghosts in their graves and bring chills to your customers?{NEWLINE}Author: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :The Lighthouse of Alexandria
+STR_PARK    :The Lighthouse of Alexandria
+STR_DTLS    :Alexander built the city; Greeks, Romans, Egyptians left their mark. But the biggest honor was a Wonder of the Ancient World - the Lighthouse. Visit and make a park!{NEWLINE}Author: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :As it was, Opening Day -- 18 MAY 1905.{NEWLINE}Author: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Mount Vesuvius
+STR_PARK    :Mt. Vesuvius
+STR_DTLS    :Pompeii and Herculaneum were burried by Mt. Vesuvis in 79 A.D. Visit the excavations and build a park!{NEWLINE}Author: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :The Sandbox
+STR_PARK    :My Sandbox
+STR_DTLS    :What everyone wants - a sandbox! So grab your l'il pail and shovel and build a park!{NEWLINE}Author: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Falls & Gorge
+STR_PARK    :Niagara Falls
+STR_DTLS    :American Falls, Bridal Falls & Canadian Horseshoe Falls on the Niagara Frontier, 1850.{NEWLINE}Author: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Rocky Mountain Miners
+STR_PARK    :Rocky Mountain Miners
+STR_DTLS    :A rockslide damaged your railroad. Your workers have gone prospecting. Is there gold in roller coasters?{NEWLINE}Authors: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :The Time Machine
+STR_PARK    :The Time Machine
+STR_DTLS    :The Time Machine, built by TIME, Inc. Build to go WHEN you want WHERE you want. Eternity awaits. It's all relative.{NEWLINE}Author: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Tower of Babel
+STR_PARK    :Tower of Babel
+STR_DTLS    :Whoaa! Look where the time machine took us now! Where did everybody go?{NEWLINE}Author: Fossil
+
+<Transformation>
+STR_SCNR    :Transformation
+STR_PARK    :Transformation
+STR_DTLS    :We were expecting you...{NEWLINE}  Author: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :The Romans are tired of boring gladiator fights. Give them a better thrill, turn a roman city into the greatest amusement park of all time!{NEWLINE}Author: Kaffe
+
+###############################################################################
+## UCES: Katy's Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Beneath the Christmas Tree
+STR_PARK    :Winter Wonderland
+STR_DTLS    :Mom built this cene under our tree. Now she wants a park made in it! Can you help?{NEWLINE}  Author: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Bigrock Blast
+STR_PARK    :Bigrock Blast
+STR_DTLS    :After an explosion at the Bigrock Mining Co., the people of Bigrock have to build an amusement park to keep their town alive.{NEWLINE}Authors: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Mockingbird
+STR_PARK    :Camp Mockingbird
+STR_DTLS    :Only $500/week to this summar camp! Break open your bank and then have fun and build a park.{NEWLINE}Author: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Choo-Choo Town
+STR_PARK    :Choo-Choo Town
+STR_DTLS    :Mommy! Daddy! I want to go to Choo-Choo Town!{NEWLINE}Author: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Dragon Islands
+STR_PARK    :Dragon Islands
+STR_DTLS    :Dragon Islands? I'm not sure I want to go there...{NEWLINE}Author: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kiddie Karnival II
+STR_PARK    :Kiddie Karnival
+STR_DTLS    :Hey kids! Let's have FUN!!!!{NEWLINE}Authors: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sand Dune
+STR_PARK    :Sand Dune
+STR_DTLS    :As the owner of a small park, you bought a large piece of land along the beach to expand and attract more quests to visit the beautiful sand dunes, but beware: you cannot disturb those ecologically fragile sand dunes.{NEWLINE} Author: rbarclay

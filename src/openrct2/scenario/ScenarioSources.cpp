@@ -273,6 +273,29 @@ namespace ScenarioSources
         { SC_UNIDENTIFIED,              "Rock 'n' Roll - Rock 'n' Roll",                    SCENARIO_CATEGORY_EXPERT        },
     };
 
+    // User Created Expansion Sets
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesUCES[] =
+    {
+        { SC_UNIDENTIFIED,              "Lighthouse of Alexandria by Katatude for UCES",    SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Cleveland's Luna Park",                            SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Mount Vesuvius 1700 A.D. by Katatude for UCES",    SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "The Sandbox by Katatude for UCES",                 SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Niagara Falls & Gorge by Katatude for UCES",       SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Rocky Mountain Miners",                            SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "The Time Machine by Katatude for UCES",            SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Tower of Babel",                                   SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Transformation",                                   SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Urbis Incognitus",                                 SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Beneath the Christmas Tree by Katatude for UCES",  SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Bigrock Blast",                                    SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Camp Mockingbird for UCES by Katatude",            SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Choo Choo Town",                                   SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Dragon Island",                                    SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Kiddy Karnival II",                                SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Sand Dune",                                        SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "UCES Halloween",                                   SCENARIO_CATEGORY_OTHER            },
+    };
+
     // Real parks
     static constexpr const ScenarioTitleDescriptor ScenarioTitlesRealParks[] =
     {
@@ -327,6 +350,7 @@ namespace ScenarioSources
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2WW),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2TT),
+        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesUCES),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRealParks),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesExtrasParks),
     };
