@@ -375,6 +375,9 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                         break;
                     }
 
+                    if (!input_test_flag(INPUT_FLAG_4))
+                        break;
+
                     if (w->classification != _dragWidget.window_classification || w->number != _dragWidget.window_number
                         || !(_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
                     {
@@ -1043,8 +1046,8 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, W
                 w = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                 if (w != nullptr)
                 {
+                    input_set_flag(INPUT_FLAG_4, true);
                     window_event_tool_down_call(w, gCurrentToolWidget.widget_index, screenCoords);
-                    _inputFlags |= INPUT_FLAG_4;
                 }
             }
             break;

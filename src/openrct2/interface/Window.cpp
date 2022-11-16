@@ -1361,6 +1361,7 @@ bool tool_set(const rct_window& w, WidgetIndex widgetIndex, Tool tool)
     }
 
     input_set_flag(INPUT_FLAG_TOOL_ACTIVE, true);
+    input_set_flag(INPUT_FLAG_4, false);
     input_set_flag(INPUT_FLAG_6, false);
     gCurrentToolId = tool;
     gCurrentToolWidget.window_classification = w.classification;
