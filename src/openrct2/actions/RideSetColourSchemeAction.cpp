@@ -62,7 +62,7 @@ GameActions::Result RideSetColourSchemeAction::Query() const
         if (trackElement == nullptr)
         {
             return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
+                GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_TRACK_PARAMETERS);
         }
     }
     if (_newColourScheme >= OpenRCT2::Limits::NumColourSchemes)
