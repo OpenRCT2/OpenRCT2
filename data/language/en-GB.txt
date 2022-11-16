@@ -4434,7 +4434,7 @@ STR_DTLS    :As it was, Opening Day -- 18 MAY 1905.{NEWLINE}Author: Aetherwave
 <Mount Vesuvius 1700 A.D. by Katatude for UCES>
 STR_SCNR    :Mount Vesuvius
 STR_PARK    :Mt. Vesuvius
-STR_DTLS    :Pompeii and Herculaneum were burried by Mt. Vesuvis in 79 A.D. Visit the excavations and build a park!{NEWLINE}Author: Katatude
+STR_DTLS    :Pompeii and Herculaneum were burried by Mt. Vesuvius in 79 A.D. Visit the excavations and build a park!{NEWLINE}Author: Katatude
 
 <The Sandbox by Katatude for UCES>
 STR_SCNR    :The Sandbox
@@ -4464,7 +4464,7 @@ STR_DTLS    :Whoaa! Look where the time machine took us now! Where did everybody
 <Transformation>
 STR_SCNR    :Transformation
 STR_PARK    :Transformation
-STR_DTLS    :We were expecting you...{NEWLINE}  Author: Fossil
+STR_DTLS    :We were expecting you...{NEWLINE}Author: Fossil
 
 <Urbis Incognitus>
 STR_SCNR    :Urbis Incognitus
@@ -4478,7 +4478,7 @@ STR_DTLS    :The Romans are tired of boring gladiator fights. Give them a better
 <Beneath the Christmas Tree by Katatude for UCES>
 STR_SCNR    :Beneath the Christmas Tree
 STR_PARK    :Winter Wonderland
-STR_DTLS    :Mom built this cene under our tree. Now she wants a park made in it! Can you help?{NEWLINE}  Author: Katatude
+STR_DTLS    :Mom built this cene under our tree. Now she wants a park made in it! Can you help?{NEWLINE}Author: Katatude
 
 <Bigrock Blast>
 STR_SCNR    :Bigrock Blast
@@ -4508,4 +4508,4 @@ STR_DTLS    :Hey kids! Let's have FUN!!!!{NEWLINE}Authors: Piehead & Fossil
 <Sand Dune>
 STR_SCNR    :Sand Dune
 STR_PARK    :Sand Dune
-STR_DTLS    :As the owner of a small park, you bought a large piece of land along the beach to expand and attract more quests to visit the beautiful sand dunes, but beware: you cannot disturb those ecologically fragile sand dunes.{NEWLINE} Author: rbarclay
+STR_DTLS    :As the owner of a small park, you bought a large piece of land along the beach to expand and attract more quests to visit the beautiful sand dunes, but beware: you cannot disturb those ecologically fragile sand dunes.{NEWLINE}Author: rbarclay
