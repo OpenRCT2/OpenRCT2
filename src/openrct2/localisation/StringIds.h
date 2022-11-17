@@ -3914,12 +3914,13 @@ enum : uint16_t
     STR_BASE_GRAPHICS_MUSIC_SOUND = 6526,
 
     STR_COMPETITIONS = 6527,
-    STR_SCENARIO_CATEGORY_UCES = 6528,
-    STR_UCES_TM = 6529,
-    STR_UCES_KD = 6530,
 
     STR_INVALID_TRACK_PARAMETERS = 6528,
     STR_INVALID_COLOUR_SCHEME_PARAMETER = 6529,
+
+    STR_SCENARIO_CATEGORY_UCES = 6530,
+    STR_UCES_TM = 6531,
+    STR_UCES_KD = 6532,
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
