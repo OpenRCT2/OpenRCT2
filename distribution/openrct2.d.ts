@@ -2407,8 +2407,8 @@ declare global {
      */
     interface ScenarioFile {
         id: number;
-        category: "beginner" | "challenging" | "expert" | "real" | "other" | "dlc" | "build_your_own" | "competitions" | "timemachine" | "dreamworld";
-        sourceGame: "rct1" | "rct1_aa" | "rct1_ll" | "rct2" | "rct2_ww" | "rct2_tt" | "uces" | "real" | "extras" | "other";
+        category: "beginner" | "challenging" | "expert" | "real" | "other" | "dlc" | "build_your_own" | "competitions";
+        sourceGame: "rct1" | "rct1_aa" | "rct1_ll" | "rct2" | "rct2_ww" | "rct2_tt" | "real" | "extras" | "other";
         path: string;
         internalName: string;
         name: string;
