@@ -41,6 +41,7 @@
 - Fix: [#18449] [Plugin] Change type of listview widgets from 'scroll_view' to 'listview'.
 - Fix: [#18453] Slow walking guests don't get across level crossings in time.
 - Fix: [#18459] ‘Highlight path issues’ hides fences for paths with additions.
+- Fix: [#18606] JSON objects do not take priority over the DAT files they supersede.
 
 0.4.2 (2022-10-05)
 ------------------------------------------------------------------------
