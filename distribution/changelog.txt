@@ -4,7 +4,7 @@
 - Feature: [#18312, objects#220, OpenSFX#13] New sound effects for the Hybrid and Single Rail roller coasters.
 - Feature: [objects#221] Add two extra jungle walls.
 - Feature: [OpenMusic#14, OpenMusic#15, OpenMusic#18] Added Galaxy, Acid and Dodgems ride music styles.
-- Improved: [#18192] Tycoon Park has been added Extras tab.
+- Improved: [#18192] Tycoon Park has been added to the Extras tab.
 - Improved: [#18214] Competition scenarios have received their own section.
 - Improved: [#18250] Added modern style file and folder pickers on Windows.
 - Improved: [#18332] Allow Inverted Roller Coaster to draw boosters.
