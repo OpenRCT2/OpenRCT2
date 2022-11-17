@@ -4105,12 +4105,6 @@ STR_NAME    :Tetto
 [TTRFWD08]
 STR_NAME    :Tetto
 
-[ACWW33]
-STR_NAME    :Muro di pali di legno
-
-[ACWWF32]
-STR_NAME    :Muro di pali di legno
-
 ## End OpenRCT2 Official
 
 ###############################################################################

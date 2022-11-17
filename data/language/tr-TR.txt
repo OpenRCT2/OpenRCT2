@@ -3870,12 +3870,6 @@ STR_NAME    :Çatı
 [TTRFWD08]
 STR_NAME    :Çatı
 
-[ACWW33]
-STR_NAME    :Direkli ahşap duvar
-
-[ACWWF32]
-STR_NAME    :Direkli ahşap duvar
-
 ## End OpenRCT2 Official
 
 ###############################################################################

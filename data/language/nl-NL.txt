@@ -4471,12 +4471,6 @@ STR_NAME    :Dak
 [TTRFWD08]
 STR_NAME    :Dak
 
-[ACWW33]
-STR_NAME    :Muur van houten palen
-
-[ACWWF32]
-STR_NAME    :Hek van houten palen
-
 ## End CC
 
 

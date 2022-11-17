@@ -4109,12 +4109,6 @@ STR_NAME    :Techo
 [TTRFWD08]
 STR_NAME    :Techo
 
-[ACWW33]
-STR_NAME    :Pared de Madera
-
-[ACWWF32]
-STR_NAME    :Pared de Madera
-
 ## End OpenRCT2 Official
 
 ###############################################################################

@@ -4417,10 +4417,4 @@ STR_NAME    :Toit
 [TTRFWD08]
 STR_NAME    :Toit
 
-[ACWW33]
-STR_NAME    :Tableau d’affichage en bois
-
-[ACWWF32]
-STR_NAME    :Tableau d’affichage en bois
-
 ## End OpenRCT2 Official

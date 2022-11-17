@@ -4071,12 +4071,6 @@ STR_NAME    :Tető
 [TTRFWD08]
 STR_NAME    :Tető
 
-[ACWW33]
-STR_NAME    :Fa sánckerítés
-
-[ACWWF32]
-STR_NAME    :Fa sánckerítés
-
 ## End OpenRCT2 Official
 
 ###############################################################################
