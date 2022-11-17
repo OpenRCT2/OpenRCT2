@@ -4105,12 +4105,6 @@ STR_NAME    :Tegmento
 [TTRFWD08]
 STR_NAME    :Tegmento
 
-[ACWW33]
-STR_NAME    :Muro el Lignaj Fostoj
-
-[ACWWF32]
-STR_NAME    :Muro el Lignaj Fostoj
-
 ## End OpenRCT2 Official
 
 ###############################################################################

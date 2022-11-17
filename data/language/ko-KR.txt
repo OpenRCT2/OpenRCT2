@@ -4106,12 +4106,6 @@ STR_NAME    :지붕
 [TTRFWD08]
 STR_NAME    :지붕
 
-[ACWW33]
-STR_NAME    :나무 기둥 벽
-
-[ACWWF32]
-STR_NAME    :나무 기둥 벽
-
 ## End OpenRCT2 Official
 
 ###############################################################################

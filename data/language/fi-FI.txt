@@ -4082,12 +4082,6 @@ STR_NAME    :Katto
 [TTRFWD08]
 STR_NAME    :Katto
 
-[ACWW33]
-STR_NAME    :Puinen tolppaseinä
-
-[ACWWF32]
-STR_NAME    :Puinen tolppaseinä
-
 ## End OpenRCT2 Official
 
 ###############################################################################

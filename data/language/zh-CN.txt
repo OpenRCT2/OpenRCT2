@@ -4106,12 +4106,6 @@ STR_NAME    :屋顶
 [TTRFWD08]
 STR_NAME    :屋顶
 
-[ACWW33]
-STR_NAME    :木柱墙
-
-[ACWWF32]
-STR_NAME    :木柱墙
-
 ## End OpenRCT2 Official
 
 ###############################################################################

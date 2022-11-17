@@ -4113,12 +4113,6 @@ STR_NAME    :Sostre
 [TTRFWD08]
 STR_NAME    :Sostre
 
-[ACWW33]
-STR_NAME    :Paret de pals de fusta
-
-[ACWWF32]
-STR_NAME    :Paret de pals de fusta
-
 ## End OpenRCT2 Official
 
 ###############################################################################
