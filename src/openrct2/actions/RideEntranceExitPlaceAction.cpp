@@ -97,12 +97,6 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    CoordsXYZ pathLocation = { _loc - CoordsDirectionDelta[_direction], z };
-    if (!LocationValid(pathLocation) || !MapIsLocationOwned(pathLocation))
-    {
-        return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_FACING_PARK_FENCE);
-    }
-
     if (!MapCheckCapacityAndReorganise(_loc))
     {
         return GameActions::Result(GameActions::Status::NoFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
@@ -113,6 +107,15 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     {
         canBuild.ErrorTitle = errorTitle;
         return canBuild;
+    }
+
+    CoordsXYZ pathLocation = { _loc - CoordsDirectionDelta[_direction], z };
+    QuarterTile quarterTile{ 0b1111, 0 };
+    canBuild = MapCanConstructWithClearAt(
+        { pathLocation, 4 * COORDS_Z_STEP }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags());
+    if (canBuild.Error != GameActions::Status::Ok)
+    {
+        return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_FACING_PARK_FENCE);
     }
 
     const auto clearanceData = canBuild.GetData<ConstructClearResult>();

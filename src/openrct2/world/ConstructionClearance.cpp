@@ -145,6 +145,13 @@ GameActions::Result MapCanConstructWithClearAt(
         return res;
     }
 
+    if (!MapIsLocationOwnedOrHasRights(pos))
+    {
+        res.Error = GameActions::Status::NotOwned;
+        res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
+        return res;
+    }
+
     do
     {
         if (tileElement->GetType() != TileElementType::Surface)
