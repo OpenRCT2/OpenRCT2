@@ -37,12 +37,12 @@
 #include <functional>
 #include <iterator>
 #include <list>
-window_close_modifier last_close_modifier = { WindowClass::Null, 0, CloseWindowModifier::CLOSE_WINDOW_MODIFIER_NONE };
 
 std::list<std::shared_ptr<rct_window>> g_window_list;
 rct_window* gWindowAudioExclusive;
 
 widget_identifier gCurrentTextBox = { { WindowClass::Null, 0 }, 0 };
+window_close_modifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::None };
 char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
 int32_t gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = false;

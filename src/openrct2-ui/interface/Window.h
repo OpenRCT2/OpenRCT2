@@ -29,7 +29,7 @@ struct Window : rct_window
     void Close();
     void CloseOthers();
     void CloseOthersOfThisClass();
-    CloseWindowModifier closedWithModifier();
+    CloseWindowModifier GetCloseModifier();
     void TextInputOpen(
         WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
         uintptr_t existingArgs, int32_t maxLength);

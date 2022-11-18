@@ -746,13 +746,13 @@ void Window::DrawWidgets(rct_drawpixelinfo& dpi)
 
 void Window::Close()
 {
-    CloseWindowModifier modifier = closedWithModifier();
+    CloseWindowModifier modifier = GetCloseModifier();
 
-    if (modifier == CloseWindowModifier::CLOSE_WINDOW_MODIFIER_SHIFT)
+    if (modifier == CloseWindowModifier::Shift)
     {
         CloseOthers();
     }
-    else if (modifier == CloseWindowModifier::CLOSE_WINDOW_MODIFIER_CONTROL)
+    else if (modifier == CloseWindowModifier::Control)
     {
         CloseOthersOfThisClass();
     }
@@ -772,16 +772,16 @@ void Window::CloseOthersOfThisClass()
     window_close_by_class(classification);
 }
 
-CloseWindowModifier Window::closedWithModifier()
+CloseWindowModifier Window::GetCloseModifier()
 {
-    CloseWindowModifier lastModifier = CloseWindowModifier::CLOSE_WINDOW_MODIFIER_NONE;
+    CloseWindowModifier lastModifier = CloseWindowModifier::None;
 
-    if (last_close_modifier.window.number == number && last_close_modifier.window.classification == classification)
+    if (gLastCloseModifier.window.number == number && gLastCloseModifier.window.classification == classification)
     {
-        lastModifier = last_close_modifier.modifier;
+        lastModifier = gLastCloseModifier.modifier;
     }
 
-    last_close_modifier.modifier = CloseWindowModifier::CLOSE_WINDOW_MODIFIER_NONE;
+    gLastCloseModifier.modifier = CloseWindowModifier::None;
 
     return lastModifier;
 }

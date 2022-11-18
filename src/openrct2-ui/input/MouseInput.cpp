@@ -1224,15 +1224,15 @@ void InputStateWidgetPressed(
         {
             if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
             {
-                last_close_modifier.window.number = w->number;
-                last_close_modifier.window.classification = w->classification;
-                last_close_modifier.modifier = CloseWindowModifier::CLOSE_WINDOW_MODIFIER_SHIFT;
+                gLastCloseModifier.window.number = w->number;
+                gLastCloseModifier.window.classification = w->classification;
+                gLastCloseModifier.modifier = CloseWindowModifier::Shift;
             }
             else if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
             {
-                last_close_modifier.window.number = w->number;
-                last_close_modifier.window.classification = w->classification;
-                last_close_modifier.modifier = CloseWindowModifier::CLOSE_WINDOW_MODIFIER_CONTROL;
+                gLastCloseModifier.window.number = w->number;
+                gLastCloseModifier.window.classification = w->classification;
+                gLastCloseModifier.modifier = CloseWindowModifier::Control;
             }
         }
     }

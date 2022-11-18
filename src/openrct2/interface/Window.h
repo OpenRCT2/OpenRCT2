@@ -29,6 +29,7 @@ struct rct_window;
 struct TrackDesignFileRef;
 struct TextInputSession;
 struct scenario_index_entry;
+struct window_close_modifier;
 
 enum class VisibilityCache : uint8_t;
 enum class CursorID : uint8_t;
@@ -64,6 +65,7 @@ struct widget_identifier
 };
 
 extern widget_identifier gCurrentTextBox;
+extern window_close_modifier gLastCloseModifier;
 
 using WidgetFlags = uint32_t;
 namespace WIDGET_FLAGS
@@ -296,6 +298,12 @@ struct error_variables
     uint16_t var_480;
 };
 
+struct window_close_modifier
+{
+    window_identifier window;
+    CloseWindowModifier modifier;
+};
+
 struct rct_window;
 
 #define RCT_WINDOW_RIGHT(w) ((w)->windowPos.x + (w)->width)
@@ -502,18 +510,11 @@ enum class VisibilityCache : uint8_t
 
 enum class CloseWindowModifier : uint8_t
 {
-    CLOSE_WINDOW_MODIFIER_NONE,
-    CLOSE_WINDOW_MODIFIER_SHIFT,
-    CLOSE_WINDOW_MODIFIER_CONTROL
+    None,
+    Shift,
+    Control
 };
 
-struct window_close_modifier
-{
-    window_identifier window;
-    CloseWindowModifier modifier;
-};
-
-extern window_close_modifier last_close_modifier;
 enum class GuestListFilterType : int32_t
 {
     GuestsOnRide,
