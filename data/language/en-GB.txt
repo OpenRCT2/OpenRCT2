@@ -3635,7 +3635,7 @@ STR_6529    :Invalid colour scheme parameter!
 STR_6530    :User Created Expansion Set
 STR_6531    :The Time Machine (2003)
 STR_6532    :Katy’s Dreamworld (2003)
-STR_6533    :Facing park fence!
+STR_6533    :Cannot connect to a path from here!
 
 #############
 # Scenarios #
