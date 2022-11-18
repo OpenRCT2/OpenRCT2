@@ -65,12 +65,18 @@ namespace OpenRCT2::Scripting
 
     template<> inline DukValue ToDuk(duk_context* ctx, const SCENARIO_CATEGORY& value)
     {
-        return ToDuk(ctx, ScenarioCategoryMap[value]);
+        const auto& entry = ScenarioCategoryMap.find(value);
+        if (entry != ScenarioCategoryMap.end())
+            return ToDuk(ctx, entry->first);
+        return ToDuk(ctx, ScenarioCategoryMap[SCENARIO_CATEGORY_OTHER]);
     }
 
     template<> inline DukValue ToDuk(duk_context* ctx, const ScenarioSource& value)
     {
-        return ToDuk(ctx, ScenarioSourceMap[value]);
+        const auto& entry = ScenarioSourceMap.find(value);
+        if (entry != ScenarioSourceMap.end())
+            return ToDuk(ctx, entry->first);
+        return ToDuk(ctx, ScenarioSourceMap[ScenarioSource::Other]);
     }
 
     class ScTool
