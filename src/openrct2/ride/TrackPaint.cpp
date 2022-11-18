@@ -975,12 +975,12 @@ constexpr CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
 
 constexpr CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
     {
-        { { 0, 6, 8 }, { 0, 0, 0 } },
+        { { 0, 6, 0 }, { 0, 0, 0 } },
         { { 16, 16, 0 }, { 0, 0, 0 } },
-        { { 6, 0, 8 }, { 0, 0, 0 } },
+        { { 6, 0, 0 }, { 0, 0, 0 } },
     },
     {
-        { { 6, 0, 8 }, { 0, 0, 0 } },
+        { { 6, 0, 0 }, { 0, 0, 0 } },
         { { 16, 0, 0 }, { 0, 0, 0 } },
         { { 0, 6, 0 }, { 0, 27, 0 } },
     },
@@ -990,7 +990,7 @@ constexpr CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
         { { 0, 0, 0 }, { 27, 0, 0 } },
     },
     {
-        { { 6, 0, 8 }, { 27, 0, 0 } },
+        { { 6, 0, 0 }, { 27, 0, 0 } },
         { { 0, 16, 0 }, { 0, 0, 0 } },
         { { 0, 6, 0 }, { 0, 0, 0 } },
     },
@@ -1040,14 +1040,14 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
 
 constexpr CoordsXYZ defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
     {
-        { { 0, 6, 8 }, { 0, 0, 0 } },
+        { { 0, 6, 0 }, { 0, 0, 0 } },
         { { 0, 16, 0 }, { 0, 0, 0 } },
         { { 0, 0, 0 }, { 0, 0, 0 } },
         { { 16, 0, 0 }, { 0, 0, 0 } },
-        { { 6, 0, 8 }, { 0, 0, 0 } },
+        { { 6, 0, 0 }, { 0, 0, 0 } },
     },
     {
-        { { 6, 0, 8 }, { 0, 0, 0 } },
+        { { 6, 0, 0 }, { 0, 0, 0 } },
         { { 16, 0, 0 }, { 0, 0, 0 } },
         { { 0, 16, 0 }, { 0, 0, 0 } },
         { { 0, 0, 0 }, { 0, 0, 0 } },
@@ -1061,7 +1061,7 @@ constexpr CoordsXYZ defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
         { { 0, 0, 0 }, { 27, 0, 0 } },
     },
     {
-        { { 6, 0, 8 }, { 27, 0, 0 } },
+        { { 6, 0, 0 }, { 27, 0, 0 } },
         { { 0, 0, 0 }, { 0, 0, 0 } },
         { { 16, 0, 0 }, { 0, 0, 0 } },
         { { 0, 16, 0 }, { 0, 0, 0 } },
