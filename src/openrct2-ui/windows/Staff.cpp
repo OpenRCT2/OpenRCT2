@@ -339,16 +339,7 @@ private:
         auto ft = Formatter::Common();
         staff->FormatNameTo(ft);
 
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-
-        widgets[WIDX_RESIZE].right = width - 1;
-        widgets[WIDX_RESIZE].bottom = height - 1;
-
-        widgets[WIDX_TITLE].right = width - 2;
-
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
+        ResizeFrameWithPage();
     }
 
     void CommonPrepareDrawAfter()
@@ -391,7 +382,7 @@ private:
             {
                 auto intent = Intent(WindowClass::FirePrompt);
                 intent.putExtra(INTENT_EXTRA_PEEP, staff);
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
                 break;
             }
             case WIDX_RENAME:

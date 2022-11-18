@@ -31,7 +31,7 @@ static rct_widget window_tooltip_widgets[] = {
 class TooltipWindow final : public Window
 {
 private:
-    utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)]{};
+    utf8 _tooltipText[CommonTextBufferSize]{};
     int16_t _tooltipNumLines = 1;
 
 public:
@@ -44,8 +44,8 @@ public:
         window_tooltip_widgets[WIDX_BACKGROUND].right = width;
         window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
         screenCoords.x = std::clamp(screenCoords.x - (width / 2), 0, screenWidth - width);
 
         // TODO The cursor size will be relative to the window DPI.
@@ -106,7 +106,7 @@ private:
     // Returns the width of the new tooltip text
     int32_t FormatTextForTooltip(const OpenRCT2String& message)
     {
-        utf8 tempBuffer[sizeof(gCommonStringFormatBuffer)];
+        utf8 tempBuffer[CommonTextBufferSize];
         format_string(tempBuffer, sizeof(tempBuffer), message.str, message.args.Data());
 
         OpenRCT2String formattedMessage{ STR_STRING_TOOLTIP, Formatter() };

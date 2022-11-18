@@ -314,12 +314,12 @@ public:
         }
 
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
 
         VisibleListDispose();
 
         intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 
     void OnUpdate() override
@@ -412,7 +412,7 @@ public:
 
                 auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
                 break;
             }
             case WIDX_FILTER_TEXT_BOX:
@@ -589,7 +589,7 @@ public:
 
         Invalidate();
 
-        const CursorState* state = context_get_cursor_state();
+        const CursorState* state = ContextGetCursorState();
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, state->position.x);
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
@@ -620,7 +620,7 @@ public:
             StringId error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
                                                                                   : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
-            context_show_error(error_title, objectSelectResult.Message, {});
+            ContextShowError(error_title, objectSelectResult.Message, {});
             return;
         }
 
@@ -636,12 +636,12 @@ public:
             const auto errorMessage = _gSceneryGroupPartialSelectError.value();
             if (errorMessage == STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED)
             {
-                context_show_error(
+                ContextShowError(
                     STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, {});
             }
             else
             {
-                context_show_error(
+                ContextShowError(
                     errorMessage, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, Formatter::Common());
             }
         }
@@ -815,13 +815,7 @@ public:
     void OnPrepareDraw() override
     {
         // Resize widgets
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_TAB_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_TAB_CONTENT_PANEL].bottom = height - 1;
+        ResizeFrameWithPage();
         widgets[WIDX_ADVANCED].left = width - 130;
         widgets[WIDX_ADVANCED].right = width - 9;
         widgets[WIDX_LIST].right = width - 309;
@@ -1513,7 +1507,7 @@ private:
         auto intent = Intent(WindowClass::TrackDesignList);
         intent.putExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
         intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
     }
 };
 
@@ -1611,5 +1605,5 @@ void EditorLoadSelectedObjects()
         load_palette();
     }
     if (showFallbackWarning)
-        context_show_error(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
+        ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
 }

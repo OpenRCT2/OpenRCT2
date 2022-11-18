@@ -338,7 +338,7 @@ static int16_t _unkF64F0A;
 rct_window* WindowTopToolbarOpen()
 {
     rct_window* window = WindowCreate(
-        ScreenCoordsXY(0, 0), context_get_width(), TOP_TOOLBAR_HEIGHT + 1, &window_top_toolbar_events, WindowClass::TopToolbar,
+        ScreenCoordsXY(0, 0), ContextGetWidth(), TOP_TOOLBAR_HEIGHT + 1, &window_top_toolbar_events, WindowClass::TopToolbar,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_top_toolbar_widgets;
 
@@ -385,35 +385,35 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
             if (!tool_set(*w, WIDX_SCENERY, Tool::Arrow))
             {
                 input_set_flag(INPUT_FLAG_6, true);
-                context_open_window(WindowClass::Scenery);
+                ContextOpenWindow(WindowClass::Scenery);
             }
             break;
         case WIDX_PATH:
             ToggleFootpathWindow();
             break;
         case WIDX_CONSTRUCT_RIDE:
-            context_open_window(WindowClass::ConstructRide);
+            ContextOpenWindow(WindowClass::ConstructRide);
             break;
         case WIDX_RIDES:
-            context_open_window(WindowClass::RideList);
+            ContextOpenWindow(WindowClass::RideList);
             break;
         case WIDX_PARK:
-            context_open_window(WindowClass::ParkInformation);
+            ContextOpenWindow(WindowClass::ParkInformation);
             break;
         case WIDX_STAFF:
-            context_open_window(WindowClass::StaffList);
+            ContextOpenWindow(WindowClass::StaffList);
             break;
         case WIDX_GUESTS:
-            context_open_window(WindowClass::GuestList);
+            ContextOpenWindow(WindowClass::GuestList);
             break;
         case WIDX_FINANCES:
-            context_open_window(WindowClass::Finances);
+            ContextOpenWindow(WindowClass::Finances);
             break;
         case WIDX_RESEARCH:
-            context_open_window(WindowClass::Research);
+            ContextOpenWindow(WindowClass::Research);
             break;
         case WIDX_NEWS:
-            context_open_window(WindowClass::RecentNews);
+            ContextOpenWindow(WindowClass::RecentNews);
             break;
         case WIDX_MUTE:
             OpenRCT2::Audio::ToggleAllSounds();
@@ -425,7 +425,7 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
             }
             else
             {
-                context_show_error(STR_CHAT_UNAVAILABLE, STR_NONE, {});
+                ContextShowError(STR_CHAT_UNAVAILABLE, STR_NONE, {});
             }
             break;
     }
@@ -575,7 +575,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                 {
                     auto intent = Intent(WindowClass::ScenarioSelect);
                     intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowTopToolbarScenarioselectCallback));
-                    context_open_intent(&intent);
+                    ContextOpenIntent(&intent);
                     break;
                 }
                 case DDIDX_LOAD_GAME:
@@ -594,7 +594,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                         auto intent = Intent(WindowClass::Loadsave);
                         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
                         intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
-                        context_open_intent(&intent);
+                        ContextOpenIntent(&intent);
                     }
                     else
                     {
@@ -603,10 +603,10 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                     }
                     break;
                 case DDIDX_ABOUT:
-                    context_open_window(WindowClass::About);
+                    ContextOpenWindow(WindowClass::About);
                     break;
                 case DDIDX_OPTIONS:
-                    context_open_window(WindowClass::Options);
+                    ContextOpenWindow(WindowClass::Options);
                     break;
                 case DDIDX_SCREENSHOT:
                     gScreenshotCountdown = 10;
@@ -624,7 +624,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                 }
                 break;
                 case DDIDX_UPDATE_AVAILABLE:
-                    context_open_window_view(WV_NEW_VERSION_INFO);
+                    ContextOpenWindowView(WV_NEW_VERSION_INFO);
                     break;
                 case DDIDX_QUIT_TO_MENU:
                 {
@@ -635,7 +635,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                     break;
                 }
                 case DDIDX_EXIT_OPENRCT2:
-                    context_quit();
+                    ContextQuit();
                     break;
             }
             break;
@@ -803,7 +803,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     }
 
     // Align right hand side toolbar buttons
-    int32_t screenWidth = context_get_width();
+    int32_t screenWidth = ContextGetWidth();
     firstAlignment = 1;
     x = std::max(640, screenWidth);
     for (size_t i = 0; i < std::size(right_aligned_widgets_order); ++i)
@@ -1999,7 +1999,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                 {
                     auto data = result->GetData<BannerPlaceActionResult>();
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                    context_open_detail_window(WD_BANNER, data.bannerId.ToUnderlying());
+                    ContextOpenDetailWindow(WD_BANNER, data.bannerId.ToUnderlying());
                 }
             });
             GameActions::Execute(&bannerPlaceAction);
@@ -3333,13 +3333,13 @@ static void TopToolbarMapMenuDropdown(int16_t dropdownIndex)
         switch (dropdownIndex)
         {
             case 0:
-                context_open_window(WindowClass::Map);
+                ContextOpenWindow(WindowClass::Map);
                 break;
             case 1:
-                context_open_window(WindowClass::Viewport);
+                ContextOpenWindow(WindowClass::Viewport);
                 break;
             case 2:
-                context_open_window(WindowClass::Mapgen);
+                ContextOpenWindow(WindowClass::Mapgen);
                 break;
         }
     }
@@ -3519,23 +3519,23 @@ static void TopToolbarCheatsMenuDropdown(int16_t dropdownIndex)
     switch (dropdownIndex)
     {
         case DDIDX_CHEATS:
-            context_open_window(WindowClass::Cheats);
+            ContextOpenWindow(WindowClass::Cheats);
             break;
         case DDIDX_TILE_INSPECTOR:
-            context_open_window(WindowClass::TileInspector);
+            ContextOpenWindow(WindowClass::TileInspector);
             break;
         case DDIDX_OBJECT_SELECTION:
             window_close_all();
-            context_open_window(WindowClass::EditorObjectSelection);
+            ContextOpenWindow(WindowClass::EditorObjectSelection);
             break;
         case DDIDX_INVENTIONS_LIST:
-            context_open_window(WindowClass::EditorInventionList);
+            ContextOpenWindow(WindowClass::EditorInventionList);
             break;
         case DDIDX_SCENARIO_OPTIONS:
-            context_open_window(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::EditorScenarioOptions);
             break;
         case DDIDX_OBJECTIVE_OPTIONS:
-            context_open_window(WindowClass::EditorObjectiveOptions);
+            ContextOpenWindow(WindowClass::EditorObjectiveOptions);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
             CheatsSet(CheatType::SandboxMode, !gCheatsSandboxMode);
@@ -3593,7 +3593,7 @@ static void TopToolbarDebugMenuDropdown(int16_t dropdownIndex)
             case DDIDX_DEBUG_PAINT:
                 if (window_find_by_class(WindowClass::DebugPaint) == nullptr)
                 {
-                    context_open_window(WindowClass::DebugPaint);
+                    ContextOpenWindow(WindowClass::DebugPaint);
                 }
                 else
                 {
@@ -3612,7 +3612,7 @@ static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex)
         switch (dropdownIndex)
         {
             case DDIDX_MULTIPLAYER:
-                context_open_window(WindowClass::Multiplayer);
+                ContextOpenWindow(WindowClass::Multiplayer);
                 break;
             case DDIDX_MULTIPLAYER_RECONNECT:
                 network_reconnect();
@@ -3767,7 +3767,7 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
             case DDIDX_VIEW_CLIPPING:
                 if (window_find_by_class(WindowClass::ViewClipping) == nullptr)
                 {
-                    context_open_window(WindowClass::ViewClipping);
+                    ContextOpenWindow(WindowClass::ViewClipping);
                 }
                 else
                 {
@@ -3779,7 +3779,7 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
                 w->viewport->flags ^= VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES;
                 break;
             case DDIDX_TRANSPARENCY:
-                context_open_window(WindowClass::Transparency);
+                ContextOpenWindow(WindowClass::Transparency);
                 break;
             default:
                 return;
@@ -3796,7 +3796,7 @@ static void ToggleFootpathWindow()
 {
     if (window_find_by_class(WindowClass::Footpath) == nullptr)
     {
-        context_open_window(WindowClass::Footpath);
+        ContextOpenWindow(WindowClass::Footpath);
     }
     else
     {
@@ -3822,7 +3822,7 @@ static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
         show_gridlines();
         tool_set(*topToolbar, widgetIndex, Tool::DigDown);
         input_set_flag(INPUT_FLAG_6, true);
-        context_open_window(WindowClass::Land);
+        ContextOpenWindow(WindowClass::Land);
     }
 }
 
@@ -3842,7 +3842,7 @@ static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetI
         show_gridlines();
         tool_set(*topToolbar, widgetIndex, Tool::Crosshair);
         input_set_flag(INPUT_FLAG_6, true);
-        context_open_window(WindowClass::ClearScenery);
+        ContextOpenWindow(WindowClass::ClearScenery);
     }
 }
 
@@ -3863,7 +3863,7 @@ static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
         show_gridlines();
         tool_set(*topToolbar, widgetIndex, Tool::WaterDown);
         input_set_flag(INPUT_FLAG_6, true);
-        context_open_window(WindowClass::Water);
+        ContextOpenWindow(WindowClass::Water);
     }
 }
 

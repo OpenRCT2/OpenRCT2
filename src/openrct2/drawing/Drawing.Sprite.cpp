@@ -444,7 +444,7 @@ static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId im
     return paletteMap;
 }
 
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, const ImageId& imageId, const ScreenCoordsXY& spriteCoords)
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords)
 {
     if (imageId.HasValue())
     {
@@ -467,7 +467,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, const ImageId& im
  * y (dx)
  */
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, const ImageId& imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     int32_t x = coords.x;
     int32_t y = coords.y;
@@ -639,7 +639,7 @@ void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs&
  *  rct2: 0x00681DE2
  */
 void FASTCALL gfx_draw_sprite_raw_masked_software(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId& maskImage, const ImageId& colourImage)
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage)
 {
     int32_t left, top, right, bottom, width, height;
     auto imgMask = gfx_get_g1_element(maskImage);
@@ -692,7 +692,7 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
     mask_fn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
-const rct_g1_element* gfx_get_g1_element(const ImageId& imageId)
+const rct_g1_element* gfx_get_g1_element(const ImageId imageId)
 {
     return gfx_get_g1_element(imageId.GetIndex());
 }

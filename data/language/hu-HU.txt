@@ -3392,7 +3392,7 @@ STR_6318    :Hálózati szinkronizációs hiba észlelve.{NEWLINE}Naplófájl: {
 STR_6319    :Blokkolófék zárva
 STR_6320    :Elpusztíthatatlan
 STR_6321    :Törött hozzáadott elem
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entitás azonosító: {BLACK}{INT32}
 STR_6323    :Szimuláció folyamatban
 STR_6324    :Szimulálás
 STR_6325    :Játék/épület szimulálása
@@ -3596,6 +3596,8 @@ STR_6524    :A kiválasztott asset csomag prioritásának növelése.
 STR_6525    :A játék összes assetjének újratöltése az engedélyezett asset csomagokkal.
 STR_6526    :(alap grafika, zene és hangeffektek)
 STR_6527    :Versenyek
+STR_6528    :Érvénytelen pályaparaméterek!
+STR_6529    :Érvénytelen színséma-paraméter!
 
 #############
 # Scenarios #
@@ -4070,12 +4072,6 @@ STR_NAME    :Tető
 
 [TTRFWD08]
 STR_NAME    :Tető
-
-[ACWW33]
-STR_NAME    :Fa sánckerítés
-
-[ACWWF32]
-STR_NAME    :Fa sánckerítés
 
 ## End OpenRCT2 Official
 

@@ -94,11 +94,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 2 - 0x0B;
-        widgets[WIDX_CLOSE].right = width - 2 - 0x0B + 0x0A;
+        ResizeFrame();
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override

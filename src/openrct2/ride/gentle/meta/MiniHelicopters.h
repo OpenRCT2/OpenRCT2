@@ -21,7 +21,7 @@ constexpr const RideTypeDescriptor MiniHelicoptersRTD =
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL, TRACK_CURVE_SMALL}),
-    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(ExtraTrackPieces, {TRACK_SPINNING_TUNNEL}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionMiniHelicopters),

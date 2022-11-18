@@ -3426,7 +3426,7 @@ STR_6318    :Dissinkronigo de reto detektita.{NEWLINE}Protokolo-dosiero: {STRING
 STR_6319    :Bremso de Blokparto Fermita
 STR_6320    :Nemalkonstruebla
 STR_6321    :Aldonaĵo difektas
-STR_6322    :{WINDOW_COLOUR_2}Identigilo de rastrumeto: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Identigilo de ento: {BLACK}{INT32}
 STR_6323    :Simulas
 STR_6324    :Simuli
 STR_6325    :Simuli atrakcion
@@ -3630,6 +3630,8 @@ STR_6524    :Kreskigi ka prioritaton de la elektita havaĵo-pako.
 STR_6525    :Reŝargi ĉiujn havaĵojn en la ludo kontraŭ la ŝaltitaj havaĵo-pakoj.
 STR_6526    :(bazaj grafikoj, muziko kaj sonefikoj)
 STR_6527    :Konkursoj
+STR_6528    :Nevalidaj parametroj de trako!
+STR_6529    :Nevalida parametro de kolorskemo!
 
 #############
 # Scenarios #
@@ -4104,12 +4106,6 @@ STR_NAME    :Tegmento
 
 [TTRFWD08]
 STR_NAME    :Tegmento
-
-[ACWW33]
-STR_NAME    :Muro el Lignaj Fostoj
-
-[ACWWF32]
-STR_NAME    :Muro el Lignaj Fostoj
 
 ## End OpenRCT2 Official
 

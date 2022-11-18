@@ -3435,7 +3435,7 @@ STR_6318    :Desynchronisation réseau détectée.{NEWLINE}Fichier journal : {S
 STR_6319    :Bloc de frein fermé
 STR_6320    :Indestructible
 STR_6321    :L’ajout est cassé
-STR_6322    :{WINDOW_COLOUR_2}Identifiant image-objet : {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}ID de l’entité : {BLACK}{INT32}
 STR_6323    :Simulation
 STR_6324    :Simuler
 STR_6325    :Simule l’attraction
@@ -3639,6 +3639,8 @@ STR_6524    :Augmente la priorité du pack de ressources sélectionné
 STR_6525    :Recharge toutes les ressources du jeu avec les packs de ressources sélectionnés
 STR_6526    :(graphismes, musiques et effets sonores de base)
 STR_6527    :Compétitions
+STR_6528    :Paramètres de voie invalides !
+STR_6529    :Paramètre de palette de couleurs invalide !
 
 #############
 # Scenarios #
@@ -4416,11 +4418,5 @@ STR_NAME    :Toit
 
 [TTRFWD08]
 STR_NAME    :Toit
-
-[ACWW33]
-STR_NAME    :Tableau d’affichage en bois
-
-[ACWWF32]
-STR_NAME    :Tableau d’affichage en bois
 
 ## End OpenRCT2 Official

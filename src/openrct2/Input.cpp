@@ -29,7 +29,7 @@ widget_ref gCurrentToolWidget;
  */
 void title_handle_keyboard_input()
 {
-    context_input_handle_keyboard(true);
+    ContextInputHandleKeyboard(true);
 }
 
 /**
@@ -38,7 +38,7 @@ void title_handle_keyboard_input()
  */
 void game_handle_keyboard_input()
 {
-    context_input_handle_keyboard(false);
+    ContextInputHandleKeyboard(false);
 }
 
 void input_set_flag(INPUT_FLAGS flag, bool on)

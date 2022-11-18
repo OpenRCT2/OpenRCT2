@@ -693,7 +693,7 @@ bool MapGenLoadHeightmap(const utf8* path)
         auto height = std::min<uint32_t>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
         if (width != image.Width || height != image.Height)
         {
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG, {});
+            ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG, {});
         }
 
         // Allocate memory for the height map values, one byte pixel
@@ -722,10 +722,10 @@ bool MapGenLoadHeightmap(const utf8* path)
         switch (format)
         {
             case IMAGE_FORMAT::BITMAP:
-                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP, {});
+                ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP, {});
                 break;
             case IMAGE_FORMAT::PNG_32:
-                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
+                ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
                 break;
             default:
                 log_error("Unable to load height map image: %s", e.what());
@@ -829,7 +829,7 @@ void MapGenGenerateFromHeightmap(mapgen_settings* settings)
 
         if (minValue == maxValue)
         {
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE, {});
+            ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE, {});
             return;
         }
     }

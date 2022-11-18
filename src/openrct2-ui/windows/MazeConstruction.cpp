@@ -130,7 +130,7 @@ public:
             {
                 auto intent = Intent(WindowClass::Ride);
                 intent.putExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
             }
         }
     }

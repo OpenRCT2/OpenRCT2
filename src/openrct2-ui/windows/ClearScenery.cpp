@@ -204,7 +204,7 @@ rct_window* WindowClearSceneryOpen()
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<CleanSceneryWindow>(WindowClass::ClearScenery, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    w = WindowCreate<CleanSceneryWindow>(WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 
     if (w != nullptr)
         return w;

@@ -3426,7 +3426,7 @@ STR_6318    :Assincronia de rede detectada.{NEWLINE}Arquivo de registro: {STRING
 STR_6319    :Freios Bloqueadores Fechados
 STR_6320    :Indestrutível
 STR_6321    :Adição quebrada
-STR_6322    :{WINDOW_COLOUR_2}Id da Sprite: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}ID da entidade: {BLACK}{INT32}
 STR_6323    :Simulando
 STR_6324    :Simular
 STR_6325    :Simular brinquedo/atração
@@ -3630,6 +3630,8 @@ STR_6524    :Aumentar a prioridade do conjunto de recursos selecionado.
 STR_6525    :Recarregar todos os recursos do jogo com os conjuntos de recursos selecionados.
 STR_6526    :(gráficos, músicas e efeitos sonoros base)
 STR_6527    :Competições
+STR_6528    :Parâmetros de pista inválidos!
+STR_6529    :Parâmetro de esquema de cor inválido!
 
 #############
 # Scenarios #
@@ -4104,12 +4106,6 @@ STR_NAME    :Telhado
 
 [TTRFWD08]
 STR_NAME    :Telhado
-
-[ACWW33]
-STR_NAME    :Parede de Poste de Madeira
-
-[ACWWF32]
-STR_NAME    :Parede de Poste de Madeira
 
 ## End OpenRCT2 Official
 

@@ -1365,7 +1365,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
                 {
                     auto intent = Intent(WindowClass::Peep);
                     intent.putExtra(INTENT_EXTRA_PEEP, peep);
-                    context_open_intent(&intent);
+                    ContextOpenIntent(&intent);
                     openedPeepWindow = 1;
 
                     break;
@@ -1468,13 +1468,7 @@ static void WindowRideSetPressedTab(rct_window* w)
 
 static void WindowRideAnchorBorderWidgets(rct_window* w)
 {
-    w->widgets[WIDX_BACKGROUND].right = w->width - 1;
-    w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_TITLE].right = w->width - 2;
-    w->widgets[WIDX_CLOSE].left = w->width - 13;
-    w->widgets[WIDX_CLOSE].right = w->width - 3;
+    w->ResizeFrameWithPage();
 }
 
 #pragma region Main
@@ -1657,7 +1651,7 @@ static void WindowRideMainMouseup(rct_window* w, WidgetIndex widgetIndex)
             WindowRideRename(w);
             break;
         case WIDX_DEMOLISH:
-            context_open_detail_window(WD_DEMOLISH_RIDE, w->number);
+            ContextOpenDetailWindow(WD_DEMOLISH_RIDE, w->number);
             break;
         case WIDX_CLOSE_LIGHT:
         case WIDX_SIMULATE_LIGHT:
@@ -3752,12 +3746,12 @@ static void WindowRideLocateMechanic(rct_window* w)
         mechanic = ride_find_closest_mechanic(ride, 1);
 
     if (mechanic == nullptr)
-        context_show_error(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE, {});
+        ContextShowError(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE, {});
     else
     {
         auto intent = Intent(WindowClass::Peep);
         intent.putExtra(INTENT_EXTRA_PEEP, mechanic);
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
     }
 }
 
@@ -3810,7 +3804,7 @@ static void WindowRideMaintenanceMouseup(rct_window* w, WidgetIndex widgetIndex)
             WindowRideLocateMechanic(w);
             break;
         case WIDX_REFURBISH_RIDE:
-            context_open_detail_window(WD_REFURBISH_RIDE, w->number);
+            ContextOpenDetailWindow(WD_REFURBISH_RIDE, w->number);
             break;
     }
 }
@@ -3883,7 +3877,7 @@ static void WindowRideMaintenanceMousedown(rct_window* w, WidgetIndex widgetInde
             }
             if (num_items == 1)
             {
-                context_show_error(STR_DEBUG_NO_BREAKDOWNS_AVAILABLE, STR_NONE, {});
+                ContextShowError(STR_DEBUG_NO_BREAKDOWNS_AVAILABLE, STR_NONE, {});
             }
             else
             {
@@ -3993,11 +3987,11 @@ static void WindowRideMaintenanceDropdown(rct_window* w, WidgetIndex widgetIndex
             if (ride->lifecycle_flags
                 & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
             {
-                context_show_error(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_ALREADY_BROKEN, {});
+                ContextShowError(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_ALREADY_BROKEN, {});
             }
             else if (ride->status == RideStatus::Closed)
             {
-                context_show_error(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_IS_CLOSED, {});
+                ContextShowError(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_IS_CLOSED, {});
             }
             else
             {
@@ -5368,7 +5362,7 @@ static void WindowRideMeasurementsDesignSave(rct_window* w)
         auto errMessage = _trackDesign->CreateTrackDesignScenery(tds);
         if (errMessage != STR_NONE)
         {
-            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage, {});
+            ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, errMessage, {});
             return;
         }
     }
@@ -5380,7 +5374,7 @@ static void WindowRideMeasurementsDesignSave(rct_window* w)
     intent.putExtra(INTENT_EXTRA_PATH, trackName);
     intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(&TrackDesignCallback));
 
-    context_open_intent(&intent);
+    ContextOpenIntent(&intent);
 }
 
 /**
@@ -6856,7 +6850,7 @@ static void WindowRideCustomerMouseup(rct_window* w, WidgetIndex widgetIndex)
             auto intent = Intent(WindowClass::GuestList);
             intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingAboutRide));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             break;
         }
         case WIDX_SHOW_GUESTS_ON_RIDE:
@@ -6864,7 +6858,7 @@ static void WindowRideCustomerMouseup(rct_window* w, WidgetIndex widgetIndex)
             auto intent = Intent(WindowClass::GuestList);
             intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsOnRide));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             break;
         }
         case WIDX_SHOW_GUESTS_QUEUING:
@@ -6872,7 +6866,7 @@ static void WindowRideCustomerMouseup(rct_window* w, WidgetIndex widgetIndex)
             auto intent = Intent(WindowClass::GuestList);
             intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsInQueue));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             break;
         }
     }

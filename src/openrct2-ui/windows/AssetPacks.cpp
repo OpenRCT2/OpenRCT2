@@ -42,8 +42,8 @@ static rct_widget WindowAssetPacksWidgets[] = {
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_HIGH_PRIORITY),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_LOW_PRIORITY),
-    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_ARROW_UP, STR_DECREASE_PRIOTITY_TIP),
-    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_ARROW_DOWN, STR_INCREASE_PRIOTITY_TIP),
+    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_ARROW_UP, STR_INCREASE_PRIOTITY_TIP),
+    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_ARROW_DOWN, STR_DECREASE_PRIOTITY_TIP),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_RELOAD, STR_RELOAD_ASSET_PACKS_TIP),
     WIDGETS_END,
 };
@@ -148,11 +148,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
+        ResizeFrame();
 
         auto& list = widgets[WIDX_LIST];
         list.left = 6;

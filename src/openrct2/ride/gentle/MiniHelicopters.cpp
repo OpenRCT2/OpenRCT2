@@ -311,6 +311,31 @@ static void PaintMiniHelicoptersTrackRightQuarterTurn1Tile(
     PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
+static void PaintMiniHelicoptersTrackSpinningTunnel(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    const uint32_t sprites[NumOrthogonalDirections][2] = {
+        { SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW, 28773 },
+        { SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW, 28774 },
+        { SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW, 28773 },
+        { SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW, 28774 },
+    };
+
+    ImageId imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+    ImageId underlay = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+
+    PaintAddImageAsParentRotated(session, direction, underlay, { 0, 6, height - 2 }, { 32, 20, 1 }, { 0, 6, height });
+    PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+    track_paint_util_spinning_tunnel_paint(session, 1, height, direction);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
 /**
  * rct2: 0x0081F268
  */
@@ -349,6 +374,9 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniHelicopters(int32_t trackType)
             return PaintMiniHelicoptersTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
             return PaintMiniHelicoptersTrackRightQuarterTurn1Tile;
+
+        case TrackElemType::SpinningTunnel:
+            return PaintMiniHelicoptersTrackSpinningTunnel;
     }
 
     return nullptr;

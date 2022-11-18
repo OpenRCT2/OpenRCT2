@@ -90,11 +90,11 @@ void screenshot_check()
 
             if (!screenshotPath.empty())
             {
-                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 100, context_get_width() / 2);
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 100, ContextGetWidth() / 2);
             }
             else
             {
-                context_show_error(STR_SCREENSHOT_FAILED, STR_NONE, {});
+                ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {});
             }
 
             // redraw_weather();
@@ -379,12 +379,12 @@ void screenshot_giant()
         Formatter ft;
         ft.Add<StringId>(STR_STRING);
         ft.Add<const utf8*>(filename.c_str());
-        context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
+        ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
     }
     catch (const std::exception& e)
     {
         log_error("%s", e.what());
-        context_show_error(STR_SCREENSHOT_FAILED, STR_NONE, {});
+        ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {});
     }
 
     ReleaseDPI(dpi);

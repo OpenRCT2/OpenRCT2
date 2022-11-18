@@ -4100,12 +4100,6 @@ STR_NAME    :Tag
 [TTRFWD08]
 STR_NAME    :Tag
 
-[ACWW33]
-STR_NAME    :Træ stolpe væg
-
-[ACWWF32]
-STR_NAME    :Træ stolpe væg
-
 ## End OpenRCT2 Official
 
 ###############################################################################

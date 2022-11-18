@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -288,4 +288,4 @@ public:
         return result;
     }
 };
-static_assert(sizeof(ImageId) == 8);
+static_assert(sizeof(ImageId) == 8, "The size of this struct is expected to fit in 64 bits for perfomance reasons. See #18555");

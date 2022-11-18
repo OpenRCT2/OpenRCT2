@@ -91,72 +91,6 @@ static constexpr const OpenRCT2::Audio::SoundId _screamSet2[] = {
     OpenRCT2::Audio::SoundId::Scream6,
 };
 
-static constexpr const uint8_t _soundParams[OpenRCT2::Audio::RCT2SoundCount][2] = {
-    { 1, 0 }, // LiftClassic
-    { 1, 0 }, // TrackFrictionClassicWood
-    { 1, 0 }, // FrictionClassic
-    { 0, 1 }, // Scream1
-    { 0, 0 }, // Click1
-    { 0, 0 }, // Click2
-    { 0, 0 }, // PlaceItem
-    { 0, 1 }, // Scream2
-    { 0, 1 }, // Scream3
-    { 0, 1 }, // Scream4
-    { 0, 1 }, // Scream5
-    { 0, 1 }, // Scream6
-    { 1, 0 }, // LiftFrictionWheels
-    { 0, 0 }, // Purchase
-    { 0, 0 }, // Crash
-    { 0, 0 }, // LayingOutWater
-    { 0, 0 }, // Water1
-    { 0, 0 }, // Water2
-    { 0, 1 }, // TrainWhistle
-    { 0, 1 }, // TrainDeparting
-    { 0, 0 }, // WaterSplash
-    { 1, 0 }, // GoKartEngine
-    { 0, 0 }, // RideLaunch1
-    { 0, 0 }, // RideLaunch2
-    { 0, 0 }, // Cough1
-    { 0, 0 }, // Cough2
-    { 0, 0 }, // Cough3
-    { 0, 0 }, // Cough4
-    { 1, 0 }, // Rain
-    { 0, 0 }, // Thunder1
-    { 0, 0 }, // Thunder2
-    { 1, 0 }, // TrackFrictionTrain
-    { 1, 0 }, // TrackFrictionWater
-    { 0, 0 }, // BalloonPop
-    { 0, 0 }, // MechanicFix
-    { 0, 1 }, // Scream7
-    { 0, 0 }, // ToiletFlush
-    { 0, 0 }, // Click3
-    { 0, 0 }, // Quack
-    { 0, 0 }, // NewsItem
-    { 0, 0 }, // WindowOpen
-    { 0, 0 }, // Laugh1
-    { 0, 0 }, // Laugh2
-    { 0, 0 }, // Laugh3
-    { 0, 0 }, // Applause
-    { 0, 0 }, // HauntedHouseScare
-    { 0, 0 }, // HauntedHouseScream1
-    { 0, 0 }, // HauntedHouseScream2
-    { 0, 0 }, // BlockBrakeClose
-    { 0, 0 }, // BlockBrakeRelease
-    { 0, 0 }, // Error
-    { 0, 0 }, // BrakeRelease
-    { 1, 0 }, // LiftArrow
-    { 1, 0 }, // LiftWood
-    { 1, 0 }, // TrackFrictionWood
-    { 1, 0 }, // LiftWildMouse
-    { 1, 0 }, // LiftBM
-    { 1, 2 }, // TrackFrictionBM
-    { 0, 1 }, // Scream8
-    { 0, 1 }, // Tram
-    { 0, 0 }, // DoorOpen
-    { 0, 0 }, // DoorClose
-    { 0, 0 }, // Portcullis
-};
-
 // clang-format off
 static constexpr const uint8_t SpaceRingsTimeToSpriteMap[] =
 {
@@ -856,7 +790,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
     panX = g_music_tracking_viewport->zoom.ApplyInversedTo(panX);
     panX += g_music_tracking_viewport->pos.x;
 
-    uint16_t screenWidth = context_get_width();
+    uint16_t screenWidth = ContextGetWidth();
     if (screenWidth < 64)
     {
         screenWidth = 64;
@@ -867,7 +801,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
     panY = g_music_tracking_viewport->zoom.ApplyInversedTo(panY);
     panY += g_music_tracking_viewport->pos.y;
 
-    uint16_t screenHeight = context_get_height();
+    uint16_t screenHeight = ContextGetHeight();
     if (screenHeight < 64)
     {
         screenHeight = 64;
@@ -1047,6 +981,64 @@ static OpenRCT2::Audio::VehicleSound* vehicle_sounds_update_get_vehicle_sound(Op
     return nullptr;
 }
 
+static bool IsLoopingSound(SoundId id)
+{
+    switch (id)
+    {
+        case SoundId::LiftClassic:
+        case SoundId::TrackFrictionClassicWood:
+        case SoundId::FrictionClassic:
+        case SoundId::LiftFrictionWheels:
+        case SoundId::GoKartEngine:
+        case SoundId::TrackFrictionTrain:
+        case SoundId::TrackFrictionWater:
+        case SoundId::LiftArrow:
+        case SoundId::LiftWood:
+        case SoundId::TrackFrictionWood:
+        case SoundId::LiftWildMouse:
+        case SoundId::LiftBM:
+        case SoundId::TrackFrictionBM:
+        case SoundId::LiftRMC:
+        case SoundId::TrackFrictionRMC:
+            return true;
+        default:
+            return false;
+    }
+}
+
+static bool IsFixedFrequencySound(SoundId id)
+{
+    switch (id)
+    {
+        case SoundId::Scream1:
+        case SoundId::Scream2:
+        case SoundId::Scream3:
+        case SoundId::Scream4:
+        case SoundId::Scream5:
+        case SoundId::Scream6:
+        case SoundId::Scream7:
+        case SoundId::Scream8:
+        case SoundId::TrainWhistle:
+        case SoundId::TrainDeparting:
+        case SoundId::Tram:
+            return true;
+        default:
+            return false;
+    }
+}
+
+static bool IsSpecialFrequencySound(SoundId id)
+{
+    switch (id)
+    {
+        case SoundId::TrackFrictionBM:
+        case SoundId::TrackFrictionRMC:
+            return true;
+        default:
+            return false;
+    }
+}
+
 enum class SoundType
 {
     TrackNoises,
@@ -1057,7 +1049,7 @@ template<SoundType type> static uint16_t SoundFrequency(const OpenRCT2::Audio::S
 {
     if constexpr (type == SoundType::TrackNoises)
     {
-        if (_soundParams[static_cast<uint8_t>(id)][1] & 2)
+        if (IsSpecialFrequencySound(id))
         {
             return (baseFrequency / 2) + 4000;
         }
@@ -1065,7 +1057,7 @@ template<SoundType type> static uint16_t SoundFrequency(const OpenRCT2::Audio::S
     }
     else
     {
-        if (_soundParams[static_cast<uint8_t>(id)][1] & 1)
+        if (IsFixedFrequencySound(id))
         {
             return 22050;
         }
@@ -1075,7 +1067,7 @@ template<SoundType type> static uint16_t SoundFrequency(const OpenRCT2::Audio::S
 
 template<SoundType type> static bool ShouldUpdateChannelRate(const OpenRCT2::Audio::SoundId id)
 {
-    return type == SoundType::TrackNoises || !(_soundParams[static_cast<uint8_t>(id)][1] & 1);
+    return type == SoundType::TrackNoises || !IsFixedFrequencySound(id);
 }
 
 template<SoundType type>
@@ -1105,7 +1097,7 @@ static void UpdateSound(
     if (sound.Id == OpenRCT2::Audio::SoundId::Null)
     {
         auto frequency = SoundFrequency<type>(id, sound_params->frequency);
-        auto looping = _soundParams[static_cast<uint8_t>(id)][0];
+        auto looping = IsLoopingSound(id);
         auto pan = sound_params->pan_x;
         auto channel = CreateAudioChannel(
             id, looping, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), false);
@@ -5219,7 +5211,7 @@ void Vehicle::KillPassengers(Ride* curRide)
         {
             decrement_guests_in_park();
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
         peep_sprite_remove(curPeep);
     }
@@ -5705,7 +5697,7 @@ void Vehicle::SetMapToolbar() const
         curRide->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
         intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 }
 
@@ -9152,7 +9144,7 @@ void Vehicle::InvalidateWindow()
 {
     auto intent = Intent(INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW);
     intent.putExtra(INTENT_EXTRA_VEHICLE, this);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 void Vehicle::UpdateCrossings() const

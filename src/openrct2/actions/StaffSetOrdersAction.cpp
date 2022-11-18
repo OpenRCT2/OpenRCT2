@@ -65,7 +65,7 @@ GameActions::Result StaffSetOrdersAction::Execute() const
 
     window_invalidate_by_number(WindowClass::Peep, _spriteIndex);
     auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     auto res = GameActions::Result();
     res.Position = staff->GetLocation();

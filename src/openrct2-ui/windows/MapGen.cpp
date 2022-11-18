@@ -1180,7 +1180,7 @@ static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, const utf8* pa
         }
 
         // The window needs to be open while using the map
-        rct_window* const w = context_open_window(WindowClass::Mapgen);
+        rct_window* const w = ContextOpenWindow(WindowClass::Mapgen);
         _heightmapLoaded = true;
         WindowMapgenSetPage(w, WINDOW_MAPGEN_PAGE_HEIGHTMAP);
 
@@ -1207,7 +1207,7 @@ static void WindowMapgenHeightmapMouseup(rct_window* w, WidgetIndex widgetIndex)
             auto intent = Intent(WindowClass::Loadsave);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
             intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowMapgenHeightmapLoadsaveCallback));
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             return;
         }
         case WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP:

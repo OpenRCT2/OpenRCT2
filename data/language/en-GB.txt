@@ -3426,7 +3426,7 @@ STR_6318    :Network desync detected.{NEWLINE}Log file: {STRING}
 STR_6319    :Block Brake Closed
 STR_6320    :Indestructible
 STR_6321    :Addition is broken
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entity ID: {BLACK}{INT32}
 STR_6323    :Simulating
 STR_6324    :Simulate
 STR_6325    :Simulate ride/attraction
@@ -3630,6 +3630,8 @@ STR_6524    :Increase the priority of the selected asset pack.
 STR_6525    :Reload all assets in the game with the enabled asset packs.
 STR_6526    :(base graphics, music and sound effects)
 STR_6527    :Competitions
+STR_6528    :Invalid track parameters!
+STR_6529    :Invalid colour scheme parameter!
 
 #############
 # Scenarios #
@@ -4105,12 +4107,6 @@ STR_NAME    :Roof
 
 [TTRFWD08]
 STR_NAME    :Roof
-
-[ACWW33]
-STR_NAME    :Wooden Post Wall
-
-[ACWWF32]
-STR_NAME    :Wooden Post Wall
 
 ## End OpenRCT2 Official
 

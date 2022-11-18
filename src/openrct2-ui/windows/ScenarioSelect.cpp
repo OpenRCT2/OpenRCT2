@@ -412,20 +412,11 @@ static void WindowScenarioselectInvalidate(rct_window* w)
 
     w->pressed_widgets |= 1LL << (w->selected_tab + WIDX_TAB1);
 
-    int32_t windowWidth = w->width;
-    window_scenarioselect_widgets[WIDX_BACKGROUND].right = windowWidth - 1;
-    window_scenarioselect_widgets[WIDX_TITLEBAR].right = windowWidth - 2;
-    window_scenarioselect_widgets[WIDX_CLOSE].left = windowWidth - 13;
-    window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
-    window_scenarioselect_widgets[WIDX_TABCONTENT].right = windowWidth - 1;
-    window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = windowWidth - 179;
-
-    int32_t windowHeight = w->height;
-    window_scenarioselect_widgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
-    window_scenarioselect_widgets[WIDX_TABCONTENT].bottom = windowHeight - 1;
+    w->ResizeFrameWithPage();
 
     const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? 17 : 5;
-    window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
+    window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = w->width - 179;
+    window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = w->height - bottomMargin;
 }
 
 static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -662,9 +653,10 @@ static void DrawCategoryHeading(
     DrawTextBasic(dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
 
     // Get string dimensions
-    utf8* buffer = gCommonStringFormatBuffer;
-    format_string(buffer, 256, stringId, nullptr);
-    int32_t categoryStringHalfWidth = (gfx_get_string_width(buffer, FontStyle::Medium) / 2) + 4;
+    utf8 buffer[CommonTextBufferSize];
+    auto bufferPtr = buffer;
+    format_string(bufferPtr, sizeof(buffer), stringId, nullptr);
+    int32_t categoryStringHalfWidth = (gfx_get_string_width(bufferPtr, FontStyle::Medium) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;
 

@@ -50,6 +50,7 @@ namespace OpenRCT2::Audio
     static std::vector<std::string> _audioDevices;
     static int32_t _currentAudioDevice = -1;
     static ObjectEntryIndex _soundsAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+    static ObjectEntryIndex _soundsAdditionalAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
     static ObjectEntryIndex _titleAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
 
     bool gGameSoundsOff = false;
@@ -123,6 +124,9 @@ namespace OpenRCT2::Audio
             }
         }
 
+        objManager.LoadObject(AudioObjectIdentifiers::OpenRCT2Additional);
+        _soundsAdditionalAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(
+            AudioObjectIdentifiers::OpenRCT2Additional);
         objManager.LoadObject(AudioObjectIdentifiers::Rct2Circus);
     }
 
@@ -195,12 +199,23 @@ namespace OpenRCT2::Audio
         return params;
     }
 
-    AudioObject* GetBaseAudioObject()
+    static std::tuple<AudioObject*, uint32_t> GetAudioObjectAndSampleIndex(SoundId id)
     {
         auto& objManager = GetContext()->GetObjectManager();
-        auto* baseAudioObject = static_cast<AudioObject*>(
-            objManager.GetLoadedObject(ObjectType::Audio, _soundsAudioObjectEntryIndex));
-        return baseAudioObject;
+        AudioObject* audioObject{};
+        uint32_t sampleIndex = EnumValue(id);
+        if (id >= SoundId::LiftRMC)
+        {
+            audioObject = static_cast<AudioObject*>(
+                objManager.GetLoadedObject(ObjectType::Audio, _soundsAdditionalAudioObjectEntryIndex));
+            sampleIndex -= EnumValue(SoundId::LiftRMC);
+        }
+        else
+        {
+            audioObject = static_cast<AudioObject*>(
+                objManager.GetLoadedObject(ObjectType::Audio, _soundsAudioObjectEntryIndex));
+        }
+        return std::make_tuple(audioObject, sampleIndex);
     }
 
     static void Play(IAudioSource* audioSource, int32_t volume, int32_t pan)
@@ -222,13 +237,13 @@ namespace OpenRCT2::Audio
             return;
 
         // Get sound from base object
-        auto* baseAudioObject = GetBaseAudioObject();
+        auto [baseAudioObject, sampleIndex] = GetAudioObjectAndSampleIndex(soundId);
         if (baseAudioObject != nullptr)
         {
-            auto params = GetParametersFromLocation(baseAudioObject, EnumValue(soundId), loc);
+            auto params = GetParametersFromLocation(baseAudioObject, sampleIndex, loc);
             if (params.in_range)
             {
-                auto source = baseAudioObject->GetSample(EnumValue(soundId));
+                auto source = baseAudioObject->GetSample(sampleIndex);
                 if (source != nullptr)
                 {
                     Play(source, params.volume, params.pan);
@@ -243,10 +258,10 @@ namespace OpenRCT2::Audio
             return;
 
         // Get sound from base object
-        auto* baseAudioObject = GetBaseAudioObject();
+        auto [baseAudioObject, sampleIndex] = GetAudioObjectAndSampleIndex(soundId);
         if (baseAudioObject != nullptr)
         {
-            auto source = baseAudioObject->GetSample(EnumValue(soundId));
+            auto source = baseAudioObject->GetSample(sampleIndex);
             if (source != nullptr)
             {
                 Play(source, volume, pan);
@@ -440,10 +455,10 @@ namespace OpenRCT2::Audio
         SoundId id, bool loop, int32_t volume, float pan, double rate, bool forget)
     {
         // Get sound from base object
-        auto baseAudioObject = GetBaseAudioObject();
+        auto [baseAudioObject, sampleIndex] = GetAudioObjectAndSampleIndex(id);
         if (baseAudioObject != nullptr)
         {
-            auto source = baseAudioObject->GetSample(EnumValue(id));
+            auto source = baseAudioObject->GetSample(sampleIndex);
             if (source != nullptr)
             {
                 return CreateAudioChannel(source, MixerGroup::Sound, loop, volume, pan, rate, forget);

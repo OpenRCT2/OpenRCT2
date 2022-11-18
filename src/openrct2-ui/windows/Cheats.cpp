@@ -1044,7 +1044,7 @@ private:
             {
                 if (!gCheatsShowAllOperatingModes)
                 {
-                    context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
                 CheatsSet(CheatType::ShowAllOperatingModes, !gCheatsShowAllOperatingModes);
             }
@@ -1053,7 +1053,7 @@ private:
             {
                 if (!gCheatsShowVehiclesFromOtherTrackTypes)
                 {
-                    context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
                 CheatsSet(CheatType::ShowVehiclesFromOtherTrackTypes, !gCheatsShowVehiclesFromOtherTrackTypes);
             }
@@ -1062,7 +1062,7 @@ private:
             {
                 if (!gCheatsDisableTrainLengthLimit)
                 {
-                    context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
                 CheatsSet(CheatType::DisableTrainLengthLimit, !gCheatsDisableTrainLengthLimit);
             }
@@ -1074,7 +1074,7 @@ private:
             {
                 if (!gCheatsAllowArbitraryRideTypeChanges)
                 {
-                    context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
                 CheatsSet(CheatType::AllowArbitraryRideTypeChanges, !gCheatsAllowArbitraryRideTypeChanges);
             }
@@ -1092,7 +1092,7 @@ private:
             {
                 if (!gCheatsAllowTrackPlaceInvalidHeights)
                 {
-                    context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
                 CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gCheatsAllowTrackPlaceInvalidHeights);
             }

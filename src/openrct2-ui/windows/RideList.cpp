@@ -412,7 +412,7 @@ public:
         {
             auto intent = Intent(WindowClass::Ride);
             intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
         }
     }
 
@@ -450,15 +450,7 @@ public:
         else
             pressed_widgets &= ~(1uLL << WIDX_QUICK_DEMOLISH);
 
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_PAGE_BACKGROUND].right = width - 1;
-        widgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-
-        // if close button is on the right then it must move
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
+        ResizeFrameWithPage();
 
         widgets[WIDX_LIST].right = width - 26;
         widgets[WIDX_LIST].bottom = height - 15;

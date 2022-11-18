@@ -160,7 +160,7 @@ public:
             _activeTabIndex = 0;
         }
 
-        window_move_position(*this, { context_get_width() - GetRequiredWidth(), 0x1D });
+        window_move_position(*this, { ContextGetWidth() - GetRequiredWidth(), 0x1D });
         window_push_others_below(*this);
     }
 
@@ -220,7 +220,7 @@ public:
                 }
                 else
                 {
-                    context_show_error(STR_CANT_DO_THIS, STR_PERMISSION_DENIED, {});
+                    ContextShowError(STR_CANT_DO_THIS, STR_PERMISSION_DENIED, {});
                 }
                 Invalidate();
                 break;
@@ -315,7 +315,7 @@ public:
         if (!_selectedScenery.IsUndefined())
         {
             // Find out what scenery the cursor is over
-            const CursorState* state = context_get_cursor_state();
+            const CursorState* state = ContextGetCursorState();
             WidgetIndex widgetIndex = window_find_widget_from_point(*this, state->position);
             if (widgetIndex == WIDX_SCENERY_LIST)
             {
@@ -342,7 +342,7 @@ public:
 
     void OnUpdate() override
     {
-        const CursorState* state = context_get_cursor_state();
+        const CursorState* state = ContextGetCursorState();
         rct_window* other = window_find_from_point(state->position);
         if (other == this)
         {
@@ -718,7 +718,7 @@ public:
             gWindowSceneryRotation = rotation.value();
         }
         gWindowSceneryEyedropperEnabled = false;
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, context_get_width() / 2);
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, ContextGetWidth() / 2);
         _hoverCounter = -16;
         gSceneryPlaceCost = MONEY32_UNDEFINED;
         Invalidate();

@@ -123,7 +123,7 @@ private:
         // Displays a message if the ride can't load, fix #4080
         if (_loadedTrackDesign == nullptr)
         {
-            context_show_error(STR_CANT_BUILD_THIS_HERE, STR_TRACK_LOAD_FAILED_ERROR, {});
+            ContextShowError(STR_CANT_BUILD_THIS_HERE, STR_TRACK_LOAD_FAILED_ERROR, {});
             return;
         }
 
@@ -138,19 +138,19 @@ private:
         {
             auto intent = Intent(WindowClass::ManageTrackDesign);
             intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
         }
         else
         {
             if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED
                 && (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE))
             {
-                context_show_error(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
+                ContextShowError(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
             }
 
             auto intent = Intent(WindowClass::TrackDesignPlace);
             intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
         }
     }
 
@@ -276,7 +276,7 @@ public:
                 Close();
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
                 {
-                    context_open_window(WindowClass::ConstructRide);
+                    ContextOpenWindow(WindowClass::ConstructRide);
                 }
                 break;
             case WIDX_FILTER_STRING:
@@ -749,8 +749,8 @@ rct_window* WindowTrackListOpen(const RideSelection item)
     ScreenCoordsXY screenPos{};
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
         screenPos = { screenWidth / 2 - 300, std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200) };
     }
     else

@@ -372,7 +372,7 @@ private:
         if (!Platform::EnsureDirectoryExists(destPath.c_str()))
         {
             log_error("Unable to create directory '%s'", destPath.c_str());
-            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+            ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
             return;
         }
 
@@ -381,7 +381,7 @@ private:
         if (File::Exists(destPath))
         {
             log_info("%s already exists, prompting user for a different track design name", destPath.c_str());
-            context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
+            ContextShowError(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
             WindowTextInputRawOpen(
                 this, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN, STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME,
                 {}, _trackName.c_str(), 255);
@@ -394,7 +394,7 @@ private:
             }
             else
             {
-                context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+                ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
             }
         }
     }
@@ -405,7 +405,7 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
     auto trackDesign = TrackDesignImport(path);
     if (trackDesign == nullptr)
     {
-        context_show_error(STR_UNABLE_TO_LOAD_FILE, STR_NONE, {});
+        ContextShowError(STR_UNABLE_TO_LOAD_FILE, STR_NONE, {});
         return nullptr;
     }
 
@@ -427,8 +427,8 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
     gTrackDesignSceneryToggle = false;
     _currentTrackPieceDirection = 2;
 
-    int32_t screenWidth = context_get_width();
-    int32_t screenHeight = context_get_height();
+    int32_t screenWidth = ContextGetWidth();
+    int32_t screenHeight = ContextGetHeight();
     auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200) };
 
     auto* window = WindowFocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, screenPos, WW, WH, 0);

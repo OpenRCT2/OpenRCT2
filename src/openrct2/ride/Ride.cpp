@@ -986,13 +986,13 @@ std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign(TrackDesignState& tds) cons
 {
     if (!(lifecycle_flags & RIDE_LIFECYCLE_TESTED))
     {
-        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
         return nullptr;
     }
 
     if (!ride_has_ratings(this))
     {
-        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
         return nullptr;
     }
 
@@ -1000,7 +1000,7 @@ std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign(TrackDesignState& tds) cons
     auto errMessage = td->CreateTrackDesign(tds, *this);
     if (errMessage != STR_NONE)
     {
-        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage, {});
+        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, errMessage, {});
         return nullptr;
     }
 
@@ -2390,7 +2390,7 @@ static void ride_track_set_map_tooltip(TileElement* tileElement)
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
         intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 }
 
@@ -2406,7 +2406,7 @@ static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
         intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 }
 
@@ -2430,7 +2430,7 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
         intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 }
 
@@ -2477,7 +2477,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
             ft.Add<uint16_t>(queueLength);
             auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
             intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
         else
         {
@@ -2497,7 +2497,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
             ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
             auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
             intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 }
@@ -5312,7 +5312,7 @@ void Ride::Crash(uint8_t vehicleIndex)
         // Open ride window for crashed vehicle
         auto intent = Intent(WD_VEHICLE);
         intent.putExtra(INTENT_EXTRA_VEHICLE, vehicle);
-        rct_window* w = context_open_intent(&intent);
+        rct_window* w = ContextOpenIntent(&intent);
 
         rct_viewport* viewport = window_get_viewport(w);
         if (w != nullptr && viewport != nullptr)

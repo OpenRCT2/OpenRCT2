@@ -36,7 +36,7 @@
 #include <iterator>
 #include <limits.h>
 
-thread_local char gCommonStringFormatBuffer[512];
+thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
 
 #ifdef DEBUG
 // Set to true before a string format call to see details of the formatting.

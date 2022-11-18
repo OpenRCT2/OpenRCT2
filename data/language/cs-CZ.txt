@@ -96,6 +96,8 @@ STR_0091    :Neznámá atrakce (59)
 STR_0092    :Horská dráha s elektromotorem
 STR_0093    :Hybridní horská dráha
 STR_0094    :Jednokolejná horská dráha
+STR_0095    :Alpská horská dráha
+STR_0096    :Klasická dřevěná horská dráha
 STR_0512    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
 STR_0513    :Návštěvníci jedou po horské dráze s loopingy ve stoje
 STR_0514    :Vlaky zavěšené pod kolejí se v zatáčkách houpají do stran
@@ -177,6 +179,8 @@ STR_0600    :Horská dráha s vozy ve stylu důlních vagónů, které jedou po 
 STR_0602    :Horská dráha s vozy poháněnými elektromotorem, které sviští skrze propletenou dráhu
 STR_0603    :Dřevěná horská dráha s ocelovými kolejemi, umožňující strmé přepady a obraty.
 STR_0604    :Jezdci jedou v jednom radě na úzké, jednokolejové dráze, při závodě úzkými obrátkami a změnami směru.
+STR_0605    :Jezdci se kloužou zauzlenou ocelovou dráhou, brzdíc pro ovládání rychlosti
+STR_0606    :Dřevěná horská dráha staršího stylu s drsnou a rychlou jízdou, koupou času ve vzduchu, bočným přetížením, navrhnutá pro pocit ‘ztracené kontroly’
 STR_0767    :Návštěvník {INT32}
 STR_0768    :Údržbář {INT32}
 STR_0769    :Mechanik {INT32}
@@ -752,7 +756,7 @@ STR_1363    :Příliš vysoké podpěry!
 STR_1364    :Podpěry tratě nelze více zvyšovat!
 STR_1365    :Otočka kolem trati (levá)
 STR_1366    :Otočka kolem trati (pravá)
-STR_1367    :Poloviční smyčka
+STR_1367    :Malá poloviční smyčka
 STR_1368    :Poloviční vývrtka (levá)
 STR_1369    :Poloviční vývrtka (pravá)
 STR_1370    :Sudový výkrut (levý)
@@ -2238,7 +2242,7 @@ STR_3185    :Malé kulisy
 STR_3186    :Velké kulisy
 STR_3187    :Stěny/ploty
 STR_3188    :Cedule u cest
-STR_3189    :Cesty
+STR_3189    :Původní cesty
 STR_3190    :Doplňky cest
 STR_3191    :Skupiny kulis
 STR_3192    :Vstup do parku
@@ -3425,7 +3429,7 @@ STR_6318    :Detekována síťová desynchronizace.{NEWLINE}Log: {STRING}
 STR_6319    :Uzavřený brzdný blok
 STR_6320    :Nezničitelné
 STR_6321    :Rozbitá část
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entity ID: {BLACK}{INT32}
 STR_6323    :Probíhá simulace
 STR_6324    :Simulovat
 STR_6325    :Simulovat atrakci
@@ -3473,7 +3477,7 @@ STR_6367    :Snímek animace:
 STR_6368    :Z důvodů kompatibility není doporučeno spuštět OpenRCT2 pod Wine. OpenRCT2 má nativví podporu pro macOS, Linux, FreeBSD a OpenBSD.
 STR_6369    :Povolit stavbu trati v jakémkoliv výšce
 STR_6370    :Umožní stavět dráhu v neplatné výšce
-STR_6371    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale chybí soubor „csg1i.dat“. Tento soubor je nutné překopírovat z RollerCoaster Tycoon 1 instalačního CD do složky „Data“ ve vaší složce s RollerCoaster Tycoon 1. 
+STR_6371    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale chybí soubor „csg1i.dat“. Tento soubor je nutné překopírovat z Loopy Landscapes nebo RCT Deluxe instalačního CD do složky „Data“ ve vaší složce s RollerCoaster Tycoon 1.
 STR_6372    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale nelze použít jeho verzi. OpenRCT2 potřebuje buď Loopy Landscapes nebo RCT Deluxe verzi, aby bylo možné převzít grafiku.
 STR_6373    :Přepnout kontroly křížení
 STR_6374    :K
@@ -3539,8 +3543,8 @@ STR_6433    :Odstranit
 STR_6434    :Odstranit všechny vazby pro tuhle zkratku.
 STR_6435    :{WINDOW_COLOUR_2}Vandali zastaveni: {BLACK}{COMMA16}
 STR_6436    :Přepnout neviditelnost
-STR_6437    :Neviditelný
-STR_6438    :N
+STR_6437    :Viditelný
+STR_6438    :V
 STR_6439    :Inspektor dlaždic: Přepnout neviditelnost
 STR_6440    :Průhledná voda
 STR_6441    :Alespoň jeden chodník který není fronta musí být vybrán.
@@ -3563,6 +3567,72 @@ STR_6457    :Nahlásit chybu na GitHub
 STR_6458    :Sledovat v Hlavním Pohledu
 STR_6460    :S
 STR_6461    :Směr
+STR_6462    :Nadšení
+STR_6463    :Nadšení: {COMMA2DP32}
+STR_6464    :Intenzita
+STR_6465    :Intenzita: {COMMA2DP32}
+STR_6466    :Nevolnost
+STR_6467    :Nevolnost: {COMMA2DP32}
+STR_6468    :Zatím neznámo
+STR_6469    :Uprav menší oblast pochůzky
+STR_6470    :Uprav větší oblast pochůzky
+STR_6471    :Průhledná Vegetace
+STR_6472    :Průhledná Vozidla
+STR_6473    :Průhledné opory
+STR_6474    :Neviditelní hosté
+STR_6475    :Neviditelní zaměstnanci
+STR_6476    :Neviditelná Vegetace
+STR_6477    :Neviditelná Scenerie
+STR_6478    :Neviditelné Cesty
+STR_6479    :Neviditelné Dráhy
+STR_6480    :Neviditelná Vozidla
+STR_6481    :Nastavení průhlednosti
+STR_6482    :Nastavení průhlednosti
+STR_6483    :Otevřít nastavení průhlednosti
+STR_6484    :Přepnutí průhledné Vegetace
+STR_6485    :Přepnutí průhledných vozidel
+STR_6486    :Skrýt přepnutí hostí
+STR_6487    :Skrýt přepnutí zaměstnanců
+STR_6488    :{RED}Hosté si stěžují na dlouhé fronty v parku.{NEWLINE}Zvažte zkrácení front, nebo zvýšení kapacit atrakcí.
+STR_6489    :Chyba: Nekompatibilní verze parku
+STR_6490    :Varování: Částečne kompatibilní verze parku
+STR_6491    :Tenhle park byl uložen v novější verzi OpenRCT2. Park je verze {INT32} a vyžaduje alespoň verzi {INT32}.
+STR_6492    :Tenhle park byl uložen v staré verzi OpenRCT2, a nemůže být otevřen touhle verzí. Park je verze {INT32}.
+STR_6493    :Tenhle park byl uložen v novější verzi OpenRCT2, některá data mohou být stracena. Park je verze {INT32} a vyžaduje alespoň verzi {INT32}.
+STR_6494    :Zoskupit podle typu atrakce
+STR_6495    :Zoskupit atrakce podle druhu místo zobrazení každé odděleně.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Kliknutím na dlaždici zobrazíte její části.{NEWLINE}Ctrl + kliknutí a části dlaždice pro její příme zvolení.
+STR_6498    :Zapnout pro udržování čtvercové mapy
+STR_6499    :Druh vozidla není podporován formátem návrhu tratě
+STR_6500    :Prvky trate nejsou podporovány formátem návrhu tratě
+STR_6501    :Náhodná barva
+STR_6502    :Vlož hodnotu mezi {COMMA16} a {COMMA16}
+STR_6503    :Alespoň jedna stanice musí bejt vybrána
+STR_6504    :Alespoň jeden povrch terénu musí bejt vybrán
+STR_6505    :Alespoň jedna hrana terénu musí bejt vybrána
+STR_6506    :Velká poloviční vývrtka (levá)
+STR_6507    :Velká poloviční vývrtka (pravá)
+STR_6508    :Střední polovičná slučka (levá)
+STR_6509    :Střední polovičná slučka (pravá)
+STR_6510    :Nula G Kotoul (levý)
+STR_6511    :Nula G Kotoul (pravý)
+STR_6512    :Velký Nula G Kotoul (levý)
+STR_6513    :Velký Nula G Kotoul (pravý)
+STR_6514    :Chybná vejška!
+STR_6515    :{BLACK}RCT1 není nalinkováno - budou použity záložné obrázky.
+STR_6516    :Jeden nebo více přidaných objektů vyžaduje nalinkované RCT1 pro správné zobrazení. Budou použity záložné obrázky.
+STR_6517    :Jeden nebo více přidaných objektů v tomto parku vyžaduje nalinkované RCT1 pro správné zobrazení. Budou použity záložné obrázky.
+STR_6518    :{BLACK}Přejeď nad scenářem pro zobrazení popisu a cíle. Klikni pro začatí hry.
+STR_6519    :Extra
+STR_6520    :Balíčky doplňků
+STR_6521    :Nízká priorita
+STR_6522    :Vysoká priorita
+STR_6523    :Znížit prioritu zvoleného balíčku doplňků.
+STR_6524    :Zvýšit prioritu zvoleného balíčku doplňků.
+STR_6525    :Znovu načítat všechny doplňky ve hře se zapnutými balíčkami doplňků.
+STR_6526    :(základní grafika, hudba a zvukové efekty)
+STR_6527    :Soutěže
 
 ###############################################################################
 ## RCT2 Scenarios

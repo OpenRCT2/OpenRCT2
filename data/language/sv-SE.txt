@@ -4074,12 +4074,6 @@ STR_NAME    :Tak
 [TTRFWD08]
 STR_NAME    :Tak
 
-[ACWW33]
-STR_NAME    :Träpalissad
-
-[ACWWF32]
-STR_NAME    :Träpalissadvägg
-
 ## End OpenRCT2 Official
 
 

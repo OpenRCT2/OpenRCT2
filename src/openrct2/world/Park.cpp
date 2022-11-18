@@ -183,7 +183,7 @@ void ParkSetForcedRating(int32_t rating)
     auto& park = GetContext()->GetGameState()->GetPark();
     gParkRating = park.CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 int32_t ParkGetForcedRating()
@@ -325,7 +325,7 @@ void Park::Update(const Date& date)
 
         window_invalidate_by_class(WindowClass::Finances);
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 
     // Every ~102 seconds
@@ -773,7 +773,7 @@ void Park::UpdateHistories()
 
     // Invalidate relevant windows
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
     window_invalidate_by_class(WindowClass::ParkInformation);
     window_invalidate_by_class(WindowClass::Finances);
 }

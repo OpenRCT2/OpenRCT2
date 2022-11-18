@@ -713,7 +713,7 @@ void peep_sprite_remove(Peep* peep)
     EntityRemove(peep);
 
     auto intent = Intent(wasGuest ? INTENT_ACTION_REFRESH_GUEST_LIST : INTENT_ACTION_REFRESH_STAFF_LIST);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 /**
@@ -728,7 +728,7 @@ void Peep::Remove()
         {
             decrement_guests_in_park();
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
         if (State == PeepState::EnteringPark)
         {
@@ -1353,7 +1353,7 @@ void peep_applause()
     }
 
     // Play applause noise
-    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Applause, 0, context_get_width() / 2);
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Applause, 0, ContextGetWidth() / 2);
 }
 
 /**
@@ -1655,7 +1655,7 @@ void peep_set_map_tooltip(Peep* peep)
 
     auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
     intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 /**
@@ -2629,7 +2629,7 @@ void peep_update_names(bool realNames)
     }
 
     auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
     gfx_invalidate_screen();
 }
 

@@ -334,7 +334,7 @@ public:
             switch (e.type)
             {
                 case SDL_QUIT:
-                    context_quit();
+                    ContextQuit();
                     break;
                 case SDL_WINDOWEVENT:
                     if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)

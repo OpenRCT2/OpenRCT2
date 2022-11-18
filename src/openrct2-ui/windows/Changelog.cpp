@@ -120,8 +120,8 @@ public:
 
     void OnResize() override
     {
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
 
         max_width = (screenWidth * 4) / 5;
         max_height = (screenHeight * 4) / 5;
@@ -147,13 +147,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_CONTENT_PANEL].bottom = height - 1;
+        ResizeFrameWithPage();
         widgets[WIDX_SCROLL].right = width - 3;
         widgets[WIDX_SCROLL].bottom = height - 22;
         widgets[WIDX_OPEN_URL].bottom = height - 5;
@@ -313,8 +307,8 @@ rct_window* WindowChangelogOpen(int personality)
     if (window == nullptr)
     {
         // Create a new centred window
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
         int32_t width = (screenWidth * 4) / 5;
         int32_t height = (screenHeight * 4) / 5;
 

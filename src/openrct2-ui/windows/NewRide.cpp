@@ -340,7 +340,7 @@ public:
                 News::OpenSubject(News::ItemType::Research, gResearchLastItem->rawValue);
                 break;
             case WIDX_RESEARCH_FUNDING_BUTTON:
-                context_open_window_view(WV_FINANCES_RESEARCH);
+                ContextOpenWindowView(WV_FINANCES_RESEARCH);
                 break;
             case WIDX_GROUP_BY_TRACK_TYPE:
                 gConfigInterface.ListRideVehiclesSeparately = !gConfigInterface.ListRideVehiclesSeparately;
@@ -530,7 +530,7 @@ private:
             auto intent = Intent(WindowClass::TrackDesignList);
             intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
             intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.EntryIndex);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             return;
         }
 
@@ -762,18 +762,12 @@ private:
             Invalidate();
 
             // Resize widgets to new window size
-            widgets[WIDX_BACKGROUND].right = newWidth - 1;
-            widgets[WIDX_BACKGROUND].bottom = newHeight - 1;
-            widgets[WIDX_PAGE_BACKGROUND].right = newWidth - 1;
-            widgets[WIDX_PAGE_BACKGROUND].bottom = newHeight - 1;
-            widgets[WIDX_TITLE].right = newWidth - 2;
-            widgets[WIDX_CLOSE].left = newWidth - 13;
-            widgets[WIDX_CLOSE].right = newWidth - 3;
+            width = newWidth;
+            height = newHeight;
+            ResizeFrameWithPage();
             widgets[WIDX_GROUP_BY_TRACK_TYPE].left = newWidth - 8 - GroupByTrackTypeWidth;
             widgets[WIDX_GROUP_BY_TRACK_TYPE].right = newWidth - 8;
 
-            width = newWidth;
-            height = newHeight;
             Invalidate();
         }
 

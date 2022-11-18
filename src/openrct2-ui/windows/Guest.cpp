@@ -440,13 +440,7 @@ private:
         auto ft = Formatter::Common();
         peep->FormatNameTo(ft);
 
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_PAGE_BACKGROUND].right = width - 1;
-        widgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
+        ResizeFrameWithPage();
 
         window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
     }
@@ -1295,7 +1289,7 @@ private:
 
         auto intent = Intent(WindowClass::Ride);
         intent.putExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
     }
 
     void OnScrollMouseOverRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)

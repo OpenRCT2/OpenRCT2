@@ -743,7 +743,7 @@ void window_push_others_right(rct_window& window)
             return;
 
         w->Invalidate();
-        if (window.windowPos.x + window.width + 13 >= context_get_width())
+        if (window.windowPos.x + window.width + 13 >= ContextGetWidth())
             return;
         auto push_amount = window.windowPos.x + window.width - w->windowPos.x + 3;
         w->windowPos.x += push_amount;
@@ -773,7 +773,7 @@ void window_push_others_below(rct_window& w1)
             return;
 
         // Check if there is room to push it down
-        if (w1.windowPos.y + w1.height + 80 >= context_get_height())
+        if (w1.windowPos.y + w1.height + 80 >= ContextGetHeight())
             return;
 
         // Invalidate the window's current area
@@ -955,7 +955,7 @@ void window_viewport_get_map_coords_by_cursor(
     const rct_window& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
 {
     // Get mouse position to offset against.
-    auto mouseCoords = context_get_cursor_position_scaled();
+    auto mouseCoords = ContextGetCursorPositionScaled();
 
     // Compute map coordinate by mouse position.
     auto viewportPos = w.viewport->ScreenToViewportCoord(mouseCoords);
@@ -996,7 +996,7 @@ void window_viewport_centre_tile_around_cursor(rct_window& w, int32_t map_x, int
     }
 
     // Get mouse position to offset against.
-    auto mouseCoords = context_get_cursor_position_scaled();
+    auto mouseCoords = ContextGetCursorPositionScaled();
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
     int32_t rebased_x = w.viewport->zoom.ApplyTo((w.width >> 1) - mouseCoords.x);
@@ -1361,6 +1361,7 @@ bool tool_set(const rct_window& w, WidgetIndex widgetIndex, Tool tool)
     }
 
     input_set_flag(INPUT_FLAG_TOOL_ACTIVE, true);
+    input_set_flag(INPUT_FLAG_4, false);
     input_set_flag(INPUT_FLAG_6, false);
     gCurrentToolId = tool;
     gCurrentToolWidget.window_classification = w.classification;
@@ -1879,7 +1880,7 @@ static void window_snap_right(rct_window& w, int32_t proximity)
         leftMost = std::min<int32_t>(leftMost, w2->windowPos.x);
     });
 
-    auto screenWidth = context_get_width();
+    auto screenWidth = ContextGetWidth();
     if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
         leftMost = std::min(leftMost, screenWidth);
 
@@ -1909,7 +1910,7 @@ static void window_snap_bottom(rct_window& w, int32_t proximity)
         topMost = std::min<int32_t>(topMost, w2->windowPos.y);
     });
 
-    auto screenHeight = context_get_height();
+    auto screenHeight = ContextGetHeight();
     if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
         topMost = std::min(topMost, screenHeight);
 
@@ -1922,7 +1923,7 @@ void window_move_and_snap(rct_window& w, ScreenCoordsXY newWindowCoords, int32_t
     auto originalPos = w.windowPos;
     int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
 
-    newWindowCoords.y = std::clamp(newWindowCoords.y, minY, context_get_height() - 34);
+    newWindowCoords.y = std::clamp(newWindowCoords.y, minY, ContextGetHeight() - 34);
 
     if (snapProximity > 0)
     {
@@ -1983,7 +1984,7 @@ void window_start_textbox(
     // from crashing the game.
     gTextBoxInput[maxLength - 1] = '\0';
 
-    gTextInput = context_start_text_input(gTextBoxInput, maxLength);
+    gTextInput = ContextStartTextInput(gTextBoxInput, maxLength);
 }
 
 void window_cancel_textbox()
@@ -1997,7 +1998,7 @@ void window_cancel_textbox()
         }
         gCurrentTextBox.window.classification = WindowClass::Null;
         gCurrentTextBox.window.number = 0;
-        context_stop_text_input();
+        ContextStopTextInput();
         gUsingWidgetTextBox = false;
         if (w != nullptr)
         {
@@ -2237,4 +2238,24 @@ void WidgetScrollUpdateThumbs(rct_window& w, WidgetIndex widget_index)
             scroll.v_thumb_bottom = static_cast<uint16_t>(std::lround(scroll.v_thumb_bottom + (20 * (1 - barPosition))));
         }
     }
+}
+
+void rct_window::ResizeFrame()
+{
+    // Frame
+    widgets[0].right = width - 1;
+    widgets[0].bottom = height - 1;
+    // Title
+    widgets[1].right = width - 2;
+    // Close button
+    widgets[2].left = width - 13;
+    widgets[2].right = width - 3;
+}
+
+void rct_window::ResizeFrameWithPage()
+{
+    ResizeFrame();
+    // Page background
+    widgets[3].right = width - 1;
+    widgets[3].bottom = height - 1;
 }

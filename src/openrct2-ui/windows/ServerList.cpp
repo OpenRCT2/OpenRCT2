@@ -183,7 +183,7 @@ static void WindowServerListMouseup(rct_window* w, WidgetIndex widgetIndex)
                 {
                     Formatter ft;
                     ft.Add<const char*>(server.Version.c_str());
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
+                    ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
                 }
             }
             break;
@@ -195,7 +195,7 @@ static void WindowServerListMouseup(rct_window* w, WidgetIndex widgetIndex)
             WindowTextInputOpen(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, STR_NONE, 0, 128);
             break;
         case WIDX_START_SERVER:
-            context_open_window(WindowClass::ServerStart);
+            ContextOpenWindow(WindowClass::ServerStart);
             break;
     }
 }
@@ -222,7 +222,7 @@ static void WindowServerListDropdown(rct_window* w, WidgetIndex widgetIndex, int
                 {
                     Formatter ft;
                     ft.Add<const char*>(server.Version.c_str());
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
+                    ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
                 }
                 break;
             case DDIDX_FAVOURITE:
@@ -352,11 +352,7 @@ static OpenRCT2String WindowServerListTooltip(rct_window* const w, const WidgetI
 
 static void WindowServerListInvalidate(rct_window* w)
 {
-    window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    window_server_list_widgets[WIDX_TITLE].right = w->width - 2;
-    window_server_list_widgets[WIDX_CLOSE].left = w->width - 2 - 11;
-    window_server_list_widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
+    w->ResizeFrame();
 
     int32_t margin = 6;
     int32_t buttonHeight = 13;
@@ -520,7 +516,7 @@ static void JoinServer(std::string address)
 
     if (!network_begin_client(address, port))
     {
-        context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
+        ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
     }
 }
 

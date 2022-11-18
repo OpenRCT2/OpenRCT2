@@ -96,7 +96,7 @@ void track_design_save_select_tile_element(
             auto result = track_design_save_add_tile_element(interactionType, loc, tileElement);
             if (!result.IsSuccess)
             {
-                context_show_error(STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY, result.Message, {});
+                ContextShowError(STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY, result.Message, {});
             }
         }
     }

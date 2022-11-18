@@ -4095,12 +4095,6 @@ STR_NAME    :Dach
 [TTRFWD08]
 STR_NAME    :Dach
 
-[ACWW33]
-STR_NAME    :Holzpfostenwand
-
-[ACWWF32]
-STR_NAME    :Holzpfostenwand
-
 ## End of OpenRCT2 Official
 
 ###############################################################################

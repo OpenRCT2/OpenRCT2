@@ -203,7 +203,7 @@ std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
 
 static void ReorganiseTileElements(size_t capacity)
 {
-    context_setcurrentcursor(CursorID::ZZZ);
+    ContextSetCurrentCursor(CursorID::ZZZ);
 
     std::vector<TileElement> newElements;
     newElements.reserve(std::max(MIN_TILE_ELEMENTS, capacity));
@@ -448,7 +448,7 @@ void MapInit(const TileCoordsXY& size)
     MapAnimationAutoCreate();
 
     auto intent = Intent(INTENT_ACTION_MAP);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 /**
@@ -1363,7 +1363,7 @@ void MapRemoveProvisionalElements()
     if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WindowClass::TrackDesignPlace) != nullptr)
     {
         auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 }
 
@@ -1388,7 +1388,7 @@ void MapRestoreProvisionalElements()
     if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WindowClass::TrackDesignPlace) != nullptr)
     {
         auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 }
 

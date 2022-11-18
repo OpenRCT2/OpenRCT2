@@ -288,7 +288,7 @@ private:
 rct_window* WindowPatrolAreaOpen(EntityId staffId)
 {
     auto w = WindowFocusOrCreate<PatrolAreaWindow>(
-        WindowClass::PatrolArea, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+        WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     if (w != nullptr)
     {
         w->SetStaffId(staffId);

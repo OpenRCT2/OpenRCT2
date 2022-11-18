@@ -94,7 +94,7 @@ void scenario_begin()
     scenario_reset();
 
     if (gScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
-        context_open_window_view(WV_PARK_OBJECTIVE);
+        ContextOpenWindowView(WV_PARK_OBJECTIVE);
 
     gScreenAge = 0;
 }
@@ -191,7 +191,7 @@ static void scenario_end()
     game_reset_speed();
     window_close_by_class(WindowClass::Dropdown);
     window_close_all_except_flags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
-    context_open_window_view(WV_PARK_OBJECTIVE);
+    ContextOpenWindowView(WV_PARK_OBJECTIVE);
 }
 
 /**
@@ -321,7 +321,7 @@ static void scenario_day_update()
     gParkRatingCasualtyPenalty = std::max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
 
     auto intent = Intent(INTENT_ACTION_UPDATE_DATE);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 static void scenario_week_update()
