@@ -365,7 +365,7 @@ namespace OpenRCT2::Ui::Windows
                     auto tabWidgetIndex = widgetDescIndex - Desc.Widgets.size();
                     if (tabWidgetIndex < widgets.size())
                     {
-                        return &widgets[widgetDescIndex];
+                        return &widgets[tabWidgetIndex];
                     }
                 }
             }
