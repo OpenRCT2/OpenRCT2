@@ -385,6 +385,9 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         case News::ItemType::Money:
             ContextOpenWindow(WindowClass::Finances);
             break;
+        case News::ItemType::Campaign:
+            ContextOpenWindowView(WV_FINANCE_MARKETING);
+            break;
         case News::ItemType::Research:
         {
             auto item = ResearchItem(subject, ResearchCategory::Transport, 0);

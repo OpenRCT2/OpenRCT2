@@ -375,6 +375,7 @@ enum
     WV_EDITOR_BOTTOM_TOOLBAR,
     WV_CHANGELOG,
     WV_NEW_VERSION_INFO,
+    WV_FINANCE_MARKETING,
 };
 
 enum WindowDetail

@@ -1915,7 +1915,7 @@ declare global {
      * The type of park message, including icon and behaviour.
      */
     type ParkMessageType =
-        "attraction" | "peep_on_attraction" | "peep" | "money" | "blank" | "research" | "guests" | "award" | "chart";
+        "attraction" | "peep_on_attraction" | "peep" | "money" | "blank" | "research" | "guests" | "award" | "chart" | "campaign";
 
     interface ParkMessage {
         /**

@@ -630,6 +630,7 @@ static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_wind
             break;
         }
         case News::ItemType::Money:
+        case News::ItemType::Campaign:
             gfx_draw_sprite(dpi, ImageId(SPR_FINANCE), screenCoords);
             break;
         case News::ItemType::Research:

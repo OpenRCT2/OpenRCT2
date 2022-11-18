@@ -1014,6 +1014,16 @@ public:
     }
 };
 
+static FinancesWindow* FinancesWindowOpen(uint8_t page)
+{
+    auto* window = WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+
+    if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
+        window->SetPage(page);
+
+    return window;
+}
+
 rct_window* WindowFinancesOpen()
 {
     return WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
@@ -1021,10 +1031,10 @@ rct_window* WindowFinancesOpen()
 
 rct_window* WindowFinancesResearchOpen()
 {
-    auto* window = WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+    return FinancesWindowOpen(WINDOW_FINANCES_PAGE_RESEARCH);
+}
 
-    if (window != nullptr)
-        window->SetPage(WINDOW_FINANCES_PAGE_RESEARCH);
-
-    return window;
+rct_window* WindowFinancesMarketingOpen()
+{
+    return FinancesWindowOpen(WINDOW_FINANCES_PAGE_MARKETING);
 }

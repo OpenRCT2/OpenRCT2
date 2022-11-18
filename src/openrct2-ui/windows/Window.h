@@ -79,6 +79,7 @@ rct_window* WindowAssetPacksOpen();
 // WC_FINANCES
 rct_window* WindowFinancesOpen();
 rct_window* WindowFinancesResearchOpen();
+rct_window* WindowFinancesMarketingOpen();
 
 // WC_PARK_INFORMATION
 rct_window* WindowParkAwardsOpen();
