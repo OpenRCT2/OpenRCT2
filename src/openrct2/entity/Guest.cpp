@@ -2959,10 +2959,17 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         if (tileElement->AsPath()->IsBroken())
                         {
                             num_rubbish++;
+                            break;
+                        }
+                        if (pathAddEntry->flags & (PATH_BIT_FLAG_LAMP))
+                        {
+                            num_scenery++;
                         }
                         break;
                     }
                     case TileElementType::LargeScenery:
+                        num_scenery += 2;
+                        break;
                     case TileElementType::SmallScenery:
                         num_scenery++;
                         break;
