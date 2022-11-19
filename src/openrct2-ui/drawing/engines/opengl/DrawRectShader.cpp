@@ -11,8 +11,12 @@
 
 #    include "DrawRectShader.h"
 
+#    define INITIAL_INSTANCES_BUFFER_SIZE 32768
+
 namespace
 {
+    size_t _maxInstancesBufferSize = INITIAL_INSTANCES_BUFFER_SIZE;
+
     struct VDStruct
     {
         GLfloat mat[4][2];
@@ -52,6 +56,8 @@ DrawRectShader::DrawRectShader()
     glVertexAttribPointer(vVertVec, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, vec)));
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * INITIAL_INSTANCES_BUFFER_SIZE, NULL, GL_STREAM_DRAW);
+
     glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, clip)));
     glVertexAttribIPointer(
         vTexColourAtlas, 1, GL_INT, sizeof(DrawRectCommand),
@@ -163,7 +169,16 @@ void DrawRectShader::SetInstances(const RectCommandBatch& instances)
     glBindVertexArray(_vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * instances.size(), instances.data(), GL_STREAM_DRAW);
+
+    if (instances.size() > _maxInstancesBufferSize)
+    {
+        glBufferData(GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * instances.size(), instances.data(), GL_STREAM_DRAW);
+        _maxInstancesBufferSize = instances.size();
+    }
+    else
+    {
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(DrawRectCommand) * instances.size(), instances.data());
+    }
 
     _instanceCount = static_cast<GLsizei>(instances.size());
 }
