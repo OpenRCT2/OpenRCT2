@@ -1828,7 +1828,7 @@ static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[
     if (argv.size() < 2)
     {
         console.WriteLineWarning("Too few arguments");
-        static_assert(News::ItemTypeCount == 10, "News::ItemType::Count changed, update console command!");
+        static_assert(News::ItemTypeCount == 11, "News::ItemType::Count changed, update console command!");
         console.WriteLine("add_news_item <type> <message> [assoc]");
         console.WriteLine("type is one of:");
         console.WriteLine("    0 (News::ItemType::Null)");
@@ -1841,6 +1841,7 @@ static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[
         console.WriteLine("    7 (News::ItemType::Peeps)");
         console.WriteLine("    8 (News::ItemType::Award)");
         console.WriteLine("    9 (News::ItemType::Graph)");
+        console.WriteLine("   10 (News::ItemType::Campaign)");
         console.WriteLine("message is the message to display, wrapped in quotes for multiple words");
         console.WriteLine("assoc is the associated id of ride/peep/tile/etc. If the selected ItemType doesn't need an assoc "
                           "(Null, Money, Award, Graph), you can leave this field blank");

@@ -3634,6 +3634,8 @@ STR_6524    :Aumentar la prioridad del paquete de recursos seleccionado.
 STR_6525    :Recargar todos los recursos del juego con los paquete de recursos activados.
 STR_6526    :(gráficos, música y efectos de sonido base)
 STR_6527    :Competiciones
+STR_6528    :¡Párametros de la vía no válidos!
+STR_6529    :¡Parámatro del esquema de color no válido!
 
 ##############
 # Escenarios #

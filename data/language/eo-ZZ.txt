@@ -3630,6 +3630,8 @@ STR_6524    :Kreskigi ka prioritaton de la elektita havaĵo-pako.
 STR_6525    :Reŝargi ĉiujn havaĵojn en la ludo kontraŭ la ŝaltitaj havaĵo-pakoj.
 STR_6526    :(bazaj grafikoj, muziko kaj sonefikoj)
 STR_6527    :Konkursoj
+STR_6528    :Nevalidaj parametroj de trako!
+STR_6529    :Nevalida parametro de kolorskemo!
 
 #############
 # Scenarios #

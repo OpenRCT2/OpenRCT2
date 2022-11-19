@@ -3596,6 +3596,8 @@ STR_6524    :A kiválasztott asset csomag prioritásának növelése.
 STR_6525    :A játék összes assetjének újratöltése az engedélyezett asset csomagokkal.
 STR_6526    :(alap grafika, zene és hangeffektek)
 STR_6527    :Versenyek
+STR_6528    :Érvénytelen pályaparaméterek!
+STR_6529    :Érvénytelen színséma-paraméter!
 
 #############
 # Scenarios #

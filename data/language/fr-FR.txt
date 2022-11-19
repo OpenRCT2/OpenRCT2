@@ -3639,6 +3639,8 @@ STR_6524    :Augmente la priorité du pack de ressources sélectionné
 STR_6525    :Recharge toutes les ressources du jeu avec les packs de ressources sélectionnés
 STR_6526    :(graphismes, musiques et effets sonores de base)
 STR_6527    :Compétitions
+STR_6528    :Paramètres de voie invalides !
+STR_6529    :Paramètre de palette de couleurs invalide !
 
 #############
 # Scenarios #
