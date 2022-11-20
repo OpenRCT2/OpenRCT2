@@ -500,6 +500,7 @@ public:
             window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
         }
 
+        // TODO: Split LOADSAVETYPE_* into two proper enum classes (one for load/save, the other for the type)
         const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
         const auto path = GetDir(type);
 
@@ -686,17 +687,17 @@ public:
 
 #pragma region Events
 public:
-    virtual void OnOpen() override
+    void OnOpen() override
     {
     }
 
-    virtual void OnClose() override
+    void OnClose() override
     {
         _listItems.clear();
         window_close_by_class(WindowClass::LoadsaveOverwritePrompt);
     }
 
-    virtual void OnResize() override
+    void OnResize() override
     {
         if (width < min_width)
         {
@@ -710,7 +711,7 @@ public:
         }
     }
 
-    virtual void OnPrepareDraw() override
+    void OnPrepareDraw() override
     {
         ResizeFrameWithPage();
 
@@ -728,7 +729,7 @@ public:
         window_loadsave_widgets[WIDX_BROWSE].bottom = height - 6;
     }
 
-    virtual void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(rct_drawpixelinfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -747,7 +748,7 @@ public:
         const auto* normalisedPathC = normalisedPath.c_str();
         auto ft = Formatter();
         ft.Add<const char*>(normalisedPathC);
-        DrawTextEllipsised(&dpi, { windowPos.x + 4, windowPos.y + 20 }, width - 8, STR_STRING, ft);
+        DrawTextEllipsised(&dpi, windowPos + ScreenCoordsXY{ 4, 20 }, width - 8, STR_STRING, ft);
 
         // Name button text
         StringId id = STR_NONE;
@@ -780,12 +781,12 @@ public:
             { COLOUR_GREY });
     }
 
-    virtual OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
+    OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
     {
         return { fallback, {} };
     }
 
-    virtual void OnMouseUp(WidgetIndex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         bool isSave = (_type & 0x01) == LOADSAVETYPE_SAVE;
         switch (widgetIndex)
@@ -863,7 +864,7 @@ public:
         }
     }
 
-    virtual void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (text.empty())
             return;
@@ -910,12 +911,12 @@ public:
         }
     }
 
-    virtual ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+    ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
         return { 0, no_list_items * SCROLLABLE_ROW_HEIGHT };
     }
 
-    virtual void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
         int32_t selectedItem;
 
@@ -928,7 +929,7 @@ public:
         Invalidate();
     }
 
-    virtual void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
         int32_t selectedItem;
 
@@ -964,7 +965,7 @@ public:
         }
     }
 
-    virtual void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         gfx_fill_rect(
             &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
