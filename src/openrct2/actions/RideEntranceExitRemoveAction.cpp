@@ -48,13 +48,8 @@ void RideEntranceExitRemoveAction::Serialise(DataSerialiser& stream)
 static TileElement* FindEntranceElement(
     const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, int32_t entranceType, uint32_t flags)
 {
-    const bool isGhost = flags & GAME_COMMAND_FLAG_GHOST;
     for (auto* entranceElement : TileElementsView<EntranceElement>(loc))
     {
-        // If we are removing ghost elements
-        if (isGhost && entranceElement->IsGhost() == false)
-            continue;
-
         if (entranceElement->GetRideIndex() != rideIndex)
             continue;
 
@@ -96,7 +91,12 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
     auto* entranceElement = FindEntranceElement(
         _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE, GetFlags());
 
-    if (entranceElement == nullptr)
+    // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
+    if (entranceElement != nullptr && (GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(entranceElement->IsGhost()))
+    {
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+    }
+    else if (entranceElement == nullptr)
     {
         log_warning(
             "Track Element not found. x = %d, y = %d, ride = %u, station = %u", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
@@ -127,7 +127,12 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     auto* entranceElement = FindEntranceElement(
         _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE, GetFlags());
 
-    if (entranceElement == nullptr)
+    // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
+    if (entranceElement != nullptr && isGhost && !(entranceElement->IsGhost()))
+    {
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+    }
+    else if (entranceElement == nullptr)
     {
         log_warning(
             "Track Element not found. x = %d, y = %d, ride = %u, station = %d", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
