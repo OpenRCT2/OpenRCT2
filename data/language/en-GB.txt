@@ -3634,7 +3634,7 @@ STR_6528    :Invalid track parameters!
 STR_6529    :Invalid colour scheme parameter!
 STR_6530    :User Created Expansion Set
 STR_6531    :The Time Machine (2003)
-STR_6532    :Katy's Dreamworld (2003)
+STR_6532    :Katy’s Dreamworld (2003)
 
 #############
 # Scenarios #
@@ -4416,9 +4416,9 @@ STR_PARK    :Panda World
 STR_DTLS    :Add more rides and attract more people to this panda-themed park
 
 <UCES Halloween>
-STR_SCNR    :Cemetary Ridge
-STR_PARK    :Cemetary Ridge
-STR_DTLS    :This is Halloween, UCES Halloween, pumpkins scream in the dead of night! This graveyard is in trouble and it's up to you to save it, while letting the dead rest in peace! Can you keep the ghosts in their graves and bring chills to your customers?{NEWLINE}Author: Squid
+STR_SCNR    :Cemetery Ridge
+STR_PARK    :Cemetery Ridge
+STR_DTLS    :This is Halloween, UCES Halloween, pumpkins scream in the dead of night! This graveyard is in trouble and it’s up to you to save it, while letting the dead rest in peace! Can you keep the ghosts in their graves and bring chills to your customers?{NEWLINE}Author: Squid
 
 ###############################################################################
 ## UCES: The Time Machine (2003)
@@ -4431,17 +4431,17 @@ STR_DTLS    :Alexander built the city; Greeks, Romans, Egyptians left their mark
 <Cleveland's Luna Park>
 STR_SCNR    :Luna Park, Cleveland
 STR_PARK    :Luna Park
-STR_DTLS    :As it was, Opening Day -- 18 MAY 1905.{NEWLINE}Author: Aetherwave
+STR_DTLS    :As it was on its opening day - 18 May 1905.{NEWLINE}Author: Aetherwave
 
 <Mount Vesuvius 1700 A.D. by Katatude for UCES>
 STR_SCNR    :Mount Vesuvius
-STR_PARK    :Mt. Vesuvius
-STR_DTLS    :Pompeii and Herculaneum were burried by Mt. Vesuvius in 79 A.D. Visit the excavations and build a park!{NEWLINE}Author: Katatude
+STR_PARK    :Mount Vesuvius
+STR_DTLS    :Pompeii and Herculaneum were buried by Mt. Vesuvius in 79 A.D. Visit the excavations and build a park!{NEWLINE}Author: Katatude
 
 <The Sandbox by Katatude for UCES>
 STR_SCNR    :The Sandbox
-STR_PARK    :My Sandbox
-STR_DTLS    :What everyone wants - a sandbox! So grab your l'il pail and shovel and build a park!{NEWLINE}Author: Katatude
+STR_PARK    :The Sandbox
+STR_DTLS    :What everyone wants - a sandbox! So grab your l’il pail and shovel and build a park!{NEWLINE}Author: Katatude
 
 <Niagara Falls & Gorge by Katatude for UCES>
 STR_SCNR    :Niagara Falls & Gorge
@@ -4456,7 +4456,7 @@ STR_DTLS    :A rockslide damaged your railroad. Your workers have gone prospecti
 <The Time Machine by Katatude for UCES>
 STR_SCNR    :The Time Machine
 STR_PARK    :The Time Machine
-STR_DTLS    :The Time Machine, built by TIME, Inc. Build to go WHEN you want WHERE you want. Eternity awaits. It's all relative.{NEWLINE}Author: Katatude
+STR_DTLS    :The Time Machine, built by TIME, Inc. Build to go WHEN you want WHERE you want. Eternity awaits. It’s all relative.{NEWLINE}Author: Katatude
 
 <Tower of Babel>
 STR_SCNR    :Tower of Babel
@@ -4466,7 +4466,7 @@ STR_DTLS    :Whoaa! Look where the time machine took us now! Where did everybody
 <Transformation>
 STR_SCNR    :Transformation
 STR_PARK    :Transformation
-STR_DTLS    :We were expecting you...{NEWLINE}Author: Fossil
+STR_DTLS    :We were expecting you…{NEWLINE}Author: Fossil
 
 <Urbis Incognitus>
 STR_SCNR    :Urbis Incognitus
@@ -4474,13 +4474,13 @@ STR_PARK    :Urbis Incognitus
 STR_DTLS    :The Romans are tired of boring gladiator fights. Give them a better thrill, turn a roman city into the greatest amusement park of all time!{NEWLINE}Author: Kaffe
 
 ###############################################################################
-## UCES: Katy's Dreamworld (2003)
+## UCES: Katy’s Dreamworld (2003)
 ###############################################################################
 
 <Beneath the Christmas Tree by Katatude for UCES>
 STR_SCNR    :Beneath the Christmas Tree
 STR_PARK    :Winter Wonderland
-STR_DTLS    :Mom built this cene under our tree. Now she wants a park made in it! Can you help?{NEWLINE}Author: Katatude
+STR_DTLS    :Mom built this scene under our tree. Now she wants a park made in it! Can you help?{NEWLINE}Author: Katatude
 
 <Bigrock Blast>
 STR_SCNR    :Bigrock Blast
@@ -4490,7 +4490,7 @@ STR_DTLS    :After an explosion at the Bigrock Mining Co., the people of Bigrock
 <Camp Mockingbird for UCES by Katatude>
 STR_SCNR    :Camp Mockingbird
 STR_PARK    :Camp Mockingbird
-STR_DTLS    :Only $500/week to this summar camp! Break open your bank and then have fun and build a park.{NEWLINE}Author: Katatude
+STR_DTLS    :Only $500/week to this summer camp! Break open your bank and then have fun and build a park.{NEWLINE}Author: Katatude
 
 <Choo Choo Town>
 STR_SCNR    :Choo-Choo Town
@@ -4500,12 +4500,12 @@ STR_DTLS    :Mommy! Daddy! I want to go to Choo-Choo Town!{NEWLINE}Author: Fossi
 <Dragon Islands>
 STR_SCNR    :Dragon Islands
 STR_PARK    :Dragon Islands
-STR_DTLS    :Dragon Islands? I'm not sure I want to go there...{NEWLINE}Author: Fossil
+STR_DTLS    :Dragon Islands? I’m not sure I want to go there…{NEWLINE}Author: Fossil
 
 <Kiddy Karnival II>
 STR_SCNR    :Kiddie Karnival II
 STR_PARK    :Kiddie Karnival
-STR_DTLS    :Hey kids! Let's have FUN!!!!{NEWLINE}Authors: Piehead & Fossil
+STR_DTLS    :Hey kids! Let’s have fun!{NEWLINE}Authors: Piehead & Fossil
 
 <Sand Dune>
 STR_SCNR    :Sand Dune
