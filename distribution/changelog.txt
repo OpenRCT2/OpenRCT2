@@ -13,7 +13,7 @@
 - Improved: [#18422] Allow adding images to music objects.
 - Improved: [#18428] [Plugin] Add widget description interfaces to documentation.
 - Improved: [#18487] Mini Helicopters track can now draw spinning tunnels.
-- Improved: [#18607] A new tab for all UCES Scenarios, if it's installed.
+- Improved: [#18607] A new tab for all UCES Scenarios, if it’s installed.
 - Change: [#17677] Open campaign window from finished campaign news.
 - Change: [#17998] Show cursor when using inverted mouse dragging.
 - Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
