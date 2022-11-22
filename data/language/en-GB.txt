@@ -4415,6 +4415,7 @@ STR_SCNR    :Panda World
 STR_PARK    :Panda World
 STR_DTLS    :Add more rides and attract more people to this panda-themed park
 
+###
 <UCES Halloween>
 STR_SCNR    :Cemetery Ridge
 STR_PARK    :Cemetery Ridge
@@ -4451,12 +4452,12 @@ STR_DTLS    :American Falls, Bridal Falls & Canadian Horseshoe Falls on the Niag
 <Rocky Mountain Miners>
 STR_SCNR    :Rocky Mountain Miners
 STR_PARK    :Rocky Mountain Miners
-STR_DTLS    :A rockslide damaged your railroad. Your workers have gone prospecting. Is there gold in roller coasters?{NEWLINE}Authors: Squid, Buckone, Fossil
+STR_DTLS    :A rockslide damaged your railway. Your workers have gone prospecting. Is there gold in roller coasters?{NEWLINE}Authors: Squid, Buckone, Fossil
 
 <The Time Machine by Katatude for UCES>
 STR_SCNR    :The Time Machine
 STR_PARK    :The Time Machine
-STR_DTLS    :The Time Machine, built by TIME, Inc. Build to go WHEN you want WHERE you want. Eternity awaits. It’s all relative.{NEWLINE}Author: Katatude
+STR_DTLS    :The Time Machine. Build to go - when you want, where you want. Eternity awaits. It’s all relative.{NEWLINE}Author: Katatude
 
 <Tower of Babel>
 STR_SCNR    :Tower of Babel
@@ -4471,7 +4472,7 @@ STR_DTLS    :We were expecting you…{NEWLINE}Author: Fossil
 <Urbis Incognitus>
 STR_SCNR    :Urbis Incognitus
 STR_PARK    :Urbis Incognitus
-STR_DTLS    :The Romans are tired of boring gladiator fights. Give them a better thrill, turn a roman city into the greatest amusement park of all time!{NEWLINE}Author: Kaffe
+STR_DTLS    :The Romans are tired of boring gladiator fights. Give them a better thrill, turn a Roman city into the greatest amusement park of all time!{NEWLINE}Author: Kaffe
 
 ###############################################################################
 ## UCES: Katy’s Dreamworld (2003)
@@ -4480,7 +4481,7 @@ STR_DTLS    :The Romans are tired of boring gladiator fights. Give them a better
 <Beneath the Christmas Tree by Katatude for UCES>
 STR_SCNR    :Beneath the Christmas Tree
 STR_PARK    :Winter Wonderland
-STR_DTLS    :Mom built this scene under our tree. Now she wants a park made in it! Can you help?{NEWLINE}Author: Katatude
+STR_DTLS    :Mum built this scene under our tree. Now she wants a park made in it! Can you help?{NEWLINE}Author: Katatude
 
 <Bigrock Blast>
 STR_SCNR    :Bigrock Blast
