@@ -26,6 +26,7 @@ libversion
 data/g2.dat
 data/sequence
 data/object
+data/assetpack
 
 #################
 ## Eclipse
