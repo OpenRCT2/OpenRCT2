@@ -48,6 +48,7 @@
 - Fix: [#18459] ‘Highlight path issues’ hides fences for paths with additions.
 - Fix: [#18606] JSON objects do not take priority over the DAT files they supersede.
 - Fix: [#18620] [Plugin] Crash when reading widget properties from windows that have both static and tab widgets.
+- Fix: [#18653] Negative ratings multipliers do not appear in Vehicle tab
 
 0.4.2 (2022-10-05)
 ------------------------------------------------------------------------
