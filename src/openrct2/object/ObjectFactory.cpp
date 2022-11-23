@@ -521,6 +521,7 @@ namespace ObjectFactory
             if (id == OpenRCT2::Audio::AudioObjectIdentifiers::Rct2cBase)
                 id = OpenRCT2::Audio::AudioObjectIdentifiers::Rct2Base;
 
+            auto version = Json::GetString(jRoot["version"]);
             ObjectEntryDescriptor descriptor;
             auto originalId = Json::GetString(jRoot["originalId"]);
             if (originalId.length() == 8 + 1 + 8 + 1 + 8)
@@ -539,8 +540,9 @@ namespace ObjectFactory
             {
                 descriptor = ObjectEntryDescriptor(objectType, id);
             }
-
+            descriptor.Version = version;
             result = CreateObject(objectType);
+            result->SetVersion(version);
             result->SetIdentifier(id);
             result->SetDescriptor(descriptor);
             result->MarkAsJsonObject();
