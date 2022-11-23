@@ -453,6 +453,8 @@ void game_fix_save_vars()
     ParkEntranceFixLocations();
 
     UpdateConsolidatedPatrolAreas();
+
+    MapCountRemainingLandRights();
 }
 
 void game_load_init()

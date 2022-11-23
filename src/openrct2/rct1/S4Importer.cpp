@@ -196,7 +196,6 @@ namespace RCT1
             SetDefaultNames();
             determine_ride_entrance_and_exit_locations();
 
-            MapCountRemainingLandRights();
             research_determine_first_of_type();
 
             CheatsReset();
