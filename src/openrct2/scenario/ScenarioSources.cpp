@@ -290,7 +290,7 @@ namespace ScenarioSources
         { SC_UNIDENTIFIED,              "Bigrock Blast",                                    SCENARIO_CATEGORY_KATYS_DREAMWORLD },
         { SC_UNIDENTIFIED,              "Camp Mockingbird for UCES by Katatude",            SCENARIO_CATEGORY_KATYS_DREAMWORLD },
         { SC_UNIDENTIFIED,              "Choo Choo Town",                                   SCENARIO_CATEGORY_KATYS_DREAMWORLD },
-        { SC_UNIDENTIFIED,              "Dragon Island",                                    SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Dragon Islands",                                   SCENARIO_CATEGORY_KATYS_DREAMWORLD },
         { SC_UNIDENTIFIED,              "Kiddy Karnival II",                                SCENARIO_CATEGORY_KATYS_DREAMWORLD },
         { SC_UNIDENTIFIED,              "Sand Dune",                                        SCENARIO_CATEGORY_KATYS_DREAMWORLD },
         { SC_UNIDENTIFIED,              "UCES Halloween",                                   SCENARIO_CATEGORY_OTHER            },
