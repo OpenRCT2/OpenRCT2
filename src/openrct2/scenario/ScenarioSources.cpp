@@ -215,20 +215,20 @@ namespace ScenarioSources
     // RCT2
     static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT2[] =
     {
-        { SC_UNIDENTIFIED,              "Crazy Castle",         SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Electric Fields",      SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Factory Capers",       SCENARIO_CATEGORY_BEGINNER      },
-        { SC_UNIDENTIFIED,              "Amity Airfield",       SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Botany Breakers",      SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Bumbly Bazaar",        SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Dusty Greens",         SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Fungus Woods",         SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Gravity Gardens",      SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Crazy Castle",         SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Dusty Greens",         SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Bumbly Bazaar",        SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Infernal Views",       SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Alpine Adventures",    SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Lucky Lake",           SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Botany Breakers",      SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Alpine Adventures",    SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Gravity Gardens",      SCENARIO_CATEGORY_EXPERT        },
         { SC_UNIDENTIFIED,              "Extreme Heights",      SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Amity Airfield",       SCENARIO_CATEGORY_EXPERT        },
         { SC_UNIDENTIFIED,              "Ghost Town",           SCENARIO_CATEGORY_EXPERT        },
-        { SC_UNIDENTIFIED,              "Lucky Lake",           SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Fungus Woods",         SCENARIO_CATEGORY_EXPERT        },
         { SC_UNIDENTIFIED,              "Rainbow Summit",       SCENARIO_CATEGORY_EXPERT        },
     };
 
