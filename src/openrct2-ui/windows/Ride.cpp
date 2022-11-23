@@ -185,7 +185,7 @@ enum {
     WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN,
     WIDX_VEHICLE_COLOUR_INDEX,
     WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN,
-    WIDX_VEHICLE_BODY_COLOR,
+    WIDX_VEHICLE_BODY_COLOUR,
     WIDX_VEHICLE_TRIM_COLOUR,
     WIDX_VEHICLE_TERNARY_COLOUR,
     WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
@@ -4446,7 +4446,7 @@ static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, rc
 
             Dropdown::SetChecked(w->vehicleIndex, true);
             break;
-        case WIDX_VEHICLE_BODY_COLOR:
+        case WIDX_VEHICLE_BODY_COLOUR:
             vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
             WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.Body);
             break;
@@ -4543,7 +4543,7 @@ static void WindowRideColourDropdown(rct_window* w, WidgetIndex widgetIndex, int
             w->vehicleIndex = dropdownIndex;
             w->Invalidate();
             break;
-        case WIDX_VEHICLE_BODY_COLOR:
+        case WIDX_VEHICLE_BODY_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
                 rideId, RideSetAppearanceType::VehicleColourBody, dropdownIndex, w->vehicleIndex);
@@ -4754,8 +4754,8 @@ static void WindowRideColourInvalidate(rct_window* w)
         vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
 
         window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WindowWidgetType::Scroll;
-        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOR].image = GetColourButtonImage(vehicleColour.Body).ToUInt32();
+        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::ColourBtn;
+        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body).ToUInt32();
 
         bool allowChangingTrimColour = false;
         bool allowChangingTernaryColour = false;
@@ -4837,7 +4837,7 @@ static void WindowRideColourInvalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WindowWidgetType::Empty;
         window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WindowWidgetType::Empty;
         window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WindowWidgetType::Empty;
-        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOR].type = WindowWidgetType::Empty;
+        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::Empty;
         window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
         window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::Empty;
     }
