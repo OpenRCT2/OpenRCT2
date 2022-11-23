@@ -2993,7 +2993,7 @@ STR_5832    :Show height as generic units instead of measurement format set unde
 STR_5833    :Changes what date format is used
 STR_5834    :Select which audio device OpenRCT2 will use
 STR_5835    :Mute the game if the window loses focus
-STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting the RCT1 theme requires that you set the path to RCT1 in the Miscellaneous tab.
+STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting the RCT1 theme requires that you set the path to RCT1 in the Advanced tab.
 STR_5837    :Create and manage custom UI themes
 STR_5838    :Show a separate button for the finance window in the toolbar
 STR_5839    :Show a separate button for the research and development window in the toolbar
@@ -3617,9 +3617,9 @@ STR_6511    :Zero G Roll (right)
 STR_6512    :Large Zero G Roll (left)
 STR_6513    :Large Zero G Roll (right)
 STR_6514    :Invalid height!
-STR_6515    :{BLACK}RCT1 not linked - fallback images will be used.
-STR_6516    :One or more objects added require RCT1 linked for proper display. Fallback images will be used.
-STR_6517    :One or more objects in this park require RCT1 linked for proper display. Fallback images will be used.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 not linked - fallback images will be used.
+STR_6516    :One or more objects added require RollerCoaster Tycoon 1 linked for proper display. Fallback images will be used.
+STR_6517    :One or more objects in this park require RollerCoaster Tycoon 1 linked for proper display. Fallback images will be used.
 STR_6518    :{BLACK}Hover over a scenario to view its description and objective. Click it to start playing.
 STR_6519    :Extras
 STR_6520    :Asset Packs
@@ -3633,8 +3633,8 @@ STR_6527    :Competitions
 STR_6528    :Invalid track parameters!
 STR_6529    :Invalid colour scheme parameter!
 STR_6530    :User Created Expansion Set
-STR_6531    :The Time Machine (2003)
-STR_6532    :Katy’s Dreamworld (2003)
+STR_6531    :The Time Machine
+STR_6532    :Katy’s Dreamworld
 
 #############
 # Scenarios #
