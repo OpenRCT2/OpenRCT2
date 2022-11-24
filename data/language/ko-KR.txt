@@ -3635,6 +3635,9 @@ STR_6526    :(기본 그래픽, 음악, 효과음)
 STR_6527    :경쟁
 STR_6528    :잘못된 트랙 값입니다!
 STR_6529    :잘못된 색상 값입니다!
+STR_6530    :유저 제작 확장팩(UCES)
+STR_6531    :타임머신
+STR_6532    :케이티의 드림월드
 
 #############
 # Scenarios #
@@ -4411,3 +4414,102 @@ STR_DTLS    :이 오래된 놀이공원은 더 나은 미래를 기대하고 있
 STR_SCNR    :판다 월드
 STR_PARK    :판다 월드
 STR_DTLS    :이 판다 테마의 공원에 놀이기구를 더 지어서 손님들을 더 끌어모으세요.
+
+
+###
+<UCES Halloween>
+STR_SCNR    :Cemetery Ridge
+STR_PARK    :묘지 언덕
+STR_DTLS    :핼러원, UCES의 핼러윈, 호박이 비명을 지르는 죽음의 밤! 죽은 자들을 편히 쉬게 하는 동시에 어려운 처지에 놓여있는 이 묘지를 구하는 것은 당신의 몫입니다! 유령을 무덤에 가둬놓고 손님들에게 오들오들함을 선사할 수 있나요?{NEWLINE}제작자: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :The Lighthouse of Alexandria
+STR_PARK    :알렉산드리아의 등대
+STR_DTLS    :알렉산더 대왕은 도시를 건설했습니다. 그리스인, 로마인, 이집트인들이 흔적을 남겼죠. 하지만 가장 큰 영예는 고대의 불가사의인 등대였습니다. 이 곳을 공원으로 만들어보세요!{NEWLINE}제작자: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :루나 파크
+STR_DTLS    :공원 개장일이었떤 1905년 5월 18일처럼.{NEWLINE}제작자: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Mount Vesuvius
+STR_PARK    :베수비오 산
+STR_DTLS    :폼페이와 헤르쿨라네움은 서기 79년에 베수비오 화산 폭발로 묻혀버렸습니다. 이 발굴지를 공원으로 만들어보세요!{NEWLINE}제작자: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :The Sandbox
+STR_PARK    :모래 상자
+STR_DTLS    :모두가 원하는 모래 상자! 이제 양동이와 삽을 들고 원하는 공원을 만드세요!{NEWLINE}제작자: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Falls & Gorge
+STR_PARK    :나이아가라 폭포
+STR_DTLS    :1850년 나이아가라 폭포의 아메리카 폭포, 브라이들 폭포, 캐나다 폭포{NEWLINE}제작자: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Rocky Mountain Miners
+STR_PARK    :록키 산맥 광부
+STR_DTLS    :산사태로 철도가 손상되었습니다. 직원들이 탐사에 나섰습니다. 롤러코스터에 금이 있을까요?{NEWLINE}제작자: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :The Time Machine
+STR_PARK    :타임 머신
+STR_DTLS    :원하는 때, 원하는 곳으로 갈 수 있도록 타임 머신을 만드세요. 영원이 당신을 기다립니다. 모든 것은 상대적이니 말이죠.{NEWLINE}제작자: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Tower of Babel
+STR_PARK    :바벨 탑
+STR_DTLS    :우와, 타임머신이 우릴 어디로 대려왔는지 보세요! 근데 다들 어디갔죠?{NEWLINE}제작자: Fossil
+
+<Transformation>
+STR_SCNR    :Transformation
+STR_PARK    :트랜스포메이션
+STR_DTLS    :널 기다리고 있었어…{NEWLINE}제작자: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :알 수 없는 도시
+STR_DTLS    :로마인들은 글래디에이터의 전투가 이제 질렸다고 합니다. 그들에게 더 많은 스릴을 선사해서 이 로마 도시를 전 시대를 통틀어 가장 거대한 놀이 공원으로 바꿔보세요!{NEWLINE}제작자: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Beneath the Christmas Tree
+STR_PARK    :겨울 원더 랜드
+STR_DTLS    :엄마가 우리 나무 아래를 이렇게 만들었어요. 이제 공원을 만들고 싶으시대요. 도와주실 수 있나요?{NEWLINE}제작자: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Bigrock Blast
+STR_PARK    :빅록 폭발
+STR_DTLS    :빅록 채광 주식회사에서 폭발 사건이 일어난 이후, 빅록의 사람들은 마을을 유지하기 위해 놀이공원을 지어야만 한다고 합니다.{NEWLINE}제작자: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Mockingbird
+STR_PARK    :앵무새 캠프
+STR_DTLS    :이번 여름 캠프가 일주일에 단돈 $500! 은행 금고를 열고 공원을 만들면서 놀아보세요.{NEWLINE}제작자: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Choo-Choo Town
+STR_PARK    :칙칙폭폭 마을
+STR_DTLS    :엄마! 아빠! 나 칙칙폭폭 마을에 가고 싶어요!{NEWLINE}제작자: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Dragon Islands
+STR_PARK    :용의 섬
+STR_DTLS    :용의 섬이라고? 거기 가고 싶은지 확신이 안 서는 걸…{NEWLINE}제작자: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kiddie Karnival II
+STR_PARK    :어린이 카니발
+STR_DTLS    :어린이 여러분! 같이 신나게 놀아봐요!{NEWLINE}제작자: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sand Dune
+STR_PARK    :모래 언덕
+STR_DTLS    :이 작은 공원의 소유자로써, 아름다운 모래 언덕을 방문하여 더 많은 목표를 유치하고 확장하기 위해 해변을 따라 큰 땅을 샀지만 조심하세요! 생태학적으로 소중한 이 모래 언덕을 건드릴 수는 없습니다.{NEWLINE}제작자: rbarclay
