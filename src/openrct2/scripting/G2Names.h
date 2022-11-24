@@ -12,7 +12,7 @@
 #include "../core/EnumMap.hpp"
 #include "../sprites.h"
 
-#include <map>
+#include <string>
 
 static const EnumMap<uint32_t> G2SpriteLookupTable = {
     { "empty", SPR_G2_EMPTY },
@@ -109,6 +109,12 @@ static const EnumMap<uint32_t> G2SpriteLookupTable = {
     { "selection_edge_sw", SPR_G2_SELECTION_EDGE_SW },
     { "selection_edge_se", SPR_G2_SELECTION_EDGE_SE },
 };
+
+int32_t GetIconByName(std::string& input)
+{
+    auto result = G2SpriteLookupTable.find(input);
+    return result != G2SpriteLookupTable.end() ? result->second : SPR_G2_EMPTY;
+}
 
 // Maps legacy G2 icons sprite indices to new sprite indices
 

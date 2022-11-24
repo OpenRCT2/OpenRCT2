@@ -18,6 +18,7 @@
 #    include "../../../object/ObjectManager.h"
 #    include "../../../scenario/Scenario.h"
 #    include "../../Duktape.hpp"
+#    include "../../G2Names.h"
 #    include "../../HookEngine.h"
 #    include "../../ScriptEngine.h"
 #    include "../game/ScConfiguration.hpp"
@@ -460,6 +461,11 @@ namespace OpenRCT2::Scripting
             ClearIntervalOrTimeout(handle);
         }
 
+        int32_t getIcon(std::string& iconName)
+        {
+            return GetIconByName(iconName);
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -482,6 +488,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::setTimeout, "setTimeout");
             dukglue_register_method(ctx, &ScContext::clearInterval, "clearInterval");
             dukglue_register_method(ctx, &ScContext::clearTimeout, "clearTimeout");
+            dukglue_register_method(ctx, &ScContext::getIcon, "getIcon");
         }
     };
 } // namespace OpenRCT2::Scripting
