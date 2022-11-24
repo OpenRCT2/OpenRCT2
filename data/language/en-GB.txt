@@ -3635,6 +3635,9 @@ STR_6529    :Invalid colour scheme parameter!
 STR_6530    :User Created Expansion Set
 STR_6531    :The Time Machine
 STR_6532    :Katy’s Dreamworld
+STR_6533    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}-{COMMA16}%
 
 #############
 # Scenarios #

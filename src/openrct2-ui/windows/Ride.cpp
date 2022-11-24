@@ -2890,17 +2890,18 @@ static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextBasic(dpi, screenCoords, STR_CAPACITY, ft);
 
     // Excitement Factor
-    if (rideEntry->excitement_multiplier > 0)
+    if (rideEntry->excitement_multiplier != 0)
     {
         screenCoords.y += LIST_ROW_HEIGHT;
 
         ft = Formatter();
-        ft.Add<int16_t>(rideEntry->excitement_multiplier);
-        DrawTextBasic(dpi, screenCoords, STR_EXCITEMENT_FACTOR, ft);
+        ft.Add<int16_t>(abs(rideEntry->excitement_multiplier));
+        StringId stringId = rideEntry->excitement_multiplier > 0 ? STR_EXCITEMENT_FACTOR : STR_EXCITEMENT_FACTOR_NEGATIVE;
+        DrawTextBasic(dpi, screenCoords, stringId, ft);
     }
 
     // Intensity Factor
-    if (rideEntry->intensity_multiplier > 0)
+    if (rideEntry->intensity_multiplier != 0)
     {
         int32_t lineHeight = font_get_line_height(FontStyle::Medium);
         if (lineHeight != 10)
@@ -2909,21 +2910,23 @@ static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi)
             screenCoords.y += LIST_ROW_HEIGHT;
 
         ft = Formatter();
-        ft.Add<int16_t>(rideEntry->intensity_multiplier);
-        DrawTextBasic(dpi, screenCoords, STR_INTENSITY_FACTOR, ft);
+        ft.Add<int16_t>(abs(rideEntry->intensity_multiplier));
+        StringId stringId = rideEntry->intensity_multiplier > 0 ? STR_INTENSITY_FACTOR : STR_INTENSITY_FACTOR_NEGATIVE;
+        DrawTextBasic(dpi, screenCoords, stringId, ft);
 
         if (lineHeight != 10)
             screenCoords.x -= 150;
     }
 
     // Nausea Factor
-    if (rideEntry->nausea_multiplier > 0)
+    if (rideEntry->nausea_multiplier != 0)
     {
         screenCoords.y += LIST_ROW_HEIGHT;
 
         ft = Formatter();
-        ft.Add<int16_t>(rideEntry->nausea_multiplier);
-        DrawTextBasic(dpi, screenCoords, STR_NAUSEA_FACTOR, ft);
+        ft.Add<int16_t>(abs(rideEntry->nausea_multiplier));
+        StringId stringId = rideEntry->nausea_multiplier > 0 ? STR_NAUSEA_FACTOR : STR_NAUSEA_FACTOR_NEGATIVE;
+        DrawTextBasic(dpi, screenCoords, stringId, ft);
     }
 }
 
