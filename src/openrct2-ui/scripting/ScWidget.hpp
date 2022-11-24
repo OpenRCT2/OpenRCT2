@@ -21,6 +21,7 @@
 #    include <openrct2/Context.h>
 #    include <openrct2/common.h>
 #    include <openrct2/scripting/Duktape.hpp>
+#    include <openrct2/scripting/G2Names.hpp>
 #    include <openrct2/scripting/ScriptEngine.h>
 
 namespace OpenRCT2::Scripting
@@ -509,7 +510,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr && widget->type == WindowWidgetType::FlatBtn)
             {
-                widget->image = value;
+                widget->image = FilterLegacyIconSprites(value);
                 Invalidate();
             }
         }

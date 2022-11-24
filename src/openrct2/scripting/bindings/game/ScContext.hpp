@@ -18,7 +18,7 @@
 #    include "../../../object/ObjectManager.h"
 #    include "../../../scenario/Scenario.h"
 #    include "../../Duktape.hpp"
-#    include "../../G2Names.h"
+#    include "../../G2Names.hpp"
 #    include "../../HookEngine.h"
 #    include "../../ScriptEngine.h"
 #    include "../game/ScConfiguration.hpp"
@@ -461,7 +461,7 @@ namespace OpenRCT2::Scripting
             ClearIntervalOrTimeout(handle);
         }
 
-        int32_t getIcon(std::string& iconName)
+        int32_t getIcon(const std::string& iconName)
         {
             return GetIconByName(iconName);
         }
