@@ -338,6 +338,13 @@ namespace OpenRCT2
                                                 identifier = "openrct2.ride.single_rail_coaster";
                                             }
                                         }
+                                        else if (version <= 14)
+                                        {
+                                            if (identifier == "openrct2.ride.alp1")
+                                            {
+                                                identifier = "openrct2.ride.alpine_coaster";
+                                            }
+                                        }
                                         desc.Identifier = identifier;
                                         desc.Version = cs.Read<std::string>();
 
