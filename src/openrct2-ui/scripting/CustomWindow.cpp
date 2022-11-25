@@ -222,6 +222,12 @@ namespace OpenRCT2::Ui::Windows
                 result.imageFrameCount = 0;
                 result.imageFrameDuration = 0;
             }
+            else if (dukImage.type() == DukValue::Type::STRING)
+            {
+                result.imageFrameBase = ImageId::FromUInt32(GetIconByName(dukImage.as_c_string()));
+                result.imageFrameCount = 0;
+                result.imageFrameDuration = 0;
+            }
             else if (dukImage.type() == DukValue::Type::OBJECT)
             {
                 result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage["frameBase"].as_int()));

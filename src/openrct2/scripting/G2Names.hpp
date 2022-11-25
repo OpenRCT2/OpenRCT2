@@ -16,7 +16,6 @@
 
 namespace OpenRCT2::Scripting
 {
-
     static EnumMap<uint32_t> G2SpriteLookupTable = {
         { "empty", SPR_G2_EMPTY },
         { "placeholder", SPR_G2_PLACEHOLDER },

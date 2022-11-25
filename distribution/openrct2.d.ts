@@ -2537,6 +2537,23 @@ declare global {
     type Widget =
         ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
         LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
+        
+    type IconName = "empty" | "placeholder" | "logo" | "logo_text" | "fast_forward" | "game_speed_indicator" |
+        "game_speed_indicator_double" | "map_gen_land" | "zoom_in" | "zoom_in_background" | "zoom_out" |
+        "zoom_out_background" | "map_gen_trees" | "map_gen_noise" | "large_scenery" | "small_scenery" | "paths" |
+        "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_off_pressed" | "rct1_test_off" |
+        "rct1_test_off_pressed" | "rct1_test_on" | "rct1_test_off_pressed" | "rct1_open_off" | "rct1_open_off_pressed" |
+        "rct1_open_on" | "rct1_open_on_pressed" | "title_restart" | "title_stop" | "title_play" | "title_skip" | "cheats" |
+        "news_messages" | "server_password" | "multiplayer" | "sort" | "copy" | "paste" | "mute" | "mute_pressed" |
+        "unmute" | "unmute_pressed" | "search" | "eyedropper" | "chat" | "map_north" | "map_north_pressed" | "map_west" |
+        "map_west_pressed" | "map_south" | "map_south_pressed" | "map_east" | "map_east_pressed" | "multiplayer_toolbar" |
+        "multiplayer_toolbar_pressed" | "multiplayer_sync" | "multiplayer_desync" | "simulate" | "rct1_simulate_off" |
+        "rct1_simulate_off_pressed" | "rct1_simulate_on" | "rct1_simulate_on_pressed" | "normal_selection_6x6" |
+        "mountain_tool_even" | "mountain_tool_odd" | "scenery_scatter_low" | "scenery_scatter_medium" |
+        "scenery_scatter_high" | "view" | "path_railings" | "legacy_path" | "path_surface" | "ride_station" |
+        "terrain_edge" | "hide_vegitation" | "hide_scenery" | "hide_vehicles" | "hide_supports" | "hide_partial"
+        | "hide_full" | "link_chain" | "sideways_tab" | "sideways_tab_active" | "arrow_up" | "arrow_down" | "reload" |
+        "glassy_recolourable" | "selection_edge_nw" | "selection_edge_ne" | "selection_edge_sw" | "selection_edge_se";
 
     interface WidgetBase {
         readonly window: Window;
@@ -2558,7 +2575,7 @@ declare global {
          * By default, text buttons have borders and image buttons do not but it can be overridden.
          */
         border: boolean;
-        image: number;
+        image: number | IconName;
         isPressed: boolean;
         text: string;
     }
@@ -2825,7 +2842,7 @@ declare global {
     }
 
     interface WindowTabDesc {
-        image: number | ImageAnimation;
+        image: number | ImageAnimation | IconName;
         widgets?: WidgetDesc[];
     }
 
