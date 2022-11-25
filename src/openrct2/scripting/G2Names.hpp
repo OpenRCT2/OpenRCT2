@@ -12,7 +12,7 @@
 #include "../core/EnumMap.hpp"
 #include "../sprites.h"
 
-#include <string>
+#include <map>
 
 namespace OpenRCT2::Scripting
 {
@@ -114,7 +114,7 @@ namespace OpenRCT2::Scripting
 
     // Maps legacy G2 icons sprite indices to new sprite indices
 
-    static std::map<int32_t, int32_t> LegacyIconMap{
+    static std::map<uint32_t, uint32_t> LegacyIconMap{
         { 32248, 29357 }, { 29363, 29358 }, { 29357, 29359 }, { 29358, 29360 }, { 29359, 29361 }, { 29360, 29362 },
         { 29361, 29363 }, { 29362, 29364 }, { 29364, 29365 }, { 29365, 29366 }, { 29366, 29367 }, { 29367, 29368 },
         { 29368, 29369 }, { 29369, 29370 }, { 29370, 29371 }, { 29371, 29372 }, { 29372, 29373 }, { 29373, 29374 },
@@ -132,16 +132,20 @@ namespace OpenRCT2::Scripting
         { 29508, 29441 }, { 29509, 29442 }, { 29510, 29443 }, { 29511, 29444 },
     };
 
-    inline int32_t GetIconByName(const std::string& input)
+    inline uint32_t GetIconByName(const std::string& input)
     {
         auto result = G2SpriteLookupTable.find(input);
-        return result != G2SpriteLookupTable.end() ? result->second : SPR_G2_EMPTY;
+        if (result != G2SpriteLookupTable.end())
+            return result->second;
+        return SPR_G2_EMPTY;
     }
 
-    inline int32_t FilterLegacyIconSprites(const uint32_t& input)
+    inline uint32_t FilterLegacyIconSprites(const uint32_t& input)
     {
         auto result = LegacyIconMap.find(input);
-        return result != LegacyIconMap.end() ? result->second : input;
+        if (result != LegacyIconMap.end())
+            return result->second;
+        return input;
     }
 
 } // namespace OpenRCT2::Scripting
