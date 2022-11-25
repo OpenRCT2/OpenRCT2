@@ -188,7 +188,7 @@ namespace OpenRCT2::Scripting
         void image(uint32_t id, int32_t x, int32_t y)
         {
             ImageId img;
-            img = img.WithIndex(1);
+            img = img.WithIndex(id);
             if (_paletteId)
             {
                 img = img.WithRemap(*_paletteId);

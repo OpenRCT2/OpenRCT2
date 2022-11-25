@@ -12,7 +12,7 @@
 #include "drawing/ScrollingText.h"
 #include "rct1/Limits.h"
 
-// When adding icon sprites to G2, insert them before the fonts in G2 and give them a name in src/openrct2/scripting/G2Names.h
+// When adding icon sprites to G2, insert them before the fonts in G2 and give them a name in src/openrct2/scripting/G2Names.hpp
 
 enum
 {
