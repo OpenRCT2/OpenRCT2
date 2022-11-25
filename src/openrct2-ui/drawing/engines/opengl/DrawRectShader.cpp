@@ -11,12 +11,8 @@
 
 #    include "DrawRectShader.h"
 
-#    define INITIAL_INSTANCES_BUFFER_SIZE 32768
-
 namespace
 {
-    size_t _maxInstancesBufferSize = INITIAL_INSTANCES_BUFFER_SIZE;
-
     struct VDStruct
     {
         GLfloat mat[4][2];
@@ -31,10 +27,14 @@ constexpr VDStruct VertexData[4] = {
     { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
 };
 
+constexpr const size_t InitialInstancesBufferSize = 32768;
+
 DrawRectShader::DrawRectShader()
     : OpenGLShaderProgram("drawrect")
 {
     GetLocations();
+
+    _maxInstancesBufferSize = InitialInstancesBufferSize;
 
     glGenBuffers(1, &_vbo);
     glGenBuffers(1, &_vboInstances);
@@ -56,7 +56,7 @@ DrawRectShader::DrawRectShader()
     glVertexAttribPointer(vVertVec, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, vec)));
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * INITIAL_INSTANCES_BUFFER_SIZE, NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * InitialInstancesBufferSize, NULL, GL_STREAM_DRAW);
 
     glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, clip)));
     glVertexAttribIPointer(

@@ -44,6 +44,7 @@ private:
     GLuint _vao;
 
     GLsizei _instanceCount = 0;
+    size_t _maxInstancesBufferSize;
 
 public:
     DrawRectShader();
