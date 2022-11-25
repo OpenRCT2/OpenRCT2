@@ -21,7 +21,7 @@ namespace OpenRCT2::Scripting
         { "empty", SPR_G2_EMPTY },
         { "placeholder", SPR_G2_PLACEHOLDER },
         { "logo", SPR_G2_LOGO },
-        { "logo_text", SPR_G2_LOGO },
+        { "logo_text", SPR_G2_TITLE },
         { "fast_forward", SPR_G2_FASTFORWARD },
         { "game_speed_indicator", SPR_G2_SPEED_ARROW },
         { "game_speed_indicator_double", SPR_G2_HYPER_ARROW },
@@ -141,12 +141,8 @@ namespace OpenRCT2::Scripting
 
     inline int32_t FilterLegacyIconSprites(const uint32_t& input)
     {
-        if (input < SPR_G2_EMPTY || input >= SPR_G2_CHAR_BEGIN)
-        {
-            return input;
-        }
         auto result = LegacyIconMap.find(input);
-        return result != LegacyIconMap.end() ? result->second : SPR_G2_EMPTY;
+        return result != LegacyIconMap.end() ? result->second : input;
     }
 
 } // namespace OpenRCT2::Scripting

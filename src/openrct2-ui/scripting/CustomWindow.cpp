@@ -109,7 +109,7 @@ namespace OpenRCT2::Ui::Windows
                 auto dukImage = desc["image"];
                 if (dukImage.type() == DukValue::Type::NUMBER)
                 {
-                    auto img = dukImage.as_uint();
+                    auto img =  FilterLegacyIconSprites(dukImage.as_uint());
                     result.Image = ImageId::FromUInt32(img);
                     result.HasBorder = false;
                 }
