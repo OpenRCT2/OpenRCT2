@@ -445,11 +445,11 @@ static void paint_monorail_station(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_flat[direction]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsChild(session, imageId, { 0, 6, height }, { 32, 20, 2 }, { 0, 0, height });
+        PaintAddImageAsChild(session, imageId, { 0, 6, height }, { { 0, 0, height }, { 32, 20, 2 } });
     }
     else
     {
-        PaintAddImageAsChild(session, imageId, { 6, 0, height }, { 20, 32, 2 }, { 0, 0, height });
+        PaintAddImageAsChild(session, imageId, { 6, 0, height }, { { 0, 0, height }, { 20, 32, 2 } });
     }
 
     if (direction == 0 || direction == 2)

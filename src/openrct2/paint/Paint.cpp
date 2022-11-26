@@ -757,13 +757,6 @@ PaintStruct* PaintAddImageAsParent(
     return CreateNormalPaintStruct(session, imageId, offset, boundBox);
 }
 
-PaintStruct* PaintAddImageAsChild(
-    PaintSession& session, const ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
-    const CoordsXYZ& boundBoxOffset)
-{
-    return PaintAddImageAsChild(session, imageId, offset, { boundBoxOffset, boundBoxLength });
-}
-
 /**
  *
  *  rct2: 0x006874B0, 0x00687618, 0x0068778C, 0x00687902, 0x0098199C

@@ -298,17 +298,17 @@ void track_paint_util_paint_fences(
     if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, rotation))
     {
         PaintAddImageAsChild(
-            session, colourFlags.WithIndex(fenceSprites[3]), { 0, 0, height }, { 32, 1, 7 }, { 0, 2, height + 2 });
+            session, colourFlags.WithIndex(fenceSprites[3]), { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
     if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, rotation))
     {
         PaintAddImageAsChild(
-            session, colourFlags.WithIndex(fenceSprites[0]), { 0, 0, height }, { 1, 32, 7 }, { 2, 0, height + 2 });
+            session, colourFlags.WithIndex(fenceSprites[0]), { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
     if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, rotation))
     {
         PaintAddImageAsParent(
-            session, colourFlags.WithIndex(fenceSprites[1]), { 0, 0, height }, { 32, 1, 7 }, { 0, 30, height + 2 });
+            session, colourFlags.WithIndex(fenceSprites[1]), { 0, 0, height }, { { 0, 30, height + 2 }, { 32, 1, 7 } });
     }
     if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, rotation))
     {
@@ -2031,11 +2031,11 @@ void track_paint_util_spinning_tunnel_paint(PaintSession& session, int8_t thickn
     auto imageId = colourFlags.WithIndex(trackSpritesGhostTrainSpinningTunnel[direction & 1][0][frame]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 28, 20, thickness }, { 2, 6, height });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 6, height }, { 28, 20, thickness } });
     }
     else
     {
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 28, thickness }, { 6, 2, height });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 6, 2, height }, { 20, 28, thickness } });
     }
 
     imageId = colourFlags.WithIndex(trackSpritesGhostTrainSpinningTunnel[direction & 1][1][frame]);

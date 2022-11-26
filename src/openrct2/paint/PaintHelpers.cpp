@@ -45,11 +45,11 @@ PaintStruct* PaintAddImageAsChildRotated(
     if (direction & 1)
     {
         return PaintAddImageAsChild(
-            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
-            { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
+            session, image_id, { offset.y, offset.x, offset.z },
+            { { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z } });
     }
 
-    return PaintAddImageAsChild(session, image_id, offset, boundBoxSize, boundBoxOffset);
+    return PaintAddImageAsChild(session, image_id, offset, { boundBoxOffset, boundBoxSize });
 }
 
 void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type)

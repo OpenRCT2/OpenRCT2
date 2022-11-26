@@ -68,8 +68,8 @@ template<bool isClassic> void wooden_rc_track_paint_bb(PaintSession& session, co
     {
         ImageId railsImageId = wooden_rc_get_rails_colour(session).WithIndex(bb->sprite_id_b);
         PaintAddImageAsChild(
-            session, railsImageId, { bb->offset.x, bb->offset.y, height + bb->offset.z }, bb->bb_size,
-            { bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z });
+            session, railsImageId, { bb->offset.x, bb->offset.y, height + bb->offset.z },
+            { { bb->bb_offset, height + bb->bb_offset.z }, bb->bb_size });
     }
 }
 

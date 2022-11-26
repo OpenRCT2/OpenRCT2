@@ -186,7 +186,9 @@ void vehicle_visual_virginia_reel(
         }
     }();
     baseImage_id += ecx & 7;
-    const vehicle_boundbox* bb = &_virginiaReelBoundbox[baseImage_id >> 3];
+    const auto& vehicleBb = _virginiaReelBoundbox[baseImage_id >> 3];
+    auto bb = BoundBoxXYZ{ { vehicleBb.offset_x, vehicleBb.offset_y, vehicleBb.offset_z + z },
+                           { vehicleBb.length_x, vehicleBb.length_y, vehicleBb.length_z } };
 
     baseImage_id += carEntry->base_image_id;
     auto image_id = ImageId(baseImage_id, vehicle->colours.Body, vehicle->colours.Trim);
@@ -194,9 +196,7 @@ void vehicle_visual_virginia_reel(
     {
         image_id = ConstructionMarker.WithIndex(image_id.GetIndex());
     }
-    PaintAddImageAsParent(
-        session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
-        { bb->offset_x, bb->offset_y, bb->offset_z + z });
+    PaintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
 
     if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {
@@ -211,9 +211,7 @@ void vehicle_visual_virginia_reel(
             if (riding_peep_sprites[i] != 0xFF)
             {
                 image_id = ImageId(baseImage_id + ((i + 1) * 72), riding_peep_sprites[i]);
-                PaintAddImageAsChild(
-                    session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
-                    { bb->offset_x, bb->offset_y, bb->offset_z + z });
+                PaintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
             }
         }
     }
@@ -438,7 +436,7 @@ static void paint_virginia_reel_station(
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 2 }, { 0, 2, height });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_VIRGINIA_REEL_FLAT_SW_NE);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 0, height });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 2 } });
 
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
@@ -448,7 +446,7 @@ static void paint_virginia_reel_station(
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 2 }, { 2, 0, height });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_VIRGINIA_REEL_FLAT_NW_SE);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 32, 2 }, { 0, 0, height });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 2 } });
 
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }

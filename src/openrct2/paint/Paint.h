@@ -304,9 +304,6 @@ PaintStruct* PaintAddImageAsParent(
 [[nodiscard]] PaintStruct* PaintAddImageAsOrphan(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 PaintStruct* PaintAddImageAsChild(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
-    const CoordsXYZ& boundBoxOffset);
-PaintStruct* PaintAddImageAsChild(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
 PaintStruct* PaintAddImageAsChildRotated(
