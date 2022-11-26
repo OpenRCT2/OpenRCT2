@@ -2538,7 +2538,7 @@ declare global {
         ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
         LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
         
-    type IconName = "empty" | "placeholder" | "logo" | "logo_text" | "fast_forward" | "game_speed_indicator" |
+    enum IconName = "empty" | "placeholder" | "logo" | "logo_text" | "fast_forward" | "game_speed_indicator" |
         "game_speed_indicator_double" | "map_gen_land" | "zoom_in" | "zoom_in_background" | "zoom_out" |
         "zoom_out_background" | "map_gen_trees" | "map_gen_noise" | "large_scenery" | "small_scenery" | "paths" |
         "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_off_pressed" | "rct1_test_off" |
