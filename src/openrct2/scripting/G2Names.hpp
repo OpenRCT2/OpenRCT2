@@ -213,7 +213,7 @@ namespace OpenRCT2::Scripting
         return SPR_G2_EMPTY;
     }
 
-    inline uint32_t FilterLegacyIconSprites(const uint32_t& input)
+    inline uint32_t NewIconIndex(const uint32_t& input)
     {
         auto result = LegacyIconMap.find(input);
         if (result != LegacyIconMap.end())

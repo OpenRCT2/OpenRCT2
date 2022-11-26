@@ -109,7 +109,9 @@ namespace OpenRCT2::Ui::Windows
                 auto dukImage = desc["image"];
                 if (dukImage.type() == DukValue::Type::NUMBER)
                 {
-                    auto img = FilterLegacyIconSprites(dukImage.as_uint());
+                    auto img = dukImage.as_uint();
+                    if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+                        img = NewIconIndex(img);
                     result.Image = ImageId::FromUInt32(img);
                     result.HasBorder = false;
                 }
@@ -218,7 +220,10 @@ namespace OpenRCT2::Ui::Windows
             auto dukImage = desc["image"];
             if (dukImage.type() == DukValue::Type::NUMBER)
             {
-                result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage.as_int()));
+                if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+                    result.imageFrameBase = ImageId::FromUInt32(NewIconIndex(dukImage.as_int()));
+                else
+                    result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage.as_int()));
                 result.imageFrameCount = 0;
                 result.imageFrameDuration = 0;
             }

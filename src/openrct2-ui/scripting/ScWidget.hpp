@@ -512,9 +512,10 @@ namespace OpenRCT2::Scripting
             {
                 if (value.type() == DukValue::Type::NUMBER)
                 {
-                    // image ids are converted from legacy values only when initialized in the Widgets field of ui.openWindow
-                    // conversion is NOT performed here on purpose
-                    widget->image = value.as_uint();
+                    if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+                        widget->image = NewIconIndex(value.as_uint());
+                    else
+                        widget->image = value.as_uint();
                 }
                 else
                     widget->image = GetIconByName(value.as_string());
