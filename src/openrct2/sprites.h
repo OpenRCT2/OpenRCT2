@@ -881,7 +881,7 @@ enum
     SPR_G2_PLACEHOLDER,
 
     // G2 UI Elements
-    // When UI elements to G2, insert them before fonts and give them a name in src/openrct2/scripting/G2Names.hpp
+    // When adding UI elements to G2, insert them before fonts and give them a name in src/openrct2/scripting/G2Names.hpp
 
     SPR_G2_LOGO,
     SPR_G2_TITLE,
