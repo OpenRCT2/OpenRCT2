@@ -222,4 +222,18 @@ namespace OpenRCT2::Scripting
         return input;
     }
 
+    inline uint32_t LegacyIconIndex(const uint32_t& input)
+    {
+        uint32_t result = input;
+        for (auto &i: LegacyIconMap)
+        {
+            if (i.second == input)
+            {
+                result = i.first;
+                break;
+            }
+        }
+        return result;
+    }
+
 } // namespace OpenRCT2::Scripting
