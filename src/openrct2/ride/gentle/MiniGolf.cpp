@@ -452,13 +452,13 @@ static PaintStruct* MiniGolfPaintUtil7C(
     if (direction & 1)
     {
         return PaintAddImageAsParent(
-            session, imageId, { yOffset, x_offset, zOffset }, { boundBoxLengthY, boundBoxLengthX, boundBoxLengthZ },
-            { boundBoxOffsetY, boundBoxOffsetX, boundBoxOffsetZ });
+            session, imageId, { yOffset, x_offset, zOffset },
+            { { boundBoxOffsetY, boundBoxOffsetX, boundBoxOffsetZ }, { boundBoxLengthY, boundBoxLengthX, boundBoxLengthZ } });
     }
 
     return PaintAddImageAsParent(
-        session, imageId, { x_offset, yOffset, zOffset }, { boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ },
-        { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ });
+        session, imageId, { x_offset, yOffset, zOffset },
+        { { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ }, { boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ } });
 }
 
 static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackElement& trackElement)
@@ -493,13 +493,13 @@ static void PaintMiniGolfTrackFlat(
     if (direction & 1)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMiniGolfFlatNwSe);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
         PaintUtilPushTunnelRight(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
     else
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMiniGolfFlatSwNe);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
         PaintUtilPushTunnelLeft(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
@@ -512,10 +512,10 @@ static void PaintMiniGolfTrackFlat(
         if (direction & 1)
         {
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfFlatFenceBackNwSe);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 10, 0, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 0, height + 2 }, { 1, 32, 7 } });
 
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfFlatFenceFrontNwSe);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 22, 0, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 22, 0, height + 2 }, { 1, 32, 7 } });
         }
         else
         {

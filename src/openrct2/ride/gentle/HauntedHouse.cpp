@@ -44,9 +44,9 @@ static void PaintHauntedHouseStructure(
     auto imageTemplate = session.TrackColours[SCHEME_MISC];
     auto baseImageIndex = rideEntry->Cars[0].base_image_id;
     auto imageIndex = baseImageIndex + direction;
-    PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height }, { boundBox.length, 127 },
-        { boundBox.offset, height });
+
+    auto bb = BoundBoxXYZ{ { boundBox.offset, height }, { boundBox.length, 127 } };
+    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height }, bb);
 
     if (session.DPI.zoom_level <= ZoomLevel{ 0 } && frameNum != 0)
     {

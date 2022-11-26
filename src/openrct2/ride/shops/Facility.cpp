@@ -56,11 +56,11 @@ static void PaintFacility(
     // Base image if door was drawn
     if (direction == 1)
     {
-        PaintAddImageAsParent(session, imageId.WithIndexOffset(2), offset, { 2, 28, 29 }, { 28, 2, height });
+        PaintAddImageAsParent(session, imageId.WithIndexOffset(2), offset, { { 28, 2, height }, { 2, 28, 29 } });
     }
     else if (direction == 2)
     {
-        PaintAddImageAsParent(session, imageId.WithIndexOffset(4), offset, { 28, 2, 29 }, { 2, 28, height });
+        PaintAddImageAsParent(session, imageId.WithIndexOffset(4), offset, { { 2, 28, height }, { 28, 2, 29 } });
     }
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);

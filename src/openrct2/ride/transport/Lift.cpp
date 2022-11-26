@@ -39,10 +39,10 @@ static void paint_lift_cage(PaintSession& session, int8_t index, ImageId colourF
     ImageId imageId;
 
     imageId = colourFlags.WithIndex(lift_cage_sprites[1 + index][0]);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 2, 2, height });
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 2, height }, { 2, 2, 30 } });
 
     imageId = colourFlags.WithIndex(lift_cage_sprites[1 + index][1]);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 28, 28, height });
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height }, { 2, 2, 30 } });
 }
 
 /** rct2: 0x0076C6CC */
@@ -71,7 +71,7 @@ static void paint_lift_base(
     int32_t edges = edges_3x3[trackSequence];
 
     auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL_B);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
     track_paint_util_paint_fences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,

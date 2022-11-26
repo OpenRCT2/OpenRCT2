@@ -195,11 +195,11 @@ static void PaintCarRideTrack25DegUp(
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 2, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, imageId, { 0, 2, height }, { { 0, 6, height }, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 2, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, imageId, { 2, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
 
     switch (direction)
@@ -233,11 +233,11 @@ static void PaintCarRideTrackFlatTo25DegUp(
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 2, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, imageId, { 0, 2, height }, { { 0, 6, height }, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 2, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, imageId, { 2, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
 
     switch (direction)
@@ -271,11 +271,11 @@ static void PaintCarRideTrack25DegUpToFlat(
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 2, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, imageId, { 0, 2, height }, { { 0, 6, height }, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 2, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, imageId, { 2, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
 
     switch (direction)
@@ -334,12 +334,12 @@ static void PaintCarRideStation(
     if (direction == 0 || direction == 2)
     {
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else if (direction == 1 || direction == 3)
     {
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesFlat[direction]);
@@ -430,19 +430,22 @@ static void PaintCarRideTrackLeftQuarterTurn1Tile(
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesLeftQuarterTurn1Tile[direction]);
 
+    CoordsXYZ offset;
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 26, 24, 1 }, { 6, 2, height });
+            PaintAddImageAsParent(session, imageId, { 6, 0, height }, { { 6, 2, height }, { 26, 24, 1 } });
             break;
         case 1:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 26, 1 });
+            offset = { 0, 0, height };
+            PaintAddImageAsParent(session, imageId, offset, { offset, { 26, 26, 1 } });
             break;
         case 2:
-            PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 24, 26, 1 }, { 2, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 6, height }, { { 2, 6, height }, { 24, 26, 1 } });
             break;
         case 3:
-            PaintAddImageAsParent(session, imageId, { 6, 6, height }, { 24, 24, 1 });
+            offset = { 6, 6, height };
+            PaintAddImageAsParent(session, imageId, offset, { offset, { 24, 24, 1 } });
             break;
     }
 
@@ -505,16 +508,16 @@ static void PaintCarRideTrack60DegUp(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 98 }, { 27, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 98 } });
             break;
         case 2:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 98 }, { 0, 27, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 98 } });
             break;
         case 3:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
             break;
     }
 
@@ -553,11 +556,11 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
 
     if (CarRideTrackPieces25DegUpTo60DegUp[direction][1] != 0)
@@ -566,11 +569,11 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
 
         if (direction == 0 || direction == 2)
         {
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
         }
         else
         {
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 66 }, { 27, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 66 } });
         }
     }
 
@@ -609,11 +612,11 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
 
     if (CarRideTrackPieces60DegUpTo25DegUp[direction][1] != 0)
@@ -622,11 +625,11 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
 
         if (direction == 0 || direction == 2)
         {
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
         }
         else
         {
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 66 }, { 27, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 66 } });
         }
     }
 
