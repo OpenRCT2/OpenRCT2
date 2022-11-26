@@ -13,6 +13,7 @@
 #include "../sprites.h"
 
 #include <map>
+#include <string>
 
 namespace OpenRCT2::Scripting
 {
