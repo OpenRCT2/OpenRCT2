@@ -595,7 +595,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
         const auto& offset = sbb->offset;
         PaintAddImageAsParent(
             session, session.TrackColours[SCHEME_TRACK].WithIndex(sbb->sprite_id), { offset.x, offset.y, height + offset.z },
-            sbb->bb_size);
+            { { 0, 0, 0 }, sbb->bb_size });
     }
 
     track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(
@@ -662,7 +662,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
         const SpriteBb* sbb = &imageIds[direction][part];
         PaintAddImageAsParent(
             session, session.TrackColours[SCHEME_TRACK].WithIndex(sbb->sprite_id),
-            { sbb->offset.x, sbb->offset.y, height + sbb->offset.z }, sbb->bb_size);
+            { sbb->offset.x, sbb->offset.y, height + sbb->offset.z }, { { 0, 0, 0 }, sbb->bb_size });
     }
 
     track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(session, height, direction, trackSequence, TUNNEL_1, TUNNEL_2);
