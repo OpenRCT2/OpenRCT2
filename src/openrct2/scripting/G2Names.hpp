@@ -17,6 +17,8 @@
 
 namespace OpenRCT2::Scripting
 {
+    // When adding to this map, also add to IconName in openrct2.d.ts
+
     static EnumMap<uint32_t> G2SpriteLookupTable = {
         { "empty", SPR_G2_EMPTY },
         { "placeholder", SPR_G2_PLACEHOLDER },
