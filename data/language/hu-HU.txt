@@ -2974,7 +2974,7 @@ STR_5831    :A hőmérséklet kijelzéséhez{NEWLINE}használt mértékegység m
 STR_5833    :A játék által használt dátumformátum megváltoztatása
 STR_5834    :Az OpenRCT2 által használt hangeszköz kiválasztása
 STR_5835    :A játék némítása, ha az ablak elveszti a fókuszt
-STR_5836    :A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha megadod az RCT1 útvonalát az Egyéb fülön.
+STR_5836    :A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha megadod az RCT1 útvonalát a Haladó fülön.
 STR_5838    :Külön gomb a pénzügyi ablak számára az eszköztáron
 STR_5839    :Külön gomb a kutatás-fejlesztés ablak számára az eszköztáron
 STR_5840    :Külön gomb a csalások ablak számára az eszköztáron
@@ -3583,9 +3583,9 @@ STR_6511    :Zéró G orsó (jobbra)
 STR_6512    :Nagy Zéró G orsó (balra)
 STR_6513    :Nagy Zéró G orsó (jobbra)
 STR_6514    :Érvénytelen magasság!
-STR_6515    :{BLACK}Nincs összekapcsolódás az RCT1-el - tartalékképek lesznek használva.
-STR_6516    :Egy vagy több hozzáadott objektum RCT1 összekapcsolást igényel a megfelelő megjelenítéshez. Tartalékképek lesznek használva.
-STR_6517    :Egy vagy több objektum ebben a parkban RCT1 összekapcsolást igényel a megfelelő megjelenítéshez. Tartalékképek lesznek használva.
+STR_6515    :{BLACK}Nincs összekapcsolódás az RollerCoaster Tycoon 1-el - tartalékképek lesznek használva.
+STR_6516    :Egy vagy több hozzáadott objektum RollerCoaster Tycoon 1 összekapcsolást igényel a megfelelő megjelenítéshez. Tartalékképek lesznek használva.
+STR_6517    :Egy vagy több objektum ebben a parkban RollerCoaster Tycoon 1 összekapcsolást igényel a megfelelő megjelenítéshez. Tartalékképek lesznek használva.
 STR_6518    :{BLACK}Vidd az egeret egy pálya fölé a leírás és a cél megtekintéséhez.  Kattints rá a játék elindításához.
 STR_6519    :Extrák
 STR_6520    :Asset csomagok
@@ -3598,6 +3598,8 @@ STR_6526    :(alap grafika, zene és hangeffektek)
 STR_6527    :Versenyek
 STR_6528    :Érvénytelen pályaparaméterek!
 STR_6529    :Érvénytelen színséma-paraméter!
+STR_6531    :Az időgép
+STR_6532    :Katy álomvilága
 
 #############
 # Scenarios #
@@ -4094,3 +4096,101 @@ STR_NAME    :Tető
 STR_SCNR    :Panda Világ
 STR_PARK    :Panda Világ
 STR_DTLS    :Szerezz be további játékokat, hogy több ember látogasson el ebbe a panda-témájú parkba
+
+###
+<UCES Halloween>
+STR_SCNR    :Temető-gerinc
+STR_PARK    :Temető-gerinc
+STR_DTLS    :Itt van halloween, UCES halloween, tök lámpás ami gyertyát rejt! Ez a temető bajban van, és rajtad múlik a megmentése, miközben arra is ügyelned kell, hogy a halottak békében nyugodjanak! Képes vagy a szellemeket a sírjukban tartani és frászt hozni a vendégeidre?{NEWLINE}Szerző: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :Alexandriai világítótorony
+STR_PARK    :Alexandriai világítótorony
+STR_DTLS    :Sándor építette a várost; a görögök, rómaiak, egyiptomiak rányomták bélyegüket. De a legnagyobb megtiszteltetés az ókori világ egy csodája - a világítótorony. Látogass el és hozz létre egy parkot!{NEWLINE}Szerző: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :Amilyen a megnyitó napján volt - 1905. május 18-án.{NEWLINE}Szerző: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Vezúv
+STR_PARK    :Vezúv
+STR_DTLS    :Pompejit és Herculaneumot a Vezúv temette maga alá Kr.u. 79-ben. Látogass el az ásatásokra és építs egy parkot!{NEWLINE}{NEWLINE}Szerző: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :A homokozó
+STR_PARK    :A homokozó
+STR_DTLS    :Amit mindenki akar - egy homokozó! Szóval ragadjátok meg a kis vödrötöket és lapátotokat és építsetek egy parkot!{NEWLINE}Szerző: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara-vízesés és szurdok
+STR_PARK    :Niagara-vízesés
+STR_DTLS    :Amerikai-zuhatag, Menyasszonyi fátyol-zuhatag és a kanadai Patkó-zuhatag a Niagara határon, 1850.{NEWLINE}Szerző: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Sziklás-hegyi bányászok
+STR_PARK    :Sziklás-hegyi bányászok
+STR_DTLS    :Egy sziklaomlás megrongálta a vasutadat. A munkásaid elmentek kutatni. Van arany a hullámvasutakban?{NEWLINE}Szerzők: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :Az időgép
+STR_PARK    :Az időgép
+STR_DTLS    :Az időgép. Építsd meg, hogy mehess - amikor akarsz, ahová akarsz. Az örökkévalóság vár. Minden relatív.{NEWLINE}Szerző: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Bábel tornya
+STR_PARK    :Bábel tornya
+STR_DTLS    :Hűű! Nézd csak, hova vitt minket az időgép! Hová tűnt mindenki?{NEWLINE}Szerző: Fossil
+
+<Transformation>
+STR_SCNR    :Átalakítás
+STR_PARK    :Átalakítás
+STR_DTLS    :Vártunk téged…{NEWLINE}Szerző: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :A rómaiak belefáradtak az unalmas gladiátorharcokba. Adj nekik valami izgalmasabbat, változtass egy római várost minden idők legnagyobb vidámparkjává!{NEWLINE}Szerző: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :A karácsonyfa alatt
+STR_PARK    :Téli csodaország
+STR_DTLS    :Anyu építette ezt a jelenetet a fánk alá. Most azt akarja, hogy parkot csináljunk bele! Tudsz segíteni?{NEWLINE}Szerző: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Robbanás Bigrockban
+STR_PARK    :Robbanás Bigrockban
+STR_DTLS    :Miután robbanás történt a Bigrock Mining Co. vállalatnál, Bigrock lakosainak egy vidámparkot kell építeniük, hogy életben tartsák városukat.{NEWLINE}Szerzők: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Feketerigó tábor
+STR_PARK    :Feketerigó tábor
+STR_DTLS    :Csak $500/hét ez a nyári tábor! Törd fel a bankodat, aztán szórakozz és építs egy parkot.{NEWLINE}Szerző: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Sihuhu város
+STR_PARK    :Sihuhu város
+STR_DTLS    :Anyu! Apu! Sihuhu városba akarok menni!{NEWLINE}Szerző: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Sárkány-szigetek
+STR_PARK    :Sárkány-szigetek
+STR_DTLS    :Sárkány-szigetek? Nem biztos, hogy oda akarok menni...{NEWLINE}Szerző: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kölyökkarnevál II
+STR_PARK    :Kölyökkarnevál
+STR_DTLS    :Hé, gyerekek! Érezzük jól magunkat!{NEWLINE}Szerzők: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Homokdűne
+STR_PARK    :Homokdűne
+STR_DTLS    :Mint egy kis park tulajdonosa, vásároltál egy nagy darab földet a tengerparton, hogy bővíts és még több vendéget vonzz a gyönyörű homokdűnékre, de vigyázz: nem bolygathatod az ökológiailag érzékeny homokdűnéket.{NEWLINE}Szerző: rbarclay
