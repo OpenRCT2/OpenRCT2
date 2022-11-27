@@ -181,7 +181,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         session.SpritePosition.y = coords.y;
         session.InteractionType = ViewportInteractionItem::None;
 
-        PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { 32, 32, -1 }, { 0, 0, arrowZ + 18 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { { 0, 0, arrowZ + 18 }, { 32, 32, -1 } });
     }
 
     if (screenMinY + 52 <= dpi->y)
@@ -332,8 +332,8 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             int32_t xOffset = static_cast<int32_t>(sy) * 10;
             int32_t yOffset = -22 + static_cast<int32_t>(sx) * 10;
             PaintStruct* ps = PaintAddImageAsParent(
-                session, imageColourFlats, { xOffset, yOffset, segmentHeight }, { 10, 10, 1 },
-                { xOffset + 1, yOffset + 16, segmentHeight });
+                session, imageColourFlats, { xOffset, yOffset, segmentHeight },
+                { { xOffset + 1, yOffset + 16, segmentHeight }, { 10, 10, 1 } });
             if (ps != nullptr)
             {
                 ps->image_id = ps->image_id.WithTertiary(COLOUR_BORDEAUX_RED);

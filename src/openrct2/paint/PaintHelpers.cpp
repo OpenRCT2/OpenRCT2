@@ -18,11 +18,11 @@ PaintStruct* PaintAddImageAsParentRotated(
     if (direction & 1)
     {
         return PaintAddImageAsParent(
-            session, imageId, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
-            { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
+            session, imageId, { offset.y, offset.x, offset.z },
+            { { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z } });
     }
 
-    return PaintAddImageAsParent(session, imageId, offset, boundBoxSize, boundBoxOffset);
+    return PaintAddImageAsParent(session, imageId, offset, { boundBoxOffset, boundBoxSize });
 }
 
 PaintStruct* PaintAddImageAsParentRotated(

@@ -737,8 +737,8 @@ static void ViewportSurfaceDrawTileSideBottom(
 
         auto imageId = GetTunnelImage(edgeStyle, tunnelType, edge);
         PaintAddImageAsParent(
-            session, imageId, { offset, zOffset }, { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 },
-            { 0, 0, boundBoxOffsetZ });
+            session, imageId, { offset, zOffset },
+            { { 0, 0, boundBoxOffsetZ }, { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 } });
 
         boundBoxOffsetZ = curHeight * COORDS_Z_PER_TINY_Z;
         boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
@@ -752,8 +752,8 @@ static void ViewportSurfaceDrawTileSideBottom(
         imageId = GetTunnelImage(edgeStyle, tunnelType, edge).WithIndexOffset(1);
         PaintAddImageAsParent(
             session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z },
-            { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 },
-            { tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ });
+            { { tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ },
+              { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 } });
 
         curHeight += _tunnelHeights[tunnelType][0];
         tunnelIndex++;
@@ -1100,10 +1100,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if (session.VerticalTunnelHeight * COORDS_Z_PER_TINY_Z == height)
     {
         // Vertical tunnels
-        PaintAddImageAsParent(session, ImageId(1575), { 0, 0, height }, { 1, 30, 39 }, { -2, 1, height - 40 });
-        PaintAddImageAsParent(session, ImageId(1576), { 0, 0, height }, { 30, 1, 0 }, { 1, 31, height });
-        PaintAddImageAsParent(session, ImageId(1577), { 0, 0, height }, { 1, 30, 0 }, { 31, 1, height });
-        PaintAddImageAsParent(session, ImageId(1578), { 0, 0, height }, { 30, 1, 39 }, { 1, -2, height - 40 });
+        PaintAddImageAsParent(session, ImageId(1575), { 0, 0, height }, { { -2, 1, height - 40 }, { 1, 30, 39 } });
+        PaintAddImageAsParent(session, ImageId(1576), { 0, 0, height }, { { 1, 31, height }, { 30, 1, 0 } });
+        PaintAddImageAsParent(session, ImageId(1577), { 0, 0, height }, { { 31, 1, height }, { 1, 30, 0 } });
+        PaintAddImageAsParent(session, ImageId(1578), { 0, 0, height }, { { 1, -2, height - 40 }, { 30, 1, 39 } });
     }
     else
     {
@@ -1409,8 +1409,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             }
 
             PaintAddImageAsParent(
-                session, ImageId(image_id), { fenceData.offset, local_height }, { fenceData.Boundbox.length, 9 },
-                { fenceData.Boundbox.offset, local_height + 1 });
+                session, ImageId(image_id), { fenceData.offset, local_height },
+                { { fenceData.Boundbox.offset, local_height + 1 }, { fenceData.Boundbox.length, 9 } });
         }
     }
 

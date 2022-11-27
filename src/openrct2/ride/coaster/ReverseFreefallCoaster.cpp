@@ -202,13 +202,13 @@ static void paint_reverse_freefall_rc_flat(
     if (direction & 1)
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
 
@@ -227,7 +227,7 @@ static void paint_reverse_freefall_rc_station(
     {
         // height -= 2 (height - 2)
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
         // height += 2 (height)
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(reverse_freefall_rc_track_pieces_station[direction]);
@@ -240,7 +240,7 @@ static void paint_reverse_freefall_rc_station(
     {
         // height -= 2 (height - 2)
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
         // height += 2 (height)
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(reverse_freefall_rc_track_pieces_station[direction]);
@@ -321,7 +321,7 @@ static void paint_reverse_freefall_rc_slope(
                 {
                     floorImageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_PLANKS);
                 }
-                PaintAddImageAsParent(session, floorImageId, { 0, 0, height }, { 26, 26, 126 }, { 3, 3, height });
+                PaintAddImageAsParent(session, floorImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 126 } });
                 PaintAddImageAsChildRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { isDirection03 ? 26 : 18, 26, 126 },
                     { isDirection03 ? 3 : 11, 3, height });
@@ -367,7 +367,7 @@ static void paint_reverse_freefall_rc_vertical(
         case 0:
             supportsImageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
                 reverse_freefall_rc_track_pieces_vertical_supports[direction]);
-            PaintAddImageAsParent(session, supportsImageId, { 0, 0, height }, { 26, 26, 79 }, { 3, 3, height });
+            PaintAddImageAsParent(session, supportsImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 79 } });
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
             break;

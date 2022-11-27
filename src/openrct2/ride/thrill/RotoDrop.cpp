@@ -55,11 +55,11 @@ void vehicle_visual_roto_drop(
 
     // Draw back:
     image_id = imageFlags.WithIndex(baseImage_id);
-    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 2, 2, 41 }, { -11, -11, z + 1 });
+    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -11, -11, z + 1 }, { 2, 2, 41 } });
 
     // Draw front:
     image_id = imageFlags.WithIndex(baseImage_id + 4);
-    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
 
     if (vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {

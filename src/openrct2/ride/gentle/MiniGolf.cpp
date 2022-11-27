@@ -938,8 +938,8 @@ static void PaintMiniGolfHoleC(
             break;
         default:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 0 },
-                { boundBoxOffset.x, boundBoxOffset.y, height + 24 });
+                session, imageId, { 0, 0, height },
+                { { boundBoxOffset.x, boundBoxOffset.y, height + 24 }, { boundBox.x, boundBox.y, 0 } });
             break;
     }
 

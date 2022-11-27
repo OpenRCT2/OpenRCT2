@@ -619,58 +619,58 @@ static void PathPaintFencesAndQueueBanners(
 
             case 7:
                 PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(1), { 0, 4, height }, { 32, 1, 7 }, { 0, 4, height + 2 });
+                    session, imageId.WithIndexOffset(1), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 7 } });
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(11), { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
+                        session, imageId.WithIndexOffset(11), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(12), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
+                        session, imageId.WithIndexOffset(12), { 0, 0, height }, { { 28, 28, height + 2 }, { 4, 4, 7 } });
                 }
                 break;
             case 13:
                 PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(1), { 0, 28, height }, { 32, 1, 7 }, { 0, 28, height + 2 });
+                    session, imageId.WithIndexOffset(1), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 7 } });
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(13), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
+                        session, imageId.WithIndexOffset(13), { 0, 0, height }, { { 28, 0, height + 2 }, { 4, 4, 7 } });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(10), { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
+                        session, imageId.WithIndexOffset(10), { 0, 0, height }, { { 0, 0, height + 2 }, { 4, 4, 7 } });
                 }
                 break;
             case 14:
                 PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(0), { 4, 0, height }, { 1, 32, 7 }, { 4, 0, height + 2 });
+                    session, imageId.WithIndexOffset(0), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 7 } });
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(12), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
+                        session, imageId.WithIndexOffset(12), { 0, 0, height }, { { 28, 28, height + 2 }, { 4, 4, 7 } });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(13), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
+                        session, imageId.WithIndexOffset(13), { 0, 0, height }, { { 28, 0, height + 2 }, { 4, 4, 7 } });
                 }
                 break;
             case 11:
                 PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(0), { 28, 0, height }, { 1, 32, 7 }, { 28, 0, height + 2 });
+                    session, imageId.WithIndexOffset(0), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 7 } });
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(11), { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
+                        session, imageId.WithIndexOffset(11), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(10), { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
+                        session, imageId.WithIndexOffset(10), { 0, 0, height }, { { 0, 0, height + 2 }, { 4, 4, 7 } });
                 }
                 break;
 
@@ -678,22 +678,22 @@ static void PathPaintFencesAndQueueBanners(
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(11), { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
+                        session, imageId.WithIndexOffset(11), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(12), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
+                        session, imageId.WithIndexOffset(12), { 0, 0, height }, { { 28, 28, height + 2 }, { 4, 4, 7 } });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(13), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
+                        session, imageId.WithIndexOffset(13), { 0, 0, height }, { { 28, 0, height + 2 }, { 4, 4, 7 } });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(10), { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
+                        session, imageId.WithIndexOffset(10), { 0, 0, height }, { { 0, 0, height + 2 }, { 4, 4, 7 } });
                 }
                 break;
         }
@@ -1091,8 +1091,8 @@ void PathPaintBoxSupport(
     if (!hasSupports || !hasPassedSurface)
     {
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, { boundBoxSize, 0 },
-            { boundBoxOffset, height + boundingBoxZOffset });
+            session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height },
+            { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
     }
     else
     {
@@ -1109,8 +1109,8 @@ void PathPaintBoxSupport(
         }
 
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height }, { boundBoxSize, 0 },
-            { boundBoxOffset, height + boundingBoxZOffset });
+            session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height },
+            { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
 
         if (pathElement.IsQueue() || (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
@@ -1230,8 +1230,8 @@ void PathPaintPoleSupport(
     if (!hasSupports || !hasPassedSurface)
     {
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, { boundBoxSize.x, boundBoxSize.y, 0 },
-            { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
+            session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height },
+            { { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset }, { boundBoxSize.x, boundBoxSize.y, 0 } });
     }
     else
     {
@@ -1248,8 +1248,8 @@ void PathPaintPoleSupport(
         }
 
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height }, { boundBoxSize, 0 },
-            { boundBoxOffset, height + boundingBoxZOffset });
+            session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height },
+            { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
 
         if (pathElement.IsQueue() || (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
