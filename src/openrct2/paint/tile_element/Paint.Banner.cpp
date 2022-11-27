@@ -112,10 +112,10 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     auto imageIndex = (direction << 1) + bannerEntry->image;
     auto imageId = imageTemplate.WithIndex(imageIndex);
     auto bbOffset = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 21 }, bbOffset);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     bbOffset = CoordsXYZ(BannerBoundBoxes[direction][1], height + 2);
-    PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { 1, 1, 21 }, bbOffset);
+    PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     PaintBannerScrollingText(session, *bannerEntry, *banner, bannerElement, direction, height, bbOffset);
 }

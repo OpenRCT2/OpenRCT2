@@ -396,7 +396,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     const CoordsXYZ& bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
 
     auto imageIndex = sceneryEntry->image + 4 + (sequenceNum << 2) + direction;
-    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, bbLength, bbOffset);
+    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { bbOffset, bbLength });
 
     if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE && direction != 1 && direction != 2)
     {

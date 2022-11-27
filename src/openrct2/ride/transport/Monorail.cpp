@@ -433,12 +433,12 @@ static void paint_monorail_station(
         if (direction == 0 || direction == 2)
         {
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 2 }, { 0, 2, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
         }
         else if (direction == 1 || direction == 3)
         {
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 2 }, { 2, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 2 } });
         }
     }
 
@@ -943,7 +943,8 @@ static void paint_monorail_track_left_eighth_to_diag(
             ghost_train_track_pieces_left_eight_to_diag[direction][index]);
         const CoordsXY& offset = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].offset;
         const CoordsXY& bounds = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].length;
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
+        PaintAddImageAsParent(
+            session, imageId, { 0, 0, height }, { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
     }
 
     switch (trackSequence)
@@ -1008,7 +1009,8 @@ static void paint_monorail_track_right_eighth_to_diag(
             ghost_train_track_pieces_right_eight_to_diag[direction][index]);
         const CoordsXY offset = GhostTrainTrackPiecesRightEightToDiagBoxes[direction][index].offset;
         const CoordsXY bounds = GhostTrainTrackPiecesRightEightToDiagBoxes[direction][index].length;
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
+        PaintAddImageAsParent(
+            session, imageId, { 0, 0, height }, { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
     }
 
     switch (trackSequence)
@@ -1110,7 +1112,7 @@ static void paint_monorail_track_diag_flat(
     if (monorail_diag_image_segment[direction][trackSequence])
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_diag_flat[direction]);
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 2 }, { -16, -16, height });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     if (trackSequence == 3)
@@ -1133,7 +1135,7 @@ static void paint_monorail_track_diag_25_deg_up(
     if (monorail_diag_image_segment[direction][trackSequence])
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_diag_25_deg_up[direction]);
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 2 }, { -16, -16, height });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     if (trackSequence == 3)
@@ -1156,7 +1158,7 @@ static void paint_monorail_track_diag_flat_to_25_deg_up(
     if (monorail_diag_image_segment[direction][trackSequence])
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_diag_flat_to_25_deg_up[direction]);
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 2 }, { -16, -16, height });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     if (trackSequence == 3)
@@ -1179,7 +1181,7 @@ static void paint_monorail_track_diag_25_deg_up_to_flat(
     if (monorail_diag_image_segment[direction][trackSequence])
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_diag_25_deg_up_to_flat[direction]);
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 2 }, { -16, -16, height });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     if (trackSequence == 3)
@@ -1202,7 +1204,7 @@ static void paint_monorail_track_diag_25_deg_down(
     if (monorail_diag_image_segment[direction][trackSequence])
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_diag_25_deg_up[(direction + 2) % 4]);
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 2 }, { -16, -16, height });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     if (trackSequence == 3)
@@ -1226,7 +1228,7 @@ static void paint_monorail_track_diag_flat_to_25_deg_down(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             monorail_track_pieces_diag_25_deg_up_to_flat[(direction + 2) % 4]);
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 2 }, { -16, -16, height });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     if (trackSequence == 3)
@@ -1250,7 +1252,7 @@ static void paint_monorail_track_diag_25_deg_down_to_flat(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             monorail_track_pieces_diag_flat_to_25_deg_up[(direction + 2) % 4]);
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 2 }, { -16, -16, height });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     if (trackSequence == 3)
