@@ -235,12 +235,12 @@ static void paint_virginia_reel_track_flat(
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction]);
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 27, 32, 2 }, { 2, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
 
@@ -266,11 +266,11 @@ static void paint_virginia_reel_track_25_deg_up(
 
     if (direction & 1)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 27, 32, 2 }, { 2, 0, height });
+        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
 
     if (direction == 1 || direction == 2)
@@ -318,27 +318,27 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
 
             WoodenASupportsPaintSetup(session, 0, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 27, 32, 2 }, { 2, 0, height });
+            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
             session.WoodenSupportsPrependTo = ps;
 
             WoodenASupportsPaintSetup(session, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
             break;
         case 2:
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             session.WoodenSupportsPrependTo = ps;
 
             WoodenASupportsPaintSetup(session, 0, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
             break;
         case 3:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 27, 32, 2 }, { 2, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
 
             WoodenASupportsPaintSetup(session, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
@@ -365,11 +365,11 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(
 
     if (direction & 1)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 27, 32, 2 }, { 2, 0, height });
+        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
 
     if (direction == 1 || direction == 2)
@@ -435,7 +435,7 @@ static void paint_virginia_reel_station(
     if (direction == 0 || direction == 2)
     {
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 2 }, { 0, 2, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_VIRGINIA_REEL_FLAT_SW_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 0, height });
@@ -445,7 +445,7 @@ static void paint_virginia_reel_station(
     else if (direction == 1 || direction == 3)
     {
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 2 }, { 2, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 2 } });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_VIRGINIA_REEL_FLAT_NW_SE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 32, 2 }, { 0, 0, height });

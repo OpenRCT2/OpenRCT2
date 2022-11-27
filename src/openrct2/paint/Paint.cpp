@@ -692,13 +692,6 @@ PaintStruct* PaintAddImageAsParent(
     return PaintAddImageAsParent(session, image_id, offset, { offset, boundBoxSize });
 }
 
-PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset)
-{
-    return PaintAddImageAsParent(session, image_id, offset, { boundBoxOffset, boundBoxSize });
-}
-
 /**
  *  rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C
  *

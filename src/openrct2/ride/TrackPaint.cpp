@@ -288,7 +288,7 @@ void track_paint_util_paint_floor(
         imageId = floorSprites[3];
     }
 
-    PaintAddImageAsParent(session, colourFlags.WithIndex(imageId), { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
+    PaintAddImageAsParent(session, colourFlags.WithIndex(imageId), { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 }
 
 void track_paint_util_paint_fences(
@@ -313,7 +313,7 @@ void track_paint_util_paint_fences(
     if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, rotation))
     {
         PaintAddImageAsParent(
-            session, colourFlags.WithIndex(fenceSprites[2]), { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
+            session, colourFlags.WithIndex(fenceSprites[2]), { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 7 } });
     }
 }
 
@@ -895,7 +895,7 @@ void track_paint_util_draw_pier(
         hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
         imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
             (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 6, 32, 1 }, { 2, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 6, 32, 1 } });
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
 
         imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PIER_EDGE_SW);
@@ -914,7 +914,7 @@ void track_paint_util_draw_pier(
         hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, rotation);
         imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
             (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 6, 1 }, { 0, 2, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 6, 1 } });
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
 
         imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PIER_EDGE_SE);
@@ -1022,8 +1022,8 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][0]);
 
         PaintAddImageAsParent(
-            session, imageId, { offset, height }, { boundsLength, thickness[0] },
-            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height },
+            { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness[0] } });
     }
     if (sprites[direction][index][1] != 0)
     {
@@ -1033,8 +1033,8 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][1]);
 
         PaintAddImageAsParent(
-            session, imageId, { offset, height }, { boundsLength, thickness[1] },
-            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height },
+            { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness[1] } });
     }
 }
 
@@ -1122,8 +1122,8 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][0]);
 
         PaintAddImageAsParent(
-            session, imageId, { offset, height }, { boundsLength, thickness[0] },
-            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height },
+            { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness[0] } });
     }
     if (sprites[direction][index][1] != 0)
     {
@@ -1133,8 +1133,8 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][1]);
 
         PaintAddImageAsParent(
-            session, imageId, { offset, height }, { boundsLength, thickness[1] },
-            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height },
+            { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness[1] } });
     }
 }
 
@@ -1297,8 +1297,9 @@ void track_paint_util_eighth_to_diag_tiles_paint(
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index]);
 
     PaintAddImageAsParent(
-        session, imageId, { offset.x, offset.y, height }, { boundsLength.x, boundsLength.y, thickness[direction][index] },
-        { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+        session, imageId, { offset.x, offset.y, height },
+        { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z },
+          { boundsLength.x, boundsLength.y, thickness[direction][index] } });
 }
 
 constexpr CoordsXY defaultDiagTileOffsets[4] = {
@@ -1339,8 +1340,8 @@ void track_paint_util_diag_tiles_paint(
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction]);
 
     PaintAddImageAsParent(
-        session, imageId, { offset, height }, { boundsLength, thickness },
-        { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+        session, imageId, { offset, height },
+        { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness } });
 }
 
 const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
@@ -1462,7 +1463,7 @@ void track_paint_util_right_quarter_turn_5_tiles_paint(
 
     PaintAddImageAsParent(
         session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-        { boundsLength.x, boundsLength.y, thickness }, { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+        { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength.x, boundsLength.y, thickness } });
 }
 
 void track_paint_util_right_quarter_turn_5_tiles_paint_2(
@@ -1480,8 +1481,8 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_2(
     const auto& offset = spriteBB->offset;
     const auto& bbOffset = spriteBB->bb_offset;
     PaintAddImageAsParent(
-        session, imageId, { offset.x, offset.y, height + offset.z }, spriteBB->bb_size,
-        { bbOffset.x, bbOffset.y, height + bbOffset.z });
+        session, imageId, { offset.x, offset.y, height + offset.z },
+        { { bbOffset.x, bbOffset.y, height + bbOffset.z }, spriteBB->bb_size });
 }
 
 void track_paint_util_right_quarter_turn_5_tiles_paint_3(
@@ -1637,8 +1638,8 @@ void track_paint_util_right_quarter_turn_3_tiles_paint(
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index]);
 
     PaintAddImageAsParent(
-        session, imageId, { offset, height }, { boundsLength.x, boundsLength.y, thickness },
-        { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+        session, imageId, { offset, height },
+        { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength.x, boundsLength.y, thickness } });
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_2(
@@ -1668,15 +1669,15 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 16, 16, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 16, 16, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
             }
             break;
@@ -1686,15 +1687,15 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 16, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 16, 0, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
             }
             break;
@@ -1704,15 +1705,15 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 0, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 0, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
             }
             break;
@@ -1722,15 +1723,15 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 0, 16, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 16, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
             }
             break;
@@ -1750,8 +1751,8 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_3(
     const auto& offset = spriteBB->offset;
     const auto& bbOffset = spriteBB->bb_offset;
     PaintAddImageAsParent(
-        session, colourFlags.WithIndex(spriteBB->sprite_id), { offset.x, offset.y, offset.z + height }, spriteBB->bb_size,
-        { bbOffset.x, bbOffset.y, height + bbOffset.z });
+        session, colourFlags.WithIndex(spriteBB->sprite_id), { offset.x, offset.y, offset.z + height },
+        { { bbOffset.x, bbOffset.y, height + bbOffset.z }, spriteBB->bb_size });
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_4(
@@ -1870,15 +1871,15 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 16, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 16, 0, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
             }
             break;
@@ -1888,15 +1889,15 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 0, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 0, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
             }
             break;
@@ -1906,15 +1907,15 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 0, 16, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 16, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
             }
             break;
@@ -1924,15 +1925,15 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 16, 16, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 16, 16, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
             }
             break;
@@ -1973,19 +1974,19 @@ void track_paint_util_left_quarter_turn_1_tile_paint(
     {
         case 0:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { 26, 24, thickness }, { 6, 2, height + boundBoxZOffset });
+                session, imageId, { 0, 0, height }, { { 6, 2, height + boundBoxZOffset }, { 26, 24, thickness } });
             break;
         case 1:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { 26, 26, thickness }, { 0, 0, height + boundBoxZOffset });
+                session, imageId, { 0, 0, height }, { { 0, 0, height + boundBoxZOffset }, { 26, 26, thickness } });
             break;
         case 2:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { 24, 26, thickness }, { 2, 6, height + boundBoxZOffset });
+                session, imageId, { 0, 0, height }, { { 2, 6, height + boundBoxZOffset }, { 24, 26, thickness } });
             break;
         case 3:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { 24, 24, thickness }, { 6, 6, height + boundBoxZOffset });
+                session, imageId, { 0, 0, height }, { { 6, 6, height + boundBoxZOffset }, { 24, 24, thickness } });
             break;
     }
 }
@@ -2041,11 +2042,11 @@ void track_paint_util_spinning_tunnel_paint(PaintSession& session, int8_t thickn
     imageId = colourFlags.WithIndex(trackSpritesGhostTrainSpinningTunnel[direction & 1][1][frame]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 1, 23 }, { 4, 28, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 28, height }, { 26, 1, 23 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 26, 23 }, { 28, 4, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 4, height }, { 1, 26, 23 } });
     }
 }
 
@@ -2201,7 +2202,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
                 auto heightNum = (height + 8) / 16 - gMapBaseZ;
                 auto imageId = ImageId(SPR_HEIGHT_MARKER_BASE + get_height_marker_offset() + heightNum, COLOUR_LIGHT_BLUE);
 
-                PaintAddImageAsParent(session, imageId, { 16, 16, height + ax + 3 }, { 1, 1, 0 }, { 1000, 1000, 2047 });
+                PaintAddImageAsParent(session, imageId, { 16, 16, height + ax + 3 }, { { 1000, 1000, 2047 }, { 1, 1, 0 } });
             }
         }
 

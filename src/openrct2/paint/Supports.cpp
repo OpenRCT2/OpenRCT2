@@ -967,7 +967,7 @@ bool MetalASupportsPaintSetup(
         imageIndex += z - 1;
         auto image_id = imageTemplate.WithIndex(imageIndex);
 
-        PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { 0, 0, 0 }, boundBoxOffset);
+        PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { boundBoxOffset, { 0, 0, 0 } });
 
         height += z;
     }
@@ -1148,8 +1148,8 @@ bool MetalBSupportsPaintSetup(
 
             uint32_t imageId = _97B15C[supportType].beam_id + (beamLength - 1);
             PaintAddImageAsParent(
-                session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[originalSegment], baseHeight }, { 0, 0, 0 },
-                { SupportBoundBoxes[originalSegment], height });
+                session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[originalSegment], baseHeight },
+                { { SupportBoundBoxes[originalSegment], height }, { 0, 0, 0 } });
             baseHeight += beamLength;
         }
     }

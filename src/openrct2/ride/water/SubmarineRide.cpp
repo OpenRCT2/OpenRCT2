@@ -56,10 +56,11 @@ void vehicle_visual_submarine(
 
     const auto& bb = VehicleBoundboxes[carEntry->draw_order][OpenRCT2::Entity::Yaw::YawTo16(imageDirection)];
     PaintAddImageAsParent(
-        session, imageId0, { 0, 0, z }, { bb.length_x, bb.length_y, bb.length_z },
-        { bb.offset_x, bb.offset_y, bb.offset_z + z });
+        session, imageId0, { 0, 0, z },
+        { { bb.offset_x, bb.offset_y, bb.offset_z + z }, { bb.length_x, bb.length_y, bb.length_z } });
     PaintAddImageAsParent(
-        session, imageId1, { 0, 0, z }, { bb.length_x, bb.length_y, 2 }, { bb.offset_x, bb.offset_y, bb.offset_z + z - 10 });
+        session, imageId1, { 0, 0, z },
+        { { bb.offset_x, bb.offset_y, bb.offset_z + z - 10 }, { bb.length_x, bb.length_y, 2 } });
     assert(carEntry->effect_visual == 1);
 }
 
@@ -74,7 +75,7 @@ static void submarine_ride_paint_track_station(
     if (direction & 1)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 20, 32, 3 }, { 6, 0, heightLower });
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 6, 0, heightLower }, { 20, 32, 3 } });
 
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
@@ -83,7 +84,7 @@ static void submarine_ride_paint_track_station(
     else
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 32, 20, 3 }, { 0, 6, heightLower });
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 0, 6, heightLower }, { 32, 20, 3 } });
 
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
@@ -104,13 +105,13 @@ static void submarine_ride_paint_track_flat(
     if (direction & 1)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 20, 32, 3 }, { 6, 0, heightLower });
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 6, 0, heightLower }, { 20, 32, 3 } });
         PaintUtilPushTunnelRight(session, heightLower, TUNNEL_0);
     }
     else
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 32, 20, 3 }, { 0, 6, heightLower });
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 0, 6, heightLower }, { 32, 20, 3 } });
         PaintUtilPushTunnelLeft(session, heightLower, TUNNEL_0);
     }
 

@@ -297,9 +297,6 @@ extern bool gPaintWidePathsAsGhost;
 PaintStruct* PaintAddImageAsParent(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
 PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset);
-PaintStruct* PaintAddImageAsParent(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 [[nodiscard]] PaintStruct* PaintAddImageAsOrphan(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
