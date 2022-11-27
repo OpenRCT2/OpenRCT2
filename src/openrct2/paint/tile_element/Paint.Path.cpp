@@ -471,7 +471,7 @@ static void PathPaintFencesAndQueueBanners(
 
             PaintAddImageAsChild(
                 session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),
-                { 0, 0, height + 7 }, { 1, 1, 21 }, boundBoxOffsets);
+                { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
         }
 
         session.InteractionType = ViewportInteractionItem::Footpath;

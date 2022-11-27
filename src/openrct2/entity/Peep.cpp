@@ -2821,7 +2821,10 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
     uint32_t baseImageId = (imageDirection >> 3) + GetPeepAnimation(SpriteType, actionSpriteType).base_image + imageOffset * 4;
     auto imageId = ImageId(baseImageId, TshirtColour, TrousersColour);
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
+
+    auto bb = BoundBoxXYZ{ { 0, 0, z + 5 }, { 1, 1, 11 } };
+    auto offset = CoordsXYZ{ 0, 0, z };
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, bb);
 
     auto* guest = As<Guest>();
     if (guest != nullptr)
@@ -2829,21 +2832,21 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         if (baseImageId >= 10717 && baseImageId < 10749)
         {
             imageId = ImageId(baseImageId + 32, guest->HatColour);
-            PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
+            PaintAddImageAsChild(session, imageId, offset, bb);
             return;
         }
 
         if (baseImageId >= 10781 && baseImageId < 10813)
         {
             imageId = ImageId(baseImageId + 32, guest->BalloonColour);
-            PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
+            PaintAddImageAsChild(session, imageId, offset, bb);
             return;
         }
 
         if (baseImageId >= 11197 && baseImageId < 11229)
         {
             imageId = ImageId(baseImageId + 32, guest->UmbrellaColour);
-            PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
+            PaintAddImageAsChild(session, imageId, offset, bb);
             return;
         }
     }

@@ -1855,7 +1855,7 @@ void junior_rc_paint_station(
         {
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_station[false][direction]);
         }
-        PaintAddImageAsChild(session, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 0, height });
+        PaintAddImageAsChild(session, imageId, { 0, 6, height }, { { 0, 0, height }, { 32, 20, 1 } });
 
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1877,7 +1877,7 @@ void junior_rc_paint_station(
         {
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_station[false][direction]);
         }
-        PaintAddImageAsChild(session, imageId, { 6, 0, height }, { 20, 32, 1 }, { 0, 0, height });
+        PaintAddImageAsChild(session, imageId, { 6, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
 
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);

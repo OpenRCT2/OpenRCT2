@@ -1006,7 +1006,7 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(
             CoordsXYZ boundsOffset = CoordsXYZ(offset, 0);
 
             PaintAddImageAsChild(
-                session, imageId, { offset, height }, { boundsLength, 2 }, boundsOffset + CoordsXYZ{ 0, 0, height });
+                session, imageId, { offset, height }, { boundsOffset + CoordsXYZ{ 0, 0, height }, { boundsLength, 2 } });
         }
     }
     if (direction == 0 && trackSequence == 0)
@@ -1380,7 +1380,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
         CoordsXYZ boundsOffset(offset, 0);
 
         PaintAddImageAsChild(
-            session, imageId, { offset, height }, { boundsLength, 3 }, boundsOffset + CoordsXYZ{ 0, 0, height });
+            session, imageId, { offset, height }, { boundsOffset + CoordsXYZ{ 0, 0, height }, { boundsLength, 3 } });
     }
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
@@ -1563,7 +1563,7 @@ static void paint_miniature_railway_track_left_eighth_to_diag(
                 miniature_railway_track_pieces_left_eight_to_diag[direction][index]);
             offset = miniature_railway_track_pieces_left_eight_to_diag_offset[direction][index];
             bounds = miniature_railway_track_pieces_left_eight_to_diag_bounds[direction][index];
-            PaintAddImageAsChild(session, imageId, { 0, 0, height }, bounds, { offset, height });
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
         }
     }
 
@@ -1728,7 +1728,7 @@ static void paint_miniature_railway_track_right_eighth_to_diag(
                 miniature_railway_track_pieces_right_eight_to_diag[direction][index]);
             offset = miniature_railway_track_pieces_right_eight_to_diag_offset[direction][index];
             bounds = miniature_railway_track_pieces_right_eight_to_diag_bounds[direction][index];
-            PaintAddImageAsChild(session, imageId, { 0, 0, height }, bounds, { offset, height });
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
         }
     }
 
@@ -1839,15 +1839,15 @@ static void miniature_railway_track_diag_flat(
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height }, { 32, 32, 2 },
-                { -16, -16, height });
+                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                { { -16, -16, height }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height }, { 32, 32, 2 },
-            { -16, -16, height });
+            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+            { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1940,8 +1940,8 @@ static void miniature_railway_track_diag_25_deg_up(
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height }, { 32, 32, 2 },
-                { -16, -16, height + offsetB[direction] });
+                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                { { -16, -16, height + offsetB[direction] }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
@@ -1991,15 +1991,15 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height }, { 32, 32, 2 },
-                { -16, -16, height });
+                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                { { -16, -16, height }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height }, { 32, 32, 2 },
-            { -16, -16, height });
+            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+            { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -2067,8 +2067,8 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height }, { 32, 32, 2 },
-                { -16, -16, height + railOffsets[direction] });
+                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
@@ -2142,8 +2142,8 @@ static void miniature_railway_track_diag_25_deg_down(
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height }, { 32, 32, 2 },
-                { -16, -16, height + railOffsets[direction] });
+                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
@@ -2216,8 +2216,8 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height }, { 32, 32, 2 },
-                { -16, -16, height + railOffsets[direction] });
+                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
@@ -2265,8 +2265,8 @@ static void miniature_railway_track_diag_25_deg_down_to_flat(
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height }, { 32, 32, 2 },
-                { -16, -16, height });
+                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                { { -16, -16, height }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)

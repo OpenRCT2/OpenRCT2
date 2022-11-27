@@ -185,7 +185,7 @@ static void SpiralSlidePaintTileFront(
 
             imageId = ImageId(offset + slide_progress, ride.slide_peep_t_shirt_colour, COLOUR_GREY);
 
-            PaintAddImageAsChild(session, imageId, { 16, 16, height }, boundingBox, boundingBoxOffset);
+            PaintAddImageAsChild(session, imageId, { 16, 16, height }, { boundingBoxOffset, boundingBox });
         }
     }
 }

@@ -59,27 +59,27 @@ void vehicle_visual_launched_freefall(
         auto directionOffset = OpenRCT2::Entity::Yaw::YawTo4(imageDirection);
         image_id = ImageId(
             baseImage_id + (((directionOffset + 0) & 3) * 3), vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
-        PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+        PaintAddImageAsChild(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
         if (vehicle->num_peeps > 2)
         {
             image_id = ImageId(
                 baseImage_id + (((directionOffset + 1) & 3) * 3), vehicle->peep_tshirt_colours[2],
                 vehicle->peep_tshirt_colours[3]);
-            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
         }
         if (vehicle->num_peeps > 4)
         {
             image_id = ImageId(
                 baseImage_id + (((directionOffset + 2) & 3) * 3), vehicle->peep_tshirt_colours[4],
                 vehicle->peep_tshirt_colours[5]);
-            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
         }
         if (vehicle->num_peeps > 6)
         {
             image_id = ImageId(
                 baseImage_id + (((directionOffset + 3) & 3) * 3), vehicle->peep_tshirt_colours[6],
                 vehicle->peep_tshirt_colours[7]);
-            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
         }
     }
 
@@ -177,7 +177,7 @@ static void paint_launched_freefall_tower_section(
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
     }
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
