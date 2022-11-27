@@ -376,6 +376,7 @@ void Duck::Paint(PaintSession& session, int32_t imageDirection) const
     uint32_t imageId = GetFrameImage(imageDirection);
     if (imageId != 0)
     {
-        PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
+        auto offset = CoordsXYZ{ 0, 0, z };
+        PaintAddImageAsParent(session, ImageId(imageId), offset, { offset, { 1, 1, 0 } });
     }
 }

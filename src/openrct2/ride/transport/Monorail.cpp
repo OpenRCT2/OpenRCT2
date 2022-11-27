@@ -389,14 +389,16 @@ static void paint_monorail_track_flat(
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_flat[direction]);
-
+    CoordsXYZ offset;
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
+        offset = { 0, 6, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 20, 3 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
+        offset = { 6, 0, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 20, 32, 3 } });
     }
 
     if (direction == 0 || direction == 2)
@@ -484,14 +486,17 @@ static void paint_monorail_track_25_deg_up(
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_25_deg_up[direction]);
+    CoordsXYZ offset;
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
+        offset = { 0, 6, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 20, 3 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
+        offset = { 6, 0, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 20, 32, 3 } });
     }
 
     switch (direction)
@@ -526,14 +531,17 @@ static void paint_monorail_track_flat_to_25_deg_up(
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_flat_to_25_deg_up[direction]);
+    CoordsXYZ offset;
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
+        offset = { 0, 6, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 20, 3 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
+        offset = { 6, 0, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 20, 32, 3 } });
     }
 
     switch (direction)
@@ -568,14 +576,17 @@ static void paint_monorail_track_25_deg_up_to_flat(
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_25_deg_up_to_flat[direction]);
+    CoordsXYZ offset;
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
+        offset = { 0, 6, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 20, 3 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
+        offset = { 6, 0, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 20, 32, 3 } });
     }
 
     switch (direction)
@@ -721,13 +732,16 @@ static void paint_monorail_track_s_bend_left(
         monorail_track_pieces_s_bend_left[direction & 1][trackSequence]);
     const CoordsXY& offset = boxList[trackSequence].offset;
     const CoordsXY& bounds = boxList[trackSequence].length;
+    CoordsXYZ offsetXYZ;
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 3 });
+        offsetXYZ = { offset.x, offset.y, height };
+        PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds.x, bounds.y, 3 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 3 });
+        offsetXYZ = { offset.y, offset.x, height };
+        PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds.y, bounds.x, 3 } });
     }
 
     if (direction == 0 || direction == 2)
@@ -810,13 +824,17 @@ static void paint_monorail_track_s_bend_right(
         monorail_track_pieces_s_bend_right[direction & 1][trackSequence]);
     const CoordsXY& offset = boxList[trackSequence].offset;
     const CoordsXY& bounds = boxList[trackSequence].length;
+    CoordsXYZ offsetXYZ;
+
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 3 });
+        offsetXYZ = { offset.x, offset.y, height };
+        PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds.x, bounds.y, 3 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 3 });
+        offsetXYZ = { offset.y, offset.x, height };
+        PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds.y, bounds.x, 3 } });
     }
 
     if (direction == 0 || direction == 2)

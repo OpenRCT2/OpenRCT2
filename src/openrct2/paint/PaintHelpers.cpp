@@ -31,11 +31,10 @@ PaintStruct* PaintAddImageAsParentRotated(
 {
     if (direction & 1)
     {
-        return PaintAddImageAsParent(
-            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z });
+        return PaintAddImageAsParent(session, image_id, offset, { offset, boundBoxSize });
     }
 
-    return PaintAddImageAsParent(session, image_id, offset, boundBoxSize);
+    return PaintAddImageAsParent(session, image_id, offset, { offset, boundBoxSize });
 }
 
 PaintStruct* PaintAddImageAsChildRotated(

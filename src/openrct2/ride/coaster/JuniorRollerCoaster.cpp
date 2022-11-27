@@ -2918,13 +2918,17 @@ static void junior_rc_s_bend_left_paint_setup(
         junior_rc_track_pieces_s_bend_left[(direction & 1)][trackSequence]);
     CoordsXY offset = offsetList[trackSequence];
     CoordsXY bounds = boundsList[trackSequence];
+
+    CoordsXYZ offsetXYZ;
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 1 });
+        offsetXYZ = { offset.x, offset.y, height };
+        PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds.x, bounds.y, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 1 });
+        offsetXYZ = { offset.y, offset.x, height };
+        PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds.y, bounds.x, 1 } });
     }
 
     if (direction == 0 || direction == 2)
@@ -3017,13 +3021,16 @@ static void junior_rc_s_bend_right_paint_setup(
         junior_rc_track_pieces_s_bend_right[direction & 1][trackSequence]);
     CoordsXY offset = offsetList[trackSequence];
     CoordsXY bounds = boundsList[trackSequence];
+    CoordsXYZ offsetXYZ;
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 1 });
+        offsetXYZ = { offset.x, offset.y, height };
+        PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds.x, bounds.y, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 1 });
+        offsetXYZ = { offset.y, offset.x, height };
+        PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds.y, bounds.x, 1 } });
     }
 
     if (direction == 0 || direction == 2)
@@ -3849,13 +3856,15 @@ static void junior_rc_brake_paint_setup(
     image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_brake[direction]);
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
+        auto offset = CoordsXYZ{ 6, 0, height };
+        PaintAddImageAsParent(session, image_id, offset, { offset, { 20, 32, 1 } });
 
         PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, { 0, 6, height }, { 32, 20, 1 });
+        auto offset = CoordsXYZ{ 0, 6, height };
+        PaintAddImageAsParent(session, image_id, offset, { offset, { 32, 20, 1 } });
 
         PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
@@ -3885,13 +3894,15 @@ static void junior_rc_block_brake_paint_setup(
     image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
+        auto offset = CoordsXYZ{ 6, 0, height };
+        PaintAddImageAsParent(session, image_id, offset, { offset, { 20, 32, 1 } });
 
         PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, { 0, 6, height }, { 32, 20, 1 });
+        auto offset = CoordsXYZ{ 0, 6, height };
+        PaintAddImageAsParent(session, image_id, offset, { offset, { 32, 20, 1 } });
 
         PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
@@ -5802,19 +5813,20 @@ static void junior_rc_booster_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
+    auto offset = CoordsXYZ{ 0, 0, height };
     if (direction & 1)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BOOSTER_NE_SW), { 0, 0, height },
-            { 20, 32, 1 });
+            session, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BOOSTER_NE_SW), offset,
+            { offset, { 20, 32, 1 } });
 
         PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
     else
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BOOSTER_NW_SE), { 0, 0, height },
-            { 32, 20, 1 });
+            session, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BOOSTER_NW_SE), offset,
+            { offset, { 32, 20, 1 } });
 
         PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }

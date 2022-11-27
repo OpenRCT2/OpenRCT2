@@ -905,7 +905,8 @@ static void PaintPatrolAreas(PaintSession& session, const PathElement& pathEl)
         }
 
         auto imageId = ImageId(baseImageIndex, *colour);
-        PaintAddImageAsParent(session, imageId, { 16, 16, patrolAreaBaseZ + 2 }, { 1, 1, 0 });
+        auto offset = CoordsXYZ{ 16, 16, patrolAreaBaseZ + 2 };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 1, 1, 0 } });
     }
 }
 
@@ -926,7 +927,8 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
         baseImageIndex += get_height_marker_offset();
         baseImageIndex -= gMapBaseZ;
         auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
-        PaintAddImageAsParent(session, imageId, { 16, 16, heightMarkerBaseZ }, { 1, 1, 0 });
+        auto offset = CoordsXYZ{ 16, 16, heightMarkerBaseZ };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 1, 1, 0 } });
     }
 }
 

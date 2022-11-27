@@ -105,7 +105,9 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
     session.SpritePosition.x = x;
     session.SpritePosition.y = y;
     session.InteractionType = ViewportInteractionItem::None;
-    PaintAddImageAsParent(session, ImageId(SPR_BLANK_TILE), { 0, 0, 16 }, { 32, 32, -1 });
+
+    auto offset = CoordsXYZ{ 0, 0, 16 };
+    PaintAddImageAsParent(session, ImageId(SPR_BLANK_TILE), offset, { offset, { 32, 32, -1 } });
 }
 
 bool gShowSupportSegmentHeights = false;

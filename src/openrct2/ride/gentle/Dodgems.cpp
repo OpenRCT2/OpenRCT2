@@ -37,7 +37,8 @@ static constexpr const uint32_t DodgemsFenceSprites[] = {
 static void PaintDodgemsRoof(PaintSession& session, int32_t height, int32_t offset)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SprDodgemsRoofFrame + offset));
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 2 });
+    auto offset = CoordsXYZ{ 0, 0, height };
+    PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 32, 2 } });
 
     imageId = ImageId(SprDodgemsRoofGlass + offset).WithTransparency(FilterPaletteID::PaletteDarken3);
     PaintAttachToPreviousPS(session, imageId, 0, 0);

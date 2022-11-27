@@ -120,5 +120,7 @@ void Balloon::Paint(PaintSession& session, int32_t imageDirection) const
     }
 
     auto image = ImageId(imageId, colour);
-    PaintAddImageAsParent(session, image, { 0, 0, z }, { 1, 1, 0 });
+
+    const auto offset = CoordsXYZ{ 0, 0, z };
+    PaintAddImageAsParent(session, image, offset, { offset, { 1, 1, 0 } });
 }

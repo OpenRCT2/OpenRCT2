@@ -669,7 +669,8 @@ static void ViewportSurfaceDrawTileSideBottom(
         if (curHeight != cornerHeight1 && curHeight != cornerHeight2)
         {
             auto imageId = baseImageId.WithIndexOffset(image_offset);
-            PaintAddImageAsParent(session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+            auto offsetXYZ = CoordsXYZ{ offset, curHeight * COORDS_Z_PER_TINY_Z };
+            PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds, 15 } });
             curHeight++;
         }
     }
@@ -693,7 +694,8 @@ static void ViewportSurfaceDrawTileSideBottom(
             }
 
             auto imageId = baseImageId.WithIndexOffset(image_offset);
-            PaintAddImageAsParent(session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+            auto offsetXYZ = CoordsXYZ{ offset, curHeight * COORDS_Z_PER_TINY_Z };
+            PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds, 15 } });
 
             return;
         }
@@ -708,7 +710,8 @@ static void ViewportSurfaceDrawTileSideBottom(
 
             if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
-                PaintAddImageAsParent(session, baseImageId, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+                auto offsetXYZ = CoordsXYZ{ offset, curHeight * COORDS_Z_PER_TINY_Z };
+                PaintAddImageAsParent(session, baseImageId, offsetXYZ, { offsetXYZ, { bounds, 15 } });
 
                 curHeight++;
                 continue;
@@ -884,8 +887,8 @@ static void ViewportSurfaceDrawTileSideTop(
         if (cur_height != cornerHeight1 && cur_height != cornerHeight2)
         {
             auto imageId = baseImageId.WithIndexOffset(image_offset);
-            PaintAddImageAsParent(
-                session, imageId, { offset.x, offset.y, cur_height * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
+            auto offsetXYZ = CoordsXYZ{ offset.x, offset.y, cur_height * COORDS_Z_PER_TINY_Z };
+            PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds.x, bounds.y, 15 } });
             cur_height++;
         }
     }
@@ -898,9 +901,11 @@ static void ViewportSurfaceDrawTileSideTop(
         offset.y = 0;
     }
 
+    CoordsXYZ offsetXYZ;
     while (cur_height < cornerHeight1 && cur_height < neighbourCornerHeight1)
     {
-        PaintAddImageAsParent(session, baseImageId, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+        offsetXYZ = { offset, cur_height * COORDS_Z_PER_TINY_Z };
+        PaintAddImageAsParent(session, baseImageId, offsetXYZ, { offsetXYZ, { bounds, 15 } });
         cur_height++;
     }
 
@@ -916,7 +921,8 @@ static void ViewportSurfaceDrawTileSideTop(
     }
 
     auto imageId = baseImageId.WithIndexOffset(image_offset);
-    PaintAddImageAsParent(session, imageId, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+    auto offsetXYZ = CoordsXYZ{ offset, cur_height * COORDS_Z_PER_TINY_Z };
+    PaintAddImageAsParent(session, imageId, offsetXYZ, { offsetXYZ, { bounds, 15 } });
 }
 
 /**
@@ -1007,7 +1013,8 @@ static void PaintPatrolArea(PaintSession& session, const SurfaceElement& element
         auto imageId = ImageId(SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[localSurfaceShape], *colour);
 
         auto* backup = session.LastPS;
-        PaintAddImageAsParent(session, imageId, { 0, 0, localZ }, { 32, 32, 1 });
+        auto offset = CoordsXYZ{ 0, 0, localZ };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 32, 1 } });
         session.LastPS = backup;
     }
 }
@@ -1093,7 +1100,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         image_id += get_height_marker_offset();
         image_id -= gMapBaseZ;
 
-        PaintAddImageAsParent(session, ImageId(image_id, COLOUR_OLIVE_GREEN), { 16, 16, surfaceHeight }, { 1, 1, 0 });
+        auto offset = CoordsXYZ{ 16, 16, surfaceHeight };
+        PaintAddImageAsParent(session, ImageId(image_id, COLOUR_OLIVE_GREEN), offset, { offset, { 1, 1, 0 } });
     }
 
     bool has_surface = false;
@@ -1140,7 +1148,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             imageId = imageId.WithRemap(FilterPaletteID::Palette44);
         }
 
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
+        auto offset = CoordsXYZ{ 0, 0, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 32, -1 } });
         has_surface = true;
     }
 
@@ -1151,15 +1160,18 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         && session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         const CoordsXY& pos = session.MapPosition;
+        CoordsXYZ offsetXYZ;
         for (auto& spawn : gPeepSpawns)
         {
             if ((spawn.x & 0xFFE0) == pos.x && (spawn.y & 0xFFE0) == pos.y)
             {
-                PaintAddImageAsParent(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE_SIMPLE), { 0, 0, spawn.z }, { 32, 32, 16 });
+                offsetXYZ = { 0, 0, spawn.z };
+                PaintAddImageAsParent(
+                    session, ImageId(SPR_TERRAIN_SELECTION_SQUARE_SIMPLE), offsetXYZ, { offsetXYZ, { 32, 32, 16 } });
 
                 const int32_t offset = (DirectionReverse(spawn.direction) + rotation) & 3;
                 const auto image_id = ImageId(PEEP_SPAWN_ARROW_0 + offset, COLOUR_LIGHT_BLUE);
-                PaintAddImageAsParent(session, image_id, { 0, 0, spawn.z }, { 32, 32, 19 });
+                PaintAddImageAsParent(session, image_id, offsetXYZ, { offsetXYZ, { 32, 32, 19 } });
             }
         }
     }
@@ -1177,7 +1189,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             const CoordsXY& pos = session.MapPosition;
             const int32_t height2 = (TileElementHeight({ pos.x + 16, pos.y + 16 })) + 3;
             PaintStruct* backup = session.LastPS;
-            PaintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
+
+            auto offset = CoordsXYZ{ 16, 16, height2 };
+            PaintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), offset, { offset, { 1, 1, 0 } });
             session.LastPS = backup;
         }
     }
@@ -1194,8 +1208,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             const CoordsXY& pos = session.MapPosition;
             const int32_t height2 = TileElementHeight({ pos.x + 16, pos.y + 16 });
             PaintStruct* backup = session.LastPS;
+
+            auto offset = CoordsXYZ{ 16, 16, height2 + 3 };
             PaintAddImageAsParent(
-                session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), { 16, 16, height2 + 3 }, { 1, 1, 0 });
+                session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), offset, { offset, { 1, 1, 0 } });
             session.LastPS = backup;
         }
     }
@@ -1251,7 +1267,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape], fpId);
 
                 PaintStruct* backup = session.LastPS;
-                PaintAddImageAsParent(session, image_id, { 0, 0, local_height }, { 32, 32, 1 });
+                auto offset = CoordsXYZ{ 0, 0, local_height };
+                PaintAddImageAsParent(session, image_id, offset, { offset, { 32, 32, 1 } });
                 session.LastPS = backup;
             }
         }
@@ -1330,7 +1347,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
 
         const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::PaletteWater).WithBlended(true);
-        PaintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
+        auto offset = CoordsXYZ{ 0, 0, waterHeight };
+        PaintAddImageAsParent(session, image_id, offset, { offset, { 32, 32, -1 } });
 
         const bool transparent = gConfigGeneral.TransparentWater || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
         const uint32_t overlayStart = transparent ? SPR_WATER_OVERLAY : SPR_RCT1_WATER_OVERLAY;

@@ -235,7 +235,9 @@ static void PaintMagicCarpet(
             if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
             {
                 auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_BASE_D);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
+
+                auto offset = CoordsXYZ{ 0, 0, height };
+                PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 32, 1 } });
             }
             break;
     }

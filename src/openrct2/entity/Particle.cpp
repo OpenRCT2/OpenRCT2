@@ -163,7 +163,9 @@ void VehicleCrashParticle::Paint(PaintSession& session, int32_t imageDirection) 
 
     uint32_t imageId = _VehicleCrashParticleSprites[crashed_sprite_base] + frame / 256;
     auto image = ImageId(imageId, colour[0], colour[1]);
-    PaintAddImageAsParent(session, image, { 0, 0, z }, { 1, 1, 0 });
+
+    auto offset = CoordsXYZ{ 0, 0, z };
+    PaintAddImageAsParent(session, image, offset, { offset, { 1, 1, 0 } });
 }
 
 /**
@@ -209,7 +211,9 @@ void CrashSplashParticle::Paint(PaintSession& session, int32_t imageDirection) c
 
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22927 + (frame / 256);
-    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
+
+    auto offset = CoordsXYZ{ 0, 0, z };
+    PaintAddImageAsParent(session, ImageId(imageId), offset, { offset, { 1, 1, 0 } });
 }
 
 /**
@@ -268,7 +272,8 @@ void SteamParticle::Paint(PaintSession& session, int32_t imageDirection) const
 
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22637 + (frame / 256);
-    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
+    auto offset = CoordsXYZ{ 0, 0, z };
+    PaintAddImageAsParent(session, ImageId(imageId), offset, { offset, { 1, 1, 0 } });
 }
 
 /**
@@ -313,7 +318,9 @@ void ExplosionCloud::Paint(PaintSession& session, int32_t imageDirection) const
     PROFILED_FUNCTION();
 
     uint32_t imageId = 22878 + (frame / 256);
-    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
+
+    auto offset = CoordsXYZ{ 0, 0, z };
+    PaintAddImageAsParent(session, ImageId(imageId), offset, { offset, { 1, 1, 0 } });
 }
 
 /**
@@ -359,5 +366,7 @@ void ExplosionFlare::Paint(PaintSession& session, int32_t imageDirection) const
 
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22896 + (frame / 256);
-    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
+
+    auto offset = CoordsXYZ{ 0, 0, z };
+    PaintAddImageAsParent(session, ImageId(imageId), offset, { offset, { 1, 1, 0 } });
 }

@@ -161,14 +161,17 @@ static void PaintCarRideTrackFlat(
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesFlat[direction]);
+    CoordsXYZ offset;
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 1 });
+        offset = { 0, 6, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 1 });
+        offset = { 6, 0, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 20, 32, 1 } });
     }
 
     if (direction == 0 || direction == 2)
@@ -468,14 +471,17 @@ static void PaintCarRideTrackSpinningTunnel(
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesFlat[direction]);
+    CoordsXYZ offset;
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 1 });
+        offset = { 0, 6, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 1 });
+        offset = { 6, 0, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 20, 32, 1 } });
     }
 
     track_paint_util_spinning_tunnel_paint(session, 1, height, direction);
@@ -686,14 +692,17 @@ static void PaintCarRideTrackLogBumps(
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(CarRideTrackPiecesLogBumps[direction]);
+    CoordsXYZ offset;
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 1 });
+        offset = { 0, 6, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 1 });
+        offset = { 6, 0, height };
+        PaintAddImageAsParent(session, imageId, offset, { offset, { 20, 32, 1 } });
     }
 
     if (direction == 0 || direction == 2)

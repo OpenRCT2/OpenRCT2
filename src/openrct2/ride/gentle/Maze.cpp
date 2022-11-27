@@ -62,7 +62,9 @@ static void MazePaintSetup(
     uint32_t rotation = session.CurrentRotation;
     // draw ground
     auto imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_TERRAIN_DIRT);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 0 });
+
+    auto offset = CoordsXYZ{ 0, 0, height };
+    PaintAddImageAsParent(session, imageId, offset, { offset, { 32, 32, 0 } });
 
     WoodenASupportsPaintSetup(session, (rotation & 1) ? 0 : 1, 0, height, session.TrackColours[SCHEME_3]);
 
