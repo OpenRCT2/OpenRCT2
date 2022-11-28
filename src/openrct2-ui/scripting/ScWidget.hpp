@@ -522,7 +522,9 @@ namespace OpenRCT2::Scripting
                         widget->image = value.as_uint();
                 }
                 else
+                {
                     widget->image = GetIconByName(value.as_string());
+                }
                 Invalidate();
             }
         }

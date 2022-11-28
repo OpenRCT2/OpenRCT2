@@ -227,7 +227,7 @@ namespace OpenRCT2::Scripting
     inline uint32_t LegacyIconIndex(const uint32_t& input)
     {
         uint32_t result = input;
-        for (auto &i: LegacyIconMap)
+        for (auto& i : LegacyIconMap)
         {
             if (i.second == input)
             {
