@@ -31,7 +31,7 @@ struct TrackDescriptor
     uint8_t track_curve;
     uint8_t slope_end;
     uint8_t bank_end;
-    uint8_t track_element;
+    track_type_t track_element;
 };
 
 enum
@@ -51,7 +51,7 @@ enum
     R9_SPIN
 };
 
-extern const TrackDescriptor gTrackDescriptors[142];
+extern const TrackDescriptor gTrackDescriptors[186];
 
 struct DodgemsTrackSize
 {

@@ -325,8 +325,9 @@ public:
                 | (1uLL << WIDX_BANK_RIGHT);
         }
 
-        // Disable large curves if the start or end of the track is sloped.
-        if (_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _currentTrackSlopeEnd != TRACK_SLOPE_NONE)
+        // Disable large curves if the start or end of the track is sloped and large sloped curves are not available
+        if ((_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _currentTrackSlopeEnd != TRACK_SLOPE_NONE)
+            && !IsTrackEnabled(TRACK_SLOPE_CURVE_LARGE))
         {
             disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
         }
