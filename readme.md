@@ -208,7 +208,7 @@ cmake --build . --target install
 # 4. Contributing
 
 There are two places to find information on how to contribute:
-- See [CONTRIBUTING.md](https://github.com/mokeefe09/OpenRCT2/blob/contribution_docs/CONTRIBUTING.md) for a brief, high-level overview of the different types of contributions relevant to the project. There are also recommendations regarding coding style and best practices.
+- See [CONTRIBUTING.md](https://github.com/OpenRCT2/OpenRCT2/blob/develop/CONTRIBUTING.md) for a brief, high-level overview of the different types of contributions relevant to the project. There are also recommendations regarding coding style and best practices.
 
 - See the [How To Contribute](https://github.com/OpenRCT2/OpenRCT2/wiki/How-To-Contribute) section of the wiki for a more in-depth explanation of the concrete steps required to contribute (forking, cloning, pull requests, etc.). The wiki contains other documentation contributors may find useful, such a detailed description of data structures used in the game.
 ---
