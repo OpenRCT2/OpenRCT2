@@ -2997,7 +2997,7 @@ STR_5832    :Mostrar marcas de altura con{NEWLINE}valores relativos{NEWLINE}(+1,
 STR_5833    :Cambiar el formato de fecha a usar en el juego.
 STR_5834    :Selecciona el dispositivo de sonido que OpenRCT2 debe usar.
 STR_5835    :Silenciar el juego si la ventana pierde el foco.
-STR_5836    :Selecciona la música usada en el menú principal.{NEWLINE}Seleccionar el tema de RCT1 requiere establecer la ruta a RCT1 en ‘Otras Opciones’.
+STR_5836    :Selecciona la música usada en el menú principal.{NEWLINE}Seleccionar el tema de RCT1 requiere establecer la ruta a RCT1 en las Opciones Avanzadas.
 STR_5837    :Crea y gestiona tus temas personalizados de la interfaz.
 STR_5838    :Mostrar un botón separado para las finanzas en la barra de herramienta superior.
 STR_5839    :Mostrar un botón separado para la investigación y desarrollo en la barra de herramienta superior.
@@ -3621,9 +3621,9 @@ STR_6511    :Giro de Gravedad Cero (der)
 STR_6512    :Giro de Gravedad Cero grande (izq)
 STR_6513    :Giro de Gravedad Cero grande (der)
 STR_6514    :¡Altura no válida!
-STR_6515    :{BLACK}RCT1 no ha sido enlazado - se utilizarán imágenes alternativas.
-STR_6516    :Uno o más objetos añadidos requieren haber enlazado RTC1 para su correcta visualización. Se utilizarán imágenes alternativas.
-STR_6517    :Uno o más objetos de este parque requieren haber enlazado RTC1 para su correcta visualización. Se utilizarán imágenes alternativas.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 no ha sido enlazado - se utilizarán imágenes alternativas.
+STR_6516    :Uno o más objetos añadidos requieren haber enlazado RollerCoaster Tycoon 1 para su correcta visualización. Se utilizarán imágenes alternativas.
+STR_6517    :Uno o más objetos de este parque requieren haber enlazado RollerCoaster Tycoon 1 para su correcta visualización. Se utilizarán imágenes alternativas.
 STR_6518    :{BLACK}Posa el ratón sobre un escenario para ver su descripción y objetivos. Haz click para empezar a jugar.
 STR_6519    :Extras
 STR_6520    :Paquetes de Recursos
