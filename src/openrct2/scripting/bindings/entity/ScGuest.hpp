@@ -27,7 +27,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx);
 
     private:
-        uint8_t type_get() const;
+        std::string type_get() const;
         uint16_t item_get() const;
         uint8_t freshness_get() const;
         uint8_t freshTimeout_get() const;
