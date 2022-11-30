@@ -11,8 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScPeep.hpp"
 #    include "../../../entity/Guest.h"
+#    include "ScPeep.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -24,7 +24,7 @@ namespace OpenRCT2::Scripting
     public:
         ScThought(PeepThought backing);
 
-        static void Register(duk_context *ctx);
+        static void Register(duk_context* ctx);
 
     private:
         uint8_t type_get() const;

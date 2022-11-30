@@ -371,7 +371,7 @@ namespace OpenRCT2::Scripting
     {
     }
 
-    void ScThought::Register(duk_context *ctx)
+    void ScThought::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScThought::type_get, nullptr, "type");
         dukglue_register_property(ctx, &ScThought::item_get, nullptr, "item");
