@@ -12,6 +12,7 @@
 #    include "ScGuest.hpp"
 
 #    include "../../../entity/Guest.h"
+#    include "../../../localisation/Localisation.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -43,6 +44,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::isInPark_get, nullptr, "isInPark");
         dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
         dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
+        dukglue_register_property(ctx, &ScGuest::thoughts_get, nullptr, "thoughts");
     }
 
     Guest* ScGuest::GetGuest() const
@@ -335,6 +337,75 @@ namespace OpenRCT2::Scripting
         {
             peep->GuestIsLostCountdown = value;
         }
+    }
+
+    DukValue ScGuest::thoughts_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        duk_push_array(ctx);
+
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            duk_uarridx_t index = 0;
+            for (const auto& thought : peep->Thoughts)
+            {
+                if (thought.type == PeepThoughtType::None)
+                    break;
+                if (thought.freshness == 0)
+                    continue;
+                auto scThoughtPtr = std::make_shared<ScThought>(thought);
+                auto dukThought = GetObjectAsDukValue(ctx, scThoughtPtr);
+                dukThought.push();
+                duk_put_prop_index(ctx, -2, index);
+                index++;
+            }
+        }
+
+        return DukValue::take_from_stack(ctx, -1);
+    }
+
+    ScThought::ScThought(PeepThought backing)
+        : _backing(backing)
+    {
+    }
+
+    void ScThought::Register(duk_context *ctx)
+    {
+        dukglue_register_property(ctx, &ScThought::type_get, nullptr, "type");
+        dukglue_register_property(ctx, &ScThought::item_get, nullptr, "item");
+        dukglue_register_property(ctx, &ScThought::freshness_get, nullptr, "freshness");
+        dukglue_register_property(ctx, &ScThought::freshTimeout_get, nullptr, "freshTimeout");
+        dukglue_register_method(ctx, &ScThought::toString, "toString");
+    }
+
+    uint8_t ScThought::type_get() const
+    {
+        return EnumValue(_backing.type);
+    }
+
+    uint16_t ScThought::item_get() const
+    {
+        return _backing.item;
+    }
+
+    uint8_t ScThought::freshness_get() const
+    {
+        return _backing.freshness;
+    }
+
+    uint8_t ScThought::freshTimeout_get() const
+    {
+        return _backing.fresh_timeout;
+    }
+
+    std::string ScThought::toString() const
+    {
+        // format string with arguments
+        auto ft = Formatter();
+        peep_thought_set_format_args(&_backing, ft);
+        return format_string(STR_STRINGID, ft.Data());
     }
 
 } // namespace OpenRCT2::Scripting

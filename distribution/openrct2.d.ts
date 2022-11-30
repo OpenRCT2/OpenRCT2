@@ -2493,6 +2493,44 @@ declare global {
          * Countdown between 0 and 255 that keeps track of how long the guest has been looking for its current destination.
          */
         lostCountdown: number;
+
+        /**
+         * The list of thoughts this guest has.
+         */
+        readonly thoughts: Thought[];
+    }
+
+    /**
+     * Represents a guest's thought. This is a copy of a thought at a given time
+     * and its values will not update.
+     */
+     interface Thought {
+        /**
+         * The type of thought.
+         */
+        readonly type: number;
+
+        /**
+         * The thought argument.
+         */
+        readonly item: number;
+
+        /**
+         * The freshness of the thought - the larger the number, the less fresh
+         * the thought.
+         */
+        readonly freshness: number;
+
+        /**
+         * The freshness timeout.
+         */
+        readonly freshTimeout: number;
+
+        /**
+         * Get the string for this thought.
+         * The result contains Unicode quotes on either end, e.g. “I feel sick”
+         */
+        toString(): string;
     }
 
     /**
