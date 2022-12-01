@@ -1301,8 +1301,9 @@ void Staff::UpdateHeadingToInspect()
         SetState(PeepState::Falling);
         return;
     }
-    if (status == RideStatus::Closed) {
+    if (ride == RideStatus::Closed) {
         //Can't find where RideStatus is declared, so i assume it returns a status variable. Please fix if wrong.
+        //-kurbus
         SetState(PeepState::Falling);
         return;
     }
