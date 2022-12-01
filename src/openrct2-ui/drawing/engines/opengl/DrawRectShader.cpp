@@ -31,10 +31,9 @@ constexpr const size_t InitialInstancesBufferSize = 32768;
 
 DrawRectShader::DrawRectShader()
     : OpenGLShaderProgram("drawrect")
+    , _maxInstancesBufferSize(InitialInstancesBufferSize)
 {
     GetLocations();
-
-    _maxInstancesBufferSize = InitialInstancesBufferSize;
 
     glGenBuffers(1, &_vbo);
     glGenBuffers(1, &_vboInstances);
