@@ -1937,7 +1937,7 @@ void Staff::UpdateFixing(int32_t steps)
     bool progressToNextSubstate = true;
     bool firstRun = true;
 
-    if ((State == PeepState::Inspecting)
+    if ((State == PeepState::Inspecting && !RideStatus::Closed)
         && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
     {
         // Ride has broken down since Mechanic was called to inspect it.
