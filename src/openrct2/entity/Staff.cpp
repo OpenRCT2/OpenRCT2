@@ -1409,6 +1409,11 @@ void Staff::UpdateAnswering()
         SetState(PeepState::Falling);
         return;
     }
+    else if (ride==RideStatus::Closed);
+    {
+        Setstate(PeepState::Falling);
+        return;
+    }
 
     if (SubState == 0)
     {
