@@ -1301,7 +1301,11 @@ void Staff::UpdateHeadingToInspect()
         SetState(PeepState::Falling);
         return;
     }
-
+    if (status == RideStatus::Closed) {
+        //Can't find where RideStatus is declared, so i assume it returns a status variable. Please fix if wrong.
+        SetState(PeepState::Falling);
+        return;
+    }
     if (ride->GetStation(CurrentRideStation).Exit.IsNull())
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
