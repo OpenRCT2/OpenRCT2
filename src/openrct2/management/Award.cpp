@@ -605,7 +605,19 @@ void award_reset()
 void award_update_all()
 {
     PROFILED_FUNCTION();
-
+    // Decrease award times
+    for (auto& award : _currentAwards)
+    {
+        --award.Time;
+    }
+    // Remove any 0 time awards
+    auto res = std::remove_if(
+        std::begin(_currentAwards), std::end(_currentAwards), [](const Award& award) { return award.Time == 0; });
+    if (res != std::end(_currentAwards))
+    {
+        _currentAwards.erase(res, std::end(_currentAwards));
+        window_invalidate_by_class(WindowClass::ParkInformation);
+    }
     // Only add new awards if park is open
     if (gParkFlags & PARK_FLAGS_PARK_OPEN)
     {
@@ -638,20 +650,5 @@ void award_update_all()
                 window_invalidate_by_class(WindowClass::ParkInformation);
             }
         }
-    }
-
-    // Decrease award times
-    for (auto& award : _currentAwards)
-    {
-        --award.Time;
-    }
-
-    // Remove any 0 time awards
-    auto res = std::remove_if(
-        std::begin(_currentAwards), std::end(_currentAwards), [](const Award& award) { return award.Time == 0; });
-    if (res != std::end(_currentAwards))
-    {
-        _currentAwards.erase(res, std::end(_currentAwards));
-        window_invalidate_by_class(WindowClass::ParkInformation);
     }
 }
