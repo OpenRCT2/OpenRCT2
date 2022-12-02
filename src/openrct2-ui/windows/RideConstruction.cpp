@@ -2119,6 +2119,12 @@ public:
                 && (bank != _previousTrackBankEnd))
                 continue;
 
+            if ((trackType == TrackElemType::LeftHalfBankedHelixUpSmall
+                 || trackType == TrackElemType::RightHalfBankedHelixUpSmall
+                 || trackType == TrackElemType::LeftHalfBankedHelixUpLarge
+                 || trackType == TrackElemType::RightHalfBankedHelixUpLarge))
+                continue;
+
             _currentPossibleRideConfigurations[currentPossibleRideConfigurationIndex] = trackType;
             _currentDisabledSpecialTrackPieces |= (1uLL << currentPossibleRideConfigurationIndex);
             if (_currentTrackPieceDirection < 4 && slope == _previousTrackSlopeEnd && bank == _previousTrackBankEnd
