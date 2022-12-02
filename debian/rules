@@ -2,5 +2,10 @@
 
 BUILDDIR=build_dir
 
+# Ignore false warning with GCC < 11.3: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99578
+# Reference OpenRCT2 bug report: https://github.com/OpenRCT2/OpenRCT2/issues/16691
+export DEB_CFLAGS_MAINT_APPEND = -Wno-stringop-overflow
+export DEB_CXXFLAGS_MAINT_APPEND = -Wno-stringop-overflow
+
 %:
 	dh $@
