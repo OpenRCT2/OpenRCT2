@@ -133,20 +133,20 @@ static void paint_go_karts_track_flat(
     if (direction == 0 || direction == 2)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 28, 1 }, { 0, 2, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_FRONT_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 3 }, { 0, 29, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 3 } });
 
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 32, 1 }, { 2, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_FRONT_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 3 }, { 29, 0, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
 
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
@@ -168,21 +168,21 @@ static void paint_go_karts_track_25_deg_up(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(go_karts_track_pieces_25_deg_up[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 28, 1 }, { 0, 2, height });
+        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 32, 1 }, { 2, 0, height });
+        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(go_karts_track_pieces_25_deg_up[direction][1]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 11 }, { 0, 29, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 11 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 11 }, { 29, 0, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
 
     session.WoodenSupportsPrependTo = ps;
@@ -222,21 +222,21 @@ static void paint_go_karts_track_flat_to_25_deg_up(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(go_karts_track_pieces_flat_to_25_deg_up[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 28, 1 }, { 0, 2, height });
+        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 32, 1 }, { 2, 0, height });
+        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(go_karts_track_pieces_flat_to_25_deg_up[direction][1]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 11 }, { 0, 29, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 11 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 11 }, { 29, 0, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
 
     session.WoodenSupportsPrependTo = ps;
@@ -276,21 +276,21 @@ static void paint_go_karts_track_25_deg_up_to_flat(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(go_karts_track_pieces_25_deg_up_to_flat[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 28, 1 }, { 0, 2, height });
+        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 32, 1 }, { 2, 0, height });
+        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(go_karts_track_pieces_25_deg_up_to_flat[direction][1]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 11 }, { 0, 29, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 11 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 11 }, { 29, 0, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
 
     session.WoodenSupportsPrependTo = ps;
@@ -362,11 +362,11 @@ static void paint_go_karts_station(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 28, 1 }, { 0, 2, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 32, 1 }, { 2, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     if (direction == 0 || direction == 2)
@@ -383,13 +383,13 @@ static void paint_go_karts_station(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 3 }, { 0, 29, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 3 } });
 
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 3 }, { 29, 0, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
 
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
@@ -414,34 +414,34 @@ static void paint_go_karts_station(
             case 0:
                 imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                     (hasGreenLight ? SPR_GO_KARTS_START_POLE_GREEN_SW_NE : SPR_GO_KARTS_START_POLE_RED_SW_NE));
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 3, 3, 13 }, { 1, 1, height + 4 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height + 4 }, { 3, 3, 13 } });
 
                 imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                     (hasGreenLight ? SPR_GO_KARTS_START_LIGHTS_GREEN_SW_NE : SPR_GO_KARTS_START_LIGHTS_RED_SW_NE));
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 3, 3, 13 }, { 1, 28, height + 4 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 28, height + 4 }, { 3, 3, 13 } });
                 break;
             case 1:
                 imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_START_POLE_NW_SE);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 3, 3, 13 }, { 1, 28, height + 4 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 28, height + 4 }, { 3, 3, 13 } });
 
                 imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_START_LIGHTS_NW_SE);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 3, 3, 13 }, { 28, 28, height + 4 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height + 4 }, { 3, 3, 13 } });
                 break;
             case 2:
                 imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_START_POLE_NE_SW);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 3, 3, 13 }, { 28, 1, height + 4 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 1, height + 4 }, { 3, 3, 13 } });
 
                 imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_START_LIGHTS_NE_SW);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 3, 3, 13 }, { 28, 28, height + 4 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height + 4 }, { 3, 3, 13 } });
                 break;
             case 3:
                 imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                     (hasGreenLight ? SPR_GO_KARTS_START_POLE_GREEN_SE_NW : SPR_GO_KARTS_START_POLE_RED_SE_NW));
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 3, 3, 13 }, { 1, 1, height + 4 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height + 4 }, { 3, 3, 13 } });
 
                 imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                     (hasGreenLight ? SPR_GO_KARTS_START_LIGHTS_GREEN_SE_NW : SPR_GO_KARTS_START_LIGHTS_RED_SE_NW));
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 3, 3, 13 }, { 28, 1, height + 4 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 1, height + 4 }, { 3, 3, 13 } });
                 break;
         }
     }
@@ -463,40 +463,40 @@ static void paint_go_karts_track_left_quarter_turn_1_tile(
     {
         case 0:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 28, 1 }, { 0, 2, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
 
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 3 }, { 29, 2, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 2, height + 2 }, { 1, 1, 3 } });
 
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 16, 1, 3 }, { 14, 29, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 29, height + 2 }, { 16, 1, 3 } });
             break;
         case 1:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_NE_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 0, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 30, 30, 1 } });
 
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_NE_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 16, 1, 3 }, { 2, 29, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 29, height + 2 }, { 16, 1, 3 } });
 
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NE_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 16, 3 }, { 29, 2, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 2, height + 2 }, { 1, 16, 3 } });
             break;
         case 2:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 32, 1 }, { 2, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
 
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 3 }, { 2, 2, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 2, height + 2 }, { 1, 1, 3 } });
 
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_SE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 16, 3 }, { 29, 14, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 14, height + 2 }, { 1, 16, 3 } });
             break;
         case 3:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SW_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SW_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 3 }, { 29, 29, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 29, height + 2 }, { 1, 1, 3 } });
 
             // The empty sprite isn't drawn
             break;

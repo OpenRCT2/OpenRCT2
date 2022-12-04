@@ -39,7 +39,8 @@ static void PaintCircusTent(PaintSession& session, const Ride& ride, uint8_t dir
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
 
     PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { al, cl, height + 3 }, { 24, 24, 47 }, { al + 16, cl + 16, height + 3 });
+        session, imageTemplate.WithIndex(imageIndex), { al, cl, height + 3 },
+        { { al + 16, cl + 16, height + 3 }, { 24, 24, 47 } });
 
     session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;

@@ -188,5 +188,5 @@ void Litter::Paint(PaintSession& session, int32_t imageDirection) const
 
     // In the following call to PaintAddImageAsParent, we add 4 (instead of 2) to the
     // bound_box_offset_z to make sure litter is drawn on top of railways
-    PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { 5, 5, -1 }, { -4, -4, z + 4 });
+    PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { { -4, -4, z + 4 }, { 5, 5, -1 } });
 }

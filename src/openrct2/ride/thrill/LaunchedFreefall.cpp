@@ -42,11 +42,11 @@ void vehicle_visual_launched_freefall(
     // Draw back:
     int32_t baseImage_id = carEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
     auto image_id = imageFlags.WithIndex(baseImage_id + 2);
-    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 2, 2, 41 }, { -11, -11, z + 1 });
+    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -11, -11, z + 1 }, { 2, 2, 41 } });
 
     // Draw front:
     image_id = imageFlags.WithIndex(baseImage_id + 1);
-    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
 
     // Draw peeps:
     if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
@@ -109,15 +109,15 @@ static void paint_launched_freefall_base(
     if (trackSequence == 0)
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_BASE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 8, 8, height + 3 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height + 3 }, { 2, 2, 27 } });
 
         height += 32;
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
         height += 32;
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
         PaintUtilSetVerticalTunnel(session, height + 32);
 
@@ -171,7 +171,7 @@ static void paint_launched_freefall_tower_section(
     }
 
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())

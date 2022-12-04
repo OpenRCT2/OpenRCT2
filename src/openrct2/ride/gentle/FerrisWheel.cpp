@@ -141,12 +141,12 @@ static void PaintFerrisWheel(
     {
         // Bound box is slightly different from track_paint_util_paint_fences
         imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
     }
     if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, rotation))
     {
         imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_SW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 7 } });
     }
 
     switch (relativeTrackSequence)

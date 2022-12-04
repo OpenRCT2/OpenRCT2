@@ -1844,7 +1844,7 @@ void junior_rc_paint_station(
     {
         // height -= 2 (height - 2)
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
 
         // height += 2 (height)
         if (trackElement.GetTrackType() == TrackElemType::EndStation && drawBlockBrake)
@@ -1866,7 +1866,7 @@ void junior_rc_paint_station(
     {
         // height -= 2 (height - 2)
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
 
         // height += 2 (height)
         if (trackElement.GetTrackType() == TrackElemType::EndStation && drawBlockBrake)
@@ -2090,13 +2090,13 @@ static void junior_rc_flat_to_left_bank_paint_setup(
     image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_flat_to_left_bank[direction][0]);
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
 
         PaintUtilPushTunnelRight(session, height, 0);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
         PaintUtilPushTunnelLeft(session, height, 0);
     }
@@ -2107,11 +2107,11 @@ static void junior_rc_flat_to_left_bank_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
         }
     }
 
@@ -2138,13 +2138,13 @@ static void junior_rc_flat_to_right_bank_paint_setup(
     image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_flat_to_right_bank[direction][0]);
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
 
         PaintUtilPushTunnelRight(session, height, 0);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
         PaintUtilPushTunnelLeft(session, height, 0);
     }
@@ -2155,11 +2155,11 @@ static void junior_rc_flat_to_right_bank_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
         }
     }
 
@@ -2268,12 +2268,12 @@ static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(
     if (direction == 1 && trackSequence == 6)
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_NW_SW_PART_4_2);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
     }
     else if (direction == 3 && trackSequence == 0)
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_SE_NE_PART_0_2);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
     }
 
     int32_t supportHeight = height;
@@ -2364,11 +2364,11 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(
     image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_left_banked_to_25_deg_up[direction][0]);
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
     }
 
     if (junior_rc_track_pieces_left_banked_to_25_deg_up[direction][1] != 0)
@@ -2377,11 +2377,11 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 34 }, { 27, 0, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 34 } });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
         }
     }
 
@@ -2424,11 +2424,11 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(
     image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_right_banked_to_25_deg_up[direction][0]);
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
     }
 
     if (junior_rc_track_pieces_right_banked_to_25_deg_up[direction][1] != 0)
@@ -2437,11 +2437,11 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 34 }, { 27, 0, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 34 } });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
         }
     }
 
@@ -2497,13 +2497,13 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
     image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_25_deg_up_to_left_bank[direction][0]);
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
 
         PaintUtilPushTunnelRight(session, tunnelHeight, tunnelType);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
         PaintUtilPushTunnelLeft(session, tunnelHeight, tunnelType);
     }
@@ -2514,11 +2514,11 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 34 }, { 27, 0, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 34 } });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
         }
     }
 
@@ -2558,13 +2558,13 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
     image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_25_deg_up_to_right_bank[direction][0]);
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
 
         PaintUtilPushTunnelRight(session, tunnelHeight, tunnelType);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
         PaintUtilPushTunnelLeft(session, tunnelHeight, tunnelType);
     }
@@ -2575,11 +2575,11 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 34 }, { 27, 0, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 34 } });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
         }
     }
 
@@ -2659,8 +2659,8 @@ static void junior_rc_left_bank_paint_setup(
 
     image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_left_bank[direction]);
     PaintAddImageAsParent(
-        session, image_id, { 0, 0, height }, junior_rc_left_bank_bound_lengths[direction],
-        { junior_rc_left_bank_bound_offsets[direction], height });
+        session, image_id, { 0, 0, height },
+        { { junior_rc_left_bank_bound_offsets[direction], height }, junior_rc_left_bank_bound_lengths[direction] });
 
     if (direction & 1)
     {
@@ -3206,12 +3206,12 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
     if (direction == 1 && trackSequence == 3)
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_NW_SW_PART_2_2);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
     }
     else if (direction == 3 && trackSequence == 0)
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_SE_NE_PART_0_2);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
     }
 
     uint8_t supportType[2][4] = {
@@ -3251,8 +3251,7 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
 {
     auto imageId = ImageId(0);
     CoordsXY offset;
-    CoordsXY boundsLength;
-    CoordsXY boundsOffset;
+    BoundBoxXY bb;
 
     switch (trackSequence)
     {
@@ -3260,20 +3259,20 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[EnumValue(chainType)][direction][0]);
             offset = defaultRightQuarterTurn3TilesOffsets[direction][0];
-            boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][0];
-            boundsOffset = offset;
+            bb.length = defaultRightQuarterTurn3TilesBoundLengths[direction][0];
+            bb.offset = offset;
             break;
         case 3:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[EnumValue(chainType)][direction][1]);
             offset = defaultRightQuarterTurn3TilesOffsets[direction][2];
-            boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][2];
-            boundsOffset = offset;
+            bb.length = defaultRightQuarterTurn3TilesBoundLengths[direction][2];
+            bb.offset = offset;
             break;
     }
     if (imageId.GetIndex() != 0)
     {
-        PaintAddImageAsParent(session, imageId, { offset, height }, { boundsLength, 1 }, { boundsOffset, height });
+        PaintAddImageAsParent(session, imageId, { offset, height }, { { bb.offset, height }, { bb.length, 1 } });
     }
 
     if (direction == 0 && trackSequence == 0)
@@ -3333,8 +3332,7 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
 {
     auto imageId = ImageId(0);
     CoordsXY offset;
-    CoordsXY boundsLength;
-    CoordsXY boundsOffset;
+    BoundBoxXY bb;
 
     switch (trackSequence)
     {
@@ -3342,21 +3340,20 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[EnumValue(chainType)][direction][0]);
             offset = defaultRightQuarterTurn3TilesOffsets[direction][0];
-            boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][0];
-            boundsOffset = offset;
+            bb.length = defaultRightQuarterTurn3TilesBoundLengths[direction][0];
+            bb.offset = offset;
             break;
         case 3:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[EnumValue(chainType)][direction][1]);
             offset = defaultRightQuarterTurn3TilesOffsets[direction][2];
-            boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][2];
-            boundsOffset = offset;
+            bb.length = defaultRightQuarterTurn3TilesBoundLengths[direction][2];
+            bb.offset = offset;
             break;
     }
     if (imageId.GetIndex() != 0)
     {
-        PaintAddImageAsParent(
-            session, imageId, { offset, height }, { boundsLength.x, boundsLength.y, 1 }, { boundsOffset, height });
+        PaintAddImageAsParent(session, imageId, { offset, height }, { { bb.offset, height }, { bb.length, 1 } });
     }
 
     if (direction == 0 && trackSequence == 0)
@@ -4742,7 +4739,7 @@ static void junior_rc_diag_flat_to_left_bank_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -4769,7 +4766,7 @@ static void junior_rc_diag_flat_to_right_bank_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -4796,7 +4793,7 @@ static void junior_rc_diag_left_bank_to_flat_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -4823,7 +4820,7 @@ static void junior_rc_diag_right_bank_to_flat_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -4850,7 +4847,7 @@ static void junior_rc_diag_left_bank_to_25_deg_up_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -4877,7 +4874,7 @@ static void junior_rc_diag_right_bank_to_25_deg_up_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -4904,7 +4901,7 @@ static void junior_rc_diag_25_deg_up_to_left_bank_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -4931,7 +4928,7 @@ static void junior_rc_diag_25_deg_up_to_right_bank_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -4958,7 +4955,7 @@ static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -4985,7 +4982,7 @@ static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -5012,7 +5009,7 @@ static void junior_rc_diag_25_deg_down_to_left_bank_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -5039,7 +5036,7 @@ static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2);
 
-        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
     }
     if (trackSequence == 3)
     {
@@ -5150,8 +5147,8 @@ void junior_rc_paint_track_60_deg_up(
 
     PaintAddImageAsParent(
         session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
-        { junior_rc_60_deg_up_bound_lengths[direction], junior_rc_60_deg_up_bound_thickness[direction] },
-        { junior_rc_60_deg_up_bound_offsets[direction], height });
+        { { junior_rc_60_deg_up_bound_offsets[direction], height },
+          { junior_rc_60_deg_up_bound_lengths[direction], junior_rc_60_deg_up_bound_thickness[direction] } });
 
     switch (direction)
     {
@@ -5229,9 +5226,9 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
 
     PaintAddImageAsParent(
         session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
-        { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][0],
-          junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] },
-        { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0], height });
+        { { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0], height },
+          { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][0],
+            junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] } });
 
     if (junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][1] != 0)
     {
@@ -5240,9 +5237,9 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
 
         PaintAddImageAsParent(
             session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
-            { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1],
-              junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] },
-            { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1], height });
+            { { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1], height },
+              { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1],
+                junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] } });
     }
 
     switch (direction)
@@ -5300,9 +5297,9 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
 
     PaintAddImageAsParent(
         session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
-        { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][0],
-          junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] },
-        { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0], height });
+        { { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0], height },
+          { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][0],
+            junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] } });
 
     if (junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][1] != 0)
     {
@@ -5311,9 +5308,9 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
 
         PaintAddImageAsParent(
             session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
-            { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1],
-              junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] },
-            { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1], height });
+            { { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1], height },
+              { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1],
+                junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] } });
     }
 
     switch (direction)
@@ -5433,7 +5430,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
             session,
             session.TrackColours[SCHEME_TRACK].WithIndex(
                 junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction]),
-            { -16, -16, height }, { 16, 16, 1 }, { 0, 0, height });
+            { -16, -16, height }, { { 0, 0, height }, { 16, 16, 1 } });
     }
     else
     {
@@ -5465,7 +5462,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
             session,
             session.TrackColours[SCHEME_TRACK].WithIndex(
                 junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[EnumValue(chainType)][direction]),
-            { -16, -16, height }, { 16, 16, 1 }, { 0, 0, height });
+            { -16, -16, height }, { { 0, 0, height }, { 16, 16, 1 } });
     }
     else
     {
@@ -5613,8 +5610,9 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
 
     PaintAddImageAsParent(
         session, image_id, { junior_rc_flat_to_60_deg_up_tile_offsets[direction][0], height + 24 },
-        { junior_rc_flat_to_60_deg_up_bound_lengths[direction][0], junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
-        { junior_rc_flat_to_60_deg_up_bound_offsets[direction][0], height });
+        { { junior_rc_flat_to_60_deg_up_bound_offsets[direction][0], height },
+          { junior_rc_flat_to_60_deg_up_bound_lengths[direction][0],
+            junior_rc_flat_to_60_deg_up_bound_thickness[direction] } });
 
     if (junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][1] != 0)
     {
@@ -5623,8 +5621,9 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
 
         PaintAddImageAsParent(
             session, image_id, { junior_rc_flat_to_60_deg_up_tile_offsets[direction][1], height },
-            { junior_rc_flat_to_60_deg_up_bound_lengths[direction][1], junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
-            { junior_rc_flat_to_60_deg_up_bound_offsets[direction][1], height });
+            { { junior_rc_flat_to_60_deg_up_bound_offsets[direction][1], height },
+              { junior_rc_flat_to_60_deg_up_bound_lengths[direction][1],
+                junior_rc_flat_to_60_deg_up_bound_thickness[direction] } });
     }
 
     switch (direction)
@@ -5673,8 +5672,9 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(
 
     PaintAddImageAsParent(
         session, image_id, { junior_rc_60_deg_up_to_flat_tile_offsets[direction][0], height + 24 },
-        { junior_rc_flat_to_60_deg_up_bound_lengths[direction][0], junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
-        { junior_rc_flat_to_60_deg_up_bound_offsets[direction][0], height });
+        { { junior_rc_flat_to_60_deg_up_bound_offsets[direction][0], height },
+          { junior_rc_flat_to_60_deg_up_bound_lengths[direction][0],
+            junior_rc_flat_to_60_deg_up_bound_thickness[direction] } });
 
     if (junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][1] != 0)
     {
@@ -5683,8 +5683,9 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(
 
         PaintAddImageAsParent(
             session, image_id, { junior_rc_60_deg_up_to_flat_tile_offsets[direction][1], height },
-            { junior_rc_flat_to_60_deg_up_bound_lengths[direction][1], junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
-            { junior_rc_flat_to_60_deg_up_bound_offsets[direction][1], height });
+            { { junior_rc_flat_to_60_deg_up_bound_offsets[direction][1], height },
+              { junior_rc_flat_to_60_deg_up_bound_lengths[direction][1],
+                junior_rc_flat_to_60_deg_up_bound_thickness[direction] } });
     }
 
     switch (direction)
