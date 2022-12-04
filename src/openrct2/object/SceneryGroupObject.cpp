@@ -153,7 +153,7 @@ void SceneryGroupObject::ReadJson(IReadObjectContext* context, json_t& root)
 
     if (properties.is_object())
     {
-        _legacyType.priority = Json::GetNumber<uint8_t>(properties["priority"]);
+        _legacyType.priority = Json::GetNumber<uint8_t>(properties["priority"], 40);
         _legacyType.entertainer_costumes = ReadJsonEntertainerCostumes(properties["entertainerCostumes"]);
 
         _items = ReadJsonEntries(context, properties["entries"]);
