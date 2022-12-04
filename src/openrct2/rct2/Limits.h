@@ -39,7 +39,7 @@ namespace RCT2::Limits
     constexpr const uint8_t MaxBannerObjects = 32;
     constexpr const uint8_t MaxPathObjects = 16;
     constexpr const uint8_t MaxPathAdditionObjects = 15;
-    constexpr const uint8_t MaxScenereyGroupObjects = 19;
+    constexpr const uint8_t MaxSceneryGroupObjects = 19;
     constexpr const uint8_t MaxParkEntranceObjects = 1;
     constexpr const uint8_t MaxWaterObjects = 1;
     constexpr const uint8_t MaxScenarioTextObjects = 1;
