@@ -20,6 +20,7 @@
 #include <memory>
 
 struct Ride;
+struct ResultWithMessage;
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
@@ -148,14 +149,14 @@ struct TrackDesign
     std::string name;
 
 public:
-    StringId CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
-    StringId CreateTrackDesignScenery(TrackDesignState& tds);
+    ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
+    ResultWithMessage CreateTrackDesignScenery(TrackDesignState& tds);
     void Serialise(DataSerialiser& stream);
 
 private:
     uint8_t _saveDirection;
-    StringId CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
-    StringId CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
+    ResultWithMessage CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
+    ResultWithMessage CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
     CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 
