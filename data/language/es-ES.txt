@@ -3636,6 +3636,9 @@ STR_6526    :(gráficos, música y efectos de sonido base)
 STR_6527    :Competiciones
 STR_6528    :¡Párametros de la vía no válidos!
 STR_6529    :¡Parámatro del esquema de color no válido!
+STR_6530    :User Created Expansion Set
+STR_6531    :La Máquina del Tiempo
+STR_6532    :Mundo de Katy
 
 ##############
 # Escenarios #
@@ -4417,3 +4420,101 @@ STR_DTLS    :Este antiguo parque temático ha visto tiempos mejores. Ayuda al pr
 STR_SCNR    :Mundo Panda
 STR_PARK    :Mundo Panda
 STR_DTLS    :Añade más atracciones y consigue más visitantes en este parque pandatemático.
+
+###
+<UCES Halloween>
+STR_SCNR    :Loma del cementerio
+STR_PARK    :Loma del cementerio
+STR_DTLS    :Esto es halloween, el Halloween UCES, ¡las calabazas gritan en la oscuridad de la noche! Este cementerio está en problemas y tu trabajo es salvarlo, ¡mientras dejas que los muertos descansen en paz! ¿Podrás mantener a los fantasmas en sus tumbas y escalofriar a tus clientes?{NEWLINE}Autor: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :El Faro de Alejandría
+STR_PARK    :El Faro de Alejandría
+STR_DTLS    :Alejandro construyó la ciudad; griegos, romanos y egipcios dejaron su huella. Pero el mayor honor fue una Maravilla del Mundo Antiguo - el Faro. ¡Visítalo y construye un parque!{NEWLINE}Autor: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :Tal y como era en el día de su inauguración - 18 de mayo de 1905.{NEWLINE}Autor: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Monte Vesubio
+STR_PARK    :Monte Vesubio
+STR_DTLS    :Pompeya y Herculano fueron sepultadas por el Vesubio en el año 79 d.C. ¡Visita las excavaciones y construye un parque!{NEWLINE}Autor: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :La caja de arena
+STR_PARK    :La caja de arena
+STR_DTLS    :Lo que todo el mundo quiere - ¡una caja de arena! Así que coge tu cubito y pala, ¡y a construir un parque!{NEWLINE}Autor: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Cataratas y Cañón del Niágara
+STR_PARK    :Cataratas del Niágara
+STR_DTLS    :La catarata Estadounidense, la catarata Velo de Novia y la catarata Canadiense en la frontera del Niágara, 1850.{NEWLINE}Autor: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Mineros de las Montañas Rocosas
+STR_PARK    :Mineros de las Montañas Rocosas
+STR_DTLS    :Un desprendimiento de rocas ha dañado tu ferrocarril. Tus trabajadores se han ido de exploración. ¿Hay oro en las montañas rusas?{NEWLINE}Autores: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :La Máquina del Tiempo
+STR_PARK    :La Máquina del Tiempo
+STR_DTLS    :La Máquina del Tiempo. Construida para ir - cuando quieras, donde quieras. La eternidad espera. Todo es relativo.{NEWLINE}Autor: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Torre de Babel
+STR_PARK    :Torre de Babel
+STR_DTLS    :¡Whoaa! ¡Mira dónde nos ha llevado la Máquina del Tiempo! ¿Dónde se ha ido todo el mundo?{NEWLINE}Autor: Fossil
+
+<Transformation>
+STR_SCNR    :Transformación
+STR_PARK    :Transformación
+STR_DTLS    :Te estábamos esperando…{NEWLINE}Autor: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :Los romanos están cansados de las aburridas luchas de gladiadores. Dales una emoción mejor, ¡convierte una ciudad romana en el mayor parque de atracciones de todos los tiempos!{NEWLINE}Autor: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Bajo el Árbol de Navidad
+STR_PARK    :País de las Maravillas Invernal
+STR_DTLS    :Mamá construyó esta escena bajo nuestro árbol. ¡Ahora quiere que construyamos un parque en ella! ¿Puedes ayudar?{NEWLINE}Autor: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Explosión en Rocagrande
+STR_PARK    :Explosión en Rocagrande
+STR_DTLS    :Tras una explosión en la Compañía Minera Rocagrande, los habitantes de Rocagrande tienen que construir un parque de atracciones para mantener vivo su pueblo.{NEWLINE}Autores: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Campamento Ruiseñor
+STR_PARK    :Campamento Ruiseñor
+STR_DTLS    :¡Sólo 500$/semana para ir a este campamento de verano! Abre tu banco y después diviértete construyendo un parque. {NEWLINE}Autor: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Pueblo Choo-Choo
+STR_PARK    :Pueblo Choo-Choo
+STR_DTLS    :¡Mami! ¡Papi! !Quiero ir al pueblo Coo-Choo!{NEWLINE}Autor: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Archipiélago Dragon
+STR_PARK    :Archipiélago Dragon
+STR_DTLS    :¿Archipiélago Dragon? No estoy seguro de querer ir ahí…{NEWLINE}Autor: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Carnaval Infantil II
+STR_PARK    :Carnaval Infantil
+STR_DTLS    :¡Hey, chavales! ¡Vamos a divertirnos!{NEWLINE}Autores: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sand Dune
+STR_PARK    :Sand Dune
+STR_DTLS    :Como propietario de un pequeño parque, has comprado un gran terreno junto a la playa para ampliarlo y atraer a más visitantes a las hermosas dunas, pero cuidado: no puedes perturbar esas dunas ecológicamente frágiles.{NEWLINE}Autor: rbarclay
