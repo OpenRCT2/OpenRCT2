@@ -231,6 +231,12 @@ declare global {
         getTrackSegment(type: number): TrackSegment | null;
 
         /**
+         * Gets the image number for the given icon.
+         * @param iconName The name of the icon.
+         */
+        getIcon(iconName: IconName): number;
+
+        /**
          * Gets a random integer within the specified range using the game's pseudo-
          * random number generator. This is part of the game state and shared across
          * all clients, you therefore must be in a context that can mutate the game
