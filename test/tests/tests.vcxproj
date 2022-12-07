@@ -63,11 +63,13 @@
   <ItemGroup>
     <ClInclude Include="AssertHelpers.hpp" />
     <ClInclude Include="helpers\StringHelpers.hpp" />
+    <ClInclude Include="PaintSessionTest.h" />
     <ClInclude Include="TestData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitSetTests.cpp" />
     <ClCompile Include="CircularBuffer.cpp" />
+	<ClCompile Include="CircusPaintSessionTest.cpp" />
     <ClCompile Include="CLITests.cpp" />
     <ClCompile Include="CryptTests.cpp" />
     <ClCompile Include="Endianness.cpp" />
@@ -79,6 +81,7 @@
     <ClCompile Include="IniWriterTest.cpp" />
     <ClCompile Include="Localisation.cpp" />
     <ClCompile Include="MultiLaunch.cpp" />
+    <ClCompile Include="PaintSessionTest.cpp" />
     <ClCompile Include="ReplayTests.cpp" />
     <ClCompile Include="PlayTests.cpp" />
     <ClCompile Include="Pathfinding.cpp" />

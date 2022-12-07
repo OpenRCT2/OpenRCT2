@@ -17,6 +17,7 @@
 #include "../world/Map.h"
 #include "Boundbox.h"
 
+#include <memory>
 #include <mutex>
 #include <thread>
 
@@ -293,6 +294,9 @@ extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
 extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
+
+class PaintHandler;
+extern std::unique_ptr<PaintHandler> gPaintHandler;
 
 PaintStruct* PaintAddImageAsParent(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);

@@ -196,3 +196,13 @@ SET_CHECK_CXX_FLAGS(test_enummap)
 target_link_libraries(test_enummap ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_enummap)
 add_test(NAME enummaptests COMMAND test_enummap)
+
+# PaintSession Tests
+set(PAINTSESSION_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/PaintSessionTest.cpp"
+								"${CMAKE_CURRENT_LIST_DIR}/TestData.cpp"
+								"${CMAKE_CURRENT_LIST_DIR}/CircusPaintSessionTest.cpp")
+add_executable(test_paintsession ${PAINTSESSION_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_paintsession)
+target_link_libraries(test_paintsession ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_paintsession)
+add_test(NAME paintsessiontests COMMAND test_paintsession)

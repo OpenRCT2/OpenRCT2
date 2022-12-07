@@ -10,11 +10,13 @@
 #include "../interface/Viewport.h"
 #include "../ride/TrackPaint.h"
 #include "Paint.h"
+#include "PaintHandler.h"
 
 PaintStruct* PaintAddImageAsParentRotated(
     PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {
+    gPaintHandler->OnPaintAddImageAsParentRotated(session, direction, imageId, offset, boundBoxSize, boundBoxOffset);
     if (direction & 1)
     {
         return PaintAddImageAsParent(
@@ -29,6 +31,7 @@ PaintStruct* PaintAddImageAsParentRotated(
     PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize)
 {
+    gPaintHandler->OnPaintAddImageAsParentRotated(session, direction, image_id, offset, boundBoxSize);
     if (direction & 1)
     {
         return PaintAddImageAsParent(
@@ -42,6 +45,7 @@ PaintStruct* PaintAddImageAsChildRotated(
     PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {
+    gPaintHandler->OnPaintAddImageAsChildRotated(session, direction, image_id, offset, boundBoxSize, boundBoxOffset);
     if (direction & 1)
     {
         return PaintAddImageAsChild(

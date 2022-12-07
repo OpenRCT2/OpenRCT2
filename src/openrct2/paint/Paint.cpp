@@ -22,6 +22,7 @@
 #include "../world/SmallScenery.h"
 #include "Boundbox.h"
 #include "Paint.Entity.h"
+#include "PaintHandler.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <algorithm>
@@ -54,6 +55,8 @@ static constexpr const uint8_t BoundBoxDebugColours[] = {
 bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
+
+std::unique_ptr<PaintHandler> gPaintHandler = std::make_unique<PaintHandler>();
 
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, PaintStruct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
@@ -718,6 +721,7 @@ PaintStruct* PaintAddImageAsParent(
 PaintStruct* PaintAddImageAsParent(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
+    gPaintHandler->OnPaintAddImageAsParent(session, image_id, offset, boundBox);
     session.LastPS = nullptr;
     session.LastAttachedPS = nullptr;
 
@@ -752,6 +756,7 @@ PaintStruct* PaintAddImageAsParent(
 [[nodiscard]] PaintStruct* PaintAddImageAsOrphan(
     PaintSession& session, const ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
+    gPaintHandler->OnPaintAddImageAsOrphan(session, imageId, offset, boundBox);
     session.LastPS = nullptr;
     session.LastAttachedPS = nullptr;
     return CreateNormalPaintStruct(session, imageId, offset, boundBox);
@@ -777,6 +782,7 @@ PaintStruct* PaintAddImageAsParent(
 PaintStruct* PaintAddImageAsChild(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
+    gPaintHandler->OnPaintAddImageAsChild(session, image_id, offset, boundBox);
     PaintStruct* parentPS = session.LastPS;
     if (parentPS == nullptr)
     {
