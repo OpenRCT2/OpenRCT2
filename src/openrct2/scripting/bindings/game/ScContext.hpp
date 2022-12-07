@@ -494,7 +494,7 @@ namespace OpenRCT2::Scripting
 
     uint32_t ImageFromDuk(const DukValue& d)
     {
-        uint32_t img = SPR_G2_EMPTY;
+        uint32_t img{};
         if (d.type() == DukValue::Type::NUMBER)
         {
             img = d.as_uint();
