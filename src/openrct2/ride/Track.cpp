@@ -918,3 +918,20 @@ void TrackElement::SetHighlight(bool on)
     if (on)
         Flags2 |= TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
 }
+
+bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, int32_t parkFileVersion)
+{
+    // Lots of Log Flumes exist where the downward slopes are simulated by using other track
+    // types like the Splash Boats, but not actually made invisible, because they never needed
+    // to be.
+    if (rideType == RIDE_TYPE_LOG_FLUME && parkFileVersion <= 15)
+    {
+        if (trackType == TrackElemType::Down25ToDown60 || trackType == TrackElemType::Down60
+            || trackType == TrackElemType::Down60ToDown25)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}

@@ -1692,6 +1692,11 @@ namespace RCT1
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }
 
+                    if (TrackTypeMustBeMadeInvisible(rideType, trackType))
+                    {
+                        dst->SetInvisible(true);
+                    }
+
                     return 1;
                 }
                 case TileElementType::SmallScenery:
