@@ -4490,4 +4490,4 @@ STR_DTLS    :Hey kids! Let’s have fun!{NEWLINE}Authors: Piehead & Fossil
 <Sand Dune>
 STR_SCNR    :Sand Dune
 STR_PARK    :Sand Dune
-STR_DTLS    :As the owner of a small park, you bought a large piece of land along the beach to expand and attract more quests to visit the beautiful sand dunes, but beware: you cannot disturb those ecologically fragile sand dunes.{NEWLINE}Author: rbarclay
+STR_DTLS    :As the owner of a small park, you bought a large piece of land along the beach to expand and attract more guests to visit the beautiful sand dunes, but beware: you cannot disturb those ecologically fragile sand dunes.{NEWLINE}Author: rbarclay
