@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
             if (result.Type == "button")
             {
                 auto dukImage = desc["image"];
-                if (dukImage.type() != DukValue::Type::UNDEFINED)
+                if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
                 {
                     result.Image = ImageId::FromUInt32(ImageFromDuk(dukImage));
                     result.HasBorder = false;
@@ -221,7 +221,7 @@ namespace OpenRCT2::Ui::Windows
                     result.offset = { AsOrDefault(dukCoord["x"], 0), AsOrDefault(dukCoord["y"], 0) };
                 }
             }
-            else if (dukImage.type() != DukValue::Type::UNDEFINED)
+            else if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
             {
                 result.imageFrameBase = ImageId::FromUInt32(ImageFromDuk(dukImage));
                 result.imageFrameCount = 0;
