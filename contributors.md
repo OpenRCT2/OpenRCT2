@@ -203,6 +203,8 @@ The following people are not part of the development team, but have been contrib
 * Raymond Zhao (rzhao271)
 * Xixiang Chen (jacknull1991)
 * (ReticulatingSplines)
+* Conrad Cash (HouseholdVTuber)
+
 
 ## Toolchain
 * (Balletie) - macOS
