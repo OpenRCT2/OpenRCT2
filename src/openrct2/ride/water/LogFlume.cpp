@@ -10,6 +10,7 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
+#include "../../sprites.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 
@@ -849,6 +850,128 @@ static void paint_log_flume_track_reverser(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
+// Steep Additions added by OpenRCT2
+
+static void log_flume_track_25_down_60(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr const uint32_t imageIds[4][2] = {
+        { SPR_G2_FLUME_25_60_NW_SE_BACK, SPR_G2_FLUME_25_60_NW_SE_BACK_WATER },
+        { SPR_G2_EMPTY, SPR_G2_FLUME_25_60_NW_SE },
+        { SPR_G2_EMPTY, SPR_G2_FLUME_25_60_NE_SW },
+        { SPR_G2_FLUME_25_60_NE_SW_BACK, SPR_G2_FLUME_25_60_NE_SW_BACK_WATER },
+    };
+
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height + 4 });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height });
+
+    if (direction == 1 || direction == 2)
+    {
+        if (track_paint_util_should_paint_supports(session.MapPosition))
+        {
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        }
+
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_14);
+    }
+    else
+    {
+        if (track_paint_util_should_paint_supports(session.MapPosition))
+        {
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height + 12, session.TrackColours[SCHEME_SUPPORTS]);
+        }
+
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
+    }
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+}
+
+static void log_flume_track_60_down(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr const uint32_t imageIds[4][2] = {
+        { SPR_G2_FLUME_60_NW_SE_BACK, SPR_G2_EMPTY },
+        { SPR_G2_EMPTY, SPR_G2_FLUME_60_NW_SE },
+        { SPR_G2_EMPTY, SPR_G2_FLUME_60_NE_SW },
+        { SPR_G2_FLUME_60_NE_SW_BACK, SPR_G2_EMPTY },
+    };
+
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 98 }, { 0, 27, height + 4 });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
+
+    if (direction == 1 || direction == 2)
+    {
+        if (track_paint_util_should_paint_supports(session.MapPosition))
+        {
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        }
+
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+    }
+    else
+    {
+        if (track_paint_util_should_paint_supports(session.MapPosition))
+        {
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height + 12, session.TrackColours[SCHEME_SUPPORTS]);
+        }
+
+        PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_SQUARE_8);
+    }
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+}
+
+static void log_flume_track_60_down_25(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr const uint32_t imageIds[4][2] = {
+        { SPR_G2_FLUME_60_25_NW_SE_BACK, SPR_G2_FLUME_60_25_NW_SE_BACK_WATER },
+        { SPR_G2_EMPTY, SPR_G2_FLUME_60_25_NW_SE },
+        { SPR_G2_EMPTY, SPR_G2_FLUME_60_25_NE_SW },
+        { SPR_G2_FLUME_60_25_NE_SW_BACK, SPR_G2_FLUME_60_25_NE_SW_BACK_WATER },
+    };
+
+    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height + 4 });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 20, 0 }, { 0, 6, height });
+
+    if (direction == 1 || direction == 2)
+    {
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_1);
+
+        if (track_paint_util_should_paint_supports(session.MapPosition))
+        {
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        }
+    }
+    else
+    {
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_FLAT);
+
+        if (track_paint_util_should_paint_supports(session.MapPosition))
+        {
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
+        }
+    }
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int32_t trackType)
 {
     switch (trackType)
@@ -884,6 +1007,14 @@ TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int32_t trackType)
             return paint_log_flume_track_on_ride_photo;
         case TrackElemType::LogFlumeReverser:
             return paint_log_flume_track_reverser;
+
+            // Added by OpenRCT2
+        case TrackElemType::Down25ToDown60:
+            return log_flume_track_25_down_60;
+        case TrackElemType::Down60:
+            return log_flume_track_60_down;
+        case TrackElemType::Down60ToDown25:
+            return log_flume_track_60_down_25;
     }
 
     return nullptr;
