@@ -491,6 +491,24 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::getIcon, "getIcon");
         }
     };
+
+    uint32_t ImageFromDuk(const DukValue& d)
+    {
+        uint32_t img{};
+        if (d.type() == DukValue::Type::NUMBER)
+        {
+            img = d.as_uint();
+            if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+            {
+                img = NewIconIndex(d.as_uint());
+            }
+        }
+        else if (d.type() == DukValue::Type::STRING)
+        {
+            img = GetIconByName(d.as_c_string());
+        }
+        return img;
+    }
 } // namespace OpenRCT2::Scripting
 
 #endif

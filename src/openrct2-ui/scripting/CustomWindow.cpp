@@ -107,18 +107,9 @@ namespace OpenRCT2::Ui::Windows
             if (result.Type == "button")
             {
                 auto dukImage = desc["image"];
-                if (dukImage.type() == DukValue::Type::NUMBER)
+                if (dukImage.type() != DukValue::Type::UNDEFINED)
                 {
-                    auto img = dukImage.as_uint();
-                    if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
-                        img = NewIconIndex(img);
-                    result.Image = ImageId::FromUInt32(img);
-                    result.HasBorder = false;
-                }
-                else if (dukImage.type() == DukValue::Type::STRING)
-                {
-                    auto img = GetIconByName(dukImage.as_c_string());
-                    result.Image = ImageId::FromUInt32(img);
+                    result.Image = ImageId::FromUInt32(ImageFromDuk(dukImage));
                     result.HasBorder = false;
                 }
                 else
@@ -218,22 +209,7 @@ namespace OpenRCT2::Ui::Windows
         {
             CustomTabDesc result;
             auto dukImage = desc["image"];
-            if (dukImage.type() == DukValue::Type::NUMBER)
-            {
-                if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
-                    result.imageFrameBase = ImageId::FromUInt32(NewIconIndex(dukImage.as_int()));
-                else
-                    result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage.as_int()));
-                result.imageFrameCount = 0;
-                result.imageFrameDuration = 0;
-            }
-            else if (dukImage.type() == DukValue::Type::STRING)
-            {
-                result.imageFrameBase = ImageId::FromUInt32(GetIconByName(dukImage.as_c_string()));
-                result.imageFrameCount = 0;
-                result.imageFrameDuration = 0;
-            }
-            else if (dukImage.type() == DukValue::Type::OBJECT)
+            if (dukImage.type() == DukValue::Type::OBJECT)
             {
                 result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage["frameBase"].as_int()));
                 result.imageFrameCount = AsOrDefault(dukImage["frameCount"], 0);
@@ -244,6 +220,12 @@ namespace OpenRCT2::Ui::Windows
                 {
                     result.offset = { AsOrDefault(dukCoord["x"], 0), AsOrDefault(dukCoord["y"], 0) };
                 }
+            }
+            else if (dukImage.type() != DukValue::Type::UNDEFINED)
+            {
+                result.imageFrameBase = ImageId::FromUInt32(ImageFromDuk(dukImage));
+                result.imageFrameCount = 0;
+                result.imageFrameDuration = 0;
             }
             if (desc["widgets"].is_array())
             {

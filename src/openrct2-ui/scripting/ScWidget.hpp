@@ -509,22 +509,13 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
+
         void image_set(DukValue value)
         {
             auto widget = GetWidget();
             if (widget != nullptr && widget->type == WindowWidgetType::FlatBtn)
             {
-                if (value.type() == DukValue::Type::NUMBER)
-                {
-                    if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
-                        widget->image = NewIconIndex(value.as_uint());
-                    else
-                        widget->image = value.as_uint();
-                }
-                else
-                {
-                    widget->image = GetIconByName(value.as_string());
-                }
+                widget->image = ImageFromDuk(value);
                 Invalidate();
             }
         }
