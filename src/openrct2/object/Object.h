@@ -410,5 +410,5 @@ constexpr bool IsIntransientObjectType(ObjectType type)
     return type == ObjectType::Audio;
 }
 
-u8string VersionString(ObjectVersion version);
+u8string VersionString(const ObjectVersion& version);
 ObjectVersion VersionTuple(std::string_view version);

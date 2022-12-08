@@ -329,7 +329,7 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
     return {};
 }
 
-u8string VersionString(ObjectVersion version)
+u8string VersionString(const ObjectVersion& version)
 {
     return std::to_string(std::get<0>(version)) + "." + std::to_string(std::get<1>(version)) + "."
         + std::to_string(std::get<2>(version));
