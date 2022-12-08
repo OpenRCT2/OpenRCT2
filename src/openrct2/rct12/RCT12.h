@@ -290,7 +290,9 @@ constexpr TileElementType ToOpenRCT2TileElementType(RCT12TileElementType rct12ty
             return static_cast<TileElementType>(rct12type);
 
         default:
-            throw std::runtime_error("This tile element type cannot be converted directly!");
+            throw std::runtime_error(
+                "This tile element type cannot be converted directly! Tile element type: "
+                + std::to_string(static_cast<int>(rct12type)));
     }
 }
 
