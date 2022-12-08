@@ -410,6 +410,5 @@ constexpr bool IsIntransientObjectType(ObjectType type)
     return type == ObjectType::Audio;
 }
 
-constexpr const size_t VersionStringMaxLength = 18; // 3 fields of 5 characters, 2 delimiters, null terminator
-std::string VersionString(ObjectVersion version);
+u8string VersionString(ObjectVersion version);
 ObjectVersion VersionTuple(std::string_view version);
