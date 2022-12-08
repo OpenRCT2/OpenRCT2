@@ -46,6 +46,7 @@
 - Fix: [#18453] Slow walking guests don't get across level crossings in time.
 - Fix: [#18469] Land rights window buttons incorrectly disabled and markers remain visible indefinitely.
 - Fix: [#18459] ‘Highlight path issues’ hides fences for paths with additions.
+- Fix: [#18552] Trains clipping through helixes.
 - Fix: [#18606] JSON objects do not take priority over the DAT files they supersede.
 - Fix: [#18620] [Plugin] Crash when reading widget properties from windows that have both static and tab widgets.
 - Fix: [#18653] Negative ratings multipliers do not appear in Vehicle tab.
