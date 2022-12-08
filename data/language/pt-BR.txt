@@ -2993,7 +2993,7 @@ STR_5832    :Mostra altura como unidade genérica ao invés de formato de medida
 STR_5833    :Muda qual formato de data é usado
 STR_5834    :Seleciona qual dispositivo de áudio o OpenRCT2 irá usar
 STR_5835    :Deixa o jogo mudo se a janela perder foco
-STR_5836    :Selecione a música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT1 requer que você defina o caminho para o RCT1 na aba Variados.
+STR_5836    :Selecione a música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT1 requer que você defina o caminho para o RCT1 na aba Avançado.
 STR_5837    :Cria e gerencia temas de interface de usuário personalizadas
 STR_5838    :Mostra um botão separado para janela de finanças na barra de ferramentas
 STR_5839    :Mostra um botão separado para janela de pesquisa e desenvolvimento na barra de ferramentas
@@ -3617,9 +3617,9 @@ STR_6511    :Giro de Gravidade Zero (direita)
 STR_6512    :Giro de Gravidade Zero Grande (esquerda)
 STR_6513    :Giro de Gravidade Zero Grande (direita)
 STR_6514    :Altura inválida!
-STR_6515    :{BLACK}RCT1 não associado - imagens de reserva serão usadas.
-STR_6516    :Um ou mais objetos adicionados requerem o RCT1 associado para exibição correta. Imagens de reserva serão usadas.
-STR_6517    :Um ou mais objetos nesse parque requerem o RCT1 associado para exibição correta. Imagens de reserva serão usadas.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 não associado - imagens de reserva serão usadas.
+STR_6516    :Um ou mais objetos adicionados requerem o RollerCoaster Tycoon 1 associado para exibição correta. Imagens de reserva serão usadas.
+STR_6517    :Um ou mais objetos nesse parque requerem o RollerCoaster Tycoon 1 associado para exibição correta. Imagens de reserva serão usadas.
 STR_6518    :{BLACK}Coloque o mouse sobre um cenário para ver sua descrição e objetivo. Clique para começar a jogar.
 STR_6519    :Extras
 STR_6520    :Conjuntos de Recursos

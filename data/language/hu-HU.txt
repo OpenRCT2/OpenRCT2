@@ -153,6 +153,7 @@ STR_0566    :Különálló hullámvasút-kocsik száguldanak egy szoros, cikcakk
 STR_0567    :A pálya mindkét oldalán felfüggesztett ülésekben ülve az utasok bukfencezve forognak, miközben meredek eséseken és különböző fordítókon haladnak át
 STR_0569    :A pálya alatti speciális rögzítőhámokban utazva az utasok megtapasztalhatják a repülés élményét, ahogy szelik a levegőt
 STR_0571    :Kör alakú autók forognak körbe-körbe, miközben a cikkcakkos fa pályán haladnak
+STR_0572    :A nagy kapacitású csónakok egy széles vízcsatornán haladnak, felfelé a lejtőkön futószalagon, majd a meredek lejtőkön lefelé gyorsulva óriási csobbanással áztatják el az utasokat
 STR_0573    :Motoros, helikopter formájú kocsik haladnak egy acélpályán, a pedálozó utasok irányításával
 STR_0578    :A kocsik egy abroncsokkal körbefogott, meredek esésekkel és palástorsókkal teli pálya mentén haladnak
 STR_0579    :Egy enyhe minigolf-játék
@@ -2207,6 +2208,7 @@ STR_3141    :Nem lehetséges többkörös utazás kábeles felvonószakasszal
 STR_3142    :{WINDOW_COLOUR_2}Befogadóképesség: {BLACK}{STRINGID}
 STR_3143    :Emberek megjelenítése a térképen
 STR_3144    :Játékok és bódék megjelenítése a térképen
+STR_3160    :{SMALLFONT}{BLACK}A körök számának menetenkénti beállítása
 STR_3162    :Nem lehet elég memóriát lefoglalni
 STR_3163    :Új adat telepítése:
 STR_3164    :{BLACK}{COMMA16} kiválasztva (maximum {COMMA16})
@@ -2261,6 +2263,11 @@ STR_3217    :Birtokolt föld
 STR_3218    :Birtokolt építési jogok
 STR_3219    :Eladó föld
 STR_3220    :Eladó építési jogok
+STR_3221    :{SMALLFONT}{BLACK}A park tulajdonába tartozó földterületek kijelölése
+STR_3222    :{SMALLFONT}{BLACK}Kizárólag a park tulajdonában lévő építési jogok kijelölése
+STR_3223    :{SMALLFONT}{BLACK}A park által megvásárolható földterületek kijelölése
+STR_3224    :{SMALLFONT}{BLACK}A park által megvásárolható építési jogok kijelölése
+STR_3225    :{SMALLFONT}{BLACK}A kiválasztott pozíció körül objektumok véletlenszerű halmazának építése be/ki
 STR_3226    :Parkbejárat építése
 STR_3227    :Túl sok a parkbejárat!
 STR_3228    :Kezdő pozíciók megadása az emberek számára
@@ -2427,7 +2434,7 @@ STR_5120    :Pénzügyek
 STR_5121    :Kutatás
 STR_5122    :A játékok pályatípus szerinti kiválasztása (mint az RCT1-ben)
 STR_5123    :Játékok felújítása
-STR_5125    :Minden lerombolható
+STR_5125    :Minden rombolható
 STR_5126    :Véletlenszerű főcímzene
 STR_5128    :Kiválasztás mérete
 STR_5129    :Add meg a kiválasztás méretét {COMMA16} és {COMMA16} között
@@ -2969,20 +2976,28 @@ STR_5823    :Nagybetűs megjelenítés a hirdetőtáblákon (RCT1-beli viselked�
 STR_5824    :A viharok alatti villámhatás{NEWLINE}kikapcsolása
 STR_5825    :Az egérmutató maradjon az ablakon belül
 STR_5826    :A látkép jobb egeres húzásának invertálása
+STR_5827    :{SMALLFONT}{BLACK}A felhasználói felület színsémájának beállítása
+STR_5828    :{SMALLFONT}{BLACK}Megváltoztatja a távolságok, sebesség stb. mérési formátumát.
+STR_5829    :{SMALLFONT}{BLACK}Megváltoztatja a használatban lévő pénznem formátumot. Tisztán vizuális, a pontos árfolyam nincs implementálva.
 STR_5830    :A játék által használt nyelv megváltoztatása
 STR_5831    :A hőmérséklet kijelzéséhez{NEWLINE}használt mértékegység megváltoztatása.
+STR_5832    :{SMALLFONT}{BLACK}A magasság általános mértékegységként való megjelenítése a "Távolság és sebesség" alatt beállított mérési formátum helyett
 STR_5833    :A játék által használt dátumformátum megváltoztatása
 STR_5834    :Az OpenRCT2 által használt hangeszköz kiválasztása
 STR_5835    :A játék némítása, ha az ablak elveszti a fókuszt
 STR_5836    :A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha megadod az RCT1 útvonalát a Haladó fülön.
+STR_5837    :{SMALLFONT}{BLACK}Egyéni felhasználói felület témák létrehozása és kezelése
 STR_5838    :Külön gomb a pénzügyi ablak számára az eszköztáron
 STR_5839    :Külön gomb a kutatás-fejlesztés ablak számára az eszköztáron
 STR_5840    :Külön gomb a csalások ablak számára az eszköztáron
 STR_5841    :Külön gomb a legutóbbi hírek ablak számára az eszköztáron
+STR_5842    :{SMALLFONT}{BLACK}A pályák nehézségük (RCT2-beli viselkedés) vagy forrásjátékuk (RCT1-beli viselkedés) szerinti fülekre csoportosítása
 STR_5843    :A pályák progresszív feloldásának engedélyezése (RCT1-beli viselkedés)
 STR_5844    :Tartsa fenn a kapcsolatot a többjátékos{NEWLINE}szerverrel akkor is, ha szinkronizációs vagy egyéb hiba jelentkezik
 STR_5845    :Hozzáadja a hibakereső{NEWLINE}eszközök gombját az eszköztárhoz.{NEWLINE}Engedélyezi a fejlesztői konzol gyorsbillentyűjét
+STR_5846    :{SMALLFONT}{BLACK}Az OpenRCT2 milyen gyakran mentsen automatikusan
 STR_5849    :Az újonnan felvett alkalmazottak{NEWLINE}automatikus lerakása
+STR_5851    :{SMALLFONT}{BLACK}Az alapértelmezett vizsgálati időköz megadása{NEWLINE}újonnan épített játékokra
 STR_5853    :A hanghatások be- és kikapcsolása
 STR_5854    :A játékok zenéjének be- és kikapcsolása
 STR_5855    :Váltás a hagyományos teljes képernyős,{NEWLINE}keret nélküli teljes képernyős és az{NEWLINE}ablakos megjelenítési módok között
@@ -3027,6 +3042,8 @@ STR_5893    :Árfolyam
 STR_5894    :Írd be az árfolyamot
 STR_5895    :Terv mentése
 STR_5896    :Pálya mentése sikertelen!
+STR_5898    :{BLACK}A pálya nem tölthető be, lehet, hogy a fájl {newline}sérült, törött vagy hiányzik!
+STR_5899    :Festési hibakeresés ablak be/ki
 STR_5900    :Eredeti rajzolókód használata
 STR_5901    :Szegmensek magasságának mutatása
 STR_5902    :Határolókeretek mutatása
@@ -3034,6 +3051,8 @@ STR_5904    :Dátum visszaállítása
 STR_5905    :Térképgeneráló eszköz, amely automatikusan létrehoz egy egyedi tájat
 STR_5906    :Nagyítás a mutató helyzetére 
 STR_5907    :Ha be van kapcsolva, a nagyítás képernyő közepe helyett a mutatóra közelít
+STR_5908    :Tetszőleges játék-változtatások
+STR_5909    :{SMALLFONT}{BLACK}Lehetővé teszi a járműtípus szabad megváltoztatását. Összeomlásokat okozhat.
 STR_5910    :Alkalmazás
 STR_5911    :Átlátszó utak
 STR_5912    :Átlátszó utak be/ki
@@ -3231,6 +3250,7 @@ STR_6105    :Hiperhullámvasút
 STR_6107    :Monster Truck-ok
 STR_6109    :Hiper-csavaró
 STR_6111    :Klasszikus mini hullámvasút
+STR_6115    :Motoros óriás 4x4-es teherautók, amelyek meredek lejtőkön is felhajtanak
 STR_6119    :Ez a hullámvasút olcsó és könnyen építhető, de csak korlátozott magasságig
 STR_6120    :{BABYBLUE}Új jármű érhető el {STRINGID} számára:{NEWLINE}{STRINGID}
 STR_6121    :Kiterjeszti a park által birtokolt területet egészen a térkép széléig
@@ -3642,8 +3662,8 @@ STR_PARK    :Hármas-sziget
 STR_DTLS    :Egy frissen nyílt park, amelyet több sziget alkot
 
 <Katie's Dreamland>
-STR_SCNR    :Kati Álomvilága
-STR_PARK    :Kati Álomvilága
+STR_SCNR    :Katie Álomvilága
+STR_PARK    :Katie Álomvilága
 STR_DTLS    :Egy kis méretű vidámpark, pár játékkal és hellyel a terjeszkedéshez - A célod, hogy megduplázd a park értékét
 
 <Pokey Park>
@@ -3863,8 +3883,8 @@ STR_PARK    :Városi Park
 STR_DTLS    :Egy apró park egyezséget kötött a közeli várossal, amelynek értelmében magán a városon keresztül terjeszkedhet
 
 <Geoffrey Gardens>
-STR_SCNR    :Gotfrid Kertek
-STR_PARK    :Gotfrid Kertek
+STR_SCNR    :Gotfrid Kert
+STR_PARK    :Gotfrid Kert
 STR_DTLS    :Egy nagy kertnek arra van szüksége, hogy sikeres vidámpark legyen belőle
 
 
@@ -4048,31 +4068,8 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
+
 [TTPIRF05]
-STR_NAME    :Tető
-
-[TTRFWD01]
-STR_NAME    :Tető
-
-[TTRFWD02]
-STR_NAME    :Tető
-
-[TTRFWD03]
-STR_NAME    :Tető
-
-[TTRFWD04]
-STR_NAME    :Tető
-
-[TTRFWD05]
-STR_NAME    :Tető
-
-[TTRFWD06]
-STR_NAME    :Tető
-
-[TTRFWD07]
-STR_NAME    :Tető
-
-[TTRFWD08]
 STR_NAME    :Tető
 
 ## End OpenRCT2 Official
@@ -4080,6 +4077,135 @@ STR_NAME    :Tető
 ###############################################################################
 ## RCT2 Scenarios
 ###############################################################################
+<Alpine Adventures>
+STR_SCNR    :Alpesi Kalandok
+STR_PARK    :Alpesi Kalandok
+STR_DTLS    :Alakíts át egy kis hegyi síközpontot havas témájú vidámparkká
+
+<Amity Airfield>
+STR_SCNR    :Barátság Repülőtér
+STR_PARK    :Barátság Repülőtér
+STR_DTLS    :Építs egy repülés témájú vidámparkot ezen az elhagyatott repülőtéren
+
+<Botany Breakers>
+STR_SCNR    :Botanikus Hullámok
+STR_PARK    :Botanikus Hullámok
+STR_DTLS    :A kihívásod az, hogy építs egy igazán nyereséges parkot ezen a paradicsomi szigeten...
+
+<Build your own Six Flags Belgium>
+STR_SCNR    :Építsd meg a saját Six Flags Belgiumodat
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Építsd meg a saját változatodat ebből európai Six Flags parkból!
+
+<Build your own Six Flags Great Adventure>
+STR_SCNR    :Építsd meg a saját Six Flags Great Adventure-ödet
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Használd a tervezői képességeidet, hogy újraalkosd ezt a Six Flags parkot
+
+<Build your own Six Flags Holland>
+STR_SCNR    :Építsd meg a saját Six Flags Hollandodat
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Építsd meg ezt az európai Six Flags parkot úgy, ahogyan szeretnéd
+
+<Build your own Six Flags Magic Mountain>
+STR_SCNR    :Építsd meg a saján Six Flags Magic Mountain-edet
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Készítsd el a saját verziódat ebből a hatalmas Six Flags parkból!
+
+<Build your own Six Flags over Texas>
+STR_SCNR    :Építsd meg a saját Six Flags over Texasodat
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :A semmiből kiindulva, építsd meg ebben a Six Flags parkban a hullámvasutakat!
+
+<Build your own Six Flags Park>
+STR_SCNR    :Építsd meg a saját Six Flags parkodat
+STR_PARK    :Six Flags
+STR_DTLS    :Építsd meg a saját Six Flags parkodat - vagy építs más Six Flags parkokból származó játékokat, vagy tervezz és építs saját játékokat.
+
+<Bumbly Bazaar>
+STR_SCNR    :Bumfordi Bazár
+STR_PARK    :Bumfordi Bazár
+STR_DTLS    :Egy kis piaci bazárral indulva, a kihívásod a boltok és bódék nyereségének növelése azzal, hogy több vendéget vonzol be játékok és hullámvasutak építésével
+
+<Crazy Castle>
+STR_SCNR    :Őrült Kastély
+STR_PARK    :Őrült Kastély
+STR_DTLS    :Örököltél egy nagy kastélyt. Az a feladatod, hogy átalakítsd egy kis vidámparkká.
+
+<Dusty Greens>
+STR_SCNR    :Poros Golfpálya 
+STR_PARK    :Poros Golfpálya
+STR_DTLS    :A sivatagban, egy autópálya-csomópont közelében található Poros Golfpálya lehetőséget kínál egy kis golfközpont virágzó vidámparkká fejlesztésére
+
+<Electric Fields>
+STR_SCNR    :Elektromos Mezők
+STR_PARK    :Elektromos Mezők
+STR_DTLS    :Örököltél egy kis farmot, és a kihívásod az, hogy építs egy kis vidámparkot a mezők és a farmépületek között
+
+<Extreme Heights>
+STR_SCNR    :Extrém Magaslatok
+STR_PARK    :Extrém Magaslatok
+STR_DTLS    :Pénzügyi korlátoktól mentesen, a kihívásod ennek a sivatagi parkonak a bővítése úgy, hogy magához vonzza a maximális izgalmakat kereső embereket 
+
+<Factory Capers>
+STR_SCNR    :Gyári Móka
+STR_PARK    :Gyári Móka
+STR_DTLS    :Egy elhagyatott gyárkomplexum lehetőség egy mechanikus témájú vidámpark építésére
+
+<Fungus Woods>
+STR_SCNR    :Gombaerdő
+STR_PARK    :Gombaerdő
+STR_DTLS    :Kizárólag régebbi stílusú, fából készült hullámvasutakra korlátozva, a kihívásod az, hogy egy virágzó vidámparkot építs Gombaerdőben
+
+<Ghost Town>
+STR_SCNR    :Szellemváros
+STR_PARK    :Szellemváros
+STR_DTLS    :Egy nagy vidámparklánc arra bérelt fel, hogy egy elhagyatott bányászváros köré építs egy óriási hullámvasútparkot
+
+<Gravity Gardens>
+STR_SCNR    :Gravitációs Kert
+STR_PARK    :Gravitációs Kert
+STR_DTLS    :A kihívásod az, hogy építs egy hullámvasútparkot a gyönyörű Gravitációs Kertben. Semmi más játékot, csak hullámvasutakat!
+
+<Infernal Views>
+STR_SCNR    :Pokoli Kilátások
+STR_PARK    :Pokoli Kilátások
+STR_DTLS    :A park bizonytalanul fészkel a magmafolyamokkal övezett lávaköveken
+
+<Lucky Lake>
+STR_SCNR    :Szerencsés-tó
+STR_PARK    :Szerencsés-tó
+STR_DTLS    :Korlátlan pénzzel, de egy kihívást jelentő tavi helyszínen, ezt a parkot igazi próbatétel lesz bővíteni és igazgatni
+
+<Rainbow Summit>
+STR_SCNR    :Szivárvány Csúcs
+STR_PARK    :Szivárvány Csúcs
+STR_DTLS    :A domboldalon épült parkban tilos bármi magasat építeni. Sikerül bővítened a parkot és sikeressé tenni?
+
+<Six Flags Belgium>
+STR_SCNR    :Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Próbáld ki magad ennek a Six Flags parknak vezetésében és fejlesztésében
+
+<Six Flags Great Adventure>
+STR_SCNR    :Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Építsd meg a hiányzó Six Flags játékokat, vagy készíts saját terveket a park fejlesztésére! De ne feledkezz meg a végső célodról: több vendéget vonzani a parkba!
+
+<Six Flags Holland>
+STR_SCNR    :Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Próbáld ki magad ennek a Six Flags parknak a vezetésében és fejlesztésében
+
+<Six Flags Magic Mountain>
+STR_SCNR    :Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Építsd meg a hiányzó Six Flags játékokat, vagy készíts saját terveket a park fejlesztésére! De ne feledkezz meg a végső célodról: több vendéget vonzani a parkba!
+
+<Six Flags over Texas>
+STR_SCNR    :Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Építsd meg a hiányzó Six Flags játékokat, vagy készíts saját terveket a park fejlesztésére! De ne feledkezz meg a végső célodról: több vendéget vonzani a parkba!
 
 ###############################################################################
 ## Wacky Worlds Scenarios
@@ -4122,8 +4248,8 @@ STR_PARK    :Vezúv
 STR_DTLS    :Pompejit és Herculaneumot a Vezúv temette maga alá Kr.u. 79-ben. Látogass el az ásatásokra és építs egy parkot!{NEWLINE}{NEWLINE}Szerző: Katatude
 
 <The Sandbox by Katatude for UCES>
-STR_SCNR    :A homokozó
-STR_PARK    :A homokozó
+STR_SCNR    :A Homokozó
+STR_PARK    :A Homokozó
 STR_DTLS    :Amit mindenki akar - egy homokozó! Szóval ragadjátok meg a kis vödrötöket és lapátotokat és építsetek egy parkot!{NEWLINE}Szerző: Katatude
 
 <Niagara Falls & Gorge by Katatude for UCES>
@@ -4173,7 +4299,7 @@ STR_DTLS    :Miután robbanás történt a Bigrock Mining Co. vállalatnál, Big
 <Camp Mockingbird for UCES by Katatude>
 STR_SCNR    :Feketerigó tábor
 STR_PARK    :Feketerigó tábor
-STR_DTLS    :Csak $500/hét ez a nyári tábor! Törd fel a bankodat, aztán szórakozz és építs egy parkot.{NEWLINE}Szerző: Katatude
+STR_DTLS    :Csak $500/hét ez a nyári tábor! Törd fel a malacperselyed, aztán szórakozz és építs egy parkot.{NEWLINE}Szerző: Katatude
 
 <Choo Choo Town>
 STR_SCNR    :Sihuhu város
@@ -4193,4 +4319,4 @@ STR_DTLS    :Hé, gyerekek! Érezzük jól magunkat!{NEWLINE}Szerzők: Piehead &
 <Sand Dune>
 STR_SCNR    :Homokdűne
 STR_PARK    :Homokdűne
-STR_DTLS    :Mint egy kis park tulajdonosa, vásároltál egy nagy darab földet a tengerparton, hogy bővíts és még több vendéget vonzz a gyönyörű homokdűnékre, de vigyázz: nem bolygathatod az ökológiailag érzékeny homokdűnéket.{NEWLINE}Szerző: rbarclay
+STR_DTLS    :Egy kis park tulajdonosaként vásároltál egy nagy darab földet a tengerparton, hogy bővíts és még több vendéget vonzz a gyönyörű homokdűnékre, de vigyázz: nem bolygathatod az ökológiailag érzékeny homokdűnéket.{NEWLINE}Szerző: rbarclay
