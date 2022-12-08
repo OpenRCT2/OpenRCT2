@@ -31,6 +31,7 @@ using ride_type_t = uint16_t;
 
 constexpr const int8_t VersionNumFields = 3;
 using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
+static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
 
 // First 0xF of rct_object_entry->flags
 enum class ObjectType : uint8_t
