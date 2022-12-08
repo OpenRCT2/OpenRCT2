@@ -339,7 +339,7 @@ namespace OpenRCT2
                                             }
                                         }
                                         desc.Identifier = identifier;
-                                        desc.version = VersionTuple(cs.Read<std::string>());
+                                        desc.Version = VersionTuple(cs.Read<std::string>());
 
                                         if (version <= 2)
                                         {
@@ -388,7 +388,7 @@ namespace OpenRCT2
                                 {
                                     cs.Write(DESCRIPTOR_JSON);
                                     cs.Write(entry.Identifier);
-                                    cs.Write(VersionString(entry.version));
+                                    cs.Write(VersionString(entry.Version));
                                 }
                                 else
                                 {

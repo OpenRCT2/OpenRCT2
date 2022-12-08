@@ -329,14 +329,14 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
     return {};
 }
 
-std::string VersionString(Version version)
+std::string VersionString(ObjectVersion version)
 {
     utf8 buff[VersionStringMaxLength];
     return String::Format(
         buff, VersionStringMaxLength, "%i.%i.%i", std::get<0>(version), std::get<1>(version), std::get<2>(version));
 }
 
-Version VersionTuple(std::string_view version)
+ObjectVersion VersionTuple(std::string_view version)
 {
     if (version.empty())
     {

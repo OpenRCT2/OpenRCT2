@@ -540,7 +540,7 @@ namespace ObjectFactory
             {
                 descriptor = ObjectEntryDescriptor(objectType, id);
             }
-            descriptor.version = version;
+            descriptor.Version = version;
             result = CreateObject(objectType);
             result->SetVersion(version);
             result->SetIdentifier(id);
