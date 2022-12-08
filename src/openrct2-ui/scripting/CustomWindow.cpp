@@ -209,7 +209,13 @@ namespace OpenRCT2::Ui::Windows
         {
             CustomTabDesc result;
             auto dukImage = desc["image"];
-            if (dukImage.type() == DukValue::Type::OBJECT)
+            if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
+            {
+                result.imageFrameBase = ImageId::FromUInt32(ImageFromDuk(dukImage));
+                result.imageFrameCount = 0;
+                result.imageFrameDuration = 0;
+            }
+            else if (dukImage.type() == DukValue::Type::OBJECT)
             {
                 result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage["frameBase"].as_int()));
                 result.imageFrameCount = AsOrDefault(dukImage["frameCount"], 0);
@@ -220,12 +226,6 @@ namespace OpenRCT2::Ui::Windows
                 {
                     result.offset = { AsOrDefault(dukCoord["x"], 0), AsOrDefault(dukCoord["y"], 0) };
                 }
-            }
-            else if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
-            {
-                result.imageFrameBase = ImageId::FromUInt32(ImageFromDuk(dukImage));
-                result.imageFrameCount = 0;
-                result.imageFrameDuration = 0;
             }
             if (desc["widgets"].is_array())
             {
