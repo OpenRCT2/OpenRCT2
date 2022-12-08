@@ -47,7 +47,7 @@ RCT12TileElementType RCT12TileElementBase::GetType() const
             return elem_type;
         default:
             // Most corrupt elements were set to 0x255, but not all. Fallback to corrupt element if encountered unknown type.
-            return RCT12TileElementType::Corrupt;
+            return RCT12TileElementType::EightCarsCorrupt15;
     }
 }
 

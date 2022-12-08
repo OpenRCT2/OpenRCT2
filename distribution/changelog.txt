@@ -48,6 +48,7 @@
 - Fix: [#18469] Land rights window buttons incorrectly disabled and markers remain visible indefinitely.
 - Fix: [#18459] ‘Highlight path issues’ hides fences for paths with additions.
 - Fix: [#18552] Trains clipping through helixes.
+- Fix: [#18576] Cannot open parks with certain types of corrupt tile elements.
 - Fix: [#18606] JSON objects do not take priority over the DAT files they supersede.
 - Fix: [#18620] [Plugin] Crash when reading widget properties from windows that have both static and tab widgets.
 - Fix: [#18653] Negative ratings multipliers do not appear in Vehicle tab.
