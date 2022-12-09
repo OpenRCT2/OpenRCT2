@@ -357,7 +357,7 @@ ObjectVersion VersionTuple(std::string_view version)
     try
     {
         uint8_t highestIndex = std::min(static_cast<int8_t>(nums.size()), VersionNumFields);
-        for (int8_t i = highestIndex - 1; i >= 0; i--)
+        for (int8_t i = 0; i < highestIndex; i++)
         {
             auto value = stoi(nums.at(i));
             constexpr auto maxValue = std::numeric_limits<uint16_t>().max();
@@ -367,7 +367,7 @@ ObjectVersion VersionTuple(std::string_view version)
                     "Version value too high in version string '%s', version value will be capped to %i.", version, maxValue);
                 value = maxValue;
             }
-            versions[VersionNumFields - highestIndex + i] = value;
+            versions[i] = value;
         }
     }
     catch (const std::exception&)
