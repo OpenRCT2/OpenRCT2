@@ -363,7 +363,8 @@ ObjectVersion VersionTuple(std::string_view version)
             constexpr auto maxValue = std::numeric_limits<uint16_t>().max();
             if (value > maxValue)
             {
-                log_warning("Version value too high in version string '%s', version value will be capped to %i.", version, maxValue);
+                log_warning(
+                    "Version value too high in version string '%s', version value will be capped to %i.", version, maxValue);
                 value = maxValue;
             }
             versions[VersionNumFields - highestIndex + i] = value;
