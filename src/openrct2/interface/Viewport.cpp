@@ -45,7 +45,7 @@
 
 using namespace OpenRCT2;
 
-//#define DEBUG_SHOW_DIRTY_BOX
+// #define DEBUG_SHOW_DIRTY_BOX
 uint8_t gShowGridLinesRefCount;
 uint8_t gShowLandRightsRefCount;
 uint8_t gShowConstuctionRightsRefCount;
@@ -1203,7 +1203,9 @@ void show_gridlines()
  */
 void hide_gridlines()
 {
-    gShowGridLinesRefCount--;
+    if (gShowGridLinesRefCount > 0)
+        gShowGridLinesRefCount--;
+
     if (gShowGridLinesRefCount == 0)
     {
         rct_window* mainWindow = window_get_main();
@@ -1245,7 +1247,9 @@ void show_land_rights()
  */
 void hide_land_rights()
 {
-    gShowLandRightsRefCount--;
+    if (gShowLandRightsRefCount > 0)
+        gShowLandRightsRefCount--;
+
     if (gShowLandRightsRefCount == 0)
     {
         rct_window* mainWindow = window_get_main();
@@ -1287,7 +1291,9 @@ void show_construction_rights()
  */
 void hide_construction_rights()
 {
-    gShowConstuctionRightsRefCount--;
+    if (gShowConstuctionRightsRefCount > 0)
+        gShowConstuctionRightsRefCount--;
+
     if (gShowConstuctionRightsRefCount == 0)
     {
         rct_window* mainWindow = window_get_main();

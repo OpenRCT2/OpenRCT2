@@ -52,6 +52,7 @@
 - Fix: [#18606] JSON objects do not take priority over the DAT files they supersede.
 - Fix: [#18620] [Plugin] Crash when reading widget properties from windows that have both static and tab widgets.
 - Fix: [#18653] Negative ratings multipliers do not appear in Vehicle tab.
+- Fix: [#18696] Construction rights cannot be viewed after all are purchased.
 - Fix: [#18720] Upwards helix is enabled for the Alpine Coaster, even when cheats are off.
 - Fix: [#18755] Ferris Wheel and Circus ghosts not coloured correctly.
 
