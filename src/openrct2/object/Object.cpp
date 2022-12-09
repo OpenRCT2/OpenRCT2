@@ -353,11 +353,10 @@ ObjectVersion VersionTuple(std::string_view version)
         log_warning("No fields found in version string '%s', expected X.Y.Z", version);
         return std::make_tuple(0, 0, 0);
     }
-    // fill in array from right-to-left
     try
     {
-        uint8_t highestIndex = std::min(static_cast<int8_t>(nums.size()), VersionNumFields);
-        for (int8_t i = 0; i < highestIndex; i++)
+        size_t highestIndex = std::min(nums.size(), VersionNumFields);
+        for (size_t i = 0; i < highestIndex; i++)
         {
             auto value = stoi(nums.at(i));
             constexpr auto maxValue = std::numeric_limits<uint16_t>().max();

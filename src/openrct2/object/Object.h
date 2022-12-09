@@ -29,7 +29,7 @@ constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<O
 struct ObjectRepositoryItem;
 using ride_type_t = uint16_t;
 
-constexpr const int8_t VersionNumFields = 3;
+constexpr const size_t VersionNumFields = 3;
 using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
 static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
 
