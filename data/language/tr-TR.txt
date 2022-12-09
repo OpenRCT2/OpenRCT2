@@ -3845,31 +3845,6 @@ STR_DTLS    :
 ## Start OpenRCT2 Official
 [TTPIRF05]
 STR_NAME    :Çatı
-
-[TTRFWD01]
-STR_NAME    :Çatı
-
-[TTRFWD02]
-STR_NAME    :Çatı
-
-[TTRFWD03]
-STR_NAME    :Çatı
-
-[TTRFWD04]
-STR_NAME    :Çatı
-
-[TTRFWD05]
-STR_NAME    :Çatı
-
-[TTRFWD06]
-STR_NAME    :Çatı
-
-[TTRFWD07]
-STR_NAME    :Çatı
-
-[TTRFWD08]
-STR_NAME    :Çatı
-
 ## End OpenRCT2 Official
 
 ###############################################################################

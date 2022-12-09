@@ -3911,31 +3911,6 @@ STR_DTLS    :
 ## Start OpenRCT2 Official
 [TTPIRF05]
 STR_NAME    :屋根
-
-[TTRFWD01]
-STR_NAME    :屋根
-
-[TTRFWD02]
-STR_NAME    :屋根
-
-[TTRFWD03]
-STR_NAME    :屋根
-
-[TTRFWD04]
-STR_NAME    :屋根
-
-[TTRFWD05]
-STR_NAME    :屋根
-
-[TTRFWD06]
-STR_NAME    :屋根
-
-[TTRFWD07]
-STR_NAME    :屋根
-
-[TTRFWD08]
-STR_NAME    :屋根
-
 ## End OpenRCT2 Official
 
 ###############################################################################

@@ -3624,7 +3624,15 @@ STR_6523    :Sænk prioriteten for den valgte materiel pakke.
 STR_6524    :Øg prioriteten for den valgte materiel pakke.
 STR_6525    :Genindlæs alle aktiver i spillet med de aktiverede materiel pakker.
 STR_6526    :(basis grafik, musik og lydeffekter)
-STR_6527    :Konkurrencer 
+STR_6527    :Konkurrencer
+STR_6528    :Ugyldig spor parameter!
+STR_6529    :Invalid farve skema parameter!
+STR_6530    :User Created Expansion Set
+STR_6531    :The Time Machine
+STR_6532    :Katy’s Dreamworld
+STR_6533    :{WINDOW_COLOUR_2}Spændings Faktor: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Intensitets Faktor: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Kvalme Faktor: {BLACK}-{COMMA16}%
 
 #############
 # Scenarios #
@@ -4074,30 +4082,6 @@ STR_DTLS    :
 
 ## Start OpenRCT2 Official
 [TTPIRF05]
-STR_NAME    :Tag
-
-[TTRFWD01]
-STR_NAME    :Tag
-
-[TTRFWD02]
-STR_NAME    :Tag
-
-[TTRFWD03]
-STR_NAME    :Tag
-
-[TTRFWD04]
-STR_NAME    :Tag
-
-[TTRFWD05]
-STR_NAME    :Tag
-
-[TTRFWD06]
-STR_NAME    :Tag
-
-[TTRFWD07]
-STR_NAME    :Tag
-
-[TTRFWD08]
 STR_NAME    :Tag
 
 ## End OpenRCT2 Official

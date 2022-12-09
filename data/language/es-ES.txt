@@ -4090,30 +4090,6 @@ STR_DTLS    :
 [TTPIRF05]
 STR_NAME    :Techo
 
-[TTRFWD01]
-STR_NAME    :Techo
-
-[TTRFWD02]
-STR_NAME    :Techo
-
-[TTRFWD03]
-STR_NAME    :Techo
-
-[TTRFWD04]
-STR_NAME    :Techo
-
-[TTRFWD05]
-STR_NAME    :Techo
-
-[TTRFWD06]
-STR_NAME    :Techo
-
-[TTRFWD07]
-STR_NAME    :Techo
-
-[TTRFWD08]
-STR_NAME    :Techo
-
 ## End OpenRCT2 Official
 
 ###############################################################################

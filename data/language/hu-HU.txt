@@ -2188,9 +2188,9 @@ STR_3121    :Nem található gépész, vagy az összes közeli gépész elfoglal
 STR_3122    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA16} vendégnek
 STR_3123    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA16} vendégnek
 STR_3124    :Hibás {STRINGID}
-STR_3125    :{WINDOW_COLOUR_2}Izgalmi tényező: {BLACK}+{COMMA16}%
-STR_3126    :{WINDOW_COLOUR_2}Intenzitási tényező: {BLACK}+{COMMA16}%
-STR_3127    :{WINDOW_COLOUR_2}Émelygési tényező: {BLACK}+{COMMA16}%
+STR_3125    :{WINDOW_COLOUR_2}Izgalmi faktor: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}Intenzitási faktor: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}Émelygési faktor: {BLACK}+{COMMA16}%
 STR_3128    :Játékterv mentése
 STR_3129    :Játékterv mentése díszletekkel
 STR_3130    :Mentés
@@ -3451,7 +3451,7 @@ STR_6358    :{UINT16}. oldal
 STR_6359    :{POP16}{POP16}{UINT16}. oldal
 STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Fényhatások a játékokon (kísérleti)
-STR_6362    :Ha be van kapcsolva, a pályával rendlekező játékokon a járművek éjjel ki lesznek világítva.
+STR_6362    :Ha be van kapcsolva, a pályával rendelkező játékokon a járművek éjjel ki lesznek világítva.
 STR_6363    :A szöveg a vágólapra másolva
 STR_6364    :{RED}{STRINGID} balesete közben {COMMA16} ember meghalt
 STR_6365    :Játékok áldozatai
@@ -3486,7 +3486,7 @@ STR_6393    :Cél kiválasztása
 STR_6394    :Cél
 STR_6395    :Karbantartás
 STR_6396    :Képernyővédő és a monitor energiagazdálkodása ki
-STR_6397    :Ha ki van választva, szüneteltetve lesz a képernyővédő és a monitor egyéb energiagazdálkodásosi funkciói, amíg az OpenRCT2 fut.
+STR_6397    :Ha ki van választva, szüneteltetve lesz a képernyővédő és a monitor egyéb energiagazdálkodási funkciói, amíg az OpenRCT2 fut.
 STR_6398    :A fájl nem támogatott játék-típusokat tartalmaz. Kérlek frissíts egy újabb OpenRCT2 verzióra.
 STR_6399    :Az OpenRCT2 működéséhez szükség van az eredeti RollerCoaster Tycoon 2 fájljaira. Kérlek állítsd be a „game_path” változót a config.ini-ben arra a mappára, amelybe telepítetted a RollerCoaster Tycoon 2-t, majd indítsd újra az OpenRCT2-t.
 STR_6400    :Letöltöttem a GOG RollerCoaster Tycoon 2 offline telepítőjét, de nincs telepítve
@@ -3620,6 +3620,9 @@ STR_6528    :Érvénytelen pályaparaméterek!
 STR_6529    :Érvénytelen színséma-paraméter!
 STR_6531    :Az időgép
 STR_6532    :Katy álomvilága
+STR_6533    :{WINDOW_COLOUR_2}Izgalmi faktor: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Intenzitási faktor: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Émelygési faktor: {BLACK}-{COMMA16}%
 
 #############
 # Scenarios #
@@ -4263,8 +4266,8 @@ STR_PARK    :Sziklás-hegyi bányászok
 STR_DTLS    :Egy sziklaomlás megrongálta a vasutadat. A munkásaid elmentek kutatni. Van arany a hullámvasutakban?{NEWLINE}Szerzők: Squid, Buckone, Fossil
 
 <The Time Machine by Katatude for UCES>
-STR_SCNR    :Az időgép
-STR_PARK    :Az időgép
+STR_SCNR    :Az Időgép
+STR_PARK    :Az Időgép
 STR_DTLS    :Az időgép. Építsd meg, hogy mehess - amikor akarsz, ahová akarsz. Az örökkévalóság vár. Minden relatív.{NEWLINE}Szerző: Katatude
 
 <Tower of Babel>
@@ -4288,7 +4291,7 @@ STR_DTLS    :A rómaiak belefáradtak az unalmas gladiátorharcokba. Adj nekik v
 
 <Beneath the Christmas Tree by Katatude for UCES>
 STR_SCNR    :A karácsonyfa alatt
-STR_PARK    :Téli csodaország
+STR_PARK    :Téli Csodaország
 STR_DTLS    :Anyu építette ezt a jelenetet a fánk alá. Most azt akarja, hogy parkot csináljunk bele! Tudsz segíteni?{NEWLINE}Szerző: Katatude
 
 <Bigrock Blast>
@@ -4297,13 +4300,13 @@ STR_PARK    :Robbanás Bigrockban
 STR_DTLS    :Miután robbanás történt a Bigrock Mining Co. vállalatnál, Bigrock lakosainak egy vidámparkot kell építeniük, hogy életben tartsák városukat.{NEWLINE}Szerzők: rbarclay & buckone
 
 <Camp Mockingbird for UCES by Katatude>
-STR_SCNR    :Feketerigó tábor
-STR_PARK    :Feketerigó tábor
+STR_SCNR    :Feketerigó Tábor
+STR_PARK    :Feketerigó Tábor
 STR_DTLS    :Csak $500/hét ez a nyári tábor! Törd fel a malacperselyed, aztán szórakozz és építs egy parkot.{NEWLINE}Szerző: Katatude
 
 <Choo Choo Town>
-STR_SCNR    :Sihuhu város
-STR_PARK    :Sihuhu város
+STR_SCNR    :Sihuhu Város
+STR_PARK    :Sihuhu Város
 STR_DTLS    :Anyu! Apu! Sihuhu városba akarok menni!{NEWLINE}Szerző: Fossil
 
 <Dragon Islands>

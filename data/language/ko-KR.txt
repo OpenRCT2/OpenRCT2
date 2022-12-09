@@ -2996,7 +2996,7 @@ STR_5832    :높이를 “거리 및 속력”에 설정된 거리 단위 대신
 STR_5833    :사용할 날짜 형식을 설정합니다.
 STR_5834    :OpenRCT2가 사용할 오디오 장치를 선택합니다.
 STR_5835    :게임 밖으로 커서가 나가면 게임에서 소리가 나지 않도록 만듭니다.
-STR_5836    :첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택하려면 기타 탭에서 RCT1의 경로를 지정해야 합니다.
+STR_5836    :첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택하려면 고급 탭에서 RCT1의 경로를 지정해야 합니다.
 STR_5837    :사용자 UI 테마를 생성하고 관리합니다.
 STR_5838    :메인 메뉴에 재정 창을 위한 별도의 버튼을 표시합니다.
 STR_5839    :메인 매뉴에 연구 및 개발 창을 위한 별도의 버튼을 표시합니다.
@@ -3620,9 +3620,9 @@ STR_6511    :제로 G 롤 (오른쪽)
 STR_6512    :대형 제로 G 롤 (왼쪽)
 STR_6513    :대형 제로 G 롤 (오른쪽)
 STR_6514    :잘못된 높이입니다!
-STR_6515    :{BLACK}RCT1이 연결되지 않았습니다 - 대체 이미지가 사용됩니다.
-STR_6516    :하나 이상의 오브젝트에서 RCT1 연결을 필요로 합니다. 대체 이미지가 사용될 것입니다.
-STR_6517    :이 공원에서 사용된 하나 이상의 오브젝트가 RCT1 연결을 필요로 합니다. 대체 이미지가 사용될 것입니다.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1이 연결되지 않았습니다 - 대체 이미지가 사용됩니다.
+STR_6516    :하나 이상의 오브젝트에서 RollerCoaster Tycoon 1 연결을 필요로 합니다. 대체 이미지가 사용될 것입니다.
+STR_6517    :이 공원에서 사용된 하나 이상의 오브젝트가 RollerCoaster Tycoon 1 연결을 필요로 합니다. 대체 이미지가 사용될 것입니다.
 STR_6518    :{BLACK}시나리오의 설명과 목표를 보려면 시나리오에 마우스를 올리세요. 플레이를 시작하려면 클릭하세요.
 STR_6519    :기타
 STR_6520    :에셋 팩
@@ -3638,6 +3638,9 @@ STR_6529    :잘못된 색상 값입니다!
 STR_6530    :유저 제작 확장팩(UCES)
 STR_6531    :타임머신
 STR_6532    :케이티의 드림월드
+STR_6533    :{WINDOW_COLOUR_2}흥미도 인수: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}격렬도 인수: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}멀미도 인수: {BLACK}-{COMMA16}%
 
 #############
 # Scenarios #
@@ -4085,30 +4088,6 @@ STR_DTLS    :
 # Scenery #
 ###########
 [TTPIRF05]
-STR_NAME    :지붕
-
-[TTRFWD01]
-STR_NAME    :지붕
-
-[TTRFWD02]
-STR_NAME    :지붕
-
-[TTRFWD03]
-STR_NAME    :지붕
-
-[TTRFWD04]
-STR_NAME    :지붕
-
-[TTRFWD05]
-STR_NAME    :지붕
-
-[TTRFWD06]
-STR_NAME    :지붕
-
-[TTRFWD07]
-STR_NAME    :지붕
-
-[TTRFWD08]
 STR_NAME    :지붕
 
 ## End OpenRCT2 Official

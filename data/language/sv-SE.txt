@@ -4050,30 +4050,6 @@ STR_DTLS    :
 [TTPIRF05]
 STR_NAME    :Tak
 
-[TTRFWD01]
-STR_NAME    :Tak
-
-[TTRFWD02]
-STR_NAME    :Tak
-
-[TTRFWD03]
-STR_NAME    :Tak
-
-[TTRFWD04]
-STR_NAME    :Tak
-
-[TTRFWD05]
-STR_NAME    :Tak
-
-[TTRFWD06]
-STR_NAME    :Tak
-
-[TTRFWD07]
-STR_NAME    :Tak
-
-[TTRFWD08]
-STR_NAME    :Tak
-
 ## End OpenRCT2 Official
 
 

@@ -4058,30 +4058,6 @@ STR_DTLS    :
 [TTPIRF05]
 STR_NAME    :Katto
 
-[TTRFWD01]
-STR_NAME    :Katto
-
-[TTRFWD02]
-STR_NAME    :Katto
-
-[TTRFWD03]
-STR_NAME    :Katto
-
-[TTRFWD04]
-STR_NAME    :Katto
-
-[TTRFWD05]
-STR_NAME    :Katto
-
-[TTRFWD06]
-STR_NAME    :Katto
-
-[TTRFWD07]
-STR_NAME    :Katto
-
-[TTRFWD08]
-STR_NAME    :Katto
-
 ## End OpenRCT2 Official
 
 ###############################################################################
