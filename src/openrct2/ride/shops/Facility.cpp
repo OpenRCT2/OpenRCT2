@@ -66,7 +66,8 @@ static void PaintFacility(
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 
-    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    if (direction == 1 || direction == 2)
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 }
 
 /* 0x00762D44 */
