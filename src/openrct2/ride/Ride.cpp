@@ -558,20 +558,9 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
         return false;
 
     const auto& ted = GetTrackElementDescriptor(inputElement->GetTrackType());
-    const auto* trackBlock = ted.Block;
+    const auto* trackBlock = ted.GetBlockForSequence(inputElement->GetSequenceIndex());
     if (trackBlock == nullptr)
         return false;
-
-    // The sequence index may be higher than the amount of sequences actually present.
-    // We don’t know the amount of sequences present in the block upfront, but there is an end marker consisting of all 255s.
-    const auto sequenceIndex = inputElement->GetSequenceIndex();
-    for (auto i = 0; i < sequenceIndex; i++)
-    {
-        trackBlock++;
-
-        if (trackBlock == nullptr || trackBlock->index == 255)
-            return false;
-    }
 
     const auto& trackCoordinate = ted.Coordinates;
 
