@@ -625,12 +625,11 @@ bool track_block_get_previous_from_zero(
             continue;
 
         const auto* ted = &GetTrackElementDescriptor(trackElement->GetTrackType());
-        const auto* nextTrackBlock = ted->Block;
-        if (nextTrackBlock == nullptr)
-            continue;
         const auto& nextTrackCoordinate = ted->Coordinates;
 
-        nextTrackBlock += trackElement->GetSequenceIndex();
+        const auto* nextTrackBlock = ted->GetBlockForSequence(trackElement->GetSequenceIndex());
+        if (nextTrackBlock == nullptr)
+            continue;
         if ((nextTrackBlock + 1)->index != 255)
             continue;
 
@@ -703,11 +702,9 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
     if (ride == nullptr)
         return false;
 
-    const auto* trackBlock = ted.Block;
+    const auto* trackBlock = ted.GetBlockForSequence(trackElement->GetSequenceIndex());
     if (trackBlock == nullptr)
         return false;
-
-    trackBlock += trackElement->GetSequenceIndex();
 
     auto trackCoordinate = ted.Coordinates;
 

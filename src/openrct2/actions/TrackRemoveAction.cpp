@@ -137,8 +137,13 @@ GameActions::Result TrackRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
     }
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const rct_preview_track* trackBlock = ted.Block;
-    trackBlock += tileElement->AsTrack()->GetSequenceIndex();
+    auto sequenceIndex = tileElement->AsTrack()->GetSequenceIndex();
+    const rct_preview_track* trackBlock = ted.GetBlockForSequence(sequenceIndex);
+    if (trackBlock == nullptr)
+    {
+        log_warning("Track block %d not found for track type %d.", sequenceIndex, trackType);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+    }
 
     auto startLoc = _origin;
     startLoc.direction = tileElement->GetDirection();
@@ -321,8 +326,13 @@ GameActions::Result TrackRemoveAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
     }
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const rct_preview_track* trackBlock = ted.Block;
-    trackBlock += tileElement->AsTrack()->GetSequenceIndex();
+    auto sequenceIndex = tileElement->AsTrack()->GetSequenceIndex();
+    const rct_preview_track* trackBlock = ted.GetBlockForSequence(sequenceIndex);
+    if (trackBlock == nullptr)
+    {
+        log_warning("Track block %d not found for track type %d.", sequenceIndex, trackType);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+    }
 
     auto startLoc = _origin;
     startLoc.direction = tileElement->GetDirection();
