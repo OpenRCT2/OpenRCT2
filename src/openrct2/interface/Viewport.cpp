@@ -45,10 +45,9 @@
 
 using namespace OpenRCT2;
 
-//#define DEBUG_SHOW_DIRTY_BOX
 uint8_t gShowGridLinesRefCount;
 uint8_t gShowLandRightsRefCount;
-uint8_t gShowConstuctionRightsRefCount;
+uint8_t gShowConstructionRightsRefCount;
 
 static std::list<rct_viewport> _viewports;
 rct_viewport* g_music_tracking_viewport;
@@ -1203,7 +1202,9 @@ void show_gridlines()
  */
 void hide_gridlines()
 {
-    gShowGridLinesRefCount--;
+    if (gShowGridLinesRefCount > 0)
+        gShowGridLinesRefCount--;
+
     if (gShowGridLinesRefCount == 0)
     {
         rct_window* mainWindow = window_get_main();
@@ -1245,7 +1246,9 @@ void show_land_rights()
  */
 void hide_land_rights()
 {
-    gShowLandRightsRefCount--;
+    if (gShowLandRightsRefCount > 0)
+        gShowLandRightsRefCount--;
+
     if (gShowLandRightsRefCount == 0)
     {
         rct_window* mainWindow = window_get_main();
@@ -1266,7 +1269,7 @@ void hide_land_rights()
  */
 void show_construction_rights()
 {
-    if (gShowConstuctionRightsRefCount == 0)
+    if (gShowConstructionRightsRefCount == 0)
     {
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
@@ -1278,7 +1281,7 @@ void show_construction_rights()
             }
         }
     }
-    gShowConstuctionRightsRefCount++;
+    gShowConstructionRightsRefCount++;
 }
 
 /**
@@ -1287,8 +1290,10 @@ void show_construction_rights()
  */
 void hide_construction_rights()
 {
-    gShowConstuctionRightsRefCount--;
-    if (gShowConstuctionRightsRefCount == 0)
+    if (gShowConstructionRightsRefCount > 0)
+        gShowConstructionRightsRefCount--;
+
+    if (gShowConstructionRightsRefCount == 0)
     {
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)

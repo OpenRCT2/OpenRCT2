@@ -109,7 +109,7 @@ struct InteractionInfo
  */
 extern uint8_t gShowGridLinesRefCount;
 extern uint8_t gShowLandRightsRefCount;
-extern uint8_t gShowConstuctionRightsRefCount;
+extern uint8_t gShowConstructionRightsRefCount;
 
 // rct2: 0x014234BC
 extern rct_viewport* g_music_tracking_viewport;

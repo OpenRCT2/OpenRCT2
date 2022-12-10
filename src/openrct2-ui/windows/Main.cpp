@@ -39,7 +39,7 @@ public:
         gCurrentRotation = 0;
         gShowGridLinesRefCount = 0;
         gShowLandRightsRefCount = 0;
-        gShowConstuctionRightsRefCount = 0;
+        gShowConstructionRightsRefCount = 0;
         WindowFootpathResetSelectedPath();
     }
 
