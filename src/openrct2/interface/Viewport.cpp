@@ -45,7 +45,6 @@
 
 using namespace OpenRCT2;
 
-// #define DEBUG_SHOW_DIRTY_BOX
 uint8_t gShowGridLinesRefCount;
 uint8_t gShowLandRightsRefCount;
 uint8_t gShowConstuctionRightsRefCount;
