@@ -464,7 +464,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     {
         return true;
     }
-    
+
     if (trackBlock->index != 0xFF)
     {
         return false;
