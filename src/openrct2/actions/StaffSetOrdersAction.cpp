@@ -23,6 +23,12 @@ StaffSetOrdersAction::StaffSetOrdersAction(EntityId spriteIndex, uint8_t ordersI
 {
 }
 
+void StaffSetOrdersAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("id", _spriteIndex);
+    visitor.Visit("staffOrders", _ordersId);
+}
+
 uint16_t StaffSetOrdersAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

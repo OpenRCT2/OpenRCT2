@@ -52,6 +52,8 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

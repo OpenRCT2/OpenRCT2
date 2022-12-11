@@ -26,6 +26,14 @@ SignSetStyleAction::SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColo
 {
 }
 
+void SignSetStyleAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("id", _bannerIndex);
+    visitor.Visit("mainColour", _mainColour);
+    visitor.Visit("textColour", _textColour);
+    visitor.Visit("isLarge", _isLarge);
+}
+
 uint16_t SignSetStyleAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

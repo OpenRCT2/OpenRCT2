@@ -23,6 +23,15 @@ LargeScenerySetColourAction::LargeScenerySetColourAction(
 {
 }
 
+void LargeScenerySetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    visitor.Visit("tileIndex", _tileIndex);
+    visitor.Visit("primaryColour", _primaryColour);
+    visitor.Visit("secondaryColour", _secondaryColour);
+    visitor.Visit("tertiaryColour", _tertiaryColour);
+}
+
 uint16_t LargeScenerySetColourAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

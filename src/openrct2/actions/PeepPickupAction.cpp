@@ -23,6 +23,14 @@ PeepPickupAction::PeepPickupAction(PeepPickupType type, EntityId spriteId, const
 {
 }
 
+void PeepPickupAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("type", _type);
+    visitor.Visit("id", _spriteId);
+    visitor.Visit(_loc);
+    visitor.Visit("playerId", _owner);
+}
+
 uint16_t PeepPickupAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

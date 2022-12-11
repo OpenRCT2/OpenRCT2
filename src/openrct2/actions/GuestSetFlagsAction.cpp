@@ -22,7 +22,7 @@ GuestSetFlagsAction::GuestSetFlagsAction(EntityId peepId, uint32_t flags)
 void GuestSetFlagsAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("peep", _peepId);
-    visitor.Visit("flags", _newFlags);
+    visitor.Visit("guestFlags", _newFlags);
 }
 
 uint16_t GuestSetFlagsAction::GetActionFlags() const

@@ -16,6 +16,13 @@ RideFreezeRatingAction::RideFreezeRatingAction(RideId rideIndex, RideRatingType 
 {
 }
 
+void RideFreezeRatingAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("ride", _rideIndex);
+    visitor.Visit("type", _type);
+    visitor.Visit("value", _value);
+}
+
 void RideFreezeRatingAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

@@ -29,6 +29,8 @@ public:
     RideFreezeRatingAction() = default;
     RideFreezeRatingAction(RideId rideIndex, RideRatingType type, ride_rating value);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     void Serialise(DataSerialiser& stream) override;
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;

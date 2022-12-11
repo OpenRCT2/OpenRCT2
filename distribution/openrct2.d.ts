@@ -273,8 +273,89 @@ declare global {
          * @param args The action parameters.
          * @param callback The function to be called with the result of the action.
          */
-        queryAction(action: ActionType, args: object, callback?: (result: GameActionResult) => void): void;
         queryAction(action: string, args: object, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: ActionType, args: object, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "balloonpress", args: BalloonPressArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "bannerplace", args: BannerPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "bannerremove", args: BannerRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "changemapsize", args: ChangeMapSizeArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "footpathadditionremove", args: FootpathAdditionRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "footpathlayoutplace", args: FootpathLayoutPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "footpathremove", args: FootpathRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "guestsetflags", args: GuestSetFlagsArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "guestsetname", args: GuestSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landbuyrights", args: LandBuyRightsArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landlower", args: LandLowerArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landraise", args: LandRaiseArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landsetheight", args: LandSetHeightArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landsetrights", args: LandSetRightsArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landsmooth", args: LandSmoothArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "largesceneryplace", args: LargeSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "largesceneryremove", args: LargeSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "largescenerysetcolour", args: LargeScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "loadorquit", args: LoadOrQuitArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "mazeplacetrack", args: MazePlaceTrackArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "mazesettrack", args: MazeSetTrackArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "networkmodifygroup", args: NetworkModifyGroupArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parkentranceplace", args: ParkEntrancePlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parkentranceremove", args: ParkEntranceRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parkmarketing", args: ParkMarketingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetdate", args: ParkSetDateArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetloan", args: ParkSetLoanArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetname", args: ParkSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetparameter", args: ParkSetParameterArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetresearchfunding", args: ParkSetResearchFundingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "pausetoggle", args: PauseToggleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "peeppickup", args: PeepPickupArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "peepspawnplace", args: PeepSpawnPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "playerkick", args: PlayerKickArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridefreezerating", args: RideFreezeRatingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetappearance", args: RideSetAppearanceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetcolourscheme", args: RideSetColourSchemeArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetname", args: RideSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetprice", args: RideSetPriceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "setcheat", args: SetCheatArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "setparkentrancefee", args: SetParkEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "smallsceneryremove", args: SmallSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "smallscenerysetcolour", args: SmallScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "stafffire", args: StaffFireArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffhire", args: StaffHireArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffsetcolour", args: StaffSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffsetcostume", args: StaffSetCostumeArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffsetname", args: StaffSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffsetorders", args: StaffSetOrdersArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffsetpatrolarea", args: StaffSetPatrolAreaArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "surfacesetstyle", args: SurfaceSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "tilemodify", args: TileModifyArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "trackdesign", args: TrackDesignArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "trackplace", args: TrackPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "trackremove", args: TrackRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "tracksetbrakespeed", args: TrackSetBrakeSpeedArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "wallplace", args: WallPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "wallremove", args: WallRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "wallsetcolour", args: WallSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "waterlower", args: WaterLowerArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "waterraise", args: WaterRaiseArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "watersetheight", args: WaterSetHeightArgs, callback?: (result: GameActionResult) => void): void;
 
         /**
          * Executes a game action. In a network game, this will send a request to the server and wait
@@ -283,8 +364,89 @@ declare global {
          * @param args The action parameters.
          * @param callback The function to be called with the result of the action.
          */
-        executeAction(action: ActionType, args: object, callback?: (result: GameActionResult) => void): void;
         executeAction(action: string, args: object, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: ActionType, args: object, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "balloonpress", args: BalloonPressArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "bannerplace", args: BannerPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "bannerremove", args: BannerRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "changemapsize", args: ChangeMapSizeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "footpathadditionremove", args: FootpathAdditionRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "footpathlayoutplace", args: FootpathLayoutPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "footpathremove", args: FootpathRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "guestsetflags", args: GuestSetFlagsArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "guestsetname", args: GuestSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landbuyrights", args: LandBuyRightsArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landlower", args: LandLowerArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landraise", args: LandRaiseArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landsetheight", args: LandSetHeightArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landsetrights", args: LandSetRightsArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landsmooth", args: LandSmoothArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "largesceneryplace", args: LargeSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "largesceneryremove", args: LargeSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "largescenerysetcolour", args: LargeScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "loadorquit", args: LoadOrQuitArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "mazeplacetrack", args: MazePlaceTrackArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "mazesettrack", args: MazeSetTrackArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "networkmodifygroup", args: NetworkModifyGroupArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parkentranceplace", args: ParkEntrancePlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parkentranceremove", args: ParkEntranceRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parkmarketing", args: ParkMarketingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetdate", args: ParkSetDateArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetloan", args: ParkSetLoanArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetname", args: ParkSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetparameter", args: ParkSetParameterArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetresearchfunding", args: ParkSetResearchFundingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "pausetoggle", args: PauseToggleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "peeppickup", args: PeepPickupArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "peepspawnplace", args: PeepSpawnPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "playerkick", args: PlayerKickArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridefreezerating", args: RideFreezeRatingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetappearance", args: RideSetAppearanceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetcolourscheme", args: RideSetColourSchemeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetname", args: RideSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetprice", args: RideSetPriceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "setcheat", args: SetCheatArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "setparkentrancefee", args: SetParkEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "smallsceneryremove", args: SmallSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "smallscenerysetcolour", args: SmallScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "stafffire", args: StaffFireArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffhire", args: StaffHireArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffsetcolour", args: StaffSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffsetcostume", args: StaffSetCostumeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffsetname", args: StaffSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffsetorders", args: StaffSetOrdersArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffsetpatrolarea", args: StaffSetPatrolAreaArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "surfacesetstyle", args: SurfaceSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "tilemodify", args: TileModifyArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "trackdesign", args: TrackDesignArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "trackplace", args: TrackPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "trackremove", args: TrackRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "tracksetbrakespeed", args: TrackSetBrakeSpeedArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "wallplace", args: WallPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "wallremove", args: WallRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "wallsetcolour", args: WallSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "waterlower", args: WaterLowerArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "waterraise", args: WaterRaiseArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "watersetheight", args: WaterSetHeightArgs, callback?: (result: GameActionResult) => void): void;
 
         /**
          * Subscribes to the given hook.
@@ -446,11 +608,11 @@ declare global {
         "changemapsize" |
         "clearscenery" |
         "climateset" |
-        "footpathplace" |
-        "footpathplacefromtrack" |
-        "footpathremove" |
         "footpathadditionplace" |
         "footpathadditionremove" |
+        "footpathplace" |
+        "footpathlayoutplace" |
+        "footpathremove" |
         "guestsetflags" |
         "guestsetname" |
         "landbuyrights" |
@@ -458,7 +620,7 @@ declare global {
         "landraise" |
         "landsetheight" |
         "landsetrights" |
-        "landsmoothaction" |
+        "landsmooth" |
         "largesceneryplace" |
         "largesceneryremove" |
         "largescenerysetcolour" |
@@ -466,6 +628,7 @@ declare global {
         "mazeplacetrack" |
         "mazesettrack" |
         "networkmodifygroup" |
+        "parkentranceplace" |
         "parkentranceremove" |
         "parkmarketing" |
         "parksetdate" |
@@ -475,27 +638,29 @@ declare global {
         "parksetresearchfunding" |
         "pausetoggle" |
         "peeppickup" |
-        "placeparkentrance" |
-        "placepeepspawn" |
+        "peepspawnplace" |
         "playerkick" |
         "playersetgroup" |
         "ridecreate" |
         "ridedemolish" |
         "rideentranceexitplace" |
         "rideentranceexitremove" |
+        "ridefreezerating" |
         "ridesetappearance" |
         "ridesetcolourscheme" |
         "ridesetname" |
         "ridesetprice" |
         "ridesetsetting" |
         "ridesetstatus" |
-        "ridesetvehicles" |
+        "ridesetvehicle" |
         "scenariosetsetting" |
-        "setcheataction" |
+        "setcheat" |
         "setparkentrancefee" |
         "signsetname" |
+        "signsetstyle" |
         "smallsceneryplace" |
         "smallsceneryremove" |
+        "smallscenerysetcolour" |
         "stafffire" |
         "staffhire" |
         "staffsetcolour" |
@@ -515,6 +680,599 @@ declare global {
         "waterlower" |
         "waterraise" |
         "watersetheight";
+
+
+    interface GameActionArgs {
+        flags?: number; // see GAME_COMMAND in openrct2/Game.h
+    }
+
+    interface BalloonPressArgs extends GameActionArgs {
+        id: number;
+    }
+
+    interface BannerPlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        object: number;
+        primaryColour: number;
+    }
+
+    interface BannerRemoveArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+    }
+
+    interface BannerSetColourArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        primaryColour: number;
+    }
+
+    interface BannerSetNameArgs extends GameActionArgs {
+        id: number;
+        name: string;
+    }
+
+    interface BannerSetStyleArgs extends GameActionArgs {
+        id: number;
+        type: number; // 0: primary colour, 1: secondary colour: 2: no entry
+        parameter: number; // primary colour | secondary colour | 0: disable, 1: enable
+    }
+
+    interface ChangeMapSizeArgs extends GameActionArgs {
+        targetSizeX: number;
+        targetSizeY: number;
+    }
+
+    interface ClearSceneryArgs extends GameActionArgs {
+        itemsToClear: number; // Bit mask. 1: small scenery and walls, 2: large scenery, 4: footpaths.
+    }
+
+    interface ClimateSetArgs extends GameActionArgs {
+        climate: number; // 0: cool and wet, 1: warm, 2: hot and dry, 3: cold
+    }
+
+    interface FootpathAdditionPlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        object: number;
+    }
+
+    interface FootpathAdditionRemoveArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+    }
+
+    interface FootpathPlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number; // direction or 0xFF
+        object: number; // surface object
+        railingsObject: number;
+        slope: number; // 0: flat, 4,5,6,7: slope direction + 4
+        constructFlags: number;
+    }
+
+    // see openrct2/actions/FootpathPlaceFromTrackAction
+    interface FootpathLayoutPlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        edges: number; // bit mask
+        object: number;
+        railingsObject: number;
+        slope: number; // 0: flat, 4,5,6,7: slope direction + 4
+        constructFlags: number;
+    }
+
+    interface FootpathRemoveArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+    }
+
+    // recommendation: use Peep.setFlag instead of the GuestSetFlag action
+    interface GuestSetFlagsArgs extends GameActionArgs {
+        peep: number;
+        guestFlags: number; // see PEEP_FLAGS in openrct2/entity/Peep.h
+    }
+
+    interface GuestSetNameArgs extends GameActionArgs {
+        peep: number;
+        name: string;
+    }
+
+    interface LandBuyRightsArgs extends GameActionArgs {
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+        setting: number; // 0: buy land, 1: buy construction rights
+    }
+
+    // x, y specify the centre. Only used for GameActionResult and 3D audio position.
+    // x1, y1, x2, y2 specify a map range
+    interface LandLowerArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+        selectionType: number; // see MAP_SELECT_TYPE in openrct2/world/Map.h
+    }
+
+    // x, y specify the centre. Only used for GameActionResult and 3D audio position.
+    // x1, y1, x2, y2 specify a map range
+    interface LandRaiseArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+        selectionType: number; // see MAP_SELECT_TYPE in openrct2/world/Map.h
+    }
+
+    interface LandSetHeightArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        height: number;
+        style: number; // see TILE_ELEMENT_SLOPE in openrct2/world/Surface.h
+    }
+
+    interface LandSetRightsArgs extends GameActionArgs {
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+        setting: number; // 0: unown land, 1: unown construction rights, 2: set for sale, 3: set construction rights for sale, 4: set ownership
+        ownership: number; // only used if setting = 4 (set ownership). See OWNERSHIP in openrct2/world/Surface.h
+    }
+
+    // x, y specify the centre. Only used for GameActionResult and 3D audio position.
+    // x1, y1, x2, y2 specify a map range
+    interface LandSmoothArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+        selectionType: number; // see MAP_SELECT_TYPE in openrct2/world/Map.h
+        isLowering: boolean;
+    }
+
+    interface LargeSceneryPlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        object: number;
+        primaryColour: number;
+        secondaryColour: number;
+        tertiaryColour: number;
+    }
+
+    interface LargeSceneryRemoveArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        tileIndex: number;
+    }
+
+    interface LargeScenerySetColourArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        tileIndex: number;
+        primaryColour: number;
+        secondaryColour: number;
+        tertiaryColour: number;
+    }
+
+    interface LoadOrQuitArgs extends GameActionArgs {
+        mode: number; // 0: open save prompt, 1: close save prompt
+        savePromptMode: number; // 0: save before load, 1: save before quit. Only used if mode = 0 (open save prompt).
+    }
+
+    interface MazePlaceTrackArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        ride: number;
+        mazeEntry: number;
+    }
+
+    interface MazeSetTrackArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        ride: number;
+        mode: number; // 0: build, 1: move, 2: fill
+        isInitialPlacement: boolean;
+    }
+
+    interface NetworkModifyGroupArgs extends GameActionArgs {
+        type: number; // 0: add group, 1: remove group, 2: set permissions, 3: set name, 4: set default
+        groupId: number; // ignored if type = 0 (add group)
+        name: string; // only used if type = 3 (set name)
+        permissionIndex: number; // only used if type = 2 (set permissions). See NetworkPermission in openrct2/network/NetworkAction.h
+        permissionState: number; // only used if type = 2 (set permissions). 0: toggle, 1: set all, 2: clear all
+    }
+
+    interface ParkEntrancePlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        footpathSurfaceObject: number;
+    }
+
+    interface ParkEntranceRemoveArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+    }
+
+    interface ParkMarketingArgs extends GameActionArgs {
+        type: number; // see ADVERTISING_CAMPAIGN in openrct2/management/Marketing.h
+        item: number; // ride id or shop item. See ShopItem in openrct2/ride/ShopItem.h
+        numweeks: number;
+    }
+
+    interface ParkSetDateArgs extends GameActionArgs {
+        year: number;
+        month: number;
+        day: number;
+    }
+
+    interface ParkSetLoanArgs extends GameActionArgs {
+        value: number;
+    }
+
+    interface ParkSetNameArgs extends GameActionArgs {
+        name: string;
+    }
+
+    interface ParkSetParameterArgs extends GameActionArgs {
+        parameter: number; // 0: close park, 1: open park, 2: set same price in park
+        value: number; // only used if parameter = 2 (set same price in park). Bit mask. See ShopItem in openrct2/ride/ShopItem.h
+    }
+
+    interface ParkSetResearchFundingArgs extends GameActionArgs {
+        priorities: number; // bit mask. See ResearchCategory in openrct2/management/Research.h
+        fundingAmount: number; // 0: none, 1: minimal, 2: normal, 3: maximum
+    }
+
+    interface PauseToggleArgs extends GameActionArgs {
+    }
+
+    interface PeepPickupArgs extends GameActionArgs {
+        type: number; // 0: pickup, 1: cancel, 2: place
+        id: number;
+        x: number; // unused if type = 0. If type = 1 (cancel), this needs to be the peep's x position BEFORE pickup
+        y: number; // only used if type = 2 (place)
+        z: number; // only used if type = 2 (place)
+        playerId: number; // 0 in single player
+    }
+
+    interface PeepSpawnPlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+    }
+
+    interface PlayerKickArgs extends GameActionArgs {
+        playerId: number;
+    }
+
+    interface PlayerSetGroupArgs extends GameActionArgs {
+        playerId: number;
+        groupId: number;
+    }
+
+    interface RideCreateArgs extends GameActionArgs {
+        rideType: number;
+        rideObject: number;
+        entranceObject: number;
+        colour1: number;
+        colour2: number;
+    }
+
+    interface RideDemolishArgs extends GameActionArgs {
+        ride: number;
+        modifyType: number; // 0: demolish, 1: renew
+    }
+
+    interface RideEntranceExitPlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        direction: number;
+        ride: number;
+        station: number;
+        isExit: boolean;
+    }
+
+    interface RideEntranceExitRemoveArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        ride: number;
+        station: number;
+        isExit: boolean;
+    }
+
+    interface RideFreezeRatingArgs extends GameActionArgs {
+        ride: number;
+        type: number; // 0: excitement, 1: intensity, 2: nausea
+        value: number;
+    }
+
+    interface RideSetAppearanceArgs extends GameActionArgs {
+        ride: number;
+        type: number; // see RideSetAppearanceType in openrct2/actions/RideSetAppearanceAction.h
+        // value:
+        // - if type is one of the track or vehicle colours: colour
+        // - if type is VehicleColourScheme: 0: all same, 1: per train, 2: per car
+        // - if type is EntranceStyle: entrance style
+        // - if type is SellingItemColourIsRandom: 0: disabled, 1: enabled
+        value: number;
+        index: number; // colour scheme index, only used if type is one of the track or vehicle colours
+    }
+
+    interface RideSetColourSchemeArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        trackType: number;
+        colourScheme: number;
+    }
+
+    interface RideSetNameArgs extends GameActionArgs {
+        ride: number;
+        name: string;
+    }
+
+    interface RideSetPriceArgs extends GameActionArgs {
+        ride: number;
+        price: number;
+        isPrimaryPrice: boolean;
+    }
+
+    interface RideSetSettingArgs extends GameActionArgs {
+        ride: number;
+        setting: number; // see RideSetSetting in openrct2/actions/RideSetSettingAction.h
+        value: number;
+    }
+
+    interface RideSetStatusArgs extends GameActionArgs {
+        ride: number;
+        status: number; // 0: closed, 1: open, 2: testing, 3: simulating
+    }
+
+    interface RideSetVehicleArgs extends GameActionArgs {
+        ride: number;
+        type: number; // 0: number of trains, 1: number of cars per train, 2: ride entry
+        value: number; // number value or sub type
+        colour: number; // only used if type is ride entry
+    }
+
+    interface ScenarioSetSettingArgs extends GameActionArgs {
+        setting: number; // see ScenarioSetSetting in openrct2/actions/ScenarioSetSettingAction.h
+        value: number;
+    }
+
+    interface SetCheatArgs extends GameActionArgs {
+        type: number; // see CheatType in openrct2/Cheats.h
+        param1: number; // see openrct2/actions/SetCheatAction.cpp
+        param2: number; // see openrct2/actions/SetCheatAction.cpp
+    }
+
+    interface SetParkEntranceFeeArgs extends GameActionArgs {
+        value: number;
+    }
+
+    interface SignSetNameArgs extends GameActionArgs {
+        id: number;
+        name: string;
+    }
+
+    interface SignSetStyleArgs extends GameActionArgs {
+        id: number;
+        mainColour: number;
+        textColour: number;
+        isLarge: boolean;
+    }
+
+    interface SmallSceneryPlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        object: number;
+        quadrant: number;
+        primaryColour: number;
+        secondaryColour: number;
+    }
+
+    interface SmallSceneryRemoveArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        object: number;
+        quadrant: number;
+    }
+
+    interface SmallScenerySetColourArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        quadrant: number;
+        sceneryType: number;
+        primaryColour: number;
+        secondaryColour: number;
+        tertiaryColour: number;
+    }
+
+    interface StaffFireArgs extends GameActionArgs {
+        id: number;
+    }
+
+    interface StaffHireArgs extends GameActionArgs {
+        autoPosition: boolean;
+        staffType: number; // 0: handyman, 1: mechanic, 2: security, 3: entertainer
+        entertainerType: number; // see EntertainerCostume in openrct2/entity/Staff.h
+        staffOrders: number; // bit mask. See STAFF_ORDERS in openrct2/entity/Staff.h
+    }
+
+    interface StaffSetColourArgs extends GameActionArgs {
+        staffType: number; // 0: handyman, 1: mechanic, 2: security, 3: entertainer
+        colour: number;
+    }
+
+    interface StaffSetCostumeArgs extends GameActionArgs {
+        id: number;
+        costume: number; // see EntertainerCostume in openrct2/entity/Staff.h
+    }
+
+    interface StaffSetNameArgs extends GameActionArgs {
+        id: number;
+        name: string;
+    }
+
+    interface StaffSetOrdersArgs extends GameActionArgs {
+        id: number;
+        staffOrders: number; // bit mask. See STAFF_ORDERS in openrct2/entity/Staff.h
+    }
+
+    interface StaffSetPatrolAreaArgs extends GameActionArgs {
+        id: number;
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+        mode: number; // 0: set, 1: unset, 2: clear all
+    }
+
+    interface SurfaceSetStyleArgs extends GameActionArgs {
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+        surfaceStyle: number;
+        edgeStyle: number;
+    }
+
+    // does not support TileModifyType::AnyPaste
+    interface TileModifyArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        setting: number; // see TileModifyType in openrct2/actions/TileModifyAction.h
+        value1: number;
+        value2: number; // see openrct2/actions/TileModifyAction.cpp
+    }
+
+    // currently unsupported
+    interface TrackDesignArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+    }
+
+    interface TrackPlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        ride: number;
+        trackType: number;
+        rideType: number;
+        brakeSpeed: number;
+        colour: number;
+        seatRotation: number;
+        trackPlaceFlags: number;
+        isFromTrackDesign: boolean;
+    }
+
+    interface TrackRemoveArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        trackType: number;
+        sequence: number;
+    }
+
+    interface TrackSetBrakeSpeedArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        trackType: number;
+        brakeSpeed: number;
+    }
+
+    interface WallPlaceArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        object: number;
+        edge: number; // = direction
+        primaryColour: number;
+        secondaryColour: number;
+        tertiaryColour: number;
+    }
+
+    interface WallRemoveArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+    }
+
+    interface WallSetColourArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        z: number;
+        direction: number;
+        primaryColour: number;
+        secondaryColour: number;
+        tertiaryColour: number;
+    }
+
+    interface WaterLowerArgs extends GameActionArgs {
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+    }
+
+    interface WaterRaiseArgs extends GameActionArgs {
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+    }
+
+    interface WaterSetHeightArgs extends GameActionArgs {
+        x: number;
+        y: number;
+        height: number;
+    }
 
     interface GameActionEventArgs {
         readonly player: number;

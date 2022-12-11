@@ -36,6 +36,12 @@ LandBuyRightsAction::LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSett
 {
 }
 
+void LandBuyRightsAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_range);
+    visitor.Visit("setting", _setting);
+}
+
 uint16_t LandBuyRightsAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();

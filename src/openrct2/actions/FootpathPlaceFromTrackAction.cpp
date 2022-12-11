@@ -43,6 +43,16 @@ void FootpathPlaceFromTrackAction::Serialise(DataSerialiser& stream)
            << DS_TAG(_constructFlags);
 }
 
+void FootpathPlaceFromTrackAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    visitor.Visit("slope", _slope);
+    visitor.Visit("object", _type);
+    visitor.Visit("railingsObject", _railingsType);
+    visitor.Visit("edges", _edges);
+    visitor.Visit("constructFlags", _constructFlags);
+}
+
 uint16_t FootpathPlaceFromTrackAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();

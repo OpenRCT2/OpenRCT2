@@ -41,6 +41,13 @@ LandSetRightsAction::LandSetRightsAction(const CoordsXY& coord, LandSetRightSett
 {
 }
 
+void LandSetRightsAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_range);
+    visitor.Visit("setting", _setting);
+    visitor.Visit("ownership", _ownership);
+}
+
 uint16_t LandSetRightsAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;

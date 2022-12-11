@@ -21,6 +21,8 @@ public:
 
     PlayerKickAction(NetworkPlayerId_t playerId);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;

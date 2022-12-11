@@ -23,6 +23,14 @@ TileModifyAction::TileModifyAction(
 {
 }
 
+void TileModifyAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    visitor.Visit("setting", _setting);
+    visitor.Visit("value1", _value1);
+    visitor.Visit("value2", _value2);
+}
+
 uint16_t TileModifyAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

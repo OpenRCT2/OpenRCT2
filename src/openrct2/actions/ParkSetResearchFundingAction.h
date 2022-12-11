@@ -22,6 +22,8 @@ public:
     ParkSetResearchFundingAction() = default;
     ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;

@@ -34,6 +34,10 @@ public:
     ClearAction() = default;
     ClearAction(MapRange range, ClearableItems itemsToClear);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
+    uint16_t GetActionFlags() const override;
+
     void Serialise(DataSerialiser& stream) override;
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;

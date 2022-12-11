@@ -21,6 +21,12 @@ WaterSetHeightAction::WaterSetHeightAction(const CoordsXY& coords, uint8_t heigh
 {
 }
 
+void WaterSetHeightAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_coords);
+    visitor.Visit("height", _height);
+}
+
 uint16_t WaterSetHeightAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();

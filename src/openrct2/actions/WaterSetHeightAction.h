@@ -21,6 +21,8 @@ public:
     WaterSetHeightAction() = default;
     WaterSetHeightAction(const CoordsXY& coords, uint8_t height);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
