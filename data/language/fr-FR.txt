@@ -3644,6 +3644,9 @@ STR_6529    :Paramètre de palette de couleurs invalide !
 STR_6530    :User Created Expansion Set
 STR_6531    :La machine temporelle
 STR_6532    :Le monde de Katy
+STR_6533    :{WINDOW_COLOUR_2}Indice d’excitation : {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Indice d’intensité : {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Indice de nausée : {BLACK}-{COMMA16}%
 
 #############
 # Scenarios #
