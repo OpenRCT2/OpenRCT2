@@ -751,10 +751,9 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
     if (ride == nullptr || input == nullptr || input->element == nullptr || input->element->GetType() != TileElementType::Track)
         return 0;
 
-    if (ride->type == RIDE_TYPE_MAZE)
-    {
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         return 0;
-    }
 
     rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == ride->id)
@@ -1046,7 +1045,8 @@ void Ride::Update()
     RideMusicUpdate(this);
 
     // Update stations
-    if (type != RIDE_TYPE_MAZE)
+    const auto& rtd = GetRideTypeDescriptor();
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             ride_update_station(this, StationIndex::FromUnderlying(i));
 
@@ -1076,7 +1076,6 @@ void Ride::Update()
     }
 
     // Ride specific updates
-    const auto& rtd = GetRideTypeDescriptor();
     if (rtd.RideUpdate != nullptr)
         rtd.RideUpdate(*this);
 
@@ -2582,7 +2581,8 @@ static StationIndexWithMessage ride_mode_check_station_present(Ride* ride)
         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
-        if (ride->type == RIDE_TYPE_MAZE)
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
         return { StationIndex::GetNull(), STR_REQUIRES_A_STATION_PLATFORM };
@@ -2742,8 +2742,12 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
 
     RideId rideIndex = trackElement->GetRideIndex();
     auto ride = get_ride(rideIndex);
-    if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
-        return true;
+    if (ride != nullptr)
+    {
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            return true;
+    }
 
     rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
@@ -2801,7 +2805,8 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
     if (ride == nullptr)
         return false;
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         return true;
 
     rct_window* w = window_find_by_class(WindowClass::RideConstruction);
@@ -3055,15 +3060,11 @@ static void ride_set_start_finish_points(RideId rideIndex, CoordsXYE* startEleme
     if (ride == nullptr)
         return;
 
-    switch (ride->type)
-    {
-        case RIDE_TYPE_BOAT_HIRE:
-            ride_set_boat_hire_return_point(ride, startElement);
-            break;
-        case RIDE_TYPE_MAZE:
-            ride_set_maze_entrance_exit_points(ride);
-            break;
-    }
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+        ride_set_maze_entrance_exit_points(ride);
+    else if (ride->type == RIDE_TYPE_BOAT_HIRE)
+        ride_set_boat_hire_return_point(ride, startElement);
 
     if (ride->IsBlockSectioned() && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
@@ -3825,7 +3826,8 @@ void Ride::ConstructMissingEntranceOrExit() const
         return;
     }
 
-    if (type != RIDE_TYPE_MAZE)
+    const auto& rtd = GetRideTypeDescriptor();
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         auto location = incompleteStation->GetStart();
         window_scroll_to_location(*w, location);
@@ -3931,7 +3933,8 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
     if (trackElement.element == nullptr)
     {
         // Maze is strange, station start is 0... investigation required
-        if (type != RIDE_TYPE_MAZE)
+        const auto& rtd = GetRideTypeDescriptor();
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             return { false };
     }
 
@@ -4067,7 +4070,8 @@ ResultWithMessage Ride::Open(bool isApplying)
     if (trackElement.element == nullptr)
     {
         // Maze is strange, station start is 0... investigation required
-        if (type != RIDE_TYPE_MAZE)
+        const auto& rtd = GetRideTypeDescriptor();
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             return { false };
     }
 

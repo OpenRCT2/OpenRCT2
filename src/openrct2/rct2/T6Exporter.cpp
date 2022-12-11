@@ -17,6 +17,7 @@
 #include "../object/ObjectList.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
@@ -96,7 +97,8 @@ namespace RCT2
         }
         tempStream.WriteValue<uint8_t>(_trackDesign->lift_hill_speed | (_trackDesign->num_circuits << 5));
 
-        if (_trackDesign->type == RIDE_TYPE_MAZE)
+        const auto& rtd = GetRideTypeDescriptor(_trackDesign->type);
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         {
             for (const auto& mazeElement : _trackDesign->maze_elements)
             {

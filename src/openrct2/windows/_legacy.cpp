@@ -47,7 +47,8 @@ money32 place_provisional_track_piece(
         return MONEY32_UNDEFINED;
 
     ride_construction_remove_ghosts();
-    if (ride->type == RIDE_TYPE_MAZE)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
         auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);

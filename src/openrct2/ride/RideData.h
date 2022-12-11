@@ -338,6 +338,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_HAS_ONE_STATION = (1uLL << 55),
     RIDE_TYPE_FLAG_HAS_SEAT_ROTATION = (1uLL << 56),
     RIDE_TYPE_FLAG_IS_FIRST_AID = (1uLL << 57),
+    RIDE_TYPE_FLAG_IS_MAZE = (1uLL << 58),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.

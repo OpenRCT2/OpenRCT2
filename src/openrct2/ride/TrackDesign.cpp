@@ -936,7 +936,8 @@ static void TrackDesignMirrorMaze(TrackDesign* td6)
  */
 void TrackDesignMirror(TrackDesign* td6)
 {
-    if (td6->type == RIDE_TYPE_MAZE)
+    const auto& rtd = GetRideTypeDescriptor(td6->type);
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         TrackDesignMirrorMaze(td6);
     }
@@ -1875,7 +1876,8 @@ static GameActions::Result TrackDesignPlaceVirtual(
     _currentTrackPieceDirection = coords.direction;
 
     GameActions::Result trackPlaceRes;
-    if (td6->type == RIDE_TYPE_MAZE)
+    const auto& rtd = GetRideTypeDescriptor(td6->type);
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         trackPlaceRes = TrackDesignPlaceMaze(tds, td6, coords, ride);
     }
