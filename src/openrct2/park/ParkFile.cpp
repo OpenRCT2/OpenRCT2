@@ -982,7 +982,7 @@ namespace OpenRCT2
 
             auto found = os.ReadWriteChunk(
                 ParkFileChunkType::TILES,
-                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap](OrcaStream::ChunkStream& cs) {
+                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os](OrcaStream::ChunkStream& cs) {
                     cs.ReadWrite(gMapSize.x);
                     cs.ReadWrite(gMapSize.y);
 
@@ -1016,6 +1016,16 @@ namespace OpenRCT2
 
                                             pathElement->SetRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
                                         }
+                                    }
+                                }
+                                else if (it.element->GetType() == TileElementType::Track)
+                                {
+                                    auto* trackElement = it.element->AsTrack();
+                                    if (TrackTypeMustBeMadeInvisible(
+                                            trackElement->GetRideType(), trackElement->GetTrackType(),
+                                            os.GetHeader().TargetVersion))
+                                    {
+                                        it.element->SetInvisible(true);
                                     }
                                 }
                             }

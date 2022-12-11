@@ -1442,6 +1442,11 @@ namespace RCT2
                         dst2->SetSeatRotation(src2->GetSeatRotation());
                     }
 
+                    if (TrackTypeMustBeMadeInvisible(rideType, dst2->GetTrackType()))
+                    {
+                        dst->SetInvisible(true);
+                    }
+
                     break;
                 }
                 case RCT12TileElementType::SmallScenery:
