@@ -558,20 +558,9 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
         return false;
 
     const auto& ted = GetTrackElementDescriptor(inputElement->GetTrackType());
-    const auto* trackBlock = ted.Block;
+    const auto* trackBlock = ted.GetBlockForSequence(inputElement->GetSequenceIndex());
     if (trackBlock == nullptr)
         return false;
-
-    // The sequence index may be higher than the amount of sequences actually present.
-    // We don’t know the amount of sequences present in the block upfront, but there is an end marker consisting of all 255s.
-    const auto sequenceIndex = inputElement->GetSequenceIndex();
-    for (auto i = 0; i < sequenceIndex; i++)
-    {
-        trackBlock++;
-
-        if (trackBlock == nullptr || trackBlock->index == 255)
-            return false;
-    }
 
     const auto& trackCoordinate = ted.Coordinates;
 
@@ -636,12 +625,11 @@ bool track_block_get_previous_from_zero(
             continue;
 
         const auto* ted = &GetTrackElementDescriptor(trackElement->GetTrackType());
-        const auto* nextTrackBlock = ted->Block;
-        if (nextTrackBlock == nullptr)
-            continue;
         const auto& nextTrackCoordinate = ted->Coordinates;
 
-        nextTrackBlock += trackElement->GetSequenceIndex();
+        const auto* nextTrackBlock = ted->GetBlockForSequence(trackElement->GetSequenceIndex());
+        if (nextTrackBlock == nullptr)
+            continue;
         if ((nextTrackBlock + 1)->index != 255)
             continue;
 
@@ -714,11 +702,9 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
     if (ride == nullptr)
         return false;
 
-    const auto* trackBlock = ted.Block;
+    const auto* trackBlock = ted.GetBlockForSequence(trackElement->GetSequenceIndex());
     if (trackBlock == nullptr)
         return false;
-
-    trackBlock += trackElement->GetSequenceIndex();
 
     auto trackCoordinate = ted.Coordinates;
 

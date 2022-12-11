@@ -780,8 +780,9 @@ namespace OpenRCT2::TileInspector
                 return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
             const auto& ted = GetTrackElementDescriptor(type);
-            const auto* trackBlock = ted.Block;
-            trackBlock += trackElement->AsTrack()->GetSequenceIndex();
+            const auto* trackBlock = ted.GetBlockForSequence(trackElement->AsTrack()->GetSequenceIndex());
+            if (trackBlock == nullptr)
+                return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
             uint8_t originDirection = trackElement->GetDirection();
             CoordsXY offsets = { trackBlock->x, trackBlock->y };
@@ -863,8 +864,9 @@ namespace OpenRCT2::TileInspector
                 return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
             const auto& ted = GetTrackElementDescriptor(type);
-            auto trackBlock = ted.Block;
-            trackBlock += trackElement->AsTrack()->GetSequenceIndex();
+            auto trackBlock = ted.GetBlockForSequence(trackElement->AsTrack()->GetSequenceIndex());
+            if (trackBlock == nullptr)
+                return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
             uint8_t originDirection = trackElement->GetDirection();
             CoordsXY offsets = { trackBlock->x, trackBlock->y };

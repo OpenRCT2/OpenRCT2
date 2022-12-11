@@ -391,33 +391,36 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
 
     // Possibly z should be & 0xF8
     const auto& ted = GetTrackElementDescriptor(type);
-    const auto* trackBlock = ted.Block;
-    if (trackBlock == nullptr)
-        return std::nullopt;
 
     // Now find all the elements that belong to this track piece
     int32_t sequence = trackElement->GetSequenceIndex();
     uint8_t mapDirection = trackElement->GetDirection();
+    const auto* trackBlock = ted.GetBlockForSequence(sequence);
+    if (trackBlock == nullptr)
+        return std::nullopt;
 
-    CoordsXY offsets = { trackBlock[sequence].x, trackBlock[sequence].y };
+    CoordsXY offsets = { trackBlock->x, trackBlock->y };
     CoordsXY newCoords = location;
     newCoords += offsets.Rotate(DirectionReverse(mapDirection));
 
-    auto retCoordsXYZ = CoordsXYZ{ newCoords.x, newCoords.y, location.z - trackBlock[sequence].z };
+    auto retCoordsXYZ = CoordsXYZ{ newCoords.x, newCoords.y, location.z - trackBlock->z };
 
     int32_t start_z = retCoordsXYZ.z;
-    retCoordsXYZ.z += trackBlock[0].z;
-    for (int32_t i = 0; trackBlock[i].index != 0xFF; ++i)
+    const auto block0 = ted.GetBlockForSequence(0);
+    assert(block0 != nullptr);
+
+    retCoordsXYZ.z += block0->z;
+    for (int32_t i = 0; ted.Block[i].index != 0xFF; ++i)
     {
         CoordsXY cur = { retCoordsXYZ };
-        offsets = { trackBlock[i].x, trackBlock[i].y };
+        offsets = { ted.Block[i].x, ted.Block[i].y };
         cur += offsets.Rotate(mapDirection);
-        int32_t cur_z = start_z + trackBlock[i].z;
+        int32_t cur_z = start_z + ted.Block[i].z;
 
         MapInvalidateTileFull(cur);
 
         trackElement = MapGetTrackElementAtOfTypeSeq(
-            { cur, cur_z, static_cast<Direction>(location.direction) }, type, trackBlock[i].index);
+            { cur, cur_z, static_cast<Direction>(location.direction) }, type, ted.Block[i].index);
         if (trackElement == nullptr)
         {
             return std::nullopt;
