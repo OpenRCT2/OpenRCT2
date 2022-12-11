@@ -2676,8 +2676,7 @@ static void WindowRideVehicleMousedown(rct_window* w, WidgetIndex widgetIndex, r
                 ride->SetNumCarsPerVehicle(ride->num_cars_per_train + 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
-            rct_ride_entry* rideEntry = ride->GetRideEntry();
-            if (ride->num_cars_per_train > rideEntry->zero_cars + 1)
+            if (ride->num_cars_per_train > 1)
                 ride->SetNumCarsPerVehicle(ride->num_cars_per_train - 1);
             break;
     }

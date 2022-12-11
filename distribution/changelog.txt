@@ -25,6 +25,7 @@
 - Change: [#18381] Convert custom invisible paths to the built-in ones.
 - Change: [OpenSFX#11, OpenMusic#19] First implementation of official replacement asset packs for sound effects & music. 
 - Fix: [#1519] “See-through rides” doesn't affect all rides (original bug).
+- Fix: [#6341] “Unlock vehicle limits” does not allow setting fewer vehicles than the vehicle type requires.
 - Fix: [#14312] Research ride type message incorrect.
 - Fix: [#14425] Ride ratings do not skip unallocated ride ids.
 - Fix: [#15969] Guests heading for ride use vanilla behaviour
