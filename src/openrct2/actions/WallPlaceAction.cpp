@@ -459,7 +459,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         }
     }
 
-    const rct_preview_track* trackBlock = ted.GetBlockForSequence(sequence + 1);
+    const rct_preview_track* trackBlock = &ted.Block[sequence + 1];
     if (trackBlock->index != 0xFF)
     {
         return false;
