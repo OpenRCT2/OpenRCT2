@@ -2848,13 +2848,13 @@ static void WindowRideVehicleInvalidate(rct_window* w)
     WindowRideAnchorBorderWidgets(w);
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 
-    if (ride->num_cars_per_train > (rideEntry->zero_cars + 1))
+    if (abs(ride->num_cars_per_train - rideEntry->zero_cars) == 1)
     {
-        window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].text = STR_X_CARS_PER_TRAIN;
+        window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].text = STR_1_CAR_PER_TRAIN;
     }
     else
     {
-        window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].text = STR_1_CAR_PER_TRAIN;
+        window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].text = STR_X_CARS_PER_TRAIN;
     }
 }
 
