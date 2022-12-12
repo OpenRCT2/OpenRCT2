@@ -21,6 +21,7 @@
 #    include <openrct2/Context.h>
 #    include <openrct2/common.h>
 #    include <openrct2/scripting/Duktape.hpp>
+#    include <openrct2/scripting/IconNames.hpp>
 #    include <openrct2/scripting/ScriptEngine.h>
 
 namespace OpenRCT2::Scripting
@@ -500,16 +501,21 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr && widget->type == WindowWidgetType::FlatBtn)
             {
+                if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+                {
+                    return LegacyIconIndex(widget->image);
+                }
                 return widget->image;
             }
             return 0;
         }
-        void image_set(uint32_t value)
+
+        void image_set(DukValue value)
         {
             auto widget = GetWidget();
             if (widget != nullptr && widget->type == WindowWidgetType::FlatBtn)
             {
-                widget->image = value;
+                widget->image = ImageFromDuk(value);
                 Invalidate();
             }
         }

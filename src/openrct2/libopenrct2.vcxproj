@@ -486,6 +486,7 @@
     <ClInclude Include="scripting\bindings\world\ScParkMessage.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTileElement.hpp" />
     <ClInclude Include="scripting\Duktape.hpp" />
+    <ClInclude Include="scripting\IconNames.hpp" />
     <ClInclude Include="scripting\HookEngine.h" />
     <ClInclude Include="scripting\Plugin.h" />
     <ClInclude Include="scripting\bindings\game\ScCheats.hpp" />

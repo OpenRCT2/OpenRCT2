@@ -107,10 +107,9 @@ namespace OpenRCT2::Ui::Windows
             if (result.Type == "button")
             {
                 auto dukImage = desc["image"];
-                if (dukImage.type() == DukValue::Type::NUMBER)
+                if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
                 {
-                    auto img = dukImage.as_uint();
-                    result.Image = ImageId::FromUInt32(img);
+                    result.Image = ImageId::FromUInt32(ImageFromDuk(dukImage));
                     result.HasBorder = false;
                 }
                 else
@@ -210,9 +209,9 @@ namespace OpenRCT2::Ui::Windows
         {
             CustomTabDesc result;
             auto dukImage = desc["image"];
-            if (dukImage.type() == DukValue::Type::NUMBER)
+            if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
             {
-                result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage.as_int()));
+                result.imageFrameBase = ImageId::FromUInt32(ImageFromDuk(dukImage));
                 result.imageFrameCount = 0;
                 result.imageFrameDuration = 0;
             }
