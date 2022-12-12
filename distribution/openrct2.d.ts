@@ -2552,15 +2552,15 @@ declare global {
         "map_north_pressed" | "map_south" | "map_south_pressed" | "map_west" | "map_west_pressed" |
         "mountain_tool_even" | "mountain_tool_odd" | "multiplayer" | "multiplayer_desync" | "multiplayer_sync" |
         "multiplayer_toolbar" | "multiplayer_toolbar_pressed" | "mute" | "mute_pressed" | "news_messages" |
-        "normal_selection_6x6" | "paste" | "path_railings" | "path_surface" | "paths" | "placeholder" |
+        "normal_selection_6x6" | "paste" | "path_railings" | "path_surfaces" | "paths" | "placeholder" |
         "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed"| "rct1_open_off" |
         "rct1_open_off_pressed" | "rct1_open_on" | "rct1_open_on_pressed" | "rct1_simulate_off" |
         "rct1_simulate_off_pressed" | "rct1_simulate_on" | "rct1_simulate_on_pressed" | "rct1_test_off" |
-        "rct1_test_off_pressed" | "rct1_test_on" | "rct1_test_on_pressed" | "reload" | "ride_station" |
+        "rct1_test_off_pressed" | "rct1_test_on" | "rct1_test_on_pressed" | "reload" | "ride_stations" |
         "scenery_scatter_high" | "scenery_scatter_low" | "scenery_scatter_medium" | "search" |
         "selection_edge_ne" | "selection_edge_nw" | "selection_edge_se" | "selection_edge_sw" |
         "server_password" | "sideways_tab" | "sideways_tab_active" | "simulate" | "small_scenery" | "sort" |
-        "terrain_edge" | "title_play" | "title_restart" | "title_skip" | "title_stop" | "unmute" |
+        "terrain_edges" | "title_play" | "title_restart" | "title_skip" | "title_stop" | "unmute" |
         "unmute_pressed" | "view" | "zoom_in" | "zoom_in_background" | "zoom_out" | "zoom_out_background";
 
 
