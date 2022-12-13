@@ -78,6 +78,7 @@
     <ClCompile Include="IniReaderTest.cpp" />
     <ClCompile Include="IniWriterTest.cpp" />
     <ClCompile Include="Localisation.cpp" />
+    <ClCompile Include="LuaTests.cpp" />
     <ClCompile Include="MultiLaunch.cpp" />
     <ClCompile Include="ReplayTests.cpp" />
     <ClCompile Include="PlayTests.cpp" />

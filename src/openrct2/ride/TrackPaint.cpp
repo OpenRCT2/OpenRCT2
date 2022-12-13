@@ -9,6 +9,7 @@
 
 #include "TrackPaint.h"
 
+#include "../Context.h"
 #include "../Game.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
@@ -16,6 +17,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../object/ObjectRepository.h"
 #include "../object/StationObject.h"
 #include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"
@@ -2247,14 +2249,26 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
 
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
-        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = rtd.TrackPaintFunction;
-        if (paintFunctionGetter != nullptr)
+
+        // check if there is a paint object available
+        if (rtd.PaintObjectId == nullptr)
         {
-            TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);
-            if (paintFunction != nullptr)
+            TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = rtd.TrackPaintFunction;
+            if (paintFunctionGetter != nullptr)
             {
-                paintFunction(session, *ride, trackSequence, direction, height, trackElement);
+                TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);
+                if (paintFunction != nullptr)
+                {
+                    paintFunction(session, *ride, trackSequence, direction, height, trackElement);
+                }
             }
+        }
+        else
+        {
+            // get the paint object from the object repository
+            /*auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+            auto* paintObject = objRepository.FindObject(rtd.PaintObjectId);*/
+
         }
     }
 }

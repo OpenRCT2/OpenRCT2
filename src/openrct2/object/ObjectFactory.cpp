@@ -33,6 +33,7 @@
 #include "Object.h"
 #include "ObjectLimits.h"
 #include "ObjectList.h"
+#include "PaintObject.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
@@ -379,6 +380,9 @@ namespace ObjectFactory
                 break;
             case ObjectType::Audio:
                 result = std::make_unique<AudioObject>();
+                break;
+            case ObjectType::Paint:
+                result = std::make_unique<PaintObject>();
                 break;
             default:
                 throw std::runtime_error("Invalid object type");

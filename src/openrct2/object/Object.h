@@ -50,6 +50,7 @@ enum class ObjectType : uint8_t
     FootpathSurface,
     FootpathRailings,
     Audio,
+    Paint,
 
     Count,
     None = 255
@@ -74,6 +75,7 @@ constexpr std::array ObjectTypes = {
     ObjectType::FootpathSurface,
     ObjectType::FootpathRailings,
     ObjectType::Audio,
+    ObjectType::Paint,
 };
 static_assert(ObjectTypes.size() == EnumValue(ObjectType::Count));
 

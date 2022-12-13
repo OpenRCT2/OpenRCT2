@@ -63,5 +63,7 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(RideUpdate, nullptr),
     SET_FIELD(UpdateMeasurementsSpecialElements, RideUpdateMeasurementsSpecialElements_Default),
     SET_FIELD(MusicTrackOffsetLength, OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Circus),
+    SET_FIELD(UpdateRideApproachVehicleWaypoints, UpdateRideApproachVehicleWaypointsDefault),
+    SET_FIELD(PaintObjectId, "rct2.circus_paint"),
 };
 // clang-format on

@@ -308,6 +308,7 @@
     <ClInclude Include="object\ObjectList.h" />
     <ClInclude Include="object\ObjectManager.h" />
     <ClInclude Include="object\ObjectRepository.h" />
+    <ClInclude Include="object\PaintObject.h" />
     <ClInclude Include="object\ResourceTable.h" />
     <ClInclude Include="object\RideObject.h" />
     <ClInclude Include="object\SceneryGroupObject.h" />
@@ -324,6 +325,7 @@
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
     <ClInclude Include="paint\Painter.h" />
+    <ClInclude Include="paint\scripting\PaintScriptEngine.h" />
     <ClInclude Include="paint\Supports.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
@@ -552,6 +554,8 @@
     <ClInclude Include="world\TilePointerIndex.hpp" />
     <ClInclude Include="world\Wall.h" />
     <ClInclude Include="world\Water.h" />
+    <ClInclude Include="..\thirdparty\*.h" />
+    <ClInclude Include="..\thirdparty\sol\sol.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resources\OpenRCT2.rc" />
@@ -796,6 +800,7 @@
     <ClCompile Include="object\ObjectList.cpp" />
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />
+    <ClCompile Include="object\PaintObject.cpp" />
     <ClCompile Include="object\ResourceTable.cpp" />
     <ClCompile Include="object\RideObject.cpp" />
     <ClCompile Include="object\SceneryGroupObject.cpp" />
@@ -1007,6 +1012,7 @@
     <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+    <ClCompile Include="..\thirdparty\onelua.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
