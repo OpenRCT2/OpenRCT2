@@ -59,6 +59,7 @@
 - Fix: [#18696] Construction rights cannot be viewed after all are purchased.
 - Fix: [#18720] Upwards helix is enabled for the Alpine Coaster, even when cheats are off.
 - Fix: [#18755] Ferris Wheel and Circus ghosts not coloured correctly.
+- Fix: [#18802] Game could crash when determining if a mechanic is heading to fix the ride blocking the path.
 
 0.4.2 (2022-10-05)
 ------------------------------------------------------------------------
