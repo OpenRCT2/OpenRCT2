@@ -9,6 +9,7 @@
 - Feature: [objects#225] Add log cabin roofs.
 - Feature: [OpenMusic#14, OpenMusic#15, OpenMusic#18] Added Galaxy, Acid and Dodgems ride music styles.
 - Improved: [#18013, #18016, #18018, #18019, #18514, objects#224] Added colour presets to Spiral Slide, Dodgems, Boat Hire, Flying Saucers, and Car Ride.
+- Improved: [#18024] Clearer error messages when loading incompatible .park files.
 - Improved: [#18192] Tycoon Park has been added to the Extras tab.
 - Improved: [#18214] Competition scenarios have received their own section.
 - Improved: [#18250] Added modern style file and folder pickers on Windows.
