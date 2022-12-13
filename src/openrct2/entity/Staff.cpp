@@ -874,6 +874,9 @@ bool Staff::IsMechanicHeadingToFixRideBlockingPath()
         return false;
 
     auto ride = get_ride(trackElement->GetRideIndex());
+    if (ride == nullptr)
+        return false;
+
     return ride->id == CurrentRide && ride->breakdown_reason == BREAKDOWN_SAFETY_CUT_OUT;
 }
 
