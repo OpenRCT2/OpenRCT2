@@ -708,8 +708,8 @@ namespace OpenRCT2
                 {
                     auto windowManager = _uiContext->GetWindowManager();
                     auto ft = Formatter();
-                    ft.Add<uint32_t>(result.MinVersion);
                     ft.Add<uint32_t>(result.TargetVersion);
+                    ft.Add<uint32_t>(OpenRCT2::PARK_FILE_CURRENT_VERSION);
                     windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
                 }
                 else if (HasObjectsThatUseFallbackImages())
@@ -769,9 +769,19 @@ namespace OpenRCT2
                 }
                 else*/
                 {
-                    ft.Add<uint32_t>(e.MinVersion);
-                    ft.Add<uint32_t>(e.TargetVersion);
-                    windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE, ft);
+                    if (e.MinVersion == e.TargetVersion)
+                    {
+                        ft.Add<uint32_t>(e.TargetVersion);
+                        ft.Add<uint32_t>(OpenRCT2::PARK_FILE_CURRENT_VERSION);
+                        windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE_2, ft);
+                    }
+                    else
+                    {
+                        ft.Add<uint32_t>(e.TargetVersion);
+                        ft.Add<uint32_t>(e.MinVersion);
+                        ft.Add<uint32_t>(OpenRCT2::PARK_FILE_CURRENT_VERSION);
+                        windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE, ft);
+                    }
                 }
             }
             catch (const std::exception& e)

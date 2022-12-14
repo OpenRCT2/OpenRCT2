@@ -3593,9 +3593,9 @@ STR_6487    :Hide staff toggle
 STR_6488    :{RED}Guests are complaining about the length of the queues in your park.{NEWLINE}Consider shortening problematic queues, or increasing the rides’ throughput.
 STR_6489    :Error: Incompatible Park Version
 STR_6490    :Warning: Semi-compatible Park Version
-STR_6491    :This park was saved in a later version of OpenRCT2. Park is v{INT32} and requires at least v{INT32}.
+STR_6491    :This park was saved in a later version of OpenRCT2. The park was saved in v{INT32} and requires at least v{INT32}. You are currently on v{INT32}.
 STR_6492    :This park was saved in an old version of OpenRCT2, and can not be opened with this version of OpenRCT2. Park is v{INT32}.
-STR_6493    :This park was saved in a later version of OpenRCT2, some data may be lost. Park is v{INT32} and requires at least v{INT32}.
+STR_6493    :This park was saved in a later version of OpenRCT2, some data may be lost. The park was saved in v{INT32}. You are currently on v{INT32}.
 STR_6494    :Group by ride type
 STR_6495    :Group rides by ride types instead of showing each vehicle separately.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3638,6 +3638,7 @@ STR_6532    :Katy’s Dreamworld
 STR_6533    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}-{COMMA16}%
+STR_6536    :This park was saved in a later version of OpenRCT2. The park was saved in v{INT32}, you are currently on v{INT32}.
 
 #############
 # Scenarios #
