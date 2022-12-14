@@ -3928,6 +3928,9 @@ enum : uint16_t
 
     STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE_2 = 6536,
 
+    STR_CHEAT_ALLOW_PATH_AS_QUEUE = 6537,
+    STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP = 6538,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
