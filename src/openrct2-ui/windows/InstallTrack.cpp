@@ -237,7 +237,8 @@ public:
             screenPos.y += LIST_ROW_HEIGHT + 4;
         }
 
-        if (td6->type != RIDE_TYPE_MAZE)
+        const auto& rtd = GetRideTypeDescriptor(td6->type);
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         {
             if (td6->type == RIDE_TYPE_MINI_GOLF)
             {

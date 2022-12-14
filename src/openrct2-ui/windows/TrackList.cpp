@@ -554,7 +554,8 @@ public:
         // Information for tracked rides.
         if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
         {
-            if (_loadedTrackDesign->type != RIDE_TYPE_MAZE)
+            const auto& rtd = GetRideTypeDescriptor(_loadedTrackDesign->type);
+            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
                 if (_loadedTrackDesign->type == RIDE_TYPE_MINI_GOLF)
                 {

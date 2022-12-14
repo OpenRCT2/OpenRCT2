@@ -3033,8 +3033,8 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
 void WindowRideConstructionUpdateActiveElementsImpl()
 {
     WindowRideConstructionUpdateEnabledTrackPieces();
-
-    if (auto currentRide = get_ride(_currentRideIndex); !currentRide || currentRide->type == RIDE_TYPE_MAZE)
+    if (auto currentRide = get_ride(_currentRideIndex);
+        !currentRide || currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         return;
     }
@@ -3255,7 +3255,8 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         return;
     }
 
-    if (ride->type != RIDE_TYPE_MAZE)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         auto window = static_cast<RideConstructionWindow*>(window_find_by_class(WindowClass::RideConstruction));
         if (!window)
@@ -3313,7 +3314,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     // search for appropriate z value for ghost, up to max ride height
     int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / COORDS_Z_STEP + 1) : 2);
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         for (int zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
         {
@@ -3551,7 +3552,8 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     // search for z value to build at, up to max ride height
     int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / COORDS_Z_STEP + 1) : 2);
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
         {

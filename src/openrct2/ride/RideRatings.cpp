@@ -398,7 +398,8 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
         return;
     }
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         state.State = RIDE_RATINGS_STATE_CALCULATE;
         return;
@@ -1457,7 +1458,8 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
         return 0;
     }
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         location = ride->GetStation().Entrance.ToCoordsXY();
     }

@@ -490,7 +490,9 @@ void ride_remove_provisional_track_piece()
     int32_t x = _unkF440C5.x;
     int32_t y = _unkF440C5.y;
     int32_t z = _unkF440C5.z;
-    if (ride->type == RIDE_TYPE_MAZE)
+
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
         const CoordsXYZD quadrants[NumOrthogonalDirections] = {
@@ -1024,7 +1026,8 @@ bool ride_modify(const CoordsXYE& input)
 
     ride_create_or_find_construction_window(rideIndex);
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         return ride_modify_maze(tileElement);
     }
@@ -1343,7 +1346,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
 void Ride::ValidateStations()
 {
     const TrackElementDescriptor* ted;
-    if (type != RIDE_TYPE_MAZE)
+    const auto& rtd = GetRideTypeDescriptor();
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         // find the stations of the ride to begin stepping over track elements from
         for (const auto& station : stations)

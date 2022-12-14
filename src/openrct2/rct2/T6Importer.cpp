@@ -137,7 +137,8 @@ namespace RCT2
 
             td->operation_setting = std::min(td->operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
-            if (td->type == RIDE_TYPE_MAZE)
+            const auto& rtd = GetRideTypeDescriptor(td->type);
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
                 rct_td46_maze_element t6MazeElement{};
                 t6MazeElement.all = !0;

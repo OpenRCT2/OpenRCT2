@@ -213,20 +213,23 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
     bool selectionShouldBeExpanded;
     int32_t rideTypeIterator, rideTypeIteratorMax;
 
-    if (gCheatsShowVehiclesFromOtherTrackTypes
-        && !(
-            ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
-            || ride->type == RIDE_TYPE_MINI_GOLF))
     {
-        selectionShouldBeExpanded = true;
-        rideTypeIterator = 0;
-        rideTypeIteratorMax = RIDE_TYPE_COUNT - 1;
-    }
-    else
-    {
-        selectionShouldBeExpanded = false;
-        rideTypeIterator = ride->type;
-        rideTypeIteratorMax = ride->type;
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (gCheatsShowVehiclesFromOtherTrackTypes
+            && !(
+                ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE)
+                || ride->type == RIDE_TYPE_MINI_GOLF))
+        {
+            selectionShouldBeExpanded = true;
+            rideTypeIterator = 0;
+            rideTypeIteratorMax = RIDE_TYPE_COUNT - 1;
+        }
+        else
+        {
+            selectionShouldBeExpanded = false;
+            rideTypeIterator = ride->type;
+            rideTypeIteratorMax = ride->type;
+        }
     }
 
     for (; rideTypeIterator <= rideTypeIteratorMax; rideTypeIterator++)
@@ -235,7 +238,9 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
         {
             if (GetRideTypeDescriptor(rideTypeIterator).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                 continue;
-            if (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF)
+
+            const auto& rtd = GetRideTypeDescriptor(rideTypeIterator);
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE) || rideTypeIterator == RIDE_TYPE_MINI_GOLF)
                 continue;
         }
 

@@ -1994,10 +1994,10 @@ static void PopulateVehicleTypeDropdown(Ride* ride, bool forceRefresh)
 
     bool selectionShouldBeExpanded;
     int32_t rideTypeIterator, rideTypeIteratorMax;
+
+    const auto& rtd = ride->GetRideTypeDescriptor();
     if (gCheatsShowVehiclesFromOtherTrackTypes
-        && !(
-            ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
-            || ride->type == RIDE_TYPE_MINI_GOLF))
+        && !(rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE) || ride->type == RIDE_TYPE_MINI_GOLF))
     {
         selectionShouldBeExpanded = true;
         rideTypeIterator = 0;
@@ -2020,9 +2020,11 @@ static void PopulateVehicleTypeDropdown(Ride* ride, bool forceRefresh)
 
     for (; rideTypeIterator <= rideTypeIteratorMax; rideTypeIterator++)
     {
-        if (selectionShouldBeExpanded && GetRideTypeDescriptor(rideTypeIterator).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        const auto& rtdIterator = GetRideTypeDescriptor(rideTypeIterator);
+        if (selectionShouldBeExpanded && rtdIterator.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
             continue;
-        if (selectionShouldBeExpanded && (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
+        if (selectionShouldBeExpanded
+            && (rtdIterator.HasFlag(RIDE_TYPE_FLAG_IS_MAZE) || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
             continue;
 
         auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
@@ -4637,7 +4639,8 @@ static void WindowRideColourInvalidate(rct_window* w)
     trackColour = ride_get_track_colour(ride, colourScheme);
 
     // Maze style
-    if (ride->type == RIDE_TYPE_MAZE)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         window_ride_colour_widgets[WIDX_MAZE_STYLE].type = WindowWidgetType::DropdownMenu;
         window_ride_colour_widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WindowWidgetType::Button;
@@ -4705,7 +4708,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     }
 
     // Track supports colour
-    if (WindowRideHasTrackColour(ride, 2) && ride->type != RIDE_TYPE_MAZE)
+    if (WindowRideHasTrackColour(ride, 2) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WindowWidgetType::ColourBtn;
         window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].image = GetColourButtonImage(trackColour.supports).ToUInt32();
@@ -4886,7 +4889,8 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
         auto screenCoords = w->windowPos + ScreenCoordsXY{ trackPreviewWidget.left, trackPreviewWidget.top };
 
         // Track
-        if (ride->type == RIDE_TYPE_MAZE)
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         {
             gfx_draw_sprite(dpi, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
         }

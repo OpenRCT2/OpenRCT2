@@ -359,7 +359,8 @@ public:
                 origin.y -= ((max.y + min.y) >> 6) * COORDS_XY_STEP;
             }
 
-            if (td6->type == RIDE_TYPE_MAZE)
+            const auto& rtd = GetRideTypeDescriptor(td6->type);
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
                 DrawMiniPreviewMaze(td6, pass, origin, min, max);
             }
