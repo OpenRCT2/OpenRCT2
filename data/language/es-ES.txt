@@ -3639,6 +3639,9 @@ STR_6529    :¡Parámatro del esquema de color no válido!
 STR_6530    :User Created Expansion Set
 STR_6531    :La Máquina del Tiempo
 STR_6532    :Mundo de Katy
+STR_6533    :{WINDOW_COLOUR_2}Factor de emoción: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Factor de intensidad: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Factor de náusea: {BLACK}-{COMMA16}%
 
 ##############
 # Escenarios #
