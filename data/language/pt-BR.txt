@@ -3593,9 +3593,9 @@ STR_6487    :Alternar visibilidade dos funcionários
 STR_6488    :{RED}Os visitantes estão reclamando do tamanho das filas no seu parque.{NEWLINE}Considere encurtar filas problemáticas, ou aumentar a vazão das atrações.
 STR_6489    :Erro: Versão de Park Incompatível
 STR_6490    :Aviso: Versão de Park Semi-compatível
-STR_6491    :Esse park foi salvo em uma versão posterior do OpenRCT2. O Park é v{INT32} e requer ao menos v{INT32}.
+STR_6491    :Esse park foi salvo em uma versão posterior do OpenRCT2. O Park foi salvo na v{INT32} e requer ao menos v{INT32}. Você atualmente está na v{INT32}.
 STR_6492    :Esse park foi salvo em uma versão antiga do OpenRCT2, e não pode ser aberto com essa versão do OpenRCT2. O Park é v{INT32}.
-STR_6493    :Esse park foi salvo em uma versão posterior do OpenRCT2, algumas informações podem ser perdidas. O Park é v{INT32} e requer ao menos v{INT32}.
+STR_6493    :Esse park foi salvo em uma versão posterior do OpenRCT2, algumas informações podem ser perdidas. O Park foi salvo na v{INT32}. Você atualmente está na v{INT32}.
 STR_6494    :Agrupar por tipo de veículo
 STR_6495    :Agrupar atrações por tipo de veículo em vez de mostrar cada veículo separadamente.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3638,6 +3638,7 @@ STR_6532    :O Mundo Fantástico de Katy
 STR_6533    :{WINDOW_COLOUR_2}Fator de emoção: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Fator de intensidade: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Fator de Náusea: {BLACK}-{COMMA16}%
+STR_6536    :Esse park foi salvo em uma versão posterior do OpenRCT2. O Park foi salvo na v{INT32}. Você atualmente está na v{INT32}.
 
 #############
 # Scenarios #

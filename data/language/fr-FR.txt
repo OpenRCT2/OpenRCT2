@@ -3602,9 +3602,9 @@ STR_6487    :Employés invisibles
 STR_6488    :{RED}Les visiteurs se plaignent de la longueur des files d’attente dans votre parc.{NEWLINE}Songez à raccourcir les files problématiques ou à augmenter la capacité des attractions.
 STR_6489    :Erreur : Version de parc incompatible
 STR_6490    :Avertissement : Version de parc semi-compatible
-STR_6491    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il est à la version {INT32} et requiert au moins la version {INT32}.
-STR_6492    :Ce parc a été sauvegardé dans une ancienne version d’OpenRCT2, et ne peut être ouvert avec cette version. Il est à la version {INT32}.
-STR_6493    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2, certaines données pourraient être perdues. Il est à la version {INT32} et requiert au moins la version {INT32}.
+STR_6491    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il a été sauvegardé avec la version {INT32} et requiert au moins la version {INT32}. Vous utilisez la version {INT32}.
+STR_6492    :Ce parc a été sauvegardé dans une ancienne version d’OpenRCT2, et ne peut être ouvert avec cette version. Il a été sauvegardé avec la version {INT32}.
+STR_6493    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2, certaines données pourraient être perdues. Il a été sauvegardé avec la version {INT32}, vous utilisez la version {INT32}.
 STR_6494    :Grouper par type d’attraction
 STR_6495    :Groupe les attractions par type au lieu d’afficher chaque véhicule indépendamment.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3647,6 +3647,7 @@ STR_6532    :Le monde de Katy
 STR_6533    :{WINDOW_COLOUR_2}Indice d’excitation : {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Indice d’intensité : {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Indice de nausée : {BLACK}-{COMMA16}%
+STR_6536    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il a été sauvegardé avec la version {INT32}, vous utilisez la version {INT32}.
 
 #############
 # Scenarios #

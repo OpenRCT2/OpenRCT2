@@ -3592,9 +3592,9 @@ STR_6487    :Zichtbaarheid werknemers wisselen
 STR_6488    :{RED}De bezoekers klagen over de lange wachttijden in je park.{NEWLINE}Overweeg het verkorten van wachtgebieden of het verlagen van doorlooptijden.
 STR_6489    :Fout: parkversie niet compatibel
 STR_6490    :Waarschuwing: Park-versie is deels compatibel
-STR_6491    :Dit park is opgeslagen in een latere versie van OpenRCT2. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6491    :Dit park is opgeslagen in een latere versie van OpenRCT2. Het park is opgeslagen in v{INT32} en vereist minimaal v{INT32}. Je huidige versie is v{INT32}.
 STR_6492    :Dit park is opgeslagen in een vorige versie van OpenRCT2 en kan niet worden geopend met deze versie van OpenRCT2. Parkversie is v{INT32}.
-STR_6493    :Dit park is opgeslagen in een latere versie van OpenRCT2, sommige gegevens kunnen verloren gaan. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6493    :Dit park is opgeslagen in een latere versie van OpenRCT2, sommige gegevens kunnen verloren gaan. Parkversie is v{INT32}, je huidige versie is v{INT32}.
 STR_6494    :Groeperen op baantype
 STR_6495    :Groepeert attracties per baantype. Schakel dit uit om elk voertuig apart te tonen.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3637,6 +3637,7 @@ STR_6532    :Katy’s Dreamworld
 STR_6533    :{WINDOW_COLOUR_2}Plezierfactor: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Intensiteitsfactor: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Misselijkheidsfactor: {BLACK}-{COMMA16}%
+STR_6536    :Dit park is opgeslagen in een latere versie van OpenRCT2. Het park is opgeslagen in v{INT32}, je huidige versie is v{INT32}.
 
 #############
 # Scenarios #
