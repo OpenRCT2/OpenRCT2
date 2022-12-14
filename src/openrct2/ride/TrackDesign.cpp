@@ -92,7 +92,7 @@ static uint8_t TrackDesignGetEntranceStyle(const Ride& ride)
     return GetStationStyleFromIdentifier(objectName);
 }
 
-StringId TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
+ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
 {
     type = ride.type;
 
@@ -103,7 +103,7 @@ StringId TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
         // Remove this check for new track design format
         if (entry.IsEmpty())
         {
-            return STR_VEHICLE_UNSUPPORTED_TD6;
+            return { false, STR_VEHICLE_UNSUPPORTED_TD6 };
         }
         vehicle_object = ObjectEntryDescriptor(entry);
     }
@@ -172,12 +172,12 @@ StringId TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
     }
 }
 
-StringId TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
+ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
 {
     CoordsXYE trackElement;
     if (!ride_try_get_origin_element(&ride, &trackElement))
     {
-        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+        return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
     ride_get_start_of_track(&trackElement);
@@ -191,7 +191,7 @@ StringId TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& 
 
     if (!newCoords.has_value())
     {
-        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+        return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
     trackElement.x = newCoords->x;
     trackElement.y = newCoords->y;
@@ -213,7 +213,7 @@ StringId TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& 
         // Remove this check for new track design format
         if (trackElement.element->AsTrack()->GetTrackType() > TrackElemType::HighestAlias)
         {
-            return STR_TRACK_ELEM_UNSUPPORTED_TD6;
+            return { false, STR_TRACK_ELEM_UNSUPPORTED_TD6 };
         }
 
         TrackDesignTrackElement track{};
@@ -261,7 +261,7 @@ StringId TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& 
 
         if (track_elements.size() > RCT2::Limits::TD6MaxTrackElements)
         {
-            return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+            return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
         }
     } while (trackElement.element != initialMap);
 
@@ -322,7 +322,7 @@ StringId TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& 
 
             if (z > 127 || z < -126)
             {
-                return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+                return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
             }
 
             entrance.z = z;
@@ -347,16 +347,16 @@ StringId TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& 
 
     space_required_x = ((tds.PreviewMax.x - tds.PreviewMin.x) / 32) + 1;
     space_required_y = ((tds.PreviewMax.y - tds.PreviewMin.y) / 32) + 1;
-    return STR_NONE;
+    return { true };
 }
 
-StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
+ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
 {
     auto startLoc = MazeGetFirstElement(ride);
 
     if (startLoc.element == nullptr)
     {
-        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+        return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
     tds.Origin = { startLoc.x, startLoc.y, startLoc.element->GetBaseZ() };
@@ -388,7 +388,7 @@ StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& r
 
                 if (maze_elements.size() >= 2000)
                 {
-                    return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+                    return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
                 }
             } while (!(tileElement++)->IsLastForTile());
         }
@@ -398,7 +398,7 @@ StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& r
     auto location = ride.GetStation().Entrance;
     if (location.IsNull())
     {
-        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+        return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
     CoordsXY entranceLoc = location.ToCoordsXY();
@@ -406,7 +406,7 @@ StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& r
     do
     {
         if (tileElement == nullptr)
-            return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+            return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
         if (tileElement->GetType() != TileElementType::Entrance)
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
@@ -427,13 +427,13 @@ StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& r
     location = ride.GetStation().Exit;
     if (location.IsNull())
     {
-        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+        return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
     CoordsXY exitLoc = location.ToCoordsXY();
     tileElement = MapGetFirstElementAt(exitLoc);
     if (tileElement == nullptr)
-        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+        return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     do
     {
         if (tileElement->GetType() != TileElementType::Entrance)
@@ -464,7 +464,7 @@ StringId TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& r
 
     space_required_x = ((tds.PreviewMax.x - tds.PreviewMin.x) / 32) + 1;
     space_required_y = ((tds.PreviewMax.y - tds.PreviewMin.y) / 32) + 1;
-    return STR_NONE;
+    return { true };
 }
 
 CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
@@ -493,7 +493,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
     return tile;
 }
 
-StringId TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
+ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
 {
     scenery_elements = _trackSavedTileElementsDesc;
     // Run an element loop
@@ -547,17 +547,17 @@ StringId TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
         if (rotatedRelativeMapPos.x > 127 * COORDS_XY_STEP || rotatedRelativeMapPos.y > 127 * COORDS_XY_STEP
             || rotatedRelativeMapPos.x < -126 * COORDS_XY_STEP || rotatedRelativeMapPos.y < -126 * COORDS_XY_STEP)
         {
-            return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+            return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
         }
 
         if (relativeMapPosition.z > 127 * COORDS_Z_STEP || relativeMapPosition.z < -126 * COORDS_Z_STEP)
         {
-            return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+            return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
         }
         scenery.loc = CoordsXYZ(rotatedRelativeMapPos, relativeMapPosition.z);
     }
 
-    return STR_NONE;
+    return { true };
 }
 
 void TrackDesign::Serialise(DataSerialiser& stream)
