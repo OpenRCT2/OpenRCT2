@@ -3600,9 +3600,7 @@ STR_6487    :Mostra/nascondi personale
 STR_6488    :{RED}I visitatori si lamentano per la lunghezza delle code nel tuo parco.{NEWLINE}Prendi in considerazione di accorciare quelle problematiche o di aumentare il flusso di visitatori delle attrazioni.
 STR_6489    :Errore: versione parco non compatibile
 STR_6490    :Avviso: versione parco semi-compatibile
-STR_6491    :Questo parco è stato salvato in una versione più recente di OpenRCT2. Il parco è v{INT32} e richiede almeno v{INT32}.
 STR_6492    :Questo parco è stato salvato in una versione più vecchia di OpenRCT2 e non può essere aperto con questa versione. Il parco è v{INT32}.
-STR_6493    :Questo parco è stato salvato in una versione più recente di OpenRCT2, alcuni dati potrebbero essere persi. Il parco è v{INT32} e richiede almeno v{INT32}.
 STR_6494    :Raggruppa per tipo attrazione
 STR_6495    :Raggruppa le attrazioni in base al loro tipo anziché mostrare ogni veicolo separatamente.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}

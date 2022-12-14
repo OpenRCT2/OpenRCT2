@@ -3579,9 +3579,7 @@ STR_6487    :Személyzet elrejtése be/ki
 STR_6488    :{RED}A vendégek panaszkodnak a parkban a sorok hosszára.{NEWLINE}Próbáld meg a problémás sorokat lerövidíteni, vagy növeld a játékok áteresztőképességét.
 STR_6489    :Hiba: Nem kompatibilis park verzió
 STR_6490    :Figyelmeztetés: Félig kompatibilis park verzió
-STR_6491    :Ezt a parkot az OpenRCT2 egy későbbi verziójában mentették el. A park v{INT32}, és legalább v{INT32}-t igényel.
 STR_6492    :Ez a park az OpenRCT2 egy régi verziójában lett elmentve, és nem nyitható meg az OpenRCT2 ezen verziójával. A park v{INT32}.
-STR_6493    :Ezt a parkot az OpenRCT2 egy későbbi verziójában mentették el, egyes adatok elveszhetnek. A park v{INT32}, és legalább v{INT32}-t igényel.
 STR_6494    :Játéktípus szerinti csoportosítás
 STR_6495    :Csoportosítsa a játékokat a játéktípusok szerint, ahelyett, hogy minden járművet külön-külön mutatna.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}

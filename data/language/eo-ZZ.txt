@@ -3593,9 +3593,7 @@ STR_6487    :Baskuligi nevideblan dungitaron
 STR_6488    :{RED}Gastoj plendas pri la longeco de la atendovicoj en via parko.{NEWLINE}Konsideru mallongigi problemajn atendovicojn, aŭ pliigi la flukvanton de la atrakcioj.
 STR_6489    :Eraro: Malkongrua Versio de Parko
 STR_6490    :Averto: Parte Kongrua Versio de Parko
-STR_6491    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
 STR_6492    :Ĉi tiu parko estis konservita en malnova versio de OpenRCT2, kaj ne povas esti malfermita per ĉi tiu versio de OpenRCT2. Parko estas v{INT32}.
-STR_6493    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2, kelkaj datumoj eble estas perditaj. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
 STR_6494    :Grupigi laŭ atrakciotipo
 STR_6495    :Grupigi atrakciojn laŭ akrakciotipoj anstataŭ montri ĉiun veturilon aparte.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}

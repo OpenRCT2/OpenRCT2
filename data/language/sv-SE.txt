@@ -3595,9 +3595,7 @@ STR_6487    :Växla genomskinlig personal
 STR_6488    :{RED}Gästerna klagar på kölängderna i din park. {NEWLINE}Överväg att förkorta problematiska köer, eller öka åkturernas genomströmning.
 STR_6489    :Fel: Inkompatibel parkversion
 STR_6490    :Varning: Halvkompatibel parkversion
-STR_6491    :Denna park sparades i en nyare version av OpenRCT2. Parken är v{INT32} och kräver åtminstone v{INT32}.
 STR_6492    :Denna park sparades i en äldre version av OpenRCT2, och kan inte öppnas med denna version av OpenRCT2. Parken är v{INT32}.
-STR_6493    :Denna park sparades i en nyare version av OpenRCT2, viss data kan gå förlorad. Parken är v{INT32} och kräver åtminstone v{INT32}.
 
 #############
 # Scenarion #

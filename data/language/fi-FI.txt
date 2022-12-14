@@ -3598,9 +3598,7 @@ STR_6487    :Läpinäkyvä henkilöstö -kytkin
 STR_6488    :{RED}Kävijät valittavat pitkistä jonoista puistosi laitteisiin.{NEWLINE}Lyhennä ongelmallisia jonotusalueita, tai korota laitteiden kapasiteettia.
 STR_6489    :Virhe: Yhteensopimaton puistoversio
 STR_6490    :Varoitus: Jokseenkin yhteensopiva puistoversio
-STR_6491    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
 STR_6492    :Tämä puisto on tallennettu vanhemmalla OpenRCT2-versiolla, eikä sitä voi avata tällä peliversiolla. Puisto on v{INT32}.
-STR_6493    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla, ja jotkin tiedot ovat saattaneet kadota. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
 STR_6494    :Ryhmitä laitetyypittäin
 STR_6495    :Ryhmitä laitteet laitetyypin perusteella, yksittäisten kulkuneuvojen sijaan.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
