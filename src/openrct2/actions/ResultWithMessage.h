@@ -16,4 +16,9 @@ struct ResultWithMessage
 {
     bool Successful{};
     StringId Message = STR_NONE;
+
+    bool HasMessage() const
+    {
+        return Message != STR_NONE;
+    }
 };

@@ -5371,7 +5371,7 @@ static void WindowRideMeasurementsDesignSave(rct_window* w)
             ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, errMessage.Message, {});
             return;
         }
-        if (errMessage.Message != STR_NONE)
+        if (errMessage.HasMessage())
         {
             ContextShowError(errMessage.Message, STR_EMPTY, {});
         }
