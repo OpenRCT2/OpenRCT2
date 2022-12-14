@@ -52,7 +52,7 @@ public:
     void OnOpen() override
     {
         widgets = window_custom_currency_widgets;
-        hold_down_widgets = (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN);
+        hold_down_widgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
         WindowInitScrollWidgets(*this);
         colours[0] = COLOUR_LIGHT_BROWN;
         colours[1] = COLOUR_LIGHT_BROWN;
@@ -70,16 +70,16 @@ public:
                 break;
             case WIDX_RATE_UP:
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
-                gConfigGeneral.custom_currency_rate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                config_save_default();
+                gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                ConfigSaveDefault();
                 window_invalidate_all();
                 break;
             case WIDX_RATE_DOWN:
                 if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate > 1)
                 {
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
-                    gConfigGeneral.custom_currency_rate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                    config_save_default();
+                    gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                    ConfigSaveDefault();
                     window_invalidate_all();
                 }
                 break;
@@ -143,8 +143,8 @@ public:
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = CurrencyAffix::Suffix;
             }
 
-            gConfigGeneral.custom_currency_affix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
-            config_save_default();
+            gConfigGeneral.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
+            ConfigSaveDefault();
 
             window_invalidate_all();
         }
@@ -165,10 +165,10 @@ public:
                     CURRENCY_SYMBOL_MAX_SIZE);
 
                 safe_strcpy(
-                    gConfigGeneral.custom_currency_symbol, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
+                    gConfigGeneral.CustomCurrencySymbol, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
                     CURRENCY_SYMBOL_MAX_SIZE);
 
-                config_save_default();
+                ConfigSaveDefault();
                 window_invalidate_all();
                 break;
 
@@ -178,8 +178,8 @@ public:
                 {
                     rate = res.value();
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
-                    gConfigGeneral.custom_currency_rate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
-                    config_save_default();
+                    gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                    ConfigSaveDefault();
                     window_invalidate_all();
                 }
                 break;

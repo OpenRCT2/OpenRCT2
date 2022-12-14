@@ -131,7 +131,7 @@ void TitleScreen::Load()
     OpenRCT2::Audio::StopAll();
     GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
     viewport_init_all();
-    context_open_window(WindowClass::MainWindow);
+    ContextOpenWindow(WindowClass::MainWindow);
     CreateWindows();
     TitleInitialise();
     OpenRCT2::Audio::PlayTitleMusic();
@@ -139,7 +139,7 @@ void TitleScreen::Load()
     if (gOpenRCT2ShowChangelog)
     {
         gOpenRCT2ShowChangelog = false;
-        context_open_window(WindowClass::Changelog);
+        ContextOpenWindow(WindowClass::Changelog);
     }
 
     if (_sequencePlayer != nullptr)
@@ -182,12 +182,12 @@ void TitleScreen::Tick()
 
     input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
-    context_update_map_tooltip();
+    ContextUpdateMapTooltip();
     window_dispatch_update_all();
 
     gSavedAge++;
 
-    context_handle_input();
+    ContextHandleInput();
 
     gInUpdateCode = false;
 }
@@ -201,8 +201,8 @@ void TitleScreen::ChangePresetSequence(size_t preset)
     }
 
     const utf8* configId = title_sequence_manager_get_config_id(preset);
-    SafeFree(gConfigInterface.current_title_sequence_preset);
-    gConfigInterface.current_title_sequence_preset = _strdup(configId);
+    SafeFree(gConfigInterface.CurrentTitleSequencePreset);
+    gConfigInterface.CurrentTitleSequencePreset = _strdup(configId);
 
     if (!_previewingSequence)
         _currentSequence = preset;
@@ -215,11 +215,11 @@ void TitleScreen::ChangePresetSequence(size_t preset)
  */
 void TitleScreen::CreateWindows()
 {
-    context_open_window(WindowClass::TitleMenu);
-    context_open_window(WindowClass::TitleExit);
-    context_open_window(WindowClass::TitleOptions);
-    context_open_window(WindowClass::TitleLogo);
-    window_resize_gui(context_get_width(), context_get_height());
+    ContextOpenWindow(WindowClass::TitleMenu);
+    ContextOpenWindow(WindowClass::TitleExit);
+    ContextOpenWindow(WindowClass::TitleOptions);
+    ContextOpenWindow(WindowClass::TitleLogo);
+    window_resize_gui(ContextGetWidth(), ContextGetHeight());
     _hideVersionInfo = false;
 }
 
@@ -229,7 +229,7 @@ void TitleScreen::TitleInitialise()
     {
         _sequencePlayer = GetContext()->GetUiContext()->GetTitleSequencePlayer();
     }
-    if (gConfigInterface.random_title_sequence)
+    if (gConfigInterface.RandomTitleSequence)
     {
         bool RCT1Installed = false, RCT1AAInstalled = false, RCT1LLInstalled = false;
         int RCT1Count = 0;
@@ -319,8 +319,8 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
                     {
                         // Forcefully change the preset to a preset that works.
                         const utf8* configId = title_sequence_manager_get_config_id(targetSequence);
-                        SafeFree(gConfigInterface.current_title_sequence_preset);
-                        gConfigInterface.current_title_sequence_preset = _strdup(configId);
+                        SafeFree(gConfigInterface.CurrentTitleSequencePreset);
+                        gConfigInterface.CurrentTitleSequencePreset = _strdup(configId);
                     }
                     _currentSequence = targetSequence;
                     gfx_invalidate_screen();
@@ -397,7 +397,7 @@ void title_set_hide_version_info(bool value)
 
 size_t title_get_config_sequence()
 {
-    return title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
+    return title_sequence_manager_get_index_for_config_id(gConfigInterface.CurrentTitleSequencePreset);
 }
 
 size_t title_get_current_sequence()
@@ -447,7 +447,7 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
     gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), buffer.c_str(), { COLOUR_BLACK });
 
     // Invalidate screen area
-    int16_t width = static_cast<int16_t>(gfx_get_string_width(buffer, FontSpriteBase::MEDIUM));
+    int16_t width = static_cast<int16_t>(gfx_get_string_width(buffer, FontStyle::Medium));
     gfx_set_dirty_blocks(
         { screenCoords, screenCoords + ScreenCoordsXY{ width, 30 } }); // 30 is an arbitrary height to catch both strings
 

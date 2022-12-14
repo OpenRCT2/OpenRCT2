@@ -13,7 +13,7 @@
 #include "Map.h"
 #include "TileElement.h"
 
-LargeSceneryEntry* get_large_scenery_entry(ObjectEntryIndex entryIndex);
+LargeSceneryEntry* GetLargeSceneryEntry(ObjectEntryIndex entryIndex);
 
 enum
 {

@@ -186,10 +186,10 @@ static void window_close_surplus(int32_t cap, WindowClass avoid_classification)
  */
 void window_set_window_limit(int32_t value)
 {
-    int32_t prev = gConfigGeneral.window_limit;
+    int32_t prev = gConfigGeneral.WindowLimit;
     int32_t val = std::clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
-    gConfigGeneral.window_limit = val;
-    config_save_default();
+    gConfigGeneral.WindowLimit = val;
+    ConfigSaveDefault();
     // Checks if value decreases and then closes surplus
     // windows if one sets a limit lower than the number of windows open
     if (val < prev)
@@ -743,7 +743,7 @@ void window_push_others_right(rct_window& window)
             return;
 
         w->Invalidate();
-        if (window.windowPos.x + window.width + 13 >= context_get_width())
+        if (window.windowPos.x + window.width + 13 >= ContextGetWidth())
             return;
         auto push_amount = window.windowPos.x + window.width - w->windowPos.x + 3;
         w->windowPos.x += push_amount;
@@ -773,7 +773,7 @@ void window_push_others_below(rct_window& w1)
             return;
 
         // Check if there is room to push it down
-        if (w1.windowPos.y + w1.height + 80 >= context_get_height())
+        if (w1.windowPos.y + w1.height + 80 >= ContextGetHeight())
             return;
 
         // Invalidate the window's current area
@@ -820,7 +820,7 @@ void window_scroll_to_location(rct_window& w, const CoordsXYZ& coords)
     window_unfollow_sprite(w);
     if (w.viewport != nullptr)
     {
-        int16_t height = tile_element_height(coords);
+        int16_t height = TileElementHeight(coords);
         if (coords.z < height - 16)
         {
             if (!(w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
@@ -838,7 +838,7 @@ void window_scroll_to_location(rct_window& w, const CoordsXYZ& coords)
             }
         }
 
-        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords);
+        auto screenCoords = Translate3DTo2DWithZ(get_current_rotation(), coords);
 
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
@@ -932,7 +932,7 @@ void window_rotate_camera(rct_window& w, int32_t direction)
     {
         coords.x = mapXYCoords->x;
         coords.y = mapXYCoords->y;
-        coords.z = tile_element_height(coords);
+        coords.z = TileElementHeight(coords);
     }
 
     gCurrentRotation = (get_current_rotation() + direction) & 3;
@@ -955,7 +955,7 @@ void window_viewport_get_map_coords_by_cursor(
     const rct_window& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
 {
     // Get mouse position to offset against.
-    auto mouseCoords = context_get_cursor_position_scaled();
+    auto mouseCoords = ContextGetCursorPositionScaled();
 
     // Compute map coordinate by mouse position.
     auto viewportPos = w.viewport->ScreenToViewportCoord(mouseCoords);
@@ -965,7 +965,7 @@ void window_viewport_get_map_coords_by_cursor(
     *map_y = mapCoords.y;
 
     // Get viewport coordinates centring around the tile.
-    int32_t z = tile_element_height(mapCoords);
+    int32_t z = TileElementHeight(mapCoords);
 
     auto centreLoc = centre_2d_coordinates({ mapCoords.x, mapCoords.y, z }, w.viewport);
     if (!centreLoc)
@@ -986,7 +986,7 @@ void window_viewport_get_map_coords_by_cursor(
 void window_viewport_centre_tile_around_cursor(rct_window& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
 {
     // Get viewport coordinates centring around the tile.
-    int32_t z = tile_element_height({ map_x, map_y });
+    int32_t z = TileElementHeight({ map_x, map_y });
     auto centreLoc = centre_2d_coordinates({ map_x, map_y, z }, w.viewport);
 
     if (!centreLoc.has_value())
@@ -996,7 +996,7 @@ void window_viewport_centre_tile_around_cursor(rct_window& w, int32_t map_x, int
     }
 
     // Get mouse position to offset against.
-    auto mouseCoords = context_get_cursor_position_scaled();
+    auto mouseCoords = ContextGetCursorPositionScaled();
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
     int32_t rebased_x = w.viewport->zoom.ApplyTo((w.width >> 1) - mouseCoords.x);
@@ -1035,7 +1035,7 @@ void window_zoom_set(rct_window& w, ZoomLevel zoomLevel, bool atCursor)
     int32_t saved_map_y = 0;
     int32_t offset_x = 0;
     int32_t offset_y = 0;
-    if (gConfigGeneral.zoom_to_cursor && atCursor)
+    if (gConfigGeneral.ZoomToCursor && atCursor)
     {
         window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
     }
@@ -1061,7 +1061,7 @@ void window_zoom_set(rct_window& w, ZoomLevel zoomLevel, bool atCursor)
     }
 
     // Zooming to cursor? Centre around the tile we were hovering over just now.
-    if (gConfigGeneral.zoom_to_cursor && atCursor)
+    if (gConfigGeneral.ZoomToCursor && atCursor)
     {
         window_viewport_centre_tile_around_cursor(w, saved_map_x, saved_map_y, offset_x, offset_y);
     }
@@ -1306,9 +1306,8 @@ void window_resize(rct_window& w, int32_t dw, int32_t dh)
     window_event_invalidate_call(&w);
 
     // Update scroll widgets
-    for (int32_t i = 0; i < 3; i++)
+    for (auto& scroll : w.scrolls)
     {
-        auto& scroll = w.scrolls[i];
         scroll.h_right = WINDOW_SCROLL_UNDEFINED;
         scroll.v_bottom = WINDOW_SCROLL_UNDEFINED;
     }
@@ -1362,6 +1361,7 @@ bool tool_set(const rct_window& w, WidgetIndex widgetIndex, Tool tool)
     }
 
     input_set_flag(INPUT_FLAG_TOOL_ACTIVE, true);
+    input_set_flag(INPUT_FLAG_4, false);
     input_set_flag(INPUT_FLAG_6, false);
     gCurrentToolId = tool;
     gCurrentToolWidget.window_classification = w.classification;
@@ -1380,8 +1380,8 @@ void tool_cancel()
     {
         input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
 
-        map_invalidate_selection_rect();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateSelectionRect();
+        MapInvalidateMapSelectionTiles();
 
         // Reset map selection
         gMapSelectFlags = 0;
@@ -1449,9 +1449,14 @@ void window_event_dropdown_call(rct_window* w, WidgetIndex widgetIndex, int32_t 
 
 void window_event_unknown_05_call(rct_window* w)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->unknown_05 != nullptr)
-            w->event_handlers->unknown_05(w);
+    if (w->event_handlers == nullptr)
+    {
+        w->OnUnknown5();
+    }
+    else if (w->event_handlers->unknown_05 != nullptr)
+    {
+        w->event_handlers->unknown_05(w);
+    }
 }
 
 void window_event_update_call(rct_window* w)
@@ -1574,11 +1579,12 @@ void window_event_viewport_rotate_call(rct_window* w)
             w->event_handlers->viewport_rotate(w);
 }
 
-void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType)
+void window_event_scroll_select_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->unknown_15 != nullptr)
-            w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
+    if (w->event_handlers == nullptr)
+        w->OnScrollSelect(scrollIndex, scrollAreaType);
+    else if (w->event_handlers->scroll_select != nullptr)
+        w->event_handlers->scroll_select(w, scrollIndex, scrollAreaType);
 }
 
 OpenRCT2String window_event_tooltip_call(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback)
@@ -1874,7 +1880,7 @@ static void window_snap_right(rct_window& w, int32_t proximity)
         leftMost = std::min<int32_t>(leftMost, w2->windowPos.x);
     });
 
-    auto screenWidth = context_get_width();
+    auto screenWidth = ContextGetWidth();
     if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
         leftMost = std::min(leftMost, screenWidth);
 
@@ -1904,7 +1910,7 @@ static void window_snap_bottom(rct_window& w, int32_t proximity)
         topMost = std::min<int32_t>(topMost, w2->windowPos.y);
     });
 
-    auto screenHeight = context_get_height();
+    auto screenHeight = ContextGetHeight();
     if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
         topMost = std::min(topMost, screenHeight);
 
@@ -1917,7 +1923,7 @@ void window_move_and_snap(rct_window& w, ScreenCoordsXY newWindowCoords, int32_t
     auto originalPos = w.windowPos;
     int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
 
-    newWindowCoords.y = std::clamp(newWindowCoords.y, minY, context_get_height() - 34);
+    newWindowCoords.y = std::clamp(newWindowCoords.y, minY, ContextGetHeight() - 34);
 
     if (snapProximity > 0)
     {
@@ -1978,7 +1984,7 @@ void window_start_textbox(
     // from crashing the game.
     gTextBoxInput[maxLength - 1] = '\0';
 
-    gTextInput = context_start_text_input(gTextBoxInput, maxLength);
+    gTextInput = ContextStartTextInput(gTextBoxInput, maxLength);
 }
 
 void window_cancel_textbox()
@@ -1992,7 +1998,7 @@ void window_cancel_textbox()
         }
         gCurrentTextBox.window.classification = WindowClass::Null;
         gCurrentTextBox.window.number = 0;
-        context_stop_text_input();
+        ContextStopTextInput();
         gUsingWidgetTextBox = false;
         if (w != nullptr)
         {
@@ -2232,4 +2238,24 @@ void WidgetScrollUpdateThumbs(rct_window& w, WidgetIndex widget_index)
             scroll.v_thumb_bottom = static_cast<uint16_t>(std::lround(scroll.v_thumb_bottom + (20 * (1 - barPosition))));
         }
     }
+}
+
+void rct_window::ResizeFrame()
+{
+    // Frame
+    widgets[0].right = width - 1;
+    widgets[0].bottom = height - 1;
+    // Title
+    widgets[1].right = width - 2;
+    // Close button
+    widgets[2].left = width - 13;
+    widgets[2].right = width - 3;
+}
+
+void rct_window::ResizeFrameWithPage()
+{
+    ResizeFrame();
+    // Page background
+    widgets[3].right = width - 1;
+    widgets[3].bottom = height - 1;
 }

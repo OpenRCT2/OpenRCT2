@@ -34,20 +34,20 @@ static constexpr const uint32_t lift_cage_sprites[][2] = {
     { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },
 };
 
-static void paint_lift_cage(paint_session& session, int8_t index, ImageId colourFlags, int32_t height, uint8_t rotation)
+static void paint_lift_cage(PaintSession& session, int8_t index, ImageId colourFlags, int32_t height, uint8_t rotation)
 {
     ImageId imageId;
 
     imageId = colourFlags.WithIndex(lift_cage_sprites[1 + index][0]);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 2, 2, height });
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 2, height }, { 2, 2, 30 } });
 
     imageId = colourFlags.WithIndex(lift_cage_sprites[1 + index][1]);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 28, 28, height });
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height }, { 2, 2, 30 } });
 }
 
 /** rct2: 0x0076C6CC */
 static void paint_lift_base(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -60,10 +60,10 @@ static void paint_lift_base(
 
         paint_lift_cage(session, -1, session.TrackColours[SCHEME_TRACK], height + 64, session.CurrentRotation);
 
-        paint_util_set_vertical_tunnel(session, height + 96);
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetVerticalTunnel(session, height + 96);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-        paint_util_set_general_support_height(session, height + 96, 0x20);
+        PaintUtilSetGeneralSupportHeight(session, height + 96, 0x20);
 
         return;
     }
@@ -71,7 +71,7 @@ static void paint_lift_base(
     int32_t edges = edges_3x3[trackSequence];
 
     auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL_B);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
     track_paint_util_paint_fences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
@@ -105,14 +105,14 @@ static void paint_lift_base(
             blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
             break;
     }
-    paint_util_set_segment_support_height(session, blockedSegments, 0xFFFF, 0);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0076C6DC */
 static void paint_lift_tower_section(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence == 1)
@@ -122,10 +122,10 @@ static void paint_lift_tower_section(
 
     paint_lift_cage(session, -1, session.TrackColours[SCHEME_TRACK], height, session.CurrentRotation);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-    paint_util_set_vertical_tunnel(session, height + 32);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetVerticalTunnel(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /**

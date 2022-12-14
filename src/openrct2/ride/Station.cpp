@@ -330,7 +330,7 @@ static void ride_invalidate_station_start(Ride* ride, StationIndex stationIndex,
     tileElement->AsTrack()->SetHasGreenLight(greenLight);
 
     // Invalidate map tile
-    map_invalidate_tile_zoom1({ startPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+    MapInvalidateTileZoom1({ startPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 }
 
 TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex stationIndex)
@@ -338,7 +338,7 @@ TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex
     auto stationStart = ride->GetStation(stationIndex).GetStart();
 
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(stationStart);
+    TileElement* tileElement = MapGetFirstElementAt(stationStart);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -354,7 +354,7 @@ TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos)
 {
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(elementPos);
+    TileElement* tileElement = MapGetFirstElementAt(elementPos);
     if (tileElement == nullptr)
         return nullptr;
     do

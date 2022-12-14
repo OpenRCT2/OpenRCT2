@@ -2708,8 +2708,6 @@ STR_5503    :Wprowadź IP lub hostname:
 STR_5504    :Pokaż status gry wieloosobowej
 STR_5505    :Nie można połączyć z serwerem.
 STR_5506    :Goście ignorują intensywność
-STR_5508    :Zezwól na pliki ze złymi sumami kontrolnymi
-STR_5509    :Zezwól na ładowanie scenariuszy i zapisanych gier z błędną sumą kontrolą, takich jak scenariusz z wersji demo czy z uszkodzonym zapisem gry.
 STR_5510    :Domyślne urządzenie audio
 STR_5511    :(UNKNOWN)
 STR_5512    :Zapisz grę jako
@@ -3593,9 +3591,7 @@ STR_6487    :Przełącznik przezroczystości pracowników
 STR_6488    :{RED}Goście skarżą się na dłogość kolejek w Twoim parku.{NEWLINE}Rozważ skrócenie problematycznych kolejek lub zwiększenie przepustowości przejażdżek.
 STR_6489    :Błąd: Niekompatybilna wersja parku
 STR_6490    :Ostrzeżenie: Częściowo kompatybilna wersja parku
-STR_6491    :Ten park został zapisany w późniejszej wersji OpenRCT2. Park jest v{INT32} i wymaga co najmniej v{INT32}.
 STR_6492    :Ten park został zapisany w starej wersji OpenRCT2 i nie można go otworzyć za pomocą tej wersji programu OpenRCT2. Park ma jest w v{INT32}.
-STR_6493    :Ten park został zapisany w późniejszej wersji OpenRCT2, niektóre dane mogą zostać utracone. Park jest w v{INT32} i wymaga co najmniej v{INT32}.
 STR_6494    :Grupuj po typie atrakcji
 STR_6495    :Grupuj po typie atrakcji zamiast wyświetlić każdą osobno.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -4067,36 +4063,6 @@ STR_DTLS    :
 ## Start OpenRCT2 Official
 [TTPIRF05]
 STR_NAME    :Roof
-
-[TTRFWD01]
-STR_NAME    :Roof
-
-[TTRFWD02]
-STR_NAME    :Roof
-
-[TTRFWD03]
-STR_NAME    :Roof
-
-[TTRFWD04]
-STR_NAME    :Roof
-
-[TTRFWD05]
-STR_NAME    :Roof
-
-[TTRFWD06]
-STR_NAME    :Roof
-
-[TTRFWD07]
-STR_NAME    :Roof
-
-[TTRFWD08]
-STR_NAME    :Roof
-
-[ACWW33]
-STR_NAME    :Wooden Post Wall
-
-[ACWWF32]
-STR_NAME    :Wooden Post Wall
 
 ## End OpenRCT2 Official
 

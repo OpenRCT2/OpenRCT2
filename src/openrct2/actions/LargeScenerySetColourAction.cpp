@@ -52,7 +52,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
-    res.Position.z = tile_element_height(_loc);
+    res.Position.z = TileElementHeight(_loc);
     res.ErrorTitle = STR_CANT_REPAINT_THIS;
 
     auto mapSizeMax = GetMapSizeMaxXY();
@@ -80,7 +80,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    auto largeElement = map_get_large_scenery_segment(_loc, _tileIndex);
+    auto largeElement = MapGetLargeScenerySegment(_loc, _tileIndex);
 
     if (largeElement == nullptr)
     {
@@ -119,7 +119,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
-            if (!map_is_location_owned(currentTile))
+            if (!MapIsLocationOwned(currentTile))
             {
                 return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
@@ -130,7 +130,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
             return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        auto tileElement = map_get_large_scenery_segment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, i);
+        auto tileElement = MapGetLargeScenerySegment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, i);
 
         if (tileElement == nullptr)
         {
@@ -145,7 +145,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
             tileElement->SetSecondaryColour(_secondaryColour);
             tileElement->SetTertiaryColour(_tertiaryColour);
 
-            map_invalidate_tile_full(currentTile);
+            MapInvalidateTileFull(currentTile);
         }
     }
     return res;

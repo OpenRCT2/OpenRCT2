@@ -207,13 +207,13 @@ GameActions::Result SetCheatAction::Execute() const
             gCheatsNeverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
-            ParkSetOpen(!park_is_open());
+            ParkSetOpen(!ParkIsOpen());
             break;
         case CheatType::HaveFun:
             gScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
             break;
         case CheatType::SetForcedParkRating:
-            set_forced_park_rating(_param1);
+            ParkSetForcedRating(_param1);
             break;
         case CheatType::AllowArbitraryRideTypeChanges:
             gCheatsAllowArbitraryRideTypeChanges = _param1 != 0;
@@ -250,7 +250,7 @@ GameActions::Result SetCheatAction::Execute() const
 
     if (network_get_mode() == NETWORK_MODE_NONE)
     {
-        config_save_default();
+        ConfigSaveDefault();
     }
 
     window_invalidate_by_class(WindowClass::Cheats);
@@ -361,7 +361,7 @@ void SetCheatAction::SetGrassLength(int32_t length) const
     {
         for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
 
@@ -380,14 +380,14 @@ void SetCheatAction::WaterPlants() const
 {
     tile_element_iterator it;
 
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() == TileElementType::SmallScenery)
         {
             it.element->AsSmallScenery()->SetAge(0);
         }
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     gfx_invalidate_screen();
 }
@@ -396,7 +396,7 @@ void SetCheatAction::FixVandalism() const
 {
     tile_element_iterator it;
 
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() != TileElementType::Path)
@@ -406,7 +406,7 @@ void SetCheatAction::FixVandalism() const
             continue;
 
         it.element->AsPath()->SetIsBroken(false);
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     gfx_invalidate_screen();
 }
@@ -419,7 +419,7 @@ void SetCheatAction::RemoveLitter() const
     }
 
     tile_element_iterator it{};
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() != TileElementType::Path)
@@ -433,7 +433,7 @@ void SetCheatAction::RemoveLitter() const
         if (pathBitEntry != nullptr && pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
             path->SetAdditionStatus(0xFF);
 
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     gfx_invalidate_screen();
 }
@@ -690,7 +690,7 @@ void SetCheatAction::OwnAllLand() const
     {
         for (coords.x = min.x; coords.x <= max.x; coords.x += COORDS_XY_STEP)
         {
-            auto* surfaceElement = map_get_surface_element_at(coords);
+            auto* surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)
                 continue;
 
@@ -699,14 +699,14 @@ void SetCheatAction::OwnAllLand() const
                 continue;
 
             int32_t baseZ = surfaceElement->GetBaseZ();
-            int32_t destOwnership = check_max_allowable_land_rights_for_tile({ coords, baseZ });
+            int32_t destOwnership = CheckMaxAllowableLandRightsForTile({ coords, baseZ });
 
             // only own tiles that were not set to 0
             if (destOwnership != OWNERSHIP_UNOWNED)
             {
                 surfaceElement->SetOwnership(destOwnership);
-                update_park_fences_around_tile(coords);
-                map_invalidate_tile({ coords, baseZ, baseZ + 16 });
+                ParkUpdateFencesAroundTile(coords);
+                MapInvalidateTile({ coords, baseZ, baseZ + 16 });
             }
         }
     }
@@ -714,17 +714,17 @@ void SetCheatAction::OwnAllLand() const
     // Completely unown peep spawn points
     for (const auto& spawn : gPeepSpawns)
     {
-        auto* surfaceElement = map_get_surface_element_at(spawn);
+        auto* surfaceElement = MapGetSurfaceElementAt(spawn);
         if (surfaceElement != nullptr)
         {
             surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-            update_park_fences_around_tile(spawn);
+            ParkUpdateFencesAroundTile(spawn);
             uint16_t baseZ = surfaceElement->GetBaseZ();
-            map_invalidate_tile({ spawn, baseZ, baseZ + 16 });
+            MapInvalidateTile({ spawn, baseZ, baseZ + 16 });
         }
     }
 
-    map_count_remaining_land_rights();
+    MapCountRemainingLandRights();
 }
 
 void SetCheatAction::ParkSetOpen(bool isOpen) const

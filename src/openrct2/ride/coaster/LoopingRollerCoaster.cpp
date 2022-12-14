@@ -26,7 +26,7 @@ static constexpr auto SPR_LOOPING_RC_FLAT_CHAINED_NW_SE = 15017;
 
 /** rct2: 0x008A6370 */
 static void looping_rc_track_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -56,7 +56,7 @@ static void looping_rc_track_flat(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     else
@@ -78,17 +78,17 @@ static void looping_rc_track_flat(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static void looping_rc_track_station(
-    paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIdsFrictionWheels[4][2] = {
@@ -113,14 +113,14 @@ static void looping_rc_track_station(
         { 32, 32, 1 });
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station(session, ride, direction, height, trackElement);
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A6380 */
 static void looping_rc_track_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -150,7 +150,7 @@ static void looping_rc_track_25_deg_up(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     else
@@ -180,25 +180,25 @@ static void looping_rc_track_25_deg_up(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A6390 */
 static void looping_rc_track_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -228,7 +228,7 @@ static void looping_rc_track_60_deg_up(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     else
@@ -258,25 +258,25 @@ static void looping_rc_track_60_deg_up(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 104, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 /** rct2: 0x008A63A0 */
 static void looping_rc_track_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -306,7 +306,7 @@ static void looping_rc_track_flat_to_25_deg_up(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     else
@@ -336,25 +336,25 @@ static void looping_rc_track_flat_to_25_deg_up(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A63B0 */
 static void looping_rc_track_25_deg_up_to_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -390,7 +390,7 @@ static void looping_rc_track_25_deg_up_to_60_deg_up(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     else
@@ -426,25 +426,25 @@ static void looping_rc_track_25_deg_up_to_60_deg_up(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
 /** rct2: 0x008A63C0 */
 static void looping_rc_track_60_deg_up_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -480,7 +480,7 @@ static void looping_rc_track_60_deg_up_to_25_deg_up(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     else
@@ -516,25 +516,25 @@ static void looping_rc_track_60_deg_up_to_25_deg_up(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 72, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
 /** rct2: 0x008A63D0 */
 static void looping_rc_track_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.HasChain())
@@ -564,7 +564,7 @@ static void looping_rc_track_25_deg_up_to_flat(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     else
@@ -594,25 +594,25 @@ static void looping_rc_track_25_deg_up_to_flat(
         }
         if (track_paint_util_should_paint_supports(session.MapPosition))
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008A63E0 */
 static void looping_rc_track_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -620,7 +620,7 @@ static void looping_rc_track_25_deg_down(
 
 /** rct2: 0x008A63F0 */
 static void looping_rc_track_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -628,7 +628,7 @@ static void looping_rc_track_60_deg_down(
 
 /** rct2: 0x008A6400 */
 static void looping_rc_track_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -636,7 +636,7 @@ static void looping_rc_track_flat_to_25_deg_down(
 
 /** rct2: 0x008A6410 */
 static void looping_rc_track_25_deg_down_to_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -644,7 +644,7 @@ static void looping_rc_track_25_deg_down_to_60_deg_down(
 
 /** rct2: 0x008A6420 */
 static void looping_rc_track_60_deg_down_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -652,7 +652,7 @@ static void looping_rc_track_60_deg_down_to_25_deg_down(
 
 /** rct2: 0x008A6430 */
 static void looping_rc_track_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -660,7 +660,7 @@ static void looping_rc_track_25_deg_down_to_flat(
 
 /** rct2: 0x008A6440 */
 static void looping_rc_track_left_quarter_turn_5(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -689,17 +689,17 @@ static void looping_rc_track_left_quarter_turn_5(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -725,12 +725,11 @@ static void looping_rc_track_left_quarter_turn_5(
                         { 32, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -756,12 +755,12 @@ static void looping_rc_track_left_quarter_turn_5(
                         { 16, 16, 3 }, { 0, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 5:
             switch (direction)
@@ -787,12 +786,11 @@ static void looping_rc_track_left_quarter_turn_5(
                         { 16, 32, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 6:
             switch (direction)
@@ -818,26 +816,26 @@ static void looping_rc_track_left_quarter_turn_5(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6450 */
 static void looping_rc_track_right_quarter_turn_5(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -846,7 +844,7 @@ static void looping_rc_track_right_quarter_turn_5(
 
 /** rct2: 0x008A6460 */
 static void looping_rc_track_flat_to_left_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -880,17 +878,17 @@ static void looping_rc_track_flat_to_left_bank(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A6470 */
 static void looping_rc_track_flat_to_right_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -924,17 +922,17 @@ static void looping_rc_track_flat_to_right_bank(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A6480 */
 static void looping_rc_track_left_bank_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -968,17 +966,17 @@ static void looping_rc_track_left_bank_to_flat(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A6490 */
 static void looping_rc_track_right_bank_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -1012,17 +1010,17 @@ static void looping_rc_track_right_bank_to_flat(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A64A0 */
 static void looping_rc_track_banked_left_quarter_turn_5(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1054,17 +1052,17 @@ static void looping_rc_track_banked_left_quarter_turn_5(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -1090,12 +1088,11 @@ static void looping_rc_track_banked_left_quarter_turn_5(
                         { 32, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -1121,12 +1118,12 @@ static void looping_rc_track_banked_left_quarter_turn_5(
                         { 16, 16, 3 }, { 0, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 5:
             switch (direction)
@@ -1152,12 +1149,11 @@ static void looping_rc_track_banked_left_quarter_turn_5(
                         { 16, 32, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 6:
             switch (direction)
@@ -1186,26 +1182,26 @@ static void looping_rc_track_banked_left_quarter_turn_5(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A64B0 */
 static void looping_rc_track_banked_right_quarter_turn_5(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1214,7 +1210,7 @@ static void looping_rc_track_banked_right_quarter_turn_5(
 
 /** rct2: 0x008A64C0 */
 static void looping_rc_track_left_bank_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -1248,24 +1244,24 @@ static void looping_rc_track_left_bank_to_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A64D0 */
 static void looping_rc_track_right_bank_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -1299,24 +1295,24 @@ static void looping_rc_track_right_bank_to_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A64E0 */
 static void looping_rc_track_25_deg_up_to_left_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -1350,24 +1346,24 @@ static void looping_rc_track_25_deg_up_to_left_bank(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008A64F0 */
 static void looping_rc_track_25_deg_up_to_right_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -1401,24 +1397,24 @@ static void looping_rc_track_25_deg_up_to_right_bank(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008A6500 */
 static void looping_rc_track_left_bank_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_25_deg_up_to_right_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -1426,7 +1422,7 @@ static void looping_rc_track_left_bank_to_25_deg_down(
 
 /** rct2: 0x008A6510 */
 static void looping_rc_track_right_bank_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_25_deg_up_to_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -1434,7 +1430,7 @@ static void looping_rc_track_right_bank_to_25_deg_down(
 
 /** rct2: 0x008A6520 */
 static void looping_rc_track_25_deg_down_to_left_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_right_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -1442,7 +1438,7 @@ static void looping_rc_track_25_deg_down_to_left_bank(
 
 /** rct2: 0x008A6530 */
 static void looping_rc_track_25_deg_down_to_right_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_left_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -1450,7 +1446,7 @@ static void looping_rc_track_25_deg_down_to_right_bank(
 
 /** rct2: 0x008A6540 */
 static void looping_rc_track_left_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -1478,17 +1474,17 @@ static void looping_rc_track_left_bank(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A6550 */
 static void looping_rc_track_right_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -1496,7 +1492,7 @@ static void looping_rc_track_right_bank(
 
 /** rct2: 0x008A6560 */
 static void looping_rc_track_left_quarter_turn_5_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1525,17 +1521,17 @@ static void looping_rc_track_left_quarter_turn_5_25_deg_up(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 2:
             switch (direction)
@@ -1561,12 +1557,11 @@ static void looping_rc_track_left_quarter_turn_5_25_deg_up(
                         { 32, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 3:
             switch (direction)
@@ -1592,12 +1587,12 @@ static void looping_rc_track_left_quarter_turn_5_25_deg_up(
                         { 16, 16, 3 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 64, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
             break;
         case 4:
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 5:
             switch (direction)
@@ -1623,12 +1618,11 @@ static void looping_rc_track_left_quarter_turn_5_25_deg_up(
                         { 16, 32, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 6:
             switch (direction)
@@ -1654,26 +1648,26 @@ static void looping_rc_track_left_quarter_turn_5_25_deg_up(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6570 */
 static void looping_rc_track_right_quarter_turn_5_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1702,17 +1696,17 @@ static void looping_rc_track_right_quarter_turn_5_25_deg_up(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 2:
             switch (direction)
@@ -1738,12 +1732,11 @@ static void looping_rc_track_right_quarter_turn_5_25_deg_up(
                         { 32, 16, 3 });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 3:
             switch (direction)
@@ -1769,12 +1762,12 @@ static void looping_rc_track_right_quarter_turn_5_25_deg_up(
                         { 16, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 64, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
             break;
         case 4:
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 5:
             switch (direction)
@@ -1800,12 +1793,11 @@ static void looping_rc_track_right_quarter_turn_5_25_deg_up(
                         { 16, 32, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 6:
             switch (direction)
@@ -1831,26 +1823,26 @@ static void looping_rc_track_right_quarter_turn_5_25_deg_up(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6580 */
 static void looping_rc_track_left_quarter_turn_5_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1859,7 +1851,7 @@ static void looping_rc_track_left_quarter_turn_5_25_deg_down(
 
 /** rct2: 0x008A6590 */
 static void looping_rc_track_right_quarter_turn_5_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1868,7 +1860,7 @@ static void looping_rc_track_right_quarter_turn_5_25_deg_down(
 
 /** rct2: 0x008A65A0 */
 static void looping_rc_track_s_bend_left(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -1897,14 +1889,14 @@ static void looping_rc_track_s_bend_left(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -1913,14 +1905,14 @@ static void looping_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15261), { 0, 0, height },
                         { 32, 26, 3 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15265), { 0, 0, height },
                         { 32, 26, 3 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -1934,12 +1926,11 @@ static void looping_rc_track_s_bend_left(
                         { 32, 26, 3 }, { 0, 6, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -1958,23 +1949,22 @@ static void looping_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15261), { 0, 0, height },
                         { 32, 26, 3 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15265), { 0, 0, height },
                         { 32, 26, 3 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -2000,26 +1990,26 @@ static void looping_rc_track_s_bend_left(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A65B0 */
 static void looping_rc_track_s_bend_right(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -2048,14 +2038,14 @@ static void looping_rc_track_s_bend_right(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -2064,14 +2054,14 @@ static void looping_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15269), { 0, 0, height },
                         { 32, 26, 3 }, { 0, 6, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15273), { 0, 0, height },
                         { 32, 26, 3 }, { 0, 6, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -2085,12 +2075,11 @@ static void looping_rc_track_s_bend_right(
                         { 32, 26, 3 });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -2109,23 +2098,22 @@ static void looping_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15269), { 0, 0, height },
                         { 32, 26, 3 }, { 0, 6, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15273), { 0, 0, height },
                         { 32, 26, 3 }, { 0, 6, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -2151,26 +2139,26 @@ static void looping_rc_track_s_bend_right(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A65C0 */
 static void looping_rc_track_left_vertical_loop(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -2201,14 +2189,13 @@ static void looping_rc_track_left_vertical_loop(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 1:
             switch (direction)
@@ -2234,12 +2221,11 @@ static void looping_rc_track_left_vertical_loop(
                         { 32, 26, 3 });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 2:
             switch (direction)
@@ -2248,7 +2234,7 @@ static void looping_rc_track_left_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15350), { 16, 0, height },
                         { 3, 16, 119 }, { 16, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_CENTRED, 1, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15364), { 16, 0, height },
@@ -2258,7 +2244,7 @@ static void looping_rc_track_left_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15358), { 12, 0, height },
                         { 3, 16, 119 }, { 12, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_ALT_CENTRED, 0, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15366), { 12, 0, height },
@@ -2268,7 +2254,7 @@ static void looping_rc_track_left_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15353), { 10, 16, height },
                         { 4, 16, 119 }, { 10, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK, 2, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15365), { 10, 16, height },
@@ -2278,16 +2264,16 @@ static void looping_rc_track_left_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15361), { 16, 16, height },
                         { 2, 16, 119 }, { 16, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_ALT, 3, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15367), { 16, 16, height },
                         { 2, 16, 119 }, { 16, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 168, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
             break;
         case 3:
             switch (direction)
@@ -2313,18 +2299,17 @@ static void looping_rc_track_left_vertical_loop(
                         { 32, 16, 3 });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 4:
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 5:
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 6:
             switch (direction)
@@ -2350,12 +2335,11 @@ static void looping_rc_track_left_vertical_loop(
                         { 32, 16, 3 });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 7:
             switch (direction)
@@ -2364,7 +2348,7 @@ static void looping_rc_track_left_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15353), { 10, 16, height },
                         { 4, 16, 119 }, { 10, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK, 2, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15365), { 10, 16, height },
@@ -2374,7 +2358,7 @@ static void looping_rc_track_left_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15361), { 16, 16, height },
                         { 2, 16, 119 }, { 16, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_ALT, 3, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15367), { 16, 16, height },
@@ -2384,7 +2368,7 @@ static void looping_rc_track_left_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15350), { 16, 0, height },
                         { 3, 16, 119 }, { 16, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_CENTRED, 1, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15364), { 16, 0, height },
@@ -2394,16 +2378,16 @@ static void looping_rc_track_left_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15358), { 12, 0, height },
                         { 3, 16, 119 }, { 12, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_ALT_CENTRED, 0, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15366), { 12, 0, height },
                         { 3, 16, 119 }, { 12, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 168, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
             break;
         case 8:
             switch (direction)
@@ -2429,12 +2413,11 @@ static void looping_rc_track_left_vertical_loop(
                         { 32, 2, 63 });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 9:
             switch (direction)
@@ -2463,25 +2446,24 @@ static void looping_rc_track_left_vertical_loop(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A65D0 */
 static void looping_rc_track_right_vertical_loop(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -2512,9 +2494,9 @@ static void looping_rc_track_right_vertical_loop(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 1:
             switch (direction)
@@ -2540,7 +2522,7 @@ static void looping_rc_track_right_vertical_loop(
                         { 32, 26, 3 });
                     break;
             }
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 2:
             switch (direction)
@@ -2549,7 +2531,7 @@ static void looping_rc_track_right_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15381), { 16, 16, height },
                         { 2, 16, 119 }, { 16, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK, 3, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15384), { 16, 16, height },
@@ -2559,7 +2541,7 @@ static void looping_rc_track_right_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15373), { 10, 16, height },
                         { 4, 16, 119 }, { 10, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_ALT, 1, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15386), { 10, 16, height },
@@ -2569,7 +2551,7 @@ static void looping_rc_track_right_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15378), { 12, 0, height },
                         { 3, 16, 119 }, { 12, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_CENTRED, 0, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15385), { 12, 0, height },
@@ -2579,14 +2561,14 @@ static void looping_rc_track_right_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15370), { 16, 0, height },
                         { 2, 16, 119 }, { 16, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_ALT_CENTRED, 2, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15387), { 16, 0, height },
                         { 2, 16, 119 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_general_support_height(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
             break;
         case 3:
             switch (direction)
@@ -2612,13 +2594,13 @@ static void looping_rc_track_right_vertical_loop(
                         { 32, 16, 3 });
                     break;
             }
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 4:
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 5:
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 6:
             switch (direction)
@@ -2644,7 +2626,7 @@ static void looping_rc_track_right_vertical_loop(
                         { 32, 16, 3 });
                     break;
             }
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 7:
             switch (direction)
@@ -2653,7 +2635,7 @@ static void looping_rc_track_right_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15378), { 12, 0, height },
                         { 3, 16, 119 }, { 12, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_CENTRED, 0, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15385), { 12, 0, height },
@@ -2663,7 +2645,7 @@ static void looping_rc_track_right_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15370), { 16, 0, height },
                         { 2, 16, 119 }, { 16, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_ALT_CENTRED, 2, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15387), { 16, 0, height },
@@ -2673,7 +2655,7 @@ static void looping_rc_track_right_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15381), { 16, 16, height },
                         { 2, 16, 119 }, { 16, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK, 3, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15384), { 16, 16, height },
@@ -2683,14 +2665,14 @@ static void looping_rc_track_right_vertical_loop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15373), { 10, 16, height },
                         { 4, 16, 119 }, { 10, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_THICK_ALT, 1, 0, height - 8, session.TrackColours[SCHEME_TRACK]);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15386), { 10, 16, height },
                         { 4, 16, 119 }, { 10, 16, height });
                     break;
             }
-            paint_util_set_general_support_height(session, height + 168, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
             break;
         case 8:
             switch (direction)
@@ -2716,7 +2698,7 @@ static void looping_rc_track_right_vertical_loop(
                         { 32, 26, 3 });
                     break;
             }
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 9:
             switch (direction)
@@ -2745,13 +2727,13 @@ static void looping_rc_track_right_vertical_loop(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height - 8, TUNNEL_1);
+                    PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
                     break;
             }
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
     }
 
@@ -2760,7 +2742,7 @@ static void looping_rc_track_right_vertical_loop(
 
 /** rct2: 0x008A6630 */
 static void looping_rc_track_left_quarter_turn_3(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -2789,17 +2771,17 @@ static void looping_rc_track_left_quarter_turn_3(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -2825,9 +2807,9 @@ static void looping_rc_track_left_quarter_turn_3(
                         { 16, 16, 3 }, { 16, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -2853,26 +2835,26 @@ static void looping_rc_track_left_quarter_turn_3(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6640 */
 static void looping_rc_track_right_quarter_turn_3(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -2881,7 +2863,7 @@ static void looping_rc_track_right_quarter_turn_3(
 
 /** rct2: 0x008A6650 */
 static void looping_rc_track_left_quarter_turn_3_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -2913,17 +2895,17 @@ static void looping_rc_track_left_quarter_turn_3_bank(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -2949,9 +2931,9 @@ static void looping_rc_track_left_quarter_turn_3_bank(
                         { 16, 16, 3 }, { 16, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -2980,26 +2962,26 @@ static void looping_rc_track_left_quarter_turn_3_bank(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6660 */
 static void looping_rc_track_right_quarter_turn_3_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3008,7 +2990,7 @@ static void looping_rc_track_right_quarter_turn_3_bank(
 
 /** rct2: 0x008A6670 */
 static void looping_rc_track_left_quarter_turn_3_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -3037,20 +3019,20 @@ static void looping_rc_track_left_quarter_turn_3_25_deg_up(
                         { 32, 20, 3 });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 2:
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 3:
             switch (direction)
@@ -3076,26 +3058,26 @@ static void looping_rc_track_left_quarter_turn_3_25_deg_up(
                         { 20, 32, 3 });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6680 */
 static void looping_rc_track_right_quarter_turn_3_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -3124,20 +3106,20 @@ static void looping_rc_track_right_quarter_turn_3_25_deg_up(
                         { 32, 20, 3 });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 2:
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 3:
             switch (direction)
@@ -3146,50 +3128,50 @@ static void looping_rc_track_right_quarter_turn_3_25_deg_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15317), { 6, 0, height },
                         { 20, 32, 3 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15319), { 6, 0, height },
                         { 20, 32, 3 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15321), { 6, 0, height },
                         { 20, 32, 3 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15323), { 6, 0, height },
                         { 20, 32, 3 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6690 */
 static void looping_rc_track_left_quarter_turn_3_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3198,7 +3180,7 @@ static void looping_rc_track_left_quarter_turn_3_25_deg_down(
 
 /** rct2: 0x008A66A0 */
 static void looping_rc_track_right_quarter_turn_3_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3207,7 +3189,7 @@ static void looping_rc_track_right_quarter_turn_3_25_deg_down(
 
 /** rct2: 0x008A66B0 */
 static void looping_rc_track_left_half_banked_helix_up_small(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -3239,18 +3221,18 @@ static void looping_rc_track_left_half_banked_helix_up_small(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -3276,9 +3258,9 @@ static void looping_rc_track_left_half_banked_helix_up_small(
                         { 16, 16, 3 }, { 16, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -3307,20 +3289,20 @@ static void looping_rc_track_left_half_banked_helix_up_small(
                         { 20, 32, 3 }, { 6, 0, height + 8 });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
             switch (direction)
@@ -3349,23 +3331,23 @@ static void looping_rc_track_left_half_banked_helix_up_small(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 5:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 6:
             switch (direction)
@@ -3391,9 +3373,9 @@ static void looping_rc_track_left_half_banked_helix_up_small(
                         { 16, 16, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 7:
             switch (direction)
@@ -3422,22 +3404,22 @@ static void looping_rc_track_left_half_banked_helix_up_small(
                         { 32, 1, 26 }, { 0, 27, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A66C0 */
 static void looping_rc_track_right_half_banked_helix_up_small(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -3469,18 +3451,18 @@ static void looping_rc_track_right_half_banked_helix_up_small(
                         { 32, 1, 26 }, { 0, 27, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -3506,9 +3488,9 @@ static void looping_rc_track_right_half_banked_helix_up_small(
                         { 16, 16, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -3537,20 +3519,20 @@ static void looping_rc_track_right_half_banked_helix_up_small(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
             switch (direction)
@@ -3579,23 +3561,23 @@ static void looping_rc_track_right_half_banked_helix_up_small(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 5:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 6:
             switch (direction)
@@ -3621,9 +3603,9 @@ static void looping_rc_track_right_half_banked_helix_up_small(
                         { 16, 16, 3 }, { 16, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 7:
             switch (direction)
@@ -3652,22 +3634,22 @@ static void looping_rc_track_right_half_banked_helix_up_small(
                         { 32, 20, 3 }, { 0, 6, height + 8 });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A66D0 */
 static void looping_rc_track_left_half_banked_helix_down_small(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence >= 4)
@@ -3681,7 +3663,7 @@ static void looping_rc_track_left_half_banked_helix_down_small(
 
 /** rct2: 0x008A66E0 */
 static void looping_rc_track_right_half_banked_helix_down_small(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence >= 4)
@@ -3695,7 +3677,7 @@ static void looping_rc_track_right_half_banked_helix_down_small(
 
 /** rct2: 0x008A66F0 */
 static void looping_rc_track_left_half_banked_helix_up_large(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -3727,18 +3709,18 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -3764,12 +3746,11 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                         { 32, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -3795,12 +3776,12 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                         { 16, 16, 3 }, { 0, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 5:
             switch (direction)
@@ -3826,12 +3807,11 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                         { 16, 32, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 6:
             switch (direction)
@@ -3860,20 +3840,20 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                         { 20, 32, 3 }, { 6, 0, height + 8 });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 7:
             switch (direction)
@@ -3902,23 +3882,23 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 8:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 9:
             switch (direction)
@@ -3944,12 +3924,11 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                         { 16, 32, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 10:
             switch (direction)
@@ -3975,12 +3954,12 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                         { 16, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 11:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 12:
             switch (direction)
@@ -4006,12 +3985,11 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                         { 32, 16, 3 }, { 0, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 13:
             switch (direction)
@@ -4040,22 +4018,22 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                         { 32, 1, 26 }, { 0, 27, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6700 */
 static void looping_rc_track_right_half_banked_helix_up_large(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -4087,18 +4065,18 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                         { 32, 1, 26 }, { 0, 27, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -4124,12 +4102,11 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                         { 32, 16, 3 }, { 0, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -4155,12 +4132,12 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                         { 16, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 5:
             switch (direction)
@@ -4186,12 +4163,11 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                         { 16, 32, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 6:
             switch (direction)
@@ -4220,20 +4196,20 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_0);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 7:
             switch (direction)
@@ -4262,23 +4238,23 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelRight(session, height, TUNNEL_0);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_0);
+                    PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 8:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 9:
             switch (direction)
@@ -4304,12 +4280,11 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                         { 16, 32, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 10:
             switch (direction)
@@ -4335,12 +4310,12 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                         { 16, 16, 3 }, { 0, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 11:
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 12:
             switch (direction)
@@ -4366,12 +4341,11 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                         { 32, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 13:
             switch (direction)
@@ -4400,22 +4374,22 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                         { 32, 20, 3 }, { 0, 6, height + 8 });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6710 */
 static void looping_rc_track_left_half_banked_helix_down_large(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence >= 7)
@@ -4429,7 +4403,7 @@ static void looping_rc_track_left_half_banked_helix_down_large(
 
 /** rct2: 0x008A6720 */
 static void looping_rc_track_right_half_banked_helix_down_large(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence >= 7)
@@ -4443,7 +4417,7 @@ static void looping_rc_track_right_half_banked_helix_down_large(
 
 /** rct2: 0x008A6750 */
 static void looping_rc_track_left_quarter_turn_1_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -4482,13 +4456,13 @@ static void looping_rc_track_left_quarter_turn_1_60_deg_up(
             break;
     }
     track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 104, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 /** rct2: 0x008A6730 */
 static void looping_rc_track_right_quarter_turn_1_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -4527,13 +4501,13 @@ static void looping_rc_track_right_quarter_turn_1_60_deg_up(
             break;
     }
     track_paint_util_right_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 104, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 /** rct2: 0x008A6740 */
 static void looping_rc_track_left_quarter_turn_1_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_right_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
@@ -4541,7 +4515,7 @@ static void looping_rc_track_left_quarter_turn_1_60_deg_down(
 
 /** rct2: 0x008A6760 */
 static void looping_rc_track_right_quarter_turn_1_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_left_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
@@ -4549,7 +4523,7 @@ static void looping_rc_track_right_quarter_turn_1_60_deg_down(
 
 /** rct2: 0x008A6770 */
 static void looping_rc_track_brakes(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -4575,17 +4549,17 @@ static void looping_rc_track_brakes(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A6A40 */
 static void looping_rc_track_25_deg_up_left_banked(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -4613,24 +4587,24 @@ static void looping_rc_track_25_deg_up_left_banked(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A6A50 */
 static void looping_rc_track_25_deg_up_right_banked(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -4658,24 +4632,24 @@ static void looping_rc_track_25_deg_up_right_banked(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A6780 */
 static void looping_rc_track_on_ride_photo(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -4684,8 +4658,8 @@ static void looping_rc_track_on_ride_photo(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_D), { 0, 0, height },
                 { 32, 32, 1 });
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15004), { 0, 0, height }, { 32, 20, 0 },
                 { 0, 6, height + 3 });
@@ -4694,8 +4668,8 @@ static void looping_rc_track_on_ride_photo(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_D), { 0, 0, height },
                 { 32, 32, 1 });
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15005), { 0, 0, height }, { 32, 20, 0 },
                 { 0, 6, height + 3 });
@@ -4704,8 +4678,8 @@ static void looping_rc_track_on_ride_photo(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_D), { 0, 0, height },
                 { 32, 32, 1 });
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15004), { 0, 0, height }, { 32, 20, 0 },
                 { 0, 6, height + 3 });
@@ -4714,22 +4688,22 @@ static void looping_rc_track_on_ride_photo(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_D), { 0, 0, height },
                 { 32, 32, 1 });
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15005), { 0, 0, height }, { 32, 20, 0 },
                 { 0, 6, height + 3 });
             break;
     }
     track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A6A60 */
 static void looping_rc_track_25_deg_down_left_banked(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_25_deg_up_right_banked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -4737,7 +4711,7 @@ static void looping_rc_track_25_deg_down_left_banked(
 
 /** rct2: 0x008A6A70 */
 static void looping_rc_track_25_deg_down_right_banked(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_25_deg_up_left_banked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -4745,7 +4719,7 @@ static void looping_rc_track_25_deg_down_right_banked(
 
 /** rct2: 0x008A6860 */
 static void looping_rc_track_left_eighth_to_diag(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -4774,14 +4748,14 @@ static void looping_rc_track_left_eighth_to_diag(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -4807,12 +4781,11 @@ static void looping_rc_track_left_eighth_to_diag(
                         { 32, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -4838,15 +4811,15 @@ static void looping_rc_track_left_eighth_to_diag(
                         { 16, 16, 3 }, { 0, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
             switch (direction)
@@ -4855,44 +4828,43 @@ static void looping_rc_track_left_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15529), { 0, 0, height },
                         { 16, 16, 3 }, { 16, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15533), { 0, 0, height },
                         { 16, 18, 3 }, { 0, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15537), { 0, 0, height },
                         { 16, 16, 3 }, { 0, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15541), { 0, 0, height },
                         { 16, 16, 3 }, { 16, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6870 */
 static void looping_rc_track_right_eighth_to_diag(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -4921,14 +4893,14 @@ static void looping_rc_track_right_eighth_to_diag(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -4954,12 +4926,11 @@ static void looping_rc_track_right_eighth_to_diag(
                         { 32, 16, 3 }, { 0, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -4985,15 +4956,15 @@ static void looping_rc_track_right_eighth_to_diag(
                         { 16, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
             switch (direction)
@@ -5002,44 +4973,43 @@ static void looping_rc_track_right_eighth_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15513), { 0, 0, height },
                         { 16, 16, 3 }, { 16, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15517), { 0, 0, height },
                         { 16, 16, 3 }, { 0, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15521), { 0, 0, height },
                         { 16, 18, 3 }, { 0, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15525), { 0, 0, height },
                         { 16, 16, 3 }, { 16, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6880 */
 static void looping_rc_track_left_eighth_to_orthogonal(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -5048,7 +5018,7 @@ static void looping_rc_track_left_eighth_to_orthogonal(
 
 /** rct2: 0x008A6890 */
 static void looping_rc_track_right_eighth_to_orthogonal(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -5057,7 +5027,7 @@ static void looping_rc_track_right_eighth_to_orthogonal(
 
 /** rct2: 0x008A68A0 */
 static void looping_rc_track_left_eighth_bank_to_diag(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -5086,14 +5056,14 @@ static void looping_rc_track_left_eighth_bank_to_diag(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -5119,12 +5089,11 @@ static void looping_rc_track_left_eighth_bank_to_diag(
                         { 32, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -5150,15 +5119,15 @@ static void looping_rc_track_left_eighth_bank_to_diag(
                         { 16, 16, 3 }, { 0, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
             switch (direction)
@@ -5167,44 +5136,43 @@ static void looping_rc_track_left_eighth_bank_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15561), { 0, 0, height },
                         { 16, 16, 3 }, { 16, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15565), { 0, 0, height },
                         { 16, 18, 0 }, { 0, 16, height + 27 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15569), { 0, 0, height },
                         { 16, 16, 3 }, { 0, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15573), { 0, 0, height },
                         { 16, 16, 3 }, { 16, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A68B0 */
 static void looping_rc_track_right_eighth_bank_to_diag(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -5233,14 +5201,14 @@ static void looping_rc_track_right_eighth_bank_to_diag(
                         { 32, 1, 26 }, { 0, 27, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+                PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -5266,12 +5234,11 @@ static void looping_rc_track_right_eighth_bank_to_diag(
                         { 32, 16, 3 }, { 0, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -5297,15 +5264,15 @@ static void looping_rc_track_right_eighth_bank_to_diag(
                         { 16, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
             switch (direction)
@@ -5314,44 +5281,43 @@ static void looping_rc_track_right_eighth_bank_to_diag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15545), { 0, 0, height },
                         { 16, 16, 3 }, { 16, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15549), { 0, 0, height },
                         { 16, 16, 3 }, { 0, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15553), { 0, 0, height },
                         { 16, 18, 0 }, { 0, 16, height + 27 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15557), { 0, 0, height },
                         { 16, 16, 3 }, { 16, 16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A68C0 */
 static void looping_rc_track_left_eighth_bank_to_orthogonal(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -5360,7 +5326,7 @@ static void looping_rc_track_left_eighth_bank_to_orthogonal(
 
 /** rct2: 0x008A68D0 */
 static void looping_rc_track_right_eighth_bank_to_orthogonal(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -5369,7 +5335,7 @@ static void looping_rc_track_right_eighth_bank_to_orthogonal(
 
 /** rct2: 0x008A6790 */
 static void looping_rc_track_diag_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -5397,9 +5363,9 @@ static void looping_rc_track_diag_flat(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -5424,9 +5390,9 @@ static void looping_rc_track_diag_flat(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -5451,9 +5417,9 @@ static void looping_rc_track_diag_flat(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -5461,22 +5427,22 @@ static void looping_rc_track_diag_flat(
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15449), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5486,36 +5452,36 @@ static void looping_rc_track_diag_flat(
                 switch (direction)
                 {
                     case 0:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15421), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_a_supports_paint_setup(
+                        MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A67C0 */
 static void looping_rc_track_diag_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -5543,9 +5509,9 @@ static void looping_rc_track_diag_25_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -5570,9 +5536,9 @@ static void looping_rc_track_diag_25_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -5597,9 +5563,9 @@ static void looping_rc_track_diag_25_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -5607,22 +5573,22 @@ static void looping_rc_track_diag_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15461), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5632,36 +5598,36 @@ static void looping_rc_track_diag_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15433), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A67F0 */
 static void looping_rc_track_diag_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -5689,9 +5655,9 @@ static void looping_rc_track_diag_60_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 104, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -5716,9 +5682,9 @@ static void looping_rc_track_diag_60_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 104, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -5743,9 +5709,9 @@ static void looping_rc_track_diag_60_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 104, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -5753,22 +5719,22 @@ static void looping_rc_track_diag_60_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15473), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5778,36 +5744,36 @@ static void looping_rc_track_diag_60_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15445), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 104, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A67A0 */
 static void looping_rc_track_diag_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -5835,9 +5801,9 @@ static void looping_rc_track_diag_flat_to_25_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -5862,9 +5828,9 @@ static void looping_rc_track_diag_flat_to_25_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -5889,9 +5855,9 @@ static void looping_rc_track_diag_flat_to_25_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -5899,22 +5865,22 @@ static void looping_rc_track_diag_flat_to_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15453), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5924,36 +5890,36 @@ static void looping_rc_track_diag_flat_to_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15425), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A67D0 */
 static void looping_rc_track_diag_25_deg_up_to_60_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -5981,9 +5947,9 @@ static void looping_rc_track_diag_25_deg_up_to_60_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6008,9 +5974,9 @@ static void looping_rc_track_diag_25_deg_up_to_60_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6035,9 +6001,9 @@ static void looping_rc_track_diag_25_deg_up_to_60_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6045,22 +6011,22 @@ static void looping_rc_track_diag_25_deg_up_to_60_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15465), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6070,36 +6036,36 @@ static void looping_rc_track_diag_25_deg_up_to_60_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15437), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A67E0 */
 static void looping_rc_track_diag_60_deg_up_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -6127,9 +6093,9 @@ static void looping_rc_track_diag_60_deg_up_to_25_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6154,9 +6120,9 @@ static void looping_rc_track_diag_60_deg_up_to_25_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6181,9 +6147,9 @@ static void looping_rc_track_diag_60_deg_up_to_25_deg_up(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6191,22 +6157,22 @@ static void looping_rc_track_diag_60_deg_up_to_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15469), { -16, -16, height },
                             { 16, 16, 3 }, { 0, 0, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6216,36 +6182,36 @@ static void looping_rc_track_diag_60_deg_up_to_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15441), { -16, -16, height },
                             { 16, 16, 3 }, { 0, 0, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A67B0 */
 static void looping_rc_track_diag_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -6273,9 +6239,9 @@ static void looping_rc_track_diag_25_deg_up_to_flat(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6300,9 +6266,9 @@ static void looping_rc_track_diag_25_deg_up_to_flat(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6327,9 +6293,9 @@ static void looping_rc_track_diag_25_deg_up_to_flat(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6337,22 +6303,22 @@ static void looping_rc_track_diag_25_deg_up_to_flat(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15457), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6362,36 +6328,36 @@ static void looping_rc_track_diag_25_deg_up_to_flat(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15429), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6820 */
 static void looping_rc_track_diag_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -6419,9 +6385,9 @@ static void looping_rc_track_diag_25_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6446,9 +6412,9 @@ static void looping_rc_track_diag_25_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6473,9 +6439,9 @@ static void looping_rc_track_diag_25_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6483,22 +6449,22 @@ static void looping_rc_track_diag_25_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15463), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6508,36 +6474,36 @@ static void looping_rc_track_diag_25_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15435), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6850 */
 static void looping_rc_track_diag_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -6565,9 +6531,9 @@ static void looping_rc_track_diag_60_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 104, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6592,9 +6558,9 @@ static void looping_rc_track_diag_60_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 104, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6619,9 +6585,9 @@ static void looping_rc_track_diag_60_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 104, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6629,22 +6595,22 @@ static void looping_rc_track_diag_60_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15475), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6654,36 +6620,36 @@ static void looping_rc_track_diag_60_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15447), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 104, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6800 */
 static void looping_rc_track_diag_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -6711,8 +6677,8 @@ static void looping_rc_track_diag_flat_to_25_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6737,8 +6703,8 @@ static void looping_rc_track_diag_flat_to_25_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6763,8 +6729,8 @@ static void looping_rc_track_diag_flat_to_25_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6772,22 +6738,22 @@ static void looping_rc_track_diag_flat_to_25_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15459), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6797,37 +6763,37 @@ static void looping_rc_track_diag_flat_to_25_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15431), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A6830 */
 static void looping_rc_track_diag_25_deg_down_to_60_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -6855,9 +6821,9 @@ static void looping_rc_track_diag_25_deg_down_to_60_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6882,9 +6848,9 @@ static void looping_rc_track_diag_25_deg_down_to_60_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6909,9 +6875,9 @@ static void looping_rc_track_diag_25_deg_down_to_60_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6919,22 +6885,22 @@ static void looping_rc_track_diag_25_deg_down_to_60_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15471), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6944,36 +6910,36 @@ static void looping_rc_track_diag_25_deg_down_to_60_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15443), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6840 */
 static void looping_rc_track_diag_60_deg_down_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7001,9 +6967,9 @@ static void looping_rc_track_diag_60_deg_down_to_25_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7028,9 +6994,9 @@ static void looping_rc_track_diag_60_deg_down_to_25_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7055,9 +7021,9 @@ static void looping_rc_track_diag_60_deg_down_to_25_deg_down(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7065,22 +7031,22 @@ static void looping_rc_track_diag_60_deg_down_to_25_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15467), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7090,36 +7056,36 @@ static void looping_rc_track_diag_60_deg_down_to_25_deg_down(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15439), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6810 */
 static void looping_rc_track_diag_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7147,9 +7113,9 @@ static void looping_rc_track_diag_25_deg_down_to_flat(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7174,9 +7140,9 @@ static void looping_rc_track_diag_25_deg_down_to_flat(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7201,9 +7167,9 @@ static void looping_rc_track_diag_25_deg_down_to_flat(
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7211,22 +7177,22 @@ static void looping_rc_track_diag_25_deg_down_to_flat(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15455), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7236,36 +7202,36 @@ static void looping_rc_track_diag_25_deg_down_to_flat(
                 switch (direction)
                 {
                     case 0:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15427), { -16, -16, height },
                             { 32, 32, 3 }, { -16, -16, height });
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        metal_b_supports_paint_setup(
+                        MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6900 */
 static void looping_rc_track_diag_flat_to_left_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7279,9 +7245,9 @@ static void looping_rc_track_diag_flat_to_left_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -7295,9 +7261,9 @@ static void looping_rc_track_diag_flat_to_left_bank(
                         { 32, 32, 0 }, { -16, -16, height + 27 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -7308,43 +7274,43 @@ static void looping_rc_track_diag_flat_to_left_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15501), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6910 */
 static void looping_rc_track_diag_flat_to_right_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7358,9 +7324,9 @@ static void looping_rc_track_diag_flat_to_right_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -7371,9 +7337,9 @@ static void looping_rc_track_diag_flat_to_right_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -7387,43 +7353,43 @@ static void looping_rc_track_diag_flat_to_right_bank(
                         { 32, 32, 0 }, { -16, -16, height + 27 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15506), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6920 */
 static void looping_rc_track_diag_left_bank_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7437,9 +7403,9 @@ static void looping_rc_track_diag_left_bank_to_flat(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -7453,9 +7419,9 @@ static void looping_rc_track_diag_left_bank_to_flat(
                         { 32, 32, 0 }, { -16, -16, height + 27 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -7466,43 +7432,43 @@ static void looping_rc_track_diag_left_bank_to_flat(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15508), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6930 */
 static void looping_rc_track_diag_right_bank_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7516,9 +7482,9 @@ static void looping_rc_track_diag_right_bank_to_flat(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -7529,9 +7495,9 @@ static void looping_rc_track_diag_right_bank_to_flat(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -7545,43 +7511,43 @@ static void looping_rc_track_diag_right_bank_to_flat(
                         { 32, 32, 0 }, { -16, -16, height + 27 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15503), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6960 */
 static void looping_rc_track_diag_left_bank_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7595,9 +7561,9 @@ static void looping_rc_track_diag_left_bank_to_25_deg_up(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 1:
             switch (direction)
@@ -7611,9 +7577,9 @@ static void looping_rc_track_diag_left_bank_to_25_deg_up(
                         { 32, 32, 0 }, { -16, -16, height + 35 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 2:
             switch (direction)
@@ -7624,43 +7590,43 @@ static void looping_rc_track_diag_left_bank_to_25_deg_up(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15491), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6970 */
 static void looping_rc_track_diag_right_bank_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7674,9 +7640,9 @@ static void looping_rc_track_diag_right_bank_to_25_deg_up(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 1:
             switch (direction)
@@ -7687,9 +7653,9 @@ static void looping_rc_track_diag_right_bank_to_25_deg_up(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 2:
             switch (direction)
@@ -7703,43 +7669,43 @@ static void looping_rc_track_diag_right_bank_to_25_deg_up(
                         { 32, 32, 0 }, { -16, -16, height + 35 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15496), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6940 */
 static void looping_rc_track_diag_25_deg_up_to_left_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7753,9 +7719,9 @@ static void looping_rc_track_diag_25_deg_up_to_left_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 1:
             switch (direction)
@@ -7769,9 +7735,9 @@ static void looping_rc_track_diag_25_deg_up_to_left_bank(
                         { 32, 32, 0 }, { -16, -16, height + 35 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 2:
             switch (direction)
@@ -7782,43 +7748,43 @@ static void looping_rc_track_diag_25_deg_up_to_left_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15481), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6950 */
 static void looping_rc_track_diag_25_deg_up_to_right_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7832,9 +7798,9 @@ static void looping_rc_track_diag_25_deg_up_to_right_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 1:
             switch (direction)
@@ -7845,9 +7811,9 @@ static void looping_rc_track_diag_25_deg_up_to_right_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 2:
             switch (direction)
@@ -7861,43 +7827,43 @@ static void looping_rc_track_diag_25_deg_up_to_right_bank(
                         { 32, 32, 0 }, { -16, -16, height + 35 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15486), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6980 */
 static void looping_rc_track_diag_left_bank_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7911,8 +7877,8 @@ static void looping_rc_track_diag_left_bank_to_25_deg_down(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 1:
             switch (direction)
@@ -7926,8 +7892,8 @@ static void looping_rc_track_diag_left_bank_to_25_deg_down(
                         { 32, 32, 0 }, { -16, -16, height + 35 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
             break;
         case 2:
             switch (direction)
@@ -7938,43 +7904,43 @@ static void looping_rc_track_diag_left_bank_to_25_deg_down(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15488), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A6990 */
 static void looping_rc_track_diag_right_bank_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -7988,8 +7954,8 @@ static void looping_rc_track_diag_right_bank_to_25_deg_down(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 1:
             switch (direction)
@@ -8000,8 +7966,8 @@ static void looping_rc_track_diag_right_bank_to_25_deg_down(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
             break;
         case 2:
             switch (direction)
@@ -8015,43 +7981,43 @@ static void looping_rc_track_diag_right_bank_to_25_deg_down(
                         { 32, 32, 0 }, { -16, -16, height + 35 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15483), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A69A0 */
 static void looping_rc_track_diag_25_deg_down_to_left_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -8065,9 +8031,9 @@ static void looping_rc_track_diag_25_deg_down_to_left_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 1:
             switch (direction)
@@ -8081,9 +8047,9 @@ static void looping_rc_track_diag_25_deg_down_to_left_bank(
                         { 32, 32, 0 }, { -16, -16, height + 35 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 2:
             switch (direction)
@@ -8094,43 +8060,43 @@ static void looping_rc_track_diag_25_deg_down_to_left_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15498), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A69B0 */
 static void looping_rc_track_diag_25_deg_down_to_right_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -8144,9 +8110,9 @@ static void looping_rc_track_diag_25_deg_down_to_right_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 1:
             switch (direction)
@@ -8157,9 +8123,9 @@ static void looping_rc_track_diag_25_deg_down_to_right_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 2:
             switch (direction)
@@ -8173,43 +8139,43 @@ static void looping_rc_track_diag_25_deg_down_to_right_bank(
                         { 32, 32, 0 }, { -16, -16, height + 35 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15493), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_b_supports_paint_setup(
+                    MetalBSupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 48, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A68E0 */
 static void looping_rc_track_diag_left_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -8223,9 +8189,9 @@ static void looping_rc_track_diag_left_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -8236,9 +8202,9 @@ static void looping_rc_track_diag_left_bank(
                         { 32, 32, 0 }, { -16, -16, height + 27 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -8249,43 +8215,43 @@ static void looping_rc_track_diag_left_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15477), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A68F0 */
 static void looping_rc_track_diag_right_bank(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -8299,9 +8265,9 @@ static void looping_rc_track_diag_right_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -8312,9 +8278,9 @@ static void looping_rc_track_diag_right_bank(
                         { 32, 32, 3 }, { -16, -16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -8325,43 +8291,43 @@ static void looping_rc_track_diag_right_bank(
                         { 32, 32, 0 }, { -16, -16, height + 27 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15479), { -16, -16, height },
                         { 32, 32, 3 }, { -16, -16, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 32, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6C00 */
 static void looping_rc_track_block_brakes(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -8387,17 +8353,17 @@ static void looping_rc_track_block_brakes(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A6BC0 */
 static void looping_rc_track_left_banked_quarter_turn_3_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -8426,20 +8392,20 @@ static void looping_rc_track_left_banked_quarter_turn_3_25_deg_up(
                         { 32, 20, 3 });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 2:
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 3:
             switch (direction)
@@ -8465,26 +8431,26 @@ static void looping_rc_track_left_banked_quarter_turn_3_25_deg_up(
                         { 20, 32, 3 });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6BD0 */
 static void looping_rc_track_right_banked_quarter_turn_3_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -8513,20 +8479,20 @@ static void looping_rc_track_right_banked_quarter_turn_3_25_deg_up(
                         { 32, 20, 3 });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 2:
-            paint_util_set_general_support_height(session, height + 56, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
             break;
         case 3:
             switch (direction)
@@ -8535,50 +8501,50 @@ static void looping_rc_track_right_banked_quarter_turn_3_25_deg_up(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15679), { 6, 0, height },
                         { 20, 32, 3 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15681), { 6, 0, height },
                         { 1, 32, 34 }, { 27, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15683), { 6, 0, height },
                         { 1, 32, 34 }, { 27, 0, height });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15685), { 6, 0, height },
                         { 20, 32, 3 });
-                    metal_a_supports_paint_setup(
+                    MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6BE0 */
 static void looping_rc_track_left_banked_quarter_turn_3_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -8588,7 +8554,7 @@ static void looping_rc_track_left_banked_quarter_turn_3_25_deg_down(
 
 /** rct2: 0x008A6BF0 */
 static void looping_rc_track_right_banked_quarter_turn_3_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -8598,7 +8564,7 @@ static void looping_rc_track_right_banked_quarter_turn_3_25_deg_down(
 
 /** rct2: 0x008A6B80 */
 static void looping_rc_track_left_banked_quarter_turn_5_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -8627,17 +8593,17 @@ static void looping_rc_track_left_banked_quarter_turn_5_25_deg_up(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 2:
             switch (direction)
@@ -8663,12 +8629,11 @@ static void looping_rc_track_left_banked_quarter_turn_5_25_deg_up(
                         { 32, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 3:
             switch (direction)
@@ -8694,12 +8659,12 @@ static void looping_rc_track_left_banked_quarter_turn_5_25_deg_up(
                         { 16, 16, 3 });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 64, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
             break;
         case 4:
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 5:
             switch (direction)
@@ -8725,12 +8690,11 @@ static void looping_rc_track_left_banked_quarter_turn_5_25_deg_up(
                         { 16, 32, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 6:
             switch (direction)
@@ -8756,26 +8720,26 @@ static void looping_rc_track_left_banked_quarter_turn_5_25_deg_up(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6B90 */
 static void looping_rc_track_right_banked_quarter_turn_5_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (trackSequence)
@@ -8804,17 +8768,17 @@ static void looping_rc_track_right_banked_quarter_turn_5_25_deg_up(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 1:
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 2:
             switch (direction)
@@ -8840,12 +8804,11 @@ static void looping_rc_track_right_banked_quarter_turn_5_25_deg_up(
                         { 32, 16, 3 });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 3:
             switch (direction)
@@ -8871,12 +8834,12 @@ static void looping_rc_track_right_banked_quarter_turn_5_25_deg_up(
                         { 16, 16, 3 }, { 0, 16, height });
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 64, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
             break;
         case 4:
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 5:
             switch (direction)
@@ -8902,12 +8865,11 @@ static void looping_rc_track_right_banked_quarter_turn_5_25_deg_up(
                         { 16, 32, 3 }, { 16, 0, height });
                     break;
             }
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
         case 6:
             switch (direction)
@@ -8933,26 +8895,26 @@ static void looping_rc_track_right_banked_quarter_turn_5_25_deg_up(
                         { 20, 32, 3 }, { 6, 0, height });
                     break;
             }
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
+                    PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
                     break;
             }
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
-            paint_util_set_general_support_height(session, height + 72, 0x20);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
             break;
     }
 }
 
 /** rct2: 0x008A6BA0 */
 static void looping_rc_track_left_banked_quarter_turn_5_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -8962,7 +8924,7 @@ static void looping_rc_track_left_banked_quarter_turn_5_25_deg_down(
 
 /** rct2: 0x008A6BB0 */
 static void looping_rc_track_right_banked_quarter_turn_5_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -8972,7 +8934,7 @@ static void looping_rc_track_right_banked_quarter_turn_5_25_deg_down(
 
 /** rct2: 0x008A6A80 */
 static void looping_rc_track_25_deg_up_to_left_banked_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9003,24 +8965,24 @@ static void looping_rc_track_25_deg_up_to_left_banked_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A6A90 */
 static void looping_rc_track_25_deg_up_to_right_banked_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9051,24 +9013,24 @@ static void looping_rc_track_25_deg_up_to_right_banked_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A6AA0 */
 static void looping_rc_track_left_banked_25_deg_up_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9099,24 +9061,24 @@ static void looping_rc_track_left_banked_25_deg_up_to_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A6AB0 */
 static void looping_rc_track_right_banked_25_deg_up_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9147,24 +9109,24 @@ static void looping_rc_track_right_banked_25_deg_up_to_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A6AC0 */
 static void looping_rc_track_25_deg_down_to_left_banked_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_right_banked_25_deg_up_to_25_deg_up(
@@ -9173,7 +9135,7 @@ static void looping_rc_track_25_deg_down_to_left_banked_25_deg_down(
 
 /** rct2: 0x008A6AD0 */
 static void looping_rc_track_25_deg_down_to_right_banked_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_left_banked_25_deg_up_to_25_deg_up(
@@ -9182,7 +9144,7 @@ static void looping_rc_track_25_deg_down_to_right_banked_25_deg_down(
 
 /** rct2: 0x008A6AE0 */
 static void looping_rc_track_left_banked_25_deg_down_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_25_deg_up_to_right_banked_25_deg_up(
@@ -9191,7 +9153,7 @@ static void looping_rc_track_left_banked_25_deg_down_to_25_deg_down(
 
 /** rct2: 0x008A6AF0 */
 static void looping_rc_track_right_banked_25_deg_down_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_25_deg_up_to_left_banked_25_deg_up(
@@ -9200,7 +9162,7 @@ static void looping_rc_track_right_banked_25_deg_down_to_25_deg_down(
 
 /** rct2: 0x008A6B00 */
 static void looping_rc_track_left_banked_flat_to_left_banked_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9228,24 +9190,24 @@ static void looping_rc_track_left_banked_flat_to_left_banked_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A6B10 */
 static void looping_rc_track_right_banked_flat_to_right_banked_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9273,24 +9235,24 @@ static void looping_rc_track_right_banked_flat_to_right_banked_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A6B40 */
 static void looping_rc_track_left_banked_25_deg_up_to_left_banked_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9318,24 +9280,24 @@ static void looping_rc_track_left_banked_25_deg_up_to_left_banked_flat(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008A6B50 */
 static void looping_rc_track_right_banked_25_deg_up_to_right_banked_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9363,24 +9325,24 @@ static void looping_rc_track_right_banked_25_deg_up_to_right_banked_flat(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008A6B60 */
 static void looping_rc_track_left_banked_flat_to_left_banked_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_right_banked_25_deg_up_to_right_banked_flat(
@@ -9389,7 +9351,7 @@ static void looping_rc_track_left_banked_flat_to_left_banked_25_deg_down(
 
 /** rct2: 0x008A6B70 */
 static void looping_rc_track_right_banked_flat_to_right_banked_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_left_banked_25_deg_up_to_left_banked_flat(
@@ -9398,7 +9360,7 @@ static void looping_rc_track_right_banked_flat_to_right_banked_25_deg_down(
 
 /** rct2: 0x008A6B20 */
 static void looping_rc_track_left_banked_25_deg_down_to_left_banked_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_right_banked_flat_to_right_banked_25_deg_up(
@@ -9407,7 +9369,7 @@ static void looping_rc_track_left_banked_25_deg_down_to_left_banked_flat(
 
 /** rct2: 0x008A6B30 */
 static void looping_rc_track_right_banked_25_deg_down_to_right_banked_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_left_banked_flat_to_left_banked_25_deg_up(
@@ -9416,7 +9378,7 @@ static void looping_rc_track_right_banked_25_deg_down_to_right_banked_flat(
 
 /** rct2: 0x008A69C0 */
 static void looping_rc_track_flat_to_left_banked_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9447,24 +9409,24 @@ static void looping_rc_track_flat_to_left_banked_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A69D0 */
 static void looping_rc_track_flat_to_right_banked_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9495,24 +9457,24 @@ static void looping_rc_track_flat_to_right_banked_25_deg_up(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A69E0 */
 static void looping_rc_track_left_banked_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9543,24 +9505,24 @@ static void looping_rc_track_left_banked_25_deg_up_to_flat(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008A69F0 */
 static void looping_rc_track_right_banked_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9591,24 +9553,24 @@ static void looping_rc_track_right_banked_25_deg_up_to_flat(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_12);
     }
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008A6A00 */
 static void looping_rc_track_flat_to_left_banked_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_right_banked_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -9616,7 +9578,7 @@ static void looping_rc_track_flat_to_left_banked_25_deg_down(
 
 /** rct2: 0x008A6A10 */
 static void looping_rc_track_flat_to_right_banked_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_left_banked_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -9624,7 +9586,7 @@ static void looping_rc_track_flat_to_right_banked_25_deg_down(
 
 /** rct2: 0x008A6A20 */
 static void looping_rc_track_left_banked_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_flat_to_right_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
@@ -9632,14 +9594,14 @@ static void looping_rc_track_left_banked_25_deg_down_to_flat(
 
 /** rct2: 0x008A6A30 */
 static void looping_rc_track_right_banked_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     looping_rc_track_flat_to_left_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 static void looping_rc_track_booster(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     switch (direction)
@@ -9659,12 +9621,12 @@ static void looping_rc_track_booster(
     }
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_looping_rc(int32_t trackType)

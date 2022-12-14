@@ -203,9 +203,9 @@ public:
         if (mapCoords.has_value())
         {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-            map_invalidate_tile_full(gMapSelectPositionA);
+            MapInvalidateTileFull(gMapSelectPositionA);
             gMapSelectPositionA = gMapSelectPositionB = mapCoords.value();
-            map_invalidate_tile_full(mapCoords.value());
+            MapInvalidateTileFull(mapCoords.value());
             gMapSelectType = MAP_SELECT_TYPE_FULL;
         }
     }
@@ -232,14 +232,14 @@ public:
         auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
         if (mapCoords)
         {
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectPositionA.x = std::min(_selectionStart.x, mapCoords->x);
             gMapSelectPositionB.x = std::max(_selectionStart.x, mapCoords->x);
             gMapSelectPositionA.y = std::min(_selectionStart.y, mapCoords->y);
             gMapSelectPositionB.y = std::max(_selectionStart.y, mapCoords->y);
             gMapSelectType = MAP_SELECT_TYPE_FULL;
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
         }
     }
 
@@ -264,11 +264,11 @@ public:
 
         if (IsActive())
         {
-            this->pressed_widgets |= 1ULL << WIDX_CLIP_SELECTOR;
+            this->pressed_widgets |= 1uLL << WIDX_CLIP_SELECTOR;
         }
         else
         {
-            this->pressed_widgets &= ~(1ULL << WIDX_CLIP_SELECTOR);
+            this->pressed_widgets &= ~(1uLL << WIDX_CLIP_SELECTOR);
         }
     }
 
@@ -298,7 +298,7 @@ public:
             case DisplayType::DisplayUnits:
             {
                 // Print the value in the configured height label type:
-                if (gConfigGeneral.show_height_as_units)
+                if (gConfigGeneral.ShowHeightAsUnits)
                 {
                     // Height label is Units.
                     auto ft = Formatter();
@@ -311,7 +311,7 @@ public:
                 {
                     // Height label is Real Values.
                     // Print the value in the configured measurement units.
-                    switch (gConfigGeneral.measurement_format)
+                    switch (gConfigGeneral.MeasurementFormat)
                     {
                         case MeasurementFormat::Metric:
                         case MeasurementFormat::SI:
@@ -344,7 +344,7 @@ public:
     void OnOpen() override
     {
         this->widgets = window_view_clipping_widgets;
-        this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
+        this->hold_down_widgets = (1uLL << WIDX_CLIP_HEIGHT_INCREASE) | (1uL << WIDX_CLIP_HEIGHT_DECREASE);
         WindowInitScrollWidgets(*this);
 
         _clipHeightDisplayType = DisplayType::DisplayUnits;

@@ -96,7 +96,7 @@ void track_design_save_select_tile_element(
             auto result = track_design_save_add_tile_element(interactionType, loc, tileElement);
             if (!result.IsSuccess)
             {
-                context_show_error(STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY, result.Message, {});
+                ContextShowError(STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY, result.Message, {});
             }
         }
     }
@@ -109,14 +109,14 @@ void track_design_save_select_tile_element(
 void track_design_save_select_nearby_scenery(RideId rideIndex)
 {
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (track_design_save_should_select_scenery_around(rideIndex, it.element))
         {
             track_design_save_select_nearby_scenery_for_tile(rideIndex, it.x, it.y);
         }
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     gfx_invalidate_screen();
 }
@@ -204,7 +204,7 @@ static void track_design_save_push_tile_element(const CoordsXY& loc, TileElement
     if (_trackSavedTileElements.size() < TRACK_MAX_SAVED_TILE_ELEMENTS)
     {
         _trackSavedTileElements.push_back(tileElement);
-        map_invalidate_tile_full(loc);
+        MapInvalidateTileFull(loc);
     }
 }
 
@@ -276,7 +276,7 @@ static TrackDesignAddStatus track_design_save_add_large_scenery(const CoordsXY& 
         auto direction = tileElement->GetDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
-        auto sceneryOrigin = map_large_scenery_get_origin(
+        auto sceneryOrigin = MapLargeSceneryGetOrigin(
             { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
         if (!sceneryOrigin.has_value())
         {
@@ -292,7 +292,7 @@ static TrackDesignAddStatus track_design_save_add_large_scenery(const CoordsXY& 
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                   sceneryOrigin->z + tile->z_offset };
-            auto largeElement = map_get_large_scenery_segment({ tileLoc, static_cast<Direction>(direction) }, sequence);
+            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, sequence);
             if (largeElement != nullptr)
             {
                 if (sequence == 0)
@@ -414,7 +414,7 @@ static TrackDesignAddStatus track_design_save_add_tile_element(
  */
 static void track_design_save_pop_tile_element(const CoordsXY& loc, TileElement* tileElement)
 {
-    map_invalidate_tile_full(loc);
+    MapInvalidateTileFull(loc);
 
     // Find index of map element to remove
     size_t removeIndex = SIZE_MAX;
@@ -493,7 +493,7 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
         auto direction = tileElement->GetDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
-        auto sceneryOrigin = map_large_scenery_get_origin(
+        auto sceneryOrigin = MapLargeSceneryGetOrigin(
             { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
         if (!sceneryOrigin)
         {
@@ -509,7 +509,7 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                   sceneryOrigin->z + tile->z_offset };
-            auto largeElement = map_get_large_scenery_segment({ tileLoc, static_cast<Direction>(direction) }, sequence);
+            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, sequence);
             if (largeElement != nullptr)
             {
                 if (sequence == 0)
@@ -618,7 +618,7 @@ static void track_design_save_select_nearby_scenery_for_tile(RideId rideIndex, i
     {
         for (int32_t x = cx - TRACK_NEARBY_SCENERY_DISTANCE; x <= cx + TRACK_NEARBY_SCENERY_DISTANCE; x++)
         {
-            tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+            tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
             if (tileElement == nullptr)
                 continue;
             do

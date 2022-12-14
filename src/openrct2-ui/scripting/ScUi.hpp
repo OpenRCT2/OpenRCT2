@@ -48,6 +48,7 @@ namespace OpenRCT2::Scripting
         { "other", SCENARIO_CATEGORY_OTHER },
         { "dlc", SCENARIO_CATEGORY_DLC },
         { "build_your_own", SCENARIO_CATEGORY_BUILD_YOUR_OWN },
+        { "competitions", SCENARIO_CATEGORY_COMPETITIONS },
     });
 
     static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
@@ -64,12 +65,18 @@ namespace OpenRCT2::Scripting
 
     template<> inline DukValue ToDuk(duk_context* ctx, const SCENARIO_CATEGORY& value)
     {
-        return ToDuk(ctx, ScenarioCategoryMap[value]);
+        const auto& entry = ScenarioCategoryMap.find(value);
+        if (entry != ScenarioCategoryMap.end())
+            return ToDuk(ctx, entry->first);
+        return ToDuk(ctx, ScenarioCategoryMap[SCENARIO_CATEGORY_OTHER]);
     }
 
     template<> inline DukValue ToDuk(duk_context* ctx, const ScenarioSource& value)
     {
-        return ToDuk(ctx, ScenarioSourceMap[value]);
+        const auto& entry = ScenarioSourceMap.find(value);
+        if (entry != ScenarioSourceMap.end())
+            return ToDuk(ctx, entry->first);
+        return ToDuk(ctx, ScenarioSourceMap[ScenarioSource::Other]);
     }
 
     class ScTool
@@ -121,11 +128,11 @@ namespace OpenRCT2::Scripting
     private:
         int32_t width_get() const
         {
-            return context_get_width();
+            return ContextGetWidth();
         }
         int32_t height_get() const
         {
-            return context_get_height();
+            return ContextGetHeight();
         }
         int32_t windows_get() const
         {

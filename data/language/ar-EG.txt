@@ -753,7 +753,7 @@ STR_1363    :Too high for supports!
 STR_1364    :Supports for track above can’t be extended any further!
 STR_1365    :In-line Twist (left)
 STR_1366    :In-line Twist (right)
-STR_1367    :Half Loop
+STR_1367    :نصف حلقة صغيرة
 STR_1368    :Half Corkscrew (left)
 STR_1369    :Half Corkscrew (right)
 STR_1370    :Barrel Roll (left)
@@ -2713,8 +2713,6 @@ STR_5503    :Enter hostname or IP address:
 STR_5504    :Show multiplayer status
 STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
-STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
 STR_5510    :جهاز الصوت الإفتراضي
 STR_5511    :(غير معروف)
 STR_5512    :حفظ اللعبة كـ
@@ -3594,14 +3592,16 @@ STR_6487    :تفعيل شاهد من خلال العاملون
 STR_6488    :{RED}يشكو الضيوف من طوابير الإنتظار الطويلة بحديقتك.{NEWLINE}قلل الطوابير الطويلة المسببة للمشكلة، أو زد عدد الرحلات.
 STR_6489    :خطأ: نسخة حديقة غير مدعومة
 STR_6490    :تحذير: نسخة حديقة شبه مدعومة
-STR_6491    :حُفظت هذه الحديقة في نسخة أحدث من اللعبة. الحديقة نسخة {INT32} و تتطلب علي الأقل نسخة{INT32}.
 STR_6492    :حُفظت هذه الحديقة في نسخة قديمة من اللعبة، ولا يمكن فتحها في النسخة الحالية من اللعبة. نسخة الحديقة هي{INT32}.
-STR_6493    :حُفظت هذه الحديقة في نسخة أحدث من اللعبة، ربما فُقدت بعض البيانات. نسخة الحديقة هي{INT32} وتتطلب علي الأقل نسخة{INT32}.
 STR_6494    :تجميع حسب نوع الرحلة
 STR_6495    :مجموعة الرحلات حسب نوع الرحلة بدلاً من عرض كل مركبة على حدة.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :اظغط علي البلاط لعرض عناصره.{NEWLINE}Ctrl + ظغطة لتحديد عنصر البلاط تحديداً.
 STR_6498    :غير قادر على إبقاء شكل الخريطة بهيئة مربع.
+STR_6499    :نوع السيارة غير مدعوم بتنسيق تصميم المسار
+STR_6500    :عناصر المسار غير مدعومة بتنسيق تصميم المسار
+STR_6501    :لون عشوائي
+STR_6514    :ارتفاع غير صحيح!
 
 #############
 # Scenarios #
@@ -4052,36 +4052,6 @@ STR_DTLS    :
 ## Start OpenRCT2 Official
 [TTPIRF05]
 STR_NAME    :سقف
-
-[TTRFWD01]
-STR_NAME    :سقف
-
-[TTRFWD02]
-STR_NAME    :سقف
-
-[TTRFWD03]
-STR_NAME    :سقف
-
-[TTRFWD04]
-STR_NAME    :سقف
-
-[TTRFWD05]
-STR_NAME    :سقف
-
-[TTRFWD06]
-STR_NAME    :سقف
-
-[TTRFWD07]
-STR_NAME    :سقف
-
-[TTRFWD08]
-STR_NAME    :سقف
-
-[ACWW33]
-STR_NAME    :حائط خشبي
-
-[ACWWF32]
-STR_NAME    :حائط خشبي
 
 ## End OpenRCT2 Official
 

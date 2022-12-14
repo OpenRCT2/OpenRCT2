@@ -29,7 +29,7 @@ constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
 class Formatter;
 struct TileElement;
-struct paint_session;
+struct PaintSession;
 
 namespace GameActions
 {
@@ -407,13 +407,14 @@ public: // Peep
     [[nodiscard]] CoordsXY GetDestination() const;
 
     void Serialise(class DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 
     // TODO: Make these private again when done refactoring
 public: // Peep
     [[nodiscard]] bool CheckForPath();
-    bool PathIsBlockedByVehicle();
+    bool ShouldWaitForLevelCrossing();
     bool IsOnLevelCrossing();
+    bool IsOnPathBlockedByVehicle();
     void PerformNextAction(uint8_t& pathing_result);
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);

@@ -110,7 +110,7 @@ public:
                 const auto& stringIdx = widgets[widgetIndex].text;
                 auto string = ls.GetString(stringIdx);
                 Guard::ArgumentNotNull(string);
-                const auto strWidth = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
+                const auto strWidth = gfx_get_string_width(string, FontStyle::Medium);
                 newWidth = std::max<int16_t>(strWidth, newWidth);
             }
 
@@ -146,7 +146,7 @@ public:
 rct_window* WindowDebugPaintOpen()
 {
     auto* window = WindowFocusOrCreate<DebugPaintWindow>(
-        WindowClass::DebugPaint, { 16, context_get_height() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
+        WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
         WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
     return window;

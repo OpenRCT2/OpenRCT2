@@ -385,7 +385,7 @@ static constexpr const uint32_t monorail_track_pieces_diag_25_deg_up[4] = {
 
 /** rct2: 0x008AE1AC */
 static void paint_monorail_track_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_flat[direction]);
@@ -401,26 +401,26 @@ static void paint_monorail_track_flat(
 
     if (direction == 0 || direction == 2)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE25C, 0x008AE26C, 0x008AE27C */
 static void paint_monorail_station(
-    paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -445,42 +445,42 @@ static void paint_monorail_station(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_flat[direction]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsChild(session, imageId, { 0, 6, height }, { 32, 20, 2 }, { 0, 0, height });
+        PaintAddImageAsChild(session, imageId, { 0, 6, height }, { { 0, 0, height }, { 32, 20, 2 } });
     }
     else
     {
-        PaintAddImageAsChild(session, imageId, { 6, 0, height }, { 20, 32, 2 }, { 0, 0, height });
+        PaintAddImageAsChild(session, imageId, { 6, 0, height }, { { 0, 0, height }, { 20, 32, 2 } });
     }
 
     if (direction == 0 || direction == 2)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (direction == 0 || direction == 2)
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     else
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     track_paint_util_draw_station(session, ride, direction, height, trackElement);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE1BC */
 static void paint_monorail_track_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_25_deg_up[direction]);
@@ -497,32 +497,32 @@ static void paint_monorail_track_25_deg_up(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_7);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_7);
+            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_7);
             break;
     }
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AE1CC */
 static void paint_monorail_track_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_flat_to_25_deg_up[direction]);
@@ -539,32 +539,32 @@ static void paint_monorail_track_flat_to_25_deg_up(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008AE1DC */
 static void paint_monorail_track_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(monorail_track_pieces_25_deg_up_to_flat[direction]);
@@ -581,32 +581,32 @@ static void paint_monorail_track_25_deg_up_to_flat(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelRight(session, height + 8, TUNNEL_14);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
+            PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_14);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
     }
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008AE1EC */
 static void paint_monorail_track_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_monorail_track_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -614,7 +614,7 @@ static void paint_monorail_track_25_deg_down(
 
 /** rct2: 0x008AE1FC */
 static void paint_monorail_track_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_monorail_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -622,7 +622,7 @@ static void paint_monorail_track_flat_to_25_deg_down(
 
 /** rct2: 0x008AE20C */
 static void paint_monorail_track_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_monorail_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -630,7 +630,7 @@ static void paint_monorail_track_25_deg_down_to_flat(
 
 /** rct2: 0x008AE22C */
 static void paint_monorail_track_right_quarter_turn_5_tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
@@ -642,28 +642,28 @@ static void paint_monorail_track_right_quarter_turn_5_tiles(
     {
         case 0:
         case 6:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
     if (direction == 0 && trackSequence == 0)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     int32_t blockedSegments = 0;
@@ -686,14 +686,14 @@ static void paint_monorail_track_right_quarter_turn_5_tiles(
             break;
     }
 
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE21C */
 static void paint_monorail_track_left_quarter_turn_5_tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -702,7 +702,7 @@ static void paint_monorail_track_left_quarter_turn_5_tiles(
 
 /** rct2: 0x */
 static void paint_monorail_track_s_bend_left(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction == 2 || direction == 3)
@@ -734,22 +734,19 @@ static void paint_monorail_track_s_bend_left(
     {
         if (trackSequence == 0)
         {
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
         }
 
         switch (trackSequence)
         {
             case 0:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -757,22 +754,19 @@ static void paint_monorail_track_s_bend_left(
     {
         if (trackSequence == 3)
         {
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
         }
 
         switch (trackSequence)
         {
             case 0:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -793,14 +787,14 @@ static void paint_monorail_track_s_bend_left(
             blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0;
             break;
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE24C */
 static void paint_monorail_track_s_bend_right(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction == 2 || direction == 3)
@@ -829,22 +823,19 @@ static void paint_monorail_track_s_bend_right(
     {
         if (trackSequence == 0)
         {
-            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
         }
 
         switch (trackSequence)
         {
             case 0:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -852,22 +843,19 @@ static void paint_monorail_track_s_bend_right(
     {
         if (trackSequence == 3)
         {
-            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
         }
 
         switch (trackSequence)
         {
             case 0:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -888,14 +876,14 @@ static void paint_monorail_track_s_bend_right(
             blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8;
             break;
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE29C */
 static void paint_monorail_track_right_quarter_turn_3_tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_3_tiles_paint(
@@ -908,7 +896,7 @@ static void paint_monorail_track_right_quarter_turn_3_tiles(
     {
         case 0:
         case 3:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -925,14 +913,14 @@ static void paint_monorail_track_right_quarter_turn_3_tiles(
             blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8;
             break;
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE28C */
 static void paint_monorail_track_left_quarter_turn_3_tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -945,7 +933,7 @@ static constexpr const int8_t paint_monorail_eighth_to_diag_index[] = {
 
 /** rct2: 0x008AE31C */
 static void paint_monorail_track_left_eighth_to_diag(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     int8_t index = paint_monorail_eighth_to_diag_index[trackSequence];
@@ -961,31 +949,27 @@ static void paint_monorail_track_left_eighth_to_diag(
     switch (trackSequence)
     {
         case 0:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
             if (direction == 0)
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
     if (direction == 0 && trackSequence == 0)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
 
     int32_t blockedSegments = 0;
@@ -1008,13 +992,13 @@ static void paint_monorail_track_left_eighth_to_diag(
             break;
     }
 
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE32C */
 static void paint_monorail_track_right_eighth_to_diag(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     int8_t index = paint_monorail_eighth_to_diag_index[trackSequence];
@@ -1030,31 +1014,27 @@ static void paint_monorail_track_right_eighth_to_diag(
     switch (trackSequence)
     {
         case 0:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
             if (direction == 0)
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
     if (direction == 0 && trackSequence == 0)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
 
     int32_t blockedSegments = 0;
@@ -1077,13 +1057,13 @@ static void paint_monorail_track_right_eighth_to_diag(
             break;
     }
 
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE33C */
 static void paint_monorail_track_left_eighth_to_orthogonal(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr uint8_t map[] = { 4, 2, 3, 1, 0 };
@@ -1093,7 +1073,7 @@ static void paint_monorail_track_left_eighth_to_orthogonal(
 
 /** rct2: 0x008AE34C */
 static void paint_monorail_track_right_eighth_to_orthogonal(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr uint8_t map[] = { 4, 2, 3, 1, 0 };
@@ -1124,7 +1104,7 @@ static constexpr const int32_t monorail_diag_blocked_segments[] = {
 
 /** rct2: 0x008AE2AC */
 static void paint_monorail_track_diag_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (monorail_diag_image_segment[direction][trackSequence])
@@ -1135,19 +1115,19 @@ static void paint_monorail_track_diag_flat(
 
     if (trackSequence == 3)
     {
-        metal_a_supports_paint_setup(
+        MetalASupportsPaintSetup(
             session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 0, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE2DC */
 static void paint_monorail_track_diag_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (monorail_diag_image_segment[direction][trackSequence])
@@ -1158,19 +1138,19 @@ static void paint_monorail_track_diag_25_deg_up(
 
     if (trackSequence == 3)
     {
-        metal_b_supports_paint_setup(
+        MetalBSupportsPaintSetup(
             session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 8, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AE2BC */
 static void paint_monorail_track_diag_flat_to_25_deg_up(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (monorail_diag_image_segment[direction][trackSequence])
@@ -1181,19 +1161,19 @@ static void paint_monorail_track_diag_flat_to_25_deg_up(
 
     if (trackSequence == 3)
     {
-        metal_b_supports_paint_setup(
+        MetalBSupportsPaintSetup(
             session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 0, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008AE2CC */
 static void paint_monorail_track_diag_25_deg_up_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (monorail_diag_image_segment[direction][trackSequence])
@@ -1204,19 +1184,19 @@ static void paint_monorail_track_diag_25_deg_up_to_flat(
 
     if (trackSequence == 3)
     {
-        metal_b_supports_paint_setup(
+        MetalBSupportsPaintSetup(
             session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 4, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AE30C */
 static void paint_monorail_track_diag_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (monorail_diag_image_segment[direction][trackSequence])
@@ -1227,19 +1207,19 @@ static void paint_monorail_track_diag_25_deg_down(
 
     if (trackSequence == 3)
     {
-        metal_b_supports_paint_setup(
+        MetalBSupportsPaintSetup(
             session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 8, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AE2EC */
 static void paint_monorail_track_diag_flat_to_25_deg_down(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (monorail_diag_image_segment[direction][trackSequence])
@@ -1251,19 +1231,19 @@ static void paint_monorail_track_diag_flat_to_25_deg_down(
 
     if (trackSequence == 3)
     {
-        metal_b_supports_paint_setup(
+        MetalBSupportsPaintSetup(
             session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 4, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AE2FC */
 static void paint_monorail_track_diag_25_deg_down_to_flat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (monorail_diag_image_segment[direction][trackSequence])
@@ -1275,14 +1255,14 @@ static void paint_monorail_track_diag_25_deg_down_to_flat(
 
     if (trackSequence == 3)
     {
-        metal_b_supports_paint_setup(
+        MetalBSupportsPaintSetup(
             session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 0, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /**

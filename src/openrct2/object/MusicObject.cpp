@@ -18,6 +18,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
+#include "../drawing/Image.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "RideObject.h"
@@ -71,6 +72,9 @@ void MusicObject::Load()
             track.Size = track.Asset.GetSize();
         }
     }
+
+    _hasPreview = !!GetImageTable().GetCount();
+    _previewImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 void MusicObject::Unload()
@@ -84,7 +88,10 @@ void MusicObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t hei
     // Write (no image)
     int32_t x = width / 2;
     int32_t y = height / 2;
-    DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
+    if (_hasPreview)
+        gfx_draw_sprite(dpi, ImageId(_previewImageId), { 0, 0 });
+    else
+        DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
 }
 
 void MusicObject::ReadJson(IReadObjectContext* context, json_t& root)

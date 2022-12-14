@@ -49,7 +49,7 @@ enum
 };
 
 static void SpiralSlidePaintTileRight(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto rideEntry = ride.GetRideEntry();
@@ -71,7 +71,7 @@ static void SpiralSlidePaintTileRight(
 }
 
 static void SpiralSlidePaintTileLeft(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto rideEntry = ride.GetRideEntry();
@@ -93,7 +93,7 @@ static void SpiralSlidePaintTileLeft(
 }
 
 static void SpiralSlidePaintTileFront(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto rideEntry = ride.GetRideEntry();
@@ -185,7 +185,7 @@ static void SpiralSlidePaintTileFront(
 
             imageId = ImageId(offset + slide_progress, ride.slide_peep_t_shirt_colour, COLOUR_GREY);
 
-            PaintAddImageAsChild(session, imageId, { 16, 16, height }, boundingBox, boundingBoxOffset);
+            PaintAddImageAsChild(session, imageId, { 16, 16, height }, { boundingBoxOffset, boundingBox });
         }
     }
 }
@@ -194,7 +194,7 @@ static void SpiralSlidePaintTileFront(
  * rct: 0x007485C8
  */
 static void PaintSpiralSlide(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto rideEntry = ride.GetRideEntry();
@@ -205,7 +205,7 @@ static void PaintSpiralSlide(
 
     int32_t edges = edges_2x2[trackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     // Base
     const StationObject* stationObject = ride.GetStationObject();
@@ -241,8 +241,8 @@ static void PaintSpiralSlide(
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 128, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
 }
 
 /**

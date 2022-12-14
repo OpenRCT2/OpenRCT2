@@ -13,7 +13,7 @@
 
 class DataSerialiser;
 struct CoordsXYZ;
-struct paint_session;
+struct PaintSession;
 struct VehicleColour;
 
 struct VehicleCrashParticle : EntityBase
@@ -32,7 +32,7 @@ struct VehicleCrashParticle : EntityBase
     static void Create(VehicleColour& colours, const CoordsXYZ& vehiclePos);
     void Update();
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 };
 
 struct CrashSplashParticle : EntityBase
@@ -42,7 +42,7 @@ struct CrashSplashParticle : EntityBase
     static void Create(const CoordsXYZ& splashPos);
     void Update();
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 };
 
 struct ExplosionFlare : EntityBase
@@ -52,7 +52,7 @@ struct ExplosionFlare : EntityBase
     static void Create(const CoordsXYZ& flarePos);
     void Update();
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 };
 
 struct ExplosionCloud : EntityBase
@@ -62,7 +62,7 @@ struct ExplosionCloud : EntityBase
     static void Create(const CoordsXYZ& cloudPos);
     void Update();
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 };
 
 struct SteamParticle : EntityBase
@@ -74,5 +74,5 @@ struct SteamParticle : EntityBase
     static void Create(const CoordsXYZ& coords);
     void Update();
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 };

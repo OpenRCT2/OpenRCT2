@@ -56,12 +56,12 @@ GameActions::Result WallSetColourAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_in_park(_loc) && !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !MapIsLocationInPark(_loc) && !gCheatsSandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    auto wallElement = map_get_wall_element_at(_loc);
+    auto wallElement = MapGetWallElementAt(_loc);
     if (wallElement == nullptr)
     {
         log_error(
@@ -113,7 +113,7 @@ GameActions::Result WallSetColourAction::Execute() const
     res.Position.z = _loc.z;
     res.Expenditure = ExpenditureType::Landscaping;
 
-    auto wallElement = map_get_wall_element_at(_loc);
+    auto wallElement = MapGetWallElementAt(_loc);
     if (wallElement == nullptr)
     {
         log_error(
@@ -140,7 +140,7 @@ GameActions::Result WallSetColourAction::Execute() const
     {
         wallElement->SetTertiaryColour(_tertiaryColour);
     }
-    map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 72 });
+    MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 72 });
 
     return res;
 }

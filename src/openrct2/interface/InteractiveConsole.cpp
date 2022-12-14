@@ -586,7 +586,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
                 {
                     console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
                 }
-                else if (current_happiness == calculate_guest_initial_happiness(i))
+                else if (current_happiness == CalculateGuestInitialHappiness(i))
                 {
                     console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gGuestInitialHappiness);
                     break;
@@ -669,7 +669,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "console_small_font")
         {
-            console.WriteFormatLine("console_small_font %d", gConfigInterface.console_small_font);
+            console.WriteFormatLine("console_small_font %d", gConfigInterface.ConsoleSmallFont);
         }
         else if (argv[0] == "location")
         {
@@ -686,19 +686,19 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "window_scale")
         {
-            console.WriteFormatLine("window_scale %.3f", gConfigGeneral.window_scale);
+            console.WriteFormatLine("window_scale %.3f", gConfigGeneral.WindowScale);
         }
         else if (argv[0] == "window_limit")
         {
-            console.WriteFormatLine("window_limit %d", gConfigGeneral.window_limit);
+            console.WriteFormatLine("window_limit %d", gConfigGeneral.WindowLimit);
         }
         else if (argv[0] == "render_weather_effects")
         {
-            console.WriteFormatLine("render_weather_effects %d", gConfigGeneral.render_weather_effects);
+            console.WriteFormatLine("render_weather_effects %d", gConfigGeneral.RenderWeatherEffects);
         }
         else if (argv[0] == "render_weather_gloom")
         {
-            console.WriteFormatLine("render_weather_gloom %d", gConfigGeneral.render_weather_gloom);
+            console.WriteFormatLine("render_weather_gloom %d", gConfigGeneral.RenderWeatherGloom);
         }
         else if (argv[0] == "cheat_sandbox_mode")
         {
@@ -723,7 +723,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting")
         {
-            console.WriteFormatLine("enable_hinting %d", gConfigFonts.enable_hinting);
+            console.WriteFormatLine("enable_hinting %d", gConfigFonts.EnableHinting);
         }
 #endif
         else
@@ -735,7 +735,6 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
 }
 static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 {
-    uint32_t i;
     if (argv.size() > 1)
     {
         int32_t int_val[4];
@@ -744,7 +743,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         bool double_valid[4];
         bool invalidArgs = false;
 
-        for (i = 0; i < 4; i++)
+        for (uint32_t i = 0; i < std::size(int_val); i++)
         {
             if (i + 1 < argv.size())
             {
@@ -833,7 +832,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "guest_initial_happiness" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::GuestInitialHappiness, calculate_guest_initial_happiness(static_cast<uint8_t>(int_val[0])));
+                ScenarioSetSetting::GuestInitialHappiness, CalculateGuestInitialHappiness(static_cast<uint8_t>(int_val[0])));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set guest_initial_happiness command failed, likely due to permissions.");
@@ -1048,8 +1047,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "console_small_font" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigInterface.console_small_font = (int_val[0] != 0);
-            config_save_default();
+            gConfigInterface.ConsoleSmallFont = (int_val[0] != 0);
+            ConfigSaveDefault();
             console.Execute("get console_small_font");
         }
         else if (argv[0] == "location" && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
@@ -1058,7 +1057,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             if (w != nullptr)
             {
                 auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
-                location.z = tile_element_height(location);
+                location.z = TileElementHeight(location);
                 w->SetLocation(location);
                 viewport_update_position(w);
                 console.Execute("get location");
@@ -1067,11 +1066,11 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "window_scale" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
-            gConfigGeneral.window_scale = std::clamp(newScale, 0.5f, 5.0f);
-            config_save_default();
+            gConfigGeneral.WindowScale = std::clamp(newScale, 0.5f, 5.0f);
+            ConfigSaveDefault();
             gfx_invalidate_screen();
-            context_trigger_resize();
-            context_update_cursor_scale();
+            ContextTriggerResize();
+            ContextUpdateCursorScale();
             console.Execute("get window_scale");
         }
         else if (argv[0] == "window_limit" && invalidArguments(&invalidArgs, int_valid[0]))
@@ -1081,14 +1080,14 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "render_weather_effects" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigGeneral.render_weather_effects = (int_val[0] != 0);
-            config_save_default();
+            gConfigGeneral.RenderWeatherEffects = (int_val[0] != 0);
+            ConfigSaveDefault();
             console.Execute("get render_weather_effects");
         }
         else if (argv[0] == "render_weather_gloom" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigGeneral.render_weather_gloom = (int_val[0] != 0);
-            config_save_default();
+            gConfigGeneral.RenderWeatherGloom = (int_val[0] != 0);
+            ConfigSaveDefault();
             console.Execute("get render_weather_gloom");
         }
         else if (argv[0] == "cheat_sandbox_mode" && invalidArguments(&invalidArgs, int_valid[0]))
@@ -1171,8 +1170,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gConfigFonts.enable_hinting = (int_val[0] != 0);
-            config_save_default();
+            gConfigFonts.EnableHinting = (int_val[0] != 0);
+            ConfigSaveDefault();
             console.Execute("get enable_hinting");
             ttf_toggle_hinting();
         }
@@ -1201,8 +1200,8 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
     {
         char name[9] = { 0 };
         std::fill_n(name, 8, ' ');
-        int32_t i = 0;
-        for (const char* ch = argv[0].c_str(); *ch != '\0' && i < 8; ch++)
+        std::size_t i = 0;
+        for (const char* ch = argv[0].c_str(); *ch != '\0' && i < std::size(name) - 1; ch++)
         {
             name[i++] = *ch;
         }
@@ -1260,10 +1259,10 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             research_reset_current_item();
             gSilentResearch = false;
         }
-        scenery_set_default_placement_configuration();
+        ScenerySetDefaultPlacementConfiguration();
 
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
 
         gWindowUpdateTicks = 0;
         gfx_invalidate_screen();
@@ -1331,7 +1330,7 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             {
                 // Only this window should be open for safety reasons
                 window_close_all();
-                context_open_window(WindowClass::EditorObjectSelection);
+                ContextOpenWindow(WindowClass::EditorObjectSelection);
             }
         }
         else if (argv[0] == "inventions_list" && invalidArguments(&invalidTitle, !title))
@@ -1342,12 +1341,12 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             }
             else
             {
-                context_open_window(WindowClass::EditorInventionList);
+                ContextOpenWindow(WindowClass::EditorInventionList);
             }
         }
         else if (argv[0] == "scenario_options" && invalidArguments(&invalidTitle, !title))
         {
-            context_open_window(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::EditorScenarioOptions);
         }
         else if (argv[0] == "objective_options" && invalidArguments(&invalidTitle, !title))
         {
@@ -1357,16 +1356,16 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             }
             else
             {
-                context_open_window(WindowClass::EditorObjectiveOptions);
+                ContextOpenWindow(WindowClass::EditorObjectiveOptions);
             }
         }
         else if (argv[0] == "options")
         {
-            context_open_window(WindowClass::Options);
+            ContextOpenWindow(WindowClass::Options);
         }
         else if (argv[0] == "themes")
         {
-            context_open_window(WindowClass::Themes);
+            ContextOpenWindow(WindowClass::Themes);
         }
         else if (invalidTitle)
         {
@@ -1397,7 +1396,7 @@ static int32_t cc_remove_floating_objects(InteractiveConsole& console, const arg
 static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     tile_element_iterator it;
-    tile_element_iterator_begin(&it);
+    TileElementIteratorBegin(&it);
     do
     {
         if (it.element->GetType() == TileElementType::Surface)
@@ -1405,7 +1404,7 @@ static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused
             // Remove all park fence flags
             it.element->AsSurface()->SetParkFences(0);
         }
-    } while (tile_element_iterator_next(&it));
+    } while (TileElementIteratorNext(&it));
 
     gfx_invalidate_screen();
 
@@ -1517,7 +1516,7 @@ static int32_t cc_load_park([[maybe_unused]] InteractiveConsole& console, [[mayb
     {
         savePath += ".park";
     }
-    if (context_load_park_from_file(savePath.c_str()))
+    if (OpenRCT2::GetContext()->LoadParkFromFile(savePath))
     {
         console.WriteFormatLine("Park %s was loaded successfully", savePath.c_str());
     }
@@ -1829,7 +1828,7 @@ static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[
     if (argv.size() < 2)
     {
         console.WriteLineWarning("Too few arguments");
-        static_assert(News::ItemTypeCount == 10, "News::ItemType::Count changed, update console command!");
+        static_assert(News::ItemTypeCount == 11, "News::ItemType::Count changed, update console command!");
         console.WriteLine("add_news_item <type> <message> [assoc]");
         console.WriteLine("type is one of:");
         console.WriteLine("    0 (News::ItemType::Null)");
@@ -1842,6 +1841,7 @@ static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[
         console.WriteLine("    7 (News::ItemType::Peeps)");
         console.WriteLine("    8 (News::ItemType::Award)");
         console.WriteLine("    9 (News::ItemType::Graph)");
+        console.WriteLine("   10 (News::ItemType::Campaign)");
         console.WriteLine("message is the message to display, wrapped in quotes for multiple words");
         console.WriteLine("assoc is the associated id of ride/peep/tile/etc. If the selected ItemType doesn't need an assoc "
                           "(Null, Money, Award, Graph), you can leave this field blank");

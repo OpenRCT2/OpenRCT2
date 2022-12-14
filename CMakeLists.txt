@@ -64,13 +64,21 @@ set(TITLE_SEQUENCE_VERSION "0.4.0")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0")
 
-set(OBJECTS_VERSION "1.3.5")
+set(OBJECTS_VERSION "1.3.7")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "58bddc5f845d8c7eb5d9fd25e52ab1fed24c85db")
+set(OBJECTS_SHA1 "82930d549e0b3c3bce29718d5390c5cd474d0f28")
 
-set(REPLAYS_VERSION "0.0.69")
+set(OPENSFX_VERSION "1.0.1")
+set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
+set(OPENSFX_SHA1 "8f04aea33f8034131c3069f6accacce0d94f80c1")
+
+set(OPENMSX_VERSION "1.0.1")
+set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
+set(OPENMSX_SHA1 "8ff94490180e2fbfdd13a4130eb300da726ca406")
+
+set(REPLAYS_VERSION "0.0.70")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "3EC20AA2C90FDEEB08C26B6DA6D111C9C5C9B694")
+set(REPLAYS_SHA1 "09B339E86AAE81580C5AC3E23AC4BC9E030DA076")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -434,6 +442,26 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/object/
                 ZIP_URL ${OBJECTS_URL}
                 SHA1 ${OBJECTS_SHA1}
+            )")
+    endif ()
+    if (DOWNLOAD_OPENSFX)
+        install(CODE "
+            include(${ROOT_DIR}/cmake/download.cmake)
+            download_openrct2_zip(
+                ZIP_VERSION ${OPENSFX_VERSION}
+                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/
+                ZIP_URL ${OPENSFX_URL}
+                SHA1 ${OPENSFX_SHA1}
+            )")
+    endif ()
+    if (DOWNLOAD_OPENMSX)
+        install(CODE "
+            include(${ROOT_DIR}/cmake/download.cmake)
+            download_openrct2_zip(
+                ZIP_VERSION ${OPENMSX_VERSION}
+                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/
+                ZIP_URL ${OPENMSX_URL}
+                SHA1 ${OPENMSX_SHA1}
             )")
     endif ()
     if (DOWNLOAD_REPLAYS)

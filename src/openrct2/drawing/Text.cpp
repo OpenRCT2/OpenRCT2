@@ -34,9 +34,9 @@ public:
         Buffer = source;
         Paint = paint;
 
-        MaxWidth = gfx_wrap_string(Buffer, width, paint.SpriteBase, &LineCount);
+        MaxWidth = gfx_wrap_string(Buffer, width, paint.FontStyle, &LineCount);
         LineCount += 1;
-        LineHeight = font_get_line_height(paint.SpriteBase);
+        LineHeight = font_get_line_height(paint.FontStyle);
     }
 
     void Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)
@@ -84,8 +84,8 @@ public:
 static void DrawText(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
 {
-    int32_t width = noFormatting ? gfx_get_string_width_no_formatting(text, paint.SpriteBase)
-                                 : gfx_get_string_width(text, paint.SpriteBase);
+    int32_t width = noFormatting ? gfx_get_string_width_no_formatting(text, paint.FontStyle)
+                                 : gfx_get_string_width(text, paint.FontStyle);
 
     auto alignedCoords = coords;
     switch (paint.Alignment)
@@ -100,7 +100,7 @@ static void DrawText(
             break;
     }
 
-    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.SpriteBase);
+    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
 
     if (paint.UnderlineText == TextUnderline::On)
     {
@@ -150,7 +150,7 @@ void DrawTextEllipsised(
 {
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, ft.Data());
-    gfx_clip_string(buffer, width, textPaint.SpriteBase);
+    gfx_clip_string(buffer, width, textPaint.FontStyle);
 
     DrawText(dpi, coords, textPaint, buffer);
 }

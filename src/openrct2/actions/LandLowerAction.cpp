@@ -64,15 +64,15 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
 
     auto validRange = ClampRangeWithinMap(_range);
 
-    res.Position = { _coords.x, _coords.y, tile_element_height(_coords) };
+    res.Position = { _coords.x, _coords.y, TileElementHeight(_coords) };
     res.Expenditure = ExpenditureType::Landscaping;
 
     if (isExecuting)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, TileElementHeight(_coords) });
     }
 
-    uint8_t maxHeight = map_get_highest_land_height(validRange);
+    uint8_t maxHeight = MapGetHighestLandHeight(validRange);
     bool withinOwnership = false;
 
     for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
@@ -81,13 +81,13 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
         {
             if (!LocationValid({ x, y }))
                 continue;
-            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+            auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(CoordsXY{ x, y }))
+                if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
                     continue;
                 }

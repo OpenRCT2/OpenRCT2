@@ -67,12 +67,20 @@ void AssetPackManager::Scan()
 
     auto context = GetContext();
     auto env = context->GetPlatformEnvironment();
-    auto assetPackDirectory = fs::u8path(env->GetDirectoryPath(DIRBASE::USER, DIRID::ASSET_PACK));
-    Platform::EnsureDirectoryExists(assetPackDirectory.u8string());
 
+    auto openrct2Dir = fs::u8path(env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::ASSET_PACK));
+    Scan(openrct2Dir);
+
+    auto userDirectory = fs::u8path(env->GetDirectoryPath(DIRBASE::USER, DIRID::ASSET_PACK));
+    Platform::EnsureDirectoryExists(userDirectory.u8string());
+    Scan(userDirectory);
+}
+
+void AssetPackManager::Scan(const fs::path& directory)
+{
     // Recursively scan for .parkap files
     std::error_code ec;
-    for (const fs::directory_entry& entry : fs::recursive_directory_iterator(assetPackDirectory, ec))
+    for (const fs::directory_entry& entry : fs::recursive_directory_iterator(directory, ec))
     {
         if (!entry.is_directory())
         {
@@ -152,7 +160,7 @@ void AssetPackManager::LoadEnabledAssetPacks()
 {
     // Re-order asset packs
     std::vector<std::unique_ptr<AssetPack>> newAssetPacks;
-    EnumerateCommaSeparatedList(gConfigGeneral.asset_pack_order, [&](std::string_view id) {
+    EnumerateCommaSeparatedList(gConfigGeneral.AssetPackOrder, [&](std::string_view id) {
         auto index = GetAssetPackIndex(id);
         if (index != std::numeric_limits<size_t>::max())
         {
@@ -169,7 +177,7 @@ void AssetPackManager::LoadEnabledAssetPacks()
     _assetPacks = std::move(newAssetPacks);
 
     // Set which asset packs are enabled
-    EnumerateCommaSeparatedList(gConfigGeneral.enabled_asset_packs, [&](std::string_view id) {
+    EnumerateCommaSeparatedList(gConfigGeneral.EnabledAssetPacks, [&](std::string_view id) {
         auto assetPack = GetAssetPack(id);
         if (assetPack != nullptr)
         {
@@ -196,7 +204,7 @@ void AssetPackManager::SaveEnabledAssetPacks()
         orderList.pop_back();
     if (enabledList.size() > 0)
         enabledList.pop_back();
-    gConfigGeneral.asset_pack_order = orderList;
-    gConfigGeneral.enabled_asset_packs = enabledList;
-    config_save_default();
+    gConfigGeneral.AssetPackOrder = orderList;
+    gConfigGeneral.EnabledAssetPacks = enabledList;
+    ConfigSaveDefault();
 }

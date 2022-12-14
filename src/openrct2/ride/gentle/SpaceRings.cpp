@@ -34,7 +34,7 @@ static constexpr const uint32_t SpaceRingsFenceSprites[] = {
 
 /** rct2: 0x00768A3B */
 static void PaintSpaceRingsStructure(
-    paint_session& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
 {
     uint32_t vehicleIndex = (segment - direction) & 0x3;
 
@@ -73,8 +73,8 @@ static void PaintSpaceRingsStructure(
             if (rider != nullptr)
             {
                 imageColourFlags = ImageId(0, rider->TshirtColour, rider->TrousersColour);
-                imageId = imageColourFlags.WithIndex((baseImageId & 0x7FFFF) + 352 + frameNum);
-                PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 20, 23 }, { -10, -10, height });
+                imageId = imageColourFlags.WithIndex(baseImageId + 352 + frameNum);
+                PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
             }
         }
     }
@@ -85,7 +85,7 @@ static void PaintSpaceRingsStructure(
 
 /** rct2: 0x00767C40 */
 static void PaintSpaceRings(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -95,7 +95,7 @@ static void PaintSpaceRings(
 
     ImageId imageId;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
     track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
@@ -168,9 +168,9 @@ static void PaintSpaceRings(
             cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
             break;
     }
-    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /**

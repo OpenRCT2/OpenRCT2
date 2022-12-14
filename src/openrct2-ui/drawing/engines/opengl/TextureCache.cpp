@@ -64,7 +64,7 @@ void TextureCache::InvalidateImage(ImageIndex image)
 }
 
 // Note: for performance reasons, this returns a BasicTextureInfo over an AtlasTextureInfo (also to not expose the cache)
-BasicTextureInfo TextureCache::GetOrLoadImageTexture(const ImageId& imageId)
+BasicTextureInfo TextureCache::GetOrLoadImageTexture(const ImageId imageId)
 {
     uint32_t index;
 
@@ -96,7 +96,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(const ImageId& imageId)
     return info;
 }
 
-BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(const ImageId& imageId, const PaletteMap& paletteMap)
+BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(const ImageId imageId, const PaletteMap& paletteMap)
 {
     GlyphId glyphId{};
     glyphId.Image = imageId.GetIndex();
@@ -247,7 +247,7 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
         }
 
         // Initial capacity will be 12 which covers most cases of a fully visible park.
-        _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1UL;
+        _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1uL;
 
         glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
         glTexImage3D(
@@ -266,7 +266,7 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
     _atlasesTextureIndices = newIndices;
 }
 
-AtlasTextureInfo TextureCache::LoadImageTexture(const ImageId& imageId)
+AtlasTextureInfo TextureCache::LoadImageTexture(const ImageId imageId)
 {
     rct_drawpixelinfo dpi = GetImageAsDPI(ImageId(imageId.GetIndex()));
 
@@ -283,7 +283,7 @@ AtlasTextureInfo TextureCache::LoadImageTexture(const ImageId& imageId)
     return cacheInfo;
 }
 
-AtlasTextureInfo TextureCache::LoadGlyphTexture(const ImageId& imageId, const PaletteMap& paletteMap)
+AtlasTextureInfo TextureCache::LoadGlyphTexture(const ImageId imageId, const PaletteMap& paletteMap)
 {
     rct_drawpixelinfo dpi = GetGlyphAsDPI(imageId, paletteMap);
 
@@ -347,7 +347,7 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     return _atlases.back().Allocate(imageWidth, imageHeight);
 }
 
-rct_drawpixelinfo TextureCache::GetImageAsDPI(const ImageId& imageId)
+rct_drawpixelinfo TextureCache::GetImageAsDPI(const ImageId imageId)
 {
     auto g1Element = gfx_get_g1_element(imageId);
     int32_t width = g1Element->width;
@@ -358,7 +358,7 @@ rct_drawpixelinfo TextureCache::GetImageAsDPI(const ImageId& imageId)
     return dpi;
 }
 
-rct_drawpixelinfo TextureCache::GetGlyphAsDPI(const ImageId& imageId, const PaletteMap& palette)
+rct_drawpixelinfo TextureCache::GetGlyphAsDPI(const ImageId imageId, const PaletteMap& palette)
 {
     auto g1Element = gfx_get_g1_element(imageId);
     int32_t width = g1Element->width;

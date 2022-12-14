@@ -209,7 +209,7 @@ static_assert(std::size(_windowFinancesTabAnimationFrames) == WINDOW_FINANCES_PA
 static constexpr const int32_t EXPENDITURE_COLUMN_WIDTH = 80;
 
 static constexpr const uint32_t _windowFinancesPageHoldDownWidgets[] = {
-    (1ULL << WIDX_LOAN_INCREASE) | (1ULL << WIDX_LOAN_DECREASE), // WINDOW_FINANCES_PAGE_SUMMARY
+    (1uLL << WIDX_LOAN_INCREASE) | (1uLL << WIDX_LOAN_DECREASE), // WINDOW_FINANCES_PAGE_SUMMARY
 
     0, // WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH
     0, // WINDOW_FINANCES_PAGE_VALUE_GRAPH
@@ -632,7 +632,7 @@ public:
             ft.Add<money64>(axisValue);
             DrawTextBasic(
                 &dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+                { FontStyle::Small, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
                 &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
@@ -689,7 +689,7 @@ public:
             ft.Add<money64>(axisValue);
             DrawTextBasic(
                 &dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+                { FontStyle::Small, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
                 &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
@@ -748,7 +748,7 @@ public:
             ft.Add<money64>(axisValue);
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+                { FontStyle::Small, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
                 &dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
@@ -768,7 +768,7 @@ public:
     {
         if (widgetIndex >= WIDX_CAMPAIGN_1 && widgetIndex <= WIDX_CAMPAIGN_6)
         {
-            context_open_detail_window(WD_NEW_CAMPAIGN, widgetIndex - WIDX_CAMPAIGN_1);
+            ContextOpenDetailWindow(WD_NEW_CAMPAIGN, widgetIndex - WIDX_CAMPAIGN_1);
         }
     }
 
@@ -890,7 +890,7 @@ public:
         if (widgetIndex >= WIDX_TRANSPORT_RIDES && widgetIndex <= WIDX_SCENERY_AND_THEMING)
         {
             auto activeResearchTypes = gResearchPriorities;
-            activeResearchTypes ^= 1ULL << (widgetIndex - WIDX_TRANSPORT_RIDES);
+            activeResearchTypes ^= 1uLL << (widgetIndex - WIDX_TRANSPORT_RIDES);
 
             auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
             GameActions::Execute(&gameAction);
@@ -904,7 +904,7 @@ public:
 
         rct_widget* dropdownWidget = &widgets[widgetIndex - 1];
 
-        for (int32_t i = 0; i < 4; i++)
+        for (std::size_t i = 0; i < std::size(ResearchFundingLevelNames); i++)
         {
             gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
             gDropdownItems[i].Args = ResearchFundingLevelNames[i];
@@ -950,7 +950,7 @@ public:
         for (int32_t i = 0; i < 7; i++)
         {
             int32_t mask = 1 << i;
-            int32_t widgetMask = 1ULL << (i + WIDX_TRANSPORT_RIDES);
+            int32_t widgetMask = 1uLL << (i + WIDX_TRANSPORT_RIDES);
 
             // Set checkbox disabled if research type is complete
             if (uncompletedResearchTypes & mask)
@@ -1014,6 +1014,16 @@ public:
     }
 };
 
+static FinancesWindow* FinancesWindowOpen(uint8_t page)
+{
+    auto* window = WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+
+    if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
+        window->SetPage(page);
+
+    return window;
+}
+
 rct_window* WindowFinancesOpen()
 {
     return WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
@@ -1021,10 +1031,10 @@ rct_window* WindowFinancesOpen()
 
 rct_window* WindowFinancesResearchOpen()
 {
-    auto* window = WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+    return FinancesWindowOpen(WINDOW_FINANCES_PAGE_RESEARCH);
+}
 
-    if (window != nullptr)
-        window->SetPage(WINDOW_FINANCES_PAGE_RESEARCH);
-
-    return window;
+rct_window* WindowFinancesMarketingOpen()
+{
+    return FinancesWindowOpen(WINDOW_FINANCES_PAGE_MARKETING);
 }

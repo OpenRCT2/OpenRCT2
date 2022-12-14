@@ -35,7 +35,7 @@ static int8_t TopSpinSeatPositionOffset[] = {
 };
 
 static void PaintTopSpinRiders(
-    paint_session& session, const Vehicle& vehicle, ImageIndex seatImageIndex, const CoordsXYZ& seatCoords,
+    PaintSession& session, const Vehicle& vehicle, ImageIndex seatImageIndex, const CoordsXYZ& seatCoords,
     const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level >= ZoomLevel{ 2 })
@@ -59,7 +59,7 @@ static void PaintTopSpinRiders(
 }
 
 static void PaintTopSpinSeat(
-    paint_session& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle* vehicle, Direction direction,
+    PaintSession& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle* vehicle, Direction direction,
     uint32_t armRotation, uint32_t seatRotation, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (armRotation >= std::size(TopSpinSeatHeightOffset))
@@ -116,7 +116,7 @@ static void PaintTopSpinSeat(
 }
 
 static void PaintTopSpinVehicle(
-    paint_session& session, int32_t al, int32_t cl, const Ride& ride, uint8_t direction, int32_t height,
+    PaintSession& session, int32_t al, int32_t cl, const Ride& ride, uint8_t direction, int32_t height,
     const TrackElement& tileElement)
 {
     const auto* rideEntry = get_ride_entry(ride.subtype);
@@ -182,14 +182,14 @@ static void PaintTopSpinVehicle(
 }
 
 static void PaintTopSpin(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -242,9 +242,9 @@ static void PaintTopSpin(
             break;
     }
 
-    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 112, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 112, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int32_t trackType)

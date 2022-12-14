@@ -269,7 +269,7 @@ public:
 
         widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
-        _filter_flags = gConfigInterface.object_selection_filter_flags;
+        _filter_flags = gConfigInterface.ObjectSelectionFilterFlags;
         std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
         WindowInitScrollWidgets(*this);
@@ -314,12 +314,12 @@ public:
         }
 
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
 
         VisibleListDispose();
 
         intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
-        context_broadcast_intent(&intent);
+        ContextBroadcastIntent(&intent);
     }
 
     void OnUpdate() override
@@ -367,8 +367,8 @@ public:
                 break;
             case WIDX_FILTER_RIDE_TAB_ALL:
                 _filter_flags |= FILTER_RIDES;
-                gConfigInterface.object_selection_filter_flags = _filter_flags;
-                config_save_default();
+                gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
+                ConfigSaveDefault();
 
                 FilterUpdateCounts();
                 VisibleListRefresh();
@@ -385,8 +385,8 @@ public:
             case WIDX_FILTER_RIDE_TAB_STALL:
                 _filter_flags &= ~FILTER_RIDES;
                 _filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + _numSourceGameItems));
-                gConfigInterface.object_selection_filter_flags = _filter_flags;
-                config_save_default();
+                gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
+                ConfigSaveDefault();
 
                 FilterUpdateCounts();
                 VisibleListRefresh();
@@ -412,7 +412,7 @@ public:
 
                 auto intent = Intent(WindowClass::Loadsave);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
-                context_open_intent(&intent);
+                ContextOpenIntent(&intent);
                 break;
             }
             case WIDX_FILTER_TEXT_BOX:
@@ -546,8 +546,8 @@ public:
                 {
                     _filter_flags ^= (1 << dropdownIndex);
                 }
-                gConfigInterface.object_selection_filter_flags = _filter_flags;
-                config_save_default();
+                gConfigInterface.ObjectSelectionFilterFlags = _filter_flags;
+                ConfigSaveDefault();
 
                 FilterUpdateCounts();
                 scrolls->v_top = 0;
@@ -589,7 +589,7 @@ public:
 
         Invalidate();
 
-        const CursorState* state = context_get_cursor_state();
+        const CursorState* state = ContextGetCursorState();
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, state->position.x);
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
@@ -620,7 +620,7 @@ public:
             StringId error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
                                                                                   : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
-            context_show_error(error_title, objectSelectResult.Message, {});
+            ContextShowError(error_title, objectSelectResult.Message, {});
             return;
         }
 
@@ -636,12 +636,12 @@ public:
             const auto errorMessage = _gSceneryGroupPartialSelectError.value();
             if (errorMessage == STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED)
             {
-                context_show_error(
+                ContextShowError(
                     STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, {});
             }
             else
             {
-                context_show_error(
+                ContextShowError(
                     errorMessage, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, Formatter::Common());
             }
         }
@@ -721,15 +721,14 @@ public:
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & ObjectSelectionFlags::Selected))
                 {
                     screenCoords.x = 2;
-                    FontSpriteBase fontSpriteBase = highlighted ? FontSpriteBase::MEDIUM_EXTRA_DARK
-                                                                : FontSpriteBase::MEDIUM_DARK;
+                    auto darkness = highlighted ? TextDarkness::ExtraDark : TextDarkness::Dark;
                     colour_t colour2 = NOT_TRANSLUCENT(colours[1]);
                     if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
                         colour2 |= COLOUR_FLAG_INSET;
 
                     gfx_draw_string(
                         &dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
-                        { static_cast<colour_t>(colour2), fontSpriteBase });
+                        { static_cast<colour_t>(colour2), FontStyle::Medium, darkness });
                 }
 
                 screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
@@ -738,11 +737,11 @@ public:
                 auto buffer = strchr(bufferWithColour, '\0');
 
                 colour_t colour = COLOUR_BLACK;
-                FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
+                auto darkness = TextDarkness::Regular;
                 if (*listItem.flags & ObjectSelectionFlags::Flag6)
                 {
                     colour = colours[1] & 0x7F;
-                    fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
+                    darkness = TextDarkness::Dark;
                 }
 
                 int32_t width_limit = widgets[WIDX_LIST].width() - screenCoords.x;
@@ -755,7 +754,8 @@ public:
                     safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
                     auto ft = Formatter();
                     ft.Add<const char*>(gCommonStringFormatBuffer);
-                    DrawTextEllipsised(&dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, fontSpriteBase });
+                    DrawTextEllipsised(
+                        &dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                     screenCoords.x = widgets[WIDX_LIST_SORT_RIDE].left - widgets[WIDX_LIST].left;
                 }
 
@@ -770,7 +770,7 @@ public:
                 }
                 auto ft = Formatter();
                 ft.Add<const char*>(gCommonStringFormatBuffer);
-                DrawTextEllipsised(&dpi, screenCoords, width_limit, STR_STRING, ft, { colour, fontSpriteBase });
+                DrawTextEllipsised(&dpi, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
             }
             screenCoords.y += SCROLLABLE_ROW_HEIGHT;
         }
@@ -815,13 +815,7 @@ public:
     void OnPrepareDraw() override
     {
         // Resize widgets
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_TAB_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_TAB_CONTENT_PANEL].bottom = height - 1;
+        ResizeFrameWithPage();
         widgets[WIDX_ADVANCED].left = width - 130;
         widgets[WIDX_ADVANCED].right = width - 9;
         widgets[WIDX_LIST].right = width - 309;
@@ -834,12 +828,12 @@ public:
         widgets[WIDX_FILTER_DROPDOWN].right = width - 137;
 
         // Set pressed widgets
-        pressed_widgets |= 1ULL << WIDX_PREVIEW;
+        pressed_widgets |= 1uLL << WIDX_PREVIEW;
         SetPressedTab();
         if (list_information_type & 1)
-            pressed_widgets |= (1ULL << WIDX_ADVANCED);
+            pressed_widgets |= (1uLL << WIDX_ADVANCED);
         else
-            pressed_widgets &= ~(1ULL << WIDX_ADVANCED);
+            pressed_widgets &= ~(1uLL << WIDX_ADVANCED);
 
         // Set window title and buttons
         auto ft = Formatter::Common();
@@ -915,17 +909,17 @@ public:
 
         if (ridePage)
         {
-            for (int32_t i = 0; i < 7; i++)
-                pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
+            for (int32_t i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
+                pressed_widgets &= ~(1 << i);
 
             if ((_filter_flags & FILTER_RIDES) == FILTER_RIDES)
-                pressed_widgets |= (1ULL << WIDX_FILTER_RIDE_TAB_ALL);
+                pressed_widgets |= (1uLL << WIDX_FILTER_RIDE_TAB_ALL);
             else
             {
                 for (int32_t i = 0; i < 6; i++)
                 {
                     if (_filter_flags & (1 << (_numSourceGameItems + i)))
-                        pressed_widgets |= 1ULL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i);
+                        pressed_widgets |= 1uLL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i);
                 }
             }
 
@@ -1508,12 +1502,12 @@ private:
             ;
 
         rct_ride_entry* ride_entry = get_ride_entry(entry_index);
-        auto rideType = ride_entry_get_first_non_null_ride_type(ride_entry);
+        auto rideType = ride_entry->GetFirstNonNullRideType();
 
         auto intent = Intent(WindowClass::TrackDesignList);
         intent.putExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
         intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
-        context_open_intent(&intent);
+        ContextOpenIntent(&intent);
     }
 };
 
@@ -1589,7 +1583,7 @@ void EditorLoadSelectedObjects()
                     if (objectType == ObjectType::Ride)
                     {
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
-                        auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        auto rideType = rideEntry->GetFirstNonNullRideType();
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                         research_insert_ride_entry(rideType, entryIndex, category, true);
                     }
@@ -1611,5 +1605,5 @@ void EditorLoadSelectedObjects()
         load_palette();
     }
     if (showFallbackWarning)
-        context_show_error(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
+        ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
 }

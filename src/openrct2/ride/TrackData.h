@@ -97,6 +97,15 @@ struct TrackElementDescriptor
 
     TrackComputeFunction VerticalFactor;
     TrackComputeFunction LateralFactor;
+
+    /**
+     * Retrieves the block for the given sequence. This method safely handles
+     * out-of-bounds sequence indices.
+     *
+     * @param sequenceIndex
+     * @return The track block, or nullptr if it doesn’t exist.
+     */
+    const rct_preview_track* GetBlockForSequence(uint8_t sequenceIndex) const;
 };
 
 namespace OpenRCT2

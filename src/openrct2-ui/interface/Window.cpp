@@ -61,17 +61,17 @@ static bool WindowFitsWithinSpace(const ScreenCoordsXY& loc, int32_t width, int3
         return false;
     if (loc.y <= TOP_TOOLBAR_HEIGHT && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         return false;
-    if (loc.x + width > context_get_width())
+    if (loc.x + width > ContextGetWidth())
         return false;
-    if (loc.y + height > context_get_height())
+    if (loc.y + height > ContextGetHeight())
         return false;
     return WindowFitsBetweenOthers(loc, width, height);
 }
 
 static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t height)
 {
-    uint16_t screenWidth = context_get_width();
-    uint16_t screenHeight = context_get_height();
+    uint16_t screenWidth = ContextGetWidth();
+    uint16_t screenHeight = ContextGetHeight();
     int32_t unk;
 
     unk = -(width / 4);
@@ -217,7 +217,7 @@ rct_window* WindowCreate(
 
     // Check if there are any window slots left
     // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
-    if (g_window_list.size() >= static_cast<size_t>(gConfigGeneral.window_limit + WINDOW_LIMIT_RESERVED))
+    if (g_window_list.size() >= static_cast<size_t>(gConfigGeneral.WindowLimit + WINDOW_LIMIT_RESERVED))
     {
         // Close least recently used window
         for (auto& w : g_window_list)
@@ -511,7 +511,7 @@ static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_
 void WindowAllWheelInput()
 {
     // Get wheel value
-    auto cursorState = context_get_cursor_state();
+    auto cursorState = ContextGetCursorState();
     int32_t absolute_wheel = cursorState->wheel;
     int32_t relative_wheel = absolute_wheel - _previousAbsoluteWheel;
     int32_t pixel_scroll = relative_wheel * WindowScrollPixels;
@@ -566,7 +566,7 @@ void WindowAllWheelInput()
 
 void ApplyScreenSaverLockSetting()
 {
-    gConfigGeneral.disable_screensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
+    gConfigGeneral.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
 }
 
 /**

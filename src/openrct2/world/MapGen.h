@@ -38,8 +38,8 @@ struct mapgen_settings
     bool normalize_height;
 };
 
-void mapgen_generate_blank(mapgen_settings* settings);
-void mapgen_generate(mapgen_settings* settings);
-bool mapgen_load_heightmap(const utf8* path);
-void mapgen_unload_heightmap();
-void mapgen_generate_from_heightmap(mapgen_settings* settings);
+void MapGenGenerateBlank(mapgen_settings* settings);
+void MapGenGenerate(mapgen_settings* settings);
+bool MapGenLoadHeightmap(const utf8* path);
+void MapGenUnloadHeightmap();
+void MapGenGenerateFromHeightmap(mapgen_settings* settings);

@@ -79,6 +79,7 @@ rct_window* WindowAssetPacksOpen();
 // WC_FINANCES
 rct_window* WindowFinancesOpen();
 rct_window* WindowFinancesResearchOpen();
+rct_window* WindowFinancesMarketingOpen();
 
 // WC_PARK_INFORMATION
 rct_window* WindowParkAwardsOpen();
@@ -146,7 +147,7 @@ void WindowMapTooltipUpdateVisibility();
 rct_window* WindowMazeConstructionOpen();
 void WindowMazeConstructionUpdatePressedWidgets();
 
-rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose);
+rct_window* WindowNetworkStatusOpen(const std::string& text, close_callback onClose);
 rct_window* WindowNetworkStatusOpenPassword();
 void WindowNetworkStatusClose();
 

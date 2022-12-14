@@ -215,20 +215,20 @@ namespace ScenarioSources
     // RCT2
     static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT2[] =
     {
-        { SC_UNIDENTIFIED,              "Crazy Castle",         SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Electric Fields",      SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Factory Capers",       SCENARIO_CATEGORY_BEGINNER      },
-        { SC_UNIDENTIFIED,              "Amity Airfield",       SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Botany Breakers",      SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Bumbly Bazaar",        SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Dusty Greens",         SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Fungus Woods",         SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Gravity Gardens",      SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Crazy Castle",         SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Dusty Greens",         SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Bumbly Bazaar",        SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Infernal Views",       SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UNIDENTIFIED,              "Alpine Adventures",    SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Lucky Lake",           SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Botany Breakers",      SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Alpine Adventures",    SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Gravity Gardens",      SCENARIO_CATEGORY_EXPERT        },
         { SC_UNIDENTIFIED,              "Extreme Heights",      SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Amity Airfield",       SCENARIO_CATEGORY_EXPERT        },
         { SC_UNIDENTIFIED,              "Ghost Town",           SCENARIO_CATEGORY_EXPERT        },
-        { SC_UNIDENTIFIED,              "Lucky Lake",           SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Fungus Woods",         SCENARIO_CATEGORY_EXPERT        },
         { SC_UNIDENTIFIED,              "Rainbow Summit",       SCENARIO_CATEGORY_EXPERT        },
     };
 
@@ -273,6 +273,29 @@ namespace ScenarioSources
         { SC_UNIDENTIFIED,              "Rock 'n' Roll - Rock 'n' Roll",                    SCENARIO_CATEGORY_EXPERT        },
     };
 
+    // User Created Expansion Sets
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesUCES[] =
+    {
+        { SC_UNIDENTIFIED,              "Lighthouse of Alexandria by Katatude for UCES",    SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Cleveland's Luna Park",                            SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Mount Vesuvius 1700 A.D. by Katatude for UCES",    SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "The Sandbox by Katatude for UCES",                 SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Niagara Falls & Gorge by Katatude for UCES",       SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Rocky Mountain Miners",                            SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "The Time Machine by Katatude for UCES",            SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Tower of Babel",                                   SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Transformation",                                   SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Urbis Incognitus",                                 SCENARIO_CATEGORY_TIME_MACHINE     },
+        { SC_UNIDENTIFIED,              "Beneath the Christmas Tree by Katatude for UCES",  SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Bigrock Blast",                                    SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Camp Mockingbird for UCES by Katatude",            SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Choo Choo Town",                                   SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Dragon Islands",                                   SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Kiddy Karnival II",                                SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "Sand Dune",                                        SCENARIO_CATEGORY_KATYS_DREAMWORLD },
+        { SC_UNIDENTIFIED,              "UCES Halloween",                                   SCENARIO_CATEGORY_OTHER            },
+    };
+
     // Real parks
     static constexpr const ScenarioTitleDescriptor ScenarioTitlesRealParks[] =
     {
@@ -294,25 +317,26 @@ namespace ScenarioSources
         { SC_PCGW,                                      "PC Gaming World",                                  SCENARIO_CATEGORY_DLC            },
         { SC_GAMEPLAY,                                  "gameplay",                                         SCENARIO_CATEGORY_DLC            },
         { SC_UNIDENTIFIED,                              "Panda World",                                      SCENARIO_CATEGORY_DLC            },
-        { SC_UNIDENTIFIED,                              "Competition Land 1",                               SCENARIO_CATEGORY_DLC            },
-        { SC_UNIDENTIFIED,                              "Competition Land 2",                               SCENARIO_CATEGORY_DLC            },
-        { SC_STEEL_TWISTER_COMPETITION,                 "Steel Twister Roller Coaster Competition",         SCENARIO_CATEGORY_DLC            },
-        { SC_GO_KARTS_COMPETITION,                      "Go Karts Competition",                             SCENARIO_CATEGORY_DLC            },
-        { SC_STEEL_CORKSCREW_COMPETITION,               "Steel Corkscrew Roller Coaster Competition",       SCENARIO_CATEGORY_DLC            },
-        { SC_MINE_TRAIN_COMPETITION,                    "Mine Train Roller Coaster Competition",            SCENARIO_CATEGORY_DLC            },
-        { SC_STEEL_ROLLER_COASTER_COMPETITION,          "Steel Roller Coaster Competition",                 SCENARIO_CATEGORY_DLC            },
-        { SC_BOBSLED_COMPETITION,                       "Bobsled Roller Coaster Competition",               SCENARIO_CATEGORY_DLC            },
-        { SC_INVERTED_ROLLER_COASTER_COMPETITION,       "Inverted Roller Coaster Competition",              SCENARIO_CATEGORY_DLC            },
-        { SC_SUSPENDED_ROLLER_COASTER_COMPETITION,      "Suspended Roller Coaster Competition",             SCENARIO_CATEGORY_DLC            },
-        { SC_STAND_UP_STEEL_ROLLER_COASTER_COMPETITION, "Stand-Up Steel Roller Coaster Competition",        SCENARIO_CATEGORY_DLC            },
-        { SC_WOODEN_ROLLER_COASTER_COMPETITION,         "Wooden Roller Coaster Competition",                SCENARIO_CATEGORY_DLC            },
-        { SC_STEEL_MINI_ROLLER_COASTER_COMPETITION,     "Steel Mini Roller Coaster Competition",            SCENARIO_CATEGORY_DLC            },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags Belgium",                 SCENARIO_CATEGORY_BUILD_YOUR_OWN },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags Great Adventure",         SCENARIO_CATEGORY_BUILD_YOUR_OWN },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags Holland",                 SCENARIO_CATEGORY_BUILD_YOUR_OWN },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags Magic Mountain",          SCENARIO_CATEGORY_BUILD_YOUR_OWN },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags Park",                    SCENARIO_CATEGORY_BUILD_YOUR_OWN },
         { SC_UNIDENTIFIED,                              "Build your own Six Flags over Texas",              SCENARIO_CATEGORY_BUILD_YOUR_OWN },
+        { SC_UNIDENTIFIED,                              "Competition Land 1",                               SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_UNIDENTIFIED,                              "Competition Land 2",                               SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_BOBSLED_COMPETITION,                       "Bobsled Roller Coaster Competition",               SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_GO_KARTS_COMPETITION,                      "Go Karts Competition",                             SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_INVERTED_ROLLER_COASTER_COMPETITION,       "Inverted Roller Coaster Competition",              SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_MINE_TRAIN_COMPETITION,                    "Mine Train Roller Coaster Competition",            SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_STAND_UP_STEEL_ROLLER_COASTER_COMPETITION, "Stand-Up Steel Roller Coaster Competition",        SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_STEEL_CORKSCREW_COMPETITION,               "Steel Corkscrew Roller Coaster Competition",       SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_STEEL_MINI_ROLLER_COASTER_COMPETITION,     "Steel Mini Roller Coaster Competition",            SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_STEEL_ROLLER_COASTER_COMPETITION,          "Steel Roller Coaster Competition",                 SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_STEEL_TWISTER_COMPETITION,                 "Steel Twister Roller Coaster Competition",         SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_SUSPENDED_ROLLER_COASTER_COMPETITION,      "Suspended Roller Coaster Competition",             SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_WOODEN_ROLLER_COASTER_COMPETITION,         "Wooden Roller Coaster Competition",                SCENARIO_CATEGORY_COMPETITIONS   },
+        { SC_UNIDENTIFIED,                              "Tycoon Park",                                      SCENARIO_CATEGORY_OTHER          },
     };
 
     #define DEFINE_SCENARIO_TITLE_DESC_GROUP(x) { std::size(x), x }
@@ -326,6 +350,7 @@ namespace ScenarioSources
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2WW),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2TT),
+        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesUCES),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRealParks),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesExtrasParks),
     };

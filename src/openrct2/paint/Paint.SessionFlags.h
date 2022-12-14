@@ -11,15 +11,8 @@
 
 #include "../common.h"
 
-namespace OpenRCT2
+namespace PaintSessionFlags
 {
-    struct IStream;
-}
-
-enum class RCT12TrackDesignVersion : uint8_t;
-
-namespace SawyerEncoding
-{
-    bool ValidateChecksum(OpenRCT2::IStream* stream);
-    RCT12TrackDesignVersion ValidateTrackChecksum(OpenRCT2::IStream* stream);
-} // namespace SawyerEncoding
+    constexpr uint8_t PassedSurface = 1u << 0;
+    constexpr uint8_t IsTrackPiecePreview = 1u << 1;
+} // namespace PaintSessionFlags

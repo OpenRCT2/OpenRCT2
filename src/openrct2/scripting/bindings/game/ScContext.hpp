@@ -19,6 +19,7 @@
 #    include "../../../scenario/Scenario.h"
 #    include "../../Duktape.hpp"
 #    include "../../HookEngine.h"
+#    include "../../IconNames.hpp"
 #    include "../../ScriptEngine.h"
 #    include "../game/ScConfiguration.hpp"
 #    include "../game/ScDisposable.hpp"
@@ -460,6 +461,11 @@ namespace OpenRCT2::Scripting
             ClearIntervalOrTimeout(handle);
         }
 
+        int32_t getIcon(const std::string& iconName)
+        {
+            return GetIconByName(iconName);
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -482,8 +488,27 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::setTimeout, "setTimeout");
             dukglue_register_method(ctx, &ScContext::clearInterval, "clearInterval");
             dukglue_register_method(ctx, &ScContext::clearTimeout, "clearTimeout");
+            dukglue_register_method(ctx, &ScContext::getIcon, "getIcon");
         }
     };
+
+    uint32_t ImageFromDuk(const DukValue& d)
+    {
+        uint32_t img{};
+        if (d.type() == DukValue::Type::NUMBER)
+        {
+            img = d.as_uint();
+            if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+            {
+                img = NewIconIndex(d.as_uint());
+            }
+        }
+        else if (d.type() == DukValue::Type::STRING)
+        {
+            img = GetIconByName(d.as_c_string());
+        }
+        return img;
+    }
 } // namespace OpenRCT2::Scripting
 
 #endif

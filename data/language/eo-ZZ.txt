@@ -2710,8 +2710,6 @@ STR_5503    :Entajpu servilonomon aŭ IP-adreson:
 STR_5504    :Montri staton plurludantan
 STR_5505    :Ne eblas aliĝi al servilo.
 STR_5506    :Gastoj malatentas intensecojn
-STR_5508    :Permesi ŝargadon de dosieroj kun nevalidaj kontrolsumoj
-STR_5509    :Permesas ŝargadon de scenaroj kaj konservaĵoj{NEWLINE}kiuj havas nevalidan kontrolsumon,{NEWLINE}kiel la scenaroj de la demonstrado{NEWLINE}aŭ difektitaj konservaĵoj.
 STR_5510    :Defaŭlta sonludilo
 STR_5511    :(NEKONATA)
 STR_5512    :Konservi Ludon Kiel
@@ -2995,7 +2993,7 @@ STR_5832    :Montri altecon per komunaj unuoj anstataŭ mezurformato agordita su
 STR_5833    :Ŝanĝas kiun datoformaton estas uzata
 STR_5834    :Elekti kiun sonludilon OpenRCT2 uzos
 STR_5835    :Silentigi la ludon se la fenestro perdas fokuson
-STR_5836    :Elekti muzikon por uzi je la ĉefa menuo.{NEWLINE}Elekti RCT1-temon postulas, ke vi kopiu ‘data/css17.dat’ de via RCT1-ludodosierujo al ‘data/css50.dat’ en via RCT2-dosierujo, aŭ agordu la dosierindikon al RCT1 en la Diversaĵo-langeto.
+STR_5836    :Elekti muzikon por uzi je la ĉefa menuo.{NEWLINE}Elekti la RCT1-temon postulas, ke vi agordu la dosierindikon al RCT1 en la Altnivela-langeto.
 STR_5837    :Krei kaj administri proprajn fasado-temojn
 STR_5838    :Montri apartan butonon por la fenestro de financoj en la ilobreto
 STR_5839    :Montri apartan butonon por la fenestro de esplorado kaj disvolvado en la ilobreto
@@ -3428,7 +3426,7 @@ STR_6318    :Dissinkronigo de reto detektita.{NEWLINE}Protokolo-dosiero: {STRING
 STR_6319    :Bremso de Blokparto Fermita
 STR_6320    :Nemalkonstruebla
 STR_6321    :Aldonaĵo difektas
-STR_6322    :{WINDOW_COLOUR_2}Identigilo de rastrumeto: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Identigilo de ento: {BLACK}{INT32}
 STR_6323    :Simulas
 STR_6324    :Simuli
 STR_6325    :Simuli atrakcion
@@ -3595,9 +3593,7 @@ STR_6487    :Baskuligi nevideblan dungitaron
 STR_6488    :{RED}Gastoj plendas pri la longeco de la atendovicoj en via parko.{NEWLINE}Konsideru mallongigi problemajn atendovicojn, aŭ pliigi la flukvanton de la atrakcioj.
 STR_6489    :Eraro: Malkongrua Versio de Parko
 STR_6490    :Averto: Parte Kongrua Versio de Parko
-STR_6491    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
 STR_6492    :Ĉi tiu parko estis konservita en malnova versio de OpenRCT2, kaj ne povas esti malfermita per ĉi tiu versio de OpenRCT2. Parko estas v{INT32}.
-STR_6493    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2, kelkaj datumoj eble estas perditaj. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
 STR_6494    :Grupigi laŭ atrakciotipo
 STR_6495    :Grupigi atrakciojn laŭ akrakciotipoj anstataŭ montri ĉiun veturilon aparte.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3619,11 +3615,27 @@ STR_6511    :Sengravida Ruliĝo (dekstre)
 STR_6512    :Granda Sengravida Ruliĝo (maldekstre)
 STR_6513    :Granda Sengravida Ruliĝo (dekstre)
 STR_6514    :Nevalida alteco!
-STR_6515    :{BLACK}RCT1 ne estas ligita - retropaŝaj bildoj estos uzitaj.
-STR_6516    :Unu aŭ pli objektoj aldonitaj bezonas je RCT1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
-STR_6517    :Unu aŭ pli objektoj en ĉi tiu parko bezonas je RCT1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 ne estas ligita - retropaŝaj bildoj estos uzitaj.
+STR_6516    :Unu aŭ pli objektoj aldonitaj bezonas je RollerCoaster Tycoon 1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
+STR_6517    :Unu aŭ pli objektoj en ĉi tiu parko bezonas je RollerCoaster Tycoon 1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
 STR_6518    :{BLACK}Musumu super scenaro por vidi ĝian priskribon kaj celon. Alklaku ĝin por ekludi.
 STR_6519    :Ekstraĵoj
+STR_6520    :Havaĵo-Pakoj
+STR_6521    :Malalta Prioritato
+STR_6522    :Alta Prioritato
+STR_6523    :Malkreskigi la prioritaton de la elektita havaĵo-pako.
+STR_6524    :Kreskigi ka prioritaton de la elektita havaĵo-pako.
+STR_6525    :Reŝargi ĉiujn havaĵojn en la ludo kontraŭ la ŝaltitaj havaĵo-pakoj.
+STR_6526    :(bazaj grafikoj, muziko kaj sonefikoj)
+STR_6527    :Konkursoj
+STR_6528    :Nevalidaj parametroj de trako!
+STR_6529    :Nevalida parametro de kolorskemo!
+STR_6530    :Uzantkreita Kompletiga Aro
+STR_6531    :La Tempomaŝino
+STR_6532    :La Revomondo de Katia
+STR_6533    :{WINDOW_COLOUR_2}Faktoro de Eksciteco: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Faktoro de Intenseco: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Faktoro de Naŭzo: {BLACK}-{COMMA16}%
 
 #############
 # Scenarios #
@@ -4074,37 +4086,6 @@ STR_DTLS    :
 ## Start OpenRCT2 Official
 [TTPIRF05]
 STR_NAME    :Tegmento
-
-[TTRFWD01]
-STR_NAME    :Tegmento
-
-[TTRFWD02]
-STR_NAME    :Tegmento
-
-[TTRFWD03]
-STR_NAME    :Tegmento
-
-[TTRFWD04]
-STR_NAME    :Tegmento
-
-[TTRFWD05]
-STR_NAME    :Tegmento
-
-[TTRFWD06]
-STR_NAME    :Tegmento
-
-[TTRFWD07]
-STR_NAME    :Tegmento
-
-[TTRFWD08]
-STR_NAME    :Tegmento
-
-[ACWW33]
-STR_NAME    :Muro el Lignaj Fostoj
-
-[ACWWF32]
-STR_NAME    :Muro el Lignaj Fostoj
-
 ## End OpenRCT2 Official
 
 ###############################################################################
@@ -4408,3 +4389,101 @@ STR_DTLS    :Ĉi tiu maljuniĝa amuzparko vidis pli bonajn tagojn. Helpu la pose
 STR_SCNR    :Pando-Mondo
 STR_PARK    :Pando-Mondo
 STR_DTLS    :Aldonu pli da atrakcioj kaj allogu pli da homoj al ĉi tiu pando-temita amuzparko
+
+###
+<UCES Halloween>
+STR_SCNR    :Tombeja Kresto
+STR_PARK    :Tombeja Kresto
+STR_DTLS    :Ĉi Tio estas Haloveno, UCES Haloveno, kukurboj kriegas en la plena nokto! Ĉi tiu tombejo havas problemon kaj ĝi dependas de vi por savi ĝin, dum lasinte la mortinton ripozi en paco! Ĉu vi povas teni la fantomojn en iliaj tomboj kaj alporti frostotremojn al viaj klientoj?{NEWLINE}Aŭtoro: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :La Lumturo de Aleksandrio
+STR_PARK    :La Lumturo de Aleksandrio
+STR_DTLS    :Aleksandrio konstruis la urbon; Grekoj, romianoj, kaj egiptoj lasis siajn markojn. Sed la plej granda honoro estis Mirindaĵo de la Antikva Mondo - la Lumturo. Vizitu kaj farigu parkon!{NEWLINE}Aŭtoro: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Parko, Klevlando
+STR_PARK    :Luna Parko
+STR_DTLS    :Kiel ĝi estis en ĝia inaŭgura tago - 18 Majo 1905.{NEWLINE}Aŭtoro: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Monto Vezuvio
+STR_PARK    :Monto Vezuvio
+STR_DTLS    :Pompejo kaj Herkulano estis enterigita de Monto Vezuvio en 79 p.K. Vizitu la elfosaĵojn kaj konstruu parkon!{NEWLINE}Aŭtoro: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :La Sablokesto
+STR_PARK    :La Sablokesto
+STR_DTLS    :Kion ĉiuj volas - sablokesto! Do prenu vian etan sitelon kaj fosilon kaj konstruu parkon!{NEWLINE}Aŭtoro: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Akvofalaro & Valego
+STR_PARK    :Niagara Akvofalaro
+STR_DTLS    :Usona Akvofalo, Luna Akvofalo & Huffera Akvofalo sur la Niagara Limo, 1850.{NEWLINE}Aŭtoro: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Ministoj de Roka Montaro
+STR_PARK    :Ministoj de Roka Montaro
+STR_DTLS    :Terŝoviĝo damaĝis vian fervojon. Viaj laboristoj foriris por esplori. Ĉu estas oro en onda-fervojojn?{NEWLINE}Aŭtoroj: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :La Tempomaŝino
+STR_PARK    :La Tempomaŝino
+STR_DTLS    :La Tempomaŝino. Konstruu por iri - kiam vi volas, kien vi volas. Eterneco atendas. Ĉio estas relativa.{NEWLINE}Aŭtoro: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Babela Turo
+STR_PARK    :Babela Turo
+STR_DTLS    :Ho! Rigardu kien la tempomaŝino kondukis nin nun! Kien ĉiuj iris?{NEWLINE}Aŭtoro: Fossil
+
+<Transformation>
+STR_SCNR    :Transformiĝo
+STR_PARK    :Transformiĝo
+STR_DTLS    :Ni atendis vin…{NEWLINE}Aŭtoro: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :La romianoj lacas enuigajn gladiatorajn batalojn. Donu al ili pli bonajn ravojn, transformu roman urbon en la plej bonan amuzparkon de ĉiuj tempoj!{NEWLINE}Aŭtoro: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Sub la Kristnaska Arbo
+STR_PARK    :Vintra Mirlando
+STR_DTLS    :Panjo konstruis ĉi tiun scenon sub nia arbo. Nun ŝi volas parkon farigitan en ĝi! Ĉu vi povas helpi?{NEWLINE}Aŭtoro: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Rokega Eksplodo
+STR_PARK    :Rokega Eksplodo
+STR_DTLS    :Post eksplodo ĉe la Rokega Minada Kompanio, la homoj de Rokego devas konstrui amuzparkon por konservi ilian urbeton viva.{NEWLINE}Aŭtoroj: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Mokbirdo-Kampejo
+STR_PARK    :Mokbirdo-Kampejo
+STR_DTLS    :Nur 500 dolaroj semajne por ĉi tiu somera kampejo! Disrompu vian ŝparmonujon kaj tiam amuziĝu kaj konstruu parkon.{NEWLINE}Aŭtoro: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Ĉu-Ĉu-Urbeto
+STR_PARK    :Ĉu-Ĉu-Urbeto
+STR_DTLS    :Panjo! Paĉjo! Mi volas iri al Ĉu-Ĉu-Urbeto!{NEWLINE}Aŭtoro: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Drakaj Insuloj
+STR_PARK    :Drakaj Insuloj
+STR_DTLS    :Ĉu Drakaj Insuloj? Mi ne estas certa, ke mi volas iri tien…{NEWLINE}Aŭtoro: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Infana Karnavalo 2
+STR_PARK    :Infana Karnavalo
+STR_DTLS    :He infanoj! Ni amuziĝu!{NEWLINE}Aŭtoroj: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sabla Duno
+STR_PARK    :Sabla Duno
+STR_DTLS    :Kiel posedanto de malgranda parko, vi aĉetis grandan terpecon laŭ la marbordo por vastigi kaj allogi pli da gastoj viziti la belajn sablajn dunojn, sed singardu: vi ne povas perturbi tiujn ekologie delikatajn sablajn dunojn.{NEWLINE}Aŭtoro: rbarclay

@@ -81,7 +81,7 @@ template<> bool EntityBase::Is<Staff>() const
 bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
 {
     // Check if location is in the park
-    if (!map_is_location_owned_or_has_rights(loc))
+    if (!MapIsLocationOwnedOrHasRights(loc))
         return false;
 
     // Check if staff has patrol area
@@ -168,7 +168,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
         }
 
         /* Search through all adjacent map elements */
-        TileElement* test_element = map_get_first_element_at(adjacPos);
+        TileElement* test_element = MapGetFirstElementAt(adjacPos);
         if (test_element == nullptr)
             return false;
         bool pathfound = false;
@@ -360,7 +360,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     int16_t nextZ = ((z + COORDS_Z_STEP) & 0xFFF0) / COORDS_Z_STEP;
 
-    TileElement* tileElement = map_get_first_element_at(nextTile);
+    TileElement* tileElement = MapGetFirstElementAt(nextTile);
     if (tileElement == nullptr)
         return INVALID_DIRECTION;
     do
@@ -375,7 +375,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     nextTile = CoordsXY(x, y).ToTileStart() + CoordsDirectionDelta[nextDirection];
 
-    tileElement = map_get_first_element_at(nextTile);
+    tileElement = MapGetFirstElementAt(nextTile);
     if (tileElement == nullptr)
         return INVALID_DIRECTION;
 
@@ -400,7 +400,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
 {
     if (!(GetNextIsSurface()))
     {
-        auto surfaceElement = map_get_surface_element_at(NextLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
         if (surfaceElement == nullptr)
             return INVALID_DIRECTION;
 
@@ -428,10 +428,10 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
 
         CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[chosenDirection];
 
-        if (!map_is_location_valid(chosenTile))
+        if (!MapIsLocationValid(chosenTile))
             continue;
 
-        auto surfaceElement = map_get_surface_element_at(chosenTile);
+        auto surfaceElement = MapGetSurfaceElementAt(chosenTile);
         if (surfaceElement != nullptr)
         {
             if (std::abs(surfaceElement->GetBaseZ() - NextLoc.z) <= 2 * COORDS_Z_STEP)
@@ -461,7 +461,7 @@ Direction Staff::HandymanDirectionRandSurface(uint8_t validDirections) const
 
         CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
-        if (map_surface_is_blocked(chosenTile))
+        if (MapSurfaceIsBlocked(chosenTile))
             continue;
 
         break;
@@ -503,7 +503,7 @@ bool Staff::DoHandymanPathFinding()
         }
         else
         {
-            auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ NextLoc });
+            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ NextLoc });
 
             if (pathElement == nullptr)
                 return true;
@@ -531,10 +531,10 @@ bool Staff::DoHandymanPathFinding()
                 }
                 else
                 {
-                    pathDirections &= ~(1 << direction_reverse(PeepDirection));
+                    pathDirections &= ~(1 << DirectionReverse(PeepDirection));
                     if (pathDirections == 0)
                     {
-                        pathDirections |= 1 << direction_reverse(PeepDirection);
+                        pathDirections |= 1 << DirectionReverse(PeepDirection);
                     }
                 }
 
@@ -550,11 +550,11 @@ bool Staff::DoHandymanPathFinding()
     }
 
     // newDirection can only contain a cardinal direction at this point, no diagonals
-    assert(direction_valid(newDirection));
+    assert(DirectionValid(newDirection));
 
     CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
-    while (!map_is_location_valid(chosenTile))
+    while (!MapIsLocationValid(chosenTile))
     {
         newDirection = HandymanDirectionRandSurface(validDirections);
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
@@ -591,15 +591,15 @@ Direction Staff::DirectionSurface(Direction initialDirection) const
 
         direction &= 3;
 
-        if (fence_in_the_way({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction))
+        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction))
             continue;
 
-        if (fence_in_the_way({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction_reverse(direction)))
+        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, DirectionReverse(direction)))
             continue;
 
         CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[direction];
 
-        if (!map_surface_is_blocked(chosenTile))
+        if (!MapSurfaceIsBlocked(chosenTile))
         {
             return direction;
         }
@@ -669,10 +669,10 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
     }
 
     // Check if this is dead end - i.e. only way out is the reverse direction.
-    pathDirections &= ~(1 << direction_reverse(PeepDirection));
+    pathDirections &= ~(1 << DirectionReverse(PeepDirection));
     if (pathDirections == 0)
     {
-        pathDirections |= (1 << direction_reverse(PeepDirection));
+        pathDirections |= (1 << DirectionReverse(PeepDirection));
     }
 
     Direction direction = bitscanforward(pathDirections);
@@ -759,7 +759,7 @@ bool Staff::DoMechanicPathFinding()
     }
     else
     {
-        auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ NextLoc });
+        auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ NextLoc });
         if (pathElement == nullptr)
             return true;
 
@@ -767,11 +767,11 @@ bool Staff::DoMechanicPathFinding()
     }
 
     // countof(CoordsDirectionDelta)
-    assert(direction_valid(newDirection));
+    assert(DirectionValid(newDirection));
 
     CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
-    while (!map_is_location_valid(chosenTile))
+    while (!MapIsLocationValid(chosenTile))
     {
         newDirection = MechanicDirectionSurface();
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
@@ -801,10 +801,10 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
         return DirectionSurface(scenario_rand() & 3);
     }
 
-    pathDirections &= ~(1 << direction_reverse(PeepDirection));
+    pathDirections &= ~(1 << DirectionReverse(PeepDirection));
     if (pathDirections == 0)
     {
-        pathDirections |= (1 << direction_reverse(PeepDirection));
+        pathDirections |= (1 << DirectionReverse(PeepDirection));
     }
 
     Direction direction = bitscanforward(pathDirections);
@@ -815,7 +815,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
     }
 
     direction = scenario_rand() & 3;
-    for (uint8_t i = 0; i < NumOrthogonalDirections; ++i, direction = direction_next(direction))
+    for (uint8_t i = 0; i < NumOrthogonalDirections; ++i, direction = DirectionNext(direction))
     {
         if (pathDirections & (1 << direction))
             return direction;
@@ -840,7 +840,7 @@ bool Staff::DoMiscPathFinding()
     }
     else
     {
-        auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ NextLoc });
+        auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ NextLoc });
         if (pathElement == nullptr)
             return true;
 
@@ -849,7 +849,7 @@ bool Staff::DoMiscPathFinding()
 
     CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
-    while (!map_is_location_valid(chosenTile))
+    while (!MapIsLocationValid(chosenTile))
     {
         newDirection = DirectionSurface(scenario_rand() & 3);
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
@@ -874,6 +874,9 @@ bool Staff::IsMechanicHeadingToFixRideBlockingPath()
         return false;
 
     auto ride = get_ride(trackElement->GetRideIndex());
+    if (ride == nullptr)
+        return false;
+
     return ride->id == CurrentRide && ride->breakdown_reason == BREAKDOWN_SAFETY_CUT_OUT;
 }
 
@@ -1027,7 +1030,7 @@ uint32_t staff_get_available_entertainer_costumes()
     {
         if (scenery_group_is_invented(i))
         {
-            const auto sgEntry = get_scenery_group_entry(i);
+            const auto sgEntry = GetSceneryGroupEntry(i);
             entertainerCostumes |= sgEntry->entertainer_costumes;
         }
     }
@@ -1074,7 +1077,7 @@ void Staff::UpdateMowing()
     {
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            int16_t checkZ = tile_element_height(*loc);
+            int16_t checkZ = TileElementHeight(*loc);
             MoveTo({ loc.value(), checkZ });
             return;
         }
@@ -1098,11 +1101,11 @@ void Staff::UpdateMowing()
         if (Var37 != 7)
             continue;
 
-        auto surfaceElement = map_get_surface_element_at(NextLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
         if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
-            map_invalidate_tile_zoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
+            MapInvalidateTileZoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
         StaffLawnsMown++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
@@ -1145,7 +1148,7 @@ void Staff::UpdateWatering()
 
         auto actionLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[Var37];
 
-        TileElement* tile_element = map_get_first_element_at(actionLoc);
+        TileElement* tile_element = MapGetFirstElementAt(actionLoc);
         if (tile_element == nullptr)
             return;
 
@@ -1163,7 +1166,7 @@ void Staff::UpdateWatering()
                 continue;
 
             tile_element->AsSmallScenery()->SetAge(0);
-            map_invalidate_tile_zoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
+            MapInvalidateTileZoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
             StaffGardensWatered++;
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
@@ -1212,7 +1215,7 @@ void Staff::UpdateEmptyingBin()
         if (ActionFrame != 11)
             return;
 
-        TileElement* tile_element = map_get_first_element_at(NextLoc);
+        TileElement* tile_element = MapGetFirstElementAt(NextLoc);
         if (tile_element == nullptr)
             return;
 
@@ -1247,7 +1250,7 @@ void Staff::UpdateEmptyingBin()
         uint8_t additionStatus = tile_element->AsPath()->GetAdditionStatus() | ((3 << Var37) << Var37);
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
-        map_invalidate_tile_zoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
+        MapInvalidateTileZoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
         StaffBinsEmptied++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
@@ -1338,7 +1341,7 @@ void Staff::UpdateHeadingToInspect()
         if (!CheckForPath())
             return;
 
-        if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+        if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
         uint8_t pathingResult;
@@ -1446,7 +1449,7 @@ void Staff::UpdateAnswering()
         if (!CheckForPath())
             return;
 
-        if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+        if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
         uint8_t pathingResult;
@@ -1524,7 +1527,7 @@ bool Staff::UpdatePatrollingFindWatering()
 
         auto chosenLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[chosen_position];
 
-        TileElement* tile_element = map_get_first_element_at(chosenLoc);
+        TileElement* tile_element = MapGetFirstElementAt(chosenLoc);
 
         // This seems to happen in some SV4 files.
         if (tile_element == nullptr)
@@ -1591,7 +1594,7 @@ bool Staff::UpdatePatrollingFindBin()
     if (GetNextIsSurface())
         return false;
 
-    TileElement* tileElement = map_get_first_element_at(NextLoc);
+    TileElement* tileElement = MapGetFirstElementAt(NextLoc);
     if (tileElement == nullptr)
         return false;
 
@@ -1658,7 +1661,7 @@ bool Staff::UpdatePatrollingFindGrass()
     if (!(GetNextIsSurface()))
         return false;
 
-    auto surfaceElement = map_get_surface_element_at(NextLoc);
+    auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
     if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
     {
         if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
@@ -1781,7 +1784,7 @@ void Staff::UpdatePatrolling()
     if (!CheckForPath())
         return;
 
-    if (PathIsBlockedByVehicle() && !IsMechanicHeadingToFixRideBlockingPath())
+    if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
         return;
 
     uint8_t pathingResult;
@@ -1791,7 +1794,7 @@ void Staff::UpdatePatrolling()
 
     if (GetNextIsSurface())
     {
-        auto surfaceElement = map_get_surface_element_at(NextLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
 
         if (surfaceElement != nullptr)
         {
@@ -2207,7 +2210,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
             return true;
         }
 
-        auto tileElement = map_get_track_element_at(stationPos);
+        auto tileElement = MapGetTrackElementAt(stationPos);
         if (tileElement == nullptr)
         {
             log_error("Couldn't find tile_element");
@@ -2296,7 +2299,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
         CoordsXYE input;
         input.x = stationPosition.x;
         input.y = stationPosition.y;
-        input.element = map_get_track_element_at_from_ride({ input.x, input.y, stationPosition.z }, CurrentRide);
+        input.element = MapGetTrackElementAtFromRide({ input.x, input.y, stationPosition.z }, CurrentRide);
         if (input.element == nullptr)
         {
             return true;

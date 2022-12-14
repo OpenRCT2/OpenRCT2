@@ -517,7 +517,7 @@ public:
             case WIDX_THEMES_RCT1_RIDE_LIGHTS:
                 if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                 {
-                    context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                    ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
                 }
                 else
                 {
@@ -529,7 +529,7 @@ public:
             case WIDX_THEMES_RCT1_PARK_LIGHTS:
                 if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                 {
-                    context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                    ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
                 }
                 else
                 {
@@ -541,7 +541,7 @@ public:
             case WIDX_THEMES_RCT1_SCENARIO_FONT:
                 if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                 {
-                    context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                    ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
                 }
                 else
                 {
@@ -553,7 +553,7 @@ public:
             case WIDX_THEMES_RCT1_BOTTOM_TOOLBAR:
                 if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                 {
-                    context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                    ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
                 }
                 else
                 {
@@ -584,7 +584,7 @@ public:
             case WIDX_THEMES_DELETE_BUTTON:
                 if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                 {
-                    context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                    ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
                 }
                 else
                 {
@@ -594,7 +594,7 @@ public:
             case WIDX_THEMES_RENAME_BUTTON:
                 if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                 {
-                    context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                    ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
                 }
                 else
                 {
@@ -659,12 +659,12 @@ public:
                     }
                     else
                     {
-                        context_show_error(STR_THEMES_ERR_NAME_ALREADY_EXISTS, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_NAME_ALREADY_EXISTS, STR_NONE, {});
                     }
                 }
                 else
                 {
-                    context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+                    ContextShowError(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
                 }
                 break;
         }
@@ -706,7 +706,7 @@ public:
                 {
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_THEMES_DESC_CANT_CHANGE_THIS_THEME, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_THEMES_DESC_CANT_CHANGE_THIS_THEME, {});
                     }
                     else
                     {
@@ -736,7 +736,7 @@ public:
                 {
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_THEMES_DESC_CANT_CHANGE_THIS_THEME, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_THEMES_DESC_CANT_CHANGE_THIS_THEME, {});
                     }
                     else
                     {
@@ -823,7 +823,7 @@ public:
                     {
                         gfx_draw_string(
                             &dpi, topLeft, static_cast<const char*>(CheckBoxMarkString),
-                            { static_cast<colour_t>(colours[1] & 0x7F), FontSpriteBase::MEDIUM_DARK });
+                            { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, TextDarkness::Dark });
                     }
                 }
             }

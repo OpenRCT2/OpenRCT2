@@ -94,6 +94,10 @@ STR_0089    :Malá horská dráha
 STR_0090    :Mini dráha
 STR_0091    :Neznámá atrakce (59)
 STR_0092    :Horská dráha s elektromotorem
+STR_0093    :Hybridní horská dráha
+STR_0094    :Jednokolejná horská dráha
+STR_0095    :Alpská horská dráha
+STR_0096    :Klasická dřevěná horská dráha
 STR_0512    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
 STR_0513    :Návštěvníci jedou po horské dráze s loopingy ve stoje
 STR_0514    :Vlaky zavěšené pod kolejí se v zatáčkách houpají do stran
@@ -173,6 +177,10 @@ STR_0598    :Vozy vyrazí vstříc jednomu konci trati, poté prosviští pozpá
 STR_0599    :Malá horská dráha, na které vozy po jednom projíždí trať s kroucenými pády
 STR_0600    :Horská dráha s vozy ve stylu důlních vagónů, které jedou po hladkých kolejnicích skrze propletenou dráhu
 STR_0602    :Horská dráha s vozy poháněnými elektromotorem, které sviští skrze propletenou dráhu
+STR_0603    :Dřevěná horská dráha s ocelovými kolejemi, umožňující strmé přepady a obraty.
+STR_0604    :Jezdci jedou v jednom radě na úzké, jednokolejové dráze, při závodě úzkými obrátkami a změnami směru.
+STR_0605    :Jezdci se kloužou zauzlenou ocelovou dráhou, brzdíc pro ovládání rychlosti
+STR_0606    :Dřevěná horská dráha staršího stylu s drsnou a rychlou jízdou, koupou času ve vzduchu, bočným přetížením, navrhnutá pro pocit ‘ztracené kontroly’
 STR_0767    :Návštěvník {INT32}
 STR_0768    :Údržbář {INT32}
 STR_0769    :Mechanik {INT32}
@@ -407,7 +415,7 @@ STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vagónů na vlak
 STR_1024    :{COMMA16} vagon na vlak
 STR_1025    :{COMMA16} vagónů na vlak
 STR_1026    :Nástupiště je příliš dlouhé!
-STR_1027    :Najet na toto místo
+STR_1027    :Najet na toto místo v Hlavním Pohledu
 STR_1028    :Mimo mapu!
 STR_1029    :Nelze stavět částečně pod a nad vodní hladinou!
 STR_1030    :Tohle lze stavět jen pod vodou!
@@ -748,7 +756,7 @@ STR_1363    :Příliš vysoké podpěry!
 STR_1364    :Podpěry tratě nelze více zvyšovat!
 STR_1365    :Otočka kolem trati (levá)
 STR_1366    :Otočka kolem trati (pravá)
-STR_1367    :Poloviční smyčka
+STR_1367    :Malá poloviční smyčka
 STR_1368    :Poloviční vývrtka (levá)
 STR_1369    :Poloviční vývrtka (pravá)
 STR_1370    :Sudový výkrut (levý)
@@ -1962,7 +1970,7 @@ STR_2754    :Zalít květiny
 STR_2755    :Opravit vandalismy
 STR_2756    :Odebrat odpadky
 STR_2763    :???
-STR_2765    :Plná tramvaj
+STR_2765    :Velká tramvaj
 STR_2766    :Vyhrát scénář
 STR_2767    :Zakázat změny počasí
 STR_2769    :Otevřít park
@@ -2234,7 +2242,7 @@ STR_3185    :Malé kulisy
 STR_3186    :Velké kulisy
 STR_3187    :Stěny/ploty
 STR_3188    :Cedule u cest
-STR_3189    :Cesty
+STR_3189    :Původní cesty
 STR_3190    :Doplňky cest
 STR_3191    :Skupiny kulis
 STR_3192    :Vstup do parku
@@ -2707,8 +2715,6 @@ STR_5503    :Zadejte hostname, nebo IP adresu:
 STR_5504    :Zobrazit stav hry více hráčů
 STR_5505    :Nelze se připojit k serveru.
 STR_5506    :Návštěvníci ignorují intenzitu atrakcí
-STR_5508    :Povolit nahrávání souborů s chybným kontrolním součtem
-STR_5509    :Povolit nahrávání scénářů s neplatným{NEWLINE}kontrolním součtem - například{NEWLINE}scénáře demoverze, nebo{NEWLINE}poškozené uložené hry.
 STR_5510    :Výchozí zvukové zařízení
 STR_5511    :(UNKNOWN)
 STR_5512    :Uložit hru jako
@@ -3022,7 +3028,7 @@ STR_5867    :{WINDOW_COLOUR_2}Jméno provozovatele: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mail provozovatele: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Web provozovatele: {BLACK}{STRING}
 STR_5870    :Zobrazovat informace o serveru
-STR_5871    :Nevadnoucí květiny.
+STR_5871    :Vypnout vadnutí květin.
 STR_5872    :Vypnout stárnutí a uvadání květin.
 STR_5873    :Povolit řetězové výtahy na všech částech trati
 STR_5874    :Umožní použít řetězový výtah na jakékoliv části dráhy
@@ -3168,18 +3174,18 @@ STR_6014    :Návštěvníci platí pouze za služby a atrakce. Vstup do parku j
 STR_6015    :Nakloněný
 STR_6016    :Upravit dlaždici
 STR_6017    :Zpomalte prosím
-STR_6018    :Stavba trati - zatáčka vlevo
-STR_6019    :Stavba trati - zatáčka vpravo
-STR_6020    :Stavba trati - použít výchozí díl
-STR_6021    :Stavba trati - svah dolů
-STR_6022    :Stavba trati - svah vzhůru
-STR_6023    :Stavba trati - řetězový vlek
-STR_6024    :Stavba trati - náklon vlevo
-STR_6025    :Stavba trati - náklon vpravo
-STR_6026    :Stavba trati - předchozí díl
-STR_6027    :Stavba trati - následující díl
-STR_6028    :Stavba trati - postavit aktivní část
-STR_6029    :Stavba trati - odebrat aktivní část
+STR_6018    :Stavba - zatáčka vlevo
+STR_6019    :Stavba - zatáčka vpravo
+STR_6020    :Stavba - použít výchozí díl
+STR_6021    :Stavba - svah dolů
+STR_6022    :Stavba - svah vzhůru
+STR_6023    :Stavba - řetězový vlek
+STR_6024    :Stavba - náklon vlevo
+STR_6025    :Stavba - náklon vpravo
+STR_6026    :Stavba - předchozí díl
+STR_6027    :Stavba - následující díl
+STR_6028    :Stavba - postavit aktivní část
+STR_6029    :Stavba - odebrat aktivní část
 STR_6030    :Výběr kulis. Klikněte na jakoukoliv kulisu na mapě pro postavení její kopie.
 STR_6031    :Popis serveru:
 STR_6032    :Uvítací zpráva serveru:
@@ -3423,7 +3429,7 @@ STR_6318    :Detekována síťová desynchronizace.{NEWLINE}Log: {STRING}
 STR_6319    :Uzavřený brzdný blok
 STR_6320    :Nezničitelné
 STR_6321    :Rozbitá část
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entity ID: {BLACK}{INT32}
 STR_6323    :Probíhá simulace
 STR_6324    :Simulovat
 STR_6325    :Simulovat atrakci
@@ -3433,7 +3439,7 @@ STR_6328    :Velké snímky obrazovky budou mít průhledné pozadí namísto v�
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Stahování [{STRING}] od {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Přivolat kachny
-STR_6332    :Zmizet kachny
+STR_6332    :Odstranit kachny
 STR_6333    :Zvýšit koeficient škálování
 STR_6334    :Snížit koeficient škálování
 STR_6336    :Průzkumník dlaždic: Kopírovat prvek
@@ -3471,7 +3477,7 @@ STR_6367    :Snímek animace:
 STR_6368    :Z důvodů kompatibility není doporučeno spuštět OpenRCT2 pod Wine. OpenRCT2 má nativví podporu pro macOS, Linux, FreeBSD a OpenBSD.
 STR_6369    :Povolit stavbu trati v jakémkoliv výšce
 STR_6370    :Umožní stavět dráhu v neplatné výšce
-STR_6371    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale chybí soubor „csg1i.dat“. Tento soubor je nutné překopírovat z RollerCoaster Tycoon 1 instalačního CD do složky „Data“ ve vaší složce s RollerCoaster Tycoon 1. 
+STR_6371    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale chybí soubor „csg1i.dat“. Tento soubor je nutné překopírovat z Loopy Landscapes nebo RCT Deluxe instalačního CD do složky „Data“ ve vaší složce s RollerCoaster Tycoon 1.
 STR_6372    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale nelze použít jeho verzi. OpenRCT2 potřebuje buď Loopy Landscapes nebo RCT Deluxe verzi, aby bylo možné převzít grafiku.
 STR_6373    :Přepnout kontroly křížení
 STR_6374    :K
@@ -3493,6 +3499,138 @@ STR_6389    :Málo místa
 STR_6390    :OpenRCT2 potřebuje soubory originální hry RollerCoaster Tycoon 2. Zvolte prosím složku instalace RollerCoaster Tycoon 2.
 STR_6391    :Vyberte RCT2 složku
 STR_6392    :Ve zvolené složce se nepodařilo nalézt {STRING}.
+STR_6393    :Výběr cíle
+STR_6394    :Cíl
+STR_6395    :Údržba
+STR_6396    :Vypnout šetřič a úsporu energie monitoru
+STR_6397    :{SMALLFONT}{BLACK}Při zvolení, šetřič obrazovky a funkce úspory energie monitoru budou pozastaveny pokud je OpenRCT2 spuštěno.
+STR_6398    :Soubor obsahuje nepodporované atrakce. Prosím aktualizujte na novější verzi OpenRCT2.
+STR_6399    :OpenRCT2 vyžaduje k fungování soubory původního RollerCoaster Tycoon 2. Nastavte “game_path” hodnotu v config.ini na složku instalace RollerCoaster Tycoon 2, poté restartujte OpenRCT2.
+STR_6400    :Mám stažený GOG offline instalátor pro RollerCoaster Tycoon 2, ale není nainstalován
+STR_6401    :Mám už nainstalován RollerCoaster Tycoon 2
+STR_6402    :OpenRCT2 Data Nastavení
+STR_6403    :Vyberte co se na vás nejlépe vztahuje
+STR_6404    :Prosím vyberte GOG RollerCoaster Tycoon 2 instalátor.
+STR_6405    :Vyberte GOG Instalátor
+STR_6406    :GOG RollerCoaster Tycoon 2 Instalátor
+STR_6407    :Tohle může zabrat několik minut.
+STR_6408    :Prosím nainstalujte “innoextract” pro extrakci GOG Instalátoru, pak restartujte OpenRCT2.
+STR_6409    :Vybraný soubor není offline GOG Instalátor pro RollerCoaster Tycoon 2. Možná jste stáhnuli GOG Galaxy stahovací základ nebo vybrali špatný soubor.
+STR_6410    :Přiblížit /Oddálit
+STR_6411    :Zobrazit tlačítka přiblížení a oddálení na nástrojové liště
+STR_6412    :Číselník Enter
+STR_6413    :Shift
+STR_6414    :L Shift
+STR_6415    :P Shift
+STR_6416    :Ctrl
+STR_6417    :L Ctrl
+STR_6418    :P Ctrl
+STR_6419    :Alt
+STR_6420    :L Alt
+STR_6421    :P Alt
+STR_6422    :Cmd
+STR_6423    :L Cmd
+STR_6424    :P Cmd
+STR_6425    :Joy Levo
+STR_6426    :Joy Pravo
+STR_6427    :Joy Nahoru
+STR_6428    :Joy Dolů
+STR_6429    :Joy {INT32}
+STR_6430    :LTM
+STR_6431    :PTM
+STR_6432    :Myš {INT32}
+STR_6433    :Odstranit
+STR_6434    :Odstranit všechny vazby pro tuhle zkratku.
+STR_6435    :{WINDOW_COLOUR_2}Vandali zastaveni: {BLACK}{COMMA16}
+STR_6436    :Přepnout neviditelnost
+STR_6437    :Viditelný
+STR_6438    :V
+STR_6439    :Inspektor dlaždic: Přepnout neviditelnost
+STR_6440    :Průhledná voda
+STR_6441    :Alespoň jeden chodník který není fronta musí být vybrán.
+STR_6442    :Alespoň jeden chodník fronty musí být vybrán.
+STR_6443    :Alespoň jedno zábradlí chodníku musí být vybráno.
+STR_6444    :Povrchy chodníků
+STR_6445    :Zábradlí chodníků
+STR_6446    :{WINDOW_COLOUR_2}Jméno povrchu: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Jméno zábradlí: {BLACK}{STRINGID}
+STR_6448    :Nepodporovaný formát objektu
+STR_6449    :{WINDOW_COLOUR_2}Skladby:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Prodává: {BLACK}{STRING}
+STR_6453    :Kopírovat informace o verzi
+STR_6454    :Nemožno přejmenovat transparent…
+STR_6455    :Nemožno přejmenovat nápis…
+STR_6456    :Gigantický snímek obrazovky
+STR_6457    :Nahlásit chybu na GitHub
+STR_6458    :Sledovat v Hlavním Pohledu
+STR_6460    :S
+STR_6461    :Směr
+STR_6462    :Nadšení
+STR_6463    :Nadšení: {COMMA2DP32}
+STR_6464    :Intenzita
+STR_6465    :Intenzita: {COMMA2DP32}
+STR_6466    :Nevolnost
+STR_6467    :Nevolnost: {COMMA2DP32}
+STR_6468    :Zatím neznámo
+STR_6469    :Uprav menší oblast pochůzky
+STR_6470    :Uprav větší oblast pochůzky
+STR_6471    :Průhledná Vegetace
+STR_6472    :Průhledná Vozidla
+STR_6473    :Průhledné opory
+STR_6474    :Neviditelní hosté
+STR_6475    :Neviditelní zaměstnanci
+STR_6476    :Neviditelná Vegetace
+STR_6477    :Neviditelná Scenerie
+STR_6478    :Neviditelné Cesty
+STR_6479    :Neviditelné Dráhy
+STR_6480    :Neviditelná Vozidla
+STR_6481    :Nastavení průhlednosti
+STR_6482    :Nastavení průhlednosti
+STR_6483    :Otevřít nastavení průhlednosti
+STR_6484    :Přepnutí průhledné Vegetace
+STR_6485    :Přepnutí průhledných vozidel
+STR_6486    :Skrýt přepnutí hostí
+STR_6487    :Skrýt přepnutí zaměstnanců
+STR_6488    :{RED}Hosté si stěžují na dlouhé fronty v parku.{NEWLINE}Zvažte zkrácení front, nebo zvýšení kapacit atrakcí.
+STR_6489    :Chyba: Nekompatibilní verze parku
+STR_6490    :Varování: Částečne kompatibilní verze parku
+STR_6492    :Tenhle park byl uložen v staré verzi OpenRCT2, a nemůže být otevřen touhle verzí. Park je verze {INT32}.
+STR_6494    :Zoskupit podle typu atrakce
+STR_6495    :Zoskupit atrakce podle druhu místo zobrazení každé odděleně.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Kliknutím na dlaždici zobrazíte její části.{NEWLINE}Ctrl + kliknutí a části dlaždice pro její příme zvolení.
+STR_6498    :Zapnout pro udržování čtvercové mapy
+STR_6499    :Druh vozidla není podporován formátem návrhu tratě
+STR_6500    :Prvky trate nejsou podporovány formátem návrhu tratě
+STR_6501    :Náhodná barva
+STR_6502    :Vlož hodnotu mezi {COMMA16} a {COMMA16}
+STR_6503    :Alespoň jedna stanice musí bejt vybrána
+STR_6504    :Alespoň jeden povrch terénu musí bejt vybrán
+STR_6505    :Alespoň jedna hrana terénu musí bejt vybrána
+STR_6506    :Velká poloviční vývrtka (levá)
+STR_6507    :Velká poloviční vývrtka (pravá)
+STR_6508    :Střední polovičná slučka (levá)
+STR_6509    :Střední polovičná slučka (pravá)
+STR_6510    :Nula G Kotoul (levý)
+STR_6511    :Nula G Kotoul (pravý)
+STR_6512    :Velký Nula G Kotoul (levý)
+STR_6513    :Velký Nula G Kotoul (pravý)
+STR_6514    :Chybná vejška!
+STR_6515    :{BLACK}RCT1 není nalinkováno - budou použity záložné obrázky.
+STR_6516    :Jeden nebo více přidaných objektů vyžaduje nalinkované RCT1 pro správné zobrazení. Budou použity záložné obrázky.
+STR_6517    :Jeden nebo více přidaných objektů v tomto parku vyžaduje nalinkované RCT1 pro správné zobrazení. Budou použity záložné obrázky.
+STR_6518    :{BLACK}Přejeď nad scenářem pro zobrazení popisu a cíle. Klikni pro začatí hry.
+STR_6519    :Extra
+STR_6520    :Balíčky doplňků
+STR_6521    :Nízká priorita
+STR_6522    :Vysoká priorita
+STR_6523    :Znížit prioritu zvoleného balíčku doplňků.
+STR_6524    :Zvýšit prioritu zvoleného balíčku doplňků.
+STR_6525    :Znovu načítat všechny doplňky ve hře se zapnutými balíčkami doplňků.
+STR_6526    :(základní grafika, hudba a zvukové efekty)
+STR_6527    :Soutěže
 
 ###############################################################################
 ## RCT2 Scenarios
@@ -3787,3 +3925,8 @@ STR_DTLS    :Obrovský každoroční hudební festival se bude konat na vašem p
 STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
 STR_PARK    :Rock ’n’ Roll Revival
 STR_DTLS    :Tento stárnoucí zábavní park už viděl lepší dny. Pomozte majiteli dát parku retro rock ’n’ roll vzhled a udělat z něho vyhledávané místo.
+
+<Panda World>
+STR_SCNR    :Panda World
+STR_PARK    :Panda World
+STR_DTLS    :Přidejte další atrakce a přilákejte více lidí do pandího zábavního parku.

@@ -2715,8 +2715,6 @@ STR_5503    :Anna isäntänimi tai IP-osoite:
 STR_5504    :Näytä moninpelin tilanne
 STR_5505    :Yhdistäminen ei onnistunut.
 STR_5506    :Kävijät eivät piittaa intensiteetistä
-STR_5508    :Salli lataus väärästä tarkistussummasta huolimatta
-STR_5509    :Sallii skenaarioiden ja tallennustiedostojen latauksen vaikka tarkistussumma olisi väärä, kuten esim. demoskenaariot tai vaurioituneet tallennukset.
 STR_5510    :Oletusäänilaite
 STR_5511    :(TUNTEMATON)
 STR_5512    :Tallenna peli nimellä
@@ -3600,9 +3598,7 @@ STR_6487    :Läpinäkyvä henkilöstö -kytkin
 STR_6488    :{RED}Kävijät valittavat pitkistä jonoista puistosi laitteisiin.{NEWLINE}Lyhennä ongelmallisia jonotusalueita, tai korota laitteiden kapasiteettia.
 STR_6489    :Virhe: Yhteensopimaton puistoversio
 STR_6490    :Varoitus: Jokseenkin yhteensopiva puistoversio
-STR_6491    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
 STR_6492    :Tämä puisto on tallennettu vanhemmalla OpenRCT2-versiolla, eikä sitä voi avata tällä peliversiolla. Puisto on v{INT32}.
-STR_6493    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla, ja jotkin tiedot ovat saattaneet kadota. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
 STR_6494    :Ryhmitä laitetyypittäin
 STR_6495    :Ryhmitä laitteet laitetyypin perusteella, yksittäisten kulkuneuvojen sijaan.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -4059,36 +4055,6 @@ STR_DTLS    :
 
 [TTPIRF05]
 STR_NAME    :Katto
-
-[TTRFWD01]
-STR_NAME    :Katto
-
-[TTRFWD02]
-STR_NAME    :Katto
-
-[TTRFWD03]
-STR_NAME    :Katto
-
-[TTRFWD04]
-STR_NAME    :Katto
-
-[TTRFWD05]
-STR_NAME    :Katto
-
-[TTRFWD06]
-STR_NAME    :Katto
-
-[TTRFWD07]
-STR_NAME    :Katto
-
-[TTRFWD08]
-STR_NAME    :Katto
-
-[ACWW33]
-STR_NAME    :Puinen tolppaseinä
-
-[ACWWF32]
-STR_NAME    :Puinen tolppaseinä
 
 ## End OpenRCT2 Official
 

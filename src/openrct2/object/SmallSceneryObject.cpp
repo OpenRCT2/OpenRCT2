@@ -175,45 +175,12 @@ void SmallSceneryObject::PerformFixes()
         static const auto& scgPirat = GetScgPiratHeader();
         SetPrimarySceneryGroup(scgPirat);
     }
-
-    // ToonTowner's wooden roofs. Make them show up in the Mine Theming.
-    if (identifier == "TTRFWD01" ||
-        identifier == "TTRFWD02" ||
-        identifier == "TTRFWD03" ||
-        identifier == "TTRFWD04" ||
-        identifier == "TTRFWD05" ||
-        identifier == "TTRFWD06" ||
-        identifier == "TTRFWD07" ||
-        identifier == "TTRFWD08")
-    {
-        static const auto& scgMine = GetScgMineHeader();
-        SetPrimarySceneryGroup(scgMine);
-    }
-
-    // ToonTowner's glass roofs. Make them show up in the Abstract Theming.
-    if (identifier == "TTRFGL01" ||
-        identifier == "TTRFGL02" ||
-        identifier == "TTRFGL03")
-    {
-        static const auto& scgAbstr = GetScgAbstrHeader();
-        SetPrimarySceneryGroup(scgAbstr);
-    }
 }
 // clang-format on
 
 ObjectEntryDescriptor SmallSceneryObject::GetScgPiratHeader() const
 {
     return ObjectEntryDescriptor("rct2.scenery_group.scgpirat");
-}
-
-ObjectEntryDescriptor SmallSceneryObject::GetScgMineHeader() const
-{
-    return ObjectEntryDescriptor("rct2.scgmine");
-}
-
-ObjectEntryDescriptor SmallSceneryObject::GetScgAbstrHeader() const
-{
-    return ObjectEntryDescriptor("rct2.scenery_group.scgabstr");
 }
 
 void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)

@@ -59,7 +59,7 @@ static constexpr const uint32_t SwingingInverterShipFrameSprites[] = {
 };
 
 static void PaintSwingingInverterShipStructure(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
     if (rideEntry == nullptr)
@@ -125,7 +125,7 @@ static void PaintSwingingInverterShipStructure(
 }
 
 static void PaintSwingingInverterShip(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
@@ -137,13 +137,13 @@ static void PaintSwingingInverterShip(
     {
         if (direction & 1)
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         else
         {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
 
         if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
@@ -163,11 +163,11 @@ static void PaintSwingingInverterShip(
                     break;
                 case 2:
                     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_PLATFORM_SW_NE);
-                    PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 32, 8, 1 }, { -2, 0, height });
+                    PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { { -2, 0, height }, { 32, 8, 1 } });
                     break;
                 case 3:
                     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_STATION_PLATFORM_NW_SE);
-                    PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 8, 32, 1 }, { 0, -2, height });
+                    PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { { 0, -2, height }, { 8, 32, 1 } });
                     break;
             }
         }
@@ -189,8 +189,8 @@ static void PaintSwingingInverterShip(
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 176, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 176, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int32_t trackType)

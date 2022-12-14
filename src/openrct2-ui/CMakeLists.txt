@@ -232,7 +232,21 @@ if(MACOS_BUNDLE)
         ZIP_URL ${TITLE_SEQUENCE_URL}
         SHA1 ${TITLE_SEQUENCE_SHA1}
     )
-    
+
+    # download opensfx and openmsx
+    download_openrct2_zip(
+        ZIP_VERSION ${OPENSFX_VERSION}
+        DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
+        ZIP_URL ${OPENSFX_URL}
+        SHA1 ${OPENSFX_SHA1}
+    )
+    download_openrct2_zip(
+        ZIP_VERSION ${OPENMSX_VERSION}
+        DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
+        ZIP_URL ${OPENMSX_URL}
+        SHA1 ${OPENMSX_SHA1}
+    )
+
     file(COPY ${OBJECTS_DIR} DESTINATION "${BUNDLE_RESOURCE_DIR}")
     file(COPY ${TITLE_SEQUENCE_DIR} DESTINATION "${BUNDLE_RESOURCE_DIR}")
 

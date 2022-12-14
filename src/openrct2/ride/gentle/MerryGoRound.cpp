@@ -26,7 +26,7 @@ static constexpr const uint16_t MerryGoRoundBreakdownVibration[] = {
 };
 
 static void PaintRiders(
-    paint_session& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle& vehicle, int32_t rotationOffset,
+    PaintSession& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle& vehicle, int32_t rotationOffset,
     const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 0 })
@@ -51,7 +51,7 @@ static void PaintRiders(
 }
 
 static void PaintCarousel(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     height += 7;
 
@@ -99,14 +99,14 @@ static void PaintCarousel(
 }
 
 static void PaintMerryGoRound(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -159,9 +159,9 @@ static void PaintMerryGoRound(
             break;
     }
 
-    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 64, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMerryGoRound(int32_t trackType)

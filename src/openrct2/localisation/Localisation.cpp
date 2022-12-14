@@ -36,7 +36,7 @@
 #include <iterator>
 #include <limits.h>
 
-thread_local char gCommonStringFormatBuffer[512];
+thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
 
 #ifdef DEBUG
 // Set to true before a string format call to see details of the formatting.
@@ -424,7 +424,7 @@ void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytes)
 money32 string_to_money(const char* string_to_monetise)
 {
     const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
     char processedString[128] = {};
 
     Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
@@ -521,7 +521,7 @@ void money_to_string(money32 amount, char* buffer_to_put_value_to, size_t buffer
         return;
     }
 
-    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
 
     int sign = amount >= 0 ? 1 : -1;
     int a = abs(amount) * currencyDesc->rate;

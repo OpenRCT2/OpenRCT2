@@ -63,7 +63,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     gInMapInitCode = true;
     gCurrentTicks = 0;
 
-    map_init(mapSize);
+    MapInit(mapSize);
     _park->Initialise();
     finance_init();
     BannerInit();
@@ -78,11 +78,11 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 
     gNextGuestNumber = 1;
 
-    context_init();
-    scenery_set_default_placement_configuration();
+    ContextInit();
+    ScenerySetDefaultPlacementConfiguration();
 
     auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     load_palette();
 
@@ -141,7 +141,7 @@ void GameState::Tick()
     }
 
     bool isPaused = game_is_paused();
-    if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.pause_server_if_no_clients)
+    if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.PauseServerIfNoClients)
     {
         // If we are headless we always have 1 player (host), pause if no one else is around.
         if (gOpenRCT2Headless && network_get_num_players() == 1)
@@ -173,7 +173,7 @@ void GameState::Tick()
 
             // Update the animation list. Note this does not
             // increment the map animation.
-            map_animation_invalidate_all();
+            MapAnimationInvalidateAll();
 
             // Post-tick network update
             network_process_pending();
@@ -228,9 +228,9 @@ void GameState::Tick()
             gWindowMapFlashingFlags |= MapFlashingFlags::FlashStaff;
         gWindowMapFlashingFlags &= ~MapFlashingFlags::StaffListOpen;
 
-        context_update_map_tooltip();
+        ContextUpdateMapTooltip();
 
-        context_handle_input();
+        ContextHandleInput();
     }
 
     // Always perform autosave check, even when paused
@@ -321,16 +321,16 @@ void GameState::UpdateLogic(LogicTimings* timings)
     report_time(LogicTimePart::Scenario);
     ClimateUpdate();
     report_time(LogicTimePart::Climate);
-    map_update_tiles();
+    MapUpdateTiles();
     report_time(LogicTimePart::MapTiles);
     // Temporarily remove provisional paths to prevent peep from interacting with them
-    map_remove_provisional_elements();
+    MapRemoveProvisionalElements();
     report_time(LogicTimePart::MapStashProvisionalElements);
-    map_update_path_wide_flags();
+    MapUpdatePathWideFlags();
     report_time(LogicTimePart::MapPathWideFlags);
     peep_update_all();
     report_time(LogicTimePart::Peep);
-    map_restore_provisional_elements();
+    MapRestoreProvisionalElements();
     report_time(LogicTimePart::MapRestoreProvisionalElements);
     vehicle_update_all();
     report_time(LogicTimePart::Vehicle);
@@ -354,7 +354,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     News::UpdateCurrentItem();
     report_time(LogicTimePart::News);
 
-    map_animation_invalidate_all();
+    MapAnimationInvalidateAll();
     report_time(LogicTimePart::MapAnimation);
     vehicle_sounds_update();
     peep_update_crowd_noise();

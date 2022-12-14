@@ -266,20 +266,14 @@ static void WindowMultiplayerSetPage(rct_window* w, int32_t page)
 
 static void WindowMultiplayerAnchorBorderWidgets(rct_window* w)
 {
-    w->widgets[WIDX_BACKGROUND].right = w->width - 1;
-    w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_TITLE].right = w->width - 2;
-    w->widgets[WIDX_CONTENT_PANEL].right = w->width - 1;
-    w->widgets[WIDX_CONTENT_PANEL].bottom = w->height - 1;
-    w->widgets[WIDX_CLOSE].left = w->width - 13;
-    w->widgets[WIDX_CLOSE].right = w->width - 3;
+    w->ResizeFrameWithPage();
 }
 
 static void WindowMultiplayerSetPressedTab(rct_window* w)
 {
-    for (int32_t i = 0; i < 2; i++)
+    for (int32_t i = WIDX_TAB1; i <= WIDX_TAB4; i++)
     {
-        w->pressed_widgets &= ~(1 << (WIDX_TAB1 + i));
+        w->pressed_widgets &= ~(1 << i);
     }
     w->pressed_widgets |= 1LL << (WIDX_TAB1 + w->page);
 }
@@ -340,7 +334,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
         return _windowInformationSize;
     }
 
-    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontStyle::Medium);
 
     // Base dimensions.
     const int32_t width = 450;
@@ -350,7 +344,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
         u8string buffer = network_get_server_name();
-        gfx_wrap_string(buffer.data(), width, FontSpriteBase::MEDIUM, &numLines);
+        gfx_wrap_string(buffer.data(), width, FontStyle::Medium, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
@@ -359,7 +353,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     if (!str_is_null_or_empty(descString))
     {
         u8string buffer = descString;
-        gfx_wrap_string(buffer.data(), width, FontSpriteBase::MEDIUM, &numLines);
+        gfx_wrap_string(buffer.data(), width, FontStyle::Medium, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
@@ -466,7 +460,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
 
 static bool IsServerPlayerInvisible()
 {
-    return network_is_server_player_invisible() && !gConfigGeneral.debugging_tools;
+    return network_is_server_player_invisible() && !gConfigGeneral.DebuggingTools;
 }
 
 static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetIndex)
@@ -623,7 +617,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 _buffer += network_get_player_name(player);
             }
             screenCoords.x = 0;
-            gfx_clip_string(_buffer.data(), 230, FontSpriteBase::MEDIUM);
+            gfx_clip_string(_buffer.data(), 230, FontStyle::Medium);
             gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
 
             // Draw group name
@@ -634,7 +628,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 _buffer += "{BLACK}";
                 screenCoords.x = 173;
                 _buffer += network_get_group_name(group);
-                gfx_clip_string(_buffer.data(), 80, FontSpriteBase::MEDIUM);
+                gfx_clip_string(_buffer.data(), 80, FontStyle::Medium);
                 gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
             }
 
@@ -958,16 +952,16 @@ static void WindowMultiplayerOptionsMouseup(rct_window* w, WidgetIndex widgetInd
             }
             break;
         case WIDX_LOG_CHAT_CHECKBOX:
-            gConfigNetwork.log_chat = !gConfigNetwork.log_chat;
-            config_save_default();
+            gConfigNetwork.LogChat = !gConfigNetwork.LogChat;
+            ConfigSaveDefault();
             break;
         case WIDX_LOG_SERVER_ACTIONS_CHECKBOX:
-            gConfigNetwork.log_server_actions = !gConfigNetwork.log_server_actions;
-            config_save_default();
+            gConfigNetwork.LogServerActions = !gConfigNetwork.LogServerActions;
+            ConfigSaveDefault();
             break;
         case WIDX_KNOWN_KEYS_ONLY_CHECKBOX:
-            gConfigNetwork.known_keys_only = !gConfigNetwork.known_keys_only;
-            config_save_default();
+            gConfigNetwork.KnownKeysOnly = !gConfigNetwork.KnownKeysOnly;
+            ConfigSaveDefault();
             break;
     }
 }
@@ -994,9 +988,9 @@ static void WindowMultiplayerOptionsInvalidate(rct_window* w)
         w->widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WindowWidgetType::Empty;
     }
 
-    WidgetSetCheckboxValue(*w, WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.log_chat);
-    WidgetSetCheckboxValue(*w, WIDX_LOG_SERVER_ACTIONS_CHECKBOX, gConfigNetwork.log_server_actions);
-    WidgetSetCheckboxValue(*w, WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.known_keys_only);
+    WidgetSetCheckboxValue(*w, WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.LogChat);
+    WidgetSetCheckboxValue(*w, WIDX_LOG_SERVER_ACTIONS_CHECKBOX, gConfigNetwork.LogServerActions);
+    WidgetSetCheckboxValue(*w, WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.KnownKeysOnly);
 }
 
 static void WindowMultiplayerOptionsPaint(rct_window* w, rct_drawpixelinfo* dpi)

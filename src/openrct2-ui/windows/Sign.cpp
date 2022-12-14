@@ -135,7 +135,7 @@ public:
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
             viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
-        viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+        viewport->flags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
 
         return true;
@@ -244,7 +244,7 @@ public:
 
         if (_isSmall)
         {
-            auto* wallEntry = get_wall_entry(_sceneryEntry);
+            auto* wallEntry = GetWallEntry(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
@@ -260,7 +260,7 @@ public:
         }
         else
         {
-            auto* sceneryEntry = get_large_scenery_entry(_sceneryEntry);
+            auto* sceneryEntry = GetLargeSceneryEntry(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
@@ -275,8 +275,8 @@ public:
             }
         }
 
-        main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(_mainColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-        text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(_textColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        main_colour_btn->image = GetColourButtonImage(_mainColour).ToUInt32();
+        text_colour_btn->image = GetColourButtonImage(_textColour).ToUInt32();
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -307,7 +307,7 @@ public:
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
             viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
         if (viewport != nullptr)
-            viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+            viewport->flags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
     }
 };

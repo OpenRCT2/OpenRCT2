@@ -72,7 +72,7 @@ int32_t track_is_connected_by_shape(TileElement* a, TileElement* b)
 
 static TileElement* find_station_element(const CoordsXYZD& loc, RideId rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at(loc);
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -244,7 +244,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
 
-                map_invalidate_element(loc, stationElement);
+                MapInvalidateElement(loc, stationElement);
 
                 if (stationBackLoc != loc)
                 {
@@ -275,7 +275,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
-        TileElement* tileElement = map_get_track_element_at_with_direction_from_ride(loc, rideIndex);
+        TileElement* tileElement = MapGetTrackElementAtWithDirectionFromRide(loc, rideIndex);
         if (tileElement != nullptr)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -390,7 +390,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
 
-                map_invalidate_element(currentLoc, stationElement);
+                MapInvalidateElement(currentLoc, stationElement);
             }
         }
 
@@ -669,9 +669,12 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
     auto coords = CoordsXYZ(posEl.x, posEl.y, trackEl->GetBaseZ());
 
     // Subtract the current sequence's offset
-    const auto* trackBlock = &ted.Block[trackEl->GetSequenceIndex()];
+    const auto* trackBlock = ted.GetBlockForSequence(trackEl->GetSequenceIndex());
+    if (trackBlock == nullptr)
+        return {};
+
     CoordsXY trackBlockOffset = { trackBlock->x, trackBlock->y };
-    coords += trackBlockOffset.Rotate(direction_reverse(direction));
+    coords += trackBlockOffset.Rotate(DirectionReverse(direction));
     coords.z -= trackBlock->z;
 
     return CoordsXYZD(coords, direction);
@@ -917,4 +920,21 @@ void TrackElement::SetHighlight(bool on)
     Flags2 &= ~TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
     if (on)
         Flags2 |= TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
+}
+
+bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, int32_t parkFileVersion)
+{
+    // Lots of Log Flumes exist where the downward slopes are simulated by using other track
+    // types like the Splash Boats, but not actually made invisible, because they never needed
+    // to be.
+    if (rideType == RIDE_TYPE_LOG_FLUME && parkFileVersion <= 15)
+    {
+        if (trackType == TrackElemType::Down25ToDown60 || trackType == TrackElemType::Down60
+            || trackType == TrackElemType::Down60ToDown25)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

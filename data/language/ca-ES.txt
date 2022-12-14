@@ -102,7 +102,7 @@ STR_0512    :Muntanya russa compacta amb una pujada en espiral i caigudes sinuos
 STR_0513    :Muntanya russa amb inversions en la qual els passatgers es mantenen drets.
 STR_0514    :Els cotxes que pengen per sota dels rails es balancegen cap a fora en les corbes.
 STR_0515    :Muntanya russa d’acer amb cotxes que pengen per sota de la via i amb un recorregut molt complex i sinuós.
-STR_0516    :Muntanya russa suau per gent que encara no s’atreveix amb muntanyes russes grans.
+STR_0516    :Muntanya russa suau per a gent que encara no s’atreveix amb muntanyes russes grans.
 STR_0517    :Els passatgers viatgen en trens diminuts per una via estreta.
 STR_0518    :Els passatgers viatgen en trens elèctrics per una via monorail.
 STR_0519    :Els passatgers viatgen en vagons petits que pengen de la via d’un sol rail, balancejant-se lliurement d’un costat a l’altre en les corbes.
@@ -112,10 +112,10 @@ STR_0522    :Muntanya russa petita en la que els passatgers estan asseguts per d
 STR_0523    :Els passatgers viatgen poc a poc en vehicles autopropulsats sobre la ruta que segueix la via.
 STR_0524    :Es llença un vagó cap amunt amb aire comprimit per una torre d’acer i després se’l deixa caure.
 STR_0525    :Els passatgers circulen per un camí tortuós guiat només per la curvatura i peralt de vies semicirculars.
-STR_0526    :Els passatgers entren a una cabina rotatòria d’observació que els puja per a dalt de tot de la torre.
+STR_0526    :Els passatgers entren a una cabina rotatòria d’observació que els puja dalt de tot de la torre.
 STR_0527    :Muntanya russa suau de vies d’acer i que permet inversions verticals.
 STR_0528    :Els passatgers viatgen en bots inflables a través de tubs semicirculars o tubs totalment tancats.
-STR_0529    :Muntanya russa amb temàtica minera per vies d’acer preparades per simular vies fèrries de tren.
+STR_0529    :Muntanya russa amb temàtica minera per vies d’acer preparades per a simular vies fèrries de tren.
 STR_0530    :Els vagons pengen d’un cable d’acer que recorren contínuament d’un extrem a l’altre de l’atracció.
 STR_0531    :Muntanya russa compacta amb vies d’acer per la qual els vagons passen per tirabuixons i inversions.
 STR_0532    :El laberint està format per bardisses o murs de dos metres. Els visitants es mouen pels camins del laberint buscant la sortida. Només abandonaran l’atracció si aconsegueixen trobar la sortida!
@@ -127,7 +127,7 @@ STR_0537    :Els passatgers condueixen cotxes de xoc elèctrics i xoquen entre e
 STR_0538    :Vaixell pirata enorme que es balanceja d’un costat a l’altre.
 STR_0539    :El vaixell està unit a un braç amb un contrapès a l’altre extrem. El vaixell es balanceja i arriba a fer una volta de 360°.
 STR_0540    :Un estand on els visitants poden comprar menjar.
-STR_0542    :Un estand per comprar begudes.
+STR_0542    :Un estand per a comprar begudes.
 STR_0544    :Un estand que ven objectes de record de la visita al parc.
 STR_0545    :Els cavallets tradicionals que giren i giren i giren…
 STR_0547    :Un estand on els visitants poden aconseguir un mapa del parc i comprar paraigües.
@@ -137,23 +137,23 @@ STR_0550    :Els passatgers veuen una pel·lícula dins del simulador mentre aqu
 STR_0551    :Un cinema que projecta pel·lícules en 3D dins d’un edifici en forma d’esfera.
 STR_0552    :Les cabines dels passatgers pengen dels braços als que estan lligades girant-les, balancejant-les i movent-les cap endavant i cap enrere.
 STR_0553    :Anells concèntrics pivotats que permeten als que hi pugen donar voltes en totes les direccions.
-STR_0554    :El vagó accelera sortint de l’estació per una via llarga i anivellada usant motors d’inducció lineal. Llavors, es mou cap amunt per una secció vertical que acaba en punta i cau en caiguda lliure per retornar després a l’andana.
-STR_0555    :Els passatgers pugen o baixen per una torre vertical per arribar a diferents nivells del parc.
+STR_0554    :El vagó accelera sortint de l’estació per una via llarga i anivellada usant motors d’inducció lineal. Llavors, es mou cap amunt per una secció vertical que acaba en punta i cau en caiguda lliure per a tornar després a l’andana.
+STR_0555    :Els passatgers pugen o baixen per una torre vertical per a accedir a diferents nivells del parc.
 STR_0556    :Vagons extraamples descendeixen per una secció vertical per a l’experiència definitiva de les caigudes lliures en muntanyes russes.
 STR_0557    :Un caixer automàtic que poden usar els visitants que tinguin pocs diners a la butxaca.
 STR_0558    :Els passatgers van aparellats als seients que giren respecte les puntes de tres braços llargs que també giren.
 STR_0559    :Edifici enorme de temàtica terrorífica amb passadissos esgarrifosos i sales horripilants.
-STR_0560    :Un lloc que els visitants amb nàusees visiten per recuperar-se més de pressa.
+STR_0560    :Un lloc que els visitants amb nàusees visiten per a recuperar-se més de pressa.
 STR_0561    :Espectacle de circ dins d’una tenda enorme.
 STR_0562    :Els vagons autopropulsats viatgen per una via a diferents nivells que recorre paisatges fantasmagòrics amb efectes especials.
 STR_0563    :Els passatgers drets amb unes subjeccions simples dintre els vagons travessen i gaudeixen de caigudes i girs enrevessats, així com d’una part «a l’aire lliure» damunt dels turons.
 STR_0564    :Movent-se per vies de fusta, aquesta muntanya russa és ràpida, rústica, sorollosa i dóna una sensació d’experiència «fora de control» a l’aire lliure.
 STR_0565    :Una muntanya russa senzilla de fusta que només és capaç de fer inclinacions i girs suaus, mentre que els vagons es mantenen a la via mitjançant la gravetat i unes rodes laterals de fricció.
 STR_0566    :Els vagons individuals giren per un difícil tram zigzaguejant amb girs pronunciats i caigudes brusques curtes.
-STR_0567    :Seient suspesos a ambdós laterals de la via, els passatgers són penjats cap per avall mentre són sotmesos a caigudes pronunciades i passen per inversions.
+STR_0567    :Seient suspesos a ambdós laterals de la via, els passatgers són penjats cap per avall mentre són sotmesos a caigudes pronunciades i inversions.
 STR_0569    :Lligats amb arnesos especials per sota de la via, els passatgers experimenten la sensació de volar mentre baixen en picat.
 STR_0571    :Vagons circulars que giren i reboten mentre es mouen per un camí de fusta zigzaguejant.
-STR_0572    :Bots de gran capacitat que es mouen per un canal d’aigua, propulsats cap amunt per cintes transportadores i accelerant per baixades pronunciades per mullar els passatgers amb una esquitxada espectacular.
+STR_0572    :Bots de gran capacitat que es mouen per un canal d’aigua, propulsats cap amunt per cintes transportadores i accelerant per baixades pronunciades que mullen els passatgers amb una esquitxada espectacular.
 STR_0573    :Disposa de vagons amb forma d’helicòpters que es mouen per una via d’acer controlats pels pedals dels passatgers.
 STR_0574    :Els passatgers estan lligats amb arnesos especials cara avall, movent-se per una via amb girs i inversions o bé d’esquena o bé de cara al terra.
 STR_0575    :Transport de persones pel parc a través de vagons penjants que circulen per un únic rail.
@@ -163,24 +163,24 @@ STR_0579    :Els visitants podran gaudir d’una tranquil·la partida de minigol
 STR_0580    :Muntanya russa gegant d’acer capaç de suaus baixades i pujades de més de 90 m.
 STR_0581    :Una anella de seients que puja per una torre alta mentre va rotant suaument, després cau en caiguda lliure i, al final, para delicadament usant frens magnètics.
 STR_0582    :Els passatgers condueixen lliurement aquests vehicles aerolliscadors.
-STR_0583    :Edifici format per habitacions deformades i passadissos angulars per desorientar la gent quan hi passa.
+STR_0583    :Edifici format per habitacions deformades i passadissos angulars que desorienten a la gent quan hi passa.
 STR_0584    :Bicicletes especials que es mouen per vies monorails gràcies al pedaleig dels passatgers.
-STR_0585    :Els passatgers seuen per parelles penjant per sota de la via passant per tirabuixons i inversions.
+STR_0585    :Els passatgers seuen per parelles penjant per sota de la via i experimenten tirabuixons i inversions.
 STR_0586    :Els vagons en forma de bot circulen per la via de la muntanya russa. Hi ha girs abruptes i descensos pronunciats, esquitxant quan passa per algunes seccions amb aigua.
-STR_0587    :Després d’un llançament excitant per aire comprimit, el vagó accelera per una via vertical fins a dalt de tot i baixa per l’altre costat per tornar a l’andana.
+STR_0587    :Després d’un llançament excitant per aire comprimit, el vagó accelera per una via vertical fins a dalt de tot i baixa per l’altre costat per a tornar a l’andana.
 STR_0588    :Disposa de vagons individuals que es mouen per una via zigzaguejant amb girs de forquilla i caigudes pronunciades.
 STR_0589    :Tematitzat com una enorme catifa voladora, un vago es mou amunt i avall cíclicament gràcies a quatre braços mecànics.
 STR_0590    :Els passatgers fan un viatge en un submarí a través d’un curs sota l’aigua.
 STR_0591    :Bots en forma de barques soleres que serpentegen a través d’una via en forma de riu.
 STR_0593    :Roda que gira amb els passatgers en cabines. Primer comença girant i després s’inclina gràcies a un braç que l’aixeca.
-STR_0598    :Els vagons de la muntanya russa invertida acceleren per l’andana per passar per un tram de via vertical. Llavors, tornen marxa enrere passant per l’andana i pujant per un altre tram de via vertical.
+STR_0598    :Els vagons de la muntanya russa invertida acceleren per l’andana i passen per un tram de via vertical. Llavors, tornen marxa enrere passant per l’andana i pugen per un altre tram de via vertical.
 STR_0599    :Muntanya russa que compta amb vagons individuals i caigudes i girs suaus.
 STR_0600    :Trens d’estil miner autopropulsats per un recorregut amb girs suaus.
-STR_0602    :Els vagons d’aquesta muntanya russa s’acceleren fora de l’andana per motors d’inducció lineal per accelerar durant les inversions tortuoses.
+STR_0602    :Els vagons d’aquesta muntanya russa s’acceleren fora de l’andana per motors d’inducció lineal per a accelerar durant les inversions tortuoses.
 STR_0603    :Una muntanya russa de fusta amb una via d’acer, el que permet unes caigudes empinades i inversions.
 STR_0604    :Els passatgers van en fila per una via monorail estreta i passen a gran velocitat per tirabuixons i inversions.
-STR_0605    :Els passatgers baixen per una via d’acer sinuosa, frenant per controlar la velocitat.
-STR_0606    :Una muntanya russa d'estil antic i de fusta, on els cotxes es mouen de pressa amb gran part al descobert, algunes accelerades laterals i dissenyada perquè els passatgers es sentin com si l'atracció estigués fora de control.
+STR_0605    :Els passatgers baixen per una via d’acer sinuosa, frenant per a controlar la velocitat.
+STR_0606    :Una muntanya russa d’estil antic i de fusta, on els cotxes es mouen de pressa amb gran part al descobert, algunes accelerades laterals i dissenyada perquè els passatgers es sentin com si l’atracció estigués fora de control.
 STR_0767    :Visitant {INT32}
 STR_0768    :Encarregat de neteja {INT32}
 STR_0769    :Mecànic {INT32}
@@ -238,7 +238,7 @@ STR_0825    :El nom ja està en ús.
 STR_0826    :S’estan usant massa noms.
 STR_0827    :No hi ha prou diners - fan falta {CURRENCY2DP}.
 STR_0828    :Tanca la finestra.
-STR_0829    :Títol - Arrossegueu-lo per moure la finestra.
+STR_0829    :Títol - Arrossegueu-lo per a moure la finestra.
 STR_0830    :Apropa la vista.
 STR_0831    :Allunya la vista.
 STR_0832    :Gira la càmera 90° en sentit horari.
@@ -317,7 +317,7 @@ STR_0924    :Helicoide cap avall
 STR_0925    :Helicoide cap amunt
 STR_0926    :No es pot treure…
 STR_0927    :Això no es pot construir aquí…
-STR_0928    :Cadena elevadora per pujar vagons per un pendent.
+STR_0928    :Cadena elevadora per a pujar vagons per un pendent.
 STR_0929    :Corba en «S» (a l’esquerra)
 STR_0930    :Corba en «S» (a la dreta)
 STR_0931    :Inversió vertical (a l’esquerra)
@@ -446,13 +446,13 @@ STR_1054    :Escull el nom d’atracció
 STR_1055    :Escull el nom de persona
 STR_1056    :Escull el nom de l’empleat
 STR_1057    :Nom de l’atracció
-STR_1058    :Escolliu el nom nou per l’atracció:
+STR_1058    :Trieu el nom nou de l’atracció:
 STR_1059    :No s’ha pogut canviar el nom de l’atracció…
 STR_1060    :Nom d’atracció no vàlid
 STR_1061    :Mode normal
 STR_1062    :Mode circuit continu
 STR_1063    :Mode de llançament invertit/inclinat
-STR_1064    :Llançament impulsat (passa per andana)
+STR_1064    :Llançament impulsat (passa per l’andana)
 STR_1065    :Mode llançadora
 STR_1066    :Mode lloguer de bots
 STR_1067    :Llançament cap amunt
@@ -487,35 +487,35 @@ STR_1095    :Mode circuit continu amb blocs de seccions
 STR_1096    :Llançament impulsat (sense passar per l’andana)
 STR_1097    :Mode llançament impulsat seccionat per blocs
 STR_1098    :Movent-se cap al final de {POP16}{STRINGID}
-STR_1099    :Esperant passatgers en {POP16}{STRINGID}
-STR_1100    :Esperant per sortir de {POP16}{STRINGID}
-STR_1101    :Sortint de {POP16}{STRINGID}
-STR_1102    :Movent-se a {VELOCITY}
-STR_1103    :Arribant a {POP16}{STRINGID}
-STR_1104    :Descarregant passatgers en {POP16}{STRINGID}
-STR_1105    :Viatjant a {VELOCITY}
+STR_1099    :S’esperen passatgers en {POP16}{STRINGID}
+STR_1100    :S’espera per a sortir de {POP16}{STRINGID}
+STR_1101    :Es surt de {POP16}{STRINGID}
+STR_1102    :Es mou a {VELOCITY}
+STR_1103    :S’arriba a {POP16}{STRINGID}
+STR_1104    :Es descarreguen els passatgers en {POP16}{STRINGID}
+STR_1105    :Va a {VELOCITY}
 STR_1106    :S’estavella!
 STR_1107    :Sinistre!
-STR_1108    :Viatjant a {VELOCITY}
-STR_1109    :Balancejant-se
-STR_1110    :Girant
-STR_1111    :Girant
-STR_1112    :Operant
-STR_1113    :Reproduint una pel·lícula
-STR_1114    :Girant
-STR_1115    :Operant
-STR_1116    :Operant
-STR_1117    :Oferint espectacle de circ
-STR_1118    :Operant
-STR_1119    :Esperant el cable d’ascens
-STR_1120    :Viatjant a {VELOCITY}
-STR_1121    :Parant-se
-STR_1122    :Esperant passatgers
-STR_1123    :Esperant per començar
-STR_1124    :Començant
-STR_1125    :Operant
-STR_1126    :Parant-se
-STR_1127    :Descarregant passatgers
+STR_1108    :Circula a {VELOCITY}
+STR_1109    :Es balanceja
+STR_1110    :Gira
+STR_1111    :Gira
+STR_1112    :Opera
+STR_1113    :Reprodueix una pel·lícula
+STR_1114    :Gira
+STR_1115    :Opera
+STR_1116    :Opera
+STR_1117    :Ofereix espectacle de circ
+STR_1118    :Opera
+STR_1119    :Espera el cable d’ascens
+STR_1120    :Circula a {VELOCITY}
+STR_1121    :Es para
+STR_1122    :Espera passatgers
+STR_1123    :Espera per a començar
+STR_1124    :Comença
+STR_1125    :Opera
+STR_1126    :Es para
+STR_1127    :Es descarreguen passatgers
 STR_1128    :Parat pels frens del bloc
 STR_1129    :Tots els vagons del mateix color
 STR_1130    :Colors diferents per {STRINGID}
@@ -551,8 +551,8 @@ STR_1159    :Afegeix decoracions, jardins i altres accessoris.
 STR_1160    :Crea i ajusta llacs i zones d’aigua.
 STR_1161    :No es pot posar aquí…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
-STR_1163    :{STRINGID}{NEWLINE}(Clic dret per modificar-ho)
-STR_1164    :{STRINGID}{NEWLINE}(Clic dret per treure-ho)
+STR_1163    :{STRINGID}{NEWLINE}(Clic dret per a modificar-ho)
+STR_1164    :{STRINGID}{NEWLINE}(Clic dret per a treure-ho)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :No es pot baixar el nivell d’aigua…
 STR_1167    :No es pot pujar el nivell d’aigua…
@@ -594,7 +594,7 @@ STR_1202    :1 persona a la cua
 STR_1203    :{COMMA16} persones a la cua
 STR_1204    :{COMMA16} minuts de cua
 STR_1205    :{COMMA16} minuts de cua
-STR_1206    :{WINDOW_COLOUR_2}Càrrega per arrencar:
+STR_1206    :{WINDOW_COLOUR_2}Càrrega per a arrencar:
 STR_1207    :{WINDOW_COLOUR_2}Arrenca el tren en espera si un altre arriba a l’estació
 STR_1208    :{WINDOW_COLOUR_2}Arrenca el bot en espera si un altre arriba a l’estació
 STR_1209    :Seleccioneu si cal esperar una certa quantitat de passatgers abans d’arrencar.
@@ -752,7 +752,7 @@ STR_1360    :{WINDOW_COLOUR_2}Temps d’espera: {BLACK}{COMMA16} min
 STR_1361    :La velocitat no es pot canviar…
 STR_1362    :La velocitat de llançament no es pot canviar…
 STR_1363    :Massa alt per als suports!
-STR_1364    :Els suports per a la secció no es poden fer més llargs.
+STR_1364    :Els suports de la secció no es poden fer més llargs.
 STR_1365    :Gir en línia (a l’esquerra)
 STR_1366    :Gir en línia (a la dreta)
 STR_1367    :Mitja volta petita
@@ -794,7 +794,7 @@ STR_1402    :Construïu o moveu l’entrada de l’atracció.
 STR_1403    :Construïu o moveu la sortida de l’atracció.
 STR_1404    :Gira 90°
 STR_1405    :Reflexa (simetria axial)
-STR_1406    :Mostra o amaga el decorat (si n’hi ha de disponible per aquest disseny).
+STR_1406    :Mostra o amaga el decorat (si n’hi ha de disponible per a aquest disseny).
 STR_1407    :{WINDOW_COLOUR_2}Construeix…
 STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
 STR_1409    :Andana d’entrada/sortida
@@ -819,29 +819,29 @@ STR_1427    :{WINDOW_COLOUR_2}Clients: {BLACK}{COMMA32} per hora
 STR_1428    :{WINDOW_COLOUR_2}Preu de l’entrada:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Gratuïta
-STR_1431    :Caminant
-STR_1432    :Dirigint-se cap a {STRINGID}
-STR_1433    :Fent cua per {STRINGID}
-STR_1434    :Ofegant-se
+STR_1431    :Camina
+STR_1432    :Es dirigeix cap a {STRINGID}
+STR_1433    :Fa cua per {STRINGID}
+STR_1434    :S’ofega
 STR_1435    :En {STRINGID}
 STR_1436    :En {STRINGID}
 STR_1437    :En {STRINGID}
 STR_1438    :Assegut
 STR_1439    :(seleccioneu-ne la nova ubicació)
-STR_1440    :Segant la gespa
-STR_1441    :Netejant el terra
-STR_1442    :Buidant una paperera
-STR_1443    :Regant els jardins
-STR_1444    :Mirant {STRINGID}
-STR_1445    :Mirant la construcció de {STRINGID}
-STR_1446    :Mirant el paisatge
-STR_1447    :Sortint del parc
-STR_1448    :Mirant com es construeix una nova atracció
+STR_1440    :Sega la gespa
+STR_1441    :Neteja el terra
+STR_1442    :Buida una paperera
+STR_1443    :Rega els jardins
+STR_1444    :Mira {STRINGID}
+STR_1445    :Mira la construcció de {STRINGID}
+STR_1446    :Mira el paisatge
+STR_1447    :Surt del parc
+STR_1448    :Mira com es construeix una nova atracció
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :Nom del visitant
-STR_1453    :Trieu un nom per aquest visitant:
+STR_1453    :Trieu un nom per a aquest visitant:
 STR_1454    :No es pot posar el nom al visitant…
 STR_1455    :El nom per al visitant no és vàlid.
 STR_1456    :{WINDOW_COLOUR_2}Diners gastats: {BLACK}{CURRENCY2DP}
@@ -850,7 +850,7 @@ STR_1458    :{WINDOW_COLOUR_2}Temps al parc: {BLACK}{REALTIME}
 STR_1459    :Estil de via
 STR_1460    :Via oberta en forma d’«U»
 STR_1461    :Via tancada en forma d’«O»
-STR_1462    :Massa inclinat per usar cadenes d’elevació
+STR_1462    :Massa inclinat per a fer servir cadenes d’elevació
 STR_1463    :Visitants
 STR_1464    :Hèlix amunt (petita)
 STR_1465    :Hèlix amunt (gran)
@@ -873,10 +873,10 @@ STR_1481    :«He gastat tots els diners».
 STR_1482    :«Estic marejat».
 STR_1483    :«Estic molt marejat».
 STR_1484    :«Vull provar alguna atracció més intensa que {STRINGID}».
-STR_1485    :«{STRINGID} sembla massa intensa per mi».
+STR_1485    :«{STRINGID} sembla massa intensa per a mi».
 STR_1486    :«Encara no m’he acabat {STRINGID}».
 STR_1487    :«Em marejo només veure {STRINGID}».
-STR_1488    :«No penso pagar tant per pujar a {STRINGID}».
+STR_1488    :«No penso pagar tant per a pujar a {STRINGID}».
 STR_1489    :«Vull anar-me’n a casa».
 STR_1490    :«{STRINGID} està bé de preu».
 STR_1491    :«Ja tinc {STRINGID}».
@@ -886,13 +886,13 @@ STR_1494    :«No tinc set».
 STR_1495    :«Ajuda! M’ofego!»
 STR_1496    :«M’he perdut!»
 STR_1497    :«{STRINGID} ha estat bé».
-STR_1498    :«He fet cua per {STRINGID} durant una eternitat».
+STR_1498    :«He fet cua per a {STRINGID} durant una eternitat».
 STR_1499    :«Estic cansat».
 STR_1500    :«Tinc gana».
 STR_1501    :«Tinc set».
 STR_1502    :«He d’anar al lavabo».
 STR_1503    :«No puc trobar {STRINGID}».
-STR_1504    :«No penso pagar tant per {STRINGID}».
+STR_1504    :«No penso pagar tant per a {STRINGID}».
 STR_1505    :«No vull pujar a {STRINGID} mentre plou».
 STR_1506    :«Això està molt brut».
 STR_1507    :«No puc trobar la sortida».
@@ -1055,7 +1055,7 @@ STR_1665    :{WINDOW_COLOUR_2}Gana:
 STR_1666    :{WINDOW_COLOUR_2}Set:
 STR_1667    :{WINDOW_COLOUR_2}Orina:
 STR_1668    :{WINDOW_COLOUR_2}Satisfacció: {BLACK}desconeguda
-STR_1669    :{WINDOW_COLOUR_2}Satisfacció: {BLACK}{COMMA16}%
+STR_1669    :{WINDOW_COLOUR_2}Satisfacció: {BLACK}{COMMA16} %
 STR_1670    :{WINDOW_COLOUR_2}Clients en total: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Benefici total: {BLACK}{CURRENCY2DP}
 STR_1672    :Frens
@@ -1064,7 +1064,7 @@ STR_1674    :Velocitat dels frens
 STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Estableix el límit de velocitat per als frens.
 STR_1677    :{WINDOW_COLOUR_2}Popularitat: {BLACK}desconeguda
-STR_1678    :{WINDOW_COLOUR_2}Popularitat: {BLACK}{COMMA16}%
+STR_1678    :{WINDOW_COLOUR_2}Popularitat: {BLACK}{COMMA16} %
 STR_1679    :Hèlix cap amunt (a l’esquerra)
 STR_1680    :Hèlix cap amunt (a la dreta)
 STR_1681    :Hèlix cap avall (a l’esquerra)
@@ -1094,7 +1094,7 @@ STR_1704    :No es poden contractar empleats nous…
 STR_1705    :Acomiada aquest empleat
 STR_1706    :Moure aquesta persona a un altre lloc
 STR_1707    :Hi ha massa empleats a la partida.
-STR_1708    :Estableix la zona de patrulla per aquest empleat.
+STR_1708    :Estableix la zona de patrulla per a aquest empleat.
 STR_1709    :Acomiada l’empleat
 STR_1710    :Sí
 STR_1711    :{WINDOW_COLOUR_1}Esteu segur que voleu acomiadar el {STRINGID}?
@@ -1140,7 +1140,7 @@ STR_1753    :Mostra una llista resumida dels visitants del parc
 STR_1754    :{BLACK}{COMMA32} visitants
 STR_1755    :{BLACK}{COMMA32} visitant
 STR_1756    :{WINDOW_COLOUR_2}Preu de l’entrada:
-STR_1757    :{WINDOW_COLOUR_2}Fiabilitat: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1757    :{WINDOW_COLOUR_2}Fiabilitat: {MOVE_X}{255}{BLACK}{COMMA16} %
 STR_1758    :Mode construir
 STR_1759    :Mode desplaçar-se
 STR_1760    :Mode omplir
@@ -1195,7 +1195,7 @@ STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Altres objectes
 STR_1814    :Accions
 STR_1815    :Pensaments
-STR_1816    :Seleccioneu el tipus d’informació per mostrar en la llista de visitants
+STR_1816    :Seleccioneu el tipus d’informació per a mostrar en la llista de visitants
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tots els visitants
 STR_1819    :{WINDOW_COLOUR_2}Tots els visitants (resum)
@@ -1204,7 +1204,7 @@ STR_1821    :{WINDOW_COLOUR_2}Visitants que pensen {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visitants pensant en {POP16}{STRINGID}
 STR_1823    :Mostra els pensaments dels visitants sobre aquesta atracció
 STR_1824    :Mostra els visitants en aquesta atracció
-STR_1825    :Mostra els visitants que fan cua per aquesta atracció
+STR_1825    :Mostra els visitants que fan cua en aquesta atracció
 STR_1826    :Estat
 STR_1827    :Popularitat
 STR_1828    :Satisfacció
@@ -1215,15 +1215,15 @@ STR_1832    :Fiabilitat
 STR_1833    :Temps d’avaria
 STR_1834    :Preferida pels visitants
 STR_1835    :Popularitat: desconeguda
-STR_1836    :Popularitat: {COMMA16}%
+STR_1836    :Popularitat: {COMMA16} %
 STR_1837    :Satisfacció: desconeguda
-STR_1838    :Satisfacció: {COMMA16}%
-STR_1839    :Fiabilitat: {COMMA16}%
-STR_1840    :Temps avariada: {COMMA16}%
+STR_1838    :Satisfacció: {COMMA16} %
+STR_1839    :Fiabilitat: {COMMA16} %
+STR_1840    :Temps avariada: {COMMA16} %
 STR_1841    :Benefici: {CURRENCY2DP} per hora
 STR_1842    :Preferida de: {COMMA16} visitant
 STR_1843    :Preferida de: {COMMA16} visitants
-STR_1844    :Seleccioneu el tipus d’informació per mostrar a la llista d’atraccions
+STR_1844    :Seleccioneu el tipus d’informació que voleu veure a la llista d’atraccions
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} visitants
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} visitants
@@ -1267,7 +1267,7 @@ STR_1885    :mai
 STR_1886    :Inspeccionant {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Temps des de l’última inspecció: {BLACK}{COMMA16} minuts
 STR_1888    :{WINDOW_COLOUR_2}Temps des de l’última inspecció: {BLACK}more than 4 hores
-STR_1889    :{WINDOW_COLOUR_2}Percentatge de temps avariada: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1889    :{WINDOW_COLOUR_2}Percentatge de temps avariada: {MOVE_X}{255}{BLACK}{COMMA16} %
 STR_1890    :Seleccioneu cada quan temps algun mecànic hauria de revisar aquesta atracció.
 STR_1891    :Al parc encara no hi ha {STRINGID}!
 # The following two strings were used to display an error when the disc was missing.
@@ -1289,7 +1289,7 @@ STR_1907    :{WINDOW_COLOUR_2}Salaris d’empleats
 STR_1908    :{WINDOW_COLOUR_2}Màrqueting
 STR_1909    :{WINDOW_COLOUR_2}Recerca i desenvolupament
 STR_1910    :{WINDOW_COLOUR_2}Interessos del préstec
-STR_1911    :{BLACK} al {COMMA16}% per any
+STR_1911    :{BLACK} al {COMMA16} % per any
 STR_1912    :{MONTH}
 STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
@@ -1307,7 +1307,7 @@ STR_1927    :{YELLOW}{STRINGID} s’ha avariat
 STR_1928    :{RED}{STRINGID} sinistrada!
 STR_1929    :{RED}{STRINGID} encara no s’ha arreglat.{NEWLINE}Comproveu on estan els mecànics i penseu si cal organitzar-los millor.
 STR_1930    :Activa/Desactiva el seguiment d’aquest visitant (si s’activa el seguiment, a l’àrea de missatges n’apareixeran les accions que faci).
-STR_1931    :{STRINGID} fa cua per l’atracció {STRINGID}.
+STR_1931    :{STRINGID} fa cua a l’atracció {STRINGID}.
 STR_1932    :{STRINGID} està a {STRINGID}.
 STR_1933    :{STRINGID} està a {STRINGID}.
 STR_1934    :{STRINGID} ha sortit de {STRINGID}.
@@ -1651,7 +1651,7 @@ STR_2286    :es va dissenyant.
 STR_2287    :es completa el disseny.
 STR_2288    :desconeguda
 STR_2289    :{STRINGID} {STRINGID}
-STR_2291    :Seleccioneu l’escenari per una nova partida
+STR_2291    :Seleccioneu l’escenari de la partida nova
 STR_2292    :{WINDOW_COLOUR_2}Atraccions visitades:
 STR_2293    :{BLACK} Cap
 STR_2294    :Canvia l’estil del terreny
@@ -1681,8 +1681,8 @@ STR_2321    :{WINDOW_COLOUR_2}Nombre d’atraccions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Empleats: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Extensió del parc: {BLACK}{COMMA32} m²
 STR_2324    :{WINDOW_COLOUR_2}Mida del parc: {BLACK}{COMMA32} ft²
-STR_2325    :Compreu terreny per estendre el parc.
-STR_2326    :Compreu drets de construcció per construir per dalt i per baix del terreny exterior del parc.
+STR_2325    :Compreu terreny per a ampliar el parc.
+STR_2326    :Compreu drets de construcció per a construir per dalt i per sota del terreny exterior del parc.
 STR_2327    :Opcions
 STR_2328    :{WINDOW_COLOUR_2}Moneda:
 STR_2329    :{WINDOW_COLOUR_2}Longitud i velocitat:
@@ -1745,12 +1745,12 @@ STR_2387    :{BLACK}Aconseguir una valoració del parc d’almenys {POP16}{POP16
 STR_2388    :{BLACK}Divertiu-vos!
 STR_2389    :{BLACK}Construïu el millor {STRINGID} que pugueu!
 STR_2390    :{BLACK}Tenir 10 tipus diferents de muntanyes russes operant al parc, cadascuna d’elles amb un valor d’emoció d’almenys 6,00.
-STR_2391    :{BLACK}Tenir almenys {COMMA16} visitants al parc. No podeu deixar que la valoració del parc caigui per baix de 700 en cap moment!
-STR_2392    :{BLACK}Aconseguir uns ingressos mensuals per entrades d’atraccions d’almenys {POP16}{POP16}{CURRENCY}.
+STR_2391    :{BLACK}Tenir almenys {COMMA16} visitants al parc. No podeu deixar que la valoració del parc caigui per sota de 700 en cap moment!
+STR_2392    :{BLACK}Aconseguir uns ingressos mensuals amb les entrades d’atraccions d’almenys {POP16}{POP16}{CURRENCY}.
 STR_2393    :{BLACK}Tenir 10 tipus diferents de muntanyes russes operant al parc, cadascuna amb una longitud mínima de {LENGTH} i un valor d’emoció d’almenys 7,00.
-STR_2394    :{BLACK}Acabar de construir les cinc muntanyes russes que s’havien començat a construir al parc, dissenyant-les per aconseguir un nivell d’emoció d’almenys {POP16}{POP16}{COMMA2DP32} per cada una d’elles.
+STR_2394    :{BLACK}Acabar de construir les cinc muntanyes russes que s’havien començat a construir al parc, dissenyant-les per a aconseguir un nivell d’emoció d’almenys {POP16}{POP16}{COMMA2DP32} per cada una d’elles.
 STR_2395    :{BLACK}Retornar el préstec i aconseguir una valoració del parc d’almenys {POP16}{POP16}{CURRENCY}.
-STR_2396    :{BLACK}Aconseguir un benefici mensual per la venda de menjar, beguda i altres productes d’almenys {POP16}{POP16}{CURRENCY}.
+STR_2396    :{BLACK}Aconseguir un benefici mensual amb la venda de menjar, beguda i altres productes d’almenys {POP16}{POP16}{CURRENCY}.
 STR_2397    :Cap
 STR_2398    :Nombre de visitants en una data determinada
 STR_2399    :Valoració del parc en una data determinada
@@ -1758,11 +1758,11 @@ STR_2400    :Divertiu-vos!
 STR_2401    :Construir la millor atracció que pugueu
 STR_2402    :Construir 10 muntanyes russes
 STR_2403    :Nombre de visitants al parc
-STR_2404    :Ingressos mensuals per entrades d’atraccions
+STR_2404    :Ingressos mensuals de les entrades d’atraccions
 STR_2405    :Construir 10 muntanyes russes amb una longitud donada
 STR_2406    :Acabar de construir 5 muntanyes russes
 STR_2407    :Retornar el préstec i assolir una valoració del parc determinada
-STR_2408    :Benefici mensual per vendes
+STR_2408    :Benefici mensual de les vendes
 STR_2409    :{WINDOW_COLOUR_2}Campanyes de màrqueting en marxa
 STR_2410    :{BLACK}Cap
 STR_2411    :{WINDOW_COLOUR_2}Campanyes de màrqueting disponibles
@@ -1774,18 +1774,18 @@ STR_2416    :{WINDOW_COLOUR_2}Ítem:
 STR_2417    :{WINDOW_COLOUR_2}Duració:
 STR_2418    :Entrada gratuïta a {STRINGID}
 STR_2419    :Viatge gratuït per {STRINGID}
-STR_2420    :Entrada a meitat de preu per {STRINGID}
+STR_2420    :Entrada a meitat de preu per a {STRINGID}
 STR_2421    :{STRINGID} gratis
 STR_2424    :{WINDOW_COLOUR_2}Cupons d’entrada gratuïta al parc
-STR_2425    :{WINDOW_COLOUR_2}Cupons de viatge gratis per una de les atraccions
-STR_2426    :{WINDOW_COLOUR_2}Cupons de descompte del 50% per a l’entrada al parc
+STR_2425    :{WINDOW_COLOUR_2}Cupons de viatge gratis per a una atracció
+STR_2426    :{WINDOW_COLOUR_2}Cupons de descompte del 50 % per a l’entrada al parc
 STR_2427    :{WINDOW_COLOUR_2}Cupons de menjar i beguda gratis
 STR_2428    :{WINDOW_COLOUR_2}Campanya de publicitat del parc
 STR_2429    :{WINDOW_COLOUR_2}Campanya de publicitat per a una atracció
 STR_2430    :{BLACK}Cupons d’entrada gratis a {STRINGID}
 STR_2431    :{BLACK}Cupons de viatge gratis a {STRINGID}
-STR_2432    :{BLACK}Cupons d’entrada a meitat de preu per {STRINGID}
-STR_2433    :{BLACK}Cupons per {STRINGID} gratis
+STR_2432    :{BLACK}Cupons d’entrada a meitat de preu per a {STRINGID}
+STR_2433    :{BLACK}Cupons per a {STRINGID} gratis
 STR_2434    :{BLACK}Campanya de publicitat de {STRINGID}
 STR_2435    :{BLACK}Campanya de publicitat de {STRINGID}
 STR_2436    :1 setmana
@@ -1987,7 +1987,7 @@ STR_2782    :SHIFT +
 STR_2783    :CTRL + 
 STR_2784    :Canvia la drecera de teclat
 STR_2785    :{WINDOW_COLOUR_2}Premeu la nova drecera de teclat per:{NEWLINE}«{STRINGID}»
-STR_2786    :Feu clic a la descripció d’una drecera per canviar-ne les tecles assignades.
+STR_2786    :Feu clic a la descripció d’una drecera per a canviar-ne les tecles assignades.
 STR_2787    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Felicitats!{NEWLINE}{BLACK}Heu aconseguit el vostre objectiu amb un valor d’empresa de {CURRENCY}!
 STR_2789    :{WINDOW_COLOUR_2}No heu aconseguit els vostres objectius!
@@ -2013,8 +2013,8 @@ STR_2808    :{RED}Els visitants es queixen del vandalisme.{NEWLINE}Comproveu on 
 STR_2809    :{RED}Els visitants tenen gana i no troben cap lloc on comprar menjar.
 STR_2810    :{RED}Els visitants tenen set i no troben cap lloc on comprar begudes.
 STR_2811    :{RED}Els visitants es queixen perquè no troben els lavabos.
-STR_2812    :{RED}Els visitants es perden o es bloquegen.{NEWLINE}Comproveu com estan posats els camins i si cal reorganitzar-los per facilitar el moviment pel parc.
-STR_2813    :{RED}L’entrada al parc és massa cara.{NEWLINE}Reduïu-ne el preu o milloreu la valoració del parc per atreure més visitants.
+STR_2812    :{RED}Els visitants es perden o es bloquegen.{NEWLINE}Comproveu com estan posats els camins i si cal reorganitzar-los per a facilitar el moviment pel parc.
+STR_2813    :{RED}L’entrada al parc és massa cara.{NEWLINE}Reduïu-ne el preu o milloreu la valoració del parc per a atreure més visitants.
 STR_2814    :{WINDOW_COLOUR_2}Premi al parc més brut
 STR_2815    :{WINDOW_COLOUR_2}Premi al parc més net
 STR_2816    :{WINDOW_COLOUR_2}Premi al parc amb millors muntanyes russes
@@ -2066,7 +2066,7 @@ STR_2974    :Esquema de color alternatiu 3
 STR_2975    :Seleccioneu l’esquema de color que voleu canviar o amb el que voleu pintar l’atracció.
 STR_2976    :Pinta només una àrea d’aquesta atracció usant l’esquema de color seleccionat.
 STR_2977    :Posa nom a l’empleat
-STR_2978    :Escriviu un nom per aquest empleat:
+STR_2978    :Escriviu un nom per a aquest empleat:
 STR_2979    :No es pot posar el nom a l’empleat…
 STR_2980    :Hi ha massa cartells a la partida.
 STR_2981    :{RED}No passeu
@@ -2133,7 +2133,7 @@ STR_3041    :Estil modern
 STR_3042    :Estil pirata
 STR_3043    :Estil rock 3
 STR_3044    :Estil caramel
-STR_3045    :Escolliu l’estil de música que ha de reproduir.
+STR_3045    :Trieu l’estil de música que ha de reproduir.
 STR_3047    :Les autoritats pertinents no permeten enderrocar o modificar aquesta atracció.
 STR_3048    :Les autoritats pertinents no permeten realitzar campanyes de màrqueting.
 STR_3049    :Forat A
@@ -2148,23 +2148,23 @@ STR_3060    :Blocs de gel
 STR_3061    :Tanques de fusta
 STR_3062    :Via estàndard de muntanya russa
 STR_3063    :Canal d’aigua (via submergida)
-STR_3064    :Parcs per principiants
+STR_3064    :Parcs per a principiants
 STR_3065    :Parcs desafiants
-STR_3066    :Parcs per experts
+STR_3066    :Parcs per a experts
 STR_3067    :Parcs «reals»
 STR_3068    :Altres parcs
 STR_3069    :Secció superior
 STR_3070    :Nivella la inclinació
 STR_3071    :{WINDOW_COLOUR_2}Mateix preu per tot el parc
 STR_3072    :Seleccioneu si aquest preu s’ha d’aplicar a aquest producte en totes les botigues del parc.
-STR_3073    :{RED}Avís: La valoració del parc ha caigut per baix de 700!{NEWLINE}Si no la milloreu en 4 setmanes, el parc es clausurarà.
-STR_3074    :{RED}Avís: La valoració del parc continua per sota de 700!{NEWLINE}Disposeu de 3 setmanes per millorar-la.
-STR_3075    :{RED}Avís: La valoració del parc continua per sota de 700!{NEWLINE}Només us queden 2 setmanes per millorar-la o clausuraran el parc.
+STR_3073    :{RED}Avís: La valoració del parc ha caigut per sota de 700!{NEWLINE}Si no la milloreu en 4 setmanes, el parc es clausurarà.
+STR_3074    :{RED}Avís: La valoració del parc continua per sota de 700!{NEWLINE}Disposeu de 3 setmanes per a millorar-la.
+STR_3075    :{RED}Avís: La valoració del parc continua per sota de 700!{NEWLINE}Només us queden 2 setmanes per a millorar-la o clausuraran el parc.
 STR_3076    :{RED}Últim avís: La valoració del parc continua per sota de 700!{NEWLINE}En set dies, es clausurarà el parc si la valoració no millora suficientment.
 STR_3077    :{RED}Avís de tancament: El parc tanca definitivament les seves portes!
 STR_3090    :Trieu el tipus d’entrada, de sortida i d’estació.
-STR_3091    :No teniu permís per treure aquesta secció!
-STR_3092    :No teniu permís per moure o modificar l’estació d’aquesta atracció!
+STR_3091    :No teniu permís per a treure aquesta secció!
+STR_3092    :No teniu permís per a moure o modificar l’estació d’aquesta atracció!
 STR_3093    :{WINDOW_COLOUR_2}Preferida: {BLACK}{STRINGID}
 STR_3094    :Cap
 STR_3095    :{WINDOW_COLOUR_2}Velocitat de cadenes d’elevació:
@@ -2182,8 +2182,8 @@ STR_3107    :Tanca
 STR_3108    :Prova
 STR_3109    :Obre
 STR_3110    :{WINDOW_COLOUR_2}Seccions de bloc: {BLACK}{COMMA16}
-STR_3111    :Cliqueu el disseny per construir-lo.
-STR_3112    :Cliqueu el disseny per canviar-ne el nom o per esborrar-lo.
+STR_3111    :Cliqueu el disseny per a construir-lo.
+STR_3112    :Cliqueu el disseny per a canviar-ne el nom o per a esborrar-lo.
 STR_3113    :Selecciona un altre disseny
 STR_3114    :Torna a la finestra de selecció de dissenys.
 STR_3115    :Desa el disseny de via
@@ -2191,19 +2191,19 @@ STR_3116    :Desa el disseny de via (no es podrà desar fins que l’atracció s
 STR_3117    :{BLACK}Es truca al mecànic…
 STR_3118    :{BLACK}{STRINGID} va cap a l’atracció
 STR_3119    :{BLACK}{STRINGID} arregla l’atracció
-STR_3120    :Localitza el mecànic disponible més proper o el mecànic assignat per la reparació.
+STR_3120    :Localitza el mecànic disponible més proper o el mecànic assignat per a reparar-ho.
 STR_3121    :No es pot trobar cap mecànic lliure.
 STR_3122    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA16} visitant
 STR_3123    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA16} visitants
 STR_3124    :{STRINGID} avariada
-STR_3125    :{WINDOW_COLOUR_2}Factor d’emoció: {BLACK}+{COMMA16}%
-STR_3126    :{WINDOW_COLOUR_2}Factor d’intensitat: {BLACK}+{COMMA16}%
-STR_3127    :{WINDOW_COLOUR_2}Factor de nàusea: {BLACK}+{COMMA16}%
+STR_3125    :{WINDOW_COLOUR_2}Factor d’emoció: {BLACK}+{COMMA16} %
+STR_3126    :{WINDOW_COLOUR_2}Factor d’intensitat: {BLACK}+{COMMA16} %
+STR_3127    :{WINDOW_COLOUR_2}Factor de nàusea: {BLACK}+{COMMA16} %
 STR_3128    :Desa el disseny de via
 STR_3129    :Desa el disseny de via i el decorat
 STR_3130    :Desa
 STR_3131    :Cancel·la
-STR_3132    :{BLACK}Cliqueu elements del decorat per seleccionar-los i desar-los amb el disseny de via.
+STR_3132    :{BLACK}Cliqueu elements del decorat per a seleccionar-los i desar-los amb el disseny de via.
 STR_3133    :No es pot construir a sobre d’un pendent.
 STR_3134    :{RED}(El disseny inclou algun decorat no disponible)
 STR_3135    :{RED}(Disseny de vehicle no disponible - Això pot afectar al rendiment de l’atracció)
@@ -2226,7 +2226,7 @@ STR_3170    :No hi ha prou espai per als gràfics.
 STR_3171    :S’han seleccionat massa objectes d’aquest tipus.
 STR_3172    :Abans s’ha d’escollir aquest objecte: {STRING}
 STR_3173    :Aquest objecte ja està en ús.
-STR_3174    :Aquest objecte és necessari per un altre.
+STR_3174    :Aquest objecte és necessari per a un altre objecte.
 STR_3175    :Aquest objecte és necessari sempre.
 STR_3176    :Aquest objecte no es pot seleccionar.
 STR_3177    :Aquest objecte no es pot treure de la selecció.
@@ -2234,7 +2234,7 @@ STR_3179    :S’ha de seleccionar almenys una atracció.
 STR_3180    :Selecció d’objectes no vàlida
 STR_3181    :Selecció d’objectes - {STRINGID}
 STR_3182    :S’ha de seleccionar el tipus d’entrada al parc.
-STR_3183    :S’ha d’escollir el tipus d’aigua.
+STR_3183    :S’ha de triar el tipus d’aigua.
 STR_3184    :Atraccions
 STR_3185    :Decoracions petites
 STR_3186    :Decoracions grans
@@ -2248,9 +2248,9 @@ STR_3193    :Aigua
 STR_3195    :Llista de recerques
 STR_3196    :{WINDOW_COLOUR_2}Grup de recerca: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Elements ja recercats a l’inici de la partida:
-STR_3198    :{WINDOW_COLOUR_2}Elements per recercar durant la partida:
+STR_3198    :{WINDOW_COLOUR_2}Elements que es poden recercar durant la partida:
 STR_3199    :Barreja aleatòria
-STR_3200    :Mescla aleatòriament la llista d’elements per recercar durant la partida.
+STR_3200    :Mescla aleatòriament la llista d’elements per a recercar durant la partida.
 STR_3201    :Selecció d’objectes
 STR_3202    :Editor de paisatges
 STR_3203    :Configuració de recerques
@@ -2297,7 +2297,7 @@ STR_3243    :{WINDOW_COLOUR_2}Taxa d’interès anual:
 STR_3244    :Sense campanyes de màrqueting
 STR_3245    :Prohibeix la publicitat, promocions i altres campanyes de màrqueting.
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3247    :{WINDOW_COLOUR_2}{COMMA16} %
 STR_3248    :L’efectiu inicial no es pot augmentar més!
 STR_3249    :L’efectiu inicial no es pot reduir més!
 STR_3250    :El préstec inicial no es pot augmentar més!
@@ -2307,9 +2307,9 @@ STR_3253    :El préstec màxim no es pot reduir més!
 STR_3254    :La taxa d’interès anual no es pot augmentar més!
 STR_3255    :La taxa d’interès anual no es pot reduir més!
 STR_3256    :Els visitants prefereixen atraccions menys intenses
-STR_3257    :Escolliu si els visitants haurien de preferir només les atraccions menys intenses.
+STR_3257    :Trieu si els visitants haurien de preferir només les atraccions menys intenses.
 STR_3258    :Els visitants prefereixen atraccions més intenses
-STR_3259    :Escolliu si els visitants haurien de preferir només les atraccions més intenses.
+STR_3259    :Trieu si els visitants haurien de preferir només les atraccions més intenses.
 STR_3260    :{WINDOW_COLOUR_2}Efectiu per visitant (mitjana):
 STR_3261    :{WINDOW_COLOUR_2}Felicitat inicial dels visitants:
 STR_3262    :{WINDOW_COLOUR_2}Gana inicial dels visitants:
@@ -2338,7 +2338,7 @@ STR_3284    :Selecció de l’objectiu
 STR_3285    :Atraccions protegides
 STR_3286    :Seleccioneu l’objectiu d’aquest escenari.
 STR_3287    :{WINDOW_COLOUR_2}Objectiu:
-STR_3288    :Escolliu el clima.
+STR_3288    :Trieu el clima.
 STR_3289    :{WINDOW_COLOUR_2}Clima:
 STR_3290    :Fresc i humit
 STR_3291    :Càlid
@@ -2364,7 +2364,7 @@ STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Atraccions protegides:
 STR_3313    :Nom de l’escenari
-STR_3314    :Escolliu el nom de l’escenari:
+STR_3314    :Trieu el nom de l’escenari:
 STR_3315    :Detalls del parc/escenari
 STR_3316    :Escriviu la descripció de l’escenari:
 STR_3317    :Encara no hi ha detalls
@@ -2397,11 +2397,11 @@ STR_3347    :L’atracció és massa gran, conté massa elements o bé el decora
 STR_3348    :Canvia el nom
 STR_3349    :Esborra
 STR_3350    :Nom del disseny de via
-STR_3351    :Escriviu un nom per aquest disseny de via:
+STR_3351    :Escriviu un nom per a aquest disseny de via:
 STR_3352    :No es pot canviar el nom d’aquest disseny de via…
 STR_3353    :El nom conté caràcters no vàlids.
 STR_3354    :Ja existeix un fitxer amb aquest nom o bé no es pot modificar el fitxer existent.
-STR_3355    :El fitxer existent està blocat, protegit o no teniu permisos suficients per modificar-lo.
+STR_3355    :El fitxer existent està blocat, protegit o no teniu permisos suficients per a modificar-lo.
 STR_3356    :Esborra el fitxer
 STR_3357    :{WINDOW_COLOUR_2}Esteu segur que voleu esborrar permanentment {STRING}?
 STR_3358    :No es pot esborrar el disseny de via…
@@ -2428,7 +2428,7 @@ STR_3380    :El disseny de via no s’ha pogut instal·lar…
 STR_3381    :El fitxer no és compatible o bé conté dades no vàlides.
 STR_3382    :Ha fallat la còpia del fitxer.
 STR_3383    :Seleccioneu un nom per al disseny de via.
-STR_3384    :Ja existeix un disseny de via amb aquest nom. Si us plau, seleccioneu un nom nou per aquest disseny:
+STR_3384    :Ja existeix un disseny de via amb aquest nom. Si us plau, seleccioneu un nom nou per a aquest disseny:
 STR_3389    :No es pot seleccionar l’element addicional de l’escenari…
 STR_3390    :S’han seleccionat massa elements.
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
@@ -2474,7 +2474,7 @@ STR_5151    :.
 STR_5152    :,
 STR_5153    :Edita temes…
 STR_5154    :Renderitzat per maquinari
-STR_5155    :Permet provar atraccions per acabar
+STR_5155    :Permet provar atraccions sense acabar
 STR_5156    :Permet provar la majoria d’atraccions fins i tot si la via no està acabada. No s’aplica als modes de bloc de seccions.
 STR_5158    :Surt al menú principal
 STR_5159    :Surt de l’OpenRCT2
@@ -2559,8 +2559,8 @@ STR_5250    :Botó del títol de sortida
 STR_5251    :Botó del títol d’opcions
 STR_5252    :Selecció del títol d’escenaris
 STR_5253    :Informació del parc
-STR_5256    :Crea un tema nou per fer-hi canvis.
-STR_5257    :Duplica el tema actual per modificar-lo sense fer canvis a l’original.
+STR_5256    :Crea un tema nou per a fer-hi canvis.
+STR_5257    :Duplica el tema actual per a modificar-lo sense fer canvis a l’original.
 STR_5258    :Esborra el tema actual.
 STR_5259    :Canvia el nom del tema actual.
 STR_5260    :Captura de pantalla gegant
@@ -2589,7 +2589,7 @@ STR_5283    :Llums del parc d’obert/tancat del RCT1
 STR_5284    :Selecció de fonts d’escenari del RCT1
 STR_5287    :L’atracció ja està avariada.
 STR_5288    :L’atracció està tancada.
-STR_5289    :No es disposa d’avaries per aquest tipus d’atracció.
+STR_5289    :No es disposa d’avaries per a aquest tipus d’atracció.
 STR_5290    :Repara l’atracció
 STR_5291    :No es pot forçar una avaria
 STR_5292    :Força una avaria
@@ -2715,8 +2715,6 @@ STR_5503    :Escriviu el nom de l’hoste o de l’adreça IP:
 STR_5504    :Mostra l’estat multijugador
 STR_5505    :No s’ha pogut connectar al servidor.
 STR_5506    :Els visitants ignoren les intensitats
-STR_5508    :Permet carregar fitxers danyats
-STR_5509    :Permet carregar escenaris i partides desades{NEWLINE}que tenen una suma de comprovació no vàlida,{NEWLINE}com els escenaris de la demostració{NEWLINE}o partides danyades.
 STR_5510    :Dispositiu de so predeterminat
 STR_5511    :(desconegut)
 STR_5512    :Desa la partida com a…
@@ -2767,7 +2765,7 @@ STR_5556    :Expulsa al jugador
 STR_5557    :Mantén la connexió després de la dessincronització (multijugador)
 STR_5558    :Aquest canvi s’aplicarà quan es reiniciï el joc.
 STR_5559    :Revisions cada 10 min
-STR_5560    :Estableix revisions cada 10 minuts per totes les atraccions.
+STR_5560    :Estableix revisions cada 10 minuts per a totes les atraccions.
 STR_5561    :L’idioma no s’ha pogut carregar.
 STR_5562    :Avís!
 STR_5563    :Aquesta funció actualment és inestable. Useu-la amb cautela.
@@ -2882,7 +2880,7 @@ STR_5708    :No es pot canviar el grup de l’amfitrió.
 STR_5709    :Canvia el nom del grup
 STR_5710    :Nom del grup
 STR_5711    :Escriviu el nom del grup:
-STR_5712    :No teniu permís per modificar els permisos mateixos.
+STR_5712    :No teniu permís per a modificar els permisos mateixos.
 STR_5713    :Expulsa el jugador
 STR_5714    :Mostra la finestra d’opcions
 STR_5715    :Nova partida
@@ -2930,7 +2928,7 @@ STR_5761    :Nou dòlar de Taiwan(NT$)
 STR_5762    :Iuan xinès (CN¥)
 STR_5763    :Tots els fitxers
 STR_5764    :Tipus d’atracció no vàlida
-STR_5765    :Per editar una atracció, cal que tingui un tipus vàlid.
+STR_5765    :Per a editar una atracció, cal que tingui un tipus vàlid.
 STR_5766    :Fòrint hongarès (Ft)
 STR_5767    :Ingressos
 STR_5768    :Clients en total
@@ -2947,16 +2945,16 @@ STR_5778    :Construït fa {COMMA16} anys
 STR_5779    :Ingressos: {CURRENCY2DP} per hora
 STR_5780    :Cost de funcionament: {CURRENCY2DP} per hora
 STR_5781    :Cost de funcionament desconegut
-STR_5782    :Esteu connectat. Premeu «{STRING}» per xatejar.
+STR_5782    :Esteu connectat. Premeu «{STRING}» per a xatejar.
 STR_5783    :{WINDOW_COLOUR_2}Escenari blocat
-STR_5784    :{BLACK}Completeu els escenaris anteriors per desblocar-lo.
+STR_5784    :{BLACK}Completeu els escenaris anteriors per a desblocar-lo.
 STR_5785    :No es pot canviar el nom del grup…
 STR_5786    :Nom del grup no vàlid
 STR_5787    :{COMMA32} jugadors connectats
 STR_5788    :Interval de revisió per defecte:
 STR_5789    :Desactiva els efectes de llamps
 STR_5790    :Activa l’estil de pagaments del RCT1{NEWLINE}(es podran editar tant els preus d’entrada al parc com el de les entrades a les atraccions).
-STR_5791    :Estableix la fiabilitat de totes les atraccions al 100%{NEWLINE}i n’estableix la data de construcció a «aquest any».
+STR_5791    :Estableix la fiabilitat de totes les atraccions al 100 %{NEWLINE}i n’estableix la data de construcció a «aquest any».
 STR_5792    :Repara atraccions avariades
 STR_5793    :Esborra l’historial de sinistres de les atraccions,{NEWLINE}i els visitants no es queixaran de que no són segures.
 STR_5794    :Alguns escenaris desactiven l’edició{NEWLINE}d’algunes atraccions del parc.{NEWLINE}Aquesta trampa elimina aquesta restricció.
@@ -2992,7 +2990,7 @@ STR_5824    :No mostris llampecs{NEWLINE}durant les tempestes.
 STR_5825    :Mantén el cursor del ratolí a la finestra.
 STR_5826    :Inverteix el desplaçament de la vista quan s’arrossega el ratolí amb el botó dret premut.
 STR_5827    :Escolliu l’esquema de colors (tema) que s’utilitzarà a la interfície gràfica.
-STR_5828    :Canvia les unitats que s’usen per mesurar distàncies, velocitats i altres magnituds.
+STR_5828    :Canvia les unitats que s’usen per a mesurar distàncies, velocitats i altres magnituds.
 STR_5829    :Canvia el format de moneda. Els efectes són només visuals, ja que no s’aplica cap tipus de canvi.
 STR_5830    :Canvia l’idioma de la interfície.
 STR_5831    :Canvia la unitat de mesura{NEWLINE}de la temperatura.
@@ -3000,12 +2998,12 @@ STR_5832    :Mostra les alçades com a unitats genèriques (-2, -1, 0, +1, +2…
 STR_5833    :Canvia el format de les dates.
 STR_5834    :Trieu quin dispositiu de so ha de fer servir l’OpenRCT2.
 STR_5835    :Silencia el joc si la finestra perd el focus.
-STR_5836    :Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema de l’RCT1, cal que copieu «data/css17.dat» de la carpeta del RCT1 al directori del RCT2 com a «data/css50.dat», o bé establiu correctament la carpeta del RCT1 a la pestanya d’altres opcions.
+STR_5836    :Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema del RCT1, cal que establiu correctament la carpeta del RCT1 a la pestanya d’altres opcions.
 STR_5837    :Crea i gestiona els temes de la interfície personalitzats.
-STR_5838    :Mostra un botó per a la finestra de finances a la barra d’eines.
-STR_5839    :Mostra un botó per a la finestra de recerques a la barra d’eines.
-STR_5840    :Mostra un botó per a la finestra de trampes a la barra d’eines.
-STR_5841    :Mostra un botó per a la finestra de notícies recents a la barra d’eines.
+STR_5838    :Mostra el botó de la finestra de finances a la barra d’eines.
+STR_5839    :Mostra el botó de la finestra de recerques a la barra d’eines.
+STR_5840    :Mostra el botó de la finestra de trampes a la barra d’eines.
+STR_5841    :Mostra el botó de la finestra de notícies recents a la barra d’eines.
 STR_5842    :Ordena els escenaris en pestanyes segons la seva dificultat (com al RCT2) o pel seu origen (com al RCT1).
 STR_5843    :Activa el desbloqueig progressiu d’escenaris (com al RCT1).
 STR_5844    :Mantén la connexió al servidor multijugador{NEWLINE}fins i tot si es produeix un error de dessincronització.
@@ -3016,10 +3014,10 @@ STR_5849    :Coloca automàticament{NEWLINE}els empleats acabats de contractar.
 STR_5851    :Estableix l’interval de revisió per defecte{NEWLINE}per a les atraccions noves.
 STR_5853    :Activa/Desactiva els efectes de so.
 STR_5854    :Activa/Desactiva la música de les atraccions.
-STR_5855    :Escolliu el mode de pantalla completa normal,{NEWLINE}pantalla completa sense vores o bé finestra.
+STR_5855    :Trieu el mode de pantalla completa normal,{NEWLINE}pantalla completa sense vores o bé finestra.
 STR_5856    :Trieu la resolució de la pantalla en mode pantalla completa.
 STR_5857    :Opcions del joc
-STR_5858    :Usa la GPU per renderitzar gràfics en lloc de la CPU. Millora la compatibilitat amb el programari de captures de pantalla. Pot fer baixar lleugerament el rendiment.
+STR_5858    :Usa la GPU per a renderitzar gràfics en lloc de la CPU. Millora la compatibilitat amb el programari de captures de pantalla. Pot fer baixar lleugerament el rendiment.
 STR_5859    :Activa la interpolació de fotogrames{NEWLINE}per una visualització de canvis més suau.{NEWLINE}El joc funcionara a 40 FPS si es desactiva.
 STR_5860    :Canvia entre mostrar les vies de forma original/alternativa.
 STR_5861    :S’ha produït un error en la verificació de la clau.
@@ -3037,7 +3035,7 @@ STR_5872    :Desactiva que les plantes es facin mústigues.
 STR_5873    :Més cadenes d’elevació
 STR_5874    :Permet que qualsevol secció de via pugui incorporar cadenes d’elevació.
 STR_5875    :Motor gràfic:
-STR_5876    :El programari que s’usarà per renderitzar els gràfics.
+STR_5876    :El programari que s’usarà per a renderitzar els gràfics.
 STR_5877    :Programari
 STR_5878    :Programari (via maquinari)
 STR_5879    :OpenGL (experimental)
@@ -3168,13 +3166,13 @@ STR_6004    :Vista retallada
 STR_6005    :Activa la vista retallada
 STR_6006    :La vista retallada només mostra els elements del mapa que estan a l’alçada de tall o per baix d’aquesta (retallat vertical) i dins de l’àrea seleccionada (retallat horitzontal).
 STR_6007    :Alçada de tall
-STR_6008    :Feu clic per alternar entre el valor sense format i el valor amb unitats de mesura.
-STR_6009    :Escolliu l’alçada de tall
+STR_6008    :Feu clic per a alternar entre el valor sense format i el valor amb unitats de mesura.
+STR_6009    :Trieu l’alçada de tall
 STR_6010    :{COMMA2DP32} m
 STR_6011    :{COMMA1DP16} ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :Els visitants només paguen l’entrada al parc i algunes instal·lacions.{NEWLINE}Les atraccions són gratuïtes.
-STR_6014    :Els visitants només pagaran per pujar a les atraccions i per usar la resta d’instal·lacions.{NEWLINE}L’entrada al parc és gratuïta.
+STR_6014    :Els visitants només pagaran per a pujar a les atraccions i per a fer servir la resta d’instal·lacions.{NEWLINE}L’entrada al parc és gratuïta.
 STR_6015    :Inclinat
 STR_6016    :Modifica la casella
 STR_6017    :Si us plau, disminuïu la velocitat.
@@ -3190,7 +3188,7 @@ STR_6026    :Construcció - Secció anterior
 STR_6027    :Construcció - Secció següent
 STR_6028    :Construcció - Construeix l’actual
 STR_6029    :Construcció - Elimina l’actual
-STR_6030    :Seleccionador de decoracions. Seleccioneu una decoració del mapa per construir-ne més del mateix tipus.
+STR_6030    :Seleccionador de decoracions. Seleccioneu una decoració del mapa per a construir-ne més del mateix tipus.
 STR_6031    :Descripció del servidor:
 STR_6032    :Missatge de benvinguda:
 STR_6033    :Camí de la instal·lació del RCT1:
@@ -3198,7 +3196,7 @@ STR_6034    :{BLACK}{STRING}
 STR_6035    :Seleccioneu el camí d’instal·lació del RCT1
 STR_6036    :Esborra
 STR_6037    :La carpeta seleccionada no conté una instal·lació del RCT1 vàlida.
-STR_6038    :Si teniu instal·lat el RCT1, indiqueu a quina carpeta està per usar-ne els escenaris, la música, etc.
+STR_6038    :Si teniu instal·lat el RCT1, indiqueu a quina carpeta està per a fer-ne servir els escenaris, la música, etc.
 STR_6039    :Retirada ràpida d’atraccions
 STR_6040    :Opcions d’edició d’escenaris
 STR_6041    :{BLACK}No s’han contractat mecànics!
@@ -3216,7 +3214,7 @@ STR_6053    :Aquest mapa d’alçades no es pot normalitzar
 STR_6054    :Només es poden usar bitmaps de 24 bits
 STR_6055    :Fitxer de mapa d’alçades de l’OpenRCT2
 STR_6056    :Botó de silenci
-STR_6057    :Mostra un botó a la barra d’eines per activar o silenciar el so.
+STR_6057    :Mostra un botó a la barra d’eines per a activar o silenciar el so.
 STR_6058    :Silencia
 STR_6059    :»
 STR_6060    :Mostra animacions de compres
@@ -3271,7 +3269,7 @@ STR_6113    :Una muntanya russa alta sense inversions, amb llargues caigudes, al
 STR_6115    :Camions 4x4 gegants i autopropulsats que poden pujar per pendents empinades.
 STR_6116    :Muntanya russa amb vagons amples que llisca per una via d’acer llisa, passant per una bona varietat d’inversions.
 STR_6119    :Una muntanya russa barata i fàcil de construir, però amb una alçada limitada.
-STR_6120    :{BABYBLUE}Nou vehicle disponible per {STRINGID}:{NEWLINE}{STRINGID}
+STR_6120    :{BABYBLUE}Nou vehicle disponible per a {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :Amplia els drets de construcció del parc fins a les vores del mapa.
 STR_6122    :No hi ha prou muntanyes russes en aquest escenari!
 STR_6123    :S’ha produït un error carregant els objectes del parc.
@@ -3289,7 +3287,7 @@ STR_6134    :Neteja les decoracions
 STR_6135    :El client ha enviat una sol·licitud no vàlida.
 STR_6136    :El servidor ha enviat una sol·licitud no vàlida.
 STR_6137    :OpenRCT2, un clon de codi obert del Roller Coaster Tycoon 2.
-STR_6138    :L’OpenRCT2 és obra de molts autors. En trobareu una llista completa en «contributors.md». Per més informació, visiteu http://github.com/OpenRCT2/OpenRCT2
+STR_6138    :L’OpenRCT2 és obra de molts autors. En trobareu una llista completa en «contributors.md». Per a més informació, visiteu http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tots els noms de productes i de noms de companyies pertanyen als seus propietaris. L’ús d’aquests noms no n’implica cap tipus d’afiliació o promoció.
 STR_6140    :Registre de canvis…
 STR_6141    :Barra d’eines inferior del RCT1
@@ -3312,7 +3310,7 @@ STR_6157    :Consola
 STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
 STR_6161    :Mostra les línies de la quadrícula
 STR_6162    :«Wild Mouse» giratori
-STR_6163    :Vagons amb forma de ratolí que es mouen a tota velocitat per giravolts i petits descensos, girant suaument per desorientar els passatgers.
+STR_6163    :Vagons amb forma de ratolí que es mouen a tota velocitat per giravolts i petits descensos, girant suaument que desorienten els passatgers.
 STR_6164    :{WHITE}❌
 STR_6165    :Sincronització vertical
 STR_6166    :Sincronitza cada fotograma anb la freqüència del monitor, evitant l’efecte de pantalla partida.
@@ -3337,7 +3335,7 @@ STR_6199    :Estableix data
 STR_6200    :Restableix data
 STR_6201    :{MONTH}
 STR_6202    :Estil del terra virtual:
-STR_6203    :Quan està activat, es dibuixarà un terra virtual mentre es prem Ctrl o Maj per facilitar el posicionament d’elements.
+STR_6203    :Quan està activat, es dibuixarà un terra virtual mentre es prem Ctrl o Maj per a facilitar el posicionament d’elements.
 STR_6215    :Construcció
 STR_6216    :Funcionament
 STR_6217    :Disponibilitat d’atraccions i tipus de via
@@ -3401,7 +3399,7 @@ STR_6277    :Índex d’estació: {BLACK}{STRINGID}
 STR_6278    :Nombre de desades automàtiques:
 STR_6279    :Nombre de desades automàtiques que es mantindran.
 STR_6280    :Xat
-STR_6281    :Mostra un botó per la finestra del xat a la barra d’eines.
+STR_6281    :Mostra el botó de la finestra del xat a la barra d’eines.
 STR_6282    :Xat
 STR_6283    :Ara mateix el xat no està disponible. Esteu connectats al servidor?
 STR_6293    :B
@@ -3438,7 +3436,7 @@ STR_6323    :Es simula
 STR_6324    :Simula
 STR_6325    :Simula l’atracció
 STR_6326    :No es pot simular {STRINGID}…
-STR_6327    :Fons transparent per captures de pantalla gegants
+STR_6327    :Fons transparent per a les captures de pantalla gegants
 STR_6328    :Si s’activa, les captures de pantalla gegants tindran un fons transparent en lloc del color negre per defecte.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Es carrega [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
@@ -3510,18 +3508,18 @@ STR_6396    :Desactiva el protector de pantalla i l’estalviador d’energia
 STR_6397    :Si es selecciona, el protector de pantalla i altres funcions d’estalvi d’energia seran inhibides mentre s’executa l’OpenRCT2.
 STR_6398    :El fitxer conté atraccions incompatibles. Si us plau, actualitzeu l’OpenRCT2.
 STR_6399    :OpenRCT2 necessita fitxers del joc original RollerCoaster Tycoon 2 per a poder funcionar. Si us plau, establiu la variable «game_path» al config.ini apuntant al directori on vau instal·lar RollerCoaster Tycoon 2 i reinicieu l’OpenRCT2.
-STR_6400    :Tinc descarregat l’instal·lador del GOG sense connexió a Internet del RollerCoaster Tycoon 2, però no l’he instal·lat
-STR_6401    :Ja tinc el RollerCoaster Tycoon 2 instal·lat
+STR_6400    :Tinc descarregat l’instal·lador del GOG sense connexió a Internet del RollerCoaster Tycoon 2, però no l’he instal·lat.
+STR_6401    :Ja tinc el RollerCoaster Tycoon 2 instal·lat.
 STR_6402    :Configuració de dades de l’OpenRCT2
-STR_6403    :Escolliu quina opció us escau més
+STR_6403    :Trieu quina opció us escau més:
 STR_6404    :Selecciona l’instal·lador del GOG del RollerCoaster Tycoon 2.
 STR_6405    :Selecciona l’instal·lador del GOG
 STR_6406    :Instal·lador del GOG del RollerCoaster Tycoon 2
 STR_6407    :Pot trigar uns minuts.
-STR_6408    :Instal·leu «innoextract» per extraure l’instal·lador del GOG i després reinicieu l’OpenRCT2.
+STR_6408    :Instal·leu «innoextract» per a extraure l’instal·lador del GOG i després reinicieu l’OpenRCT2.
 STR_6409    :El fitxer seleccionat no és l’instal·lador del GOG sense connexió a Internet del RollerCoaster Tycoon 2. Potser heu descarregat el GOG Galaxy stub o heu seleccionat un fitxer erroni.
 STR_6410    :Apropa/Allunya
-STR_6411    :Mostra botons a la barra d’eines per apropar o allunyar la vista.
+STR_6411    :Mostra botons a la barra d’eines per a apropar o allunyar la vista.
 STR_6412    :Retorn del teclat numèric
 STR_6413    :Maj.
 STR_6414    :Maj. esquerra
@@ -3600,13 +3598,11 @@ STR_6487    :Alterna veure a través dels treballadors
 STR_6488    :{RED}Els visitants es queixen de les llargues cues del parc.{NEWLINE}Considereu escurçar les més problemàtiques o augmentar el rendiment de les atraccions.
 STR_6489    :Error: Versió de parc no compatible
 STR_6490    :Avís: Versió de parc parcialment compatible
-STR_6491    :Aquest parc es va desar amb una versió de l’OpenRCT2 posterior. La versió del parc és v{INT32} i es requereix almenys la versió v{INT32}.
 STR_6492    :Aquest parc es va desar amb una versió antiga de l’OpenRCT2 i no es pot obrir amb aquesta versió. La versió del parc és v{INT32}.
-STR_6493    :Aquest parc es va desar amb una versió de l’OpenRCT2 posterior i es poden haver perdut dades. La versió del parc és v{INT32} i es requereix almenys la versió v{INT32}.
 STR_6494    :Agrupa per tipus d’atracció
 STR_6495    :Agrupa les atraccions per tipus en lloc de mostrar els vehicles per separat.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
-STR_6497    :Feu clic en una casella per mostrar els seus elements.{NEWLINE}Amb Ctrl + clic en una casella, seleccioneu l’element directament.
+STR_6497    :Feu clic en una casella per a mostrar els seus elements.{NEWLINE}Amb Ctrl + clic en una casella, seleccioneu l’element directament.
 STR_6498    :Si s’activa, el mapa tindrà forma quadrada.
 STR_6474    :Visitants invisibles
 STR_6475    :Empleats invisibles
@@ -3633,6 +3629,14 @@ STR_6516    :Un o més objectes que s’han afegit necessiten l’enllaç al RCT
 STR_6517    :Un o més objectes d’aquest parc necessiten l’enllaç al RCT1 per a veure’ls correctament. Es faran servir imatges alternatives.
 STR_6518    :{BLACK}Situeu el ratolí damunt d’un escenari per a veure la seva descripció i els seus objectius. Feu clic per a començar a jugar.
 STR_6519    :Extres
+STR_6520    :Paquets de recursos
+STR_6521    :Prioritat baixa
+STR_6522    :Prioritat alta
+STR_6523    :Redueix la prioritat del paquet de recursos.
+STR_6524    :Augmenta la prioritat del paquet de recursos.
+STR_6525    :Recarrega tots els recursos del joc amb els paquets de recursos activats.
+STR_6526    :(gràfics base, música i efectes de so)
+STR_6527    :Competicions
 
 #############
 # Scenarios #
@@ -3647,7 +3651,7 @@ STR_DTLS    :Construïu un parc pròsper a l’àrea que s’ha netejat ben endi
 <Dynamite Dunes>
 STR_SCNR    :Les dunes Dinamita
 STR_PARK    :Les dunes Dinamita
-STR_DTLS    :Construït al bell mig del desert, aquest parc temàtic només té una muntanya russa però disposa d’espai per expandir-se.
+STR_DTLS    :Construït al bell mig del desert, aquest parc temàtic només té una muntanya russa però disposa d’espai per a expandir-se.
 
 <Leafy Lake>
 STR_SCNR    :El llac frondós
@@ -3677,7 +3681,7 @@ STR_DTLS    :La base d’aquest parc la formen diverses illes.
 <Katie's Dreamland>
 STR_SCNR    :El món dels somnis de la Katie
 STR_PARK    :El món dels somnis de la Katie
-STR_DTLS    :Un parc temàtic petit amb unes quantes atraccions i espai per expandir-lo. El vostre objectiu és doblar-ne el valor.
+STR_DTLS    :Un parc temàtic petit amb unes quantes atraccions i espai per a expandir-lo. El vostre objectiu és duplicar-ne el valor.
 
 <Pokey Park>
 STR_SCNR    :El parc diminut
@@ -3702,7 +3706,7 @@ STR_DTLS    :Un parc gran amagat al bell mig dels boscos. Només té vies de kà
 <Mel's World>
 STR_SCNR    :El món d’en Mel
 STR_PARK    :El món d’en Mel
-STR_DTLS    :Aquest parc temàtic té algunes atraccions modernes molt ben dissenyades i molt d’espai per expandir-se.
+STR_DTLS    :Aquest parc temàtic té algunes atraccions modernes molt ben dissenyades i molt d’espai per a expandir-se.
 
 <Mystic Mountain>
 STR_SCNR    :La muntanya mística
@@ -3717,7 +3721,7 @@ STR_DTLS    :Convertiu l’atracció turística d’aquestes ruïnes egípcies e
 <Crumbly Woods>
 STR_SCNR    :Els boscos llangorosos
 STR_PARK    :Els boscos llangorosos
-STR_DTLS    :Un parc enorme amb atraccions ben dissenyades però que comencen a ser velles. Substituïu-les o afegiu-hi atraccions noves per fer que el parc sigui més popular.
+STR_DTLS    :Un parc enorme amb atraccions ben dissenyades però que comencen a ser velles. Substituïu-les o afegiu-hi atraccions noves per a fer que el parc sigui més popular.
 
 <Paradise Pier>
 STR_SCNR    :El moll paradisíac
@@ -3727,7 +3731,7 @@ STR_DTLS    :Convertiu aquest petit moll fantasma en una atracció pròspera.
 <Lightning Peaks>
 STR_SCNR    :Els cims llampeguejants
 STR_PARK    :Els cims llampeguejants
-STR_DTLS    :Els excursionistes ja coneixen aquestes magnífiques muntanyes. Useu el terreny disponible per atreure més clientela, especialment aquells que busquin emocions fortes.
+STR_DTLS    :Els excursionistes ja coneixen aquestes magnífiques muntanyes. Useu el terreny disponible per a atreure més clientela, especialment aquells que busquin emocions fortes.
 
 <Ivory Towers>
 STR_SCNR    :Les torres de vori
@@ -3737,17 +3741,17 @@ STR_DTLS    :Un parc ben establert que té alguns problemes.
 <Rainbow Valley>
 STR_SCNR    :La vall de l’arc iris
 STR_PARK    :La vall de l’arc iris
-STR_DTLS    :Les autoritats locals de la vall no permetran canvis en el terreny ni que es treguin arbres centenaris. L’haureu de desenvolupar amb molt de compte per convertir-la en un parc temàtic.
+STR_DTLS    :Les autoritats locals de la vall no permetran canvis en el terreny ni que es treguin arbres centenaris. L’haureu de desenvolupar amb molt de compte per a convertir-la en un parc temàtic.
 
 <Thunder Rock>
 STR_SCNR    :La roca del tro
 STR_PARK    :La roca del tro
-STR_DTLS    :La roca del tro està al mig d’un desert i atrau molts turistes. Useu l’espai disponible per construir-hi atraccions per atreure més visitants.
+STR_DTLS    :La roca del tro està al mig d’un desert i atrau molts turistes. Useu l’espai disponible per a construir-hi atraccions i atreure més visitants.
 
 <Mega Park>
 STR_SCNR    :Megaparc
 STR_PARK    :Megaparc
-STR_DTLS    :Només per divertir-se!
+STR_DTLS    :Només per a divertir-se!
 
 ## Added Attractions
 <Whispering Cliffs>
@@ -3758,7 +3762,7 @@ STR_DTLS    :Desenvolupeu els penya-segats i convertiu-los en un parc d’atracc
 <Three Monkeys Park>
 STR_SCNR    :El parc de les tres mones
 STR_PARK    :El parc de les tres mones
-STR_DTLS    :Al bell mig d’aquest gran parc en desenvolupament i hi ha una muntanya russa d’acer amb triple carril per competicions.
+STR_DTLS    :Al bell mig d’aquest gran parc en desenvolupament i hi ha una muntanya russa d’acer amb triple carril per a fer competicions.
 
 <Canary Mines>
 STR_SCNR    :Les mines Canàries
@@ -3783,7 +3787,7 @@ STR_DTLS    :Les autoritats locals han acordat vendre barat el terreny proper d�
 <Fun Fortress>
 STR_SCNR    :La fortalesa de la diversió
 STR_PARK    :La fortalesa de la diversió
-STR_DTLS    :Aquest castell és tot vostre per convertir-lo en un parc temàtic.
+STR_DTLS    :Aquest castell és tot vostre per a convertir-lo en un parc temàtic.
 
 <Future World>
 STR_SCNR    :El món del futur
@@ -3793,17 +3797,17 @@ STR_DTLS    :Aquest parc futurístic disposa de molt d’espai lliure per a nove
 <Gentle Glen>
 STR_SCNR    :La vall tranquil·la
 STR_PARK    :La vall tranquil·la
-STR_DTLS    :La població local prefereix atraccions suaus i relaxants. Així que la vostra feina és expandir aquest parc per satisfer els seus desitjos.
+STR_DTLS    :La població local prefereix atraccions suaus i relaxants. Així que la vostra feina és expandir aquest parc per a satisfer els seus desitjos.
 
 <Jolly Jungle>
 STR_SCNR    :La selva alegre
 STR_PARK    :La selva alegre
-STR_DTLS    :Ben endins de la selva hi ha una gran àrea de terreny preparat per convertir-se en un parc temàtic.
+STR_DTLS    :Ben endins de la selva hi ha una gran àrea de terreny preparada per a convertir-la en un parc temàtic.
 
 <Hydro Hills>
 STR_SCNR    :Els turons Hydro
 STR_PARK    :Els turons Hydro
-STR_DTLS    :Una sèrie de llacs escalonats formen la base per aquest parc nou.
+STR_DTLS    :Una sèrie de llacs escalonats formen la base per a aquest parc nou.
 
 <Sprightly Park>
 STR_SCNR    :El parc alegre
@@ -3813,12 +3817,12 @@ STR_DTLS    :Aquest parc envellit té moltes atraccions històriques però està
 <Magic Quarters>
 STR_SCNR    :Els barris màgics
 STR_PARK    :Els barris màgics
-STR_DTLS    :S’ha netejat una gran àrea de terreny i s’ha tematitzat parcialment per convertir-la en un parc temàtic paisatgístic.
+STR_DTLS    :S’ha netejat una gran àrea de terreny i s’ha tematitzat parcialment per a convertir-la en un parc temàtic paisatgístic.
 
 <Fruit Farm>
 STR_SCNR    :La granja de la fruita
 STR_PARK    :La granja de la fruita
-STR_DTLS    :Una granja de fruites pròspera ha construït el ferrocarril per augmentar-ne els ingressos. La vostra feina és convertir-la en un parc d’atraccions plenament desenvolupat.
+STR_DTLS    :Una granja de fruites pròspera ha construït el ferrocarril per a augmentar-ne els ingressos. La vostra feina és convertir-la en un parc d’atraccions plenament desenvolupat.
 
 <Butterfly Dam>
 STR_SCNR    :La presa Papallona
@@ -3828,12 +3832,12 @@ STR_DTLS    :L’àrea del voltant de la presa està disponible perquè hi desen
 <Coaster Canyon>
 STR_SCNR    :Atraccions al canyó
 STR_PARK    :Atraccions al canyó
-STR_DTLS    :Teniu un vast canyó per convertir-lo en un parc temàtic.
+STR_DTLS    :Teniu un vast canyó per a convertir-lo en un parc temàtic.
 
 <Thunderstorm Park>
 STR_SCNR    :Parc Tempesta
 STR_PARK    :Parc Tempesta
-STR_DTLS    :El clima és tan humit que s’ha construït una piràmide gegant per construir-hi algunes atraccions a cobert.
+STR_DTLS    :El clima és tan humit que s’ha construït una piràmide gegant per a construir-hi algunes atraccions a cobert.
 
 <Harmonic Hills>
 STR_SCNR    :Turons harmònics
@@ -3853,12 +3857,12 @@ STR_DTLS    :Construït parcialment en illes petites, aquest parc ja disposa d�
 <Adrenaline Heights>
 STR_SCNR    :Els cims d’Adrenalina
 STR_PARK    :Els cims d’Adrenalina
-STR_DTLS    :Construeix un parc per atreure a la gent dels voltants que busqui emocions d’alt voltatge.
+STR_DTLS    :Construeix un parc per a atreure a la gent dels voltants que busqui emocions d’alt voltatge.
 
 <Utopia Park>
 STR_SCNR    :Parc Utopia
 STR_PARK    :Parc Utopia
-STR_DTLS    :Un oasi al mig del desert ofereix una oportunitat poc usual per construir un parc d’atraccions.
+STR_DTLS    :Un oasi al mig del desert ofereix una oportunitat poc usual per a construir un parc d’atraccions.
 
 <Rotting Heights>
 STR_SCNR    :Els cims Mig-Podrits
@@ -3868,12 +3872,12 @@ STR_DTLS    :Descuidat i dilapidat, podreu ressuscitar aquest parc d’atraccion
 <Fiasco Forest>
 STR_SCNR    :El bosc Fiasco
 STR_PARK    :El bosc Fiasco
-STR_DTLS    :Ple d’atraccions perilloses i mal dissenyades, teniu un pressupost i temps molt limitat per arreglar-ne els problemes i tirar endavant el parc.
+STR_DTLS    :Ple d’atraccions perilloses i mal dissenyades, teniu un pressupost i temps molt limitat per a solucionar-ne els problemes i tirar endavant el parc.
 
 <Pickle Park>
 STR_SCNR    :Parc dels cogombrets
 STR_PARK    :Parc dels cogombrets
-STR_DTLS    :L’autoritat local no permetrà campanyes de màrqueting. El parc haurà d’aconseguir tirar endavant només per la seva reputació.
+STR_DTLS    :L’autoritat local no permetrà campanyes de màrqueting. El parc haurà d’aconseguir tirar endavant només amb la seva reputació.
 
 <Giggle Downs>
 STR_SCNR    :Baixades de riure
@@ -3888,12 +3892,12 @@ STR_DTLS    :Convertiu aquesta pedrera abandonada en un lloc on atreure als turi
 <Coaster Crazy>
 STR_SCNR    :Vessants boges
 STR_PARK    :Vessants boges
-STR_DTLS    :Disposeu de fons financers limitats però temps il·limitat per convertir aquesta àrea de muntanyes en un gran parc de muntanyes russes.
+STR_DTLS    :Disposeu de fons financers limitats però temps il·limitat per a convertir aquesta àrea de muntanyes en un gran parc de muntanyes russes.
 
 <Urban Park>
 STR_SCNR    :Parc urbà
 STR_PARK    :Parc urbà
-STR_DTLS    :Un petit parc ha arribat a un acord amb una població propera per expandir-se pel mig de la mateixa població.
+STR_DTLS    :Un petit parc ha arribat a un acord amb una població propera per a expandir-se pel mig de la mateixa població.
 
 <Geoffrey Gardens>
 STR_SCNR    :Jardins Geoffrey
@@ -3934,7 +3938,7 @@ STR_DTLS    :Aquest parc enorme ja té una hipermuntanya russa, però la vostra 
 <Paradise Pier 2>
 STR_SCNR    :El moll paradisíac II
 STR_PARK    :El moll paradisíac II
-STR_DTLS    :El moll paradisíac ha expandit la seva xarxa de camins pel mar i la vostra tasca és ampliar el parc per usar aquest espai extra.
+STR_DTLS    :El moll paradisíac ha expandit la seva xarxa de camins pel mar i la vostra tasca és ampliar el parc i fer servir aquest espai extra.
 
 <Dragon's Cove>
 STR_SCNR    :La cova del drac
@@ -3959,7 +3963,7 @@ STR_DTLS    :Teniu aquesta vall ocupada per una glacera. Hi heu de desenvolupar 
 <Crazy Craters>
 STR_SCNR    :Cràters bojos
 STR_PARK    :Cràters bojos
-STR_DTLS    :En un món llunyà on els diners no fan falta, heu de construir un centre d’entreteniment per mantenir feliç a la gent.
+STR_DTLS    :En un món llunyà on els diners no fan falta, heu de construir un centre d’entreteniment per a mantenir feliç a la gent.
 
 <Dusty Desert>
 STR_SCNR    :Desert polsegós
@@ -3969,12 +3973,12 @@ STR_DTLS    :Cal completar 5 muntanyes russes en aquest parc situat al desert.
 <Woodworm Park>
 STR_SCNR    :Parc dels corcs
 STR_PARK    :Parc dels corcs
-STR_DTLS    :Aquest parc històric només té permís per construir atraccions d’estil antic.
+STR_DTLS    :Aquest parc històric només té permís per a construir atraccions d’estil antic.
 
 <Icarus Park>
 STR_SCNR    :Parc Ícar
 STR_PARK    :Parc Ícar
-STR_DTLS    :Desenvolupa aquest parc alienígena per maximitzar-ne els beneficis.
+STR_DTLS    :Desenvolupeu aquest parc alienígena per tal de maximitzar-ne els beneficis.
 
 <Sunny Swamps>
 STR_SCNR    :Pantans solejats
@@ -4009,7 +4013,7 @@ STR_DTLS    :Un paisatge gèlid que demana que el converteixin en un parc temàt
 <Southern Sands>
 STR_SCNR    :Les arenes del sud
 STR_PARK    :Les arenes del sud
-STR_DTLS    :Un parc al desert amb algunes muntanyes russes enginyosament dissenyades és tot vostre per expandir-lo.
+STR_DTLS    :Un parc al desert amb algunes muntanyes russes enginyosament dissenyades és tot vostre per a expandir-lo.
 
 <Tiny Towers>
 STR_SCNR    :Les torres petites
@@ -4024,17 +4028,17 @@ STR_DTLS    :Un parc gran amb un sistema de transport nou que el voreja.
 <Pacifica>
 STR_SCNR    :L’illa Pacífica
 STR_PARK    :L’illa Pacífica
-STR_DTLS    :Aquesta enorme illa és tota vostra per desenvolupar-la com a parc d’atraccions.
+STR_DTLS    :Aquesta enorme illa és tota vostra per a desenvolupar-la com a parc d’atraccions.
 
 <Urban Jungle>
 STR_SCNR    :La jungla urbana
 STR_PARK    :La jungla urbana
-STR_DTLS    :Un gratacels gegant abandonat és l’única opció per desenvolupar un parc temàtic.
+STR_DTLS    :Un gratacels gegant abandonat és l’única opció per a desenvolupar un parc temàtic.
 
 <Terror Town>
 STR_SCNR    :El poble Terror
 STR_PARK    :El poble Terror
-STR_DTLS    :Aquesta àrea urbana és tota vostra per desenvolupar-la com a parc d’atraccions.
+STR_DTLS    :Aquesta àrea urbana és tota vostra per a desenvolupar-la com a parc d’atraccions.
 
 <Megaworld Park>
 STR_SCNR    :Megaworld Park
@@ -4083,36 +4087,6 @@ STR_DTLS    :
 [TTPIRF05]
 STR_NAME    :Sostre
 
-[TTRFWD01]
-STR_NAME    :Sostre
-
-[TTRFWD02]
-STR_NAME    :Sostre
-
-[TTRFWD03]
-STR_NAME    :Sostre
-
-[TTRFWD04]
-STR_NAME    :Sostre
-
-[TTRFWD05]
-STR_NAME    :Sostre
-
-[TTRFWD06]
-STR_NAME    :Sostre
-
-[TTRFWD07]
-STR_NAME    :Sostre
-
-[TTRFWD08]
-STR_NAME    :Sostre
-
-[ACWW33]
-STR_NAME    :Paret de pals de fusta
-
-[ACWWF32]
-STR_NAME    :Paret de pals de fusta
-
 ## End OpenRCT2 Official
 
 ###############################################################################
@@ -4141,7 +4115,7 @@ STR_DTLS    :Construïu la vostra versió d’aquest parc Six Flag europeu.
 <Build your own Six Flags Great Adventure>
 STR_SCNR    :El vostre Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Empreu les vostres tècniques de disseny per recrear aquest parc Six Flag.
+STR_DTLS    :Empreu les vostres tècniques de disseny per tal de recrear aquest parc Six Flag.
 
 <Build your own Six Flags Holland>
 STR_SCNR    :El vostre Six Flags Holland
@@ -4166,7 +4140,7 @@ STR_DTLS    :Construïu el vostre disseny del parc Six Flags. Construïu atracci
 <Bumbly Bazaar>
 STR_SCNR    :El basar atrafegat
 STR_PARK    :El basar atrafegat
-STR_DTLS    :Començant amb un petit basar, el repte consisteix en incrementar els beneficis de les paradetes construint atraccions i muntanyes russes per atreure més clients.
+STR_DTLS    :Començant amb un petit basar, el repte consisteix en incrementar els beneficis de les paradetes construint atraccions i muntanyes russes per a atreure més clients.
 
 <Crazy Castle>
 STR_SCNR    :Castell esbojarrat
@@ -4176,7 +4150,7 @@ STR_DTLS    :Heu heretat aquest enorme castell. La vostra feina consisteix en co
 <Dusty Greens>
 STR_SCNR    :Verds polsosos
 STR_PARK    :Verds polsosos
-STR_DTLS    :Situat prop d’una sortida d’autopista al mig del desert, «Verds polsosos» és una oportunitat per desenvolupar un petit complex amb un camp de golf i convertir-lo en un parc temàtic pròsper.
+STR_DTLS    :Situat prop d’una sortida d’autopista al mig del desert, «Verds polsosos» és una oportunitat per tal de desenvolupar un petit complex amb un camp de golf i convertir-lo en un parc temàtic pròsper.
 
 <Electric Fields>
 STR_SCNR    :Camps elèctrics
@@ -4186,12 +4160,12 @@ STR_DTLS    :Heu heretat una petita masoveria i teniu el repte de construir un p
 <Extreme Heights>
 STR_SCNR    :Alçades extremes
 STR_PARK    :Alçades extremes
-STR_DTLS    :Sense restriccions financeres, el repte és expandir aquest parc desèrtic per atreure gent que busqui emocions fortes.
+STR_DTLS    :Sense restriccions financeres, el repte és expandir aquest parc desèrtic per a atreure gent que busqui emocions fortes.
 
 <Factory Capers>
 STR_SCNR    :Aventures de la fàbrica
 STR_PARK    :Aventures de la fàbrica
-STR_DTLS    :Un complex abandonat és una oportunitat per construir un parc d’atraccions de temàtica industrial.
+STR_DTLS    :Un complex abandonat és una oportunitat per a construir un parc d’atraccions de temàtica industrial.
 
 <Fungus Woods>
 STR_SCNR    :Boscos rancis
@@ -4231,7 +4205,7 @@ STR_DTLS    :Proveu a dirigir i millorar aquest parc Six Flags.
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Construïu les atraccions que li falten a aquest Six Flags, o creeu els vostres dissenys per millorar el parc! Però no oblideu el vostre objectiu final: atreure més clients al parc.
+STR_DTLS    :Construïu les atraccions que li falten a aquest Six Flags, o creeu els vostres dissenys per a millorar el parc! Però no oblideu el vostre objectiu final: atreure més clients al parc.
 
 <Six Flags Holland>
 STR_SCNR    :Six Flags Holland
@@ -4241,12 +4215,12 @@ STR_DTLS    :Proveu a dirigir i millorar aquest parc Six Flags.
 <Six Flags Magic Mountain>
 STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Construïu les atraccions Six Flags que falten, o creeu els vostres dissenys per millorar el parc! Però no oblideu el vostre objectiu final: retornar el préstec mentre el parc manté una valoració alta.
+STR_DTLS    :Construïu les atraccions Six Flags que falten, o creeu els vostres dissenys per a millorar el parc! Però no oblideu el vostre objectiu final: retornar el préstec mentre el parc manté una valoració alta.
 
 <Six Flags over Texas>
 STR_SCNR    :Six Flags over Texas
 STR_PARK    :Six Flags over Texas
-STR_DTLS    :Construïu les atraccions Six Flags que falten, o creeu els vostres dissenys per millorar el parc! Però no oblideu el vostre objectiu final: atreure més clients al parc.
+STR_DTLS    :Construïu les atraccions Six Flags que falten, o creeu els vostres dissenys per a millorar el parc! Però no oblideu el vostre objectiu final: atreure més clients al parc.
 
 ###############################################################################
 ## Wacky Worlds Scenarios
@@ -4254,22 +4228,22 @@ STR_DTLS    :Construïu les atraccions Six Flags que falten, o creeu els vostres
 <Africa - African Diamond Mine>
 STR_SCNR    :Àfrica - Mines de diamants
 STR_PARK    :Mines d’Àfrica
-STR_DTLS    :Heu heretat una mina de diamants que ja no s’explota, on hi heu trobat un diamant valuós. Voleu invertir els diners del diamant per construir un parc temàtic conegut a tot el món.
+STR_DTLS    :Heu heretat una mina de diamants que ja no s’explota, on hi heu trobat un diamant valuós. Voleu invertir els diners del diamant per tal de construir un parc temàtic conegut a tot el món.
 
 <Africa - Oasis>
 STR_SCNR    :Àfrica - Oasi
 STR_PARK    :La follia dels miratges
-STR_DTLS    :S’ha descobert un oasi que seria una bona localització per un parc. El transport fins l’oasi ja està preparat.
+STR_DTLS    :S’ha descobert un oasi que seria una bona localització per a fer-hi un parc. El transport fins l’oasi ja està preparat.
 
 <Africa - Victoria Falls>
 STR_SCNR    :Àfrica - Les cascades Victòria
 STR_PARK    :A la vora
-STR_DTLS    :S’ha construït una presa que ofereix energia hidroelèctrica barata i abundant per fer funcionar un parc. Haureu d’obtenir una valoració del parc prou alta per poder retornar el préstec de la presa.
+STR_DTLS    :S’ha construït una presa que ofereix energia hidroelèctrica barata i abundant per a fer funcionar un parc. Haureu d’obtenir una valoració del parc prou alta per a poder retornar el préstec de la presa.
 
 <Antarctic - Ecological Salvage>
 STR_SCNR    :Antàrtida - Rescat ecològic
 STR_PARK    :Aventures gèlides
-STR_DTLS    :L’agència mediambiental us ha delegat la tasca de transformar aquesta monstruositat ecològica en forma de refineria de petroli en una atracció turística capdavantera. El terreny és barat però el tipus d’interès del prèstec és alt. Podeu vendre els vells edificis per treure’n profit.
+STR_DTLS    :L’agència mediambiental us ha delegat la tasca de transformar aquesta monstruositat ecològica en forma de refineria de petroli en una atracció turística capdavantera. El terreny és barat però el tipus d’interès del prèstec és alt. Podeu vendre els vells edificis per a treure’n profit.
 
 <Asia - Great Wall of China Tourism Enhancement>
 STR_SCNR    :Àsia - Millores turístiques a la Gran Muralla
@@ -4289,7 +4263,7 @@ STR_DTLS    :El maharajà us ha destinat aquí per tal que proporcioneu entreten
 <Australasia - Ayers Rock>
 STR_SCNR    :Austràlia - Uluru
 STR_PARK    :L’aventura Uluru
-STR_DTLS    :Esteu ajudant els aborígens a construir un parc dins del programa de conciencació cultural. Necessiteu un gran nombre de visitants per instruir-los en l’herència cultural única de la població indígena.
+STR_DTLS    :Esteu ajudant els aborígens a construir un parc dins del programa de conciencació cultural. Necessiteu un gran nombre de visitants per a instruir-los en l’herència cultural única de la població indígena.
 
 <Australasia - Fun at the Beach>
 STR_SCNR    :Austràlia - Diversió a la platja
@@ -4299,22 +4273,22 @@ STR_DTLS    :El parc marítim d’un emprenedor local ha fet fallida. Ja teniu u
 <Europe - European Cultural Festival>
 STR_SCNR    :Europa - Festival cultural europeu
 STR_PARK    :Extravagància europea
-STR_DTLS    :Us han dut per dirigir una atracció cultural europea per als turistes i heu d’augmentar el nombre de visitants per tal de poder retornar la subvenció de la UE a finals de l’actual mandat del parlament europeu.
+STR_DTLS    :Us han dut per a dirigir una atracció cultural europea per als turistes i heu d’augmentar el nombre de visitants per tal de poder retornar la subvenció de la UE a finals de l’actual mandat del parlament europeu.
 
 <Europe - Renovation>
 STR_SCNR    :Europa - Renovació
 STR_PARK    :Des de les cendres
-STR_DTLS    :Aquest parc vell està en mal estat. Heu guanyat una subvenció per retornar aquesta àrea desafavorida a la seva antiga glòria! Heu de renovar el parc i retornar la subvenció.
+STR_DTLS    :Aquest parc vell està en mal estat. Heu guanyat una subvenció per a retornar aquesta àrea desafavorida a la seva antiga glòria! Heu de renovar el parc i retornar la subvenció.
 
 <N. America - Extreme Hawaiian Island>
 STR_SCNR    :Nord-amèrica - Illa hawaiana llunyana
 STR_PARK    :Wacky Waikiki
-STR_DTLS    :La gent de Hawaii s’avorreixen només fent surf i busquen alguna cosa més intensa. Heu de construir un parc amb això al cap per mantenir un interès turístic en la zona prou elevat.
+STR_DTLS    :La gent de Hawaii s’avorreixen només fent surf i busquen alguna cosa més intensa. Heu de construir un parc amb això al cap per tal de mantenir un interès turístic a la zona prou elevat.
 
 <North America - Grand Canyon>
 STR_SCNR    :Nord-amèrica - El Gran Canyó
 STR_PARK    :Calamitats del Canyó
-STR_DTLS    :Heu de construir un parc en el terreny limitat en les dues bandes d’aquest tresor natural. Teniu l’oportunitat de comprar terrenys adjacents dels nadius indis americans. Heu de completar l’objectiu per alimentar els habitants de la població local.
+STR_DTLS    :Heu de construir un parc en el terreny limitat en les dues bandes d’aquest tresor natural. Teniu l’oportunitat de comprar terrenys adjacents dels nadius indis americans. Heu de completar l’objectiu per a alimentar els habitants de la població local.
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :Nord-amèrica - Rollercoaster Heaven
@@ -4324,7 +4298,7 @@ STR_DTLS    :Sou un magnat de les finances competent en període sabàtic que de
 <South America - Inca Lost City>
 STR_SCNR    :Sud-amèrica - La ciutat inca perduda
 STR_PARK    :La fundació de la ciutat perduda
-STR_DTLS    :Per augmentar el turisme local heu de construir un parc que s’adigui amb els seus voltants i que compleixi amb les restriccions d’alçada.
+STR_DTLS    :Per a augmentar el turisme local heu de construir un parc que s’adigui amb els seus voltants i que compleixi amb les restriccions d’alçada.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sud-amèrica - L’altiplà de la selva tropical
@@ -4334,7 +4308,7 @@ STR_DTLS    :En aquesta preciosa selva tropical, l’espai està limitat. Heu d�
 <South America - Rio Carnival>
 STR_SCNR    :Sud-amèrica - Carnaval de Rio
 STR_PARK    :Costes del Pão de Açúcar
-STR_DTLS    :Dirigiu un petit parc prop de Rio, però el banc demana que se li pagui el préstec. Necessiteu augmentar ràpidament la vostra capacitat recaptatòria per retornar aquest deute inesperat.
+STR_DTLS    :Dirigiu un petit parc prop de Rio, però el banc demana que se li pagui el préstec. Necessiteu augmentar ràpidament la vostra capacitat recaptatòria per a retornar aquest deute inesperat.
 
 ###############################################################################
 ## Time Twister Scenarios
@@ -4347,12 +4321,12 @@ STR_DTLS    :Els membres locals de la societat de representacions de batalles es
 <Dark Age - Robin Hood>
 STR_SCNR    :Medieval - Robin Hood
 STR_PARK    :El bosc de Sherwood
-STR_DTLS    :Per robar als rics i repartir-ho entre els pobres, heu decidit juntament amb els vostres «homes feliços» construir un parc temàtic al bosc de Sherwood.
+STR_DTLS    :Amb la intenció de robar als rics i repartir el que aconseguiu entre els pobres, heu decidit que, amb l’ajuda dels vostres «homes feliços», construireu un parc temàtic al bosc de Sherwood.
 
 <Future - First Encounters>
 STR_SCNR    :Futurístic - Primers encontres
 STR_PARK    :Extravagància Extraterrestre
-STR_DTLS    :S’ha descobert vida en un planeta llunyà. Construïu un parc de temàtica alienígena per recaptar els diners d’aquesta onada d’interès sense precedent.
+STR_DTLS    :S’ha descobert vida en un planeta llunyà. Construïu un parc de temàtica alienígena per a recaptar els diners d’aquesta onada d’interès sense precedent.
 
 <Future - Future World>
 STR_SCNR    :Futurístic - Món del futur
@@ -4377,12 +4351,12 @@ STR_DTLS    :Sou el propietari d’un vell cràter polsegós causat per un meteo
 <Prehistoric - Jurassic Safari>
 STR_SCNR    :Prehistòric - Safari juràssic
 STR_PARK    :Atracciósaurus
-STR_DTLS    :Us han assignat la tasca de construir un parc de l’era juràssica. Per optimitzar l’accés dels visitants a les exhibicions de plantes i animals exòtics, haureu de construir atraccions per tota la vall.
+STR_DTLS    :Us han assignat la tasca de construir un parc de l’era juràssica. Per tal d’optimitzar l’accés dels visitants a les exhibicions de plantes i animals exòtics, haureu de construir atraccions per tota la vall.
 
 <Prehistoric - Stone Age>
 STR_SCNR    :Prehistòric - L’edat de pedra
 STR_PARK    :Passeig rocós
-STR_DTLS    :Per frustrar els plans dels constructors d’una autopista i per ajudar a preservar els misteriosos i antics cercles de pedra, haureu de construir un parc temàtic amb l’edat de pedra com a principal motiu i aconseguir treure’n beneficis. No obstant, atreure visitants pot suposar un repte, ja que el terrny és un poc inhòspit.
+STR_DTLS    :Per a frustrar els plans dels constructors d’una autopista i per a ajudar a preservar els misteriosos i antics cercles de pedra, haureu de construir un parc temàtic amb l’edat de pedra com a principal motiu i aconseguir treure’n beneficis. No obstant, atreure visitants pot suposar un repte, ja que el terrny és un poc inhòspit.
 
 <Roaring Twenties - Prison Island>
 STR_SCNR    :Roaring Twenties - L’illa presó
@@ -4397,12 +4371,12 @@ STR_DTLS    :El 25è aniversari de la victòria del vostre avi a la Copa Schneid
 <Roaring Twenties - Skyscrapers>
 STR_SCNR    :Els «Roaring Twenties» - Gratacels
 STR_PARK    :Metròpoli
-STR_DTLS    :Disposeu d’un solar buit prop de la zona pobra de la població. Per treure profit d’aquests terrenys urbans, construïu un parc en forma de gratacels inspirat en el desorbitat art decó dels anys vint.
+STR_DTLS    :Disposeu d’un solar buit prop de la zona pobra de la població. Per a treure profit d’aquests terrenys urbans, construïu un parc en forma de gratacels inspirat en el desorbitat art decó dels anys vint.
 
 <Rock 'n' Roll - Flower Power>
 STR_SCNR    :Rock ’n’ Roll - Flower Power
 STR_PARK    :Woodstock
-STR_DTLS    :Hi ha un gran festival anual de música als teus terrenys. Construïu-hi un parc temàtic a la moda per mantenir els esperits lliures entretinguts.
+STR_DTLS    :Hi ha un gran festival anual de música als teus terrenys. Construïu-hi un parc temàtic a la moda per a mantenir els esperits lliures entretinguts.
 
 <Rock 'n' Roll - Rock 'n' Roll>
 STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll

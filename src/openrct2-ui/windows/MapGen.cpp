@@ -284,65 +284,65 @@ static uint64_t PageDisabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
 
     0,
 
-    (1ULL << WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP) |
-    (1ULL << WIDX_HEIGHTMAP_STRENGTH) |
-    (1ULL << WIDX_HEIGHTMAP_STRENGTH_UP) |
-    (1ULL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
-    (1ULL << WIDX_HEIGHTMAP_NORMALIZE) |
-    (1ULL << WIDX_HEIGHTMAP_SMOOTH_TILES) |
-    (1ULL << WIDX_HEIGHTMAP_HIGH) |
-    (1ULL << WIDX_HEIGHTMAP_HIGH_UP) |
-    (1ULL << WIDX_HEIGHTMAP_HIGH_DOWN) |
-    (1ULL << WIDX_HEIGHTMAP_LOW) |
-    (1ULL << WIDX_HEIGHTMAP_LOW_UP) |
-    (1ULL << WIDX_HEIGHTMAP_LOW_DOWN) |
-    (1ULL << WIDX_HEIGHTMAP_WATER_LEVEL) |
-    (1ULL << WIDX_HEIGHTMAP_WATER_LEVEL_UP) |
-    (1ULL << WIDX_HEIGHTMAP_WATER_LEVEL_DOWN)
+    (1uLL << WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP) |
+    (1uLL << WIDX_HEIGHTMAP_STRENGTH) |
+    (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
+    (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
+    (1uLL << WIDX_HEIGHTMAP_NORMALIZE) |
+    (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILES) |
+    (1uLL << WIDX_HEIGHTMAP_HIGH) |
+    (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
+    (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
+    (1uLL << WIDX_HEIGHTMAP_LOW) |
+    (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
+    (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
+    (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL) |
+    (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_UP) |
+    (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_DOWN)
 };
 
 static uint64_t HoldDownWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-    (1ULL << WIDX_MAP_SIZE_Y_UP) |
-    (1ULL << WIDX_MAP_SIZE_Y_DOWN) |
-    (1ULL << WIDX_MAP_SIZE_X_UP) |
-    (1ULL << WIDX_MAP_SIZE_X_DOWN) |
-    (1ULL << WIDX_BASE_HEIGHT_UP) |
-    (1ULL << WIDX_BASE_HEIGHT_DOWN) |
-    (1ULL << WIDX_WATER_LEVEL_UP) |
-    (1ULL << WIDX_WATER_LEVEL_DOWN),
+    (1uLL << WIDX_MAP_SIZE_Y_UP) |
+    (1uLL << WIDX_MAP_SIZE_Y_DOWN) |
+    (1uLL << WIDX_MAP_SIZE_X_UP) |
+    (1uLL << WIDX_MAP_SIZE_X_DOWN) |
+    (1uLL << WIDX_BASE_HEIGHT_UP) |
+    (1uLL << WIDX_BASE_HEIGHT_DOWN) |
+    (1uLL << WIDX_WATER_LEVEL_UP) |
+    (1uLL << WIDX_WATER_LEVEL_DOWN),
 
     0,
 
-    (1ULL << WIDX_SIMPLEX_LOW_UP) |
-    (1ULL << WIDX_SIMPLEX_LOW_DOWN) |
-    (1ULL << WIDX_SIMPLEX_HIGH_UP) |
-    (1ULL << WIDX_SIMPLEX_HIGH_DOWN) |
-    (1ULL << WIDX_SIMPLEX_BASE_FREQ_UP) |
-    (1ULL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
-    (1ULL << WIDX_SIMPLEX_OCTAVES_UP) |
-    (1ULL << WIDX_SIMPLEX_OCTAVES_DOWN) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE_Y_UP) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE_Y_DOWN) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE_X_UP) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE_X_DOWN) |
-    (1ULL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
-    (1ULL << WIDX_SIMPLEX_WATER_LEVEL_DOWN),
+    (1uLL << WIDX_SIMPLEX_LOW_UP) |
+    (1uLL << WIDX_SIMPLEX_LOW_DOWN) |
+    (1uLL << WIDX_SIMPLEX_HIGH_UP) |
+    (1uLL << WIDX_SIMPLEX_HIGH_DOWN) |
+    (1uLL << WIDX_SIMPLEX_BASE_FREQ_UP) |
+    (1uLL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
+    (1uLL << WIDX_SIMPLEX_OCTAVES_UP) |
+    (1uLL << WIDX_SIMPLEX_OCTAVES_DOWN) |
+    (1uLL << WIDX_SIMPLEX_MAP_SIZE_Y_UP) |
+    (1uLL << WIDX_SIMPLEX_MAP_SIZE_Y_DOWN) |
+    (1uLL << WIDX_SIMPLEX_MAP_SIZE_X_UP) |
+    (1uLL << WIDX_SIMPLEX_MAP_SIZE_X_DOWN) |
+    (1uLL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
+    (1uLL << WIDX_SIMPLEX_WATER_LEVEL_DOWN),
 
-    (1ULL << WIDX_HEIGHTMAP_STRENGTH_UP) |
-    (1ULL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
-    (1ULL << WIDX_HEIGHTMAP_LOW_UP) |
-    (1ULL << WIDX_HEIGHTMAP_LOW_DOWN) |
-    (1ULL << WIDX_HEIGHTMAP_HIGH_UP) |
-    (1ULL << WIDX_HEIGHTMAP_HIGH_DOWN) |
-    (1ULL << WIDX_HEIGHTMAP_WATER_LEVEL_UP) |
-    (1ULL << WIDX_HEIGHTMAP_WATER_LEVEL_DOWN)
+    (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
+    (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
+    (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
+    (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
+    (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
+    (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
+    (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_UP) |
+    (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_DOWN)
 };
 
 static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     0,
     0,
     0,
-    (1ULL << WIDX_HEIGHTMAP_SMOOTH_TILES)
+    (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILES)
 };
 // clang-format on
 
@@ -447,7 +447,7 @@ rct_window* WindowMapgenOpen()
 
 static void WindowMapgenSharedClose(rct_window* w)
 {
-    mapgen_unload_heightmap();
+    MapGenUnloadHeightmap();
 }
 
 static void WindowMapgenSharedMouseup(rct_window* w, WidgetIndex widgetIndex)
@@ -494,7 +494,7 @@ static void WindowMapgenBaseMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.floor = _floorTexture;
             mapgenSettings.wall = _wallTexture;
 
-            mapgen_generate_blank(&mapgenSettings);
+            MapGenGenerateBlank(&mapgenSettings);
             gfx_invalidate_screen();
             break;
         case WIDX_MAP_SIZE_Y:
@@ -788,7 +788,7 @@ static void WindowMapgenRandomMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.simplex_base_freq = 1.75f;
             mapgenSettings.simplex_octaves = 6;
 
-            mapgen_generate(&mapgenSettings);
+            MapGenGenerate(&mapgenSettings);
             gfx_invalidate_screen();
             break;
         case WIDX_RANDOM_TERRAIN:
@@ -822,9 +822,9 @@ static void WindowMapgenRandomInvalidate(rct_window* w)
 
     w->pressed_widgets = 0;
     if (_randomTerrain)
-        w->pressed_widgets |= 1ULL << WIDX_RANDOM_TERRAIN;
+        w->pressed_widgets |= 1uLL << WIDX_RANDOM_TERRAIN;
     if (_placeTrees)
-        w->pressed_widgets |= 1ULL << WIDX_RANDOM_PLACE_TREES;
+        w->pressed_widgets |= 1uLL << WIDX_RANDOM_PLACE_TREES;
 
     WindowMapgenSetPressedTab(w);
 }
@@ -872,7 +872,7 @@ static void WindowMapgenSimplexMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.simplex_base_freq = (static_cast<float>(_simplex_base_freq)) / 100.00f;
             mapgenSettings.simplex_octaves = _simplex_octaves;
 
-            mapgen_generate(&mapgenSettings);
+            MapGenGenerate(&mapgenSettings);
             gfx_invalidate_screen();
             break;
     }
@@ -1165,7 +1165,7 @@ static void WindowMapgenHeightmapGenerateMap()
     mapgenSettings.normalize_height = _heightmapNormalize;
     mapgenSettings.simplex_low = _heightmapLow;
     mapgenSettings.simplex_high = _heightmapHigh;
-    mapgen_generate_from_heightmap(&mapgenSettings);
+    MapGenGenerateFromHeightmap(&mapgenSettings);
     gfx_invalidate_screen();
 }
 
@@ -1173,14 +1173,14 @@ static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, const utf8* pa
 {
     if (result == MODAL_RESULT_OK)
     {
-        if (!mapgen_load_heightmap(path))
+        if (!MapGenLoadHeightmap(path))
         {
             // TODO: Display error popup
             return;
         }
 
         // The window needs to be open while using the map
-        rct_window* const w = context_open_window(WindowClass::Mapgen);
+        rct_window* const w = ContextOpenWindow(WindowClass::Mapgen);
         _heightmapLoaded = true;
         WindowMapgenSetPage(w, WINDOW_MAPGEN_PAGE_HEIGHTMAP);
 
@@ -1207,7 +1207,7 @@ static void WindowMapgenHeightmapMouseup(rct_window* w, WidgetIndex widgetIndex)
             auto intent = Intent(WindowClass::Loadsave);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
             intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowMapgenHeightmapLoadsaveCallback));
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             return;
         }
         case WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP:

@@ -2710,8 +2710,6 @@ STR_5503    :Digite o nome do servidor ou o endereço de IP:
 STR_5504    :Exibir o estado do multijogador
 STR_5505    :Impossível se conectar ao servidor.
 STR_5506    :Visitantes ignoram intensidades
-STR_5508    :Carregamento de arquivos com checksum incorreto
-STR_5509    :Permite carregar cenários e jogos salvos{NEWLINE}que possuam checksum incorreto, como os cenários do demo{NEWLINE}ou jogos salvos danificados.
 STR_5510    :Dispositivo de som padrão
 STR_5511    :(DESCONHECIDO)
 STR_5512    :Salvar Jogo Como
@@ -2995,7 +2993,7 @@ STR_5832    :Mostra altura como unidade genérica ao invés de formato de medida
 STR_5833    :Muda qual formato de data é usado
 STR_5834    :Seleciona qual dispositivo de áudio o OpenRCT2 irá usar
 STR_5835    :Deixa o jogo mudo se a janela perder foco
-STR_5836    :Seleciona música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT1 requer que você copie ‘data/css17.dat’ da pasta do seu RCT1 para ‘data/css50.dat’ da pasta do seu RCT2, ou definir o caminho para o RCT1 na aba Variados.
+STR_5836    :Selecione a música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT1 requer que você defina o caminho para o RCT1 na aba Avançado.
 STR_5837    :Cria e gerencia temas de interface de usuário personalizadas
 STR_5838    :Mostra um botão separado para janela de finanças na barra de ferramentas
 STR_5839    :Mostra um botão separado para janela de pesquisa e desenvolvimento na barra de ferramentas
@@ -3428,7 +3426,7 @@ STR_6318    :Assincronia de rede detectada.{NEWLINE}Arquivo de registro: {STRING
 STR_6319    :Freios Bloqueadores Fechados
 STR_6320    :Indestrutível
 STR_6321    :Adição quebrada
-STR_6322    :{WINDOW_COLOUR_2}Id da Sprite: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}ID da entidade: {BLACK}{INT32}
 STR_6323    :Simulando
 STR_6324    :Simular
 STR_6325    :Simular brinquedo/atração
@@ -3595,9 +3593,9 @@ STR_6487    :Alternar visibilidade dos funcionários
 STR_6488    :{RED}Os visitantes estão reclamando do tamanho das filas no seu parque.{NEWLINE}Considere encurtar filas problemáticas, ou aumentar a vazão das atrações.
 STR_6489    :Erro: Versão de Park Incompatível
 STR_6490    :Aviso: Versão de Park Semi-compatível
-STR_6491    :Esse park foi salvo em uma versão posterior do OpenRCT2. O Park é v{INT32} e requer ao menos v{INT32}.
+STR_6491    :Esse park foi salvo em uma versão posterior do OpenRCT2. O Park foi salvo na v{INT32} e requer ao menos v{INT32}. Você atualmente está na v{INT32}.
 STR_6492    :Esse park foi salvo em uma versão antiga do OpenRCT2, e não pode ser aberto com essa versão do OpenRCT2. O Park é v{INT32}.
-STR_6493    :Esse park foi salvo em uma versão posterior do OpenRCT2, algumas informações podem ser perdidas. O Park é v{INT32} e requer ao menos v{INT32}.
+STR_6493    :Esse park foi salvo em uma versão posterior do OpenRCT2, algumas informações podem ser perdidas. O Park foi salvo na v{INT32}. Você atualmente está na v{INT32}.
 STR_6494    :Agrupar por tipo de veículo
 STR_6495    :Agrupar atrações por tipo de veículo em vez de mostrar cada veículo separadamente.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3619,11 +3617,28 @@ STR_6511    :Giro de Gravidade Zero (direita)
 STR_6512    :Giro de Gravidade Zero Grande (esquerda)
 STR_6513    :Giro de Gravidade Zero Grande (direita)
 STR_6514    :Altura inválida!
-STR_6515    :{BLACK}RCT1 não associado - imagens de reserva serão usadas.
-STR_6516    :Um ou mais objetos adicionados requerem o RCT1 associado para exibição correta. Imagens de reserva serão usadas.
-STR_6517    :Um ou mais objetos nesse parque requerem o RCT1 associado para exibição correta. Imagens de reserva serão usadas.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 não associado - imagens de reserva serão usadas.
+STR_6516    :Um ou mais objetos adicionados requerem o RollerCoaster Tycoon 1 associado para exibição correta. Imagens de reserva serão usadas.
+STR_6517    :Um ou mais objetos nesse parque requerem o RollerCoaster Tycoon 1 associado para exibição correta. Imagens de reserva serão usadas.
 STR_6518    :{BLACK}Coloque o mouse sobre um cenário para ver sua descrição e objetivo. Clique para começar a jogar.
 STR_6519    :Extras
+STR_6520    :Conjuntos de Recursos
+STR_6521    :Baixa Prioridade
+STR_6522    :Alta Prioridade
+STR_6523    :Diminuir a prioridade do conjunto de recursos selecionado.
+STR_6524    :Aumentar a prioridade do conjunto de recursos selecionado.
+STR_6525    :Recarregar todos os recursos do jogo com os conjuntos de recursos selecionados.
+STR_6526    :(gráficos, músicas e efeitos sonoros base)
+STR_6527    :Competições
+STR_6528    :Parâmetros de pista inválidos!
+STR_6529    :Parâmetro de esquema de cor inválido!
+STR_6530    :User Created Expansion Set
+STR_6531    :A Máquina do Tempo
+STR_6532    :O Mundo Fantástico de Katy
+STR_6533    :{WINDOW_COLOUR_2}Fator de emoção: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Fator de intensidade: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Fator de Náusea: {BLACK}-{COMMA16}%
+STR_6536    :Esse park foi salvo em uma versão posterior do OpenRCT2. O Park foi salvo na v{INT32}. Você atualmente está na v{INT32}.
 
 #############
 # Scenarios #
@@ -4074,37 +4089,6 @@ STR_DTLS    :
 ## Start OpenRCT2 Official
 [TTPIRF05]
 STR_NAME    :Telhado
-
-[TTRFWD01]
-STR_NAME    :Telhado
-
-[TTRFWD02]
-STR_NAME    :Telhado
-
-[TTRFWD03]
-STR_NAME    :Telhado
-
-[TTRFWD04]
-STR_NAME    :Telhado
-
-[TTRFWD05]
-STR_NAME    :Telhado
-
-[TTRFWD06]
-STR_NAME    :Telhado
-
-[TTRFWD07]
-STR_NAME    :Telhado
-
-[TTRFWD08]
-STR_NAME    :Telhado
-
-[ACWW33]
-STR_NAME    :Parede de Poste de Madeira
-
-[ACWWF32]
-STR_NAME    :Parede de Poste de Madeira
-
 ## End OpenRCT2 Official
 
 ###############################################################################
@@ -4408,3 +4392,101 @@ STR_DTLS    :Este parque temático envelhecido já viu dias melhores. Ajude o do
 STR_SCNR    :Mundo Panda
 STR_PARK    :Mundo Panda
 STR_DTLS    :Adicione mais atrações e atraia mais pessoas a esse parque com temática panda
+
+###
+<UCES Halloween>
+STR_SCNR    :Cemetery Ridge
+STR_PARK    :Cemetery Ridge
+STR_DTLS    :É Halloween, Halloween do UCES, abóboras gritam na calada da noite! Esse cemitério está em apuros e cabe a você salvá-lo enquanto deixa os mortos descansarem em paz! Você consegue manter os fantasmas em seus túmulos e dar calafrios aos seus clientes?{NEWLINE}Autor: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :O Farol de Alexandria
+STR_PARK    :O Farol de Alexandria
+STR_DTLS    :Alexandre construiu a cidade; Gregos, romanos, egípcios deixaram suas marcas. Mas a maior honra foi um monumento do mundo antigo - o farol. Visite e faça um parque!{NEWLINE}Autor: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :Como estava no seu dia de inauguração - 18 de maio de 1905.{NEWLINE}Autor: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Monte Vesúvio
+STR_PARK    :Monte Vesúvio
+STR_DTLS    :Pompeia e Herculano foram soterradas pelo Monte Vesúvio em 79 d.C. Visite as escavações e construa um parque!{NEWLINE}Autor: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :A Caixa de Areia
+STR_PARK    :A Caixa de Areia
+STR_DTLS    :O que todos querem: uma caixa de areia! Então pegue seu baldinho e sua pá e construa um parque!{NEWLINE}Autor: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Cataratas e Desfiladeiro do Niágara
+STR_PARK    :Cataratas do Niágara
+STR_DTLS    :Cataratas Americanas, Cataratas “Véu da Noiva” & Cataratas “Ferradura” na fronteira Niágara, 1850.{NEWLINE}Autor: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Mineradores da Montanha Rochosa
+STR_PARK    :Mineradores da Montanha Rochosa
+STR_DTLS    :Um deslizamento de pedras danificou sua linha de trem. Seus trabalhadores saíram para explorar. Há ouro em montanhas-russas?{NEWLINE}Autores: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :A Máquina do Tempo
+STR_PARK    :A Máquina do Tempo
+STR_DTLS    :A Máquina do Tempo. Construa para ir: quando quiser, aonde quiser. A eternidade espera. É tudo relativo.{NEWLINE}Autor: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Torre de Babel
+STR_PARK    :Torre de Babel
+STR_DTLS    :Eita! Olha aonde a máquina do tempo nos trouxe agora! Aonde foram todos?{NEWLINE}Autor: Fossil
+
+<Transformation>
+STR_SCNR    :Transformação
+STR_PARK    :Transformação
+STR_DTLS    :Estávamos te esperando…{NEWLINE}Autor: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :Os romanos estão cansados de lutas entediantes de gladiadores. Dê a eles algo mais emocionante, transforme uma cidade romana no maior parque de diversões de todos os tempos!{NEWLINE}Autor: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Debaixo da Árvore de Natal
+STR_PARK    :Inverno das Maravilhas
+STR_DTLS    :Mamãe construiu esse cenário debaixo de nossa árvore. Agora ela quer um parque feito nele! Você pode ajudar?{NEWLINE}Autor: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Explosão de Pedragrande
+STR_PARK    :Explosão de Pedragrande
+STR_DTLS    :Após uma explosão na Companhia de Mineração de Pedragrande, as pessoa de Pedragrande tem de construir um parque de diversões para manter sua cidade viva.{NEWLINE}Autores: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Acampamento Sabiá
+STR_PARK    :Acampamento Sabiá
+STR_DTLS    :Apenas R$500/semana para esse acampamento de verão! Abra sua carteira e se divirta construindo um parque.{NEWLINE}Autor: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Cidade do Piuí
+STR_PARK    :Cidade do Piuí
+STR_DTLS    :Mamãe! Papai! Quero ir pra Cidade do Piuí!{NEWLINE}Autor: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Ilhas do Dragão
+STR_PARK    :Ilhas do Dragão
+STR_DTLS    :Ilhas do Dragão? Não tenho certeza se quero ir lá…{NEWLINE}Autor: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kiddie Karnival II
+STR_PARK    :Kiddie Karnival
+STR_DTLS    :Ei crianças! Vamos nos divertir!{NEWLINE}Autores: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Duna de Areia
+STR_PARK    :Duna de Areia
+STR_DTLS    :Como o dono de um pequeno parque, você comprou um grande terreno ao longo da praia para expandir e atrair mais visitantes para visitar as lindas dunas de areia, mas cuidado: você não pode perturbar essas dunas de areia frágeis ecologicamente.{NEWLINE}Autor: rbarclay

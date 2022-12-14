@@ -7190,3 +7190,22 @@ namespace OpenRCT2
 
     } // namespace TrackMetaData
 } // namespace OpenRCT2
+
+const rct_preview_track* TrackElementDescriptor::GetBlockForSequence(uint8_t sequenceIndex) const
+{
+    const auto* trackBlock = Block;
+    if (trackBlock == nullptr)
+        return nullptr;
+
+    // The sequence index may be higher than the amount of sequences actually present.
+    // We don’t know the amount of sequences present in the block upfront, but there is an end marker consisting of all 255s.
+    for (auto i = 0; i < sequenceIndex; i++)
+    {
+        trackBlock++;
+
+        if (trackBlock == nullptr || trackBlock->index == 255)
+            return nullptr;
+    }
+
+    return trackBlock;
+}

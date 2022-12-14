@@ -107,10 +107,9 @@ namespace OpenRCT2::Ui::Windows
             if (result.Type == "button")
             {
                 auto dukImage = desc["image"];
-                if (dukImage.type() == DukValue::Type::NUMBER)
+                if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
                 {
-                    auto img = dukImage.as_uint();
-                    result.Image = ImageId::FromUInt32(img);
+                    result.Image = ImageId::FromUInt32(ImageFromDuk(dukImage));
                     result.HasBorder = false;
                 }
                 else
@@ -210,9 +209,9 @@ namespace OpenRCT2::Ui::Windows
         {
             CustomTabDesc result;
             auto dukImage = desc["image"];
-            if (dukImage.type() == DukValue::Type::NUMBER)
+            if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
             {
-                result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage.as_int()));
+                result.imageFrameBase = ImageId::FromUInt32(ImageFromDuk(dukImage));
                 result.imageFrameCount = 0;
                 result.imageFrameDuration = 0;
             }
@@ -365,7 +364,7 @@ namespace OpenRCT2::Ui::Windows
                     auto tabWidgetIndex = widgetDescIndex - Desc.Widgets.size();
                     if (tabWidgetIndex < widgets.size())
                     {
-                        return &widgets[widgetDescIndex];
+                        return &widgets[tabWidgetIndex];
                     }
                 }
             }
@@ -1003,7 +1002,7 @@ namespace OpenRCT2::Ui::Windows
             else if (desc.Type == "colourpicker")
             {
                 widget.type = WindowWidgetType::ColourBtn;
-                widget.image = GetColourButtonImage(desc.Colour);
+                widget.image = GetColourButtonImage(desc.Colour).ToUInt32();
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "custom")
@@ -1238,7 +1237,7 @@ namespace OpenRCT2::Ui::Windows
                 if (lastColour != colour && colour < COLOUR_COUNT)
                 {
                     customWidgetInfo->Colour = colour;
-                    widget.image = GetColourButtonImage(colour);
+                    widget.image = GetColourButtonImage(colour).ToUInt32();
                     widget_invalidate(*w, widgetIndex);
 
                     std::vector<DukValue> args;

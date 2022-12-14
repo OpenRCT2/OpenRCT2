@@ -144,7 +144,7 @@ rct_window* WindowServerListOpen()
 
     window_set_resize(*window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
-    safe_strcpy(_playerName, gConfigNetwork.player_name.c_str(), sizeof(_playerName));
+    safe_strcpy(_playerName, gConfigNetwork.PlayerName.c_str(), sizeof(_playerName));
 
     window->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
@@ -183,7 +183,7 @@ static void WindowServerListMouseup(rct_window* w, WidgetIndex widgetIndex)
                 {
                     Formatter ft;
                     ft.Add<const char*>(server.Version.c_str());
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
+                    ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
                 }
             }
             break;
@@ -195,7 +195,7 @@ static void WindowServerListMouseup(rct_window* w, WidgetIndex widgetIndex)
             WindowTextInputOpen(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, STR_NONE, 0, 128);
             break;
         case WIDX_START_SERVER:
-            context_open_window(WindowClass::ServerStart);
+            ContextOpenWindow(WindowClass::ServerStart);
             break;
     }
 }
@@ -222,7 +222,7 @@ static void WindowServerListDropdown(rct_window* w, WidgetIndex widgetIndex, int
                 {
                     Formatter ft;
                     ft.Add<const char*>(server.Version.c_str());
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
+                    ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
                 }
                 break;
             case DDIDX_FAVOURITE:
@@ -322,8 +322,8 @@ static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, ch
 
             if (_playerName[0] != '\0')
             {
-                gConfigNetwork.player_name = _playerName;
-                config_save_default();
+                gConfigNetwork.PlayerName = _playerName;
+                ConfigSaveDefault();
             }
 
             widget_invalidate(*w, WIDX_PLAYER_NAME_INPUT);
@@ -352,11 +352,7 @@ static OpenRCT2String WindowServerListTooltip(rct_window* const w, const WidgetI
 
 static void WindowServerListInvalidate(rct_window* w)
 {
-    window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    window_server_list_widgets[WIDX_TITLE].right = w->width - 2;
-    window_server_list_widgets[WIDX_CLOSE].left = w->width - 2 - 11;
-    window_server_list_widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
+    w->ResizeFrame();
 
     int32_t margin = 6;
     int32_t buttonHeight = 13;
@@ -441,7 +437,7 @@ static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         {
             snprintf(players, sizeof(players), "%d/%d", serverDetails.Players, serverDetails.MaxPlayers);
         }
-        const int16_t numPlayersStringWidth = gfx_get_string_width(players, FontSpriteBase::MEDIUM);
+        const int16_t numPlayersStringWidth = gfx_get_string_width(players, FontStyle::Medium);
 
         // How much space we have for the server info depends on the size of everything rendered after.
         const int16_t spaceAvailableForInfo = width - numPlayersStringWidth - SCROLLBAR_WIDTH - 35;
@@ -520,7 +516,7 @@ static void JoinServer(std::string address)
 
     if (!network_begin_client(address, port))
     {
-        context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
+        ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
     }
 }
 

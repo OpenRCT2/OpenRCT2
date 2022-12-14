@@ -41,26 +41,26 @@ enum VirtualFloorFlags
     VIRTUAL_FLOOR_FORCE_INVALIDATION = (1 << 2),
 };
 
-bool virtual_floor_is_enabled()
+bool VirtualFloorIsEnabled()
 {
     return (_virtualFloorFlags & VIRTUAL_FLOOR_FLAG_ENABLED) != 0;
 }
 
-void virtual_floor_set_height(int16_t height)
+void VirtualFloorSetHeight(int16_t height)
 {
-    if (!virtual_floor_is_enabled())
+    if (!VirtualFloorIsEnabled())
     {
         return;
     }
 
     if (_virtualFloorHeight != height)
     {
-        virtual_floor_invalidate();
+        VirtualFloorInvalidate();
         _virtualFloorHeight = height;
     }
 }
 
-static void virtual_floor_reset()
+static void VirtualFloorReset()
 {
     _virtualFloorLastMinPos.x = std::numeric_limits<int32_t>::max();
     _virtualFloorLastMinPos.y = std::numeric_limits<int32_t>::max();
@@ -69,20 +69,20 @@ static void virtual_floor_reset()
     _virtualFloorHeight = 0;
 }
 
-void virtual_floor_enable()
+void VirtualFloorEnable()
 {
-    if (virtual_floor_is_enabled())
+    if (VirtualFloorIsEnabled())
     {
         return;
     }
 
-    virtual_floor_reset();
+    VirtualFloorReset();
     _virtualFloorFlags |= VIRTUAL_FLOOR_FLAG_ENABLED;
 }
 
-void virtual_floor_disable()
+void VirtualFloorDisable()
 {
-    if (!virtual_floor_is_enabled())
+    if (!VirtualFloorIsEnabled())
     {
         return;
     }
@@ -91,13 +91,13 @@ void virtual_floor_disable()
 
     // Force invalidation, even if the position hasn't changed.
     _virtualFloorFlags |= VIRTUAL_FLOOR_FORCE_INVALIDATION;
-    virtual_floor_invalidate();
+    VirtualFloorInvalidate();
     _virtualFloorFlags &= ~VIRTUAL_FLOOR_FORCE_INVALIDATION;
 
-    virtual_floor_reset();
+    VirtualFloorReset();
 }
 
-void virtual_floor_invalidate()
+void VirtualFloorInvalidate()
 {
     PROFILED_FUNCTION();
 
@@ -140,7 +140,7 @@ void virtual_floor_invalidate()
             log_verbose(
                 "Invalidating previous region, Min: %d %d, Max: %d %d", _virtualFloorLastMinPos.x, _virtualFloorLastMinPos.y,
                 _virtualFloorLastMaxPos.x, _virtualFloorLastMaxPos.y);
-            map_invalidate_region(_virtualFloorLastMinPos, _virtualFloorLastMaxPos);
+            MapInvalidateRegion(_virtualFloorLastMinPos, _virtualFloorLastMaxPos);
         }
     }
 
@@ -161,7 +161,7 @@ void virtual_floor_invalidate()
     if (min_position.x != std::numeric_limits<int32_t>::max() && min_position.y != std::numeric_limits<int32_t>::max()
         && max_position.x != std::numeric_limits<int32_t>::lowest() && max_position.y != std::numeric_limits<int32_t>::lowest())
     {
-        map_invalidate_region(min_position, max_position);
+        MapInvalidateRegion(min_position, max_position);
 
         // Save minimal and maximal positions.
         _virtualFloorLastMinPos.x = min_position.x;
@@ -174,9 +174,9 @@ void virtual_floor_invalidate()
     }
 }
 
-bool virtual_floor_tile_is_floor(const CoordsXY& loc)
+bool VirtualFloorTileIsFloor(const CoordsXY& loc)
 {
-    if (!virtual_floor_is_enabled())
+    if (!VirtualFloorIsEnabled())
     {
         return false;
     }
@@ -206,7 +206,7 @@ bool virtual_floor_tile_is_floor(const CoordsXY& loc)
     return false;
 }
 
-static void virtual_floor_get_tile_properties(
+static void VirtualFloorGetTileProperties(
     const CoordsXY& loc, int16_t height, bool* outOccupied, bool* tileOwned, uint8_t* outOccupiedEdges, bool* outBelowGround,
     bool* aboveGround, bool* outLit)
 {
@@ -239,7 +239,7 @@ static void virtual_floor_get_tile_properties(
         }
     }
 
-    *tileOwned = map_is_location_owned({ loc, height });
+    *tileOwned = MapIsLocationOwned({ loc, height });
 
     if (gCheatsSandboxMode)
         *tileOwned = true;
@@ -292,7 +292,7 @@ static void virtual_floor_get_tile_properties(
     }
 }
 
-void virtual_floor_paint(paint_session& session)
+void VirtualFloorPaint(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
@@ -322,7 +322,7 @@ void virtual_floor_paint(paint_session& session)
     bool weAreAboveGround;
     uint8_t litEdges = 0;
 
-    virtual_floor_get_tile_properties(
+    VirtualFloorGetTileProperties(
         session.MapPosition, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges, &weAreBelowGround,
         &weAreAboveGround, &weAreLit);
 
@@ -345,7 +345,7 @@ void virtual_floor_paint(paint_session& session)
         bool theyAreOwned;
         bool theyAreAboveGround;
 
-        virtual_floor_get_tile_properties(
+        VirtualFloorGetTileProperties(
             theirLocation, virtualFloorClipHeight, &theyAreOccupied, &theyAreOwned, &theirOccupiedEdges, &theyAreBelowGround,
             &theyAreAboveGround, &theyAreLit);
 
@@ -402,7 +402,7 @@ void virtual_floor_paint(paint_session& session)
             { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) });
     }
 
-    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Glassy)
+    if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Glassy)
         return;
 
     if (!weAreOccupied && !weAreLit && weAreAboveGround && weAreOwned)
@@ -412,7 +412,7 @@ void virtual_floor_paint(paint_session& session)
     }
 }
 
-uint16_t virtual_floor_get_height()
+uint16_t VirtualFloorGetHeight()
 {
     return _virtualFloorHeight;
 }

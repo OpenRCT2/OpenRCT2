@@ -30,7 +30,7 @@ struct Ride;
 struct rct_ride_entry;
 struct CarEntry;
 class DataSerialiser;
-struct paint_session;
+struct PaintSession;
 
 struct GForces
 {
@@ -270,7 +270,7 @@ struct Vehicle : EntityBase
     }
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);
@@ -507,6 +507,7 @@ enum
     FRICTION_SOUND_WATERSLIDE = 32,
     FRICTION_SOUND_WOOD_LARGE = 54,
     FRICTION_SOUND_STEEL_SMOOTH = 57,
+    FRICTION_SOUND_HYBRID = 65,
     FRICTION_SOUND_NONE = 255
 };
 

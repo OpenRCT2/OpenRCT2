@@ -73,13 +73,13 @@ GameActions::Result BannerPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
     }
 
-    if (!map_can_build_at(_loc))
+    if (!MapCanBuildAt(_loc))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     auto baseHeight = _loc.z + PATH_HEIGHT_STEP;
-    BannerElement* existingBannerElement = map_get_banner_element_at({ _loc.x, _loc.y, baseHeight }, _loc.direction);
+    BannerElement* existingBannerElement = MapGetBannerElementAt({ _loc.x, _loc.y, baseHeight }, _loc.direction);
     if (existingBannerElement != nullptr)
     {
         return GameActions::Result(
@@ -93,7 +93,7 @@ GameActions::Result BannerPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
     }
 
-    auto* bannerEntry = get_banner_entry(_bannerType);
+    auto* bannerEntry = GetBannerEntry(_bannerType);
     if (bannerEntry == nullptr)
     {
         log_error("Invalid banner object type. bannerType = ", _bannerType);
@@ -120,7 +120,7 @@ GameActions::Result BannerPlaceAction::Execute() const
             GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    auto* bannerEntry = get_banner_entry(_bannerType);
+    auto* bannerEntry = GetBannerEntry(_bannerType);
     if (bannerEntry == nullptr)
     {
         log_error("Invalid banner object type. bannerType = ", _bannerType);
@@ -151,8 +151,8 @@ GameActions::Result BannerPlaceAction::Execute() const
     bannerElement->SetIndex(banner->id);
     bannerElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
-    map_invalidate_tile_full(_loc);
-    map_animation_create(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
+    MapInvalidateTileFull(_loc);
+    MapAnimationCreate(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
 
     res.Cost = bannerEntry->price;
     return res;

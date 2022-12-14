@@ -97,7 +97,7 @@ void finance_payment(money64 amount, ExpenditureType type)
     }
 
     auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 /**

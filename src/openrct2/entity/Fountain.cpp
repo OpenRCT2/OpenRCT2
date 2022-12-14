@@ -15,6 +15,7 @@
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../world/Footpath.h"
+#include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "EntityRegistry.h"
@@ -93,7 +94,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
     {
         case PATTERN::CYCLIC_SQUARES:
             // 0, 1, 2, 3
-            for (int32_t i = 0; i < 4; i++)
+            for (int32_t i = 0; i < NumOrthogonalDirections; i++)
             {
                 JumpingFountain::Create(
                     newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],
@@ -103,7 +104,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
         case PATTERN::BOUNCING_PAIRS:
             // random [0, 2 or 1, 3]
             randomIndex = scenario_rand() & 1;
-            for (int32_t i = randomIndex; i < 4; i += 2)
+            for (int32_t i = randomIndex; i < NumOrthogonalDirections; i += 2)
             {
                 JumpingFountain::Create(
                     newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],
@@ -250,7 +251,7 @@ bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const
     const int32_t pathBitFlagMask = newType == JumpingFountainType::Snow ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
                                                                          : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
 
-    TileElement* tileElement = map_get_first_element_at(newLoc);
+    TileElement* tileElement = MapGetFirstElementAt(newLoc);
     if (tileElement == nullptr)
         return false;
     do
@@ -395,7 +396,7 @@ void JumpingFountain::Serialise(DataSerialiser& stream)
     stream << Iteration;
 }
 
-void JumpingFountain::Paint(paint_session& session, int32_t imageDirection) const
+void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 

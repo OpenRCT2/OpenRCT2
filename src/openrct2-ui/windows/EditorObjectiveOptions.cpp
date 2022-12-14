@@ -177,10 +177,10 @@ static WindowEventList *window_editor_objective_options_page_events[] = {
 #pragma region Enabled widgets
 
 static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
-    (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_2_DECREASE),
+    (1uLL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
+    (1uLL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
+    (1uLL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
+    (1uLL << WIDX_OBJECTIVE_ARG_2_DECREASE),
 
     0,
 };
@@ -218,20 +218,14 @@ rct_window* WindowEditorObjectiveOptionsOpen()
 static void WindowEditorObjectiveOptionsSetPressedTab(rct_window* w)
 {
     int32_t i;
-    for (i = 0; i < 2; i++)
-        w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+    for (i = WIDX_TAB_1; i <= WIDX_TAB_2; i++)
+        w->pressed_widgets &= ~(1 << i);
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
 static void WindowEditorObjectiveOptionsAnchorBorderWidgets(rct_window* w)
 {
-    w->widgets[WIDX_BACKGROUND].right = w->width - 1;
-    w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_TITLE].right = w->width - 2;
-    w->widgets[WIDX_CLOSE].left = w->width - 13;
-    w->widgets[WIDX_CLOSE].right = w->width - 3;
+    w->ResizeFrameWithPage();
 }
 
 static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi)
@@ -391,7 +385,7 @@ static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
 
         const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(i);
         // This objective can only work if the player can ask money for rides.
-        const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || park_ride_prices_unlocked();
+        const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || ParkRidePricesUnlocked();
         if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
         {
             gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
@@ -442,7 +436,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             if (gScenarioObjective.Currency >= 2000000.00_GBP)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -453,7 +447,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             if (gScenarioObjective.Currency >= 2000000.00_GBP)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -464,7 +458,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             if (gScenarioObjective.MinimumLength >= 5000)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -475,7 +469,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             if (gScenarioObjective.MinimumExcitement >= FIXED_2DP(9, 90))
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -486,7 +480,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         default:
             if (gScenarioObjective.NumGuests >= 5000)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -506,7 +500,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             if (gScenarioObjective.Currency <= 1000.00_GBP)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -517,7 +511,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             if (gScenarioObjective.Currency <= 1000.00_GBP)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -528,7 +522,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             if (gScenarioObjective.MinimumLength <= 1000)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -539,7 +533,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             if (gScenarioObjective.MinimumExcitement <= FIXED_2DP(4, 00))
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -550,7 +544,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         default:
             if (gScenarioObjective.NumGuests <= 250)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -565,7 +559,7 @@ static void WindowEditorObjectiveOptionsArg2Increase(rct_window* w)
 {
     if (gScenarioObjective.Year >= 25)
     {
-        context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
     }
     else
     {
@@ -578,7 +572,7 @@ static void WindowEditorObjectiveOptionsArg2Decrease(rct_window* w)
 {
     if (gScenarioObjective.Year <= 1)
     {
-        context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
     }
     else
     {
@@ -664,8 +658,7 @@ static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
     // Check if objective is allowed by money and pay-per-ride settings.
     const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(objectiveType);
     // This objective can only work if the player can ask money for rides.
-    const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
-        || park_ride_prices_unlocked();
+    const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME) || ParkRidePricesUnlocked();
     if (!objectiveAllowedByMoneyUsage || !objectiveAllowedByPaymentSettings)
     {
         // Reset objective
@@ -1085,11 +1078,10 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
             {
-                FontSpriteBase fontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FontSpriteBase::MEDIUM_EXTRA_DARK
-                                                                                         : FontSpriteBase::MEDIUM_DARK;
+                auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                 gfx_draw_string(
                     dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
-                    { static_cast<colour_t>(w->colours[1] & 0x7F), fontSpriteBase });
+                    { static_cast<colour_t>(w->colours[1] & 0x7F), FontStyle::Medium, darkness });
             }
 
             // Ride name
@@ -1111,10 +1103,10 @@ static void WindowEditorObjectiveOptionsUpdateDisabledWidgets(rct_window* w)
     const auto& rideManager = GetRideManager();
     if (std::any_of(rideManager.begin(), rideManager.end(), [](const Ride& ride) { return ride.IsRide(); }))
     {
-        w->disabled_widgets &= ~(1ULL << WIDX_TAB_2);
+        w->disabled_widgets &= ~(1uLL << WIDX_TAB_2);
     }
     else
     {
-        w->disabled_widgets |= (1ULL << WIDX_TAB_2);
+        w->disabled_widgets |= (1uLL << WIDX_TAB_2);
     }
 }

@@ -46,10 +46,11 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 62;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 65;
 
     // Versions marking breaking changes.
     static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
+    static constexpr int32_t API_VERSION_63_G2_REORDER = 63;
 
 #    ifndef DISABLE_NETWORK
     class ScSocketBase;

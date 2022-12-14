@@ -82,7 +82,7 @@ void TileElementBase::SetGhost(bool isGhost)
 
 void TileElementBase::Remove()
 {
-    tile_element_remove(static_cast<TileElement*>(this));
+    TileElementRemove(static_cast<TileElement*>(this));
 }
 
 uint8_t TileElementBase::GetOccupiedQuadrants() const

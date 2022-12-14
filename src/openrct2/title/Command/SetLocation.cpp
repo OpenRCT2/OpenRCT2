@@ -22,7 +22,7 @@ namespace OpenRCT2::Title
         if (w != nullptr)
         {
             auto loc = TileCoordsXY(Location.X, Location.Y).ToCoordsXY().ToTileCentre();
-            int32_t z = tile_element_height(loc);
+            int32_t z = TileElementHeight(loc);
 
             // Prevent scroll adjustment due to window placement when in-game
             auto oldScreenFlags = gScreenFlags;

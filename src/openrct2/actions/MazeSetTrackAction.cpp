@@ -61,7 +61,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         return res;
     }
 
-    if (!LocationValid(_loc) || (!map_is_location_owned(_loc) && !gCheatsSandboxMode))
+    if (!LocationValid(_loc) || (!MapIsLocationOwned(_loc) && !gCheatsSandboxMode))
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -74,7 +74,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         res.ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
         return res;
     }
-    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         res.Error = GameActions::Status::Unknown;
@@ -100,7 +100,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         }
     }
 
-    TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
+    TileElement* tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::Maze, _rideIndex);
     if (tileElement == nullptr)
     {
         if (_mode != GC_SET_MAZE_TRACK_BUILD)
@@ -166,11 +166,11 @@ GameActions::Result MazeSetTrackAction::Execute() const
     uint32_t flags = GetFlags();
     if (!(flags & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_remove_litter(_loc);
-        wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
+        FootpathRemoveLitter(_loc);
+        WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
     }
 
-    auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
+    auto tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::Maze, _rideIndex);
     if (tileElement == nullptr)
     {
         res.Cost = MazeCalculateCost(0, *ride, _loc);
@@ -189,7 +189,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
         tileElement = trackElement->as<TileElement>();
 
-        map_invalidate_tile_full(startLoc);
+        MapInvalidateTileFull(startLoc);
 
         ride->maze_tiles++;
         ride->GetStation().SetBaseZ(tileElement->GetBaseZ());
@@ -219,7 +219,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 {
                     auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
 
-                    TileElement* previousTileElement = map_get_track_element_at_of_type_from_ride(
+                    TileElement* previousTileElement = MapGetTrackElementAtOfTypeFromRide(
                         { previousElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
 
                     if (previousTileElement != nullptr)
@@ -245,10 +245,9 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 auto previousSegment = CoordsXY{ _loc.x - CoordsDirectionDelta[_loc.direction].x / 2,
                                                  _loc.y - CoordsDirectionDelta[_loc.direction].y / 2 };
 
-                tileElement = map_get_track_element_at_of_type_from_ride(
-                    { previousSegment, _loc.z }, TrackElemType::Maze, _rideIndex);
+                tileElement = MapGetTrackElementAtOfTypeFromRide({ previousSegment, _loc.z }, TrackElemType::Maze, _rideIndex);
 
-                map_invalidate_tile_full(previousSegment.ToTileStart());
+                MapInvalidateTileFull(previousSegment.ToTileStart());
                 if (tileElement == nullptr)
                 {
                     log_error("No surface found");
@@ -273,7 +272,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                     uint32_t direction1 = byte_993D0C[segmentBit];
                     auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
-                    TileElement* tmp_tileElement = map_get_track_element_at_of_type_from_ride(
+                    TileElement* tmp_tileElement = MapGetTrackElementAtOfTypeFromRide(
                         { nextElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
 
                     if (tmp_tileElement != nullptr)
@@ -288,11 +287,11 @@ GameActions::Result MazeSetTrackAction::Execute() const
             break;
     }
 
-    map_invalidate_tile({ _loc.ToTileStart(), tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+    MapInvalidateTile({ _loc.ToTileStart(), tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 
     if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
     {
-        tile_element_remove(tileElement);
+        TileElementRemove(tileElement);
         ride->ValidateStations();
         ride->maze_tiles--;
     }

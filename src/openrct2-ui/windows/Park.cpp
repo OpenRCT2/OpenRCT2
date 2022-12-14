@@ -155,8 +155,8 @@ static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
     0,
     0,
     0,
-    (1ULL << WIDX_INCREASE_PRICE) |
-    (1ULL << WIDX_DECREASE_PRICE),
+    (1uLL << WIDX_INCREASE_PRICE) |
+    (1uLL << WIDX_DECREASE_PRICE),
     0,
     0,
     0,
@@ -394,7 +394,7 @@ private:
     void SetDisabledTabs()
     {
         // Disable price tab if money is disabled
-        disabled_widgets = (gParkFlags & PARK_FLAGS_NO_MONEY) ? (1ULL << WIDX_TAB_4) : 0;
+        disabled_widgets = (gParkFlags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
     }
 
     void PrepareWindowTitleText()
@@ -413,7 +413,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_BUY_LAND_RIGHTS:
-                context_open_window(WindowClass::LandRights);
+                ContextOpenWindow(WindowClass::LandRights);
                 break;
             case WIDX_LOCATE:
                 ScrollToViewport();
@@ -426,10 +426,10 @@ private:
                 break;
             }
             case WIDX_CLOSE_LIGHT:
-                park_set_open(false);
+                ParkSetOpen(false);
                 break;
             case WIDX_OPEN_LIGHT:
-                park_set_open(true);
+                ParkSetOpen(true);
                 break;
         }
     }
@@ -453,7 +453,7 @@ private:
             WindowDropdownShowText(
                 { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
 
-            if (park_is_open())
+            if (ParkIsOpen())
             {
                 gDropdownDefaultIndex = 0;
                 Dropdown::SetChecked(1, true);
@@ -475,11 +475,11 @@ private:
 
             if (dropdownIndex != 0)
             {
-                park_set_open(true);
+                ParkSetOpen(true);
             }
             else
             {
-                park_set_open(false);
+                ParkSetOpen(false);
             }
         }
     }
@@ -515,17 +515,16 @@ private:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(parkName);
         }
-        widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
-        widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2
+        widgets[WIDX_OPEN_OR_CLOSE].image = ParkIsOpen() ? SPR_OPEN : SPR_CLOSED;
+        widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !ParkIsOpen() * 2
             + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
-        widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2
-            + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
+        widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + ParkIsOpen() * 2 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
 
         // Only allow closing of park for guest / rating objective
         if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
-            disabled_widgets |= (1ULL << WIDX_OPEN_OR_CLOSE) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT);
+            disabled_widgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
         else
-            disabled_widgets &= ~((1ULL << WIDX_OPEN_OR_CLOSE) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT));
+            disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
 
         // Only allow purchase of land when there is money
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -600,7 +599,7 @@ private:
 
         // Draw park closed / open label
         auto ft = Formatter();
-        ft.Add<StringId>(park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
+        ft.Add<StringId>(ParkIsOpen() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
         auto* labelWidget = &widgets[WIDX_STATUS];
         DrawTextEllipsised(
@@ -623,7 +622,7 @@ private:
         int32_t viewportFlags{};
         if (viewport == nullptr)
         {
-            viewportFlags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+            viewportFlags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         }
         else
         {
@@ -714,7 +713,7 @@ private:
             ft.Add<uint32_t>(axisValue);
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+                { FontStyle::Small, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
@@ -787,7 +786,7 @@ private:
             ft.Add<uint32_t>(axisValue);
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+                { FontStyle::Small, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
@@ -864,14 +863,14 @@ private:
         widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
         widgets[WIDX_PRICE].tooltip = STR_NONE;
 
-        if (!park_entry_price_unlocked())
+        if (!ParkEntranceFeeUnlocked())
         {
             widgets[WIDX_PRICE_LABEL].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
             widgets[WIDX_PRICE].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
         }
 
         // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-        if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
+        if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
         {
             widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
             widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
@@ -899,7 +898,7 @@ private:
         ft.Add<money64>(gTotalIncomeFromAdmissions);
         DrawTextBasic(&dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
-        money64 parkEntranceFee = park_get_entrance_fee();
+        money64 parkEntranceFee = ParkGetEntranceFee();
         auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
         screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_PRICE].left + 1, widgets[WIDX_PRICE].top + 1 };
         ft = Formatter();
@@ -963,7 +962,7 @@ private:
         // Draw park size
         auto parkSize = gParkSize * 10;
         auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
-        if (gConfigGeneral.measurement_format == MeasurementFormat::Imperial)
+        if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         {
             stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
             parkSize = squaredmetres_to_squaredfeet(parkSize);
@@ -1203,19 +1202,13 @@ private:
 
     void AnchorBorderWidgets()
     {
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_PAGE_BACKGROUND].right = width - 1;
-        widgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
+        ResizeFrameWithPage();
     }
 
     void SetPressedTab()
     {
-        for (auto i = 0; i < 7; i++)
-            pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+        for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
+            pressed_widgets &= ~(1 << i);
         pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
     }
 
@@ -1343,8 +1336,8 @@ rct_window* WindowParkObjectiveOpen()
     if (wnd != nullptr)
     {
         wnd->Invalidate();
-        wnd->windowPos.x = context_get_width() / 2 - 115;
-        wnd->windowPos.y = context_get_height() / 2 - 87;
+        wnd->windowPos.x = ContextGetWidth() / 2 - 115;
+        wnd->windowPos.y = ContextGetHeight() / 2 - 87;
         wnd->Invalidate();
     }
     return wnd;

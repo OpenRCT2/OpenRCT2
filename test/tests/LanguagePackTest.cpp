@@ -25,17 +25,17 @@ TEST_F(LanguagePackTest, create_empty)
 {
     auto empty = LanguagePackFactory::FromText(0, "");
     ASSERT_EQ(empty->GetId(), 0);
-    ASSERT_EQ(empty->GetCount(), 0U);
+    ASSERT_EQ(empty->GetCount(), 0u);
 }
 
 TEST_F(LanguagePackTest, create_mutable_id_1)
 {
     auto lang = LanguagePackFactory::FromText(1, "STR_0000:\n");
     ASSERT_EQ(lang->GetId(), 1);
-    ASSERT_EQ(lang->GetCount(), 1U);
+    ASSERT_EQ(lang->GetCount(), 1u);
     ASSERT_STREQ(lang->GetString(0), nullptr);
     lang->SetString(0, "xx");
-    ASSERT_EQ(lang->GetCount(), 1U);
+    ASSERT_EQ(lang->GetCount(), 1u);
     ASSERT_STREQ(lang->GetString(0), "xx");
 }
 
@@ -43,7 +43,7 @@ TEST_F(LanguagePackTest, language_pack_simple)
 {
     auto lang = LanguagePackFactory::FromText(0, LanguageEnGB);
     ASSERT_EQ(lang->GetId(), 0);
-    ASSERT_EQ(lang->GetCount(), 4U);
+    ASSERT_EQ(lang->GetCount(), 4u);
     ASSERT_STREQ(lang->GetString(2), "Spiral Roller Coaster");
     ASSERT_EQ(lang->GetScenarioOverrideStringId("Arid Heights", 0), 0x7000);
     ASSERT_STREQ(lang->GetString(0x7000), "Arid Heights scenario string");
@@ -57,9 +57,9 @@ TEST_F(LanguagePackTest, language_pack_simple)
 
 TEST_F(LanguagePackTest, language_pack_multibyte)
 {
-    auto lang = LanguagePackFactory::FromText(0, (const utf8*)LanguageZhTW);
+    auto lang = LanguagePackFactory::FromText(0, reinterpret_cast<const utf8*>(LanguageZhTW));
     ASSERT_EQ(lang->GetId(), 0);
-    ASSERT_EQ(lang->GetCount(), 4U);
+    ASSERT_EQ(lang->GetCount(), 4u);
     ASSERT_STREQ(lang->GetString(2), u8"懸吊式雲霄飛車");
     ASSERT_EQ(lang->GetScenarioOverrideStringId("Forest Frontiers", 0), 0x7000);
     ASSERT_EQ(lang->GetScenarioOverrideStringId("Forest Frontiers", 2), 0x7002);

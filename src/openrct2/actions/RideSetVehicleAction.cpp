@@ -197,12 +197,12 @@ GameActions::Result RideSetVehicleAction::Execute() const
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res.Position = { location, tile_element_height(res.Position) };
+        res.Position = { location, TileElementHeight(res.Position) };
     }
 
     auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);
     intent.putExtra(INTENT_EXTRA_RIDE_ID, _rideIndex.ToUnderlying());
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     gfx_invalidate_screen();
     return res;

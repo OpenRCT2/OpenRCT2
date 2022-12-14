@@ -176,7 +176,7 @@ namespace OpenRCT2::Scripting
                 {
                     auto coord = FromDuk<CoordsXY>(dukCoord);
                     staff->SetPatrolArea(coord, value);
-                    map_invalidate_tile_full(coord);
+                    MapInvalidateTileFull(coord);
                 }
             }
             else
@@ -188,7 +188,7 @@ namespace OpenRCT2::Scripting
                     {
                         CoordsXY coord(x, y);
                         staff->SetPatrolArea(coord, value);
-                        map_invalidate_tile_full(coord);
+                        MapInvalidateTileFull(coord);
                     }
                 }
             }

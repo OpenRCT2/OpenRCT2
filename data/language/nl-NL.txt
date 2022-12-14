@@ -2711,8 +2711,6 @@ STR_5503    :Hostnaam of IP-adres invoeren:
 STR_5504    :Status multiplayer tonen
 STR_5505    :Kan niet met de server verbinden.
 STR_5506    :Bezoekers negeren intensiteit
-STR_5508    :Bestanden met incorrecte checksum toch laden
-STR_5509    :Maakt het mogelijk om scenario’s en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario’s uit de demo of beschadigde opgeslagen parken.
 STR_5510    :Standaard geluidsapparaat
 STR_5511    :(ONBEKEND)
 STR_5512    :Spel opslaan als…
@@ -2994,7 +2992,7 @@ STR_5832    :Toon hoogtes in eenheden in plaats van echte maten.
 STR_5833    :Stelt de datumindeling in.
 STR_5834    :Stelt in welk audioapparaat OpenRCT2 zal gebruiken.
 STR_5835    :Dempt het geluid als het venster de focus kwijtraakt.
-STR_5836    :Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je het bestand ‘data/css17.dat’ uit je RCT1-map kopiëren naar ‘data/css50.dat’ in je RCT2-map, of een pad naar je RCT1-bestanden instellen onder het tabblad ‘Overige instellingen’.
+STR_5836    :Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je een pad naar je RCT1-bestanden instellen onder het tabblad ‘Geavanceerd’.
 STR_5837    :Eigen thema’s voor de GUI aanmaken en beheren.
 STR_5838    :Toont een knop voor financiën in de werkbalk.
 STR_5839    :Toont een knop voor onderzoek en ontwikkeling in de werkbalk.
@@ -3427,7 +3425,7 @@ STR_6318    :Netwerkdesynchronisatie gedetecteerd.{NEWLINE}Logbestand: {STRING}
 STR_6319    :Blokrem is gesloten
 STR_6320    :Mag niet worden verwijderd
 STR_6321    :Straatmeubel is kapot
-STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entiteit-ID: {BLACK}{INT32}
 STR_6323    :Simulatie
 STR_6324    :Simuleren
 STR_6325    :Testrit simuleren
@@ -3594,9 +3592,9 @@ STR_6487    :Zichtbaarheid werknemers wisselen
 STR_6488    :{RED}De bezoekers klagen over de lange wachttijden in je park.{NEWLINE}Overweeg het verkorten van wachtgebieden of het verlagen van doorlooptijden.
 STR_6489    :Fout: parkversie niet compatibel
 STR_6490    :Waarschuwing: Park-versie is deels compatibel
-STR_6491    :Dit park is opgeslagen in een latere versie van OpenRCT2. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6491    :Dit park is opgeslagen in een latere versie van OpenRCT2. Het park is opgeslagen in v{INT32} en vereist minimaal v{INT32}. Je huidige versie is v{INT32}.
 STR_6492    :Dit park is opgeslagen in een vorige versie van OpenRCT2 en kan niet worden geopend met deze versie van OpenRCT2. Parkversie is v{INT32}.
-STR_6493    :Dit park is opgeslagen in een latere versie van OpenRCT2, sommige gegevens kunnen verloren gaan. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6493    :Dit park is opgeslagen in een latere versie van OpenRCT2, sommige gegevens kunnen verloren gaan. Parkversie is v{INT32}, je huidige versie is v{INT32}.
 STR_6494    :Groeperen op baantype
 STR_6495    :Groepeert attracties per baantype. Schakel dit uit om elk voertuig apart te tonen.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3618,11 +3616,28 @@ STR_6511    :0 g-rol (rechts)
 STR_6512    :Grote 0 g-rol (links)
 STR_6513    :Grote 0 g-rol (rechts)
 STR_6514    :Ongeldige hoogte!
-STR_6515    :{BLACK}RCT1 is niet gekoppeld, OpenRCT2 zal terugvallen op alternatieve afbeeldingen.
-STR_6516    :Eén of meer toegevoegde objecten vereist een koppeling met RCT1 voor een juiste weergave. OpenRCT2 zal terugvallen op alternatieve afbeeldingen.
-STR_6517    :Eén of meer objecten in dit park vereist een koppeling met RCT1 voor een juiste weergave. OpenRCT2 zal terugvallen op alternatieve afbeeldingen.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 is niet gekoppeld, OpenRCT2 zal terugvallen op alternatieve afbeeldingen.
+STR_6516    :Eén of meer toegevoegde objecten vereist een koppeling met RollerCoaster Tycoon 1 voor een juiste weergave. OpenRCT2 zal terugvallen op alternatieve afbeeldingen.
+STR_6517    :Eén of meer objecten in dit park vereist een koppeling met RollerCoaster Tycoon 1 voor een juiste weergave. OpenRCT2 zal terugvallen op alternatieve afbeeldingen.
 STR_6518    :{BLACK}Beweeg de aanwijzer over een scenario om de beschrijving en doelstelling weer te geven. Klik erop om een spel te starten.
 STR_6519    :Extra’s
+STR_6520    :Assetpacks
+STR_6521    :Lage prioriteit
+STR_6522    :Hoge prioriteit
+STR_6523    :Prioriteit van het geselecteerde assetpack verlagen.
+STR_6524    :Prioriteit van het geselecteerde assetpack verhogen.
+STR_6525    :Assets in het spel opnieuw laden, op basis van de geselecteerde assetpacks.
+STR_6526    :(basisgraphics, -muziek en -geluidseffecten)
+STR_6527    :Wedstrijden
+STR_6528    :Ongeldige baanparameters!
+STR_6529    :Ongeldige parameter voor kleurenschema!
+STR_6530    :User Created Expansion Set
+STR_6531    :The Time Machine
+STR_6532    :Katy’s Dreamworld
+STR_6533    :{WINDOW_COLOUR_2}Plezierfactor: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Intensiteitsfactor: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Misselijkheidsfactor: {BLACK}-{COMMA16}%
+STR_6536    :Dit park is opgeslagen in een latere versie van OpenRCT2. Het park is opgeslagen in v{INT32}, je huidige versie is v{INT32}.
 
 #############
 # Scenarios #
@@ -4360,6 +4375,104 @@ STR_SCNR    :Panda World
 STR_PARK    :Panda World
 STR_DTLS    :Voeg meer attracties toe aan dit park met pandathema, en trek meer bezoekers aan.
 
+###
+<UCES Halloween>
+STR_SCNR    :Cemetery Ridge
+STR_PARK    :Cemetery Ridge
+STR_DTLS    :Het is Allerheiligenavond bij UCES en de pompoenen komen tot leven! Deze begraafplaats is in de problemen gekomen en het is jouw taak om deze op te lossen, zonder de doden te storen! Gaat het je lukken om de geesten in de graven te houden en je bezoekers koude rillingen te bezorgen?{NEWLINE}Gemaakt door: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :De vuurtoren van Alexandrië
+STR_PARK    :De vuurtoren van Alexandrië
+STR_DTLS    :Alexander bouwde deze stad. De Grieken, Romeinen en Egyptenaren drukten er hun stempel op. Maar het pronkstuk was dit wereldwonder: de vuurtoren. Kom langs en bouw een park!{NEWLINE}Gemaakt door: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :Zoals het eruitzag op de openingsdag, 18 mei 1905.{NEWLINE}Gemaakt door: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Vesuvius
+STR_PARK    :Vesuvius
+STR_DTLS    :Pompeii en Herculaneum werden in 79 n.Chr. door de Vesuvius bedolven onder de as. Bezoek de opgravingen en bouw een park!{NEWLINE}Gemaakt door: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :De zandbak
+STR_PARK    :De zandbak
+STR_DTLS    :Iedereen wil toch wel eens in de zandbak spelen? Pak je emmertje en je schepje en bouw een park!{NEWLINE}Gemaakt door: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Falls
+STR_PARK    :Niagara Falls
+STR_DTLS    :American Falls, Bridal Falls en Canadian Horseshoe Falls op de grens bij de Niagara, 1850.{NEWLINE}Gemaakt door: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Rocky Mountain Miners
+STR_PARK    :Rocky Mountain Miners
+STR_DTLS    :Door een aardverschuiving is je spoorweg bedolven onder het puin. Je werknemers zijn het gebied gaan verkennen. Zijn achtbanen misschien de gouden bergen waar je naar op zoek was?{NEWLINE}Gemaakt door: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :De tijdmachine
+STR_PARK    :The Time Machine
+STR_DTLS    :De tijdmachine, die je overal heen brengt waar en wanneer je maar wilt. De eeuwigheid wacht op je. Maar alles is relatief.{NEWLINE}Gemaakt door: Katatude
+
+<Tower of Babel>
+STR_SCNR    :De toren van Babel
+STR_PARK    :Babel
+STR_DTLS    :Waar zijn we nu weer beland? Waar is iedereen?{NEWLINE}Gemaakt door: Fossil
+
+<Transformation>
+STR_SCNR    :Transformation
+STR_PARK    :Transformation
+STR_DTLS    :We hadden je al verwacht…{NEWLINE}Gemaakt door: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :De Romeinen hebben zo onderhand wel genoeg van al die gladiatorengevechten. Zorg voor nieuwe vormen van vermaak door een Romeins stadje om te toveren in het beste attractiepark aller tijden!{NEWLINE}Gemaakt door: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Beneath the Christmas Tree
+STR_PARK    :Winter Wonderland
+STR_DTLS    :Je moeder heeft dit tafereel onder de kerstboom gebouwd. Nu is het jouw beurt om er een park van te maken!{NEWLINE}Gemaakt door: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Bigrock Blast
+STR_PARK    :Bigrock Blast
+STR_DTLS    :Na een explosie bij de Bigrock Mining Co. moeten de inwoners van Bigrock hun stad in leven zien te houden. Ze hebben jou ingehuurd om deze klus te klaren.{NEWLINE}Gemaakt door: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Mockingbird
+STR_PARK    :Camp Mockingbird
+STR_DTLS    :Dit zomerkamp kost maar 500 euro per week! Plunder je spaarrekening en kom bouwen!{NEWLINE}Gemaakt door: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Choo-Choo Town
+STR_PARK    :Choo-Choo Town
+STR_DTLS    :Mam! Pap! Ik wil naarChoo-Choo Town!{NEWLINE}Gemaakt door: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Dragon Islands
+STR_PARK    :Dragon Islands
+STR_DTLS    :Dragon Islands? Dat klinkt niet erg veilig…{NEWLINE}Gemaakt door: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kiddie Karnival II
+STR_PARK    :Kiddie Karnival
+STR_DTLS    :Tijd om de kleintjes te vermaken!{NEWLINE}Gemaakt door: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sand Dune
+STR_PARK    :Sand Dune
+STR_DTLS    :Je bezit al een klein park en hebt besloten om een groot stuk land bij het strand erbij te kopen, om meer bezoekers naar deze prachtige duinen te trekken. Maar let op: de duinen zijn een gevoelig ecosysteem dat je niet mag verstoren.{NEWLINE}Gemaakt door: rbarclay
+
 ##################################
 # Rides/attractions / Attracties #
 ##################################
@@ -4439,38 +4552,6 @@ STR_NAME    :Dak
 
 [TTPRF11]
 STR_NAME    :Dak
-
-# TT wooden (Mine) roofs
-[TTRFWD01]
-STR_NAME    :Dak
-
-[TTRFWD02]
-STR_NAME    :Dak
-
-[TTRFWD03]
-STR_NAME    :Dak
-
-[TTRFWD04]
-STR_NAME    :Dak
-
-[TTRFWD05]
-STR_NAME    :Dak
-
-[TTRFWD06]
-STR_NAME    :Dak
-
-[TTRFWD07]
-STR_NAME    :Dak
-
-[TTRFWD08]
-STR_NAME    :Dak
-
-[ACWW33]
-STR_NAME    :Muur van houten palen
-
-[ACWWF32]
-STR_NAME    :Hek van houten palen
-
 ## End CC
 
 

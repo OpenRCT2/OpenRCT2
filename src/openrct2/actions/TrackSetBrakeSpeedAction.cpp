@@ -60,7 +60,7 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
         return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_NONE);
     }
 
-    TileElement* tileElement = map_get_track_element_at_of_type(_loc, _trackType);
+    TileElement* tileElement = MapGetTrackElementAtOfType(_loc, _trackType);
     if (tileElement == nullptr)
     {
         log_warning("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);

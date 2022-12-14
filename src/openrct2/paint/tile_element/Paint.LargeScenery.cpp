@@ -53,7 +53,7 @@ static constexpr const BoundBoxXY LargeSceneryBoundBoxes[] = {
 // clang-format on
 
 static void PaintLargeScenerySupports(
-    paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
+    PaintSession& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
     const rct_large_scenery_tile& tile)
 {
     PROFILED_FUNCTION();
@@ -69,18 +69,18 @@ static void PaintLargeScenerySupports(
         special = 49;
     }
 
-    wooden_b_supports_paint_setup(session, (direction & 1), special, supportHeight, imageTemplate);
+    WoodenBSupportsPaintSetup(session, (direction & 1), special, supportHeight, imageTemplate);
 
     int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
     if (tile.flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
     {
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, clearanceHeight, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, clearanceHeight, 0x20);
     }
     else
     {
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     }
-    paint_util_set_general_support_height(session, clearanceHeight, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, clearanceHeight, 0x20);
 }
 
 static std::string_view LargeSceneryCalculateDisplayText(const LargeSceneryText& text, std::string_view s, bool height)
@@ -105,7 +105,7 @@ static int32_t DivToMinusInfinity(int32_t a, int32_t b)
 }
 
 static void PaintLargeScenery3DTextLine(
-    paint_session& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryText& text, std::string_view line,
+    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryText& text, std::string_view line,
     ImageId imageTemplate, Direction direction, int32_t offsetY)
 {
     PROFILED_FUNCTION();
@@ -181,7 +181,7 @@ static bool Is3DTextSingleLine(const LargeSceneryText& text, std::string_view s)
 }
 
 static void PaintLargeScenery3DText(
-    paint_session& session, const LargeSceneryEntry& sceneryEntry, const rct_large_scenery_tile& tile,
+    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const rct_large_scenery_tile& tile,
     const LargeSceneryElement& tileElement, uint8_t direction, uint16_t height, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -295,7 +295,7 @@ static void PaintLargeScenery3DText(
 }
 
 static void PaintLargeSceneryScrollingText(
-    paint_session& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryElement& tileElement, uint8_t direction,
+    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryElement& tileElement, uint8_t direction,
     uint16_t height, const CoordsXYZ& bbOffset, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -311,7 +311,7 @@ static void PaintLargeSceneryScrollingText(
     banner->FormatTextTo(ft);
 
     char text[256];
-    if (gConfigGeneral.upper_case_banners)
+    if (gConfigGeneral.UpperCaseBanners)
     {
         format_string_to_upper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
@@ -321,13 +321,13 @@ static void PaintLargeSceneryScrollingText(
     }
 
     auto scrollMode = sceneryEntry.scrolling_mode + ((direction + 1) & 3);
-    auto stringWidth = gfx_get_string_width(text, FontSpriteBase::TINY);
+    auto stringWidth = gfx_get_string_width(text, FontStyle::Tiny);
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
     auto imageId = scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
-    PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { 1, 1, 21 }, bbOffset);
+    PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { bbOffset, { 1, 1, 21 } });
 }
 
-void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
+void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
 {
     PROFILED_FUNCTION();
 

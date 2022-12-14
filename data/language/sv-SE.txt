@@ -2711,8 +2711,6 @@ STR_5503    :Skriv in värdsnamn eller IP-adress:
 STR_5504    :Visa online-status
 STR_5505    :Kunde inte ansluta till servern.
 STR_5506    :Besökarna ignorerar intensitetsnivån
-STR_5508    :Tillåt filer med inkorrekta kontrollsummor att laddas
-STR_5509    :Tillåter spelet att ladda scenarion och sparfiler{NEWLINE}som har inkorrekta kontrollsummor,{NEWLINE}som scenarion från demon och skadade sparfiler.
 STR_5510    :Standardljudenhet
 STR_5511    :(OKÄND)
 STR_5512    :Spara spelet som
@@ -3597,9 +3595,7 @@ STR_6487    :Växla genomskinlig personal
 STR_6488    :{RED}Gästerna klagar på kölängderna i din park. {NEWLINE}Överväg att förkorta problematiska köer, eller öka åkturernas genomströmning.
 STR_6489    :Fel: Inkompatibel parkversion
 STR_6490    :Varning: Halvkompatibel parkversion
-STR_6491    :Denna park sparades i en nyare version av OpenRCT2. Parken är v{INT32} och kräver åtminstone v{INT32}.
 STR_6492    :Denna park sparades i en äldre version av OpenRCT2, och kan inte öppnas med denna version av OpenRCT2. Parken är v{INT32}.
-STR_6493    :Denna park sparades i en nyare version av OpenRCT2, viss data kan gå förlorad. Parken är v{INT32} och kräver åtminstone v{INT32}.
 
 #############
 # Scenarion #
@@ -4051,36 +4047,6 @@ STR_DTLS    :
 ## Start OpenRCT2 Official
 [TTPIRF05]
 STR_NAME    :Tak
-
-[TTRFWD01]
-STR_NAME    :Tak
-
-[TTRFWD02]
-STR_NAME    :Tak
-
-[TTRFWD03]
-STR_NAME    :Tak
-
-[TTRFWD04]
-STR_NAME    :Tak
-
-[TTRFWD05]
-STR_NAME    :Tak
-
-[TTRFWD06]
-STR_NAME    :Tak
-
-[TTRFWD07]
-STR_NAME    :Tak
-
-[TTRFWD08]
-STR_NAME    :Tak
-
-[ACWW33]
-STR_NAME    :Träpalissad
-
-[ACWWF32]
-STR_NAME    :Träpalissadvägg
 
 ## End OpenRCT2 Official
 

@@ -2711,8 +2711,6 @@ STR_5503    :Hostnamen oder IP-Adresse eingeben:
 STR_5504    :Mehrspielerstatus anzeigen
 STR_5505    :Verbindung zum Server konnte nicht hergestellt werden
 STR_5506    :Besucher ignorieren Bahnintensität
-STR_5508    :Laden von Dateien mit unzul. Prüfsummen erlauben
-STR_5509    :Erlaubt das Laden von Szenarios und gespeicherten Spielständen, die eine unzulässige Prüfsumme haben, wie Szenarios aus der Demo oder fehlerhafte Spielstände
 STR_5510    :Standard Audiogerät
 STR_5511    :(UNBEKANNT)
 STR_5512    :Spiel speichern unter
@@ -2992,7 +2990,7 @@ STR_5832    :Zeigt Höhen als generische Einheiten,{NEWLINE}anstelle der unter �
 STR_5833    :Verändert das verwendete Datumsformat
 STR_5834    :Das zu verwendende Audiogerät auswählen
 STR_5835    :Schaltet das Spiel stumm, wenn das{NEWLINE}Spiel nicht mehr im Vordergrund ist
-STR_5836    :Die im Hauptmenü verwendete{NEWLINE}Musik auswählen.{NEWLINE}{NEWLINE}Die RCT1-Musik erfordert das Kopieren von „data/css17.dat“,{NEWLINE}aus dem RCT1-Ordner, nach „data/css50.dat“ im{NEWLINE}RCT2-Ordner oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
+STR_5836    :Die im Hauptmenü verwendete Musik auswählen.{NEWLINE}Die Auswahl der RCT1-Musik erfordert, dass der Pfad zu RCT1 im Reiter „Erweitert“ festgelegt wird.
 STR_5837    :Benutzerdefinierte GUIs{NEWLINE}erstellen und verwalten
 STR_5838    :Zeigt für die Finanzen in der Symbolleiste{NEWLINE}eine gesonderte Schaltfläche an
 STR_5839    :Zeigt für die Forschung & Entwicklung{NEWLINE}in der Symbolleiste eine gesonderte Schaltfläche an
@@ -3425,7 +3423,7 @@ STR_6318    :Netzwerkdesynchronisation erkannt.{NEWLINE}Logdatei: {STRING}
 STR_6319    :Blockbremse geschlossen
 STR_6320    :Unzerstörbar
 STR_6321    :Zusatz ist kaputt
-STR_6322    :{WINDOW_COLOUR_2}Sprite-ID: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entity-ID: {BLACK}{INT32}
 STR_6323    :Simulierend
 STR_6324    :Simulieren
 STR_6325    :Fahrgeschäft/Attraktion simulieren
@@ -3592,9 +3590,7 @@ STR_6487    :Personal ausblenden
 STR_6488    :{RED}Die Gäste beschweren sich über die Länge der Warteschlangen in ihrem Park.{NEWLINE}Verkürzen Sie problematische Warteschlangen oder erhöhen Sie den Durchsatz der Fahrgeschäfte.
 STR_6489    :Fehler: Inkompatible Parkversion
 STR_6490    :Warnung: Teilkompatible Parkversion
-STR_6491    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert. Park ist v{INT32} und benötigt mindestens v{INT32}.
 STR_6492    :Dieser Park wurde in einer alten Version von OpenRCT2 gespeichert und kann nicht mit dieser Version von OpenRCT2 geöffnet werden. Park ist v{INT32}.
-STR_6493    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert, einige Daten können verloren gehen. Park ist v{INT32} und benötigt mindestens v{INT32}.
 STR_6494    :Nach Fahrgeschäftstyp gruppieren
 STR_6495    :Fahrgeschäfte nach Fahrgeschäftstyp gruppieren, anstatt jedes Fahrzeug separat anzuzeigen.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3616,11 +3612,23 @@ STR_6511    :Null-G-Rolle (rechts)
 STR_6512    :Große Null-G-Rolle (l.)
 STR_6513    :Große Null-G-Rolle (r.)
 STR_6514    :Ungültige Höhe!
-STR_6515    :{BLACK}RCT1 nicht verknüpft - Es werden Fallback-Bilder verwendet.
-STR_6516    :Eines oder mehrere der hinzugefügten Objekte benötigen eine Verknüpfung mit RCT1 für eine korrekte Anzeige. Es werden Fallback-Bilder verwendet.
-STR_6517    :Eines oder mehrere Objekte in diesem Park benötigen eine Verknüpfung mit RCT1 für eine korrekte Anzeige. Es werden Fallback-Bilder verwendet.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 nicht verknüpft - Es werden Fallback-Bilder verwendet.
+STR_6516    :Eines oder mehrere der hinzugefügten Objekte benötigen eine Verknüpfung mit RollerCoaster Tycoon 1 für eine korrekte Anzeige. Es werden Fallback-Bilder verwendet.
+STR_6517    :Eines oder mehrere Objekte in diesem Park benötigen eine Verknüpfung mit RollerCoaster Tycoon 1 für eine korrekte Anzeige. Es werden Fallback-Bilder verwendet.
 STR_6518    :{BLACK}Zeigen Sie auf ein Szenario, um seine Beschreibung und sein Ziel zu sehen. Klicken Sie, um das Spiel zu beginnen.
 STR_6519    :Extras
+STR_6520    :Medienpakete
+STR_6521    :Niedrige Priorität
+STR_6522    :Hohe Priorität
+STR_6523    :Die Priorität des gewählten Medienpakets verringern.
+STR_6524    :Die Priorität des gewählten Medienpakets erhöhen.
+STR_6525    :Alle Mediendaten im Spiel mit den aktivierten Medienpaken neu laden.
+STR_6526    :(Basisgrafiken, -musik und -toneffekte)
+STR_6527    :Wettbewerbe
+STR_6528    :Ungültige Streckenparameter!
+STR_6529    :Ungültiger Farbschemaparameter!
+STR_6531    :Die Zeitmaschine
+STR_6532    :Katys Traumwelt
 
 
 #############
@@ -4073,36 +4081,6 @@ STR_DTLS    :
 [TTPIRF05]
 STR_NAME    :Dach
 
-[TTRFWD01]
-STR_NAME    :Dach
-
-[TTRFWD02]
-STR_NAME    :Dach
-
-[TTRFWD03]
-STR_NAME    :Dach
-
-[TTRFWD04]
-STR_NAME    :Dach
-
-[TTRFWD05]
-STR_NAME    :Dach
-
-[TTRFWD06]
-STR_NAME    :Dach
-
-[TTRFWD07]
-STR_NAME    :Dach
-
-[TTRFWD08]
-STR_NAME    :Dach
-
-[ACWW33]
-STR_NAME    :Holzpfostenwand
-
-[ACWWF32]
-STR_NAME    :Holzpfostenwand
-
 ## End of OpenRCT2 Official
 
 ###############################################################################
@@ -4406,3 +4384,101 @@ STR_DTLS    :Dieser Freizeitpark ist ein wenig in die Jahre gekommen. Helfen Sie
 STR_SCNR    :Pandawelt
 STR_PARK    :Pandawelt
 STR_DTLS    :Bauen Sie weitere Fahrgeschäfte und ziehen Sie neue Gäste in diesem Park im Pandastil an
+
+###
+<UCES Halloween>
+STR_SCNR    :Cemetery Ridge
+STR_PARK    :Cemetery Ridge
+STR_DTLS    :Es ist Halloween, UCES-Halloween. Kürbisse kreischen in der kalten toten Nacht! Dieser Friedhof ist in Gefahr, und es liegt an Ihnen, ihn zu retten, während Sie die Toten in Frieden ruhen lassen. Können Sie die Geister in ihren Gräbern halten und Ihren Kunden das Fürchten lehren?{NEWLINE}Autor: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :Der Leuchtturm von Alexandria
+STR_PARK    :Der Leuchtturm von Alexandria
+STR_DTLS    :Alexander erbaute die Stadt; Griechen, Römer, Ägypter hinterließen ihre Spuren. Aber die größte Ehre war ein Wunder der Antiken Welt - der Leuchtturm. Statten Sie ihm einen Besuch ab und bauen Sie einen Park.{NEWLINE}Autor: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :So, wie er am Eröffnungstag war, den 18. Mai 1905.{NEWLINE}Autor: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Vesuv
+STR_PARK    :Vesuv
+STR_DTLS    :Pompeji and Herculaneum wurden vom Vesuv in 79 v. Chr. zerstört. Besuchen Sie die Ausgrabungen und bauen Sie einen Park!{NEWLINE}Autor: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :Der Sandkasten
+STR_PARK    :Der Sandkasten
+STR_DTLS    :Was alle wollen - ein Sandkasten! Also schnappen Sie sich Eimer und Schaufel und bauen Sie einen Park!{NEWLINE}Autor: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagarafälle u. Schlucht
+STR_PARK    :Niagarafälle
+STR_DTLS    :Die American Falls, Bridal Falls und die kanadischen Horseshoe Falls am Niagara, 1850.{NEWLINE}Autor: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Rocky Mountain Miners
+STR_PARK    :Rocky Mountain Miners
+STR_DTLS    :Ein Steinschlag hat Ihre Eisenbahnstrecke beschädigt. Ihre Arbeiter sind auf die Suche nach Bodenschätzen gegangen. Gibt es Gold in Achterbahnen?{NEWLINE}Autoren: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :Die Zeitmaschine
+STR_PARK    :Die Zeitmaschine
+STR_DTLS    :Die Zeitmaschine. Bauen Sie, wann Sie wollen, wo Sie wollen. Die Ewigkeit wartet. Alles ist relativ.{NEWLINE}Autor: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Turmbau zu Babel
+STR_PARK    :Turmbau zu Babel
+STR_DTLS    :Wow! Schauen Sie, wohin uns die Zeitmaschine jetzt befördert hat! Wo sind alle hin?{NEWLINE}Autor: Fossil
+
+<Transformation>
+STR_SCNR    :Transformation
+STR_PARK    :Transformation
+STR_DTLS    :Wir haben auf Sie gewartet …{NEWLINE}Autor: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :Die Römer haben keine Lust mehr auf langweilige Gladiatorenkämpfe. Geben Sie ihnen etwas aufregenderes; verwandeln Sie eine römische Stadt zum großartigsten Vergnügungspark aller Zeiten!{NEWLINE}Autor: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Unter dem Weihnachtsbaum
+STR_PARK    :Winterwunderland
+STR_DTLS    :Mama hat diese Szenerie unter unserem Baum gebaut. Jetzt möchte sie darin einen Park gebaut haben! Können Sie helfen?{NEWLINE}Autor: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Bigrock Blast
+STR_PARK    :Bigrock Blast
+STR_DTLS    :Nach einer Explosion bei der Bigrock Mining Co. haben die Einwohner von Bigrock einen Vergnügungspark gebaut, um ihre Stadt am Leben zu halten.{NEWLINE}Autoren: rbarclay u. buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Mockingbird
+STR_PARK    :Camp Mockingbird
+STR_DTLS    :Nur $500/Woche in diesem Sommercamp! Ziehen Sie Ihre Spendierhosen an, haben Sie Spaß und bauen Sie einen Park.{NEWLINE}Autor: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Töff-Töff-Land
+STR_PARK    :Töff-Töff-Land
+STR_DTLS    :Mama! Papa! Ich will ins Töff-Töff-Land!{NEWLINE}Autor: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Dracheninseln
+STR_PARK    :Dracheninseln
+STR_DTLS    :Dracheninseln? Ich bin mir nicht sicher, wie man da hinkommt …{NEWLINE}Autor: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kiddie Karnival II
+STR_PARK    :Kiddie Karnival
+STR_DTLS    :Hallo Kinder! Lasst uns Spaß haben!{NEWLINE}Autoren: Piehead u. Fossil
+
+<Sand Dune>
+STR_SCNR    :Sanddüne
+STR_PARK    :Sanddüne
+STR_DTLS    :Als der Eigentümer eines kleinen Parks haben Sie sich ein größes Grundstück am Strand gekauft, um den Park zu erweitern, um mehr Gäste anzulocken, die schönen Sanddünen zu besuchen. Aber vorsicht: Sie dürfen die ökologisch fragilen Sanddünen nicht zerstören.{NEWLINE}Autor: rbarclay

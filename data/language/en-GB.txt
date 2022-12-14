@@ -2710,8 +2710,6 @@ STR_5503    :Enter hostname or IP address:
 STR_5504    :Show multiplayer status
 STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
-STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
 STR_5510    :Default sound device
 STR_5511    :(UNKNOWN)
 STR_5512    :Save Game As
@@ -2995,7 +2993,7 @@ STR_5832    :Show height as generic units instead of measurement format set unde
 STR_5833    :Changes what date format is used
 STR_5834    :Select which audio device OpenRCT2 will use
 STR_5835    :Mute the game if the window loses focus
-STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting the RCT1 theme requires that you set the path to RCT1 in the Miscellaneous tab.
+STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting the RCT1 theme requires that you set the path to RCT1 in the Advanced tab.
 STR_5837    :Create and manage custom UI themes
 STR_5838    :Show a separate button for the finance window in the toolbar
 STR_5839    :Show a separate button for the research and development window in the toolbar
@@ -3428,7 +3426,7 @@ STR_6318    :Network desync detected.{NEWLINE}Log file: {STRING}
 STR_6319    :Block Brake Closed
 STR_6320    :Indestructible
 STR_6321    :Addition is broken
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entity ID: {BLACK}{INT32}
 STR_6323    :Simulating
 STR_6324    :Simulate
 STR_6325    :Simulate ride/attraction
@@ -3595,9 +3593,9 @@ STR_6487    :Hide staff toggle
 STR_6488    :{RED}Guests are complaining about the length of the queues in your park.{NEWLINE}Consider shortening problematic queues, or increasing the rides’ throughput.
 STR_6489    :Error: Incompatible Park Version
 STR_6490    :Warning: Semi-compatible Park Version
-STR_6491    :This park was saved in a later version of OpenRCT2. Park is v{INT32} and requires at least v{INT32}.
+STR_6491    :This park was saved in a later version of OpenRCT2. The park was saved in v{INT32} and requires at least v{INT32}. You are currently on v{INT32}.
 STR_6492    :This park was saved in an old version of OpenRCT2, and can not be opened with this version of OpenRCT2. Park is v{INT32}.
-STR_6493    :This park was saved in a later version of OpenRCT2, some data may be lost. Park is v{INT32} and requires at least v{INT32}.
+STR_6493    :This park was saved in a later version of OpenRCT2, some data may be lost. The park was saved in v{INT32}. You are currently on v{INT32}.
 STR_6494    :Group by ride type
 STR_6495    :Group rides by ride types instead of showing each vehicle separately.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3619,9 +3617,9 @@ STR_6511    :Zero G Roll (right)
 STR_6512    :Large Zero G Roll (left)
 STR_6513    :Large Zero G Roll (right)
 STR_6514    :Invalid height!
-STR_6515    :{BLACK}RCT1 not linked - fallback images will be used.
-STR_6516    :One or more objects added require RCT1 linked for proper display. Fallback images will be used.
-STR_6517    :One or more objects in this park require RCT1 linked for proper display. Fallback images will be used.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 not linked - fallback images will be used.
+STR_6516    :One or more objects added require RollerCoaster Tycoon 1 linked for proper display. Fallback images will be used.
+STR_6517    :One or more objects in this park require RollerCoaster Tycoon 1 linked for proper display. Fallback images will be used.
 STR_6518    :{BLACK}Hover over a scenario to view its description and objective. Click it to start playing.
 STR_6519    :Extras
 STR_6520    :Asset Packs
@@ -3631,6 +3629,16 @@ STR_6523    :Decrease the priority of the selected asset pack.
 STR_6524    :Increase the priority of the selected asset pack.
 STR_6525    :Reload all assets in the game with the enabled asset packs.
 STR_6526    :(base graphics, music and sound effects)
+STR_6527    :Competitions
+STR_6528    :Invalid track parameters!
+STR_6529    :Invalid colour scheme parameter!
+STR_6530    :User Created Expansion Set
+STR_6531    :The Time Machine
+STR_6532    :Katy’s Dreamworld
+STR_6533    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}-{COMMA16}%
+STR_6536    :This park was saved in a later version of OpenRCT2. The park was saved in v{INT32}, you are currently on v{INT32}.
 
 #############
 # Scenarios #
@@ -4083,36 +4091,6 @@ STR_DTLS    :
 [TTPIRF05]
 STR_NAME    :Roof
 
-[TTRFWD01]
-STR_NAME    :Roof
-
-[TTRFWD02]
-STR_NAME    :Roof
-
-[TTRFWD03]
-STR_NAME    :Roof
-
-[TTRFWD04]
-STR_NAME    :Roof
-
-[TTRFWD05]
-STR_NAME    :Roof
-
-[TTRFWD06]
-STR_NAME    :Roof
-
-[TTRFWD07]
-STR_NAME    :Roof
-
-[TTRFWD08]
-STR_NAME    :Roof
-
-[ACWW33]
-STR_NAME    :Wooden Post Wall
-
-[ACWWF32]
-STR_NAME    :Wooden Post Wall
-
 ## End OpenRCT2 Official
 
 ###############################################################################
@@ -4416,3 +4394,101 @@ STR_DTLS    :This aging theme park has seen better days. Help the owner give it 
 STR_SCNR    :Panda World
 STR_PARK    :Panda World
 STR_DTLS    :Add more rides and attract more people to this panda-themed park
+
+###
+<UCES Halloween>
+STR_SCNR    :Cemetery Ridge
+STR_PARK    :Cemetery Ridge
+STR_DTLS    :This is Halloween, UCES Halloween, pumpkins scream in the dead of night! This graveyard is in trouble and it’s up to you to save it, while letting the dead rest in peace! Can you keep the ghosts in their graves and bring chills to your customers?{NEWLINE}Author: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :The Lighthouse of Alexandria
+STR_PARK    :The Lighthouse of Alexandria
+STR_DTLS    :Alexander built the city; Greeks, Romans, Egyptians left their mark. But the biggest honor was a Wonder of the Ancient World - the Lighthouse. Visit and make a park!{NEWLINE}Author: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :As it was on its opening day - 18 May 1905.{NEWLINE}Author: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Mount Vesuvius
+STR_PARK    :Mount Vesuvius
+STR_DTLS    :Pompeii and Herculaneum were buried by Mt. Vesuvius in 79 A.D. Visit the excavations and build a park!{NEWLINE}Author: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :The Sandbox
+STR_PARK    :The Sandbox
+STR_DTLS    :What everyone wants - a sandbox! So grab your l’il pail and shovel and build a park!{NEWLINE}Author: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Falls & Gorge
+STR_PARK    :Niagara Falls
+STR_DTLS    :American Falls, Bridal Falls & Canadian Horseshoe Falls on the Niagara Frontier, 1850.{NEWLINE}Author: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Rocky Mountain Miners
+STR_PARK    :Rocky Mountain Miners
+STR_DTLS    :A rockslide damaged your railway. Your workers have gone prospecting. Is there gold in roller coasters?{NEWLINE}Authors: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :The Time Machine
+STR_PARK    :The Time Machine
+STR_DTLS    :The Time Machine. Build to go - when you want, where you want. Eternity awaits. It’s all relative.{NEWLINE}Author: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Tower of Babel
+STR_PARK    :Tower of Babel
+STR_DTLS    :Whoaa! Look where the time machine took us now! Where did everybody go?{NEWLINE}Author: Fossil
+
+<Transformation>
+STR_SCNR    :Transformation
+STR_PARK    :Transformation
+STR_DTLS    :We were expecting you…{NEWLINE}Author: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :The Romans are tired of boring gladiator fights. Give them a better thrill, turn a Roman city into the greatest amusement park of all time!{NEWLINE}Author: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Beneath the Christmas Tree
+STR_PARK    :Winter Wonderland
+STR_DTLS    :Mum built this scene under our tree. Now she wants a park made in it! Can you help?{NEWLINE}Author: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Bigrock Blast
+STR_PARK    :Bigrock Blast
+STR_DTLS    :After an explosion at the Bigrock Mining Co., the people of Bigrock have to build an amusement park to keep their town alive.{NEWLINE}Authors: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Mockingbird
+STR_PARK    :Camp Mockingbird
+STR_DTLS    :Only $500/week to this summer camp! Break open your bank and then have fun and build a park.{NEWLINE}Author: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Choo-Choo Town
+STR_PARK    :Choo-Choo Town
+STR_DTLS    :Mommy! Daddy! I want to go to Choo-Choo Town!{NEWLINE}Author: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Dragon Islands
+STR_PARK    :Dragon Islands
+STR_DTLS    :Dragon Islands? I’m not sure I want to go there…{NEWLINE}Author: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kiddie Karnival II
+STR_PARK    :Kiddie Karnival
+STR_DTLS    :Hey kids! Let’s have fun!{NEWLINE}Authors: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sand Dune
+STR_PARK    :Sand Dune
+STR_DTLS    :As the owner of a small park, you bought a large piece of land along the beach to expand and attract more guests to visit the beautiful sand dunes, but beware: you cannot disturb those ecologically fragile sand dunes.{NEWLINE}Author: rbarclay

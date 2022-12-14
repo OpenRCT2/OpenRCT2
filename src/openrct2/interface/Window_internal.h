@@ -157,6 +157,9 @@ struct rct_window
     {
         return {};
     }
+    virtual void OnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType)
+    {
+    }
     virtual void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
     }
@@ -178,7 +181,7 @@ struct rct_window
     virtual void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
     }
-    virtual void OnToolUp(WidgetIndex, const ScreenCoordsXY&)
+    virtual void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&)
     {
     }
     virtual void OnToolAbort(WidgetIndex widgetIndex)
@@ -191,6 +194,12 @@ struct rct_window
     {
     }
     virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
+    virtual void OnUnknown5()
+    {
+    }
+
+    void ResizeFrame();
+    void ResizeFrameWithPage();
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

@@ -34,7 +34,7 @@
 using namespace OpenRCT2;
 
 static void PaintRideEntranceExitScrollingText(
-    paint_session& session, const EntranceElement& entranceEl, const StationObject& stationObj, Direction direction,
+    PaintSession& session, const EntranceElement& entranceEl, const StationObject& stationObj, Direction direction,
     int32_t height)
 {
     PROFILED_FUNCTION();
@@ -61,7 +61,7 @@ static void PaintRideEntranceExitScrollingText(
     }
 
     char text[256];
-    if (gConfigGeneral.upper_case_banners)
+    if (gConfigGeneral.UpperCaseBanners)
     {
         format_string_to_upper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
@@ -69,15 +69,15 @@ static void PaintRideEntranceExitScrollingText(
     {
         format_string(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
-    auto stringWidth = gfx_get_string_width(text, FontSpriteBase::TINY);
+    auto stringWidth = gfx_get_string_width(text, FontStyle::Tiny);
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
         session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK),
-        { 0, 0, height + stationObj.Height }, { 28, 28, 51 }, { 2, 2, height + stationObj.Height });
+        { 0, 0, height + stationObj.Height }, { { 2, 2, height + stationObj.Height }, { 28, 28, 51 } });
 }
 
-static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t height, const EntranceElement& entranceEl)
+static void PaintRideEntranceExitLightEffects(PaintSession& session, int32_t height, const EntranceElement& entranceEl)
 {
     PROFILED_FUNCTION();
 
@@ -106,7 +106,7 @@ static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t he
     }
 }
 
-static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
+static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
 {
     PROFILED_FUNCTION();
 
@@ -162,7 +162,7 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
     CoordsXYZ boundBoxLength = {
         (direction & 1) ? 2 : 28,
         (direction & 1) ? 28 : 2,
-        isExit ? 35 : 51,
+        isExit ? 32 : 48,
     };
 
     // Back
@@ -188,7 +188,7 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
             { { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height }, boundBoxLength });
     }
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     if (!entranceEl.IsGhost())
         PaintRideEntranceExitScrollingText(session, entranceEl, *stationObj, direction, height);
@@ -198,15 +198,15 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
     {
         supportsImageTemplate = ImageId().WithPrimary(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, supportsImageTemplate);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, supportsImageTemplate);
 
     height += isExit ? 40 : 56;
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height, 0x20);
 }
 
 static void PaintParkEntranceScrollingText(
-    paint_session& session, const EntranceObject& entrance, Direction direction, int32_t height)
+    PaintSession& session, const EntranceObject& entrance, Direction direction, int32_t height)
 {
     PROFILED_FUNCTION();
 
@@ -232,7 +232,7 @@ static void PaintParkEntranceScrollingText(
     }
 
     char text[256];
-    if (gConfigGeneral.upper_case_banners)
+    if (gConfigGeneral.UpperCaseBanners)
     {
         format_string_to_upper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
@@ -241,7 +241,7 @@ static void PaintParkEntranceScrollingText(
         format_string(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
 
-    auto stringWidth = gfx_get_string_width(text, FontSpriteBase::TINY);
+    auto stringWidth = gfx_get_string_width(text, FontStyle::Tiny);
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
     auto imageIndex = scrolling_text_setup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, COLOUR_BLACK);
@@ -249,7 +249,7 @@ static void PaintParkEntranceScrollingText(
     PaintAddImageAsChild(session, imageIndex, { 0, 0, textHeight }, { { 2, 2, textHeight }, { 28, 28, 47 } });
 }
 
-static void PaintParkEntranceLightEffects(paint_session& session)
+static void PaintParkEntranceLightEffects(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
@@ -259,7 +259,7 @@ static void PaintParkEntranceLightEffects(paint_session& session)
     }
 }
 
-static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
+static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
 {
     PROFILED_FUNCTION();
 
@@ -326,13 +326,13 @@ static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t
     {
         supportsImageTemplate = ImageId().WithPrimary(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, supportsImageTemplate);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, supportsImageTemplate);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 80, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
 }
 
-static void PaintHeightMarkers(paint_session& session, const EntranceElement& entranceEl, int32_t height)
+static void PaintHeightMarkers(PaintSession& session, const EntranceElement& entranceEl, int32_t height)
 {
     PROFILED_FUNCTION();
 
@@ -351,7 +351,7 @@ static void PaintHeightMarkers(paint_session& session, const EntranceElement& en
     }
 }
 
-void PaintEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceElement)
+void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, const EntranceElement& entranceElement)
 {
     PROFILED_FUNCTION();
 

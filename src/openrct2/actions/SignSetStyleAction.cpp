@@ -88,7 +88,7 @@ GameActions::Result SignSetStyleAction::Execute() const
     if (_isLarge)
     {
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
-        if (!map_large_scenery_sign_set_colour(
+        if (!MapLargeScenerySignSetColour(
                 { coords, tileElement->GetBaseZ(), tileElement->GetDirection() },
                 tileElement->AsLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
         {
@@ -101,12 +101,12 @@ GameActions::Result SignSetStyleAction::Execute() const
 
         wallElement->SetPrimaryColour(_mainColour);
         wallElement->SetSecondaryColour(_textColour);
-        map_invalidate_tile({ coords, wallElement->GetBaseZ(), wallElement->GetClearanceZ() });
+        MapInvalidateTile({ coords, wallElement->GetBaseZ(), wallElement->GetClearanceZ() });
     }
 
     auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
     intent.putExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     return GameActions::Result();
 }

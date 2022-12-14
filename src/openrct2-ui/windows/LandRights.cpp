@@ -58,11 +58,11 @@ public:
     void OnOpen() override
     {
         widgets = window_land_rights_widgets;
-        hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
+        hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
         window_push_others_below(*this);
         _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
-        pressed_widgets = (1ULL << WIDX_BUY_LAND_RIGHTS);
+        pressed_widgets = (1uLL << WIDX_BUY_LAND_RIGHTS);
 
         gLandToolSize = 1;
 
@@ -80,6 +80,7 @@ public:
 
     void OnClose() override
     {
+        hide_gridlines();
         if (gLandRemainingConstructionSales == 0)
         {
             hide_construction_rights();
@@ -236,7 +237,7 @@ public:
 
     void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
         auto mapTile = screen_get_map_xy(screenCoords, nullptr);
@@ -303,7 +304,7 @@ public:
             state_changed++;
         }
 
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         if (!state_changed)
             return;
 
@@ -318,7 +319,6 @@ public:
 
     void OnToolAbort(WidgetIndex widgetIndex) override
     {
-        hide_gridlines();
         if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
         {
             hide_land_rights();
@@ -402,5 +402,5 @@ private:
 rct_window* WindowLandRightsOpen()
 {
     return WindowFocusOrCreate<LandRightsWindow>(
-        WindowClass::LandRights, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+        WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 }

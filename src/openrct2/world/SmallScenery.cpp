@@ -71,7 +71,7 @@ void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
             {
-                map_invalidate_tile_zoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
+                MapInvalidateTileZoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
             }
         }
     }
@@ -125,10 +125,10 @@ void SmallSceneryElement::SetNeedsSupports()
 
 SmallSceneryEntry* SmallSceneryElement::GetEntry() const
 {
-    return get_small_scenery_entry(entryIndex);
+    return GetSmallSceneryEntry(entryIndex);
 }
 
-SmallSceneryEntry* get_small_scenery_entry(ObjectEntryIndex entryIndex)
+SmallSceneryEntry* GetSmallSceneryEntry(ObjectEntryIndex entryIndex)
 {
     SmallSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();

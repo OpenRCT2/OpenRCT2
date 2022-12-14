@@ -120,8 +120,8 @@ void GameHandleInput()
     }
     else
     {
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
         screenCoords.x = std::clamp(screenCoords.x, 0, screenWidth - 1);
         screenCoords.y = std::clamp(screenCoords.y, 0, screenHeight - 1);
 
@@ -140,7 +140,7 @@ static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords)
     RCTMouseData* input = GetMouseInput();
     if (input == nullptr)
     {
-        const CursorState* cursorState = context_get_cursor_state();
+        const CursorState* cursorState = ContextGetCursorState();
         screenCoords = cursorState->position;
         return MouseState::Released;
     }
@@ -181,7 +181,7 @@ static void InputScrollDragBegin(const ScreenCoordsXY& screenCoords, rct_window*
     _ticksSinceDragStart = 0;
 
     _dragScrollIndex = window_get_scroll_data_index(*w, widgetIndex);
-    context_hide_cursor();
+    ContextHideCursor();
 }
 
 /**
@@ -219,10 +219,10 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, rct_wind
     WidgetScrollUpdateThumbs(*w, widgetIndex);
     window_invalidate_by_number(w->classification, w->number);
 
-    ScreenCoordsXY fixedCursorPosition = { static_cast<int32_t>(std::ceil(gInputDragLast.x * gConfigGeneral.window_scale)),
-                                           static_cast<int32_t>(std::ceil(gInputDragLast.y * gConfigGeneral.window_scale)) };
+    ScreenCoordsXY fixedCursorPosition = { static_cast<int32_t>(std::ceil(gInputDragLast.x * gConfigGeneral.WindowScale)),
+                                           static_cast<int32_t>(std::ceil(gInputDragLast.y * gConfigGeneral.WindowScale)) };
 
-    context_set_cursor_position(fixedCursorPosition);
+    ContextSetCursorPosition(fixedCursorPosition);
 }
 
 /**
@@ -234,7 +234,7 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState stat
     rct_window* w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
     if (w == nullptr)
     {
-        context_show_cursor();
+        ContextShowCursor();
         _inputState = InputState::Reset;
         return;
     }
@@ -251,7 +251,7 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState stat
             break;
         case MouseState::RightRelease:
             _inputState = InputState::Reset;
-            context_show_cursor();
+            ContextShowCursor();
             break;
         case MouseState::LeftPress:
         case MouseState::LeftRelease:
@@ -375,6 +375,9 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                         break;
                     }
 
+                    if (!input_test_flag(INPUT_FLAG_4))
+                        break;
+
                     if (w->classification != _dragWidget.window_classification || w->number != _dragWidget.window_number
                         || !(_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
                     {
@@ -471,7 +474,7 @@ static void InputWindowPositionContinue(
 {
     int32_t snapProximity;
 
-    snapProximity = (w.flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
+    snapProximity = (w.flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.WindowSnapProximity;
     window_move_and_snap(w, newScreenCoords - lastScreenCoords, snapProximity);
 }
 
@@ -496,7 +499,7 @@ static void InputWindowResizeBegin(rct_window& w, WidgetIndex widgetIndex, const
 
 static void InputWindowResizeContinue(rct_window& w, const ScreenCoordsXY& screenCoords)
 {
-    if (screenCoords.y < static_cast<int32_t>(context_get_height()) - 2)
+    if (screenCoords.y < static_cast<int32_t>(ContextGetHeight()) - 2)
     {
         auto differentialCoords = screenCoords - gInputDragLast;
         int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w.width;
@@ -524,9 +527,12 @@ static void InputViewportDragBegin(rct_window& w)
     _dragWidget.window_classification = w.classification;
     _dragWidget.window_number = w.number;
     _ticksSinceDragStart = 0;
-    auto cursorPosition = context_get_cursor_position();
+    auto cursorPosition = ContextGetCursorPosition();
     gInputDragLast = cursorPosition;
-    context_hide_cursor();
+    if (!gConfigGeneral.InvertViewportDrag)
+    {
+        ContextHideCursor();
+    }
 
     window_unfollow_sprite(w);
     // gInputFlags |= INPUT_FLAG_5;
@@ -537,8 +543,8 @@ static void InputViewportDragContinue()
     rct_window* w;
     rct_viewport* viewport;
 
-    auto newDragCoords = context_get_cursor_position();
-    const CursorState* cursorState = context_get_cursor_state();
+    auto newDragCoords = ContextGetCursorPosition();
+    const CursorState* cursorState = ContextGetCursorState();
 
     auto differentialCoords = newDragCoords - gInputDragLast;
     w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
@@ -555,7 +561,7 @@ static void InputViewportDragContinue()
     _ticksSinceDragStart += gCurrentDeltaTime;
     if (viewport == nullptr)
     {
-        context_show_cursor();
+        ContextShowCursor();
         _inputState = InputState::Reset;
     }
     else if (differentialCoords.x != 0 || differentialCoords.y != 0)
@@ -570,7 +576,7 @@ static void InputViewportDragContinue()
 
             differentialCoords.x = (viewport->zoom + 1).ApplyTo(differentialCoords.x);
             differentialCoords.y = (viewport->zoom + 1).ApplyTo(differentialCoords.y);
-            if (gConfigGeneral.invert_viewport_drag)
+            if (gConfigGeneral.InvertViewportDrag)
             {
                 w->savedViewPos -= differentialCoords;
             }
@@ -581,20 +587,20 @@ static void InputViewportDragContinue()
         }
     }
 
-    if (cursorState->touch)
+    if (cursorState->touch || gConfigGeneral.InvertViewportDrag)
     {
         gInputDragLast = newDragCoords;
     }
     else
     {
-        context_set_cursor_position(gInputDragLast);
+        ContextSetCursorPosition(gInputDragLast);
     }
 }
 
 static void InputViewportDragEnd()
 {
     _inputState = InputState::Reset;
-    context_show_cursor();
+    ContextShowCursor();
 }
 
 #pragma endregion
@@ -618,7 +624,7 @@ static void InputScrollBegin(rct_window& w, WidgetIndex widgetIndex, const Scree
 
     _currentScrollArea = scroll_area;
     _currentScrollIndex = scroll_id;
-    window_event_unknown_15_call(&w, scroll_id, scroll_area);
+    window_event_scroll_select_call(&w, scroll_id, scroll_area);
     if (scroll_area == SCROLL_PART_VIEW)
     {
         window_event_scroll_mousedown_call(&w, scroll_id, scrollCoords);
@@ -1040,8 +1046,8 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, W
                 w = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                 if (w != nullptr)
                 {
+                    input_set_flag(INPUT_FLAG_4, true);
                     window_event_tool_down_call(w, gCurrentToolWidget.widget_index, screenCoords);
-                    _inputFlags |= INPUT_FLAG_4;
                 }
             }
             break;
@@ -1491,7 +1497,7 @@ static void InputUpdateTooltip(rct_window* w, WidgetIndex widgetIndex, const Scr
  */
 int32_t GetNextKey()
 {
-    uint8_t* keysPressed = const_cast<uint8_t*>(context_get_keys_pressed());
+    uint8_t* keysPressed = const_cast<uint8_t*>(ContextGetKeysPressed());
     for (int32_t i = 0; i < 221; i++)
     {
         if (keysPressed[i])
@@ -1517,7 +1523,7 @@ void SetCursor(CursorID cursor_id)
     {
         cursor_id = CursorID::DiagonalArrows;
     }
-    context_setcurrentcursor(cursor_id);
+    ContextSetCurrentCursor(cursor_id);
 }
 
 /**
@@ -1567,23 +1573,23 @@ void GameHandleEdgeScroll()
         return;
     if (mainWindow->viewport == nullptr)
         return;
-    if (!context_has_focus())
+    if (!ContextHasFocus())
         return;
 
     scrollX = 0;
     scrollY = 0;
 
     // Scroll left / right
-    const CursorState* cursorState = context_get_cursor_state();
+    const CursorState* cursorState = ContextGetCursorState();
     if (cursorState->position.x == 0)
         scrollX = -1;
-    else if (cursorState->position.x >= context_get_width() - 1)
+    else if (cursorState->position.x >= ContextGetWidth() - 1)
         scrollX = 1;
 
     // Scroll up / down
     if (cursorState->position.y == 0)
         scrollY = -1;
-    else if (cursorState->position.y >= context_get_height() - 1)
+    else if (cursorState->position.y >= ContextGetHeight() - 1)
         scrollY = 1;
 
     InputScrollViewport(ScreenCoordsXY(scrollX, scrollY));
@@ -1599,7 +1605,7 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
     rct_window* mainWindow = window_get_main();
     rct_viewport* viewport = mainWindow->viewport;
 
-    const int32_t speed = gConfigGeneral.edge_scrolling_speed;
+    const int32_t speed = gConfigGeneral.EdgeScrollingSpeed;
 
     int32_t multiplier = viewport->zoom.ApplyTo(speed);
     int32_t dx = scrollScreenCoords.x * multiplier;

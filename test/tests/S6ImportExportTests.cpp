@@ -64,10 +64,10 @@ static void GameInit(bool retainSpatialIndices)
         ResetEntitySpatialIndices();
 
     reset_all_sprite_quadrant_placements();
-    scenery_set_default_placement_configuration();
+    ScenerySetDefaultPlacementConfiguration();
     load_palette();
     EntityTweener::Get().Reset();
-    AutoCreateMapAnimations();
+    MapAnimationAutoCreate();
     fix_invalid_vehicle_sprite_sizes();
 
     gGameSpeed = 1;

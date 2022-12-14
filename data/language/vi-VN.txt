@@ -2708,8 +2708,6 @@ STR_5503    :Enter hostname or IP address:
 STR_5504    :Show multiplayer status
 STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
-STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
 STR_5510    :Default sound device
 STR_5511    :(UNKNOWN)
 STR_5512    :Save Game As
@@ -3988,36 +3986,6 @@ STR_DTLS    :
 ## Start OpenRCT2 Official
 [TTPIRF05]
 STR_NAME    :Roof
-
-[TTRFWD01]
-STR_NAME    :Roof
-
-[TTRFWD02]
-STR_NAME    :Roof
-
-[TTRFWD03]
-STR_NAME    :Roof
-
-[TTRFWD04]
-STR_NAME    :Roof
-
-[TTRFWD05]
-STR_NAME    :Roof
-
-[TTRFWD06]
-STR_NAME    :Roof
-
-[TTRFWD07]
-STR_NAME    :Roof
-
-[TTRFWD08]
-STR_NAME    :Roof
-
-[ACWW33]
-STR_NAME    :Wooden Post Wall
-
-[ACWWF32]
-STR_NAME    :Wooden Post Wall
 
 ## End OpenRCT2 Official
 

@@ -55,7 +55,7 @@ GameActions::Result ClearAction::CreateResult() const
 
     auto x = (_range.GetLeft() + _range.GetRight()) / 2 + 16;
     auto y = (_range.GetTop() + _range.GetBottom()) / 2 + 16;
-    auto z = tile_element_height({ x, y });
+    auto z = TileElementHeight({ x, y });
     result.Position = CoordsXYZ(x, y, z);
 
     return result;
@@ -116,7 +116,7 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
     do
     {
         tileEdited = false;
-        tileElement = map_get_first_element_at(tilePos);
+        tileElement = MapGetFirstElementAt(tilePos);
         if (tileElement == nullptr)
             return totalCost;
         do
@@ -211,7 +211,7 @@ void ClearAction::ResetClearLargeSceneryFlag()
     {
         for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+            auto tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
             do
             {
                 if (tileElement == nullptr)
@@ -227,5 +227,5 @@ void ClearAction::ResetClearLargeSceneryFlag()
 
 bool ClearAction::MapCanClearAt(const CoordsXY& location)
 {
-    return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || map_is_location_owned_or_has_rights(location);
+    return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || MapIsLocationOwnedOrHasRights(location);
 }

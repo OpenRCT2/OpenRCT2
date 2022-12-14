@@ -338,6 +338,13 @@ namespace OpenRCT2
                                                 identifier = "openrct2.ride.single_rail_coaster";
                                             }
                                         }
+                                        else if (version <= 14)
+                                        {
+                                            if (identifier == "openrct2.ride.alp1")
+                                            {
+                                                identifier = "openrct2.ride.alpine_coaster";
+                                            }
+                                        }
                                         desc.Identifier = identifier;
                                         desc.Version = cs.Read<std::string>();
 
@@ -388,7 +395,7 @@ namespace OpenRCT2
                                 {
                                     cs.Write(DESCRIPTOR_JSON);
                                     cs.Write(entry.Identifier);
-                                    cs.Write(""); // reserved for version
+                                    cs.Write(entry.Version);
                                 }
                                 else
                                 {
@@ -975,7 +982,7 @@ namespace OpenRCT2
 
             auto found = os.ReadWriteChunk(
                 ParkFileChunkType::TILES,
-                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap](OrcaStream::ChunkStream& cs) {
+                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os](OrcaStream::ChunkStream& cs) {
                     cs.ReadWrite(gMapSize.x);
                     cs.ReadWrite(gMapSize.y);
 
@@ -991,8 +998,8 @@ namespace OpenRCT2
                         SetTileElements(std::move(tileElements));
                         {
                             tile_element_iterator it;
-                            tile_element_iterator_begin(&it);
-                            while (tile_element_iterator_next(&it))
+                            TileElementIteratorBegin(&it);
+                            while (TileElementIteratorNext(&it))
                             {
                                 if (it.element->GetType() == TileElementType::Path)
                                 {
@@ -1011,9 +1018,19 @@ namespace OpenRCT2
                                         }
                                     }
                                 }
+                                else if (it.element->GetType() == TileElementType::Track)
+                                {
+                                    auto* trackElement = it.element->AsTrack();
+                                    if (TrackTypeMustBeMadeInvisible(
+                                            trackElement->GetRideType(), trackElement->GetTrackType(),
+                                            os.GetHeader().TargetVersion))
+                                    {
+                                        it.element->SetInvisible(true);
+                                    }
+                                }
                             }
                         }
-                        UpdateParkEntranceLocations();
+                        ParkEntranceUpdateLocations();
                     }
                     else
                     {
@@ -1034,7 +1051,7 @@ namespace OpenRCT2
             {
                 for (int32_t x = 0; x < gMapSize.x; x++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+                    TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
                         continue;
                     do
@@ -2326,7 +2343,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
 
         Formatter ft;
         ft.Add<const char*>(e.what());
-        context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
+        ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
         gfx_invalidate_screen();
 
         auto ctx = OpenRCT2::GetContext();

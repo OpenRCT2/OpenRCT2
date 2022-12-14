@@ -186,7 +186,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 {
                     auto intent = Intent(WD_VEHICLE);
                     intent.putExtra(INTENT_EXTRA_VEHICLE, entity);
-                    context_open_intent(&intent);
+                    ContextOpenIntent(&intent);
                     break;
                 }
                 case EntityType::Guest:
@@ -194,7 +194,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 {
                     auto intent = Intent(WindowClass::Peep);
                     intent.putExtra(INTENT_EXTRA_PEEP, entity);
-                    context_open_intent(&intent);
+                    ContextOpenIntent(&intent);
                     break;
                 }
                 case EntityType::Balloon:
@@ -227,11 +227,11 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
         {
             auto intent = Intent(WD_TRACK);
             intent.putExtra(INTENT_EXTRA_TILE_ELEMENT, info.Element);
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
             return true;
         }
         case ViewportInteractionItem::ParkEntrance:
-            context_open_window(WindowClass::ParkInformation);
+            ContextOpenWindow(WindowClass::ParkInformation);
             return true;
         default:
             return false;
@@ -356,7 +356,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             else
             {
                 // FIXME: Why does it *2 the value?
-                if (!gCheatsSandboxMode && !map_is_location_owned({ info.Loc, tileElement->GetBaseZ() * 2 }))
+                if (!gCheatsSandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
                 {
                     info.SpriteType = ViewportInteractionItem::None;
                     return info;
@@ -428,7 +428,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             auto banner = tileElement->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto* bannerEntry = get_banner_entry(banner->type);
+                auto* bannerEntry = GetBannerEntry(banner->type);
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
@@ -587,7 +587,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
             ViewportInteractionRemoveLargeScenery(info.Element, info.Loc);
             break;
         case ViewportInteractionItem::Banner:
-            context_open_detail_window(WD_BANNER, info.Element->AsBanner()->GetIndex().ToUnderlying());
+            ContextOpenDetailWindow(WD_BANNER, info.Element->AsBanner()->GetIndex().ToUnderlying());
             break;
     }
 
@@ -620,9 +620,9 @@ static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const Co
 
     w = window_find_by_class(WindowClass::Footpath);
     if (w != nullptr)
-        footpath_provisional_update();
+        FootpathProvisionalUpdate();
 
-    tileElement2 = map_get_first_element_at(mapCoords);
+    tileElement2 = MapGetFirstElementAt(mapCoords);
     if (tileElement2 == nullptr)
         return;
     do
@@ -675,7 +675,7 @@ static void ViewportInteractionRemoveParkWall(TileElement* tileElement, const Co
     auto* wallEntry = tileElement->AsWall()->GetEntry();
     if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
-        context_open_detail_window(WD_SIGN_SMALL, tileElement->AsWall()->GetBannerIndex().ToUnderlying());
+        ContextOpenDetailWindow(WD_SIGN_SMALL, tileElement->AsWall()->GetBannerIndex().ToUnderlying());
     }
     else
     {
@@ -696,7 +696,7 @@ static void ViewportInteractionRemoveLargeScenery(TileElement* tileElement, cons
     if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         auto bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
-        context_open_detail_window(WD_SIGN, bannerIndex.ToUnderlying());
+        ContextOpenDetailWindow(WD_SIGN, bannerIndex.ToUnderlying());
     }
     else
     {
@@ -793,7 +793,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
         int16_t z = waterHeight;
         if (info.SpriteType != ViewportInteractionItem::Water)
         {
-            z = tile_element_height(mapPos);
+            z = TileElementHeight(mapPos);
         }
         mapPos = viewport_coord_to_map_coord(initialVPPos, z);
         mapPos.x = std::clamp(mapPos.x, initialPos.x, initialPos.x + 31);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -92,20 +92,6 @@ public:
             result._flags |= NEW_FLAG_SECONDARY;
         assert(result.ToUInt32() == value);
         return result;
-    }
-
-    [[nodiscard]] static ImageId FromUInt32(uint32_t value, uint32_t tertiary)
-    {
-        if (!(value & FLAG_PRIMARY) && (value & FLAG_SECONDARY))
-        {
-            auto result = ImageId::FromUInt32(value).WithTertiary(tertiary);
-            assert(result.ToUInt32() == value);
-            return result;
-        }
-        else
-        {
-            return ImageId::FromUInt32(value);
-        }
     }
 
     ImageId() = default;
@@ -302,4 +288,4 @@ public:
         return result;
     }
 };
-static_assert(sizeof(ImageId) == 8);
+static_assert(sizeof(ImageId) == 8, "The size of this struct is expected to fit in 64 bits for perfomance reasons. See #18555");

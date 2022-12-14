@@ -249,7 +249,7 @@ public:
         ride_construction_invalidate_current_track();
         viewport_set_visibility(0);
 
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
@@ -272,7 +272,7 @@ public:
         if (ride_try_get_origin_element(currentRide, nullptr))
         {
             // Auto open shops if required.
-            if (currentRide->mode == RideMode::ShopStall && gConfigGeneral.auto_open_shops)
+            if (currentRide->mode == RideMode::ShopStall && gConfigGeneral.AutoOpenShops)
             {
                 // HACK: Until we find a good a way to defer the game command for opening the shop, stop this
                 //       from getting stuck in an infinite loop as opening the currentRide will try to close this window
@@ -288,7 +288,7 @@ public:
             currentRide->SetToDefaultInspectionInterval();
             auto intent = Intent(WindowClass::Ride);
             intent.putExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
-            context_open_intent(&intent);
+            ContextOpenIntent(&intent);
         }
         else
         {
@@ -316,24 +316,24 @@ public:
 
         if (_currentTrackCurve & RideConstructionSpecialPieceSelected)
         {
-            disabledWidgets |= (1ULL << WIDX_SLOPE_GROUPBOX) | (1ULL << WIDX_BANKING_GROUPBOX) | (1ULL << WIDX_SLOPE_DOWN_STEEP)
-                | (1ULL << WIDX_SLOPE_DOWN) | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP)
-                | (1ULL << WIDX_CHAIN_LIFT) | (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_STRAIGHT)
-                | (1ULL << WIDX_BANK_RIGHT);
+            disabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_BANKING_GROUPBOX) | (1uLL << WIDX_SLOPE_DOWN_STEEP)
+                | (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP)
+                | (1uLL << WIDX_CHAIN_LIFT) | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT)
+                | (1uLL << WIDX_BANK_RIGHT);
         }
 
         // Disable large curves if the start or end of the track is sloped.
         if (_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _currentTrackSlopeEnd != TRACK_SLOPE_NONE)
         {
-            disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_LARGE) | (1ULL << WIDX_RIGHT_CURVE_LARGE);
+            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
         }
         if (IsTrackEnabled(TRACK_SLOPE_CURVE) && IsTrackEnabled(TRACK_CURVE_VERY_SMALL))
         {
             // Disable small curves if the start or end of the track is sloped.
             if (_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _currentTrackSlopeEnd != TRACK_SLOPE_NONE)
             {
-                disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_RIGHT_CURVE)
-                    | (1ULL << WIDX_RIGHT_CURVE_VERY_SMALL);
+                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_RIGHT_CURVE)
+                    | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
             }
         }
         if (!IsTrackEnabled(TRACK_SLOPE_CURVE))
@@ -345,9 +345,9 @@ public:
                 {
                     if (_previousTrackSlopeEnd != TRACK_SLOPE_DOWN_90 || _currentTrackSlopeEnd != TRACK_SLOPE_DOWN_90)
                     {
-                        disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE_SMALL)
-                            | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
-                            | (1ULL << WIDX_RIGHT_CURVE_VERY_SMALL);
+                        disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
+                            | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
+                            | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
                     }
                 }
             }
@@ -356,31 +356,31 @@ public:
                 // Disable all curves on sloped track
                 if (_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _currentTrackSlopeEnd != TRACK_SLOPE_NONE)
                 {
-                    disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE_SMALL)
-                        | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
-                        | (1ULL << WIDX_RIGHT_CURVE_VERY_SMALL);
+                    disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
+                        | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
+                        | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
             }
         }
         if (!IsTrackEnabled(TRACK_FLAT_ROLL_BANKING))
         {
             // Disable banking
-            disabledWidgets |= (1ULL << WIDX_BANKING_GROUPBOX) | (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_STRAIGHT)
-                | (1ULL << WIDX_BANK_RIGHT);
+            disabledWidgets |= (1uLL << WIDX_BANKING_GROUPBOX) | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT)
+                | (1uLL << WIDX_BANK_RIGHT);
         }
         // Disable banking if the start track is steep and the end of the track becomes flat.
         if ((_previousTrackSlopeEnd == TRACK_SLOPE_DOWN_60 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_60)
             && _currentTrackSlopeEnd == TRACK_SLOPE_NONE)
         {
-            disabledWidgets |= (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
+            disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
         }
         if (!IsTrackEnabled(TRACK_SLOPE) && !IsTrackEnabled(TRACK_SLOPE_STEEP_DOWN) && !IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
         {
             if (!currentRide->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
             {
                 // Disable all slopes
-                disabledWidgets |= (1ULL << WIDX_SLOPE_GROUPBOX) | (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_DOWN)
-                    | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN)
+                    | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
             }
         }
         if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
@@ -389,16 +389,16 @@ public:
             // Disable lift hill toggle and banking if current track piece is uphill
             if (_previousTrackSlopeEnd == TRACK_SLOPE_UP_25 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_60
                 || _currentTrackSlopeEnd == TRACK_SLOPE_UP_25 || _currentTrackSlopeEnd == TRACK_SLOPE_UP_60)
-                disabledWidgets |= 1ULL << WIDX_CHAIN_LIFT | (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
+                disabledWidgets |= 1uLL << WIDX_CHAIN_LIFT | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
             // Disable upward slope if current track piece is not flat
             if ((_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _previousTrackBankEnd != TRACK_BANK_NONE)
                 && !(_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED))
-                disabledWidgets |= (1ULL << WIDX_SLOPE_UP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_UP);
         }
         if (_rideConstructionState == RideConstructionState::State0)
         {
-            disabledWidgets |= (1ULL << WIDX_CONSTRUCT) | (1ULL << WIDX_DEMOLISH) | (1ULL << WIDX_PREVIOUS_SECTION)
-                | (1ULL << WIDX_NEXT_SECTION);
+            disabledWidgets |= (1uLL << WIDX_CONSTRUCT) | (1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_PREVIOUS_SECTION)
+                | (1uLL << WIDX_NEXT_SECTION);
         }
         switch (_currentTrackCurve)
         {
@@ -406,28 +406,28 @@ public:
             case TRACK_CURVE_LEFT_SMALL:
             case TRACK_CURVE_LEFT:
             case TRACK_CURVE_LEFT_LARGE:
-                disabledWidgets |= (1ULL << WIDX_BANK_RIGHT);
+                disabledWidgets |= (1uLL << WIDX_BANK_RIGHT);
                 if (_previousTrackBankEnd == TRACK_BANK_NONE)
                 {
-                    disabledWidgets |= (1ULL << WIDX_BANK_LEFT);
+                    disabledWidgets |= (1uLL << WIDX_BANK_LEFT);
                 }
                 else
                 {
-                    disabledWidgets |= (1ULL << WIDX_BANK_STRAIGHT);
+                    disabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT);
                 }
                 break;
             case TRACK_CURVE_RIGHT_LARGE:
             case TRACK_CURVE_RIGHT:
             case TRACK_CURVE_RIGHT_SMALL:
             case TRACK_CURVE_RIGHT_VERY_SMALL:
-                disabledWidgets |= (1ULL << WIDX_BANK_LEFT);
+                disabledWidgets |= (1uLL << WIDX_BANK_LEFT);
                 if (_previousTrackBankEnd == TRACK_BANK_NONE)
                 {
-                    disabledWidgets |= (1ULL << WIDX_BANK_RIGHT);
+                    disabledWidgets |= (1uLL << WIDX_BANK_RIGHT);
                 }
                 else
                 {
-                    disabledWidgets |= (1ULL << WIDX_BANK_STRAIGHT);
+                    disabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT);
                 }
                 break;
         }
@@ -435,7 +435,7 @@ public:
         {
             if (_currentTrackBankEnd != TRACK_BANK_NONE)
             {
-                disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN) | (1ULL << WIDX_SLOPE_UP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
             }
         }
         if (_previousTrackSlopeEnd == _currentTrackSlopeEnd)
@@ -444,20 +444,20 @@ public:
             {
                 case TRACK_SLOPE_UP_60:
                 case TRACK_SLOPE_DOWN_60:
-                    disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE)
-                        | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_VERY_SMALL);
+                    disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE)
+                        | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
                     if (!IsTrackEnabled(TRACK_SLOPE_CURVE_STEEP))
                     {
-                        disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_RIGHT_CURVE_SMALL);
+                        disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE_SMALL);
                     }
                     break;
                 case TRACK_SLOPE_UP_90:
                 case TRACK_SLOPE_DOWN_90:
-                    disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE)
-                        | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_VERY_SMALL);
+                    disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE)
+                        | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
                     if (!IsTrackEnabled(TRACK_CURVE_VERTICAL))
                     {
-                        disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_RIGHT_CURVE_SMALL);
+                        disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE_SMALL);
                     }
                     break;
             }
@@ -465,9 +465,9 @@ public:
         else
         {
             // Disable all curves
-            disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE_SMALL)
-                | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
-                | (1ULL << WIDX_RIGHT_CURVE_VERY_SMALL);
+            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
+                | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
+                | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
         }
 
         switch (_previousTrackSlopeEnd)
@@ -476,72 +476,72 @@ public:
                 if (_currentTrackCurve != TRACK_CURVE_NONE
                     || (IsTrackEnabled(TRACK_SLOPE_STEEP_LONG) && TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
                 {
-                    disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_UP_STEEP);
+                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                 }
                 break;
             case TRACK_SLOPE_DOWN_25:
-                disabledWidgets |= (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                 break;
             case TRACK_SLOPE_DOWN_60:
-                disabledWidgets |= (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                 if (!IsTrackEnabled(TRACK_SLOPE_LONG)
                     && !(IsTrackEnabled(TRACK_SLOPE_STEEP_LONG) && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
                 {
-                    disabledWidgets |= (1ULL << WIDX_LEVEL);
+                    disabledWidgets |= (1uLL << WIDX_LEVEL);
                 }
                 break;
             case TRACK_SLOPE_UP_25:
-                disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_DOWN);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
                 break;
             case TRACK_SLOPE_UP_60:
-                disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_DOWN);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
                 if (!IsTrackEnabled(TRACK_SLOPE_LONG)
                     && !(IsTrackEnabled(TRACK_SLOPE_STEEP_LONG) && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
                 {
-                    disabledWidgets |= (1ULL << WIDX_LEVEL);
+                    disabledWidgets |= (1uLL << WIDX_LEVEL);
                 }
                 break;
             case TRACK_SLOPE_DOWN_90:
             case TRACK_SLOPE_UP_90:
-                disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN) | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP);
                 break;
         }
         if (_previousTrackSlopeEnd == TRACK_SLOPE_NONE)
         {
             if (!IsTrackEnabled(TRACK_SLOPE_LONG) && !IsTrackEnabled(TRACK_SLOPE_STEEP_LONG))
             {
-                disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_UP_STEEP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
             }
         }
         if (IsTrackEnabled(TRACK_SLOPE_VERTICAL))
         {
             if (_previousTrackSlopeEnd == TRACK_SLOPE_UP_60 && _currentTrackPieceDirection < 4)
             {
-                disabledWidgets &= ~(1ULL << WIDX_SLOPE_DOWN_STEEP);
+                disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
             }
             if (_previousTrackSlopeEnd == TRACK_SLOPE_UP_90)
             {
-                disabledWidgets &= ~(1ULL << WIDX_SLOPE_DOWN_STEEP);
+                disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
             }
             if (_previousTrackSlopeEnd == TRACK_SLOPE_DOWN_60 && _currentTrackPieceDirection < 4)
             {
-                disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP_STEEP);
+                disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
             }
         }
         if (_previousTrackBankEnd == TRACK_BANK_LEFT)
         {
-            disabledWidgets |= (1ULL << WIDX_RIGHT_CURVE_SMALL) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_LARGE)
-                | (1ULL << WIDX_BANK_RIGHT);
+            disabledWidgets |= (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_LARGE)
+                | (1uLL << WIDX_BANK_RIGHT);
         }
         if (_previousTrackBankEnd == TRACK_BANK_RIGHT)
         {
-            disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_LEFT_CURVE_LARGE)
-                | (1ULL << WIDX_BANK_LEFT);
+            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_LEFT_CURVE_LARGE)
+                | (1uLL << WIDX_BANK_LEFT);
         }
         if (_currentTrackBankEnd != _previousTrackBankEnd)
         {
-            disabledWidgets |= (1ULL << WIDX_RIGHT_CURVE_SMALL) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_LARGE)
-                | (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_LEFT_CURVE_LARGE);
+            disabledWidgets |= (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_LARGE)
+                | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_LEFT_CURVE_LARGE);
         }
         if (_currentTrackSlopeEnd != TRACK_SLOPE_NONE)
         {
@@ -551,194 +551,194 @@ public:
                 {
                     if (_currentTrackSlopeEnd != TRACK_SLOPE_UP_25 && _currentTrackSlopeEnd != TRACK_SLOPE_DOWN_25)
                     {
-                        disabledWidgets |= (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
+                        disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                     }
                 }
                 else
                 {
                     if (_currentTrackSlopeEnd != _previousTrackSlopeEnd)
                     {
-                        disabledWidgets |= (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
+                        disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                     }
                     else
                     {
                         if (_currentTrackSlopeEnd != TRACK_SLOPE_UP_25 && _currentTrackSlopeEnd != TRACK_SLOPE_DOWN_25)
                         {
-                            disabledWidgets |= (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
+                            disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                         }
                     }
                 }
             }
             else
             {
-                disabledWidgets |= (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
+                disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
             }
         }
         if (_currentTrackBankEnd != TRACK_BANK_NONE || _previousTrackBankEnd != TRACK_BANK_NONE)
         {
-            disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_UP_STEEP) | (1ULL << WIDX_CHAIN_LIFT);
+            disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP) | (1uLL << WIDX_CHAIN_LIFT);
         }
         if (_currentTrackCurve != TRACK_CURVE_NONE)
         {
             if (!IsTrackEnabled(TRACK_LIFT_HILL_CURVE))
             {
-                disabledWidgets |= (1ULL << WIDX_CHAIN_LIFT);
+                disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
             }
             if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE)
             {
-                disabledWidgets |= (1ULL << WIDX_CHAIN_LIFT);
+                disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
             }
             if (_currentTrackSlopeEnd == TRACK_SLOPE_UP_60)
             {
-                disabledWidgets |= (1ULL << WIDX_CHAIN_LIFT);
+                disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
             }
             if (_currentTrackSlopeEnd == TRACK_SLOPE_DOWN_60)
             {
-                disabledWidgets |= (1ULL << WIDX_CHAIN_LIFT);
+                disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
             }
         }
         if (_currentTrackSlopeEnd == TRACK_SLOPE_UP_90 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_90)
         {
-            disabledWidgets |= (1ULL << WIDX_CHAIN_LIFT);
+            disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
         }
         if (!IsTrackEnabled(TRACK_LIFT_HILL_STEEP))
         {
             if (_previousTrackSlopeEnd == TRACK_SLOPE_UP_60 || _currentTrackSlopeEnd == TRACK_SLOPE_UP_60)
             {
-                disabledWidgets |= (1ULL << WIDX_CHAIN_LIFT);
+                disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
             }
         }
         if (_previousTrackBankEnd == TRACK_BANK_UPSIDE_DOWN)
         {
-            disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_LEFT_CURVE_LARGE)
-                | (1ULL << WIDX_STRAIGHT) | (1ULL << WIDX_RIGHT_CURVE_SMALL) | (1ULL << WIDX_RIGHT_CURVE)
-                | (1ULL << WIDX_RIGHT_CURVE_LARGE);
+            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_LEFT_CURVE_LARGE)
+                | (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE)
+                | (1uLL << WIDX_RIGHT_CURVE_LARGE);
         }
         if (_currentTrackCurve != TRACK_CURVE_NONE)
         {
             if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE)
             {
-                disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN) | (1ULL << WIDX_SLOPE_UP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
             }
             if (_currentTrackSlopeEnd == _previousTrackSlopeEnd)
             {
                 if (_currentTrackSlopeEnd == TRACK_SLOPE_UP_25)
                 {
-                    disabledWidgets |= (1ULL << WIDX_SLOPE_UP_STEEP);
+                    disabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
                     if (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT
                         || _rideConstructionState != RideConstructionState::Back || !IsTrackEnabled(TRACK_SLOPE_CURVE_BANKED))
                     {
-                        disabledWidgets |= (1ULL << WIDX_LEVEL);
+                        disabledWidgets |= (1uLL << WIDX_LEVEL);
                     }
                 }
                 if (_currentTrackSlopeEnd == TRACK_SLOPE_DOWN_25)
                 {
-                    disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP);
+                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP);
                     if (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT
                         || _rideConstructionState != RideConstructionState::Front || !IsTrackEnabled(TRACK_SLOPE_CURVE_BANKED))
                     {
-                        disabledWidgets |= (1ULL << WIDX_LEVEL);
+                        disabledWidgets |= (1uLL << WIDX_LEVEL);
                     }
                 }
             }
             else if (IsTrackEnabled(TRACK_SLOPE_CURVE_BANKED))
             {
-                disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_UP_STEEP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                 if (_currentTrackBankEnd == TRACK_BANK_LEFT)
                 {
-                    disabledWidgets |= (1ULL << WIDX_BANK_STRAIGHT) | (1ULL << WIDX_BANK_RIGHT);
-                    disabledWidgets &= ~(1ULL << WIDX_BANK_LEFT);
+                    disabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT) | (1uLL << WIDX_BANK_RIGHT);
+                    disabledWidgets &= ~(1uLL << WIDX_BANK_LEFT);
                 }
                 if (_currentTrackBankEnd == TRACK_BANK_RIGHT)
                 {
-                    disabledWidgets |= (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_STRAIGHT);
-                    disabledWidgets &= ~(1ULL << WIDX_BANK_RIGHT);
+                    disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT);
+                    disabledWidgets &= ~(1uLL << WIDX_BANK_RIGHT);
                 }
                 if (_currentTrackBankEnd == TRACK_BANK_NONE)
                 {
-                    disabledWidgets |= (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
-                    disabledWidgets &= ~(1ULL << WIDX_BANK_STRAIGHT);
+                    disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+                    disabledWidgets &= ~(1uLL << WIDX_BANK_STRAIGHT);
                 }
                 if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE)
                 {
-                    disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN) | (1ULL << WIDX_SLOPE_UP);
-                    disabledWidgets &= ~(1ULL << WIDX_LEVEL);
+                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
+                    disabledWidgets &= ~(1uLL << WIDX_LEVEL);
                 }
                 if (_currentTrackSlopeEnd == TRACK_SLOPE_UP_25)
                 {
-                    disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN) | (1ULL << WIDX_LEVEL);
-                    disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP);
+                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL);
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
                 }
                 if (_currentTrackSlopeEnd == TRACK_SLOPE_DOWN_25)
                 {
-                    disabledWidgets |= (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP);
-                    disabledWidgets &= ~(1ULL << WIDX_SLOPE_DOWN);
+                    disabledWidgets |= (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP);
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN);
                 }
                 if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL)
                 {
-                    disabledWidgets &= ~(1ULL << WIDX_LEFT_CURVE_SMALL);
+                    disabledWidgets &= ~(1uLL << WIDX_LEFT_CURVE_SMALL);
                 }
                 if (_currentTrackCurve == TRACK_CURVE_RIGHT_SMALL)
                 {
-                    disabledWidgets &= ~(1ULL << WIDX_RIGHT_CURVE_SMALL);
+                    disabledWidgets &= ~(1uLL << WIDX_RIGHT_CURVE_SMALL);
                 }
             }
         }
         if (_currentTrackCurve != TRACK_CURVE_NONE && _currentTrackSlopeEnd == TRACK_SLOPE_UP_60)
         {
-            disabledWidgets |= (1ULL << WIDX_SLOPE_UP);
+            disabledWidgets |= (1uLL << WIDX_SLOPE_UP);
         }
         if (_currentTrackCurve != TRACK_CURVE_NONE && _currentTrackSlopeEnd == TRACK_SLOPE_DOWN_60)
         {
-            disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN);
+            disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN);
         }
         if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED) && !gCheatsEnableChainLiftOnAllTrack)
         {
             if (_currentTrackSlopeEnd != TRACK_SLOPE_NONE && !IsTrackEnabled(TRACK_LIFT_HILL_CURVE))
             {
-                disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_LEFT_CURVE_LARGE)
-                    | (1ULL << WIDX_RIGHT_CURVE_SMALL) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_LARGE);
+                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_LEFT_CURVE_LARGE)
+                    | (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
             }
             if (!IsTrackEnabled(TRACK_LIFT_HILL_STEEP))
             {
                 if (widgets[WIDX_SLOPE_UP_STEEP].tooltip == STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP)
                 {
-                    disabledWidgets |= (1ULL << WIDX_SLOPE_UP_STEEP);
+                    disabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
                 }
             }
         }
         if (_previousTrackSlopeEnd == TRACK_SLOPE_UP_60 && _currentTrackCurve != TRACK_CURVE_NONE)
         {
-            disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_LEVEL);
+            disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_LEVEL);
         }
         if (_previousTrackSlopeEnd == TRACK_SLOPE_DOWN_60 && _currentTrackCurve != TRACK_CURVE_NONE)
         {
-            disabledWidgets |= (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP_STEEP);
+            disabledWidgets |= (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP_STEEP);
         }
         if (_currentTrackSlopeEnd == TRACK_SLOPE_UP_90 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_90)
         {
             if (_currentTrackCurve != TRACK_CURVE_NONE)
             {
-                disabledWidgets |= (1ULL << WIDX_SLOPE_UP_STEEP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
             }
-            disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_LARGE) | (1ULL << WIDX_RIGHT_CURVE_LARGE);
+            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
             if (currentRide->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
             {
-                disabledWidgets |= (1ULL << WIDX_STRAIGHT) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
-                    | (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE);
+                disabledWidgets |= (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
+                    | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
             }
         }
         else if (_currentTrackSlopeEnd == TRACK_SLOPE_DOWN_90 || _previousTrackSlopeEnd == TRACK_SLOPE_DOWN_90)
         {
             if (_currentTrackCurve != TRACK_CURVE_NONE)
             {
-                disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP);
+                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP);
             }
-            disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_LARGE) | (1ULL << WIDX_RIGHT_CURVE_LARGE);
+            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
             if (currentRide->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
             {
-                disabledWidgets |= (1ULL << WIDX_STRAIGHT) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
-                    | (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE);
+                disabledWidgets |= (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
+                    | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
             }
         }
         if (IsTrackEnabled(TRACK_HELIX_LARGE_UNBANKED))
@@ -749,8 +749,8 @@ public:
                 {
                     if (_currentTrackSlopeEnd == _previousTrackSlopeEnd)
                     {
-                        disabledWidgets &= ~(1ULL << WIDX_SLOPE_DOWN_STEEP);
-                        disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP_STEEP);
+                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
                     }
                 }
             }
@@ -766,10 +766,10 @@ public:
             if (_previousTrackSlopeEnd == _currentTrackSlopeEnd)
             {
                 // Enable helix
-                disabledWidgets &= ~(1ULL << WIDX_SLOPE_DOWN_STEEP);
+                disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
                 if (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
                     || gCheatsEnableAllDrawableTrackPieces)
-                    disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP_STEEP);
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
             }
         }
         if (IsTrackEnabled(TRACK_SLOPE_CURVE_BANKED))
@@ -782,7 +782,7 @@ public:
                         && (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
                             || gCheatsEnableAllDrawableTrackPieces))
                     {
-                        disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP);
+                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
                     }
                 }
             }
@@ -792,61 +792,61 @@ public:
                 {
                     if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _previousTrackBankEnd != TRACK_BANK_NONE)
                     {
-                        disabledWidgets &= ~(1ULL << WIDX_SLOPE_DOWN);
+                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN);
                     }
                 }
             }
         }
         if (_currentTrackPieceDirection >= 4)
         {
-            disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE_SMALL)
-                | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
-                | (1ULL << WIDX_RIGHT_CURVE_VERY_SMALL);
+            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
+                | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
+                | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
         }
         if (_rideConstructionState == RideConstructionState::Front)
         {
-            disabledWidgets |= (1ULL << WIDX_NEXT_SECTION);
+            disabledWidgets |= (1uLL << WIDX_NEXT_SECTION);
             if (window_ride_construction_update_state(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr))
             {
-                disabledWidgets |= (1ULL << WIDX_CONSTRUCT);
+                disabledWidgets |= (1uLL << WIDX_CONSTRUCT);
             }
         }
         else if (_rideConstructionState == RideConstructionState::Back)
         {
-            disabledWidgets |= (1ULL << WIDX_PREVIOUS_SECTION);
+            disabledWidgets |= (1uLL << WIDX_PREVIOUS_SECTION);
             if (window_ride_construction_update_state(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr))
             {
-                disabledWidgets |= (1ULL << WIDX_CONSTRUCT);
+                disabledWidgets |= (1uLL << WIDX_CONSTRUCT);
             }
         }
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
         {
-            disabledWidgets &= ~(1ULL << WIDX_BANKING_GROUPBOX);
+            disabledWidgets &= ~(1uLL << WIDX_BANKING_GROUPBOX);
         }
         if (_rideConstructionState == RideConstructionState::EntranceExit
             || _rideConstructionState == RideConstructionState::Selected)
         {
-            disabledWidgets |= (1ULL << WIDX_DIRECTION_GROUPBOX) | (1ULL << WIDX_SLOPE_GROUPBOX)
-                | (1ULL << WIDX_BANKING_GROUPBOX) | (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE_SMALL)
-                | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_STRAIGHT) | (1ULL << WIDX_RIGHT_CURVE)
-                | (1ULL << WIDX_RIGHT_CURVE_SMALL) | (1ULL << WIDX_RIGHT_CURVE_VERY_SMALL)
-                | (1ULL << WIDX_SPECIAL_TRACK_DROPDOWN) | (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_DOWN)
-                | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP) | (1ULL << WIDX_CHAIN_LIFT)
-                | (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_STRAIGHT) | (1ULL << WIDX_BANK_RIGHT)
-                | (1ULL << WIDX_LEFT_CURVE_LARGE) | (1ULL << WIDX_RIGHT_CURVE_LARGE);
+            disabledWidgets |= (1uLL << WIDX_DIRECTION_GROUPBOX) | (1uLL << WIDX_SLOPE_GROUPBOX)
+                | (1uLL << WIDX_BANKING_GROUPBOX) | (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
+                | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE)
+                | (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL)
+                | (1uLL << WIDX_SPECIAL_TRACK_DROPDOWN) | (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN)
+                | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP) | (1uLL << WIDX_CHAIN_LIFT)
+                | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT) | (1uLL << WIDX_BANK_RIGHT)
+                | (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
         }
         if (_currentlyShowingBrakeOrBoosterSpeed)
         {
-            disabledWidgets &= ~(1ULL << WIDX_BANKING_GROUPBOX);
-            disabledWidgets &= ~(1ULL << WIDX_BANK_LEFT);
-            disabledWidgets &= ~(1ULL << WIDX_BANK_STRAIGHT);
-            disabledWidgets &= ~(1ULL << WIDX_BANK_RIGHT);
+            disabledWidgets &= ~(1uLL << WIDX_BANKING_GROUPBOX);
+            disabledWidgets &= ~(1uLL << WIDX_BANK_LEFT);
+            disabledWidgets &= ~(1uLL << WIDX_BANK_STRAIGHT);
+            disabledWidgets &= ~(1uLL << WIDX_BANK_RIGHT);
         }
 
         // If chain lift cheat is enabled then show the chain lift widget no matter what
         if (gCheatsEnableChainLiftOnAllTrack)
         {
-            disabledWidgets &= ~(1ULL << WIDX_CHAIN_LIFT);
+            disabledWidgets &= ~(1uLL << WIDX_CHAIN_LIFT);
         }
 
         // Set and invalidate the changed widgets
@@ -856,7 +856,7 @@ public:
 
         for (WidgetIndex i = 0; i < 64; i++)
         {
-            if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
+            if ((disabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
             {
                 widget_invalidate(*this, i);
             }
@@ -1473,11 +1473,11 @@ public:
             simulateWidget.type = WindowWidgetType::FlatBtn;
             if (currentRide->status == RideStatus::Simulating)
             {
-                pressed_widgets |= (1ULL << WIDX_SIMULATE);
+                pressed_widgets |= (1uLL << WIDX_SIMULATE);
             }
             else
             {
-                pressed_widgets &= ~(1ULL << WIDX_SIMULATE);
+                pressed_widgets &= ~(1uLL << WIDX_SIMULATE);
             }
         }
 
@@ -1889,7 +1889,7 @@ public:
             widgets[WIDX_BANK_RIGHT].right = 83;
             widgets[WIDX_BANK_RIGHT].top = 139;
             widgets[WIDX_BANK_RIGHT].bottom = 148;
-            hold_down_widgets |= (1ULL << WIDX_BANK_STRAIGHT) | (1ULL << WIDX_BANK_RIGHT);
+            hold_down_widgets |= (1uLL << WIDX_BANK_STRAIGHT) | (1uLL << WIDX_BANK_RIGHT);
         }
 
         widgets[WIDX_BANKING_GROUPBOX].right = 162;
@@ -1918,10 +1918,10 @@ public:
         }
 
         uint64_t pressedWidgets = pressed_widgets
-            & ((1ULL << WIDX_BACKGROUND) | (1ULL << WIDX_TITLE) | (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DIRECTION_GROUPBOX)
-               | (1ULL << WIDX_SLOPE_GROUPBOX) | (1ULL << WIDX_BANKING_GROUPBOX) | (1ULL << WIDX_CONSTRUCT)
-               | (1ULL << WIDX_DEMOLISH) | (1ULL << WIDX_PREVIOUS_SECTION) | (1ULL << WIDX_NEXT_SECTION)
-               | (1ULL << WIDX_ENTRANCE_EXIT_GROUPBOX) | (1ULL << WIDX_ENTRANCE) | (1ULL << WIDX_EXIT));
+            & ((1uLL << WIDX_BACKGROUND) | (1uLL << WIDX_TITLE) | (1uLL << WIDX_CLOSE) | (1uLL << WIDX_DIRECTION_GROUPBOX)
+               | (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_BANKING_GROUPBOX) | (1uLL << WIDX_CONSTRUCT)
+               | (1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_PREVIOUS_SECTION) | (1uLL << WIDX_NEXT_SECTION)
+               | (1uLL << WIDX_ENTRANCE_EXIT_GROUPBOX) | (1uLL << WIDX_ENTRANCE) | (1uLL << WIDX_EXIT));
 
         widgets[WIDX_CONSTRUCT].type = WindowWidgetType::Empty;
         widgets[WIDX_DEMOLISH].type = WindowWidgetType::FlatBtn;
@@ -1999,7 +1999,7 @@ public:
                 widgetIndex = WIDX_SPECIAL_TRACK_DROPDOWN;
                 break;
         }
-        pressedWidgets |= (1ULL << widgetIndex);
+        pressedWidgets |= (1uLL << widgetIndex);
 
         switch (_currentTrackSlopeEnd)
         {
@@ -2021,7 +2021,7 @@ public:
                 widgetIndex = WIDX_LEVEL;
                 break;
         }
-        pressedWidgets |= (1ULL << widgetIndex);
+        pressedWidgets |= (1uLL << widgetIndex);
 
         if (!_currentlyShowingBrakeOrBoosterSpeed)
         {
@@ -2029,11 +2029,11 @@ public:
             {
                 if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
                 {
-                    pressed_widgets |= (1ULL << WIDX_O_TRACK);
+                    pressed_widgets |= (1uLL << WIDX_O_TRACK);
                 }
                 else
                 {
-                    pressed_widgets |= (1ULL << WIDX_U_TRACK);
+                    pressed_widgets |= (1uLL << WIDX_U_TRACK);
                 }
             }
             switch (_currentTrackBankEnd)
@@ -2048,11 +2048,11 @@ public:
                     widgetIndex = WIDX_BANK_RIGHT;
                     break;
             }
-            pressedWidgets |= (1ULL << widgetIndex);
+            pressedWidgets |= (1uLL << widgetIndex);
         }
 
         if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
-            pressedWidgets |= (1ULL << WIDX_CHAIN_LIFT);
+            pressedWidgets |= (1uLL << WIDX_CHAIN_LIFT);
 
         pressed_widgets = pressedWidgets;
         Invalidate();
@@ -2119,13 +2119,22 @@ public:
                 && (bank != _previousTrackBankEnd))
                 continue;
 
+            if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
+                && !gCheatsEnableAllDrawableTrackPieces
+                && ((
+                    trackType == TrackElemType::LeftHalfBankedHelixUpSmall
+                    || trackType == TrackElemType::RightHalfBankedHelixUpSmall
+                    || trackType == TrackElemType::LeftHalfBankedHelixUpLarge
+                    || trackType == TrackElemType::RightHalfBankedHelixUpLarge)))
+                continue;
+
             _currentPossibleRideConfigurations[currentPossibleRideConfigurationIndex] = trackType;
-            _currentDisabledSpecialTrackPieces |= (1ULL << currentPossibleRideConfigurationIndex);
+            _currentDisabledSpecialTrackPieces |= (1uLL << currentPossibleRideConfigurationIndex);
             if (_currentTrackPieceDirection < 4 && slope == _previousTrackSlopeEnd && bank == _previousTrackBankEnd
                 && (trackType != TrackElemType::TowerBase
                     || currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES)))
             {
-                _currentDisabledSpecialTrackPieces &= ~(1ULL << currentPossibleRideConfigurationIndex);
+                _currentDisabledSpecialTrackPieces &= ~(1uLL << currentPossibleRideConfigurationIndex);
                 _numCurrentPossibleSpecialTrackPieces++;
             }
             currentPossibleRideConfigurationIndex++;
@@ -2138,7 +2147,7 @@ public:
         int32_t trackType, trackDirection;
         CoordsXYZ trackPos{};
 
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
 
@@ -2170,7 +2179,7 @@ public:
         if (get_ride(_currentRideIndex))
         {
             SelectMapTiles(trackType, trackDirection, trackPos);
-            map_invalidate_map_selection_tiles();
+            MapInvalidateMapSelectionTiles();
         }
     }
 
@@ -2524,7 +2533,7 @@ private:
 
         for (int32_t i = 0; i < 64; i++)
         {
-            if (_currentDisabledSpecialTrackPieces & (1ULL << i))
+            if (_currentDisabledSpecialTrackPieces & (1uLL << i))
             {
                 Dropdown::SetDisabled(i, true);
             }
@@ -2543,7 +2552,7 @@ private:
     void ToolDownEntranceExit(const ScreenCoordsXY& screenCoords)
     {
         ride_construction_invalidate_current_track();
-        map_invalidate_selection_rect();
+        MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
@@ -2552,7 +2561,7 @@ private:
             return;
 
         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-            entranceOrExitCoords, direction_reverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
+            entranceOrExitCoords, DirectionReverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
             gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
@@ -2613,7 +2622,7 @@ private:
         int16_t previewZOffset = ted.Definition.preview_z_offset;
         mapCoords.z -= previewZOffset;
 
-        const ScreenCoordsXY rotatedScreenCoords = translate_3d_to_2d_with_z(get_current_rotation(), mapCoords);
+        const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(get_current_rotation(), mapCoords);
 
         dpi->x += rotatedScreenCoords.x - widgetWidth / 2;
         dpi->y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
@@ -2628,7 +2637,7 @@ private:
         TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         TileElement tempTrackTileElement{};
         TileElement* backupTileElementArrays[5]{};
-        paint_session* session = PaintSessionAlloc(dpi, 0);
+        PaintSession* session = PaintSessionAlloc(dpi, 0);
         trackDirection &= 3;
 
         auto currentRide = get_ride(rideIndex);
@@ -2673,16 +2682,16 @@ private:
             auto southTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_SOUTH];
 
             // Replace map elements with temporary ones containing track
-            backupTileElementArrays[0] = map_get_first_element_at(centreTileCoords);
-            backupTileElementArrays[1] = map_get_first_element_at(eastTileCoords);
-            backupTileElementArrays[2] = map_get_first_element_at(westTileCoords);
-            backupTileElementArrays[3] = map_get_first_element_at(northTileCoords);
-            backupTileElementArrays[4] = map_get_first_element_at(southTileCoords);
-            map_set_tile_element(centreTileCoords, &tempTrackTileElement);
-            map_set_tile_element(eastTileCoords, &tempSideTrackTileElement);
-            map_set_tile_element(westTileCoords, &tempSideTrackTileElement);
-            map_set_tile_element(northTileCoords, &tempSideTrackTileElement);
-            map_set_tile_element(southTileCoords, &tempSideTrackTileElement);
+            backupTileElementArrays[0] = MapGetFirstElementAt(centreTileCoords);
+            backupTileElementArrays[1] = MapGetFirstElementAt(eastTileCoords);
+            backupTileElementArrays[2] = MapGetFirstElementAt(westTileCoords);
+            backupTileElementArrays[3] = MapGetFirstElementAt(northTileCoords);
+            backupTileElementArrays[4] = MapGetFirstElementAt(southTileCoords);
+            MapSetTileElement(centreTileCoords, &tempTrackTileElement);
+            MapSetTileElement(eastTileCoords, &tempSideTrackTileElement);
+            MapSetTileElement(westTileCoords, &tempSideTrackTileElement);
+            MapSetTileElement(northTileCoords, &tempSideTrackTileElement);
+            MapSetTileElement(southTileCoords, &tempSideTrackTileElement);
 
             // Set the temporary track element
             tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
@@ -2691,14 +2700,14 @@ private:
             tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
 
             // Draw this map tile
-            tile_element_paint_setup(*session, coords, true);
+            TileElementPaintSetup(*session, coords, true);
 
             // Restore map elements
-            map_set_tile_element(centreTileCoords, backupTileElementArrays[0]);
-            map_set_tile_element(eastTileCoords, backupTileElementArrays[1]);
-            map_set_tile_element(westTileCoords, backupTileElementArrays[2]);
-            map_set_tile_element(northTileCoords, backupTileElementArrays[3]);
-            map_set_tile_element(southTileCoords, backupTileElementArrays[4]);
+            MapSetTileElement(centreTileCoords, backupTileElementArrays[0]);
+            MapSetTileElement(eastTileCoords, backupTileElementArrays[1]);
+            MapSetTileElement(westTileCoords, backupTileElementArrays[2]);
+            MapSetTileElement(northTileCoords, backupTileElementArrays[3]);
+            MapSetTileElement(southTileCoords, backupTileElementArrays[4]);
 
             trackBlock++;
         }
@@ -2773,7 +2782,7 @@ rct_window* WindowRideConstructionOpen()
     switch (rtd.ConstructionWindowContext)
     {
         case RideConstructionWindowContext::Maze:
-            return context_open_window_view(WV_MAZE_CONSTRUCTION);
+            return ContextOpenWindowView(WV_MAZE_CONSTRUCTION);
         case RideConstructionWindowContext::Default:
             return WindowCreate<RideConstructionWindow>(
                 WindowClass::RideConstruction, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
@@ -2877,7 +2886,7 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
     auto ride = get_ride(_currentRideIndex);
     if (ride != nullptr)
     {
-        auto trackDirection = direction_reverse(_currentTrackPieceDirection);
+        auto trackDirection = DirectionReverse(_currentTrackPieceDirection);
         auto trackPos = _currentTrackBegin;
         if (!(trackDirection & 4))
         {
@@ -2982,7 +2991,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
         _trackPlaceZ = 0;
         if (_trackPlaceShiftState)
         {
-            auto surfaceElement = map_get_surface_element_at(mapCoords);
+            auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
             if (surfaceElement == nullptr)
                 return std::nullopt;
             auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);
@@ -3133,13 +3142,13 @@ void UpdateGhostTrackAndArrow()
             if (direction >= 4)
                 direction += 4;
             if (_rideConstructionState == RideConstructionState::Back)
-                direction = direction_reverse(direction);
+                direction = DirectionReverse(direction);
             gMapSelectArrowPosition = trackPos;
             gMapSelectArrowDirection = direction;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-            map_invalidate_tile_full(trackPos);
+            MapInvalidateTileFull(trackPos);
             break;
         }
         case RideConstructionState::Selected:
@@ -3189,7 +3198,7 @@ void UpdateGhostTrackAndArrow()
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-            map_invalidate_tile_full(trackPos);
+            MapInvalidateTileFull(trackPos);
             break;
         }
         default:
@@ -3206,7 +3215,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     int32_t z;
     const rct_preview_track* trackBlock;
 
-    map_invalidate_map_selection_tiles();
+    MapInvalidateMapSelectionTiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3214,13 +3223,13 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     if (!mapCoords)
     {
         ride_construction_invalidate_current_track();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         return;
     }
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(*mapCoords);
+        z = MapGetHighestZ(*mapCoords);
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3236,7 +3245,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr))
     {
         ride_construction_invalidate_current_track();
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         return;
     }
     _currentTrackPieceType = trackType;
@@ -3268,16 +3277,16 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             int32_t highestZ = 0;
             for (const auto& selectedTile : gMapSelectionTiles)
             {
-                if (map_is_location_valid(selectedTile))
+                if (MapIsLocationValid(selectedTile))
                 {
-                    z = map_get_highest_z(selectedTile);
+                    z = MapGetHighestZ(selectedTile);
                     if (z > highestZ)
                         highestZ = z;
                 }
             }
         }
         // loc_6CC8BF:
-        // z = map_get_highest_z(x >> 5, y >> 5);
+        // z = MapGetHighestZ(x >> 5, y >> 5);
     }
     // loc_6CC91B:
     const auto& ted = GetTrackElementDescriptor(trackType);
@@ -3296,7 +3305,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     _currentTrackBegin.z = z;
     if ((_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) && _currentTrackBegin == _previousTrackPiece)
     {
-        map_invalidate_map_selection_tiles();
+        MapInvalidateMapSelectionTiles();
         return;
     }
 
@@ -3324,8 +3333,8 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
-        context_broadcast_intent(&intent);
-        map_invalidate_map_selection_tiles();
+        ContextBroadcastIntent(&intent);
+        MapInvalidateMapSelectionTiles();
         return;
     }
 
@@ -3357,13 +3366,13 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         for (int8_t i = 0; i < NumOrthogonalDirections; i++)
         {
             const auto testLoc = CoordsXYZ{ *mapCoords + CoordsDirectionDelta[i], z };
-            if (!map_is_location_owned(testLoc))
+            if (!MapIsLocationOwned(testLoc))
             {
                 pathsByDir[i] = nullptr;
                 continue;
             }
 
-            pathsByDir[i] = map_get_footpath_element(testLoc);
+            pathsByDir[i] = MapGetFootpathElement(testLoc);
 
             if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsSloped()
                 && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
@@ -3374,11 +3383,11 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             // Sloped path on the level below
             if (pathsByDir[i] == nullptr)
             {
-                pathsByDir[i] = map_get_footpath_element({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
+                pathsByDir[i] = MapGetFootpathElement({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
 
                 if (pathsByDir[i] != nullptr
                     && (!(pathsByDir[i])->AsPath()->IsSloped()
-                        || (pathsByDir[i])->AsPath()->GetSlopeDirection() != direction_reverse(i)))
+                        || (pathsByDir[i])->AsPath()->GetSlopeDirection() != DirectionReverse(i)))
                 {
                     pathsByDir[i] = nullptr;
                 }
@@ -3416,7 +3425,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     }
 
     window_ride_construction_update_active_elements();
-    map_invalidate_map_selection_tiles();
+    MapInvalidateMapSelectionTiles();
 }
 
 /**
@@ -3425,8 +3434,8 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
  */
 void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoords)
 {
-    map_invalidate_selection_rect();
-    map_invalidate_map_selection_tiles();
+    MapInvalidateSelectionRect();
+    MapInvalidateMapSelectionTiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3442,10 +3451,10 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
     gMapSelectPositionA = entranceOrExitCoords;
     gMapSelectPositionB = entranceOrExitCoords;
     gMapSelectArrowPosition = entranceOrExitCoords;
-    gMapSelectArrowDirection = direction_reverse(entranceOrExitCoords.direction);
-    map_invalidate_selection_rect();
+    gMapSelectArrowDirection = DirectionReverse(entranceOrExitCoords.direction);
+    MapInvalidateSelectionRect();
 
-    entranceOrExitCoords.direction = direction_reverse(gRideEntranceExitPlaceDirection);
+    entranceOrExitCoords.direction = DirectionReverse(gRideEntranceExitPlaceDirection);
     StationIndex stationNum = gRideEntranceExitPlaceStationIndex;
     if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
         || entranceOrExitCoords != gRideEntranceExitGhostPosition || stationNum != gRideEntranceExitGhostStationIndex)
@@ -3453,7 +3462,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
         auto ride = get_ride(_currentRideIndex);
         if (ride != nullptr)
         {
-            _currentTrackPrice = ride_entrance_exit_place_ghost(
+            _currentTrackPrice = RideEntranceExitPlaceGhost(
                 ride, entranceOrExitCoords, entranceOrExitCoords.direction, gRideEntranceExitPlaceType, stationNum);
         }
         window_ride_construction_update_active_elements();
@@ -3466,11 +3475,11 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
  */
 void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 {
-    const CursorState* state = context_get_cursor_state();
+    const CursorState* state = ContextGetCursorState();
 
     rct_window* w;
 
-    map_invalidate_map_selection_tiles();
+    MapInvalidateMapSelectionTiles();
     ride_construction_invalidate_current_track();
 
     CoordsXYZ mapCoords{};
@@ -3488,10 +3497,10 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     {
         for (const auto& selectedTile : gMapSelectionTiles)
         {
-            if (!map_is_location_valid(selectedTile))
+            if (!MapIsLocationValid(selectedTile))
                 continue;
 
-            z = map_get_highest_z(selectedTile);
+            z = MapGetHighestZ(selectedTile);
             if (z > highestZ)
                 highestZ = z;
         }
@@ -3508,7 +3517,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(mapCoords);
+        z = MapGetHighestZ(mapCoords);
 
     tool_cancel();
 
@@ -3552,7 +3561,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             _currentTrackBegin.z = z;
             _currentTrackSelectionFlags = 0;
             auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
             w = window_find_by_class(WindowClass::RideConstruction);
             if (w == nullptr)
                 break;
@@ -3595,7 +3604,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                         _trackPlaceShiftState = false;
                     }
                     auto intent2 = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
-                    context_broadcast_intent(&intent2);
+                    ContextBroadcastIntent(&intent2);
                     break;
                 }
                 z += 16;

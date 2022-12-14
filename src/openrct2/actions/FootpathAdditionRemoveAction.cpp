@@ -49,7 +49,7 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -64,7 +64,7 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_HIGH);
     }
 
-    auto tileElement = map_get_footpath_element(_loc);
+    auto tileElement = MapGetFootpathElement(_loc);
     if (tileElement == nullptr)
     {
         log_warning("Could not find path element.");
@@ -91,12 +91,12 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
 
 GameActions::Result FootpathAdditionRemoveAction::Execute() const
 {
-    auto tileElement = map_get_footpath_element(_loc);
+    auto tileElement = MapGetFootpathElement(_loc);
     auto pathElement = tileElement->AsPath();
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_interrupt_peeps(_loc);
+        FootpathInterruptPeeps(_loc);
     }
 
     if (pathElement == nullptr)
@@ -106,7 +106,7 @@ GameActions::Result FootpathAdditionRemoveAction::Execute() const
     }
 
     pathElement->SetAddition(0);
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
 
     auto res = GameActions::Result();
     res.Position = _loc;

@@ -42,7 +42,7 @@ static constexpr BoundBoxXY FerrisWheelData[] = {
 };
 
 static void PaintFerrisWheelRiders(
-    paint_session& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
+    PaintSession& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
     const BoundBoxXYZ& bb)
 {
     for (int32_t i = 0; i < 32; i += 2)
@@ -59,7 +59,7 @@ static void PaintFerrisWheelRiders(
 }
 
 static void PaintFerrisWheelStructure(
-    paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -79,7 +79,7 @@ static void PaintFerrisWheelStructure(
     auto supportsImageTemplate = session.TrackColours[SCHEME_TRACK];
     auto wheelImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto wheelImageFlags = session.TrackColours[SCHEME_MISC];
-    if (!wheelImageFlags.HasPrimary())
+    if (wheelImageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
     {
         wheelImageTemplate = wheelImageFlags;
     }
@@ -102,7 +102,7 @@ static void PaintFerrisWheelStructure(
 }
 
 static void PaintFerrisWheel(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
@@ -117,7 +117,7 @@ static void PaintFerrisWheel(
         edges = Edges1X4NeSw[relativeTrackSequence];
     }
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -130,23 +130,23 @@ static void PaintFerrisWheel(
     if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session.MapPosition, trackElement, ride, rotation))
     {
         imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_NW);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 2, height + 2 });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
     if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, session.MapPosition, trackElement, ride, rotation))
     {
         imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_NE);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 2, 0, height + 2 });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
     if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, rotation))
     {
         // Bound box is slightly different from track_paint_util_paint_fences
         imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
     }
     if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, rotation))
     {
         imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_SW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 7 } });
     }
 
     switch (relativeTrackSequence)
@@ -165,8 +165,8 @@ static void PaintFerrisWheel(
             break;
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 176, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 176, 0x20);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionFerrisWheel(int32_t trackType)

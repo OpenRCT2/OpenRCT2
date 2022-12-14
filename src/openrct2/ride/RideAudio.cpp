@@ -257,7 +257,7 @@ namespace OpenRCT2::RideAudio
             return;
 
         // TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
-        if (gGameSoundsOff || !gConfigSound.ride_music_enabled)
+        if (gGameSoundsOff || !gConfigSound.RideMusicEnabled)
             return;
 
         StopInactiveRideMusicChannels();
@@ -382,7 +382,7 @@ namespace OpenRCT2::RideAudio
     {
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
         {
-            auto rotatedCoords = translate_3d_to_2d_with_z(get_current_rotation(), rideCoords);
+            auto rotatedCoords = Translate3DTo2DWithZ(get_current_rotation(), rideCoords);
             auto viewport = g_music_tracking_viewport;
             auto viewWidth = viewport->view_width;
             auto viewWidth2 = viewWidth * 2;
@@ -397,11 +397,11 @@ namespace OpenRCT2::RideAudio
             else
             {
                 auto x2 = (viewport->pos.x + viewport->zoom.ApplyInversedTo(rotatedCoords.x - viewport->viewPos.x)) * 0x10000;
-                auto screenWidth = std::max(context_get_width(), 64);
+                auto screenWidth = std::max(ContextGetWidth(), 64);
                 auto panX = ((x2 / screenWidth) - 0x8000) >> 4;
 
                 auto y2 = (viewport->pos.y + viewport->zoom.ApplyInversedTo(rotatedCoords.y - viewport->viewPos.y)) * 0x10000;
-                auto screenHeight = std::max(context_get_height(), 64);
+                auto screenHeight = std::max(ContextGetHeight(), 64);
                 auto panY = ((y2 / screenHeight) - 0x8000) >> 4;
 
                 auto volX = CalculateVolume(panX);

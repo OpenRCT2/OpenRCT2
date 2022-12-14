@@ -30,7 +30,7 @@ enum
  *  rct2: 0x006D5FAB
  */
 void vehicle_visual_launched_freefall(
-    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
     auto imageFlags = ImageId(0, vehicle->colours.Body, vehicle->colours.Trim);
@@ -42,11 +42,11 @@ void vehicle_visual_launched_freefall(
     // Draw back:
     int32_t baseImage_id = carEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
     auto image_id = imageFlags.WithIndex(baseImage_id + 2);
-    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 2, 2, 41 }, { -11, -11, z + 1 });
+    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -11, -11, z + 1 }, { 2, 2, 41 } });
 
     // Draw front:
     image_id = imageFlags.WithIndex(baseImage_id + 1);
-    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
 
     // Draw peeps:
     if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
@@ -59,27 +59,27 @@ void vehicle_visual_launched_freefall(
         auto directionOffset = OpenRCT2::Entity::Yaw::YawTo4(imageDirection);
         image_id = ImageId(
             baseImage_id + (((directionOffset + 0) & 3) * 3), vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
-        PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+        PaintAddImageAsChild(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
         if (vehicle->num_peeps > 2)
         {
             image_id = ImageId(
                 baseImage_id + (((directionOffset + 1) & 3) * 3), vehicle->peep_tshirt_colours[2],
                 vehicle->peep_tshirt_colours[3]);
-            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
         }
         if (vehicle->num_peeps > 4)
         {
             image_id = ImageId(
                 baseImage_id + (((directionOffset + 2) & 3) * 3), vehicle->peep_tshirt_colours[4],
                 vehicle->peep_tshirt_colours[5]);
-            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
         }
         if (vehicle->num_peeps > 6)
         {
             image_id = ImageId(
                 baseImage_id + (((directionOffset + 3) & 3) * 3), vehicle->peep_tshirt_colours[6],
                 vehicle->peep_tshirt_colours[7]);
-            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
+            PaintAddImageAsChild(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
         }
     }
 
@@ -88,14 +88,14 @@ void vehicle_visual_launched_freefall(
 
 /** rct2: 0x006FD1F8 */
 static void paint_launched_freefall_base(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -109,17 +109,17 @@ static void paint_launched_freefall_base(
     if (trackSequence == 0)
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_BASE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 8, 8, height + 3 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height + 3 }, { 2, 2, 27 } });
 
         height += 32;
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
         height += 32;
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
-        paint_util_set_vertical_tunnel(session, height + 32);
+        PaintUtilSetVerticalTunnel(session, height + 32);
 
         height -= 64;
     }
@@ -155,14 +155,14 @@ static void paint_launched_freefall_base(
             blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
             break;
     }
-    paint_util_set_segment_support_height(session, blockedSegments, 0xFFFF, 0);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x006FD208 */
 static void paint_launched_freefall_tower_section(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence == 1)
@@ -171,19 +171,19 @@ static void paint_launched_freefall_tower_section(
     }
 
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
     }
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-    paint_util_set_vertical_tunnel(session, height + 32);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetVerticalTunnel(session, height + 32);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /**

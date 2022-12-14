@@ -21,6 +21,8 @@ Includes all git commit authors. Aliases are GitHub user names.
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
+* Edward Calver (X7123M3-256)
+* Karst van Galen Last (AuraSpecs)
 * Matte Andersson (Nubbie)
 * Kenton Boadway (Krutonium)
 * Joe Minor Jr (wolfreak99)
@@ -57,7 +59,7 @@ The following people are not part of the development team, but have been contrib
 * Inseok Lee (dlunch) - Load save files from command line
 * Jørn Lomax (jvlomax) - Configuration parser
 * Alexander Overvoorde (Overv) - OpenGL improvements, Steam overlay detection, various bugfixes.
-* (eezstreet) - Add finances button to toolbar
+* (eezstreet) - Add finances button to toolbar, various bugfixes.
 * Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
 * Joe Minor Jr (wolfreak99) - Various cheats, bugfixes, new About and Changelog windows.
 * Thomas den Hollander (ThomasdenH) - Dithering in sprite importer, invert viewport dragging, park rating cheats misc.
@@ -97,7 +99,7 @@ The following people are not part of the development team, but have been contrib
 * Bas Cantrijn (Basssiiie) - Various plugin additions, misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
 * Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
-* Karst van Galen Last (AuraSpecs) - Misc.
+* Karst van Galen Last (AuraSpecs) - Ride paint (bounding boxes, extra track pieces), soundtrack, sound effects, misc.
 * (8street) - Misc.
 
 ## Bug fixes
@@ -197,6 +199,12 @@ The following people are not part of the development team, but have been contrib
 * Huu Kim Nguyen (CoderUndefined)
 * Henry Cheng (jazzysoggy)
 * Dan Stevens (MajeureX)
+* 73 (733737)
+* Raymond Zhao (rzhao271)
+* Xixiang Chen (jacknull1991)
+* (ReticulatingSplines)
+* Conrad Cash (HouseholdVTuber)
+
 
 ## Toolchain
 * (Balletie) - macOS
@@ -217,6 +225,7 @@ The following people are not part of the development team, but have been contrib
 * (MaxBareiss)
 * Mithun Hunsur (Philpax)
 * (RollingStar)
+* (That Human Being)
 
 ## Translation
 * Extracting from original files: Ted John (IntelOrca)
@@ -232,6 +241,7 @@ The following people are not part of the development team, but have been contrib
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
 * Danish - Lars P. Sørensen (LPSGizmo)
 * Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon).
+* Esperanto - (tellovishous), Raymond Zhao (rzhao271)
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rmnvgr), (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum), Nicolas Hawrysh (xp4xbox)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)

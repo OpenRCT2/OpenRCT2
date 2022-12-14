@@ -27,198 +27,197 @@ enum class TitleMusicKind : int32_t;
 struct GeneralConfiguration
 {
     // Paths
-    u8string rct1_path;
-    u8string rct2_path;
+    u8string RCT1Path;
+    u8string RCT2Path;
 
     // Display
-    int32_t default_display;
-    int32_t window_width;
-    int32_t window_height;
-    int32_t fullscreen_mode;
-    int32_t fullscreen_width;
-    int32_t fullscreen_height;
-    float window_scale;
-    DrawingEngine drawing_engine;
-    bool uncap_fps;
-    bool use_vsync;
-    bool show_fps;
-    bool multithreading;
-    bool minimize_fullscreen_focus_loss;
-    bool disable_screensaver;
+    int32_t DefaultDisplay;
+    int32_t WindowWidth;
+    int32_t WindowHeight;
+    int32_t FullscreenMode;
+    int32_t FullscreenWidth;
+    int32_t FullscreenHeight;
+    float WindowScale;
+    ::DrawingEngine DrawingEngine;
+    bool UncapFPS;
+    bool UseVSync;
+    bool ShowFPS;
+    bool MultiThreading;
+    bool MinimizeFullscreenFocusLoss;
+    bool DisableScreensaver;
 
     // Map rendering
-    bool landscape_smoothing;
-    bool always_show_gridlines;
-    VirtualFloorStyles virtual_floor_style;
-    bool day_night_cycle;
-    bool enable_light_fx;
-    bool enable_light_fx_for_vehicles;
-    bool upper_case_banners;
-    bool render_weather_effects;
-    bool render_weather_gloom;
-    bool disable_lightning_effect;
-    bool show_guest_purchases;
-    bool transparent_screenshot;
-    bool transparent_water;
+    bool LandscapeSmoothing;
+    bool AlwaysShowGridlines;
+    VirtualFloorStyles VirtualFloorStyle;
+    bool DayNightCycle;
+    bool EnableLightFx;
+    bool EnableLightFxForVehicles;
+    bool UpperCaseBanners;
+    bool RenderWeatherEffects;
+    bool RenderWeatherGloom;
+    bool DisableLightningEffect;
+    bool ShowGuestPurchases;
+    bool TransparentScreenshot;
+    bool TransparentWater;
 
-    bool invisible_rides;
-    bool invisible_vehicles;
-    bool invisible_trees;
-    bool invisible_scenery;
-    bool invisible_paths;
-    bool invisible_supports;
+    bool InvisibleRides;
+    bool InvisibleVehicles;
+    bool InvisibleTrees;
+    bool InvisibleScenery;
+    bool InvisiblePaths;
+    bool InvisibleSupports;
 
     // Localisation
-    int32_t language;
-    MeasurementFormat measurement_format;
-    TemperatureUnit temperature_format;
-    bool show_height_as_units;
-    int32_t date_format;
-    CurrencyType currency_format;
-    int32_t custom_currency_rate;
-    CurrencyAffix custom_currency_affix;
-    utf8* custom_currency_symbol;
+    int32_t Language;
+    ::MeasurementFormat MeasurementFormat;
+    TemperatureUnit TemperatureFormat;
+    bool ShowHeightAsUnits;
+    int32_t DateFormat;
+    CurrencyType CurrencyFormat;
+    int32_t CustomCurrencyRate;
+    CurrencyAffix CustomCurrencyAffix;
+    utf8* CustomCurrencySymbol;
 
     // Controls
-    bool edge_scrolling;
-    int32_t edge_scrolling_speed;
-    bool trap_cursor;
-    bool invert_viewport_drag;
-    bool zoom_to_cursor;
+    bool EdgeScrolling;
+    int32_t EdgeScrollingSpeed;
+    bool TrapCursor;
+    bool InvertViewportDrag;
+    bool ZoomToCursor;
 
     // Miscellaneous
-    bool play_intro;
-    int32_t window_snap_proximity;
-    bool allow_loading_with_incorrect_checksum;
-    bool save_plugin_data;
-    bool debugging_tools;
-    int32_t autosave_frequency;
-    int32_t autosave_amount;
-    bool auto_staff_placement;
-    bool handymen_mow_default;
-    bool auto_open_shops;
-    int32_t default_inspection_interval;
-    int32_t window_limit;
-    int32_t scenario_select_mode;
-    bool scenario_unlocking_enabled;
-    bool scenario_hide_mega_park;
-    bool steam_overlay_pause;
-    bool show_real_names_of_guests;
-    bool allow_early_completion;
-    u8string asset_pack_order;
-    u8string enabled_asset_packs;
+    bool PlayIntro;
+    int32_t WindowSnapProximity;
+    bool SavePluginData;
+    bool DebuggingTools;
+    int32_t AutosaveFrequency;
+    int32_t AutosaveAmount;
+    bool AutoStaffPlacement;
+    bool HandymenMowByDefault;
+    bool AutoOpenShops;
+    int32_t DefaultInspectionInterval;
+    int32_t WindowLimit;
+    int32_t ScenarioSelectMode;
+    bool ScenarioUnlockingEnabled;
+    bool ScenarioHideMegaPark;
+    bool SteamOverlayPause;
+    bool ShowRealNamesOfGuests;
+    bool AllowEarlyCompletion;
+    u8string AssetPackOrder;
+    u8string EnabledAssetPacks;
 
     // Loading and saving
-    bool confirmation_prompt;
-    Sort load_save_sort;
-    u8string last_save_game_directory;
-    u8string last_save_landscape_directory;
-    u8string last_save_scenario_directory;
-    u8string last_save_track_directory;
-    u8string last_run_version;
-    bool use_native_browse_dialog;
-    int64_t last_version_check_time;
+    bool ConfirmationPrompt;
+    Sort LoadSaveSort;
+    u8string LastSaveGameDirectory;
+    u8string LastSaveLandscapeDirectory;
+    u8string LastSaveScenarioDirectory;
+    u8string LastSaveTrackDirectory;
+    u8string LastRunVersion;
+    bool UseNativeBrowseDialog;
+    int64_t LastVersionCheckTime;
 };
 
 struct InterfaceConfiguration
 {
-    bool toolbar_show_finances;
-    bool toolbar_show_research;
-    bool toolbar_show_cheats;
-    bool toolbar_show_news;
-    bool toolbar_show_mute;
-    bool toolbar_show_chat;
-    bool toolbar_show_zoom;
-    bool console_small_font;
-    bool random_title_sequence;
-    utf8* current_theme_preset;
-    utf8* current_title_sequence_preset;
-    int32_t object_selection_filter_flags;
-    int32_t scenarioselect_last_tab;
-    bool list_ride_vehicles_separately;
+    bool ToolbarShowFinances;
+    bool ToolbarShowResearch;
+    bool ToolbarShowCheats;
+    bool ToolbarShowNews;
+    bool ToolbarShowMute;
+    bool ToolbarShowChat;
+    bool ToolbarShowZoom;
+    bool ConsoleSmallFont;
+    bool RandomTitleSequence;
+    utf8* CurrentThemePreset;
+    utf8* CurrentTitleSequencePreset;
+    int32_t ObjectSelectionFilterFlags;
+    int32_t ScenarioselectLastTab;
+    bool ListRideVehiclesSeparately;
 };
 
 struct SoundConfiguration
 {
-    std::string device;
-    bool master_sound_enabled;
-    uint8_t master_volume;
-    TitleMusicKind title_music;
-    bool sound_enabled;
-    uint8_t sound_volume;
-    bool ride_music_enabled;
-    uint8_t ride_music_volume;
+    std::string Device;
+    bool MasterSoundEnabled;
+    uint8_t MasterVolume;
+    TitleMusicKind TitleMusic;
+    bool SoundEnabled;
+    uint8_t SoundVolume;
+    bool RideMusicEnabled;
+    uint8_t AudioFocus;
     bool audio_focus;
 };
 
 struct NetworkConfiguration
 {
-    std::string player_name;
-    int32_t default_port;
-    std::string listen_address;
-    std::string default_password;
-    bool stay_connected;
-    bool advertise;
-    std::string advertise_address;
-    int32_t maxplayers;
-    std::string server_name;
-    std::string server_description;
-    std::string server_greeting;
-    std::string master_server_url;
-    std::string provider_name;
-    std::string provider_email;
-    std::string provider_website;
-    bool known_keys_only;
-    bool log_chat;
-    bool log_server_actions;
-    bool pause_server_if_no_clients;
-    bool desync_debugging;
+    std::string PlayerName;
+    int32_t DefaultPort;
+    std::string ListenAddress;
+    std::string DefaultPassword;
+    bool StayConnected;
+    bool Advertise;
+    std::string AdvertiseAddress;
+    int32_t Maxplayers;
+    std::string ServerName;
+    std::string ServerDescription;
+    std::string ServerGreeting;
+    std::string MasterServerUrl;
+    std::string ProviderName;
+    std::string ProviderEmail;
+    std::string ProviderWebsite;
+    bool KnownKeysOnly;
+    bool LogChat;
+    bool LogServerActions;
+    bool PauseServerIfNoClients;
+    bool DesyncDebugging;
 };
 
 struct NotificationConfiguration
 {
-    bool park_award;
-    bool park_marketing_campaign_finished;
-    bool park_warnings;
-    bool park_rating_warnings;
-    bool ride_broken_down;
-    bool ride_crashed;
-    bool ride_casualties;
-    bool ride_warnings;
-    bool ride_researched;
-    bool ride_stalled_vehicles;
-    bool guest_warnings;
-    bool guest_left_park;
-    bool guest_queuing_for_ride;
-    bool guest_on_ride;
-    bool guest_left_ride;
-    bool guest_bought_item;
-    bool guest_used_facility;
-    bool guest_died;
+    bool ParkAward;
+    bool ParkMarketingCampaignFinished;
+    bool ParkWarnings;
+    bool ParkRatingWarnings;
+    bool RideBrokenDown;
+    bool RideCrashed;
+    bool RideCasualties;
+    bool RideWarnings;
+    bool RideResearched;
+    bool RideStalledVehicles;
+    bool GuestWarnings;
+    bool GuestLeftPark;
+    bool GuestQueuingForRide;
+    bool GuestOnRide;
+    bool GuestLeftRide;
+    bool GuestBoughtItem;
+    bool GuestUsedFacility;
+    bool GuestDied;
 };
 
 struct FontConfiguration
 {
-    utf8* file_name;
-    utf8* font_name;
-    int32_t x_offset;
-    int32_t y_offset;
-    int32_t size_tiny;
-    int32_t size_small;
-    int32_t size_medium;
-    int32_t size_big;
-    int32_t height_tiny;
-    int32_t height_small;
-    int32_t height_medium;
-    int32_t height_big;
-    bool enable_hinting;
-    int32_t hinting_threshold;
+    utf8* FileName;
+    utf8* FontName;
+    int32_t OffsetX;
+    int32_t OffsetY;
+    int32_t SizeTiny;
+    int32_t SizeSmall;
+    int32_t SizeMedium;
+    int32_t SizeBig;
+    int32_t HeightTiny;
+    int32_t HeightSmall;
+    int32_t HeightMedium;
+    int32_t HeightBig;
+    bool EnableHinting;
+    int32_t HintingThreshold;
 };
 
 struct PluginConfiguration
 {
-    bool enable_hot_reloading;
-    std::string allowed_hosts;
+    bool EnableHotReloading;
+    std::string AllowedHosts;
 };
 
 enum class Sort : int32_t
@@ -265,13 +264,13 @@ extern NotificationConfiguration gConfigNotifications;
 extern FontConfiguration gConfigFonts;
 extern PluginConfiguration gConfigPlugin;
 
-bool config_open(u8string_view path);
-bool config_save(u8string_view path);
-u8string config_get_default_path();
-void config_set_defaults();
-void config_release();
-bool config_save_default();
-bool config_find_or_browse_install_directory();
+bool ConfigOpen(u8string_view path);
+bool ConfigSave(u8string_view path);
+u8string ConfigGetDefaultPath();
+void ConfigSetDefaults();
+void ConfigRelease();
+bool ConfigSaveDefault();
+bool ConfigFindOrBrowseInstallDirectory();
 
 bool RCT1DataPresentAtLocation(u8string_view path);
 std::string FindCsg1datAtLocation(u8string_view path);

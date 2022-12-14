@@ -23,7 +23,7 @@
 namespace OpenRCT2::Scripting
 {
     static constexpr const char* ParkMessageTypeStrings[] = {
-        "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award", "chart",
+        "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award", "chart", "campaign",
     };
 
     inline News::ItemType GetParkMessageType(const std::string& key)

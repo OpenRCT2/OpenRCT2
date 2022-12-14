@@ -36,6 +36,7 @@ namespace News
         Peeps,
         Award,
         Graph,
+        Campaign,
         Count
     };
 
@@ -81,6 +82,7 @@ namespace News
                 case News::ItemType::Peeps:
                 case News::ItemType::Award:
                 case News::ItemType::Graph:
+                case News::ItemType::Campaign:
                     return News::ItemTypeProperty::HasSubject;
                 case News::ItemType::Ride:
                 case News::ItemType::PeepOnRide:

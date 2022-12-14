@@ -315,8 +315,8 @@ private:
         const auto ddWidth = ItemWidth * NumColumns + 3;
         const auto ddHeight = ItemHeight * NumRows + 3;
 
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
         auto boundedScreenPos = screenPos;
         if (screenPos.x + ddWidth > screenWidth)
             boundedScreenPos.x = std::max(0, screenWidth - ddWidth);
@@ -354,7 +354,7 @@ void WindowDropdownShowText(const ScreenCoordsXY& screenPos, int32_t extray, uin
     for (size_t i = 0; i < num_items; i++)
     {
         format_string(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
-        string_width = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
+        string_width = gfx_get_string_width(buffer, FontStyle::Medium);
         max_string_width = std::max(string_width, max_string_width);
     }
 
@@ -456,7 +456,7 @@ void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdow
             defaultIndex = i;
 
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;
-        gDropdownItems[i].Args = (i << 32) | (SPRITE_ID_PALETTE_COLOUR_1(i) | SPR_PALETTE_BTN);
+        gDropdownItems[i].Args = (i << 32) | ImageId(SPR_PALETTE_BTN, i).ToUInt32();
     }
 
     // Show dropdown
@@ -472,4 +472,9 @@ void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdow
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems)
 {
     return numItems < std::size(_appropriateImageDropdownItemsPerRow) ? _appropriateImageDropdownItemsPerRow[numItems] : 8;
+}
+
+bool WindowDropDownHasMultipleColumns(size_t numItems)
+{
+    return numItems > DROPDOWN_TEXT_MAX_ROWS;
 }

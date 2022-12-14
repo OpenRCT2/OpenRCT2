@@ -465,6 +465,8 @@ namespace OpenRCT2::Scripting
         return OBJECT_ENTRY_INDEX_NULL;
     }
 
+    uint32_t ImageFromDuk(const DukValue& d);
+
 } // namespace OpenRCT2::Scripting
 
 #endif

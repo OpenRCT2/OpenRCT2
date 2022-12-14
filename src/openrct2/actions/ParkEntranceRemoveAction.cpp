@@ -43,7 +43,7 @@ GameActions::Result ParkEntranceRemoveAction::Query() const
     res.Position = _loc;
     res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
-    auto entranceIndex = park_entrance_get_index(_loc);
+    auto entranceIndex = ParkEntranceGetIndex(_loc);
     if (!LocationValid(_loc) || entranceIndex == -1)
     {
         log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
@@ -59,7 +59,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     res.Position = _loc;
     res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
-    auto entranceIndex = park_entrance_get_index(_loc);
+    auto entranceIndex = ParkEntranceGetIndex(_loc);
     if (entranceIndex == -1)
     {
         log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
@@ -85,13 +85,13 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
 
 void ParkEntranceRemoveAction::ParkEntranceRemoveSegment(const CoordsXYZ& loc) const
 {
-    auto entranceElement = map_get_park_entrance_element_at(loc, true);
+    auto entranceElement = MapGetParkEntranceElementAt(loc, true);
     if (entranceElement == nullptr)
     {
         return;
     }
 
-    map_invalidate_tile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
+    MapInvalidateTile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
     entranceElement->Remove();
-    update_park_fences({ loc.x, loc.y });
+    ParkUpdateFences({ loc.x, loc.y });
 }

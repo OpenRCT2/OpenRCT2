@@ -2719,8 +2719,6 @@ STR_5503    :Saisir nom d’hôte ou adresse IP :
 STR_5504    :Afficher le statut multijoueur
 STR_5505    :Impossible de se connecter au serveur
 STR_5506    :Les visiteurs ignorent l’intensité
-STR_5508    :Autor. charg. de fichiers avec une empreinte incorrecte
-STR_5509    :Autorise le chargement de scénarios et sauvegardes ayant une empreinte incorrecte, par exemple les scénarios de la démo ou des sauvegardes corrompues
 STR_5510    :Périphérique audio par défaut
 STR_5511    :(UNKNOWN)
 STR_5512    :Sauvegarder partie sous
@@ -3004,7 +3002,7 @@ STR_5832    :Affiche les hauteurs comme des unités génériques au lieu des uni
 STR_5833    :Change le format de date utilisé
 STR_5834    :Sélectionne le périphérique audio que doit utiliser OpenRCT2
 STR_5835    :Coupe le son du jeu si la fenêtre passe à l’arrière-plan
-STR_5836    :Sélectionne la musique du menu principal.{NEWLINE}La musique RCT1 nécessite que vous copiiez et renommiez le fichier {SMALLFONT}data/css17.dat{MEDIUMFONT} de votre dossier RCT1 en data/{SMALLFONT}css50.dat{MEDIUMFONT} dans votre dossier RCT2, ou que vous ayez défini le chemin d’installation de RCT1 dans les options diverses.
+STR_5836    :Sélectionne la musique jouée dans le menu principal.{NEWLINE}Sélectionner le thème de RCT1 nécessite que le chemin d’installation de RCT1 soit défini dans les options avancées.
 STR_5837    :Créer et gérer des thèmes d’interface personnalisés
 STR_5838    :Affiche un bouton séparé pour les options financières dans la barre d’outils
 STR_5839    :Affiche un bouton séparé pour la recherche et développement dans la barre d’outils
@@ -3437,7 +3435,7 @@ STR_6318    :Desynchronisation réseau détectée.{NEWLINE}Fichier journal : {S
 STR_6319    :Bloc de frein fermé
 STR_6320    :Indestructible
 STR_6321    :L’ajout est cassé
-STR_6322    :{WINDOW_COLOUR_2}Identifiant image-objet : {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}ID de l’entité : {BLACK}{INT32}
 STR_6323    :Simulation
 STR_6324    :Simuler
 STR_6325    :Simule l’attraction
@@ -3604,9 +3602,9 @@ STR_6487    :Employés invisibles
 STR_6488    :{RED}Les visiteurs se plaignent de la longueur des files d’attente dans votre parc.{NEWLINE}Songez à raccourcir les files problématiques ou à augmenter la capacité des attractions.
 STR_6489    :Erreur : Version de parc incompatible
 STR_6490    :Avertissement : Version de parc semi-compatible
-STR_6491    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il est à la version {INT32} et requiert au moins la version {INT32}.
-STR_6492    :Ce parc a été sauvegardé dans une ancienne version d’OpenRCT2, et ne peut être ouvert avec cette version. Il est à la version {INT32}.
-STR_6493    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2, certaines données pourraient être perdues. Il est à la version {INT32} et requiert au moins la version {INT32}.
+STR_6491    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il a été sauvegardé avec la version {INT32} et requiert au moins la version {INT32}. Vous utilisez la version {INT32}.
+STR_6492    :Ce parc a été sauvegardé dans une ancienne version d’OpenRCT2, et ne peut être ouvert avec cette version. Il a été sauvegardé avec la version {INT32}.
+STR_6493    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2, certaines données pourraient être perdues. Il a été sauvegardé avec la version {INT32}, vous utilisez la version {INT32}.
 STR_6494    :Grouper par type d’attraction
 STR_6495    :Groupe les attractions par type au lieu d’afficher chaque véhicule indépendamment.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3628,11 +3626,28 @@ STR_6511    :Zero-G roll (droite)
 STR_6512    :Grand zero-G roll (gauche)
 STR_6513    :Grand zero-G roll (droite)
 STR_6514    :Hauteur invalide !
-STR_6515    :{BLACK}RCT1 pas lié — des images de secours seront utilisées.
-STR_6516    :Un ou plusieurs des objets ajoutés nécessitent que RCT1 soit lié pour être affichés correctement. Des images de secours seront utilisées.
-STR_6517    :Un ou plusieurs objets de ce parc nécessitent que RCT1 soit lié pour être affichés correctement. Des images de secours seront utilisées.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 pas lié — des images de secours seront utilisées.
+STR_6516    :Un ou plusieurs des objets ajoutés nécessitent que RollerCoaster Tycoon 1 soit lié pour être affichés correctement. Des images de secours seront utilisées.
+STR_6517    :Un ou plusieurs objets de ce parc nécessitent que RollerCoaster Tycoon 1 soit lié pour être affichés correctement. Des images de secours seront utilisées.
 STR_6518    :{BLACK}Survolez un scénario pour afficher sa description et son objectif. Cliquez pour commencer à jouer.
 STR_6519    :Extras
+STR_6520    :Packs de ressources
+STR_6521    :Priorité basse
+STR_6522    :Priorité haute
+STR_6523    :Réduit la priorité du pack de ressources sélectionné
+STR_6524    :Augmente la priorité du pack de ressources sélectionné
+STR_6525    :Recharge toutes les ressources du jeu avec les packs de ressources sélectionnés
+STR_6526    :(graphismes, musiques et effets sonores de base)
+STR_6527    :Compétitions
+STR_6528    :Paramètres de voie invalides !
+STR_6529    :Paramètre de palette de couleurs invalide !
+STR_6530    :User Created Expansion Set
+STR_6531    :La machine temporelle
+STR_6532    :Le monde de Katy
+STR_6533    :{WINDOW_COLOUR_2}Indice d’excitation : {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Indice d’intensité : {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Indice de nausée : {BLACK}-{COMMA16}%
+STR_6536    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il a été sauvegardé avec la version {INT32}, vous utilisez la version {INT32}.
 
 #############
 # Scenarios #
@@ -4378,6 +4393,104 @@ STR_SCNR    :Monde de Panda
 STR_PARK    :Monde de Panda
 STR_DTLS    :Ajoutez davantage d’attractions et attirez plus de visiteurs avec ce parc autour du thème du panda
 
+###
+<UCES Halloween>
+STR_SCNR    :Crête du cimetière
+STR_PARK    :Crête du cimetière
+STR_DTLS    :C’est Halloween, l’Halloween UCES, les citrouilles hurlent au milieu de la nuit ! Ce cimetière est en mauvaise posture et vous devez le sauver, tout en laissant les défunts reposer en paix ! Pouvez-vous garder les fantômes dans leurs tombes et faire frissonner vos clients ?{NEWLINE}Par : Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :Le Phare d’Alexandrie
+STR_PARK    :Le Phare d’Alexandrie
+STR_DTLS    :Alexandre a bâti la cité ; les Grecs, les Romains, les Égyptiens y ont laissé leur marque. Mais le plus grand accomplissement était une merveille de l’ancien monde — le Phare. Venez visiter et bâtir un parc !{NEWLINE}Par : Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :Comme à son jour d’ouverture — 18 mai 1905.{NEWLINE}Par : Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Le mont Vésuve
+STR_PARK    :Le mont Vésuve
+STR_DTLS    :Pompeii and Herculaneum were buried by Mt. Vesuvius in 79 A.D. Visit the excavations and build a park!{NEWLINE}Author: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :Le bac à sable
+STR_PARK    :Le bac à sable
+STR_DTLS    :Ce que tout le monde veut — un bac à sable ! Alors prenez votre pelle et votre rateau et contruisez un parc !{NEWLINE}Par : Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Gorges et chutes du Niagara
+STR_PARK    :Chutes du Niagara
+STR_DTLS    :Les chutes américaines, les chutes du Voile de la Mariée et les chutes du Fer-à-Cheval sur la frontière du Niagara, 1850.{NEWLINE}Par : Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Mineurs des montagnes rocailleuses
+STR_PARK    :Mineurs des montagnes rocailleuses
+STR_DTLS    :Un glissement de terrain a endommagé votre chemin de fer. Vos travailleurs sont partis prospecter. Y a-t-il de l’or dans les montagnes russes ?{NEWLINE}Par : Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :La machine temporelle
+STR_PARK    :La machine temporelle
+STR_DTLS    :La machine temporelle. Construite pour partir — quand vous voulez, où vous voulez. L’éternité attends. Tout est relatif.{NEWLINE}Par : Katatude
+
+<Tower of Babel>
+STR_SCNR    :La tour de Babel
+STR_PARK    :La tour de Babel
+STR_DTLS    :Ouaah ! Regardez où la machine temporelle nous a emmené ! Où est tout le monde ?{NEWLINE}Par : Fossil
+
+<Transformation>
+STR_SCNR    :Transformation
+STR_PARK    :Transformation
+STR_DTLS    :Nous vous attendions…{NEWLINE}Par : Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :Les Romains sont lassés des combats de gladiateurs ennuyants. Donnez-leur plus de frissons, faîtes d’une cité romaine le meilleur parc d’attractions de tous les temps !{NEWLINE}Par : Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Sous le sapin de Noël
+STR_PARK    :Pays de l’hiver
+STR_DTLS    :Maman a construit cette scène sous notre sapin. Maintenant elle veut qu’un parc y soit construit ! Pouvez-vous aider ?{NEWLINE}Par : Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Explosion à Groscailloux
+STR_PARK    :Explosion à Groscailloux
+STR_DTLS    :Après une explosion à la Compagnie de Minage de Groscailloux, les habitants de Groscailloux doivent bâtir un parc d’attractions pour garder leur ville vivante.{NEWLINE}Par : rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp du geai moqueur
+STR_PARK    :Camp du geai moqueur
+STR_DTLS    :Seulement 500€ par semaine pour ce camp d’été ! Cassez votre tirelire et venez vous amuser et construire un parc.{NEWLINE}Par : Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Tchoutchouville
+STR_PARK    :Tchoutchouville
+STR_DTLS    :Maman ! Papa ! Je veux aller à Tchoutchouville !{NEWLINE}Par : Fossil
+
+<Dragon Islands>
+STR_SCNR    :Archipel du dragon
+STR_PARK    :Archipel du dragon
+STR_DTLS    :Archipel du dragon ? Je ne suis pas sûr de vouloir y aller…{NEWLINE}Par : Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Carnaval des enfants II
+STR_PARK    :Carnaval des enfants
+STR_DTLS    :Eh les enfants ! Amusons-nous !{NEWLINE}Par : Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Dune ensablée
+STR_PARK    :Dune ensablée
+STR_DTLS    :En tant que propriétaire d’un petit parc, vous avez acheté un grand terrain le long de la plage pour vous étendre et attirer plus de visiteurs dans ces magnifiques dunes de sable, mais attention : vous ne pouvez pas perturber de fragile écosystème.{NEWLINE}Par : rbarclay
+
 ###########
 # Scenery #
 ###########
@@ -4386,35 +4499,5 @@ STR_DTLS    :Ajoutez davantage d’attractions et attirez plus de visiteurs avec
 
 [TTPIRF05]
 STR_NAME    :Toit
-
-[TTRFWD01]
-STR_NAME    :Toit
-
-[TTRFWD02]
-STR_NAME    :Toit
-
-[TTRFWD03]
-STR_NAME    :Toit
-
-[TTRFWD04]
-STR_NAME    :Toit
-
-[TTRFWD05]
-STR_NAME    :Toit
-
-[TTRFWD06]
-STR_NAME    :Toit
-
-[TTRFWD07]
-STR_NAME    :Toit
-
-[TTRFWD08]
-STR_NAME    :Toit
-
-[ACWW33]
-STR_NAME    :Tableau d’affichage en bois
-
-[ACWWF32]
-STR_NAME    :Tableau d’affichage en bois
 
 ## End OpenRCT2 Official

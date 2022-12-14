@@ -90,18 +90,18 @@ static constexpr const std::string_view BaseTerrain[] = {
     "rct2.terrain_surface.dirt",  "rct2.terrain_surface.ice",
 };
 
-static void mapgen_place_trees();
-static void mapgen_set_water_level(int32_t waterLevel);
-static void mapgen_smooth_height(int32_t iterations);
-static void mapgen_set_height(mapgen_settings* settings);
+static void MapGenPlaceTrees();
+static void MapGenSetWaterLevel(int32_t waterLevel);
+static void MapGenSmoothHeight(int32_t iterations);
+static void MapGenSetHeight(mapgen_settings* settings);
 
-static float fractal_noise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
-static void mapgen_simplex(mapgen_settings* settings);
+static float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
+static void MapGenSimplex(mapgen_settings* settings);
 
 static TileCoordsXY _heightSize;
 static uint8_t* _height;
 
-static int32_t get_height(int32_t x, int32_t y)
+static int32_t GetHeight(int32_t x, int32_t y)
 {
     if (x >= 0 && y >= 0 && x < _heightSize.x && y < _heightSize.y)
         return _height[x + y * _heightSize.x];
@@ -109,23 +109,23 @@ static int32_t get_height(int32_t x, int32_t y)
     return 0;
 }
 
-static void set_height(int32_t x, int32_t y, int32_t height)
+static void SetHeight(int32_t x, int32_t y, int32_t height)
 {
     if (x >= 0 && y >= 0 && x < _heightSize.x && y < _heightSize.y)
         _height[x + y * _heightSize.x] = height;
 }
 
-void mapgen_generate_blank(mapgen_settings* settings)
+void MapGenGenerateBlank(mapgen_settings* settings)
 {
     int32_t x, y;
-    map_clear_all_elements();
+    MapClearAllElements();
 
-    map_init(settings->mapSize);
+    MapInit(settings->mapSize);
     for (y = 1; y < settings->mapSize.y - 1; y++)
     {
         for (x = 1; x < settings->mapSize.x - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetSurfaceStyle(settings->floor);
@@ -136,10 +136,10 @@ void mapgen_generate_blank(mapgen_settings* settings)
         }
     }
 
-    mapgen_set_water_level(settings->water_level);
+    MapGenSetWaterLevel(settings->water_level);
 }
 
-void mapgen_generate(mapgen_settings* settings)
+void MapGenGenerate(mapgen_settings* settings)
 {
     const auto& mapSize = settings->mapSize;
     auto waterLevel = settings->water_level;
@@ -181,15 +181,15 @@ void mapgen_generate(mapgen_settings* settings)
     auto floorTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(floorTexture));
     auto edgeTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(edgeTexture));
 
-    map_clear_all_elements();
+    MapClearAllElements();
 
     // Initialise the base map
-    map_init(mapSize);
+    MapInit(mapSize);
     for (auto y = 1; y < mapSize.y - 1; y++)
     {
         for (auto x = 1; x < mapSize.x - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetSurfaceStyle(floorTextureId);
@@ -205,20 +205,20 @@ void mapgen_generate(mapgen_settings* settings)
     _height = new uint8_t[_heightSize.y * _heightSize.x];
     std::fill_n(_height, _heightSize.y * _heightSize.x, 0x00);
 
-    mapgen_simplex(settings);
-    mapgen_smooth_height(2 + (util_rand() % 6));
+    MapGenSimplex(settings);
+    MapGenSmoothHeight(2 + (util_rand() % 6));
 
     // Set the game map to the height map
-    mapgen_set_height(settings);
+    MapGenSetHeight(settings);
     delete[] _height;
 
     // Set the tile slopes so that there are no cliffs
-    while (map_smooth(1, 1, mapSize.x - 1, mapSize.y - 1))
+    while (MapSmooth(1, 1, mapSize.x - 1, mapSize.y - 1))
     {
     }
 
     // Add the water
-    mapgen_set_water_level(waterLevel);
+    MapGenSetWaterLevel(waterLevel);
 
     // Add sandy beaches
     std::string_view beachTexture = floorTexture;
@@ -239,7 +239,7 @@ void mapgen_generate(mapgen_settings* settings)
     {
         for (auto x = 1; x < mapSize.x - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
 
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel + 6)
                 surfaceElement->SetSurfaceStyle(beachTextureId);
@@ -248,18 +248,18 @@ void mapgen_generate(mapgen_settings* settings)
 
     // Place the trees
     if (settings->trees != 0)
-        mapgen_place_trees();
+        MapGenPlaceTrees();
 }
 
-static void mapgen_place_tree(ObjectEntryIndex type, const CoordsXY& loc)
+static void MapGenPlaceTree(ObjectEntryIndex type, const CoordsXY& loc)
 {
-    auto* sceneryEntry = get_small_scenery_entry(type);
+    auto* sceneryEntry = GetSmallSceneryEntry(type);
     if (sceneryEntry == nullptr)
     {
         return;
     }
 
-    int32_t surfaceZ = tile_element_height(loc.ToTileCentre());
+    int32_t surfaceZ = TileElementHeight(loc.ToTileCentre());
 
     auto* sceneryElement = TileElementInsert<SmallSceneryElement>({ loc, surfaceZ }, 0b1111);
     Guard::Assert(sceneryElement != nullptr);
@@ -303,7 +303,7 @@ template<typename T> static bool TryFindTreeInList(std::string_view id, const T&
 /**
  * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
  */
-static void mapgen_place_trees()
+static void MapGenPlaceTrees()
 {
     std::vector<int32_t> grassTreeIds;
     std::vector<int32_t> desertTreeIds;
@@ -311,7 +311,7 @@ static void mapgen_place_trees()
 
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
-        auto* sceneryEntry = get_small_scenery_entry(i);
+        auto* sceneryEntry = GetSmallSceneryEntry(i);
         auto entry = object_entry_get_object(ObjectType::SmallScenery, i);
 
         if (sceneryEntry == nullptr)
@@ -341,7 +341,7 @@ static void mapgen_place_trees()
             pos.x = x * COORDS_XY_STEP;
             pos.y = y * COORDS_XY_STEP;
 
-            auto* surfaceElement = map_get_surface_element_at(pos);
+            auto* surfaceElement = MapGetSurfaceElementAt(pos);
             if (surfaceElement == nullptr)
                 continue;
 
@@ -368,7 +368,7 @@ static void mapgen_place_trees()
                         neighbourPos.x = std::clamp(neighbourPos.x, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.x - 1));
                         neighbourPos.y = std::clamp(neighbourPos.y, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.y - 1));
 
-                        const auto neighboutSurface = map_get_surface_element_at(neighbourPos);
+                        const auto neighboutSurface = MapGetSurfaceElementAt(neighbourPos);
                         if (neighboutSurface->GetWaterHeight() > 0)
                         {
                             float distance = std::sqrt(offsetX * offsetX + offsetY * offsetY);
@@ -384,7 +384,7 @@ static void mapgen_place_trees()
                 continue;
 
             // Use fractal noise to group tiles that are likely to spawn trees together
-            float noiseValue = fractal_noise(x, y, 0.025f, 2, 2.0f, 0.65f);
+            float noiseValue = FractalNoise(x, y, 0.025f, 2, 2.0f, 0.65f);
             // Reduces the range to rarely stray further than 0.5 from the mean.
             float noiseOffset = util_rand_normal_distributed() * 0.25f;
             if (noiseValue + oasisScore < noiseOffset)
@@ -404,7 +404,7 @@ static void mapgen_place_trees()
             }
 
             if (treeObjectEntryIndex != OBJECT_ENTRY_INDEX_NULL)
-                mapgen_place_tree(treeObjectEntryIndex, pos);
+                MapGenPlaceTree(treeObjectEntryIndex, pos);
         }
     }
 }
@@ -412,13 +412,13 @@ static void mapgen_place_trees()
 /**
  * Sets each tile's water level to the specified water level if underneath that water level.
  */
-static void mapgen_set_water_level(int32_t waterLevel)
+static void MapGenSetWaterLevel(int32_t waterLevel)
 {
     for (int32_t y = 1; y < gMapSize.y - 1; y++)
     {
         for (int32_t x = 1; x < gMapSize.x - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel)
                 surfaceElement->SetWaterHeight(waterLevel * COORDS_Z_STEP);
         }
@@ -428,7 +428,7 @@ static void mapgen_set_water_level(int32_t waterLevel)
 /**
  * Smooths the height map.
  */
-static void mapgen_smooth_height(int32_t iterations)
+static void MapGenSmoothHeight(int32_t iterations)
 {
     int32_t i, x, y, xx, yy, avg;
     int32_t arraySize = _heightSize.y * _heightSize.x * sizeof(uint8_t);
@@ -450,7 +450,7 @@ static void mapgen_smooth_height(int32_t iterations)
                     }
                 }
                 avg /= 9;
-                set_height(x, y, avg);
+                SetHeight(x, y, avg);
             }
         }
     }
@@ -461,7 +461,7 @@ static void mapgen_smooth_height(int32_t iterations)
 /**
  * Sets the height of the actual game map tiles to the height map.
  */
-static void mapgen_set_height(mapgen_settings* settings)
+static void MapGenSetHeight(mapgen_settings* settings)
 {
     int32_t x, y, heightX, heightY;
 
@@ -472,14 +472,14 @@ static void mapgen_set_height(mapgen_settings* settings)
             heightX = x * 2;
             heightY = y * 2;
 
-            uint8_t q00 = get_height(heightX + 0, heightY + 0);
-            uint8_t q01 = get_height(heightX + 0, heightY + 1);
-            uint8_t q10 = get_height(heightX + 1, heightY + 0);
-            uint8_t q11 = get_height(heightX + 1, heightY + 1);
+            uint8_t q00 = GetHeight(heightX + 0, heightY + 0);
+            uint8_t q01 = GetHeight(heightX + 0, heightY + 1);
+            uint8_t q10 = GetHeight(heightX + 1, heightY + 0);
+            uint8_t q11 = GetHeight(heightX + 1, heightY + 1);
 
             uint8_t baseHeight = (q00 + q01 + q10 + q11) / 4;
 
-            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
             surfaceElement->base_height = std::max(2, baseHeight * 2);
@@ -515,13 +515,13 @@ static void mapgen_set_height(mapgen_settings* settings)
  *   - https://code.google.com/p/fractalterraingeneration/wiki/Fractional_Brownian_Motion
  */
 
-static float generate(float x, float y);
-static int32_t fast_floor(float x);
-static float grad(int32_t hash, float x, float y);
+static float Generate(float x, float y);
+static int32_t FastFloor(float x);
+static float Grad(int32_t hash, float x, float y);
 
 static uint8_t perm[512];
 
-static void noise_rand()
+static void NoiseRand()
 {
     for (auto& i : perm)
     {
@@ -529,20 +529,20 @@ static void noise_rand()
     }
 }
 
-static float fractal_noise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence)
+static float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence)
 {
     float total = 0.0f;
     float amplitude = persistence;
     for (int32_t i = 0; i < octaves; i++)
     {
-        total += generate(x * frequency, y * frequency) * amplitude;
+        total += Generate(x * frequency, y * frequency) * amplitude;
         frequency *= lacunarity;
         amplitude *= persistence;
     }
     return total;
 }
 
-static float generate(float x, float y)
+static float Generate(float x, float y)
 {
     const float F2 = 0.366025403f; // F2 = 0.5*(sqrt(3.0)-1.0)
     const float G2 = 0.211324865f; // G2 = (3.0-sqrt(3.0))/6.0
@@ -553,8 +553,8 @@ static float generate(float x, float y)
     float s = (x + y) * F2; // Hairy factor for 2D
     float xs = x + s;
     float ys = y + s;
-    int32_t i = fast_floor(xs);
-    int32_t j = fast_floor(ys);
+    int32_t i = FastFloor(xs);
+    int32_t j = FastFloor(ys);
 
     float t = static_cast<float>(i + j) * G2;
     float X0 = i - t; // Unskew the cell origin back to (x,y) space
@@ -598,7 +598,7 @@ static float generate(float x, float y)
     else
     {
         t0 *= t0;
-        n0 = t0 * t0 * grad(perm[ii + perm[jj]], x0, y0);
+        n0 = t0 * t0 * Grad(perm[ii + perm[jj]], x0, y0);
     }
 
     float t1 = 0.5f - x1 * x1 - y1 * y1;
@@ -609,7 +609,7 @@ static float generate(float x, float y)
     else
     {
         t1 *= t1;
-        n1 = t1 * t1 * grad(perm[ii + i1 + perm[jj + j1]], x1, y1);
+        n1 = t1 * t1 * Grad(perm[ii + i1 + perm[jj + j1]], x1, y1);
     }
 
     float t2 = 0.5f - x2 * x2 - y2 * y2;
@@ -620,7 +620,7 @@ static float generate(float x, float y)
     else
     {
         t2 *= t2;
-        n2 = t2 * t2 * grad(perm[ii + 1 + perm[jj + 1]], x2, y2);
+        n2 = t2 * t2 * Grad(perm[ii + 1 + perm[jj + 1]], x2, y2);
     }
 
     // Add contributions from each corner to get the final noise value.
@@ -628,12 +628,12 @@ static float generate(float x, float y)
     return 40.0f * (n0 + n1 + n2); // TODO: The scale factor is preliminary!
 }
 
-static int32_t fast_floor(float x)
+static int32_t FastFloor(float x)
 {
     return (x > 0) ? (static_cast<int32_t>(x)) : ((static_cast<int32_t>(x)) - 1);
 }
 
-static float grad(int32_t hash, float x, float y)
+static float Grad(int32_t hash, float x, float y)
 {
     int32_t h = hash & 7;    // Convert low 3 bits of hash code
     float u = h < 4 ? x : y; // into 8 simple gradient directions,
@@ -641,7 +641,7 @@ static float grad(int32_t hash, float x, float y)
     return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -2.0f * v : 2.0f * v);
 }
 
-static void mapgen_simplex(mapgen_settings* settings)
+static void MapGenSimplex(mapgen_settings* settings)
 {
     int32_t x, y;
 
@@ -651,15 +651,15 @@ static void mapgen_simplex(mapgen_settings* settings)
     int32_t low = settings->simplex_low;
     int32_t high = settings->simplex_high;
 
-    noise_rand();
+    NoiseRand();
     for (y = 0; y < _heightSize.y; y++)
     {
         for (x = 0; x < _heightSize.x; x++)
         {
-            float noiseValue = std::clamp(fractal_noise(x, y, freq, octaves, 2.0f, 0.65f), -1.0f, 1.0f);
+            float noiseValue = std::clamp(FractalNoise(x, y, freq, octaves, 2.0f, 0.65f), -1.0f, 1.0f);
             float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
 
-            set_height(x, y, low + static_cast<int32_t>(normalisedNoiseValue * high));
+            SetHeight(x, y, low + static_cast<int32_t>(normalisedNoiseValue * high));
         }
     }
 }
@@ -677,7 +677,7 @@ static TileCoordsXY MapgenHeightmapCoordToTileCoordsXY(uint32_t x, uint32_t y)
     return TileCoordsXY(static_cast<int32_t>(y + 1), static_cast<int32_t>(x + 1));
 }
 
-bool mapgen_load_heightmap(const utf8* path)
+bool MapGenLoadHeightmap(const utf8* path)
 {
     auto format = Imaging::GetImageFormatFromPath(path);
     if (format == IMAGE_FORMAT::PNG)
@@ -693,7 +693,7 @@ bool mapgen_load_heightmap(const utf8* path)
         auto height = std::min<uint32_t>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
         if (width != image.Width || height != image.Height)
         {
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG, {});
+            ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG, {});
         }
 
         // Allocate memory for the height map values, one byte pixel
@@ -722,10 +722,10 @@ bool mapgen_load_heightmap(const utf8* path)
         switch (format)
         {
             case IMAGE_FORMAT::BITMAP:
-                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP, {});
+                ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP, {});
                 break;
             case IMAGE_FORMAT::PNG_32:
-                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
+                ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
                 break;
             default:
                 log_error("Unable to load height map image: %s", e.what());
@@ -738,7 +738,7 @@ bool mapgen_load_heightmap(const utf8* path)
 /**
  * Frees the memory used to store the selected height map
  */
-void mapgen_unload_heightmap()
+void MapGenUnloadHeightmap()
 {
     _heightMapData.mono_bitmap.clear();
     _heightMapData.width = 0;
@@ -748,7 +748,7 @@ void mapgen_unload_heightmap()
 /**
  * Applies box blur to the surface N times
  */
-static void mapgen_smooth_heightmap(std::vector<uint8_t>& src, int32_t strength)
+static void MapGenSmoothHeightmap(std::vector<uint8_t>& src, int32_t strength)
 {
     // Create buffer to store one channel
     std::vector<uint8_t> dest(src.size());
@@ -791,7 +791,7 @@ static void mapgen_smooth_heightmap(std::vector<uint8_t>& src, int32_t strength)
     }
 }
 
-void mapgen_generate_from_heightmap(mapgen_settings* settings)
+void MapGenGenerateFromHeightmap(mapgen_settings* settings)
 {
     openrct2_assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
     openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
@@ -802,11 +802,11 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
     // Get technical map size, +2 for the black tiles around the map
     auto maxWidth = static_cast<int32_t>(_heightMapData.width + 2);
     auto maxHeight = static_cast<int32_t>(_heightMapData.height + 2);
-    map_init({ maxHeight, maxWidth });
+    MapInit({ maxHeight, maxWidth });
 
     if (settings->smooth_height_map)
     {
-        mapgen_smooth_heightmap(dest, settings->smooth_strength);
+        MapGenSmoothHeightmap(dest, settings->smooth_strength);
     }
 
     uint8_t maxValue = 255;
@@ -829,7 +829,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
 
         if (minValue == maxValue)
         {
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE, {});
+            ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE, {});
             return;
         }
     }
@@ -846,7 +846,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
         {
             // The x and y axis are flipped in the world, so this uses y for x and x for y.
             auto tileCoords = MapgenHeightmapCoordToTileCoordsXY(x, y);
-            auto* const surfaceElement = map_get_surface_element_at(tileCoords.ToCoordsXY());
+            auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
 
@@ -880,7 +880,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
                 for (uint32_t x = 0; x < _heightMapData.width; x++)
                 {
                     auto tileCoords = MapgenHeightmapCoordToTileCoordsXY(x, y);
-                    numTilesChanged += tile_smooth(tileCoords);
+                    numTilesChanged += TileSmooth(tileCoords);
                 }
             }
 

@@ -159,8 +159,8 @@ static constexpr const uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4
     },
 };
 
-static paint_struct* PaintMonorailCyclesUtil7C(
-    paint_session& session, bool flip, ImageId imageId, int8_t xOffset, int8_t yOffset, int16_t boundBoxLengthX,
+static PaintStruct* PaintMonorailCyclesUtil7C(
+    PaintSession& session, bool flip, ImageId imageId, int8_t xOffset, int8_t yOffset, int16_t boundBoxLengthX,
     int16_t boundBoxLengthY, int8_t boundBoxLengthZ, int16_t zOffset, int16_t boundBoxOffsetX, int16_t boundBoxOffsetY,
     int16_t boundBoxOffsetZ, uint32_t rotation)
 {
@@ -178,7 +178,7 @@ static paint_struct* PaintMonorailCyclesUtil7C(
 
 /** rct2: 0x0088AD48 */
 static void PaintMonorailCyclesTrackFlat(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MonorailCyclesTrackPiecesFlat[(direction & 1)]);
@@ -187,25 +187,25 @@ static void PaintMonorailCyclesTrackFlat(
 
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
 
-    metal_a_supports_paint_setup(
+    MetalASupportsPaintSetup(
         session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, height,
         session.TrackColours[SCHEME_SUPPORTS]);
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0088ADD8 */
 static void PaintMonorailCyclesStation(
-    paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     ImageId imageId;
@@ -216,11 +216,11 @@ static void PaintMonorailCyclesStation(
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMonorailCyclesFlatSwNe);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 0, height });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 1 } });
 
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else if (direction == 1 || direction == 3)
     {
@@ -228,22 +228,22 @@ static void PaintMonorailCyclesStation(
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMonorailCyclesFlatNwSe);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 0, 0, height });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
 
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     track_paint_util_draw_station(session, ride, direction, height, trackElement);
 
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0088AD88 */
 static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
@@ -254,22 +254,22 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
             break;
         case 2:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
             break;
         case 3:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 static constexpr const uint8_t monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[] = {
@@ -281,7 +281,7 @@ static constexpr const uint8_t monorail_cycles_right_quarter_turn_3_tiles_to_lef
 
 /** rct2: 0x0088AD98 */
 static void PaintMonorailCyclesTrackRightQuarterTurn3Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
@@ -304,7 +304,7 @@ static constexpr const int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportSp
 
 /** rct2: 0x0088ADB8 */
 static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
@@ -317,48 +317,48 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     switch (trackSequence)
     {
         case 0:
-            metal_a_supports_paint_setup(
+            MetalASupportsPaintSetup(
                 session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, supportSpecial, supportHeight,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             if (direction == 0)
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 8, supportSpecial,
                     supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 7, supportSpecial,
                     supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 5, supportSpecial,
                     supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 6, supportSpecial,
                     supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 5:
             if (direction == 0)
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, (direction & 1) ? METAL_SUPPORTS_STICK : METAL_SUPPORTS_STICK_ALT, 7, supportSpecial,
                     supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, (direction & 1) ? METAL_SUPPORTS_STICK : METAL_SUPPORTS_STICK_ALT, 5, supportSpecial,
                     supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, (direction & 1) ? METAL_SUPPORTS_STICK : METAL_SUPPORTS_STICK_ALT, 6, supportSpecial,
                     supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, (direction & 1) ? METAL_SUPPORTS_STICK : METAL_SUPPORTS_STICK_ALT, 8, supportSpecial,
                     supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 6:
-            metal_a_supports_paint_setup(
+            MetalASupportsPaintSetup(
                 session, (direction & 1) ? METAL_SUPPORTS_STICK : METAL_SUPPORTS_STICK_ALT, 4, supportSpecial, supportHeight,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
@@ -366,60 +366,58 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
 
     if (direction == 0 && trackSequence == 0)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_0);
+        PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_0);
+        PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
 
     switch (trackSequence)
     {
         case 0:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC, direction), 0xFFFF, 0);
             break;
         case 2:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction),
+                PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction),
                 0xFFFF, 0);
             break;
         case 3:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4, direction), 0xFFFF, 0);
             break;
         case 5:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
-                    SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction),
+                PaintUtilRotateSegments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction),
                 0xFFFF, 0);
             break;
         case 6:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8, direction), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8, direction), 0xFFFF, 0);
             break;
     }
 
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0088ADA8 */
 static void PaintMonorailCyclesTrackLeftQuarterTurn5Tiles(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -428,7 +426,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn5Tiles(
 
 /** rct2: 0x0088ADC8 */
 static void PaintMonorailCyclesTrackSBendLeft(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction == 2 || direction == 3)
@@ -462,22 +460,19 @@ static void PaintMonorailCyclesTrackSBendLeft(
     {
         if (trackSequence == 0)
         {
-            paint_util_push_tunnel_left(session, height, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
         }
 
         switch (trackSequence)
         {
             case 0:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_STICK, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -485,21 +480,21 @@ static void PaintMonorailCyclesTrackSBendLeft(
     {
         if (trackSequence == 3)
         {
-            paint_util_push_tunnel_right(session, height, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_0);
         }
 
         switch (trackSequence)
         {
             case 0:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_STICK_ALT, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 0, height - 2, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
@@ -508,36 +503,34 @@ static void PaintMonorailCyclesTrackSBendLeft(
     switch (trackSequence)
     {
         case 0:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction & 1), 0xFFFF,
-                0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction & 1), 0xFFFF, 0);
             break;
         case 1:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
+                PaintUtilRotateSegments(
                     SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4, direction & 1),
                 0xFFFF, 0);
             break;
         case 2:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
+                PaintUtilRotateSegments(
                     SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC, direction & 1),
                 0xFFFF, 0);
             break;
         case 3:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0, direction & 1), 0xFFFF,
-                0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0, direction & 1), 0xFFFF, 0);
             break;
     }
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x*/
 static void PaintMonorailCyclesTrackSBendRight(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction == 2 || direction == 3)
@@ -571,22 +564,20 @@ static void PaintMonorailCyclesTrackSBendRight(
     {
         if (trackSequence == 0)
         {
-            paint_util_push_tunnel_left(session, height, TUNNEL_0);
+            PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
         }
 
         switch (trackSequence)
         {
             case 0:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_STICK, 8, 0, height - 2, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -594,21 +585,21 @@ static void PaintMonorailCyclesTrackSBendRight(
     {
         if (trackSequence == 3)
         {
-            paint_util_push_tunnel_right(session, height, TUNNEL_0);
+            PaintUtilPushTunnelRight(session, height, TUNNEL_0);
         }
 
         switch (trackSequence)
         {
             case 0:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_STICK_ALT, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                metal_a_supports_paint_setup(
+                MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
@@ -617,31 +608,29 @@ static void PaintMonorailCyclesTrackSBendRight(
     switch (trackSequence)
     {
         case 0:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC, direction & 1), 0xFFFF,
-                0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC, direction & 1), 0xFFFF, 0);
             break;
         case 1:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
+                PaintUtilRotateSegments(
                     SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC, direction & 1),
                 0xFFFF, 0);
             break;
         case 2:
-            paint_util_set_segment_support_height(
+            PaintUtilSetSegmentSupportHeight(
                 session,
-                paint_util_rotate_segments(
+                PaintUtilRotateSegments(
                     SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4, direction & 1),
                 0xFFFF, 0);
             break;
         case 3:
-            paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8, direction & 1), 0xFFFF,
-                0);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8, direction & 1), 0xFFFF, 0);
             break;
     }
-    paint_util_set_general_support_height(session, height + 32, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /**

@@ -16,16 +16,16 @@
 #include <optional>
 #include <vector>
 
-struct paint_session;
+struct PaintSession;
 struct RecordedPaintSession;
-struct paint_struct;
+struct PaintStruct;
 struct rct_drawpixelinfo;
 struct TileElement;
 struct rct_window;
 struct EntityBase;
 struct Guest;
 struct Staff;
-struct paint_entry;
+struct PaintEntry;
 
 // Flags must currenly retain their values to avoid breaking plugins.
 // Values can be changed when plugins move to using named constants.
@@ -94,7 +94,7 @@ constexpr uint16_t ViewportInteractionItemAll = std::numeric_limits<uint16_t>::m
 struct InteractionInfo
 {
     InteractionInfo() = default;
-    InteractionInfo(const paint_struct* ps);
+    InteractionInfo(const PaintStruct* ps);
     CoordsXY Loc;
     TileElement* Element{};
     EntityBase* Entity{};
@@ -109,7 +109,7 @@ struct InteractionInfo
  */
 extern uint8_t gShowGridLinesRefCount;
 extern uint8_t gShowLandRightsRefCount;
-extern uint8_t gShowConstuctionRightsRefCount;
+extern uint8_t gShowConstructionRightsRefCount;
 
 // rct2: 0x014234BC
 extern rct_viewport* g_music_tracking_viewport;
@@ -117,7 +117,7 @@ extern ScreenCoordsXY gSavedView;
 extern ZoomLevel gSavedViewZoom;
 extern uint8_t gSavedViewRotation;
 
-extern paint_entry* gNextFreePaintStruct;
+extern PaintEntry* gNextFreePaintStruct;
 extern uint8_t gCurrentRotation;
 
 void viewport_init_all();
@@ -154,7 +154,7 @@ void viewport_set_visibility(uint8_t mode);
 InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t flags);
 InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
-InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint32_t viewFlags, uint16_t filter);
+InteractionInfo set_interaction_info_from_paint_session(PaintSession* session, uint32_t viewFlags, uint16_t filter);
 InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionLeftOver(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords);
@@ -178,4 +178,4 @@ int32_t get_height_marker_offset();
 
 void viewport_set_saved_view();
 
-VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFlags);
+VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags);

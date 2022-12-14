@@ -26,15 +26,15 @@ namespace OpenRCT2::Drawing
         virtual void FilterRect(
             rct_drawpixelinfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
         virtual void DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line) abstract;
-        virtual void DrawSprite(rct_drawpixelinfo* dpi, const ImageId& image, int32_t x, int32_t y) abstract;
+        virtual void DrawSprite(rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y) abstract;
         virtual void DrawSpriteRawMasked(
-            rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId& maskImage, const ImageId& colourImage) abstract;
+            rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) abstract;
         virtual void DrawSpriteSolid(
-            rct_drawpixelinfo* dpi, const ImageId& image, int32_t x, int32_t y, uint8_t colour) abstract;
+            rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) abstract;
         virtual void DrawGlyph(
-            rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& palette) abstract;
+            rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) abstract;
         virtual void DrawBitmap(
-            rct_drawpixelinfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x,
+            rct_drawpixelinfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
             int32_t y) abstract;
     };
 

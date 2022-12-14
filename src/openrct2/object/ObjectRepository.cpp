@@ -121,6 +121,7 @@ public:
             item.Generation = object->GetGeneration();
             item.Identifier = object->GetIdentifier();
             item.ObjectEntry = object->GetObjectEntry();
+            item.Version = object->GetVersion();
             item.Path = path;
             item.Name = object->GetName();
             item.Authors = object->GetAuthors();
@@ -419,6 +420,7 @@ private:
         {
             conflict = FindObject(item.Identifier);
         }
+
         if (conflict == nullptr)
         {
             size_t index = _items.size();
@@ -433,6 +435,21 @@ private:
             {
                 _itemMap[item.ObjectEntry] = index;
             }
+            return true;
+        }
+        // When there is a conflict between a DAT file and a JSON file, the JSON should take precedence.
+        else if (item.Generation == ObjectGeneration::JSON && conflict->Generation == ObjectGeneration::DAT)
+        {
+            const auto id = conflict->Id;
+            const auto oldPath = conflict->Path;
+            _items[id] = item;
+            _items[id].Id = id;
+            if (!item.Identifier.empty())
+            {
+                _newItemMap[item.Identifier] = id;
+            }
+
+            Console::Error::WriteLine("Object conflict: '%s' was overridden by '%s'", oldPath.c_str(), item.Path.c_str());
             return true;
         }
 
@@ -567,7 +584,7 @@ private:
         auto fileName = GetFileNameForNewObject(generation, name);
         auto extension = (generation == ObjectGeneration::DAT ? u8".DAT" : u8".parkobj");
         auto fullPath = Path::Combine(userObjPath, fileName + extension);
-        auto counter = 1U;
+        auto counter = 1u;
         while (File::Exists(fullPath))
         {
             counter++;

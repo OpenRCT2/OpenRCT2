@@ -57,7 +57,7 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
     MakeWidget({  2, 21}, {138, 11}, WindowWidgetType::FlatBtn,     WindowColour::Primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
 
     MakeWidget({142,  0}, {356, 34}, WindowWidgetType::ImgBtn,      WindowColour::Tertiary                                                    ), // Middle outset panel
-    MakeWidget({144,  2}, {352, 30}, WindowWidgetType::Placeholder, WindowColour::Tertiary                                                    ), // Middle inset panel
+    MakeWidget({144,  2}, {352, 30}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary                                                    ), // Middle inset panel
     MakeWidget({147,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
     MakeWidget({469,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
 
@@ -107,11 +107,11 @@ static void WindowGameBottomToolbarInvalidateDirtyWidgets(rct_window* w);
  */
 rct_window* WindowGameBottomToolbarOpen()
 {
-    int32_t screenWidth = context_get_width();
-    int32_t screenHeight = context_get_height();
+    int32_t screenWidth = ContextGetWidth();
+    int32_t screenHeight = ContextGetHeight();
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
+    uint32_t line_height = font_get_line_height(FontStyle::Medium);
     uint32_t toolbar_height = line_height * 2 + 12;
 
     rct_window* window = WindowCreate(
@@ -142,18 +142,18 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, WidgetIndex widgetInde
         case WIDX_LEFT_OUTSET:
         case WIDX_MONEY:
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-                context_open_window(WindowClass::Finances);
+                ContextOpenWindow(WindowClass::Finances);
             break;
         case WIDX_GUESTS:
-            context_open_window_view(WV_PARK_GUESTS);
+            ContextOpenWindowView(WV_PARK_GUESTS);
             break;
         case WIDX_PARK_RATING:
-            context_open_window_view(WV_PARK_RATING);
+            ContextOpenWindowView(WV_PARK_RATING);
             break;
         case WIDX_MIDDLE_INSET:
             if (News::IsQueueEmpty())
             {
-                context_open_window(WindowClass::RecentNews);
+                ContextOpenWindow(WindowClass::RecentNews);
             }
             else
             {
@@ -183,7 +183,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, WidgetIndex widgetInde
             break;
         case WIDX_RIGHT_OUTSET:
         case WIDX_DATE:
-            context_open_window(WindowClass::RecentNews);
+            ContextOpenWindow(WindowClass::RecentNews);
             break;
     }
 }
@@ -220,11 +220,11 @@ static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const Widget
 static void WindowGameBottomToolbarInvalidate(rct_window* w)
 {
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
+    uint32_t line_height = font_get_line_height(FontStyle::Medium);
 
     // Reset dimensions as appropriate -- in case we're switching languages.
     w->height = line_height * 2 + 12;
-    w->windowPos.y = context_get_height() - w->height;
+    w->windowPos.y = ContextGetHeight() - w->height;
 
     // Change height of widgets in accordance with line height.
     w->widgets[WIDX_LEFT_OUTSET].bottom = w->widgets[WIDX_MIDDLE_OUTSET].bottom = w->widgets[WIDX_RIGHT_OUTSET].bottom
@@ -255,7 +255,7 @@ static void WindowGameBottomToolbarInvalidate(rct_window* w)
     w->widgets[WIDX_DATE].bottom = line_height + 1;
 
     // Anchor the middle and right panel to the right
-    int32_t x = context_get_width();
+    int32_t x = ContextGetWidth();
     w->width = x;
     x--;
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;
@@ -291,7 +291,7 @@ static void WindowGameBottomToolbarInvalidate(rct_window* w)
         else
         {
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Placeholder;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 0;
@@ -302,30 +302,30 @@ static void WindowGameBottomToolbarInvalidate(rct_window* w)
     {
         News::Item* newsItem = News::GetItem(0);
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Placeholder;
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 2;
-        w->disabled_widgets &= ~(1ULL << WIDX_NEWS_SUBJECT);
-        w->disabled_widgets &= ~(1ULL << WIDX_NEWS_LOCATE);
+        w->disabled_widgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
+        w->disabled_widgets &= ~(1uLL << WIDX_NEWS_LOCATE);
 
         // Find out if the news item is no longer valid
         auto subjectLoc = News::GetSubjectLocation(newsItem->Type, newsItem->Assoc);
 
         if (!subjectLoc.has_value())
-            w->disabled_widgets |= (1ULL << WIDX_NEWS_LOCATE);
+            w->disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
 
         if (!(newsItem->TypeHasSubject()))
         {
-            w->disabled_widgets |= (1ULL << WIDX_NEWS_SUBJECT);
+            w->disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
         }
 
         if (newsItem->HasButton())
         {
-            w->disabled_widgets |= (1ULL << WIDX_NEWS_SUBJECT);
-            w->disabled_widgets |= (1ULL << WIDX_NEWS_LOCATE);
+            w->disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
+            w->disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
         }
     }
 }
@@ -396,7 +396,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
     gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
+    uint32_t line_height = font_get_line_height(FontStyle::Medium);
 
     // Draw money
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -465,12 +465,12 @@ static void WindowGameBottomToolbarDrawParkRating(
     bar_width = (factor * 114) / 255;
     gfx_fill_rect_inset(
         dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, w->colours[1], INSET_RECT_F_30);
-    if (!(colour & IMAGE_TYPE_REMAP_2_PLUS) || game_is_paused() || (gCurrentRealTimeTicks & 8))
+    if (!(colour & BAR_BLINK) || game_is_paused() || (gCurrentRealTimeTicks & 8))
     {
         if (bar_width > 2)
         {
             gfx_fill_rect_inset(
-                dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour & 0x7FFFFFFF, 0);
+                dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
         }
     }
 
@@ -505,7 +505,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
         = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_DATE
                ? COLOUR_WHITE
                : NOT_TRANSLUCENT(w->colours[0]));
-    StringId stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
+    StringId stringId = DateFormatStringFormatIds[gConfigGeneral.DateFormat];
     auto ft = Formatter();
     ft.Add<StringId>(DateDayNames[day]);
     ft.Add<int16_t>(month);
@@ -513,7 +513,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
     DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
+    uint32_t line_height = font_get_line_height(FontStyle::Medium);
 
     // Temperature
     screenCoords = { w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
@@ -521,7 +521,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
 
     int32_t temperature = gClimateCurrent.Temperature;
     StringId format = STR_CELSIUS_VALUE;
-    if (gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit)
+    if (gConfigGeneral.TemperatureFormat == TemperatureUnit::Fahrenheit)
     {
         temperature = ClimateCelsiusToFahrenheit(temperature);
         format = STR_FAHRENHEIT_VALUE;
@@ -630,6 +630,7 @@ static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_wind
             break;
         }
         case News::ItemType::Money:
+        case News::ItemType::Campaign:
             gfx_draw_sprite(dpi, ImageId(SPR_FINANCE), screenCoords);
             break;
         case News::ItemType::Research:
@@ -662,7 +663,7 @@ static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo* dpi, rct_w
         w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
+    uint32_t line_height = font_get_line_height(FontStyle::Medium);
 
     ScreenCoordsXY middleWidgetCoords(
         w->windowPos.x + middleOutsetWidget->midX(), w->windowPos.y + middleOutsetWidget->top + line_height + 1);

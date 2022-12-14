@@ -939,7 +939,7 @@ const vehicle_boundbox VehicleBoundboxes[16][224] = {
 #pragma region VehiclePaintUtil
 
 static void PaintVehicleRiders(
-    paint_session& session, const Vehicle* vehicle, const CarEntry* carEntry, uint32_t baseImageId, int32_t z,
+    PaintSession& session, const Vehicle* vehicle, const CarEntry* carEntry, uint32_t baseImageId, int32_t z,
     const vehicle_boundbox& bb)
 {
     baseImageId += carEntry->NumCarImages;
@@ -971,7 +971,7 @@ static void PaintVehicleRiders(
 
 // 6D5214
 static void vehicle_sprite_paint(
-    paint_session& session, const Vehicle* vehicle, int32_t spriteNum, const vehicle_boundbox& bb, int32_t z,
+    PaintSession& session, const Vehicle* vehicle, int32_t spriteNum, const vehicle_boundbox& bb, int32_t z,
     const CarEntry* carEntry)
 {
     if (carEntry->draw_order >= std::size(VehicleBoundboxes))
@@ -1008,7 +1008,7 @@ static void vehicle_sprite_paint(
 
 // 6D520E
 static void VehicleSpritePaintWithSwinging(
-    paint_session& session, const Vehicle* vehicle, int32_t spriteNum, int32_t boundingBoxNum, int32_t z,
+    PaintSession& session, const Vehicle* vehicle, int32_t spriteNum, int32_t boundingBoxNum, int32_t z,
     const CarEntry* carEntry)
 {
     vehicle_sprite_paint(
@@ -1017,7 +1017,7 @@ static void VehicleSpritePaintWithSwinging(
 }
 
 static void VehicleSpritePaintRestraints(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     int32_t boundingBoxNum = YawTo16(imageDirection);
     auto restraintFrame = ((vehicle->restraints_position - 64) / 64) * 4;
@@ -1032,8 +1032,8 @@ static void VehicleSpritePaintRestraints(
 #pragma region FlatSlope
 
 // 6D51DE
-static void VehicleSpriteFlatUnbanked(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatUnbanked(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // Restraint animations are only drawn for vehicles that are in a cardinal direction (north, east, south, west)
     if (vehicle->restraints_position >= 64 && carEntry->GroupEnabled(SpriteGroupType::RestraintAnimation)
@@ -1048,8 +1048,8 @@ static void VehicleSpriteFlatUnbanked(
 }
 
 // 6D4EE7
-static void vehicle_sprite_0_1(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedLeft22(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::FlatBanked22))
     {
@@ -1059,13 +1059,13 @@ static void vehicle_sprite_0_1(
     }
     else
     {
-        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D4F34
-static void vehicle_sprite_0_2(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedLeft45(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::FlatBanked45))
     {
@@ -1075,13 +1075,13 @@ static void vehicle_sprite_0_2(
     }
     else
     {
-        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D4F0C
-static void vehicle_sprite_0_3(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedRight22(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::FlatBanked22))
     {
@@ -1091,13 +1091,13 @@ static void vehicle_sprite_0_3(
     }
     else
     {
-        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D4F5C
-static void vehicle_sprite_0_4(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedRight45(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::FlatBanked45))
     {
@@ -1107,13 +1107,13 @@ static void vehicle_sprite_0_4(
     }
     else
     {
-        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D4F84
-static void vehicle_sprite_0_5(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedLeft67(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -1127,13 +1127,13 @@ static void vehicle_sprite_0_5(
     }
     else
     {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D4FE4
-static void vehicle_sprite_0_6(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedLeft90(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -1147,13 +1147,13 @@ static void vehicle_sprite_0_6(
     }
     else
     {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D5055
-static void vehicle_sprite_0_7(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedLeft112(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -1167,13 +1167,13 @@ static void vehicle_sprite_0_7(
     }
     else
     {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D50C6
-static void vehicle_sprite_0_8(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedLeft135(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -1187,13 +1187,13 @@ static void vehicle_sprite_0_8(
     }
     else
     {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D5137
-static void vehicle_sprite_0_9(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedLeft157(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -1207,13 +1207,13 @@ static void vehicle_sprite_0_9(
     }
     else
     {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D4FB1
-static void vehicle_sprite_0_10(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedRight67(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -1227,13 +1227,13 @@ static void vehicle_sprite_0_10(
     }
     else
     {
-        vehicle_sprite_0_4(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D501B
-static void vehicle_sprite_0_11(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedRight90(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -1247,13 +1247,13 @@ static void vehicle_sprite_0_11(
     }
     else
     {
-        vehicle_sprite_0_4(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D508C
-static void vehicle_sprite_0_12(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedRight112(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -1267,13 +1267,13 @@ static void vehicle_sprite_0_12(
     }
     else
     {
-        vehicle_sprite_0_4(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D50FD
-static void vehicle_sprite_0_13(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedRight135(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -1287,13 +1287,13 @@ static void vehicle_sprite_0_13(
     }
     else
     {
-        vehicle_sprite_0_4(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D516E
-static void vehicle_sprite_0_14(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchFlatBankedRight157(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -1307,109 +1307,109 @@ static void vehicle_sprite_0_14(
     }
     else
     {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D4EE4
-static void vehicle_sprite_0_16(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchUninvertedFlatBankedLeft22(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     carEntry--;
-    vehicle_sprite_0_1(session, vehicle, imageDirection, z, carEntry);
+    VehiclePitchFlatBankedLeft22(session, vehicle, imageDirection, z, carEntry);
 }
 
 // 6D4F31
-static void vehicle_sprite_0_17(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchUninvertedFlatBankedLeft45(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     carEntry--;
-    vehicle_sprite_0_2(session, vehicle, imageDirection, z, carEntry);
+    VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
 }
 
 // 6D4F09
-static void vehicle_sprite_0_18(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchUninvertedFlatBankedRight22(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     carEntry--;
-    vehicle_sprite_0_3(session, vehicle, imageDirection, z, carEntry);
+    VehiclePitchFlatBankedRight22(session, vehicle, imageDirection, z, carEntry);
 }
 
 // 6D4F59
-static void vehicle_sprite_0_19(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchUninvertedFlatBankedRight45(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     carEntry--;
-    vehicle_sprite_0_4(session, vehicle, imageDirection, z, carEntry);
+    VehiclePitchFlatBankedRight45(session, vehicle, imageDirection, z, carEntry);
 }
 
 // 6D51D7
 static void VehiclePitchFlat(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3DE4:
     switch (vehicle->bank_rotation)
     {
         case 0:
-            VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
             break;
         case 1:
-            vehicle_sprite_0_1(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedLeft22(session, vehicle, imageDirection, z, carEntry);
             break;
         case 2:
-            vehicle_sprite_0_2(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
             break;
         case 3:
-            vehicle_sprite_0_3(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedRight22(session, vehicle, imageDirection, z, carEntry);
             break;
         case 4:
-            vehicle_sprite_0_4(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedRight45(session, vehicle, imageDirection, z, carEntry);
             break;
         case 5:
-            vehicle_sprite_0_5(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedLeft67(session, vehicle, imageDirection, z, carEntry);
             break;
         case 6:
-            vehicle_sprite_0_6(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedLeft90(session, vehicle, imageDirection, z, carEntry);
             break;
         case 7:
-            vehicle_sprite_0_7(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedLeft112(session, vehicle, imageDirection, z, carEntry);
             break;
         case 8:
-            vehicle_sprite_0_8(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedLeft135(session, vehicle, imageDirection, z, carEntry);
             break;
         case 9:
-            vehicle_sprite_0_9(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedLeft157(session, vehicle, imageDirection, z, carEntry);
             break;
         case 10:
-            vehicle_sprite_0_10(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedRight67(session, vehicle, imageDirection, z, carEntry);
             break;
         case 11:
-            vehicle_sprite_0_11(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedRight90(session, vehicle, imageDirection, z, carEntry);
             break;
         case 12:
-            vehicle_sprite_0_12(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedRight112(session, vehicle, imageDirection, z, carEntry);
             break;
         case 13:
-            vehicle_sprite_0_13(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedRight135(session, vehicle, imageDirection, z, carEntry);
             break;
         case 14:
-            vehicle_sprite_0_14(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatBankedRight157(session, vehicle, imageDirection, z, carEntry);
             break;
         case 15:
             // what is roll 15?
-            VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
             break;
         case 16:
-            vehicle_sprite_0_16(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchUninvertedFlatBankedLeft22(session, vehicle, imageDirection, z, carEntry);
             break;
         case 17:
-            vehicle_sprite_0_17(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchUninvertedFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
             break;
         case 18:
-            vehicle_sprite_0_18(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchUninvertedFlatBankedRight22(session, vehicle, imageDirection, z, carEntry);
             break;
         case 19:
-            vehicle_sprite_0_19(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchUninvertedFlatBankedRight45(session, vehicle, imageDirection, z, carEntry);
             break;
     }
 }
@@ -1422,7 +1422,7 @@ static void VehiclePitchFlat(
 
 // 6D4614
 static void VehiclePitchUp12Unbanked(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes12))
     {
@@ -1438,7 +1438,7 @@ static void VehiclePitchUp12Unbanked(
 
 // 6D4662
 static void VehiclePitchUp12BankedLeft22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes12Banked22))
     {
@@ -1454,7 +1454,7 @@ static void VehiclePitchUp12BankedLeft22(
 
 // 6D46DB
 static void VehiclePitchUp12BankedLeft45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes12Banked45))
     {
@@ -1470,7 +1470,7 @@ static void VehiclePitchUp12BankedLeft45(
 
 // 6D467D
 static void VehiclePitchUp12BankedRight22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes12Banked22))
     {
@@ -1486,7 +1486,7 @@ static void VehiclePitchUp12BankedRight22(
 
 // 6D46FD
 static void VehiclePitchUp12BankedRight45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes12Banked45))
     {
@@ -1502,7 +1502,7 @@ static void VehiclePitchUp12BankedRight45(
 
 // 6D460D
 static void VehiclePitchUp12(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3C04:
     switch (vehicle->bank_rotation)
@@ -1545,7 +1545,7 @@ static void VehiclePitchUp12(
 
 // 6D4791
 static void VehiclePitchUp25Unbanked(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25))
     {
@@ -1561,7 +1561,7 @@ static void VehiclePitchUp25Unbanked(
 
 // 6D4833
 static void VehiclePitchUp25BankedLeft22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked22))
     {
@@ -1577,7 +1577,7 @@ static void VehiclePitchUp25BankedLeft22(
 
 // 6D48D6
 static void VehiclePitchUp25BankedLeft45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked45))
     {
@@ -1598,7 +1598,7 @@ static void VehiclePitchUp25BankedLeft45(
 
 // 6D4858
 static void VehiclePitchUp25BankedRight22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked22))
     {
@@ -1614,7 +1614,7 @@ static void VehiclePitchUp25BankedRight22(
 
 // 6D4910
 static void VehiclePitchUp25BankedRight45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked45))
     {
@@ -1633,7 +1633,7 @@ static void VehiclePitchUp25BankedRight45(
 }
 
 static void VehiclePitchUp25BankedLeft67(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked67))
     {
@@ -1648,7 +1648,7 @@ static void VehiclePitchUp25BankedLeft67(
 }
 
 static void VehiclePitchUp25BankedLeft90(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked90))
     {
@@ -1663,7 +1663,7 @@ static void VehiclePitchUp25BankedLeft90(
 }
 
 static void VehiclePitchUp25BankedLeft112(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -1678,7 +1678,7 @@ static void VehiclePitchUp25BankedLeft112(
 }
 
 static void VehiclePitchUp25BankedLeft135(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -1693,7 +1693,7 @@ static void VehiclePitchUp25BankedLeft135(
 }
 
 static void VehiclePitchUp25BankedLeft157(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -1708,7 +1708,7 @@ static void VehiclePitchUp25BankedLeft157(
 }
 
 static void VehiclePitchUp25BankedRight67(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked67))
     {
@@ -1723,7 +1723,7 @@ static void VehiclePitchUp25BankedRight67(
 }
 
 static void VehiclePitchUp25BankedRight90(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked90))
     {
@@ -1738,7 +1738,7 @@ static void VehiclePitchUp25BankedRight90(
 }
 
 static void VehiclePitchUp25BankedRight112(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -1753,7 +1753,7 @@ static void VehiclePitchUp25BankedRight112(
 }
 
 static void VehiclePitchUp25BankedRight135(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -1768,7 +1768,7 @@ static void VehiclePitchUp25BankedRight135(
 }
 
 static void VehiclePitchUp25BankedRight157(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -1784,7 +1784,7 @@ static void VehiclePitchUp25BankedRight157(
 
 // 6D476C
 static void VehiclePitchUp25(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3CA4:
     switch (vehicle->bank_rotation)
@@ -1860,7 +1860,7 @@ static void VehiclePitchUp25(
 
 // 6D49DC
 static void VehiclePitchUp42Unbanked(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42))
     {
@@ -1875,7 +1875,7 @@ static void VehiclePitchUp42Unbanked(
 }
 
 static void VehiclePitchUp42BankedLeft22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked22))
     {
@@ -1890,7 +1890,7 @@ static void VehiclePitchUp42BankedLeft22(
 }
 
 static void VehiclePitchUp42BankedLeft45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked45))
     {
@@ -1905,7 +1905,7 @@ static void VehiclePitchUp42BankedLeft45(
 }
 
 static void VehiclePitchUp42BankedRight22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked22))
     {
@@ -1920,7 +1920,7 @@ static void VehiclePitchUp42BankedRight22(
 }
 
 static void VehiclePitchUp42BankedRight45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked45))
     {
@@ -1935,7 +1935,7 @@ static void VehiclePitchUp42BankedRight45(
 }
 
 static void VehiclePitchUp42BankedLeft67(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked67))
     {
@@ -1950,7 +1950,7 @@ static void VehiclePitchUp42BankedLeft67(
 }
 
 static void VehiclePitchUp42BankedLeft90(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked90))
     {
@@ -1965,7 +1965,7 @@ static void VehiclePitchUp42BankedLeft90(
 }
 
 static void VehiclePitchUp42BankedRight67(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked67))
     {
@@ -1980,7 +1980,7 @@ static void VehiclePitchUp42BankedRight67(
 }
 
 static void VehiclePitchUp42BankedRight90(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked90))
     {
@@ -1996,7 +1996,7 @@ static void VehiclePitchUp42BankedRight90(
 
 // 6D49DC
 static void VehiclePitchUp42(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     switch (vehicle->bank_rotation)
     {
@@ -2034,7 +2034,7 @@ static void VehiclePitchUp42(
 
 // 6D4A31
 static void VehiclePitchUp60Unbanked(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes60))
     {
@@ -2049,7 +2049,7 @@ static void VehiclePitchUp60Unbanked(
 }
 
 static void VehiclePitchUp60BankedLeft22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes60Banked22))
     {
@@ -2064,7 +2064,7 @@ static void VehiclePitchUp60BankedLeft22(
 }
 
 static void VehiclePitchUp60BankedRight22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes60Banked22))
     {
@@ -2079,7 +2079,7 @@ static void VehiclePitchUp60BankedRight22(
 }
 
 static void VehiclePitchUp60(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     switch (vehicle->bank_rotation)
     {
@@ -2105,7 +2105,7 @@ static void VehiclePitchUp60(
 
 // 6D463D
 static void VehiclePitchDown12Unbanked(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes12))
     {
@@ -2121,7 +2121,7 @@ static void VehiclePitchDown12Unbanked(
 
 // 6D469B
 static void VehiclePitchDown12BankedLeft22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes12Banked22))
     {
@@ -2137,7 +2137,7 @@ static void VehiclePitchDown12BankedLeft22(
 
 // 6D4722
 static void VehiclePitchDown12BankedLeft45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes12Banked45))
     {
@@ -2153,7 +2153,7 @@ static void VehiclePitchDown12BankedLeft45(
 
 // 6D46B9
 static void VehiclePitchDown12BankedRight22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes12Banked22))
     {
@@ -2169,7 +2169,7 @@ static void VehiclePitchDown12BankedRight22(
 
 // 6D4747
 static void VehiclePitchDown12BankedRight45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes12Banked45))
     {
@@ -2185,7 +2185,7 @@ static void VehiclePitchDown12BankedRight45(
 
 // 6D4636
 static void VehiclePitchDown12(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3C54:
     switch (vehicle->bank_rotation)
@@ -2262,7 +2262,7 @@ static void VehiclePitchDown12(
 
 // 6D47E4
 static void VehiclePitchDown25Unbanked(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25))
     {
@@ -2278,7 +2278,7 @@ static void VehiclePitchDown25Unbanked(
 
 // 6D4880
 static void VehiclePitchDown25BankedLeft22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked22))
     {
@@ -2294,7 +2294,7 @@ static void VehiclePitchDown25BankedLeft22(
 
 // 6D4953
 static void VehiclePitchDown25BankedLeft45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked45))
     {
@@ -2315,7 +2315,7 @@ static void VehiclePitchDown25BankedLeft45(
 
 // 6D48AB
 static void VehiclePitchDown25BankedRight22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked22))
     {
@@ -2331,7 +2331,7 @@ static void VehiclePitchDown25BankedRight22(
 
 // 6D4996
 static void VehiclePitchDown25BankedRight45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked45))
     {
@@ -2351,7 +2351,7 @@ static void VehiclePitchDown25BankedRight45(
 }
 
 static void VehiclePitchDown25BankedLeft67(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked67))
     {
@@ -2366,7 +2366,7 @@ static void VehiclePitchDown25BankedLeft67(
 }
 
 static void VehiclePitchDown25BankedLeft90(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked90))
     {
@@ -2381,7 +2381,7 @@ static void VehiclePitchDown25BankedLeft90(
 }
 
 static void VehiclePitchDown25BankedLeft11BankedLeft45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -2396,7 +2396,7 @@ static void VehiclePitchDown25BankedLeft11BankedLeft45(
 }
 
 static void VehiclePitchDown25BankedLeft135(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -2411,7 +2411,7 @@ static void VehiclePitchDown25BankedLeft135(
 }
 
 static void VehiclePitchDown25BankedLeft157(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -2426,7 +2426,7 @@ static void VehiclePitchDown25BankedLeft157(
 }
 
 static void VehiclePitchDown25BankedRight67(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked67))
     {
@@ -2441,7 +2441,7 @@ static void VehiclePitchDown25BankedRight67(
 }
 
 static void VehiclePitchDown25BankedRight90(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25Banked90))
     {
@@ -2456,7 +2456,7 @@ static void VehiclePitchDown25BankedRight90(
 }
 
 static void VehiclePitchDown25BankedRight11BankedLeft45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -2471,7 +2471,7 @@ static void VehiclePitchDown25BankedRight11BankedLeft45(
 }
 
 static void VehiclePitchDown25BankedRight135(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -2486,7 +2486,7 @@ static void VehiclePitchDown25BankedRight135(
 }
 
 static void VehiclePitchDown25BankedRight157(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
     {
@@ -2502,7 +2502,7 @@ static void VehiclePitchDown25BankedRight157(
 
 // 6D47DD
 static void VehiclePitchDown25(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3CF4:
     switch (vehicle->bank_rotation)
@@ -2578,7 +2578,7 @@ static void VehiclePitchDown25(
 
 // 6D4A05
 static void VehiclePitchDown42Unbanked(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42))
     {
@@ -2593,7 +2593,7 @@ static void VehiclePitchDown42Unbanked(
 }
 
 static void VehiclePitchDown42BankedLeft22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked22))
     {
@@ -2608,7 +2608,7 @@ static void VehiclePitchDown42BankedLeft22(
 }
 
 static void VehiclePitchDown42BankedLeft45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked45))
     {
@@ -2623,7 +2623,7 @@ static void VehiclePitchDown42BankedLeft45(
 }
 
 static void VehiclePitchDown42BankedRight22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked22))
     {
@@ -2638,7 +2638,7 @@ static void VehiclePitchDown42BankedRight22(
 }
 
 static void VehiclePitchDown42BankedRight45(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked45))
     {
@@ -2653,7 +2653,7 @@ static void VehiclePitchDown42BankedRight45(
 }
 
 static void VehiclePitchDown42BankedLeft67(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked67))
     {
@@ -2668,7 +2668,7 @@ static void VehiclePitchDown42BankedLeft67(
 }
 
 static void VehiclePitchDown42BankedLeft90(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked90))
     {
@@ -2683,7 +2683,7 @@ static void VehiclePitchDown42BankedLeft90(
 }
 
 static void VehiclePitchDown42BankedRight67(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked67))
     {
@@ -2698,7 +2698,7 @@ static void VehiclePitchDown42BankedRight67(
 }
 
 static void VehiclePitchDown42BankedRight90(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked90))
     {
@@ -2713,7 +2713,7 @@ static void VehiclePitchDown42BankedRight90(
 }
 
 static void VehiclePitchDown42(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     switch (vehicle->bank_rotation)
     {
@@ -2751,7 +2751,7 @@ static void VehiclePitchDown42(
 
 // 6D4A59
 static void VehiclePitchDown60Unbanked(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes60))
     {
@@ -2766,7 +2766,7 @@ static void VehiclePitchDown60Unbanked(
 }
 
 static void VehiclePitchDown60BankedLeft22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes60Banked22))
     {
@@ -2781,7 +2781,7 @@ static void VehiclePitchDown60BankedLeft22(
 }
 
 static void VehiclePitchDown60BankedRight22(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes60Banked22))
     {
@@ -2796,7 +2796,7 @@ static void VehiclePitchDown60BankedRight22(
 }
 
 static void VehiclePitchDown60(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     switch (vehicle->bank_rotation)
     {
@@ -2820,7 +2820,7 @@ static void VehiclePitchDown60(
 
 // 6D4A81
 static void VehiclePitchUp75(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes75))
     {
@@ -2836,7 +2836,7 @@ static void VehiclePitchUp75(
 
 // 6D4AE8
 static void VehiclePitchUp90(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes90))
     {
@@ -2856,7 +2856,7 @@ static void VehiclePitchUp90(
 
 // 6D4B57
 static void VehiclePitchUp105(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::SlopesLoop))
     {
@@ -2872,7 +2872,7 @@ static void VehiclePitchUp105(
 
 // 6D4BB7
 static void VehiclePitchUp120(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::SlopesLoop))
     {
@@ -2888,7 +2888,7 @@ static void VehiclePitchUp120(
 
 // 6D4C17
 static void VehiclePitchUp135(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::SlopesLoop))
     {
@@ -2904,7 +2904,7 @@ static void VehiclePitchUp135(
 
 // 6D4C77
 static void VehiclePitchUp150(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::SlopesLoop))
     {
@@ -2920,7 +2920,7 @@ static void VehiclePitchUp150(
 
 // 6D4CD7
 static void VehiclePitchUp165(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::SlopesLoop))
     {
@@ -2940,7 +2940,7 @@ static void VehiclePitchUp165(
 
 // 6D4D37
 static void VehiclePitchInverted(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::SlopeInverted))
     {
@@ -2960,7 +2960,7 @@ static void VehiclePitchInverted(
 
 // 6D4AA3
 static void VehiclePitchDown75(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -2984,7 +2984,7 @@ static void VehiclePitchDown75(
 
 // 6D4B0D
 static void VehiclePitchDown90(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -3012,7 +3012,7 @@ static void VehiclePitchDown90(
 
 // 6D4B80
 static void VehiclePitchDown105(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -3032,7 +3032,7 @@ static void VehiclePitchDown105(
 
 // 6D4BE0
 static void VehiclePitchDown120(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -3052,7 +3052,7 @@ static void VehiclePitchDown120(
 
 // 6D4C40
 static void VehiclePitchDown135(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -3072,7 +3072,7 @@ static void VehiclePitchDown135(
 
 // 6D4CA0
 static void VehiclePitchDown150(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -3092,7 +3092,7 @@ static void VehiclePitchDown150(
 
 // 6D4D00
 static void VehiclePitchDown165(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -3115,8 +3115,9 @@ static void VehiclePitchDown165(
 #pragma region CorkscrewSlopes
 
 // 6D51A5
-static void VehiclePitchCorkscrew(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+template<int32_t corkscrewFrame>
+void VehiclePitchCorkscrew(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
@@ -3124,15 +3125,13 @@ static void VehiclePitchCorkscrew(
     }
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-        // corkscrew slopes begin at pitch 24 and end at pitch 43
-        int32_t corkscrewFrame = vehicle->Pitch - 24;
         int32_t boundingBoxNum = (YawTo4(imageDirection)) + corkscrewFrame * 4 + 144;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, corkscrewFrame);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
     else
     {
-        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3143,8 +3142,8 @@ static void VehiclePitchCorkscrew(
 #pragma region SlopeUp8
 
 // 6D4D67
-static void vehicle_sprite_50_0(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchUp8Unbanked(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes8))
     {
@@ -3159,8 +3158,8 @@ static void vehicle_sprite_50_0(
 }
 
 // 6D4DB5
-static void vehicle_sprite_50_1(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchUp8BankedLeft22(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes8Banked22))
     {
@@ -3170,13 +3169,13 @@ static void vehicle_sprite_50_1(
     }
     else
     {
-        vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp8Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D4DD3
-static void vehicle_sprite_50_3(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchUp8BankedRight22(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes8Banked22))
     {
@@ -3186,76 +3185,30 @@ static void vehicle_sprite_50_3(
     }
     else
     {
-        vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp8Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
 // 6D4D60
 static void VehiclePitchUp8(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3D44:
     switch (vehicle->bank_rotation)
     {
         case 0:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchUp8Unbanked(session, vehicle, imageDirection, z, carEntry);
             break;
         case 1:
-            vehicle_sprite_50_1(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 2:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
+        case 16:
+            VehiclePitchUp8BankedLeft22(session, vehicle, imageDirection, z, carEntry);
             break;
         case 3:
-            vehicle_sprite_50_3(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 4:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 5:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 6:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 7:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 8:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 9:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 10:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 11:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 12:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 13:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 14:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 15:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 16:
-            vehicle_sprite_50_1(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 17:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
-            break;
         case 18:
-            vehicle_sprite_50_3(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchUp8BankedRight22(session, vehicle, imageDirection, z, carEntry);
             break;
-        case 19:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, carEntry);
+        default:
+            VehiclePitchUp8Unbanked(session, vehicle, imageDirection, z, carEntry);
             break;
     }
 }
@@ -3266,7 +3219,7 @@ static void VehiclePitchUp8(
 
 // 6D4E3A
 static void VehiclePitchUp16(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16))
     {
@@ -3286,7 +3239,7 @@ static void VehiclePitchUp16(
 
 // 6D4E8F
 static void VehiclePitchUp50(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes50))
     {
@@ -3309,8 +3262,8 @@ static void VehiclePitchUp50(
 #pragma region SlopeDown8
 
 // 6D4D90
-static void vehicle_sprite_53_0(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchDown8Unbanked(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes8))
     {
@@ -3325,8 +3278,8 @@ static void vehicle_sprite_53_0(
 }
 
 // 6D4DF4
-static void vehicle_sprite_53_1(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchDown8BankedLeft22(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes8Banked22))
     {
@@ -3341,8 +3294,8 @@ static void vehicle_sprite_53_1(
 }
 
 // 6D4E15
-static void vehicle_sprite_53_3(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+static void VehiclePitchDown8BankedRight22(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes8Banked22))
     {
@@ -3358,70 +3311,24 @@ static void vehicle_sprite_53_3(
 
 // 6D4D89
 static void VehiclePitchDown8(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3D94:
     switch (vehicle->bank_rotation)
     {
         case 0:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchDown8Unbanked(session, vehicle, imageDirection, z, carEntry);
             break;
         case 1:
-            vehicle_sprite_53_1(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 2:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
+        case 16:
+            VehiclePitchDown8BankedLeft22(session, vehicle, imageDirection, z, carEntry);
             break;
         case 3:
-            vehicle_sprite_53_3(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 4:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 5:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 6:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 7:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 8:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 9:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 10:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 11:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 12:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 13:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 14:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 15:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 16:
-            vehicle_sprite_53_1(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 17:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
-            break;
         case 18:
-            vehicle_sprite_53_3(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchDown8BankedRight22(session, vehicle, imageDirection, z, carEntry);
             break;
-        case 19:
-            vehicle_sprite_53_0(session, vehicle, imageDirection, z, carEntry);
+        default:
+            VehiclePitchDown8Unbanked(session, vehicle, imageDirection, z, carEntry);
             break;
     }
 }
@@ -3432,7 +3339,7 @@ static void VehiclePitchDown8(
 
 // 6D4E63
 static void VehiclePitchDown16(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16))
     {
@@ -3452,7 +3359,7 @@ static void VehiclePitchDown16(
 
 // 6D4EB8
 static void VehiclePitchDown50(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes50))
     {
@@ -3474,7 +3381,7 @@ static void VehiclePitchDown50(
 
 // 6D47DA
 static void VehiclePitchInvertingDown25(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     carEntry--;
     VehiclePitchDown25(session, vehicle, imageDirection, z, carEntry);
@@ -3482,7 +3389,7 @@ static void VehiclePitchInvertingDown25(
 
 // 6D4A02
 static void VehiclePitchInvertingDown42(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     carEntry--;
     VehiclePitchDown42(session, vehicle, imageDirection, z, carEntry);
@@ -3490,7 +3397,7 @@ static void VehiclePitchInvertingDown42(
 
 // 6D4A56
 static void VehiclePitchInvertingDown60(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     carEntry--;
     VehiclePitchDown60(session, vehicle, imageDirection, z, carEntry);
@@ -3502,7 +3409,7 @@ static void VehiclePitchInvertingDown60(
 
 // 6D4773
 static void VehiclePitchSpiralLift(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::CurvedLiftHill))
     {
@@ -3520,7 +3427,7 @@ static void VehiclePitchSpiralLift(
 
 // 0x009A3B14:
 using vehicle_sprite_func = void (*)(
-    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry);
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry);
 
 // clang-format off
 static constexpr const vehicle_sprite_func PaintFunctionsByPitch[] = {
@@ -3548,26 +3455,26 @@ static constexpr const vehicle_sprite_func PaintFunctionsByPitch[] = {
     VehiclePitchDown135,
     VehiclePitchDown150,
     VehiclePitchDown165,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew, 
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
-    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew<0>,
+    VehiclePitchCorkscrew<1>,
+    VehiclePitchCorkscrew<2>,
+    VehiclePitchCorkscrew<3>,
+    VehiclePitchCorkscrew<4>,
+    VehiclePitchCorkscrew<5>,
+    VehiclePitchCorkscrew<6>,
+    VehiclePitchCorkscrew<7>,
+    VehiclePitchCorkscrew<8>,
+    VehiclePitchCorkscrew<9>,
+    VehiclePitchCorkscrew<10>,
+    VehiclePitchCorkscrew<11>,
+    VehiclePitchCorkscrew<12>,
+    VehiclePitchCorkscrew<13>,
+    VehiclePitchCorkscrew<14>,
+    VehiclePitchCorkscrew<15>,
+    VehiclePitchCorkscrew<16>,
+    VehiclePitchCorkscrew<17>,
+    VehiclePitchCorkscrew<18>,
+    VehiclePitchCorkscrew<19>,
     VehiclePitchFlat, // Half Helix Up Large
     VehiclePitchFlat, // Half Helix Up Small
     VehiclePitchFlat, // Half Helix Down Large
@@ -3593,7 +3500,7 @@ static constexpr const vehicle_sprite_func PaintFunctionsByPitch[] = {
  *
  *  rct2: 0x006D5600
  */
-static void vehicle_visual_splash1_effect(paint_session& session, int32_t z, const Vehicle* vehicle)
+static void vehicle_visual_splash1_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->GetTrackType() != TrackElemType::Watersplash)
     {
@@ -3611,16 +3518,16 @@ static void vehicle_visual_splash1_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29014 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_1_NE_0 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
-    PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { 0, 0, 0 }, { 0, 0, z });
+    PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 0, 0, 0 } });
 }
 
 /**
  *
  *  rct2: 0x006D5696
  */
-static void vehicle_visual_splash2_effect(paint_session& session, int32_t z, const Vehicle* vehicle)
+static void vehicle_visual_splash2_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->sprite_direction & 7)
     {
@@ -3634,16 +3541,16 @@ static void vehicle_visual_splash2_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29046 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_3_NE_0 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
-    PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { 0, 0, 0 }, { 0, 0, z });
+    PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 0, 0, 0 } });
 }
 
 /**
  *
  *  rct2: 0x006D57EE
  */
-static void vehicle_visual_splash3_effect(paint_session& session, int32_t z, const Vehicle* vehicle)
+static void vehicle_visual_splash3_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->sprite_direction & 7)
     {
@@ -3657,16 +3564,16 @@ static void vehicle_visual_splash3_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29014 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_1_NE_0 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
-    PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { 0, 0, 0 }, { 0, 0, z });
+    PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 0, 0, 0 } });
 }
 
 /**
  *
  *  rct2: 0x006D5783
  */
-static void vehicle_visual_splash4_effect(paint_session& session, int32_t z, const Vehicle* vehicle)
+static void vehicle_visual_splash4_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
 {
     Vehicle* vehicle2 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
     if (vehicle2 == nullptr)
@@ -3685,16 +3592,16 @@ static void vehicle_visual_splash4_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29078 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_5_NE_0 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
-    PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z });
+    PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 1, 1, 0 } });
 }
 
 /**
  *
  *  rct2: 0x006D5701
  */
-static void vehicle_visual_splash5_effect(paint_session& session, int32_t z, const Vehicle* vehicle)
+static void vehicle_visual_splash5_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
 {
     Vehicle* vehicle2 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
     if (vehicle2 == nullptr)
@@ -3717,12 +3624,12 @@ static void vehicle_visual_splash5_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29078 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_5_NE_0 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
-    PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z });
+    PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 1, 1, 0 } });
 }
 
-void vehicle_visual_splash_effect(paint_session& session, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
+void vehicle_visual_splash_effect(PaintSession& session, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
 {
     switch (carEntry->effect_visual)
     {
@@ -3751,7 +3658,7 @@ void vehicle_visual_splash_effect(paint_session& session, int32_t z, const Vehic
  *  rct2: 0x006D45F8
  */
 void vehicle_visual_default(
-    paint_session& session, int32_t imageDirection, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
+    PaintSession& session, int32_t imageDirection, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
 {
     if (vehicle->Pitch < std::size(PaintFunctionsByPitch))
     {
@@ -3759,13 +3666,14 @@ void vehicle_visual_default(
     }
 }
 
-void Vehicle::Paint(paint_session& session, int32_t imageDirection) const
+void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     const CarEntry* carEntry;
 
     if (IsCrashedVehicle)
     {
-        PaintAddImageAsParent(session, ImageId(22965 + animation_frame), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
+        PaintAddImageAsParent(
+            session, ImageId(SPR_WATER_PARTICLES_DENSE_0 + animation_frame), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
         return;
     }
 
