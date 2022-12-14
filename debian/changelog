@@ -1,6 +1,69 @@
-openrct2 (0.4.2-develop-1) unstable; urgency=medium
+openrct2 (0.4.3-develop-1) unstable; urgency=medium
 
  * Nightly develop build.
+ 
+openrct2 (0.4.3) stable; urgency=medium
+* Feature: [#17782] The Flying Coaster now has access to boosters and can draw outside loops.
+* Feature: [#17997] The Log Flume can now draw steep pieces down (if vehicle allows it).
+* Feature: [#18312, objects#220, OpenSFX#13] New sound effects for the Hybrid and Single Rail roller coasters.
+* Feature: [#18675] [Plugin] Plugins can refer to g2 image icons by name.
+* Feature: [objects#173] Add alpine coaster vehicle.
+* Feature: [objects#221] Add two extra jungle walls.
+* Feature: [objects#225] Add log cabin roofs.
+* Feature: [OpenMusic#14, OpenMusic#15, OpenMusic#18] Added Galaxy, Acid and Dodgems ride music styles.
+* Improved: [#18013, #18016, #18018, #18019, #18514, objects#224] Added colour presets to Spiral Slide, Dodgems, Boat Hire, Flying Saucers, and Car Ride.
+* Improved: [#18024] Clearer error messages when loading incompatible .park files.
+* Improved: [#18192] Tycoon Park has been added to the Extras tab.
+* Improved: [#18214] Competition scenarios have received their own section.
+* Improved: [#18250] Added modern style file and folder pickers on Windows.
+* Improved: [#18332] Allow Inverted Roller Coaster to draw boosters.
+* Improved: [#18350] Changed ride vehicle list to have less padding.
+* Improved: [#18422] Allow adding images to music objects.
+* Improved: [#18428] [Plugin] Add widget description interfaces to documentation.
+* Improved: [#18487] Mini Helicopters track can now draw spinning tunnels.
+* Improved: [#18591] Order RollerCoaster Tycoon 2 scenarios by difficulty.
+* Improved: [#18607] A new tab for all UCES Scenarios, if it’s installed.
+* Improved: [#18621] OpenGL performance.
+* Change: [#17677] Open campaign window from finished campaign news.
+* Change: [#17998] Show cursor when using inverted mouse dragging.
+* Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
+* Change: [#18381] Convert custom invisible paths to the built-in ones.
+* Change: [OpenSFX#11, OpenMusic#19] First implementation of official replacement asset packs for sound effects & music. 
+* Fix: [#1491] Clearance of the Cash Machine is too low (original bug).
+* Fix: [#1519] “See-through rides” doesn't affect all rides (original bug).
+* Fix: [#6341] “Unlock vehicle limits” does not allow setting fewer vehicles than the vehicle type requires.
+* Fix: [#14312] Research ride type message incorrect.
+* Fix: [#14425] Ride ratings do not skip unallocated ride ids.
+* Fix: [#15969] Guests heading for ride use vanilla behaviour
+* Fix: [#17067] Random Staff Patrol Area clicks.
+* Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
+* Fix: [#17657] When switching from buying land rights to buying construction rights, grid disables and won't re-enable afterwards.
+* Fix: [#17763] Missing validation on invalid characters in file name.
+* Fix: [#17853] Invention name tears while being dragged.
+* Fix: [#18064] Unable to dismiss notification messages.
+* Fix: [#18070] Underground entrance/exit shows through terrain walls (original bug).
+* Fix: [#18094] Underground shops & facilities don't show when adjacent to non-underground path (original bug).
+* Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
+* Fix: [#18134] Underground on-ride photo section partially clips through adjacent terrain edge.
+* Fix: [#18244] Invention DragWindow's starting position is inconsistent.
+* Fix: [#18245] Guests stopping dead in their tracks at railway crossings.
+* Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
+* Fix: [#18354] Overwrite alert does not show when save name has different casing on Windows.
+* Fix: [#18379] Tunnel entrances for underground Mini Golf Hole E are not rendered correctly.
+* Fix: [#18442] About window background is clickable.
+* Fix: [#18449] [Plugin] Change type of listview widgets from 'scroll_view' to 'listview'.
+* Fix: [#18453] Slow walking guests don't get across level crossings in time.
+* Fix: [#18469] Land rights window buttons incorrectly disabled and markers remain visible indefinitely.
+* Fix: [#18459] ‘Highlight path issues’ hides fences for paths with additions.
+* Fix: [#18552] Trains clipping through helixes.
+* Fix: [#18576] Cannot open parks with certain types of corrupt tile elements.
+* Fix: [#18606] JSON objects do not take priority over the DAT files they supersede.
+* Fix: [#18620] [Plugin] Crash when reading widget properties from windows that have both static and tab widgets.
+* Fix: [#18653] Negative ratings multipliers do not appear in Vehicle tab.
+* Fix: [#18696] Construction rights cannot be viewed after all are purchased.
+* Fix: [#18720] Upwards helix is enabled for the Alpine Coaster, even when cheats are off.
+* Fix: [#18755] Ferris Wheel and Circus ghosts not coloured correctly.
+* Fix: [#18802] Game could crash when determining if a mechanic is heading to fix the ride blocking the path.
  
 openrct2 (0.4.2) stable; urgency=medium
 
