@@ -3598,7 +3598,9 @@ STR_6487    :Alterna veure a través dels treballadors
 STR_6488    :{RED}Els visitants es queixen de les llargues cues del parc.{NEWLINE}Considereu escurçar les més problemàtiques o augmentar el rendiment de les atraccions.
 STR_6489    :Error: Versió de parc no compatible
 STR_6490    :Avís: Versió de parc parcialment compatible
+STR_6491    :Aquest parc es va desar amb una versió de l’OpenRCT2 posterior. La versió del parc és v{INT32} i es requereix almenys la versió v{INT32}.
 STR_6492    :Aquest parc es va desar amb una versió antiga de l’OpenRCT2 i no es pot obrir amb aquesta versió. La versió del parc és v{INT32}.
+STR_6493    :Aquest parc es va desar amb una versió de l’OpenRCT2 posterior i es poden haver perdut dades. La versió del parc és v{INT32} i es requereix almenys la versió v{INT32}.
 STR_6494    :Agrupa per tipus d’atracció
 STR_6495    :Agrupa les atraccions per tipus en lloc de mostrar els vehicles per separat.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}

@@ -3590,7 +3590,9 @@ STR_6487    :Personal ausblenden
 STR_6488    :{RED}Die Gäste beschweren sich über die Länge der Warteschlangen in ihrem Park.{NEWLINE}Verkürzen Sie problematische Warteschlangen oder erhöhen Sie den Durchsatz der Fahrgeschäfte.
 STR_6489    :Fehler: Inkompatible Parkversion
 STR_6490    :Warnung: Teilkompatible Parkversion
+STR_6491    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert. Der Park wurde in v{INT32} gespeichert und benötigt mindestens v{INT32}. Sie benutzen im Moment v{INT32}.
 STR_6492    :Dieser Park wurde in einer alten Version von OpenRCT2 gespeichert und kann nicht mit dieser Version von OpenRCT2 geöffnet werden. Park ist v{INT32}.
+STR_6493    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert, einige Daten können verloren gehen. Der Park wurde in v{INT32} gespeichert. Sie benutzen im Moment v{INT32}.
 STR_6494    :Nach Fahrgeschäftstyp gruppieren
 STR_6495    :Fahrgeschäfte nach Fahrgeschäftstyp gruppieren, anstatt jedes Fahrzeug separat anzuzeigen.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3629,6 +3631,10 @@ STR_6528    :Ungültige Streckenparameter!
 STR_6529    :Ungültiger Farbschemaparameter!
 STR_6531    :Die Zeitmaschine
 STR_6532    :Katys Traumwelt
+STR_6533    :{WINDOW_COLOUR_2}Nervenkitzelfaktor: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Intensitätsfaktor: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Übelkeitsfaktor: {BLACK}-{COMMA16}%
+STR_6536    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert. Der Park wurde in v{INT32} gespeichert. Sie benutzen im Moment v{INT32}.
 
 
 #############

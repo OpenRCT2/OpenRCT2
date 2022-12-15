@@ -3597,7 +3597,9 @@ STR_6487    :Alternar empleados invisibles
 STR_6488    :{RED}Los visitantes se quejan de la longitud de las colas en tu parque.{NEWLINE}Considera acortar las colas problemáticas o aumentar el rendimiento de las atracciones.
 STR_6489    :{RED}ERROR: Versión de parque incompatible
 STR_6490    :{RED}ADVERTENCIA: Versión de parque no del todo compatible
-STR_6492    :Este parque fue guardado en una versión más antigua de OpenRCT2 y no puede abrirse con esta versión de OpenRCT2. Este parque es la versión {INT32}.
+STR_6491    :Este parque fue guardado en una versión más reciente de OpenRCT2. Este parque se guardó en la v{INT32} y requiere al menos la v{INT32}. Actualmente estás en la v{INT32}.
+STR_6492    :Este parque fue guardado en una versión más antigua de OpenRCT2 y no puede abrirse con esta versión de OpenRCT2. Este parque es la versión v{INT32}.
+STR_6493    :Este parque fue guardado en una versión más reciente de OpenRCT2, algunos datos podrían perderse. Este parque se guardó en la v{INT32}, actualmente estás en la v{INT32}.
 STR_6494    :Agrupar por tipo de atracción
 STR_6495    :Agrupar las atracciones por tipo en vez de mostrar cada vehículo por separado.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3640,6 +3642,7 @@ STR_6532    :Mundo de Katy
 STR_6533    :{WINDOW_COLOUR_2}Factor de emoción: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Factor de intensidad: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Factor de náusea: {BLACK}-{COMMA16}%
+STR_6536    :Este parque fue guardado en una versión más reciente de OpenRCT2. Este parque se guardó en la v{INT32}, actualmente estás en la v{INT32}.
 
 ##############
 # Escenarios #

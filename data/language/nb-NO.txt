@@ -3605,7 +3605,9 @@ STR_6487    :Skru av/på usynlige ansatte
 STR_6488    :{RED}Gjestene klager på lange køer i parken.{NEWLINE}Prøv å gjøre køer kortere, eller øk kapasiteten til påvirkede attraksjoner.
 STR_6489    :Feil: Inkompatibel parkversjon
 STR_6490    :Advarsel delvis inkompatibel parkversjon
+STR_6491    :Denne parken ble lagret i en nyere versjon av OpenRCT2. Parken er lagret med v{INT32} og krever minst v{INT32} for å lastes inn.
 STR_6492    :Denne parken ble lagret i en eldre versjon av OpenRCT2 og kan ikke åpnes i denne versjonen av OpenRCT2. Parken er lagret med v{INT32}.
+STR_6493    :Denne parken ble lagret i en nyere versjon av OpenRCT2. Noe data kan mangle ved innlasting. Parken er lagret med v{INT32} og krever minst v{INT32} for å lastes inn.
 STR_6494    :Grupper etter attraksjonstype
 STR_6495    :Grupper attraksjoner etter type heller enn å vise hver vogn separat
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}

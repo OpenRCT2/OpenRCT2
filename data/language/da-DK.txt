@@ -3591,7 +3591,9 @@ STR_6487    :Skift gennemsigtig personale
 STR_6488    :{RED}Gæster klager over længden af køerne i din park.{NEWLINE}Overvej at forkorte problematiske køer eller øge forlystelsernes gennemstrømning.
 STR_6489    :Fejl: Inkompatibel Park Version
 STR_6490    :Advarsel: Semi-kompatibel Park Version
+STR_6491    :Denne park blev gemt i en nyere version af OpenRCT2. Parken er v{INT32} og kræver mindst v{INT32}.
 STR_6492    :Denne park er gemt i en ældre version af OpenRCT2, og kan ikke åbnes med denne version af OpenRCT2. Parken er v{INT32}.
+STR_6493    :Denne park blev gemt i en nyere version af OpenRCT2, nogle data kan gå tabt. Parken er v{INT32} og kræver mindst v{INT32}.
 STR_6497    :Klik på et felt for at vise dets felt elementer.{NEWLINE}Ctrl + Klik et felt element for at vælge det direkte.
 STR_6498    :Aktiver for at fastholde kvadratisk kortfacon.
 STR_6499    :Køretøjstype understøttes ikke af spor design formatet
