@@ -17,6 +17,12 @@ PlayerSetGroupAction::PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t g
 {
 }
 
+void PlayerSetGroupAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("playerId", _playerId);
+    visitor.Visit("groupId", _groupId);
+}
+
 uint16_t PlayerSetGroupAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

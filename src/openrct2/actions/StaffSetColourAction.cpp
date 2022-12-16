@@ -25,6 +25,12 @@ StaffSetColourAction::StaffSetColourAction(StaffType staffType, uint8_t colour)
 {
 }
 
+void StaffSetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("staffType", _staffType);
+    visitor.Visit("colour", _colour);
+}
+
 uint16_t StaffSetColourAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

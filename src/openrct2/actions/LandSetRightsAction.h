@@ -33,6 +33,8 @@ public:
     LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership = 0);
     LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, uint8_t ownership = 0);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;

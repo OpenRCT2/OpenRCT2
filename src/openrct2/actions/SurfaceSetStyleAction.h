@@ -22,6 +22,8 @@ public:
     SurfaceSetStyleAction() = default;
     SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     void Serialise(DataSerialiser& stream) override;
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;

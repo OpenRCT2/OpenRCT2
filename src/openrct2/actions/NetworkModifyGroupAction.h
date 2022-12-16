@@ -44,6 +44,8 @@ public:
         ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), const std::string name = "",
         uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::Count);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;

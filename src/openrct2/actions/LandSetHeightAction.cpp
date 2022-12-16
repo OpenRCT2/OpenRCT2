@@ -33,6 +33,13 @@ LandSetHeightAction::LandSetHeightAction(const CoordsXY& coords, uint8_t height,
 {
 }
 
+void LandSetHeightAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_coords);
+    visitor.Visit("height", _height);
+    visitor.Visit("style", _style);
+}
+
 uint16_t LandSetHeightAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;

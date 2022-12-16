@@ -26,6 +26,12 @@ void ScenarioSetSettingAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_setting) << DS_TAG(_value);
 }
 
+void ScenarioSetSettingAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("setting", _setting);
+    visitor.Visit("value", _value);
+}
+
 GameActions::Result ScenarioSetSettingAction::Query() const
 {
     if (_setting >= ScenarioSetSetting::Count)

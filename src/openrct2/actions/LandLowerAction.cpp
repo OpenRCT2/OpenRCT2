@@ -31,6 +31,13 @@ LandLowerAction::LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t
 {
 }
 
+void LandLowerAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_coords);
+    visitor.Visit(_range);
+    visitor.Visit("selectionType", _selectionType);
+}
+
 uint16_t LandLowerAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();

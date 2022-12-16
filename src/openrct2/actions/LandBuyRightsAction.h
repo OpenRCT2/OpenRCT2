@@ -34,6 +34,8 @@ public:
     LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting);
     LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSetting setting);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;

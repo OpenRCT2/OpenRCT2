@@ -21,6 +21,8 @@ public:
     PlayerSetGroupAction() = default;
     PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;

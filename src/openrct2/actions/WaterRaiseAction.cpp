@@ -19,6 +19,11 @@ WaterRaiseAction::WaterRaiseAction(MapRange range)
 {
 }
 
+void WaterRaiseAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_range);
+}
+
 uint16_t WaterRaiseAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();

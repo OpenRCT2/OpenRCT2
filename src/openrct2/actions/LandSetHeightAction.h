@@ -22,6 +22,8 @@ public:
     LandSetHeightAction() = default;
     LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;

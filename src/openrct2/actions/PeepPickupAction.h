@@ -32,6 +32,8 @@ public:
     PeepPickupAction() = default;
     PeepPickupAction(PeepPickupType type, EntityId spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;

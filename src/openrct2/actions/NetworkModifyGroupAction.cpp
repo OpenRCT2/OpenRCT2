@@ -22,6 +22,15 @@ NetworkModifyGroupAction::NetworkModifyGroupAction(
 {
 }
 
+void NetworkModifyGroupAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("type", _type);
+    visitor.Visit("groupId", _groupId);
+    visitor.Visit("name", _name);
+    visitor.Visit("permissionIndex", _permissionIndex);
+    visitor.Visit("permissionState", _permissionState);
+}
+
 uint16_t NetworkModifyGroupAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

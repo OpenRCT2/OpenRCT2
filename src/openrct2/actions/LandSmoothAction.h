@@ -28,6 +28,8 @@ public:
     LandSmoothAction() = default;
     LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;

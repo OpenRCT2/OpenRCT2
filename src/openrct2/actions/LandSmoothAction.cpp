@@ -33,6 +33,14 @@ LandSmoothAction::LandSmoothAction(const CoordsXY& coords, MapRange range, uint8
 {
 }
 
+void LandSmoothAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_coords);
+    visitor.Visit(_range);
+    visitor.Visit("selectionType", _selectionType);
+    visitor.Visit("isLowering", _isLowering);
+}
+
 uint16_t LandSmoothAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();

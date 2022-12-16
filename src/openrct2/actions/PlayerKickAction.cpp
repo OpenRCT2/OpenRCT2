@@ -16,6 +16,11 @@ PlayerKickAction::PlayerKickAction(NetworkPlayerId_t playerId)
 {
 }
 
+void PlayerKickAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("playerId", _playerId);
+}
+
 uint16_t PlayerKickAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

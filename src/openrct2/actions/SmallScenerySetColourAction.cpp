@@ -37,6 +37,16 @@ SmallScenerySetColourAction::SmallScenerySetColourAction(
 {
 }
 
+void SmallScenerySetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    visitor.Visit("quadrant", _quadrant);
+    visitor.Visit("sceneryType", _sceneryType);
+    visitor.Visit("primaryColour", _primaryColour);
+    visitor.Visit("secondaryColour", _secondaryColour);
+    visitor.Visit("tertiaryColour", _tertiaryColour);
+}
+
 uint16_t SmallScenerySetColourAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

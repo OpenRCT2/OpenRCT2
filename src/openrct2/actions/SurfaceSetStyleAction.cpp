@@ -26,6 +26,13 @@ SurfaceSetStyleAction::SurfaceSetStyleAction(MapRange range, ObjectEntryIndex su
 {
 }
 
+void SurfaceSetStyleAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_range);
+    visitor.Visit("surfaceStyle", _surfaceStyle);
+    visitor.Visit("edgeStyle", _edgeStyle);
+}
+
 void SurfaceSetStyleAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
