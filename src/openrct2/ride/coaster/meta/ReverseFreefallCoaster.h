@@ -24,7 +24,7 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_reverse_freefall_rc),
-    SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT),
+    SET_FIELD(Flags, { TrackHasThreeColours, CommonCoaster, CommonCoasterNonAlt } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::LimPoweredLaunch)),
     SET_FIELD(DefaultMode, RideMode::LimPoweredLaunch),
     SET_FIELD(OperatingSettings, { 7, 30, 30, 40, 40, 0 }),

@@ -924,7 +924,7 @@ namespace RCT1
             dst->lift_hill_speed = 5;
 
             dst->music = OBJECT_ENTRY_INDEX_NULL;
-            if (GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+            if (GetRideTypeDescriptor(dst->type).HasFlag(RideTypeFlags::AllowMusic))
             {
                 if (_gameVersion == FILE_VERSION_RCT1)
                 {
@@ -1089,7 +1089,7 @@ namespace RCT1
             }
 
             dst->entrance_style = OBJECT_ENTRY_INDEX_NULL;
-            if (dst->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+            if (dst->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasEntranceExit))
             {
                 // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
                 if (_gameVersion == FILE_VERSION_RCT1)
@@ -1688,7 +1688,7 @@ namespace RCT1
 
                     // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
                     const auto& rtd = GetRideTypeDescriptor(rideType);
-                    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                    if (rtd.HasFlag(RideTypeFlags::IsMaze))
                     {
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }

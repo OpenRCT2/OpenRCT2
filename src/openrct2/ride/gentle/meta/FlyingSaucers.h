@@ -24,11 +24,22 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack4x4),
     SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionFlyingSaucers),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
-                     RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_NO_TRACK |
-                     RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-                     RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
-                     RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
+    SET_FIELD(Flags, { {
+            RideTypeFlags::HasTrackColourMain,
+            RideTypeFlags::HasTrackColourAdditional,
+            RideTypeFlags::HasSinglePieceStation,
+            RideTypeFlags::CannotHaveGaps,
+            RideTypeFlags::NoTestMode,
+            RideTypeFlags::HasNoTrack,
+            RideTypeFlags::TrackNoWalls,
+            RideTypeFlags::FlatRide,
+            RideTypeFlags::HasVehicleColours,
+            RideTypeFlags::MusicOnDefault,
+            RideTypeFlags::AllowMusic,
+            RideTypeFlags::HasEntranceExit,
+            RideTypeFlags::SingleSession,
+            RideTypeFlags::InterestingToLookAt,
+            RideTypeFlags::ListVehiclesSeparately } } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Dodgems)),
     SET_FIELD(DefaultMode, RideMode::Dodgems),
     SET_FIELD(OperatingSettings, { 20, 180, 0, 0, 0, 0 }),

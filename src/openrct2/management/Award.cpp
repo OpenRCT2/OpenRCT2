@@ -293,7 +293,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
     {
         if (ride.status != RideStatus::Open)
             continue;
-        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RideTypeFlags::SellsFood))
             continue;
 
         shops++;
@@ -338,7 +338,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
     {
         if (ride.status != RideStatus::Open)
             continue;
-        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RideTypeFlags::SellsFood))
             continue;
 
         shops++;
@@ -377,7 +377,7 @@ static bool award_is_deserved_best_toilets([[maybe_unused]] int32_t activeAwardT
     const auto& rideManager = GetRideManager();
     auto numToilets = static_cast<size_t>(std::count_if(rideManager.begin(), rideManager.end(), [](const Ride& ride) {
         const auto& rtd = ride.GetRideTypeDescriptor();
-        return rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) && ride.status == RideStatus::Open;
+        return rtd.HasFlag(RideTypeFlags::IsToilet) && ride.status == RideStatus::Open;
     }));
 
     // At least 4 open toilets
@@ -466,7 +466,7 @@ static bool award_is_deserved_best_custom_designed_rides(int32_t activeAwardType
     auto customDesignedRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasTrack))
             continue;
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN)
             continue;
@@ -498,7 +498,7 @@ static bool award_is_deserved_most_dazzling_ride_colours(int32_t activeAwardType
     auto colourfulRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasTrack))
             continue;
 
         countedRides++;

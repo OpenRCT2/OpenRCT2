@@ -22,12 +22,24 @@ constexpr const RideTypeDescriptor AlpineCoasterRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, AlpineRC::GetTrackPaintFunction),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
-                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN
-    | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK
-    | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT
-    | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT| RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
-                     RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT),
+    SET_FIELD(Flags, {
+                RideTypeFlags::HasTrackColourMain,
+                RideTypeFlags::HasTrackColourSupports,
+                RideTypeFlags::HasDataLogging,
+                RideTypeFlags::HasDrops,
+                RideTypeFlags::HasLoadOptions,
+                RideTypeFlags::PeepWillRideAgain,
+                RideTypeFlags::HasVehicleColours,
+                RideTypeFlags::CheckForStalling,
+                RideTypeFlags::HasTrack,
+                RideTypeFlags::AllowMusic,
+                RideTypeFlags::InterestingToLookAt,
+                RideTypeFlags::CanSynchroniseAdjacentStations,
+                RideTypeFlags::HasEntranceExit,
+                RideTypeFlags::HasLargeCurves,
+                RideTypeFlags::NoTestMode,
+                RideTypeFlags::AllowMoreVehiclesThanStationFits,
+                RideTypeFlags::UpInclineRequiresLift } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),

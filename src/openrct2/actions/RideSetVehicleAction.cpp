@@ -217,7 +217,7 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
         const auto& rtd = ride->GetRideTypeDescriptor();
         if (gCheatsShowVehiclesFromOtherTrackTypes
             && !(
-                ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE)
+                ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::FlatRide) || rtd.HasFlag(RideTypeFlags::IsMaze)
                 || ride->type == RIDE_TYPE_MINI_GOLF))
         {
             selectionShouldBeExpanded = true;
@@ -236,11 +236,11 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
     {
         if (selectionShouldBeExpanded)
         {
-            if (GetRideTypeDescriptor(rideTypeIterator).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+            if (GetRideTypeDescriptor(rideTypeIterator).HasFlag(RideTypeFlags::FlatRide))
                 continue;
 
             const auto& rtd = GetRideTypeDescriptor(rideTypeIterator);
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE) || rideTypeIterator == RIDE_TYPE_MINI_GOLF)
+            if (rtd.HasFlag(RideTypeFlags::IsMaze) || rideTypeIterator == RIDE_TYPE_MINI_GOLF)
                 continue;
         }
 

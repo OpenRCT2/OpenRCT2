@@ -499,7 +499,7 @@ namespace OpenRCT2::Scripting
                     if (ride != nullptr)
                     {
                         const auto& rtd = ride->GetRideTypeDescriptor();
-                        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                        if (rtd.HasFlag(RideTypeFlags::IsMaze))
                             throw DukException() << "Cannot read 'sequence' property, TrackElement belongs to a maze.";
                     }
 
@@ -550,7 +550,7 @@ namespace OpenRCT2::Scripting
                     if (ride != nullptr)
                     {
                         const auto& rtd = ride->GetRideTypeDescriptor();
-                        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                        if (rtd.HasFlag(RideTypeFlags::IsMaze))
                             throw DukException() << "Cannot set 'sequence' property, TrackElement belongs to a maze.";
                     }
 
@@ -823,7 +823,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot read 'mazeEntry' property, ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (!rtd.HasFlag(RideTypeFlags::IsMaze))
                 throw DukException() << "Cannot read 'mazeEntry' property, ride is not a maze.";
 
             duk_push_int(ctx, el->GetMazeEntry());
@@ -853,7 +853,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot set 'mazeEntry' property, ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (!rtd.HasFlag(RideTypeFlags::IsMaze))
                 throw DukException() << "Cannot set 'mazeEntry' property, ride is not a maze.";
 
             el->SetMazeEntry(value.as_uint());
@@ -881,7 +881,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot read 'colourScheme' property, ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (rtd.HasFlag(RideTypeFlags::IsMaze))
                 throw DukException() << "Cannot read 'colourScheme' property, TrackElement belongs to a maze.";
 
             duk_push_int(ctx, el->GetColourScheme());
@@ -911,7 +911,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot set 'colourScheme', ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (rtd.HasFlag(RideTypeFlags::IsMaze))
                 throw DukException() << "Cannot set 'colourScheme' property, TrackElement belongs to a maze.";
 
             el->SetColourScheme(value.as_uint());
@@ -939,7 +939,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot read 'seatRotation' property, ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (rtd.HasFlag(RideTypeFlags::IsMaze))
                 throw DukException() << "Cannot read 'seatRotation' property, TrackElement belongs to a maze.";
 
             duk_push_int(ctx, el->GetSeatRotation());
@@ -969,7 +969,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot set 'seatRotation' property, ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (!rtd.HasFlag(RideTypeFlags::IsMaze))
                 throw DukException() << "Cannot set 'seatRotation' property, TrackElement belongs to a maze.";
 
             el->SetSeatRotation(value.as_uint());

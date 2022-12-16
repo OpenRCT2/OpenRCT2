@@ -568,9 +568,9 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
                 continue;
-            if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+            if (!ride.GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasTrack))
                 continue;
-            if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+            if (!ride.GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasDataLogging))
                 continue;
             if (ride.GetStation().SegmentLength < (600 << 16))
                 continue;

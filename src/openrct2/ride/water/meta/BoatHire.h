@@ -25,9 +25,18 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_boat_hire),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER |
-                     RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING |
-                     RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT),
+    SET_FIELD(Flags, {
+                RideTypeFlags::HasTrackColourMain,
+                RideTypeFlags::HasTrackColourSupports,
+                RideTypeFlags::TrackMustBeOnWater,
+                RideTypeFlags::NoTestMode,
+                RideTypeFlags::HasLoadOptions,
+                RideTypeFlags::HasVehicleColours,
+                RideTypeFlags::CheckForStalling,
+                RideTypeFlags::HasTrack,
+                RideTypeFlags::SupportsMultipleTrackColour,
+                RideTypeFlags::AllowMusic,
+                RideTypeFlags::HasEntranceExit } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::BoatHire)),
     SET_FIELD(DefaultMode, RideMode::BoatHire),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),

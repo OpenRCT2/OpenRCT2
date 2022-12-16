@@ -433,7 +433,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             }
         }
 
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER))
+        if (ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::TrackMustBeOnWater))
         {
             surfaceElement->SetHasTrackThatNeedsWater(false);
         }

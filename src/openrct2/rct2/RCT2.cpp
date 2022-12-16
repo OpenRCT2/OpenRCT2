@@ -147,7 +147,7 @@ namespace RCT2
 
     track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType, bool convertFlat)
     {
-        if (convertFlat && GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (convertFlat && GetRideTypeDescriptor(rideType).HasFlag(RideTypeFlags::FlatRide))
             return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
         if (origTrackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, origTrackType))
             return TrackElemType::RotationControlToggle;

@@ -2208,13 +2208,13 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         {
             uint8_t zOffset = 16;
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID)
-                || rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
+            if (rtd.HasFlag(RideTypeFlags::IsToilet) || rtd.HasFlag(RideTypeFlags::IsFirstAid)
+                || rtd.HasFlag(RideTypeFlags::IsCashMachine))
                 zOffset = 23;
 
             if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
                 LightFxAddKioskLights(session.MapPosition, height, zOffset);
-            else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+            else if (RideTypeDescriptors[ride->type].HasFlag(RideTypeFlags::IsShopOrFacility))
                 LightFxAddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
 

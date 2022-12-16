@@ -1442,7 +1442,7 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
                                 break;
 
                             auto ride = vehicle->GetRide();
-                            if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+                            if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasNoTrack))
                             {
                                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden
                                                                                    : VisibilityKind::Partial;

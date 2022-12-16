@@ -25,11 +25,21 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_chairlift),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-                     RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-                     RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
-                     RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG_TRANSPORT_RIDE | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER |
-                     RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_IS_SUSPENDED),
+    SET_FIELD(Flags, {
+        RideTypeFlags::HasTrackColourMain,
+        RideTypeFlags::HasTrackColourSupports,
+        RideTypeFlags::CanSynchroniseAdjacentStations,
+        RideTypeFlags::HasLoadOptions,
+        RideTypeFlags::HasVehicleColours,
+        RideTypeFlags::HasTrack,
+        RideTypeFlags::SupportsMultipleTrackColour,
+        RideTypeFlags::AllowMusic,
+        RideTypeFlags::HasEntranceExit,
+        RideTypeFlags::AllowMoreVehiclesThanStationFits,
+        RideTypeFlags::TransportRide,
+        RideTypeFlags::ShowInTrackDesigner,
+        RideTypeFlags::SlightlyInterestingToLookAt,
+        RideTypeFlags::IsSuspended } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::StationToStation)),
     SET_FIELD(DefaultMode, RideMode::StationToStation),
     SET_FIELD(OperatingSettings, { 1, 4, 0, 0, 0, 0 }),

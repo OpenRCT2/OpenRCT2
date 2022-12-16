@@ -24,9 +24,11 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_inverted_impulse_rc),
-    SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES |
-                     RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG_IS_SUSPENDED),
+    SET_FIELD(Flags, {TrackHasThreeColours, CommonCoaster, CommonCoasterNonAlt, {
+        RideTypeFlags::HasLeaveWhenAnotherVehicleArrivesAtStation,
+        RideTypeFlags::PeepCheckGForces,
+        RideTypeFlags::AllowMultipleCircuits,
+        RideTypeFlags::IsSuspended } } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch)),
     SET_FIELD(DefaultMode, RideMode::PoweredLaunchPasstrough),
     SET_FIELD(OperatingSettings, { 10, 33, 30, 25, 25, 0 }),

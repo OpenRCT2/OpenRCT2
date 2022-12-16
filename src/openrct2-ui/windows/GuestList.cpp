@@ -187,7 +187,7 @@ public:
                 if (guestRide != nullptr)
                 {
                     ft.Add<StringId>(
-                        guestRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
+                        guestRide->GetRideTypeDescriptor().HasFlag(RideTypeFlags::InRide) ? STR_IN_RIDE : STR_ON_RIDE);
                     guestRide->FormatNameTo(ft);
 
                     _selectedFilter = GuestFilterType::Guests;

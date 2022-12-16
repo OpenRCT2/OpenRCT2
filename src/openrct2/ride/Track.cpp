@@ -121,7 +121,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
     CoordsXY stationFrontLoc = loc;
     int32_t stationLength = 1;
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
+    if (ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasSinglePieceStation))
     {
         if (ride->num_stations >= OpenRCT2::Limits::MaxStationsPerRide)
         {
@@ -273,7 +273,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
     int32_t stationLength = 0;
     int32_t byte_F441D1 = -1;
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
+    if (ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasSinglePieceStation))
     {
         TileElement* tileElement = MapGetTrackElementAtWithDirectionFromRide(loc, rideIndex);
         if (tileElement != nullptr)
@@ -576,7 +576,7 @@ roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank)
 
 roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank)
 {
-    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RideTypeFlags::HasAlternativeTrackType))
     {
         if (isInverted)
         {
@@ -694,7 +694,7 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
 uint8_t TrackElement::GetSeatRotation() const
 {
     const auto* ride = get_ride(GetRideIndex());
-    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasLandscapeDoors))
         return DEFAULT_SEAT_ROTATION;
 
     return URide.ColourScheme >> 4;

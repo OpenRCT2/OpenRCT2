@@ -110,7 +110,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     auto resultData = TrackPlaceActionResult{};
 
-    uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
+    const auto& rtd = ride->GetRideTypeDescriptor();
 
     if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
     {
@@ -128,7 +128,7 @@ GameActions::Result TrackPlaceAction::Query() const
         }
     }
 
-    if (!(rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE))
+    if (!(rtd.HasFlag(RideTypeFlags::FlatRide)))
     {
         if (_trackType == TrackElemType::OnRidePhoto)
         {
@@ -245,7 +245,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
         }
 
-        uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
+        uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::SupportsLevelCrossings)
                                 && _trackType == TrackElemType::Flat)
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
@@ -305,7 +305,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !_trackDesignDrawingPreview)
+        if ((rtd.HasFlag(RideTypeFlags::TrackMustBeOnWater)) && !_trackDesignDrawingPreview)
         {
             auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
             if (surfaceElement == nullptr)
@@ -368,8 +368,7 @@ GameActions::Result TrackPlaceAction::Query() const
             {
                 uint16_t maxHeight;
 
-                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
-                    && rideEntry->max_height != 0)
+                if (ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::ListVehiclesSeparately) && rideEntry->max_height != 0)
                 {
                     maxHeight = rideEntry->max_height;
                 }
@@ -433,9 +432,8 @@ GameActions::Result TrackPlaceAction::Execute() const
 
     auto resultData = TrackPlaceActionResult{};
 
-    uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
-
     const auto& ted = GetTrackElementDescriptor(_trackType);
+    const auto& rtd = ride->GetRideTypeDescriptor();
     const auto& wallEdges = ted.SequenceElementAllowedWallEdges;
 
     money32 costs = 0;
@@ -463,7 +461,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
         const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
-        uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
+        uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::SupportsLevelCrossings)
                                 && _trackType == TrackElemType::Flat)
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
@@ -479,7 +477,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
         {
             FootpathRemoveLitter(mapLoc);
-            if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
+            if (rtd.HasFlag(RideTypeFlags::TrackNoWalls))
             {
                 WallRemoveAt(mapLocWithClearance);
             }
@@ -630,7 +628,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         {
             trackElement->SetBrakeBoosterSpeed(_brakeSpeed);
         }
-        else if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+        else if (ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasLandscapeDoors))
         {
             trackElement->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
             trackElement->SetDoorBState(LANDSCAPE_DOOR_CLOSED);
@@ -684,7 +682,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         auto* tileElement = trackElement->as<TileElement>();
 
-        if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
+        if (rtd.HasFlag(RideTypeFlags::TrackMustBeOnWater))
         {
             auto* waterSurfaceElement = MapGetSurfaceElementAt(mapLoc);
             if (waterSurfaceElement != nullptr)

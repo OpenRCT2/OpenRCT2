@@ -238,7 +238,7 @@ public:
         }
 
         const auto& rtd = GetRideTypeDescriptor(td6->type);
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+        if (!rtd.HasFlag(RideTypeFlags::IsMaze))
         {
             if (td6->type == RIDE_TYPE_MINI_GOLF)
             {
@@ -277,7 +277,7 @@ public:
             screenPos.y += LIST_ROW_HEIGHT;
         }
 
-        if (GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+        if (GetRideTypeDescriptor(td6->type).HasFlag(RideTypeFlags::HasGForces))
         {
             // Maximum positive vertical Gs
             {
@@ -314,7 +314,7 @@ public:
             }
         }
 
-        if (GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
+        if (GetRideTypeDescriptor(td6->type).HasFlag(RideTypeFlags::HasDrops))
         {
             // Drops
             uint16_t drops = td6->drops & 0x3F;

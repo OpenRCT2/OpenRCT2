@@ -103,7 +103,7 @@ static void DrawResearchItem(
     int16_t columnSplitOffset = width / 2;
 
     if (researchItem.type == Research::EntryType::Ride
-        && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RideTypeFlags::ListVehiclesSeparately))
     {
         const StringId rideTypeName = get_ride_naming(researchItem.baseRideType, get_ride_entry(researchItem.entryIndex)).Name;
 
@@ -410,7 +410,7 @@ public:
         auto ft = Formatter();
 
         if (researchItem->type == Research::EntryType::Ride
-            && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RideTypeFlags::ListVehiclesSeparately))
         {
             drawString = STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
             StringId rideTypeName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).Name;

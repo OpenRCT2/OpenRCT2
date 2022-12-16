@@ -360,7 +360,7 @@ public:
             }
 
             const auto& rtd = GetRideTypeDescriptor(td6->type);
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (rtd.HasFlag(RideTypeFlags::IsMaze))
             {
                 DrawMiniPreviewMaze(td6, pass, origin, min, max);
             }

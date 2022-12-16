@@ -247,7 +247,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
         if (tileElement->AsTrack()->GetRideIndex() != ride->id)
         {
             // Only check that the track belongs to the same ride if ride does not have buildable track
-            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+            if (!ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasTrack))
                 continue;
         }
 
@@ -353,7 +353,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
         if (tileElement->AsTrack()->GetRideIndex() != ride->id)
         {
             // Only check that the track belongs to the same ride if ride does not have buildable track
-            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+            if (!ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasTrack))
                 continue;
         }
 
@@ -399,7 +399,7 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
     }
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RideTypeFlags::IsMaze))
     {
         state.State = RIDE_RATINGS_STATE_CALCULATE;
         return;
@@ -1009,7 +1009,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
         }
     }
 #else
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_AIR_TIME))
+    if (ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasAirTime))
     {
         int32_t excitementModifier;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
@@ -1459,7 +1459,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     }
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RideTypeFlags::IsMaze))
     {
         location = ride->GetStation().Entrance.ToCoordsXY();
     }

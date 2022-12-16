@@ -549,7 +549,7 @@ private:
 
         if (item.Type < 0x80)
         {
-            if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            if (GetRideTypeDescriptor(item.Type).HasFlag(RideTypeFlags::ListVehiclesSeparately))
             {
                 entryName = get_ride_entry_name(item.EntryIndex);
             }
@@ -564,7 +564,7 @@ private:
     void UpdateVehicleAvailability(ObjectEntryIndex rideType)
     {
         _vehicleAvailability.clear();
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RideTypeFlags::ListVehiclesSeparately))
         {
             return;
         }
@@ -647,7 +647,7 @@ private:
 
             // Skip if the vehicle isn't the preferred vehicle for this generic track type
             if (!gConfigInterface.ListRideVehiclesSeparately
-                && !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+                && !GetRideTypeDescriptor(rideType).HasFlag(RideTypeFlags::ListVehiclesSeparately)
                 && highestVehiclePriority > rideEntry->BuildMenuPriority)
             {
                 continue;
@@ -657,7 +657,7 @@ private:
 
             // Determines how and where to draw a button for this ride type/vehicle.
             if (gConfigInterface.ListRideVehiclesSeparately
-                || GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                || GetRideTypeDescriptor(rideType).HasFlag(RideTypeFlags::ListVehiclesSeparately))
             {
                 // Separate, draw apart
                 allowDrawingOverLastButton = false;
@@ -869,7 +869,7 @@ private:
 
             //
             StringId stringId = STR_NEW_RIDE_COST;
-            if (!GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+            if (!GetRideTypeDescriptor(item.Type).HasFlag(RideTypeFlags::HasNoTrack))
                 stringId = STR_NEW_RIDE_COST_FROM;
 
             ft = Formatter();

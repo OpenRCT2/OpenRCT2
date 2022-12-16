@@ -25,11 +25,18 @@ constexpr const RideTypeDescriptor MonorailCyclesRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionMonorailCycles),
-    SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
-                     RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-                     RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-                     RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
-                     RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT),
+    SET_FIELD(Flags, { TrackHasThreeColours, {
+        RideTypeFlags::CanSynchroniseAdjacentStations,
+        RideTypeFlags::HasDataLogging,
+        RideTypeFlags::NoTestMode,
+        RideTypeFlags::HasLoadOptions,
+        RideTypeFlags::PeepWillRideAgain,
+        RideTypeFlags::HasVehicleColours,
+        RideTypeFlags::HasTrack,
+        RideTypeFlags::SupportsMultipleTrackColour,
+        RideTypeFlags::AllowMusic,
+        RideTypeFlags::HasEntranceExit,
+        RideTypeFlags::SlightlyInterestingToLookAt } } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),

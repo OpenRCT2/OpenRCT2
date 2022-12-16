@@ -177,7 +177,7 @@ private:
         std::string entryName;
         if (item.Type < 0x80)
         {
-            if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            if (GetRideTypeDescriptor(item.Type).HasFlag(RideTypeFlags::ListVehiclesSeparately))
             {
                 entryName = get_ride_entry_name(item.EntryIndex);
             }
@@ -552,10 +552,10 @@ public:
         screenPos.y += LIST_ROW_HEIGHT + 4;
 
         // Information for tracked rides.
-        if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+        if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RideTypeFlags::HasTrack))
         {
             const auto& rtd = GetRideTypeDescriptor(_loadedTrackDesign->type);
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (!rtd.HasFlag(RideTypeFlags::IsMaze))
             {
                 if (_loadedTrackDesign->type == RIDE_TYPE_MINI_GOLF)
                 {
@@ -588,7 +588,7 @@ public:
                 screenPos.y += LIST_ROW_HEIGHT;
             }
 
-            if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+            if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RideTypeFlags::HasGForces))
             {
                 // Maximum positive vertical Gs
                 ft = Formatter();
@@ -618,7 +618,7 @@ public:
                 }
             }
 
-            if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
+            if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RideTypeFlags::HasDrops))
             {
                 // Drops
                 ft = Formatter();

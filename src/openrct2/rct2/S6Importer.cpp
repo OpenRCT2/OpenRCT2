@@ -732,7 +732,7 @@ namespace RCT2
                 auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
                 auto* rideEntry = get_ride_entry(subtype);
                 // If the ride is tracked, we don’t need to check the vehicle any more.
-                if (!GetRideTypeDescriptor(src->type).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+                if (!GetRideTypeDescriptor(src->type).HasFlag(RideTypeFlags::FlatRide))
                 {
                     _isFlatRide[index] = false;
                     continue;
@@ -745,7 +745,7 @@ namespace RCT2
                 {
                     originalRideType = rideEntry->GetFirstNonNullRideType();
                 }
-                const auto isFlatRide = GetRideTypeDescriptor(originalRideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE);
+                const auto isFlatRide = GetRideTypeDescriptor(originalRideType).HasFlag(RideTypeFlags::FlatRide);
                 _isFlatRide.set(static_cast<size_t>(index), isFlatRide);
             }
         }
@@ -1035,7 +1035,7 @@ namespace RCT2
             }
 
             auto musicStyle = OBJECT_ENTRY_INDEX_NULL;
-            if (GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+            if (GetRideTypeDescriptor(dst->type).HasFlag(RideTypeFlags::AllowMusic))
             {
                 musicStyle = src->music;
             }
@@ -1043,7 +1043,7 @@ namespace RCT2
 
             // In SV7, "plain" entrances are invisible.
             auto entranceStyle = OBJECT_ENTRY_INDEX_NULL;
-            if (!_isSV7 && GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+            if (!_isSV7 && GetRideTypeDescriptor(dst->type).HasFlag(RideTypeFlags::HasEntranceExit))
             {
                 entranceStyle = src->entrance_style;
             }
@@ -1429,7 +1429,7 @@ namespace RCT2
 
                     // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
                     const auto& rtd = GetRideTypeDescriptor(rideType);
-                    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                    if (rtd.HasFlag(RideTypeFlags::IsMaze))
                     {
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }

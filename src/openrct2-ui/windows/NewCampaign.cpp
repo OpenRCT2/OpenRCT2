@@ -133,9 +133,8 @@ public:
         {
             if (curRide.status == RideStatus::Open)
             {
-                if (!curRide.GetRideTypeDescriptor().HasFlag(
-                        RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS
-                        | RIDE_TYPE_FLAG_IS_TOILET))
+                if (!curRide.GetRideTypeDescriptor().HasFlag({ RideTypeFlags::IsShopOrFacility, RideTypeFlags::SellsFood,
+                                                               RideTypeFlags::SellsDrinks, RideTypeFlags::IsToilet }))
                 {
                     RideList.push_back(curRide.id);
                 }

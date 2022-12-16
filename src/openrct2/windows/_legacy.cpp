@@ -48,7 +48,7 @@ money32 place_provisional_track_piece(
 
     ride_construction_remove_ghosts();
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RideTypeFlags::IsMaze))
     {
         int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
         auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
@@ -88,7 +88,7 @@ money32 place_provisional_track_piece(
     int16_t z_begin, z_end;
     const auto& ted = GetTrackElementDescriptor(trackType);
     const rct_track_coordinates& coords = ted.Coordinates;
-    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasNoTrack))
     {
         z_begin = coords.z_begin;
         z_end = coords.z_end;
@@ -295,7 +295,7 @@ bool window_ride_construction_update_state(
     }
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)
+    if (rtd.HasFlag(RideTypeFlags::TrackElementsHaveTwoVarieties)
         && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
     {
         auto availablePieces = rtd.CoveredTrackPieces;

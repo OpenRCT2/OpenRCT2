@@ -23,9 +23,19 @@ constexpr const RideTypeDescriptor ToiletsRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack1x1A),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_facility),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-                     RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-                     RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_IS_TOILET | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
+    SET_FIELD(Flags, {
+        RideTypeFlags::HasSinglePieceStation,
+        RideTypeFlags::CannotHaveGaps,
+        RideTypeFlags::NoTestMode,
+        RideTypeFlags::NoVehicles,
+        RideTypeFlags::HasNoTrack,
+        RideTypeFlags::IsShopOrFacility,
+        RideTypeFlags::TrackNoWalls,
+        RideTypeFlags::FlatRide,
+        RideTypeFlags::PeepShouldGoInsideFacility,
+        RideTypeFlags::InRide,
+        RideTypeFlags::IsToilet,
+        RideTypeFlags::ListVehiclesSeparately } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ShopStall)),
     SET_FIELD(DefaultMode, RideMode::ShopStall),
     SET_FIELD(OperatingSettings, { 4, 4, 0, 0, 0, 0 }),

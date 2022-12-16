@@ -99,7 +99,7 @@ GameActions::Result RideSetPriceAction::Execute() const
         shopItem = ShopItem::Admission;
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+        if (!rtd.HasFlag(RideTypeFlags::IsToilet))
         {
             shopItem = rideEntry->shop_item[0];
             if (shopItem == ShopItem::None)
@@ -152,7 +152,7 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
         auto invalidate = false;
         auto rideEntry = get_ride_entry(ride.subtype);
         const auto& rtd = ride.GetRideTypeDescriptor();
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) && shopItem == ShopItem::Admission)
+        if (rtd.HasFlag(RideTypeFlags::IsToilet) && shopItem == ShopItem::Admission)
         {
             if (ride.price[0] != _price)
             {

@@ -76,7 +76,7 @@ static void setup_track_manager_objects()
 
             for (auto rideType : item->RideInfo.RideType)
             {
-                if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+                if (GetRideTypeDescriptor(rideType).HasFlag(RideTypeFlags::HasTrack))
                 {
                     *selectionFlags &= ~ObjectSelectionFlags::Flag6;
                     break;
@@ -107,7 +107,7 @@ static void setup_track_designer_objects()
             {
                 if (rideType != RIDE_TYPE_NULL)
                 {
-                    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER))
+                    if (GetRideTypeDescriptor(rideType).HasFlag(RideTypeFlags::ShowInTrackDesigner))
                     {
                         *selectionFlags &= ~ObjectSelectionFlags::Flag6;
                         break;

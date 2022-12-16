@@ -361,7 +361,7 @@ private:
             if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(currentRide).Successful)
             {
                 tool_cancel();
-                if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+                if (currentRide->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasNoTrack))
                     window_close_by_class(WindowClass::RideConstruction);
             }
             else

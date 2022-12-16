@@ -252,7 +252,7 @@ void research_finish_item(ResearchItem* researchItem)
 
             // If a vehicle is the first to be invented for its ride type, show the ride type/group name.
             // Independently listed vehicles (like all flat rides and shops) should always be announced as such.
-            if (GetRideTypeDescriptor(base_ride_type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+            if (GetRideTypeDescriptor(base_ride_type).HasFlag(RideTypeFlags::ListVehiclesSeparately)
                 || researchItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
             {
                 RideNaming naming = get_ride_naming(base_ride_type, rideEntry);
@@ -966,7 +966,7 @@ static void research_update_first_of_type(ResearchItem* researchItem)
 
     researchItem->flags &= ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
     const auto& rtd = GetRideTypeDescriptor(rideType);
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    if (rtd.HasFlag(RideTypeFlags::ListVehiclesSeparately))
     {
         researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
         return;
@@ -999,7 +999,7 @@ void research_determine_first_of_type()
             continue;
 
         const auto& rtd = GetRideTypeDescriptor(rideType);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (rtd.HasFlag(RideTypeFlags::ListVehiclesSeparately))
             continue;
 
         // The last research item will also be present in gResearchItemsInvented.

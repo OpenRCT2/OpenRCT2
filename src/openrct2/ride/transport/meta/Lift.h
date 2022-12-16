@@ -24,10 +24,21 @@ constexpr const RideTypeDescriptor LiftRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::TowerBase),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_lift),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
-                     RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-                     RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR |
-                     RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_TRANSPORT_RIDE | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER),
+    SET_FIELD(Flags, {
+        RideTypeFlags::HasTrackColourMain,
+        RideTypeFlags::HasTrackColourSupports,
+        RideTypeFlags::HasSinglePieceStation,
+        RideTypeFlags::CannotHaveGaps,
+        RideTypeFlags::HasLoadOptions,
+        RideTypeFlags::TrackNoWalls,
+        RideTypeFlags::HasVehicleColours,
+        RideTypeFlags::HasTrack,
+        RideTypeFlags::AllowExtraTowerBases,
+        RideTypeFlags::SupportsMultipleTrackColour,
+        RideTypeFlags::AllowMusic,
+        RideTypeFlags::HasEntranceExit,
+        RideTypeFlags::TransportRide,
+        RideTypeFlags::ShowInTrackDesigner } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Shuttle)),
     SET_FIELD(DefaultMode, RideMode::Shuttle),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),

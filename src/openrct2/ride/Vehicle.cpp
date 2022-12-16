@@ -1495,7 +1495,7 @@ void Vehicle::UpdateMeasurements()
             stationForTestSegment.SegmentLength = add_clamp_int32_t(stationForTestSegment.SegmentLength, distance);
         }
 
-        if (curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+        if (curRide->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasGForces))
         {
             auto gForces = GetGForces();
             gForces.VerticalG += curRide->previous_vertical_g;
@@ -2228,7 +2228,7 @@ void Vehicle::UpdateWaitingForPassengers()
             }
         }
 
-        if (curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS))
+        if (curRide->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasLoadOptions))
         {
             if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
             {
@@ -2273,7 +2273,7 @@ void Vehicle::UpdateWaitingForPassengers()
             }
         }
 
-        if (curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS)
+        if (curRide->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasLoadOptions)
             && curRide->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
         {
             if (num_peeps_on_train == num_seats_on_train)
@@ -2437,7 +2437,7 @@ void Vehicle::UpdateWaitingToDepart()
             return;
     }
 
-    if (curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
+    if (curRide->GetRideTypeDescriptor().HasFlag(RideTypeFlags::CanSynchroniseAdjacentStations))
     {
         if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
         {
@@ -3387,7 +3387,7 @@ void Vehicle::CheckIfMissing()
     if (curRide->IsBlockSectioned())
         return;
 
-    if (!curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_CHECK_FOR_STALLING))
+    if (!curRide->GetRideTypeDescriptor().HasFlag(RideTypeFlags::CheckForStalling))
         return;
 
     lost_time_out++;
@@ -3851,7 +3851,7 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
             return;
         }
 
-        if (GetRideTypeDescriptor(curRide.type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)
+        if (GetRideTypeDescriptor(curRide.type).HasFlag(RideTypeFlags::AllowMultipleCircuits)
             && curRide.mode != RideMode::Shuttle && curRide.mode != RideMode::PoweredLaunch)
         {
             SetUpdateFlag(VEHICLE_UPDATE_FLAG_12);
@@ -6902,7 +6902,7 @@ template<bool isBackwards> static void AnimateLandscapeDoor(TrackElement* trackE
 void Vehicle::UpdateLandscapeDoor() const
 {
     const auto* currentRide = GetRide();
-    if (currentRide == nullptr || !currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+    if (currentRide == nullptr || !currentRide->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasLandscapeDoors))
     {
         return;
     }
@@ -6975,7 +6975,7 @@ void Vehicle::UpdateSceneryDoorBackwards() const
 void Vehicle::UpdateLandscapeDoorBackwards() const
 {
     const auto* currentRide = GetRide();
-    if (currentRide == nullptr || !currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+    if (currentRide == nullptr || !currentRide->GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasLandscapeDoors))
     {
         return;
     }
@@ -7493,7 +7493,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         {
             int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
-            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+            if (GetRideTypeDescriptor(rideType).HasFlag(RideTypeFlags::HasAlternativeTrackType))
             {
                 if (tileElement->AsTrack()->IsInverted())
                 {
@@ -7871,7 +7871,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
 
         // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
-        if (GetRideTypeDescriptor(curRide->type).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+        if (GetRideTypeDescriptor(curRide->type).HasFlag(RideTypeFlags::HasAlternativeTrackType))
         {
             if (tileElement->AsTrack()->IsInverted())
             {
@@ -8261,7 +8261,7 @@ loc_6DC476:
     {
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RideTypeFlags::HasAlternativeTrackType))
         {
             if (tileElement->AsTrack()->IsInverted())
             {
@@ -8475,7 +8475,7 @@ loc_6DCA9A:
     {
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RideTypeFlags::HasAlternativeTrackType))
         {
             if (tileElement->AsTrack()->IsInverted())
             {
@@ -9208,7 +9208,7 @@ void Vehicle::UpdateCrossings() const
             // Many New Element parks have invisible rides hacked into the path.
             // Limit path blocking to rides actually supporting level crossings to prevent peeps getting stuck everywhere.
             if (pathElement != nullptr && curRide != nullptr
-                && GetRideTypeDescriptor(curRide->type).HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
+                && GetRideTypeDescriptor(curRide->type).HasFlag(RideTypeFlags::SupportsLevelCrossings))
             {
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
                 {

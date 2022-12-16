@@ -2199,7 +2199,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride->GetRideTypeDescriptor().HasFlag({ RideTypeFlags::HasSinglePieceStation, RideTypeFlags::HasNoTrack }))
         {
             return true;
         }
@@ -2285,7 +2285,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride->GetRideTypeDescriptor().HasFlag({ RideTypeFlags::HasSinglePieceStation, RideTypeFlags::HasNoTrack }))
         {
             return true;
         }
@@ -2361,7 +2361,7 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride->GetRideTypeDescriptor().HasFlag({ RideTypeFlags::HasSinglePieceStation, RideTypeFlags::HasNoTrack }))
         {
             return true;
         }

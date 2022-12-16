@@ -338,9 +338,19 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER      */ ClassicWoodenRollerCoasterRTD,
 };
 
-bool RideTypeDescriptor::HasFlag(uint64_t flag) const
+bool RideTypeDescriptor::HasFlag(RideTypeFlags flag) const
 {
-    return Flags & flag;
+    return Flags.get(static_cast<size_t>(flag));
+}
+
+bool RideTypeDescriptor::HasFlag(std::vector<RideTypeFlags> flags) const
+{
+    for (const auto& flag : flags)
+    {
+        if (Flags.get(static_cast<size_t>(flag)))
+            return true;
+    }
+    return false;
 }
 
 void RideTypeDescriptor::GetAvailableTrackPieces(RideTrackGroup& res) const

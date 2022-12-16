@@ -23,10 +23,20 @@ constexpr const RideTypeDescriptor TwistRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack3x3),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_twist),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-                     RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-                     RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
-                     RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
+    SET_FIELD(Flags, {
+        RideTypeFlags::HasSinglePieceStation,
+        RideTypeFlags::CannotHaveGaps,
+        RideTypeFlags::HasLoadOptions,
+        RideTypeFlags::HasNoTrack,
+        RideTypeFlags::VehicleIsIntegral,
+        RideTypeFlags::TrackNoWalls,
+        RideTypeFlags::FlatRide,
+        RideTypeFlags::HasVehicleColours,
+        RideTypeFlags::AllowMusic,
+        RideTypeFlags::HasEntranceExit,
+        RideTypeFlags::SingleSession,
+        RideTypeFlags::InterestingToLookAt,
+        RideTypeFlags::ListVehiclesSeparately } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Rotation)),
     SET_FIELD(DefaultMode, RideMode::Rotation),
     SET_FIELD(OperatingSettings, { 3, 6, 0, 0, 0, 0, 12, 3 }),

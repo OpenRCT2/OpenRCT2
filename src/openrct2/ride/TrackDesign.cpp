@@ -232,7 +232,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         if (trackElement.element->AsTrack()->HasChain())
             trackFlags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
         trackFlags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
+        if (ride.GetRideTypeDescriptor().HasFlag(RideTypeFlags::HasAlternativeTrackType)
             && trackElement.element->AsTrack()->IsInverted())
         {
             trackFlags |= TD6_TRACK_ELEMENT_FLAG_INVERTED;
@@ -937,7 +937,7 @@ static void TrackDesignMirrorMaze(TrackDesign* td6)
 void TrackDesignMirror(TrackDesign* td6)
 {
     const auto& rtd = GetRideTypeDescriptor(td6->type);
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RideTypeFlags::IsMaze))
     {
         TrackDesignMirrorMaze(td6);
     }
@@ -1877,7 +1877,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
 
     GameActions::Result trackPlaceRes;
     const auto& rtd = GetRideTypeDescriptor(td6->type);
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RideTypeFlags::IsMaze))
     {
         trackPlaceRes = TrackDesignPlaceMaze(tds, td6, coords, ride);
     }
@@ -2017,7 +2017,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     // Flat rides need their vehicle colours loaded for display
     // in the preview window
-    if (!GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!GetRideTypeDescriptor(td6->type).HasFlag(RideTypeFlags::HasTrack))
     {
         for (int32_t i = 0; i < RCT12::Limits::MaxVehicleColours; i++)
         {
@@ -2117,7 +2117,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
 
     // Special case for flat rides - Z-axis info is irrelevant
     // and must be zeroed out lest the preview be off-centre
-    if (!GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!GetRideTypeDescriptor(td6->type).HasFlag(RideTypeFlags::HasTrack))
     {
         centre.z = 0;
         size_z = 0;

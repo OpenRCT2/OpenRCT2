@@ -24,11 +24,21 @@ constexpr const RideTypeDescriptor RotoDropRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::TowerBase),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_roto_drop),
-    SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
-                     RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
-                     RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
-                     RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
-                     RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT),
+    SET_FIELD(Flags, { TrackHasThreeColours, {
+        RideTypeFlags::HasSinglePieceStation,
+        RideTypeFlags::CannotHaveGaps,
+        RideTypeFlags::HasDataLogging,
+        RideTypeFlags::HasLoadOptions,
+        RideTypeFlags::TrackNoWalls,
+        RideTypeFlags::PeepWillRideAgain,
+        RideTypeFlags::HasVehicleColours,
+        RideTypeFlags::HasTrack,
+        RideTypeFlags::SupportsMultipleTrackColour,
+        RideTypeFlags::AllowMusic,
+        RideTypeFlags::HasEntranceExit,
+        RideTypeFlags::SingleSession,
+        RideTypeFlags::ShowInTrackDesigner,
+        RideTypeFlags::InterestingToLookAt } } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::FreefallDrop)),
     SET_FIELD(DefaultMode, RideMode::FreefallDrop),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),

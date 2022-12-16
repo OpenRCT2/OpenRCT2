@@ -303,7 +303,7 @@ void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, W
         else if (gResearchNextItem->type == Research::EntryType::Ride)
         {
             const auto& rtd = GetRideTypeDescriptor(gResearchNextItem->baseRideType);
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            if (rtd.HasFlag(RideTypeFlags::ListVehiclesSeparately))
             {
                 ft.Add<StringId>(gResearchNextItem->GetName());
             }
@@ -363,7 +363,7 @@ void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, W
         {
             lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
             const auto& rtd = GetRideTypeDescriptor(gResearchLastItem->baseRideType);
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            if (rtd.HasFlag(RideTypeFlags::ListVehiclesSeparately))
             {
                 ft.Add<StringId>(gResearchLastItem->GetName());
             }

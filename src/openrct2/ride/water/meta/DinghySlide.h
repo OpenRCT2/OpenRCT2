@@ -24,13 +24,24 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
     SET_FIELD(CoveredTrackPieces, {TrackElemType::Flat, TrackElemType::Up25, TrackElemType::Up60, TrackElemType::FlatToUp25, TrackElemType::Up25ToUp60, TrackElemType::Up60ToUp25, TrackElemType::Up25ToFlat, TrackElemType::Down25, TrackElemType::Down60, TrackElemType::FlatToDown25, TrackElemType::Down25ToDown60, TrackElemType::Down60ToDown25, TrackElemType::Down25ToFlat, TrackElemType::LeftQuarterTurn5Tiles, TrackElemType::RightQuarterTurn5Tiles, TrackElemType::SBendLeft, TrackElemType::SBendRight, TrackElemType::LeftQuarterTurn3Tiles,TrackElemType::RightQuarterTurn3Tiles}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_dinghy_slide),
-    SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-                     RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES |
-                     RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-                     RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR |
-                     RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_HAS_AIR_TIME |
-                     RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT),
+    SET_FIELD(Flags, { TrackHasThreeColours, {
+        RideTypeFlags::HasLeaveWhenAnotherVehicleArrivesAtStation,
+        RideTypeFlags::CanSynchroniseAdjacentStations,
+        RideTypeFlags::HasGForces,
+        RideTypeFlags::HasDataLogging,
+        RideTypeFlags::HasDrops,
+        RideTypeFlags::TrackElementsHaveTwoVarieties,
+        RideTypeFlags::HasLoadOptions,
+        RideTypeFlags::PeepWillRideAgain,
+        RideTypeFlags::HasVehicleColours,
+        RideTypeFlags::CheckForStalling,
+        RideTypeFlags::HasTrack,
+        RideTypeFlags::SupportsMultipleTrackColour,
+        RideTypeFlags::AllowMusic,
+        RideTypeFlags::HasEntranceExit,
+        RideTypeFlags::HasAirTime,
+        RideTypeFlags::ShowInTrackDesigner,
+        RideTypeFlags::InterestingToLookAt } } ),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
