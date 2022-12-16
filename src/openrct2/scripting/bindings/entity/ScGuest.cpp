@@ -142,7 +142,6 @@ namespace OpenRCT2::Scripting
         { "nice_ride_deprecated", PeepThoughtType::NiceRideDeprecated },
         { "excited_deprecated", PeepThoughtType::ExcitedDeprecated },
         { "here_we_are", PeepThoughtType::HereWeAre },
-        { "none", PeepThoughtType::None },
     });
 
     ScGuest::ScGuest(EntityId id)

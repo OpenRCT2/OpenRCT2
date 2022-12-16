@@ -2658,8 +2658,7 @@ declare global {
         "new_ride" |
         "nice_ride_deprecated" |
         "excited_deprecated" |
-        "here_we_are" |
-        "none";
+        "here_we_are";
 
     /**
      * Represents a staff member.
