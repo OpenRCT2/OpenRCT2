@@ -1011,7 +1011,6 @@ void ride_update_favourited_stat();
 void ride_check_all_reachable();
 
 bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
-void ride_construct(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);

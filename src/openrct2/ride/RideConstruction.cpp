@@ -130,12 +130,12 @@ static rct_window* ride_create_or_find_construction_window(RideId rideIndex)
  *
  *  rct2: 0x006B4857
  */
-void ride_construct(Ride* ride)
+void RideConstructionStart(Ride& ride)
 {
     CoordsXYE trackElement;
-    if (ride_try_get_origin_element(ride, &trackElement))
+    if (ride_try_get_origin_element(&ride, &trackElement))
     {
-        ride->FindTrackGap(trackElement, &trackElement);
+        ride.FindTrackGap(trackElement, &trackElement);
 
         rct_window* w = window_get_main();
         if (w != nullptr && ride_modify(trackElement))
@@ -143,7 +143,7 @@ void ride_construct(Ride* ride)
     }
     else
     {
-        ride_initialise_construction_window(ride);
+        ride_initialise_construction_window(&ride);
     }
 }
 

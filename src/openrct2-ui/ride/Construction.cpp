@@ -11,6 +11,7 @@
 
 #include <openrct2/actions/RideCreateAction.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideTypes.h>
 
 /**
@@ -30,7 +31,7 @@ void ride_construct_new(RideSelection listItem)
             return;
         const auto rideIndex = result->GetData<RideId>();
         auto ride = get_ride(rideIndex);
-        ride_construct(ride);
+        RideConstructionStart(*ride);
     });
 
     GameActions::Execute(&gameAction);
