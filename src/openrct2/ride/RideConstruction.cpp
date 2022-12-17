@@ -135,7 +135,7 @@ void ride_construct(Ride* ride)
     CoordsXYE trackElement;
     if (ride_try_get_origin_element(ride, &trackElement))
     {
-        ride_find_track_gap(ride, &trackElement, &trackElement);
+        ride->FindTrackGap(trackElement, &trackElement);
 
         rct_window* w = window_get_main();
         if (w != nullptr && ride_modify(trackElement))
@@ -1035,7 +1035,7 @@ bool ride_modify(const CoordsXYE& input)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
     {
         CoordsXYE endOfTrackElement{};
-        if (ride_find_track_gap(ride, &tileElement, &endOfTrackElement))
+        if (ride->FindTrackGap(tileElement, &endOfTrackElement))
             tileElement = endOfTrackElement;
     }
 

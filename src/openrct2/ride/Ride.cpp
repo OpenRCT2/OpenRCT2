@@ -732,31 +732,31 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
  * bx result y
  * esi input / output map element
  */
-int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output)
+bool Ride::FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const
 {
-    if (ride == nullptr || input == nullptr || input->element == nullptr || input->element->GetType() != TileElementType::Track)
-        return 0;
+    if (input.element == nullptr || input.element->GetType() != TileElementType::Track)
+        return false;
 
-    const auto& rtd = ride->GetRideTypeDescriptor();
+    const auto& rtd = GetRideTypeDescriptor();
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-        return 0;
+        return false;
 
     rct_window* w = window_find_by_class(WindowClass::RideConstruction);
-    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == ride->id)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == id)
     {
         ride_construction_invalidate_current_track();
     }
 
     bool moveSlowIt = true;
     track_circuit_iterator it = {};
-    track_circuit_iterator_begin(&it, *input);
+    track_circuit_iterator_begin(&it, input);
     track_circuit_iterator slowIt = it;
     while (track_circuit_iterator_next(&it))
     {
         if (!track_is_connected_by_shape(it.last.element, it.current.element))
         {
             *output = it.current;
-            return 1;
+            return true;
         }
         // #2081: prevent an infinite loop
         moveSlowIt = !moveSlowIt;
@@ -766,17 +766,17 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
             if (track_circuit_iterators_match(&it, &slowIt))
             {
                 *output = it.current;
-                return 1;
+                return true;
             }
         }
     }
     if (!it.looped)
     {
         *output = it.last;
-        return 1;
+        return true;
     }
 
-    return 0;
+    return false;
 }
 
 void Ride::FormatStatusTo(Formatter& ft) const
@@ -3824,7 +3824,7 @@ void Ride::ConstructMissingEntranceOrExit() const
 
         CoordsXYE trackElement;
         ride_try_get_origin_element(this, &trackElement);
-        ride_find_track_gap(this, &trackElement, &trackElement);
+        FindTrackGap(trackElement, &trackElement);
         int32_t ok = ride_modify(trackElement);
         if (ok == 0)
         {
@@ -3930,8 +3930,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
 
     if (mode == RideMode::ContinuousCircuit || IsBlockSectioned())
     {
-        if (ride_find_track_gap(this, &trackElement, &problematicTrackElement)
-            && (newStatus != RideStatus::Simulating || IsBlockSectioned()))
+        if (FindTrackGap(trackElement, &problematicTrackElement) && (newStatus != RideStatus::Simulating || IsBlockSectioned()))
         {
             ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
@@ -3971,7 +3970,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
 
     if (mode == RideMode::StationToStation)
     {
-        if (!ride_find_track_gap(this, &trackElement, &problematicTrackElement))
+        if (!FindTrackGap(trackElement, &problematicTrackElement))
         {
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
@@ -4067,7 +4066,7 @@ ResultWithMessage Ride::Open(bool isApplying)
 
     if (mode == RideMode::Race || mode == RideMode::ContinuousCircuit || IsBlockSectioned())
     {
-        if (ride_find_track_gap(this, &trackElement, &problematicTrackElement))
+        if (FindTrackGap(trackElement, &problematicTrackElement))
         {
             ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
@@ -4107,7 +4106,7 @@ ResultWithMessage Ride::Open(bool isApplying)
 
     if (mode == RideMode::StationToStation)
     {
-        if (!ride_find_track_gap(this, &trackElement, &problematicTrackElement))
+        if (!FindTrackGap(trackElement, &problematicTrackElement))
         {
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
