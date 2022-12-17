@@ -309,6 +309,8 @@ private:
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;
 
+    ResultWithMessage ChangeStatusCheckTrackValidity(const CoordsXYE& trackElement);
+
 public:
     bool CanBreakDown() const;
     RideClassification GetClassification() const;

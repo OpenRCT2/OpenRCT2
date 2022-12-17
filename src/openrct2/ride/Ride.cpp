@@ -3937,55 +3937,10 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         }
     }
 
-    if (IsBlockSectioned())
+    auto message = ChangeStatusCheckTrackValidity(trackElement);
+    if (!message.Successful)
     {
-        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
-        if (!blockBrakeCheck.Successful)
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, blockBrakeCheck.Message };
-        }
-    }
-
-    if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
-    {
-        rct_ride_entry* rideType = get_ride_entry(subtype);
-        if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
-        {
-            if (ride_check_track_contains_inversions(trackElement, &problematicTrackElement))
-            {
-                ride_scroll_to_track_error(problematicTrackElement);
-                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
-            }
-        }
-        if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
-        {
-            if (ride_check_track_contains_banked(trackElement, &problematicTrackElement))
-            {
-                ride_scroll_to_track_error(problematicTrackElement);
-                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
-            }
-        }
-    }
-
-    if (mode == RideMode::StationToStation)
-    {
-        if (!FindTrackGap(trackElement, &problematicTrackElement))
-        {
-            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
-        }
-
-        if (!ride_check_station_length(trackElement, &problematicTrackElement))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_STATION_NOT_LONG_ENOUGH };
-        }
-
-        if (!ride_check_start_and_end_is_station(trackElement))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
-        }
+        return message;
     }
 
     if (isApplying)
@@ -4073,55 +4028,10 @@ ResultWithMessage Ride::Open(bool isApplying)
         }
     }
 
-    if (IsBlockSectioned())
+    auto message = ChangeStatusCheckTrackValidity(trackElement);
+    if (!message.Successful)
     {
-        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
-        if (!blockBrakeCheck.Successful)
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, blockBrakeCheck.Message };
-        }
-    }
-
-    if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
-    {
-        rct_ride_entry* rideEntry = get_ride_entry(subtype);
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
-        {
-            if (ride_check_track_contains_inversions(trackElement, &problematicTrackElement))
-            {
-                ride_scroll_to_track_error(problematicTrackElement);
-                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
-            }
-        }
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
-        {
-            if (ride_check_track_contains_banked(trackElement, &problematicTrackElement))
-            {
-                ride_scroll_to_track_error(problematicTrackElement);
-                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
-            }
-        }
-    }
-
-    if (mode == RideMode::StationToStation)
-    {
-        if (!FindTrackGap(trackElement, &problematicTrackElement))
-        {
-            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
-        }
-
-        if (!ride_check_station_length(trackElement, &problematicTrackElement))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_STATION_NOT_LONG_ENOUGH };
-        }
-
-        if (!ride_check_start_and_end_is_station(trackElement))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
-        }
+        return message;
     }
 
     if (isApplying)
@@ -5925,4 +5835,62 @@ std::vector<RideId> GetTracklessRides()
         }
     }
     return result;
+}
+
+ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackElement)
+{
+    CoordsXYE problematicTrackElement = {};
+
+    if (IsBlockSectioned())
+    {
+        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
+        if (!blockBrakeCheck.Successful)
+        {
+            ride_scroll_to_track_error(problematicTrackElement);
+            return { false, blockBrakeCheck.Message };
+        }
+    }
+
+    if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
+    {
+        rct_ride_entry* rideEntry = get_ride_entry(subtype);
+        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
+        {
+            if (ride_check_track_contains_inversions(trackElement, &problematicTrackElement))
+            {
+                ride_scroll_to_track_error(problematicTrackElement);
+                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
+            }
+        }
+        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
+        {
+            if (ride_check_track_contains_banked(trackElement, &problematicTrackElement))
+            {
+                ride_scroll_to_track_error(problematicTrackElement);
+                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
+            }
+        }
+    }
+
+    if (mode == RideMode::StationToStation)
+    {
+        if (!FindTrackGap(trackElement, &problematicTrackElement))
+        {
+            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
+        }
+
+        if (!ride_check_station_length(trackElement, &problematicTrackElement))
+        {
+            ride_scroll_to_track_error(problematicTrackElement);
+            return { false, STR_STATION_NOT_LONG_ENOUGH };
+        }
+
+        if (!ride_check_start_and_end_is_station(trackElement))
+        {
+            ride_scroll_to_track_error(problematicTrackElement);
+            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
+        }
+    }
+
+    return { true };
 }
