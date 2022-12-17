@@ -619,8 +619,8 @@ bool track_circuit_iterator_previous(track_circuit_iterator* it);
 bool track_circuit_iterator_next(track_circuit_iterator* it);
 bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const track_circuit_iterator* secondIt);
 
-void track_get_back(CoordsXYE* input, CoordsXYE* output);
-void track_get_front(CoordsXYE* input, CoordsXYE* output);
+void track_get_back(const CoordsXYE& input, CoordsXYE* output);
+void track_get_front(const CoordsXYE& input, CoordsXYE* output);
 
 bool track_element_is_covered(track_type_t trackElementType);
 bool track_type_is_station(track_type_t trackType);

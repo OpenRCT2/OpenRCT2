@@ -2721,12 +2721,12 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
  * @returns true if an inversion track piece is found, otherwise false.
  *  rct2: 0x006CB149
  */
-static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* output)
+static bool ride_check_track_contains_inversions(const CoordsXYE& input, CoordsXYE* output)
 {
-    if (input->element == nullptr)
+    if (input.element == nullptr)
         return false;
 
-    const auto* trackElement = input->element->AsTrack();
+    const auto* trackElement = input.element->AsTrack();
     if (trackElement == nullptr)
         return false;
 
@@ -2747,7 +2747,7 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
 
     bool moveSlowIt = true;
     track_circuit_iterator it, slowIt;
-    track_circuit_iterator_begin(&it, *input);
+    track_circuit_iterator_begin(&it, input);
     slowIt = it;
 
     while (track_circuit_iterator_next(&it))
@@ -2781,12 +2781,12 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
  * @returns true if a banked track piece is found, otherwise false.
  *  rct2: 0x006CB1D3
  */
-static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output)
+static bool ride_check_track_contains_banked(const CoordsXYE& input, CoordsXYE* output)
 {
-    if (input->element == nullptr)
+    if (input.element == nullptr)
         return false;
 
-    const auto* trackElement = input->element->AsTrack();
+    const auto* trackElement = input.element->AsTrack();
     if (trackElement == nullptr)
         return false;
 
@@ -2807,7 +2807,7 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
 
     bool moveSlowIt = true;
     track_circuit_iterator it, slowIt;
-    track_circuit_iterator_begin(&it, *input);
+    track_circuit_iterator_begin(&it, input);
     slowIt = it;
 
     while (track_circuit_iterator_next(&it))
@@ -2838,18 +2838,18 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
  *
  *  rct2: 0x006CB25D
  */
-static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
+static int32_t ride_check_station_length(const CoordsXYE& input, CoordsXYE* output)
 {
     rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0
-        && _currentRideIndex == input->element->AsTrack()->GetRideIndex())
+        && _currentRideIndex == input.element->AsTrack()->GetRideIndex())
     {
         ride_construction_invalidate_current_track();
     }
 
-    output->x = input->x;
-    output->y = input->y;
-    output->element = input->element;
+    output->x = input.x;
+    output->y = input.y;
+    output->element = input.element;
     track_begin_end trackBeginEnd;
     while (track_block_get_previous(*output, &trackBeginEnd))
     {
@@ -2893,11 +2893,11 @@ static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
  *
  *  rct2: 0x006CB2DA
  */
-static bool ride_check_start_and_end_is_station(CoordsXYE* input)
+static bool ride_check_start_and_end_is_station(const CoordsXYE& input)
 {
     CoordsXYE trackBack, trackFront;
 
-    RideId rideIndex = input->element->AsTrack()->GetRideIndex();
+    RideId rideIndex = input.element->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return false;
@@ -3952,7 +3952,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         rct_ride_entry* rideType = get_ride_entry(subtype);
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
         {
-            if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
+            if (ride_check_track_contains_inversions(trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(problematicTrackElement);
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
@@ -3960,7 +3960,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         }
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
         {
-            if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
+            if (ride_check_track_contains_banked(trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(problematicTrackElement);
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
@@ -3975,13 +3975,13 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
 
-        if (!ride_check_station_length(&trackElement, &problematicTrackElement))
+        if (!ride_check_station_length(trackElement, &problematicTrackElement))
         {
             ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_STATION_NOT_LONG_ENOUGH };
         }
 
-        if (!ride_check_start_and_end_is_station(&trackElement))
+        if (!ride_check_start_and_end_is_station(trackElement))
         {
             ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
@@ -4088,7 +4088,7 @@ ResultWithMessage Ride::Open(bool isApplying)
         rct_ride_entry* rideEntry = get_ride_entry(subtype);
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
         {
-            if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
+            if (ride_check_track_contains_inversions(trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(problematicTrackElement);
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
@@ -4096,7 +4096,7 @@ ResultWithMessage Ride::Open(bool isApplying)
         }
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
         {
-            if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
+            if (ride_check_track_contains_banked(trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(problematicTrackElement);
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
@@ -4111,13 +4111,13 @@ ResultWithMessage Ride::Open(bool isApplying)
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
 
-        if (!ride_check_station_length(&trackElement, &problematicTrackElement))
+        if (!ride_check_station_length(trackElement, &problematicTrackElement))
         {
             ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_STATION_NOT_LONG_ENOUGH };
         }
 
-        if (!ride_check_start_and_end_is_station(&trackElement))
+        if (!ride_check_start_and_end_is_station(trackElement))
         {
             ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
