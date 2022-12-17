@@ -2936,10 +2936,10 @@ static bool ride_check_start_and_end_is_station(const CoordsXYE& input)
  * station or the last track piece from the end of the direction.
  *  rct2: 0x006B4D39
  */
-static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
+static void ride_set_boat_hire_return_point(Ride& ride, const CoordsXYE& startElement)
 {
     int32_t trackType = -1;
-    auto returnPos = *startElement;
+    auto returnPos = startElement;
     int32_t startX = returnPos.x;
     int32_t startY = returnPos.y;
     track_begin_end trackBeginEnd;
@@ -2961,22 +2961,22 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
     trackType = returnPos.element->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
     int32_t elementReturnDirection = ted.Coordinates.rotation_begin;
-    ride->boat_hire_return_direction = returnPos.element->GetDirectionWithOffset(elementReturnDirection);
-    ride->boat_hire_return_position = TileCoordsXY{ returnPos };
+    ride.boat_hire_return_direction = returnPos.element->GetDirectionWithOffset(elementReturnDirection);
+    ride.boat_hire_return_position = TileCoordsXY{ returnPos };
 }
 
 /**
  *
  *  rct2: 0x006B4D39
  */
-static void ride_set_maze_entrance_exit_points(Ride* ride)
+static void ride_set_maze_entrance_exit_points(Ride& ride)
 {
     // Needs room for an entrance and an exit per station, plus one position for the list terminator.
     TileCoordsXYZD positions[(OpenRCT2::Limits::MaxStationsPerRide * 2) + 1];
 
     // Create a list of all the entrance and exit positions
     TileCoordsXYZD* position = positions;
-    for (const auto& station : ride->GetStations())
+    for (const auto& station : ride.GetStations())
     {
         if (!station.Entrance.IsNull())
         {
@@ -3018,9 +3018,9 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
  * Opens all block brakes of a ride.
  *  rct2: 0x006B4E6B
  */
-static void RideOpenBlockBrakes(CoordsXYE* startElement)
+static void RideOpenBlockBrakes(const CoordsXYE& startElement)
 {
-    CoordsXYE currentElement = *startElement;
+    CoordsXYE currentElement = startElement;
     do
     {
         auto trackType = currentElement.element->AsTrack()->GetTrackType();
@@ -3037,14 +3037,14 @@ static void RideOpenBlockBrakes(CoordsXYE* startElement)
                 break;
         }
     } while (track_block_get_next(&currentElement, &currentElement, nullptr, nullptr)
-             && currentElement.element != startElement->element);
+             && currentElement.element != startElement.element);
 }
 
 /**
  *
  *  rct2: 0x006B4D26
  */
-static void ride_set_start_finish_points(RideId rideIndex, CoordsXYE* startElement)
+static void ride_set_start_finish_points(RideId rideIndex, const CoordsXYE& startElement)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -3052,9 +3052,9 @@ static void ride_set_start_finish_points(RideId rideIndex, CoordsXYE* startEleme
 
     const auto& rtd = ride->GetRideTypeDescriptor();
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-        ride_set_maze_entrance_exit_points(ride);
+        ride_set_maze_entrance_exit_points(*ride);
     else if (ride->type == RIDE_TYPE_BOAT_HIRE)
-        ride_set_boat_hire_return_point(ride, startElement);
+        ride_set_boat_hire_return_point(*ride, startElement);
 
     if (ride->IsBlockSectioned() && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
@@ -3944,7 +3944,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
     }
 
     if (isApplying)
-        ride_set_start_finish_points(id, &trackElement);
+        ride_set_start_finish_points(id, trackElement);
 
     const auto& rtd = GetRideTypeDescriptor();
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
@@ -4035,7 +4035,7 @@ ResultWithMessage Ride::Open(bool isApplying)
     }
 
     if (isApplying)
-        ride_set_start_finish_points(id, &trackElement);
+        ride_set_start_finish_points(id, trackElement);
 
     if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
