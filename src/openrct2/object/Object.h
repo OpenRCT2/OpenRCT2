@@ -236,6 +236,7 @@ struct IReadObjectContext
     virtual IObjectRepository& GetObjectRepository() abstract;
     virtual bool ShouldLoadImages() abstract;
     virtual std::vector<uint8_t> GetData(std::string_view path) abstract;
+    virtual u8string ReadAllText(std::string_view path) abstract;
     virtual ObjectAsset GetAsset(std::string_view path) abstract;
 
     virtual void LogVerbose(ObjectError code, const utf8* text) abstract;

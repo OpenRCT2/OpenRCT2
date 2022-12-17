@@ -326,6 +326,8 @@
     <ClInclude Include="paint\Paint.h" />
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\scripting\PaintScriptEngine.h" />
+    <ClInclude Include="paint\scripting\PaintScriptEngine.h" />
+    <ClInclude Include="paint\scripting\PaintScriptRideEntry.h" />
     <ClInclude Include="paint\Supports.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
@@ -555,7 +557,6 @@
     <ClInclude Include="world\Wall.h" />
     <ClInclude Include="world\Water.h" />
     <ClInclude Include="..\thirdparty\*.h" />
-    <ClInclude Include="..\thirdparty\sol\sol.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resources\OpenRCT2.rc" />
@@ -817,6 +818,7 @@
     <ClCompile Include="paint\Paint.Entity.cpp" />
     <ClCompile Include="paint\Painter.cpp" />
     <ClCompile Include="paint\PaintHelpers.cpp" />
+    <ClCompile Include="paint\scripting\PaintScriptEngine.cpp" />
     <ClCompile Include="paint\Supports.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Banner.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Entrance.cpp" />
@@ -1012,7 +1014,6 @@
     <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\onelua.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

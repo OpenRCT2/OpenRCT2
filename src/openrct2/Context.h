@@ -107,6 +107,11 @@ namespace OpenRCT2
         class ScriptEngine;
     }
 
+    namespace PaintScripting
+    {
+        class PaintScriptEngine;
+    }
+
     namespace Ui
     {
         struct IUiContext;
@@ -133,6 +138,7 @@ namespace OpenRCT2
         virtual IObjectRepository& GetObjectRepository() abstract;
 #ifdef ENABLE_SCRIPTING
         virtual Scripting::ScriptEngine& GetScriptEngine() abstract;
+        virtual PaintScripting::PaintScriptEngine& GetPaintScriptEngine() abstract;
 #endif
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;

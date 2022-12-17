@@ -17,11 +17,14 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/PaintObject.h"
 #include "../object/StationObject.h"
 #include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"
 #include "../paint/Supports.h"
+#include "../paint/scripting/PaintScriptEngine.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
@@ -2266,9 +2269,19 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         else
         {
             // get the paint object from the object repository
-            /*auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
-            auto* paintObject = objRepository.FindObject(rtd.PaintObjectId);*/
-
+            auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+            const auto* repositoryItem = objRepository.FindObject(rtd.PaintObjectId);
+            if (repositoryItem != nullptr)
+            {
+                auto obj = objRepository.LoadObject(repositoryItem);
+                if (obj != nullptr)
+                {
+                    auto paintObject = dynamic_cast<PaintObject*>(obj.get());
+                    auto& paintScriptEngine = OpenRCT2::GetContext()->GetPaintScriptEngine();
+                    paintScriptEngine.CallScript(
+                        paintObject->GetScript(), *ride, trackSequence, direction, height, trackElement);
+                }
+            }
         }
     }
 }

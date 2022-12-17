@@ -51,6 +51,7 @@ struct IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
     virtual std::vector<uint8_t> GetData(std::string_view path) const abstract;
+    virtual u8string ReadAllText(std::string_view path) const abstract;
     virtual ObjectAsset GetAsset(std::string_view path) const abstract;
 };
 
@@ -69,6 +70,12 @@ public:
     {
         auto absolutePath = Path::Combine(_basePath, path);
         return File::ReadAllBytes(absolutePath);
+    }
+
+    u8string ReadAllText(std::string_view path) const override
+    {
+        auto absolutePath = Path::Combine(_basePath, path);
+        return File::ReadAllText(absolutePath);
     }
 
     ObjectAsset GetAsset(std::string_view path) const override
@@ -101,6 +108,14 @@ public:
     std::vector<uint8_t> GetData(std::string_view path) const override
     {
         return _zipArchive.GetFileData(path);
+        
+    }
+
+    u8string ReadAllText(std::string_view path) const override
+    {
+        auto stream = _zipArchive.GetFileStream(path);
+        auto stdString = stream->ReadStdString();
+        return stdString;
     }
 
     ObjectAsset GetAsset(std::string_view path) const override
@@ -159,6 +174,15 @@ public:
     bool ShouldLoadImages() override
     {
         return _loadImages;
+    }
+
+    u8string ReadAllText(std::string_view path) override
+    {
+        if (_fileDataRetriever != nullptr)
+        {
+            return _fileDataRetriever->ReadAllText(path);
+        }
+        return {};
     }
 
     std::vector<uint8_t> GetData(std::string_view path) override
@@ -424,6 +448,8 @@ namespace ObjectFactory
             return ObjectType::FootpathRailings;
         if (s == "audio")
             return ObjectType::Audio;
+        if (s == "paint")
+            return ObjectType::Paint;
         return ObjectType::None;
     }
 

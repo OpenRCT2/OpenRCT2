@@ -139,6 +139,11 @@ public:
         return _zipArchive->GetFileData(path);
     }
 
+    u8string ReadAllText(std::string_view path) override
+    {
+        return "";
+    }
+
     ObjectAsset GetAsset(std::string_view path) override
     {
         return ObjectAsset(_zipPath, path);

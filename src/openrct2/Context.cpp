@@ -57,6 +57,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
+#include "paint/scripting/PaintScriptEngine.h"
 #include "park/ParkFile.h"
 #include "platform/Crash.h"
 #include "platform/Platform.h"
@@ -88,6 +89,7 @@ using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Localisation;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Scripting;
+using namespace OpenRCT2::PaintScripting;
 using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2
@@ -115,6 +117,7 @@ namespace OpenRCT2
         StdInOutConsole _stdInOutConsole;
 #ifdef ENABLE_SCRIPTING
         ScriptEngine _scriptEngine;
+        PaintScriptEngine _paintScriptEngine;
 #endif
 #ifndef DISABLE_NETWORK
         NetworkBase _network;
@@ -218,6 +221,11 @@ namespace OpenRCT2
         Scripting::ScriptEngine& GetScriptEngine() override
         {
             return _scriptEngine;
+        }
+
+        PaintScripting::PaintScriptEngine& GetPaintScriptEngine() override
+        {
+            return _paintScriptEngine;
         }
 #endif
 
