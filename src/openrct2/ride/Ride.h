@@ -309,6 +309,9 @@ private:
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;
 
+    ResultWithMessage ChangeStatusCheckTrackValidity(const CoordsXYE& trackElement);
+    ResultWithMessage ChangeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement);
+
 public:
     bool CanBreakDown() const;
     RideClassification GetClassification() const;
@@ -397,6 +400,8 @@ public:
 
     bool HasRecolourableShopItems() const;
     bool HasStation() const;
+
+    bool FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
 };
 void UpdateSpiralSlide(Ride& ride);
 void UpdateChairlift(Ride& ride);
@@ -1009,8 +1014,6 @@ void ride_update_favourited_stat();
 void ride_check_all_reachable();
 
 bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
-int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);
-void ride_construct(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);
@@ -1075,8 +1078,6 @@ money32 set_operating_setting_nested(RideId rideId, RideSetSetting setting, uint
 
 void UpdateGhostTrackAndArrow();
 
-void ride_reset_all_names();
-
 uint32_t ride_customers_per_hour(const Ride* ride);
 uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
 
@@ -1100,6 +1101,5 @@ void ride_clear_leftover_entrances(Ride* ride);
 
 std::vector<RideId> GetTracklessRides();
 
-void ride_remove_vehicles(Ride* ride);
 void CircusMusicUpdate(Ride* ride);
 void DefaultMusicUpdate(Ride* ride);

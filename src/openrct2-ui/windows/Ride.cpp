@@ -1639,7 +1639,7 @@ static void WindowRideMainMouseup(rct_window* w, WidgetIndex widgetIndex)
             auto ride = get_ride(w->rideId);
             if (ride != nullptr)
             {
-                ride_construct(ride);
+                RideConstructionStart(*ride);
                 if (window_find_by_number(WindowClass::RideConstruction, ride->id.ToUnderlying()) != nullptr)
                 {
                     window_close(*w);

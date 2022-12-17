@@ -559,7 +559,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
                 auto ride = get_ride(vehicle->ride);
                 if (ride != nullptr)
                 {
-                    ride_construct(ride);
+                    RideConstructionStart(*ride);
                 }
             }
         }

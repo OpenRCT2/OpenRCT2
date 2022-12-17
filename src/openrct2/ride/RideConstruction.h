@@ -92,3 +92,5 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
 
 bool ride_select_backwards_from_front();
 bool ride_select_forwards_from_back();
+
+void RideConstructionStart(Ride& ride);

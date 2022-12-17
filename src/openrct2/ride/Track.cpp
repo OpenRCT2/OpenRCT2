@@ -482,13 +482,13 @@ bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const 
         && firstIt->current.x == secondIt->current.x && firstIt->current.y == secondIt->current.y);
 }
 
-void track_get_back(CoordsXYE* input, CoordsXYE* output)
+void track_get_back(const CoordsXYE& input, CoordsXYE* output)
 {
     CoordsXYE lastTrack;
     track_begin_end currentTrack;
     bool result;
 
-    lastTrack = *input;
+    lastTrack = input;
     do
     {
         result = track_block_get_previous(lastTrack, &currentTrack);
@@ -502,13 +502,13 @@ void track_get_back(CoordsXYE* input, CoordsXYE* output)
     *output = lastTrack;
 }
 
-void track_get_front(CoordsXYE* input, CoordsXYE* output)
+void track_get_front(const CoordsXYE& input, CoordsXYE* output)
 {
     CoordsXYE lastTrack, currentTrack;
     int32_t z, direction;
     bool result;
 
-    lastTrack = *input;
+    lastTrack = input;
     do
     {
         result = track_block_get_next(&lastTrack, &currentTrack, &z, &direction);

@@ -732,31 +732,31 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
  * bx result y
  * esi input / output map element
  */
-int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output)
+bool Ride::FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const
 {
-    if (ride == nullptr || input == nullptr || input->element == nullptr || input->element->GetType() != TileElementType::Track)
-        return 0;
+    if (input.element == nullptr || input.element->GetType() != TileElementType::Track)
+        return false;
 
-    const auto& rtd = ride->GetRideTypeDescriptor();
+    const auto& rtd = GetRideTypeDescriptor();
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-        return 0;
+        return false;
 
     rct_window* w = window_find_by_class(WindowClass::RideConstruction);
-    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == ride->id)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == id)
     {
         ride_construction_invalidate_current_track();
     }
 
     bool moveSlowIt = true;
     track_circuit_iterator it = {};
-    track_circuit_iterator_begin(&it, *input);
+    track_circuit_iterator_begin(&it, input);
     track_circuit_iterator slowIt = it;
     while (track_circuit_iterator_next(&it))
     {
         if (!track_is_connected_by_shape(it.last.element, it.current.element))
         {
             *output = it.current;
-            return 1;
+            return true;
         }
         // #2081: prevent an infinite loop
         moveSlowIt = !moveSlowIt;
@@ -766,17 +766,17 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
             if (track_circuit_iterators_match(&it, &slowIt))
             {
                 *output = it.current;
-                return 1;
+                return true;
             }
         }
     }
     if (!it.looped)
     {
         *output = it.last;
-        return 1;
+        return true;
     }
 
-    return 0;
+    return false;
 }
 
 void Ride::FormatStatusTo(Formatter& ft) const
@@ -2721,12 +2721,12 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
  * @returns true if an inversion track piece is found, otherwise false.
  *  rct2: 0x006CB149
  */
-static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* output)
+static bool ride_check_track_contains_inversions(const CoordsXYE& input, CoordsXYE* output)
 {
-    if (input->element == nullptr)
+    if (input.element == nullptr)
         return false;
 
-    const auto* trackElement = input->element->AsTrack();
+    const auto* trackElement = input.element->AsTrack();
     if (trackElement == nullptr)
         return false;
 
@@ -2747,7 +2747,7 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
 
     bool moveSlowIt = true;
     track_circuit_iterator it, slowIt;
-    track_circuit_iterator_begin(&it, *input);
+    track_circuit_iterator_begin(&it, input);
     slowIt = it;
 
     while (track_circuit_iterator_next(&it))
@@ -2781,12 +2781,12 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
  * @returns true if a banked track piece is found, otherwise false.
  *  rct2: 0x006CB1D3
  */
-static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output)
+static bool ride_check_track_contains_banked(const CoordsXYE& input, CoordsXYE* output)
 {
-    if (input->element == nullptr)
+    if (input.element == nullptr)
         return false;
 
-    const auto* trackElement = input->element->AsTrack();
+    const auto* trackElement = input.element->AsTrack();
     if (trackElement == nullptr)
         return false;
 
@@ -2807,7 +2807,7 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
 
     bool moveSlowIt = true;
     track_circuit_iterator it, slowIt;
-    track_circuit_iterator_begin(&it, *input);
+    track_circuit_iterator_begin(&it, input);
     slowIt = it;
 
     while (track_circuit_iterator_next(&it))
@@ -2838,18 +2838,18 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
  *
  *  rct2: 0x006CB25D
  */
-static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
+static int32_t ride_check_station_length(const CoordsXYE& input, CoordsXYE* output)
 {
     rct_window* w = window_find_by_class(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0
-        && _currentRideIndex == input->element->AsTrack()->GetRideIndex())
+        && _currentRideIndex == input.element->AsTrack()->GetRideIndex())
     {
         ride_construction_invalidate_current_track();
     }
 
-    output->x = input->x;
-    output->y = input->y;
-    output->element = input->element;
+    output->x = input.x;
+    output->y = input.y;
+    output->element = input.element;
     track_begin_end trackBeginEnd;
     while (track_block_get_previous(*output, &trackBeginEnd))
     {
@@ -2893,11 +2893,11 @@ static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
  *
  *  rct2: 0x006CB2DA
  */
-static bool ride_check_start_and_end_is_station(CoordsXYE* input)
+static bool ride_check_start_and_end_is_station(const CoordsXYE& input)
 {
     CoordsXYE trackBack, trackFront;
 
-    RideId rideIndex = input->element->AsTrack()->GetRideIndex();
+    RideId rideIndex = input.element->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return false;
@@ -2936,10 +2936,10 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
  * station or the last track piece from the end of the direction.
  *  rct2: 0x006B4D39
  */
-static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
+static void ride_set_boat_hire_return_point(Ride& ride, const CoordsXYE& startElement)
 {
     int32_t trackType = -1;
-    auto returnPos = *startElement;
+    auto returnPos = startElement;
     int32_t startX = returnPos.x;
     int32_t startY = returnPos.y;
     track_begin_end trackBeginEnd;
@@ -2961,22 +2961,22 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
     trackType = returnPos.element->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
     int32_t elementReturnDirection = ted.Coordinates.rotation_begin;
-    ride->boat_hire_return_direction = returnPos.element->GetDirectionWithOffset(elementReturnDirection);
-    ride->boat_hire_return_position = TileCoordsXY{ returnPos };
+    ride.boat_hire_return_direction = returnPos.element->GetDirectionWithOffset(elementReturnDirection);
+    ride.boat_hire_return_position = TileCoordsXY{ returnPos };
 }
 
 /**
  *
  *  rct2: 0x006B4D39
  */
-static void ride_set_maze_entrance_exit_points(Ride* ride)
+static void ride_set_maze_entrance_exit_points(Ride& ride)
 {
     // Needs room for an entrance and an exit per station, plus one position for the list terminator.
     TileCoordsXYZD positions[(OpenRCT2::Limits::MaxStationsPerRide * 2) + 1];
 
     // Create a list of all the entrance and exit positions
     TileCoordsXYZD* position = positions;
-    for (const auto& station : ride->GetStations())
+    for (const auto& station : ride.GetStations())
     {
         if (!station.Entrance.IsNull())
         {
@@ -3018,9 +3018,9 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
  * Opens all block brakes of a ride.
  *  rct2: 0x006B4E6B
  */
-static void RideOpenBlockBrakes(CoordsXYE* startElement)
+static void RideOpenBlockBrakes(const CoordsXYE& startElement)
 {
-    CoordsXYE currentElement = *startElement;
+    CoordsXYE currentElement = startElement;
     do
     {
         auto trackType = currentElement.element->AsTrack()->GetTrackType();
@@ -3037,14 +3037,14 @@ static void RideOpenBlockBrakes(CoordsXYE* startElement)
                 break;
         }
     } while (track_block_get_next(&currentElement, &currentElement, nullptr, nullptr)
-             && currentElement.element != startElement->element);
+             && currentElement.element != startElement.element);
 }
 
 /**
  *
  *  rct2: 0x006B4D26
  */
-static void ride_set_start_finish_points(RideId rideIndex, CoordsXYE* startElement)
+static void ride_set_start_finish_points(RideId rideIndex, const CoordsXYE& startElement)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -3052,9 +3052,9 @@ static void ride_set_start_finish_points(RideId rideIndex, CoordsXYE* startEleme
 
     const auto& rtd = ride->GetRideTypeDescriptor();
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-        ride_set_maze_entrance_exit_points(ride);
+        ride_set_maze_entrance_exit_points(*ride);
     else if (ride->type == RIDE_TYPE_BOAT_HIRE)
-        ride_set_boat_hire_return_point(ride, startElement);
+        ride_set_boat_hire_return_point(*ride, startElement);
 
     if (ride->IsBlockSectioned() && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
@@ -3824,7 +3824,7 @@ void Ride::ConstructMissingEntranceOrExit() const
 
         CoordsXYE trackElement;
         ride_try_get_origin_element(this, &trackElement);
-        ride_find_track_gap(this, &trackElement, &trackElement);
+        FindTrackGap(trackElement, &trackElement);
         int32_t ok = ride_modify(trackElement);
         if (ok == 0)
         {
@@ -3930,87 +3930,20 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
 
     if (mode == RideMode::ContinuousCircuit || IsBlockSectioned())
     {
-        if (ride_find_track_gap(this, &trackElement, &problematicTrackElement)
-            && (newStatus != RideStatus::Simulating || IsBlockSectioned()))
+        if (FindTrackGap(trackElement, &problematicTrackElement) && (newStatus != RideStatus::Simulating || IsBlockSectioned()))
         {
             ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
         }
     }
 
-    if (IsBlockSectioned())
+    auto message = ChangeStatusCheckTrackValidity(trackElement);
+    if (!message.Successful)
     {
-        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
-        if (!blockBrakeCheck.Successful)
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, blockBrakeCheck.Message };
-        }
+        return message;
     }
 
-    if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
-    {
-        rct_ride_entry* rideType = get_ride_entry(subtype);
-        if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
-        {
-            if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
-            {
-                ride_scroll_to_track_error(problematicTrackElement);
-                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
-            }
-        }
-        if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
-        {
-            if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
-            {
-                ride_scroll_to_track_error(problematicTrackElement);
-                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
-            }
-        }
-    }
-
-    if (mode == RideMode::StationToStation)
-    {
-        if (!ride_find_track_gap(this, &trackElement, &problematicTrackElement))
-        {
-            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
-        }
-
-        if (!ride_check_station_length(&trackElement, &problematicTrackElement))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_STATION_NOT_LONG_ENOUGH };
-        }
-
-        if (!ride_check_start_and_end_is_station(&trackElement))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
-        }
-    }
-
-    if (isApplying)
-        ride_set_start_finish_points(id, &trackElement);
-
-    const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
-    {
-        const auto createVehicleResult = CreateVehicles(trackElement, isApplying);
-        if (!createVehicleResult.Successful)
-        {
-            return { false, createVehicleResult.Message };
-        }
-    }
-
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL) && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
-        && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
-    {
-        const auto createCableLiftResult = ride_create_cable_lift(id, isApplying);
-        if (!createCableLiftResult.Successful)
-            return { false, createCableLiftResult.Message };
-    }
-
-    return { true };
+    return ChangeStatusCreateVehicles(isApplying, trackElement);
 }
 /**
  *
@@ -4067,85 +4000,20 @@ ResultWithMessage Ride::Open(bool isApplying)
 
     if (mode == RideMode::Race || mode == RideMode::ContinuousCircuit || IsBlockSectioned())
     {
-        if (ride_find_track_gap(this, &trackElement, &problematicTrackElement))
+        if (FindTrackGap(trackElement, &problematicTrackElement))
         {
             ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
         }
     }
 
-    if (IsBlockSectioned())
+    auto message = ChangeStatusCheckTrackValidity(trackElement);
+    if (!message.Successful)
     {
-        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
-        if (!blockBrakeCheck.Successful)
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, blockBrakeCheck.Message };
-        }
+        return message;
     }
 
-    if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
-    {
-        rct_ride_entry* rideEntry = get_ride_entry(subtype);
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
-        {
-            if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
-            {
-                ride_scroll_to_track_error(problematicTrackElement);
-                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
-            }
-        }
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
-        {
-            if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
-            {
-                ride_scroll_to_track_error(problematicTrackElement);
-                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
-            }
-        }
-    }
-
-    if (mode == RideMode::StationToStation)
-    {
-        if (!ride_find_track_gap(this, &trackElement, &problematicTrackElement))
-        {
-            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
-        }
-
-        if (!ride_check_station_length(&trackElement, &problematicTrackElement))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_STATION_NOT_LONG_ENOUGH };
-        }
-
-        if (!ride_check_start_and_end_is_station(&trackElement))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
-        }
-    }
-
-    if (isApplying)
-        ride_set_start_finish_points(id, &trackElement);
-
-    if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
-    {
-        const auto createVehicleResult = CreateVehicles(trackElement, isApplying);
-        if (!createVehicleResult.Successful)
-        {
-            return { false, createVehicleResult.Message };
-        }
-    }
-
-    if ((GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL))
-        && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED) && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
-    {
-        const auto createCableLiftResult = ride_create_cable_lift(id, isApplying);
-        if (!createCableLiftResult.Successful)
-            return { false, createCableLiftResult.Message };
-    }
-
-    return { true };
+    return ChangeStatusCreateVehicles(isApplying, trackElement);
 }
 
 /**
@@ -5323,14 +5191,6 @@ void Ride::Crash(uint8_t vehicleIndex)
     }
 }
 
-void ride_reset_all_names()
-{
-    for (auto& ride : GetRideManager())
-    {
-        ride.SetNameToDefault();
-    }
-}
-
 // Gets the approximate value of customers per hour for this ride. Multiplies ride_customers_in_last_5_minutes() by 12.
 uint32_t ride_customers_per_hour(const Ride* ride)
 {
@@ -5934,4 +5794,88 @@ std::vector<RideId> GetTracklessRides()
         }
     }
     return result;
+}
+
+ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackElement)
+{
+    CoordsXYE problematicTrackElement = {};
+
+    if (IsBlockSectioned())
+    {
+        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
+        if (!blockBrakeCheck.Successful)
+        {
+            ride_scroll_to_track_error(problematicTrackElement);
+            return { false, blockBrakeCheck.Message };
+        }
+    }
+
+    if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
+    {
+        rct_ride_entry* rideEntry = get_ride_entry(subtype);
+        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
+        {
+            if (ride_check_track_contains_inversions(trackElement, &problematicTrackElement))
+            {
+                ride_scroll_to_track_error(problematicTrackElement);
+                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
+            }
+        }
+        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
+        {
+            if (ride_check_track_contains_banked(trackElement, &problematicTrackElement))
+            {
+                ride_scroll_to_track_error(problematicTrackElement);
+                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
+            }
+        }
+    }
+
+    if (mode == RideMode::StationToStation)
+    {
+        if (!FindTrackGap(trackElement, &problematicTrackElement))
+        {
+            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
+        }
+
+        if (!ride_check_station_length(trackElement, &problematicTrackElement))
+        {
+            ride_scroll_to_track_error(problematicTrackElement);
+            return { false, STR_STATION_NOT_LONG_ENOUGH };
+        }
+
+        if (!ride_check_start_and_end_is_station(trackElement))
+        {
+            ride_scroll_to_track_error(problematicTrackElement);
+            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
+        }
+    }
+
+    return { true };
+}
+
+ResultWithMessage Ride::ChangeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement)
+{
+    if (isApplying)
+        ride_set_start_finish_points(id, trackElement);
+
+    const auto& rtd = GetRideTypeDescriptor();
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    {
+        const auto createVehicleResult = CreateVehicles(trackElement, isApplying);
+        if (!createVehicleResult.Successful)
+        {
+            return { false, createVehicleResult.Message };
+        }
+    }
+
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL) && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
+        && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
+    {
+        const auto createCableLiftResult = ride_create_cable_lift(id, isApplying);
+        if (!createCableLiftResult.Successful)
+            return { false, createCableLiftResult.Message };
+    }
+
+    return { true };
 }
