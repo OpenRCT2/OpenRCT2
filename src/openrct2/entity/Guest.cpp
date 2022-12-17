@@ -3868,7 +3868,8 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         }
     }
 
-    if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE))
     {
         SwitchToSpecialSprite(1);
     }
@@ -4590,6 +4591,7 @@ void Guest::UpdateRideApproachSpiralSlide()
         return;
     }
 
+    [[maybe_unused]] const auto& rtd = ride->GetRideTypeDescriptor();
     if (waypoint == 2)
     {
         bool lastRide = false;
@@ -4610,7 +4612,7 @@ void Guest::UpdateRideApproachSpiralSlide()
             Var37 = (exit.direction * 4) | (Var37 & 0x30) | waypoint;
             CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
-            assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+            assert(rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE));
             targetLoc += SpiralSlideWalkingPath[Var37];
 
             SetDestination(targetLoc);
@@ -4624,7 +4626,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 
     CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
-    assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+    assert(rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE));
     targetLoc += SpiralSlideWalkingPath[Var37];
 
     SetDestination(targetLoc);
@@ -4653,7 +4655,12 @@ static constexpr const CoordsXY _SpiralSlideEndWaypoint[] = {
 void Guest::UpdateRideOnSpiralSlide()
 {
     auto ride = get_ride(CurrentRide);
-    if (ride == nullptr || ride->type != RIDE_TYPE_SPIRAL_SLIDE)
+
+    if (ride == nullptr)
+        return;
+
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE))
         return;
 
     auto destination = GetDestination();
@@ -4718,7 +4725,6 @@ void Guest::UpdateRideOnSpiralSlide()
 
     CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
-    assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
     targetLoc += SpiralSlideWalkingPath[Var37];
 
     SetDestination(targetLoc);
@@ -4758,7 +4764,8 @@ void Guest::UpdateRideLeaveSpiralSlide()
         Var37--;
         CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
-        assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+        [[maybe_unused]] const auto& rtd = ride->GetRideTypeDescriptor();
+        assert(rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE));
         targetLoc += SpiralSlideWalkingPath[Var37];
 
         SetDestination(targetLoc);
