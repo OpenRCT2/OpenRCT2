@@ -310,6 +310,7 @@ private:
     void ConstructMissingEntranceOrExit() const;
 
     ResultWithMessage ChangeStatusCheckTrackValidity(const CoordsXYE& trackElement);
+    ResultWithMessage ChangeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement);
 
 public:
     bool CanBreakDown() const;

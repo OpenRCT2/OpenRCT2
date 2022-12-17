@@ -3943,28 +3943,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         return message;
     }
 
-    if (isApplying)
-        ride_set_start_finish_points(id, trackElement);
-
-    const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
-    {
-        const auto createVehicleResult = CreateVehicles(trackElement, isApplying);
-        if (!createVehicleResult.Successful)
-        {
-            return { false, createVehicleResult.Message };
-        }
-    }
-
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL) && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
-        && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
-    {
-        const auto createCableLiftResult = ride_create_cable_lift(id, isApplying);
-        if (!createCableLiftResult.Successful)
-            return { false, createCableLiftResult.Message };
-    }
-
-    return { true };
+    return ChangeStatusCreateVehicles(isApplying, trackElement);
 }
 /**
  *
@@ -4034,27 +4013,7 @@ ResultWithMessage Ride::Open(bool isApplying)
         return message;
     }
 
-    if (isApplying)
-        ride_set_start_finish_points(id, trackElement);
-
-    if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
-    {
-        const auto createVehicleResult = CreateVehicles(trackElement, isApplying);
-        if (!createVehicleResult.Successful)
-        {
-            return { false, createVehicleResult.Message };
-        }
-    }
-
-    if ((GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL))
-        && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED) && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
-    {
-        const auto createCableLiftResult = ride_create_cable_lift(id, isApplying);
-        if (!createCableLiftResult.Successful)
-            return { false, createCableLiftResult.Message };
-    }
-
-    return { true };
+    return ChangeStatusCreateVehicles(isApplying, trackElement);
 }
 
 /**
@@ -5890,6 +5849,32 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
             ride_scroll_to_track_error(problematicTrackElement);
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
+    }
+
+    return { true };
+}
+
+ResultWithMessage Ride::ChangeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement)
+{
+    if (isApplying)
+        ride_set_start_finish_points(id, trackElement);
+
+    const auto& rtd = GetRideTypeDescriptor();
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    {
+        const auto createVehicleResult = CreateVehicles(trackElement, isApplying);
+        if (!createVehicleResult.Successful)
+        {
+            return { false, createVehicleResult.Message };
+        }
+    }
+
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL) && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
+        && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
+    {
+        const auto createCableLiftResult = ride_create_cable_lift(id, isApplying);
+        if (!createCableLiftResult.Successful)
+            return { false, createCableLiftResult.Message };
     }
 
     return { true };
