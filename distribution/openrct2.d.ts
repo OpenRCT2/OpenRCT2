@@ -3032,6 +3032,7 @@ declare global {
         sandboxMode: boolean;
         showAllOperatingModes: boolean;
         showVehiclesFromOtherTrackTypes: boolean;
+        allowRegularPathAsQueue: boolean;
     }
 
     /**

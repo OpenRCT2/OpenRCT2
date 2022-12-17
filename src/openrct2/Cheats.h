@@ -33,6 +33,7 @@ extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
 extern bool gCheatsAllowTrackPlaceInvalidHeights;
+extern bool gCheatsAllowRegularPathAsQueue;
 
 enum class CheatType : int32_t
 {
@@ -86,6 +87,7 @@ enum class CheatType : int32_t
     RemoveDucks,
     AllowTrackPlaceInvalidHeights,
     NoCapOnQueueLengthDummy, // Removed; this dummy exists only for deserialisation parks that had it saved
+    AllowRegularPathAsQueue,
     Count,
 };
 

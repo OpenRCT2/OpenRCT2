@@ -652,10 +652,18 @@ private:
             {
                 continue;
             }
-            if (showQueues != ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+            // If regular paths can be used as queue, only hide the path if we’re _not_ looking at a queue,
+            // but the path surface is one.
+            if (gCheatsAllowRegularPathAsQueue && !showQueues && ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
             {
                 continue;
             }
+            // If the cheat is disabled, hide queues from the regular path view and vice versa.
+            else if (!gCheatsAllowRegularPathAsQueue && showQueues != ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+            {
+                continue;
+            }
+
             if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL
                 && i == (showQueues ? gFootpathSelection.QueueSurface : gFootpathSelection.NormalSurface))
             {

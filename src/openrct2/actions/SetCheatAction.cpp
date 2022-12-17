@@ -240,6 +240,9 @@ GameActions::Result SetCheatAction::Execute() const
         case CheatType::AllowTrackPlaceInvalidHeights:
             gCheatsAllowTrackPlaceInvalidHeights = _param1 != 0;
             break;
+        case CheatType::AllowRegularPathAsQueue:
+            gCheatsAllowRegularPathAsQueue = _param1 != 0;
+            break;
         default:
         {
             log_error("Unabled cheat: %d", _cheatType.id);
@@ -304,6 +307,8 @@ ParametersRange SetCheatAction::GetParameterRange(CheatType cheatType) const
         case CheatType::IgnoreResearchStatus:
             [[fallthrough]];
         case CheatType::EnableAllDrawableTrackPieces:
+            [[fallthrough]];
+        case CheatType::AllowRegularPathAsQueue:
             [[fallthrough]];
         case CheatType::OpenClosePark:
             return { { 0, 1 }, { 0, 0 } };

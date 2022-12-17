@@ -41,6 +41,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(
                 ctx, &ScCheats::disablePlantAging_get, &ScCheats::disablePlantAging_set, "disablePlantAging");
             dukglue_register_property(
+                ctx, &ScCheats::allowRegularPathAsQueue_get, &ScCheats::allowRegularPathAsQueue_set, "allowRegularPathAsQueue");
+            dukglue_register_property(
                 ctx, &ScCheats::disableRideValueAging_get, &ScCheats::disableRideValueAging_set, "disableRideValueAging");
             dukglue_register_property(
                 ctx, &ScCheats::disableSupportLimits_get, &ScCheats::disableSupportLimits_set, "disableSupportLimits");
@@ -157,6 +159,17 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             gCheatsDisablePlantAging = value;
+        }
+
+        bool allowRegularPathAsQueue_get()
+        {
+            return gCheatsAllowRegularPathAsQueue;
+        }
+
+        void allowRegularPathAsQueue_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            gCheatsAllowRegularPathAsQueue = value;
         }
 
         bool disableRideValueAging_get()
