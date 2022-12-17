@@ -230,22 +230,22 @@
         "y_offset": 1
     },
     {
-        "path": "icons/legacy_path.png",
+        "path": "icons/legacy_paths.png",
         "x_offset": 1,
         "y_offset": 1
     },
     {
-        "path": "icons/path_surface.png",
+        "path": "icons/path_surfaces.png",
         "x_offset": 1,
         "y_offset": 1
     },
     {
-        "path": "icons/ride_station.png",
+        "path": "icons/ride_stations.png",
         "x_offset": 5,
         "y_offset": 1
     },
     {
-        "path": "icons/terrain_edge.png",
+        "path": "icons/terrain_edges.png",
         "x_offset": 1,
         "y_offset": 1
     },
