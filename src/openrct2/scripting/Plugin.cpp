@@ -161,6 +161,12 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
         {
             metadata.TargetApiVersion = dukTargetApiVersion.as_int();
         }
+        else
+        {
+            log_error(
+                u8"Plug-in “%s” does not specify a target API version or specifies it incorrectly. Emulating deprecated APIs.",
+                metadata.Name.c_str());
+        }
 
         auto dukAuthors = dukMetadata["authors"];
         dukAuthors.push();

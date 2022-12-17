@@ -137,7 +137,11 @@ declare global {
         type: PluginType;
         licence: string;
         minApiVersion?: number;
-        targetApiVersion?: number;
+        /**
+         * The Plug-in API version the current plug-in is designed for. This is used for backwards compatibility.
+         * E.g.: 66
+         */
+        targetApiVersion: number;
         main: () => void;
     }
 
