@@ -5322,14 +5322,6 @@ void Ride::Crash(uint8_t vehicleIndex)
     }
 }
 
-void ride_reset_all_names()
-{
-    for (auto& ride : GetRideManager())
-    {
-        ride.SetNameToDefault();
-    }
-}
-
 // Gets the approximate value of customers per hour for this ride. Multiplies ride_customers_in_last_5_minutes() by 12.
 uint32_t ride_customers_per_hour(const Ride* ride)
 {

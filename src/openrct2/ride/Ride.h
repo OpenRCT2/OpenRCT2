@@ -1076,8 +1076,6 @@ money32 set_operating_setting_nested(RideId rideId, RideSetSetting setting, uint
 
 void UpdateGhostTrackAndArrow();
 
-void ride_reset_all_names();
-
 uint32_t ride_customers_per_hour(const Ride* ride);
 uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
 
