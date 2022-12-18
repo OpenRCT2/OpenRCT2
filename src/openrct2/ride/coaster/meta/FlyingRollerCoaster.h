@@ -16,7 +16,7 @@
 
 // clang-format off
 // Non-inverted variant
-constexpr const RideTypeDescriptor FlyingRollerCoasterRTD =
+RideTypeDescriptor FlyingRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_FLYING_ROLLER_COASTER_ALT),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -61,7 +61,7 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterRTD =
 };
 
 // Inverted variant
-constexpr const RideTypeDescriptor FlyingRollerCoasterAltRTD =
+RideTypeDescriptor FlyingRollerCoasterAltRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_NONE),

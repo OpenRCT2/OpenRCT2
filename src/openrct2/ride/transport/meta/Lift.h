@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor LiftRTD =
+RideTypeDescriptor LiftRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_TRANSPORT),

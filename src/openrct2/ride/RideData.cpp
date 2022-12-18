@@ -122,6 +122,53 @@
 
 using namespace OpenRCT2::Entity::Yaw;
 
+RideTypeDescriptor DummyRTD = {
+    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(Category, RIDE_CATEGORY_NONE),
+    SET_FIELD(EnabledTrackPieces, {}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
+    SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
+    SET_FIELD(TrackPaintFunction, nullptr),
+    SET_FIELD(Flags, 0),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
+    SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(Naming, { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN }),
+    SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
+    SET_FIELD(EnumName, "(INVALID)"),
+    SET_FIELD(AvailableBreakdowns, 0),
+    SET_FIELD(
+        Heights,
+        {
+            12,
+            64,
+            0,
+            0,
+        }),
+    SET_FIELD(MaxMass, 255),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
+    SET_FIELD(RatingsCalculationFunction, nullptr),
+    SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
+    SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
+    SET_FIELD(BuildCosts, { 0.00_GBP, 0.00_GBP, 1 }),
+    SET_FIELD(DefaultPrices, { 20, 20 }),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
+    SET_FIELD(BonusValue, 0),
+    SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
+    SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "invalid"),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
+    SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
+    SET_FIELD(Classification, RideClassification::Ride),
+    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
+};
+
 // clang-format off
 
 const CarEntry CableLiftVehicle = {
@@ -187,6 +234,14 @@ const CarEntry CableLiftVehicle = {
     /* .peep_loading_positions = */ 0
 };
 
+RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideType)
+{
+    if (rideType >= std::size(RideTypeDescriptors))
+        return DummyRTD;
+
+    return RideTypeDescriptors[rideType];
+}
+
 /* rct2: 0x009A0AA0 */
 const uint16_t RideFilmLength[3] = {
     5000, // MOUSE_TAILS
@@ -235,7 +290,7 @@ const StringId RideModeNames[] = {
 };
 // clang-format on
 
-constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
+RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SPIRAL_ROLLER_COASTER              */ SpiralRollerCoasterRTD,
     /* RIDE_TYPE_STAND_UP_ROLLER_COASTER            */ StandUpRollerCoasterRTD,
     /* RIDE_TYPE_SUSPENDED_SWINGING_COASTER         */ SuspendedSwingingCoasterRTD,

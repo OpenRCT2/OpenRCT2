@@ -24,6 +24,7 @@
 #include "../core/BitSet.hpp"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
+#include "../object/PaintObject.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Ride.h"
@@ -250,6 +251,9 @@ struct RideTypeDescriptor
     // Paint Object Id
     const char* PaintObjectId = nullptr;
 
+    // Paint object pointer
+    PaintObject* PaintObjectPtr = nullptr;
+
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
@@ -263,7 +267,7 @@ struct RideTypeDescriptor
 #    define SET_FIELD(fieldname, ...) .fieldname = __VA_ARGS__
 #endif
 
-extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
+extern RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
 
 enum
 {
@@ -413,55 +417,10 @@ extern const uint16_t RideFilmLength[3];
 extern const StringId RideModeNames[static_cast<uint8_t>(RideMode::Count)];
 
 // clang-format off
-constexpr const RideTypeDescriptor DummyRTD =
-{
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
-    SET_FIELD(Category, RIDE_CATEGORY_NONE),
-    SET_FIELD(EnabledTrackPieces, {}),
-    SET_FIELD(ExtraTrackPieces, {}),
-    SET_FIELD(CoveredTrackPieces, {}),
-    SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, nullptr),
-    SET_FIELD(Flags, 0),
-    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
-    SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
-    SET_FIELD(Naming, { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN }),
-    SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, "(INVALID)"),
-    SET_FIELD(AvailableBreakdowns, 0),
-    SET_FIELD(Heights, { 12, 64, 0, 0, }),
-    SET_FIELD(MaxMass, 255),
-    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, nullptr),
-    SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
-    SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 0.00_GBP, 0.00_GBP, 1 }),
-    SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
-    SET_FIELD(PhotoItem, ShopItem::Photo),
-    SET_FIELD(BonusValue, 0),
-    SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
-    SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
-    SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(Name, "invalid"),
-    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
-    SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
-    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
-    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
-    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
-    SET_FIELD(Classification, RideClassification::Ride),
-    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
-};
+extern RideTypeDescriptor DummyRTD;
 // clang-format on
 
-constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideType)
-{
-    if (rideType >= std::size(RideTypeDescriptors))
-        return DummyRTD;
-
-    return RideTypeDescriptors[rideType];
-}
+RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideType);
 
 constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 {

@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
+RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -56,7 +56,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     SET_FIELD(Name, "multi_dimension_rc"),
 };
 
-constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
+RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_NONE),

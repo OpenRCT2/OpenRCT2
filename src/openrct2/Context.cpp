@@ -490,6 +490,7 @@ namespace OpenRCT2
 
 #ifdef ENABLE_SCRIPTING
             _scriptEngine.Initialise();
+            _paintScriptEngine.Initialize();
 #endif
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);

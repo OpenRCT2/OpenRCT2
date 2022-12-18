@@ -2254,7 +2254,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
 
         // check if there is a paint object available
-        if (rtd.PaintObjectId == nullptr)
+        if (rtd.PaintObjectPtr == nullptr)
         {
             TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = rtd.TrackPaintFunction;
             if (paintFunctionGetter != nullptr)
@@ -2268,25 +2268,8 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
         else
         {
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-            auto objIndex = objManager.GetLoadedObjectEntryIndex(rtd.PaintObjectId);
-            auto paintObject = static_cast<PaintObject*>(objManager.GetLoadedObject(ObjectType::Paint, objIndex));
-
-            //load the object on the fly for now
-            if (paintObject == nullptr)
-            {
-                paintObject = static_cast<PaintObject*>(objManager.LoadObject(rtd.PaintObjectId));
-            }
-
-            if (paintObject != nullptr)
-            {
-                //we only execute the script if we didn't encounter an error
-                if (paintObject->Error.empty())
-                {
-                    auto& paintScriptEngine = OpenRCT2::GetContext()->GetPaintScriptEngine();
-                    paintScriptEngine.CallScript(*ride, trackSequence, direction, height, trackElement, paintObject);
-                }
-            }
+            auto& paintScriptEngine = OpenRCT2::GetContext()->GetPaintScriptEngine();
+            paintScriptEngine.CallScript(*ride, trackSequence, direction, height, trackElement, rtd.PaintObjectPtr);
         }
     }
 }

@@ -17,7 +17,7 @@
 #include "../BolligerMabillardTrack.hpp"
 
 // clang-format off
-constexpr const RideTypeDescriptor TwisterRollerCoasterRTD =
+RideTypeDescriptor TwisterRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),

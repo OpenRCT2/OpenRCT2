@@ -16,7 +16,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor GoKartsRTD =
+RideTypeDescriptor GoKartsRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
