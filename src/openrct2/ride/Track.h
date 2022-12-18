@@ -17,6 +17,7 @@
 #include <optional>
 
 constexpr const uint32_t RideConstructionSpecialPieceSelected = 0x10000;
+constexpr const uint8_t TrackDirectionDiagonalFlag = 4;
 
 constexpr const int32_t BLOCK_BRAKE_BASE_SPEED = 0x20364;
 
