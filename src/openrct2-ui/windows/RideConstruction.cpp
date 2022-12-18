@@ -2215,7 +2215,7 @@ public:
 private:
     bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
     {
-        return direction >= TrackDirectionDiagonalFlag;
+        return direction >= NumOrthogonalDirections;
     }
 
     void Construct()
