@@ -1737,13 +1737,13 @@ STR_2382    :土地
 STR_2383    :水面
 STR_2384    :{WINDOW_COLOUR_2}你的目标：
 STR_2385    :{BLACK}无
-STR_2386    :{BLACK}在{POP16}{MONTHYEAR}末乐园内至少有{PUSH16}{PUSH16}{COMMA16}游客，并且乐园评分不低于600
+STR_2386    :{BLACK}在{POP16}{MONTHYEAR}末乐园内至少有{NEWLINE}{PUSH16}{PUSH16}{COMMA16}游客，并且乐园评分不低于600
 STR_2387    :{BLACK}在{POP16}{MONTHYEAR}末乐园价值不低于{CURRENCY}
 STR_2388    :{BLACK}尽情玩吧!
 STR_2389    :{BLACK}建造你的最佳{STRINGID}吧!
 STR_2390    :{BLACK}在你的乐园中运营10种类型的过山车，并且每一个的兴奋度不低于6.00
 STR_2391    :{BLACK}乐园内至少有{COMMA16} 游客，并且在任何时候你都不能让公园评分低于700 ！
-STR_2392    :{BLACK}每个月的门票收入至少{POP16}{POP16}{CURRENCY}
+STR_2392    :{BLACK}每个月的门票收入至少{NEWLINE}{POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}在你的乐园中运营10种类型的过山车，每一个的长度至少{LENGTH}，并且每一个的兴奋度不低于7.00
 STR_2394    :{BLACK}建造好五座未完成的过山车，将他们每座设计成兴奋度至少达到{POP16}{POP16}{COMMA2DP32}
 STR_2395    :{BLACK}还清乐园的贷款，并令其价值至少达到{POP16}{POP16}{CURRENCY}
@@ -2817,11 +2817,11 @@ STR_5616    :网格标记的最后一个元素
 STR_5617    :将选中的元素移至上方.
 STR_5618    :将选中的元素移至下方.
 STR_5619    :过山车大亨
-STR_5620    :过山车大亨：快乐天地
-STR_5621    :过山车大亨：极限反转
+STR_5620    :过山车大亨：{NEWLINE}快乐天地
+STR_5621    :过山车大亨：{NEWLINE}极限反转
 STR_5622    :过山车大亨2
-STR_5623    :过山车大亨2：异国风情
-STR_5624    :过山车大亨2：欢乐时光
+STR_5623    :过山车大亨2：{NEWLINE}异国风情
+STR_5624    :过山车大亨2：{NEWLINE}欢乐时光
 STR_5625    :“真实的”游乐园
 STR_5626    :其他游乐园
 STR_5627    :剧情列表排序方法:
@@ -3426,7 +3426,7 @@ STR_6318    :Network desync detected.{NEWLINE} Log文件: {STRING}
 STR_6319    :块式制动器关闭
 STR_6320    :坚不可摧
 STR_6321    :附加内容损坏
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}实体编号: {BLACK}{INT32}
 STR_6323    :模拟中
 STR_6324    :模拟
 STR_6325    :模拟设施/景点
@@ -3630,6 +3630,8 @@ STR_6524    :增加所选资产包的优先级
 STR_6525    :使用已启用的资产包重新加载在游戏中的所有资产
 STR_6526    :（基础图形、音乐及音效）
 STR_6527    :竞赛
+STR_6528    :无效的轨道参数！
+STR_6529    :无效的配色参数！
 
 #############
 # Scenarios #
