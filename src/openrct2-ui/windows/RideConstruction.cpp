@@ -2085,7 +2085,7 @@ public:
             }
 
             int32_t slope, bank;
-            bool buildDirectionIsDiagonal;
+            bool buildDirectionIsDiagonal = false;
             if (_rideConstructionState == RideConstructionState::Front
                 || _rideConstructionState == RideConstructionState::Place)
             {
