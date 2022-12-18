@@ -2085,19 +2085,19 @@ public:
             }
 
             int32_t slope, bank;
-            bool diag;
+            bool buildDirectionIsDiagonal;
             if (_rideConstructionState == RideConstructionState::Front
                 || _rideConstructionState == RideConstructionState::Place)
             {
                 slope = ted.Definition.vangle_start;
                 bank = ted.Definition.bank_start;
-                diag = TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_begin);
+                buildDirectionIsDiagonal = TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_begin);
             }
             else if (_rideConstructionState == RideConstructionState::Back)
             {
                 slope = ted.Definition.vangle_end;
                 bank = ted.Definition.bank_end;
-                diag = TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_end);
+                buildDirectionIsDiagonal = TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_end);
             }
             else
             {
@@ -2133,8 +2133,8 @@ public:
 
             _currentPossibleRideConfigurations[currentPossibleRideConfigurationIndex] = trackType;
             _currentDisabledSpecialTrackPieces |= (1uLL << currentPossibleRideConfigurationIndex);
-            if (TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection) == diag && slope == _previousTrackSlopeEnd
-                && bank == _previousTrackBankEnd
+            if (TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection) == buildDirectionIsDiagonal
+                && slope == _previousTrackSlopeEnd && bank == _previousTrackBankEnd
                 && (trackType != TrackElemType::TowerBase
                     || currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES)))
             {
