@@ -2268,18 +2268,23 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
         else
         {
-            // get the paint object from the object repository
-            auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
-            const auto* repositoryItem = objRepository.FindObject(rtd.PaintObjectId);
-            if (repositoryItem != nullptr)
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto objIndex = objManager.GetLoadedObjectEntryIndex(rtd.PaintObjectId);
+            auto paintObject = static_cast<PaintObject*>(objManager.GetLoadedObject(ObjectType::Paint, objIndex));
+
+            //load the object on the fly for now
+            if (paintObject == nullptr)
             {
-                auto obj = objRepository.LoadObject(repositoryItem);
-                if (obj != nullptr)
+                paintObject = static_cast<PaintObject*>(objManager.LoadObject(rtd.PaintObjectId));
+            }
+
+            if (paintObject != nullptr)
+            {
+                //we only execute the script if we didn't encounter an error
+                if (paintObject->Error.empty())
                 {
-                    auto paintObject = dynamic_cast<PaintObject*>(obj.get());
                     auto& paintScriptEngine = OpenRCT2::GetContext()->GetPaintScriptEngine();
-                    paintScriptEngine.CallScript(
-                        paintObject->GetScript(), *ride, trackSequence, direction, height, trackElement);
+                    paintScriptEngine.CallScript(*ride, trackSequence, direction, height, trackElement, paintObject);
                 }
             }
         }
