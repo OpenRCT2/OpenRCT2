@@ -3642,6 +3642,8 @@ STR_6533    :{WINDOW_COLOUR_2}흥미도 인수: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}격렬도 인수: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}멀미도 인수: {BLACK}-{COMMA16}%
 STR_6536    :이 공원은 더 최신 버전의 OpenRCT2에서 저장되었습니다. 이 공원은 v{INT32} 버전에서 저장되었고, 현재 버전은 v{INT32} 입니다.
+STR_6537    :일반 보도를 대기줄로 사용
+STR_6538    :보도 창의 대기줄 메뉴 밑에 일반 보도를 표시합니다.
 
 #############
 # Scenarios #
