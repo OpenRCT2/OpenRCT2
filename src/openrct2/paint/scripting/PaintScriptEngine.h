@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <vector>
+#include <mutex>
 
 struct Ride;
 class PaintObject;
@@ -27,13 +28,8 @@ namespace OpenRCT2::PaintScripting
         OpenRCT2::Scripting::DukContext _context;
         uint32_t _scriptsCount;
 
-        /*the stack is organized like this:
-        *
-        * Script functions
-        *
-        * 
-        * 
-        */
+        //it seems we need a mutex for multithreading
+        std::mutex _mutex;
     };
 
 } // namespace OpenRCT2::PaintScripting

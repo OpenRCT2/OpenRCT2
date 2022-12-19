@@ -71,6 +71,9 @@ namespace OpenRCT2::PaintScripting
         if (!paintObject->Error.empty())
             return;
 
+        //for now, use a mutex since the PaintObject is static
+        std::lock_guard lockGuard(_mutex);
+
         //update the static values of the Paint objects
         PsPaintObject::Update(session, ride, trackSequence, direction, height, trackElement);
 
