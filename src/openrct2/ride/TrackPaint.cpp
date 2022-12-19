@@ -2269,7 +2269,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         else
         {
             auto& paintScriptEngine = OpenRCT2::GetContext()->GetPaintScriptEngine();
-            paintScriptEngine.CallScript(*ride, trackSequence, direction, height, trackElement, rtd.PaintObjectPtr);
+            paintScriptEngine.CallScript(session, *ride, trackSequence, direction, height, trackElement, rtd.PaintObjectPtr);
         }
     }
 }
