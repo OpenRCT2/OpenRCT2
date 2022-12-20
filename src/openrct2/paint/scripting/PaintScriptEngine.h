@@ -18,8 +18,6 @@ namespace OpenRCT2::PaintScripting
 
         void Initialize();
 
-        uint32_t AddScript(const std::string& scriptContent);
-
         void CallScript(
             PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height, const TrackElement& trackElement,
             PaintObject* paintObject);

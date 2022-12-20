@@ -19,14 +19,6 @@ namespace OpenRCT2::PaintScripting
     {
     }
 
-    uint32_t PaintScriptEngine::AddScript(const std::string& scriptContent)
-    {
-        _scriptsCount++;
-        duk_push_string(_context, scriptContent.c_str());
-        auto index = duk_get_top_index(_context);
-        return index;
-    }
-
     void PaintScriptEngine::Initialize()
     {
         // get all the paint object from the repository and load them
@@ -67,22 +59,19 @@ namespace OpenRCT2::PaintScripting
         PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height, const TrackElement& trackElement,
         PaintObject* paintObject)
     {
+        // for now, use a mutex since the PaintObject is static
+        std::lock_guard lockGuard(_mutex);
+
         // if there was an error, don't run the script again
         if (!paintObject->Error.empty())
             return;
 
-        //for now, use a mutex since the PaintObject is static
-        std::lock_guard lockGuard(_mutex);
-
         //update the static values of the Paint objects
         PsPaintObject::Update(session, ride, trackSequence, direction, height, trackElement);
 
-        
-
         // run the script
 #pragma warning(disable : 4189)
-        auto scriptString = duk_get_string(_context, paintObject->GetScriptStackIndex());
-        auto rc = duk_peval_string(_context, scriptString);
+        auto rc = duk_peval_string(_context, paintObject->GetScript().c_str());
         if (rc == DUK_EXEC_ERROR)
         {
             if (duk_is_error(_context, -1))
