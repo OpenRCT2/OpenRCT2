@@ -3881,20 +3881,15 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
     return nullptr;
 }
 
-ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
+ResultWithMessage Ride::Test(bool isApplying)
 {
-    CoordsXYE problematicTrackElement = {};
-
     if (type == RIDE_TYPE_NULL)
     {
         log_warning("Invalid ride type for ride %u", id.ToUnderlying());
         return { false };
     }
 
-    if (newStatus != RideStatus::Simulating)
-    {
-        window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
-    }
+    window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
 
     StationIndex stationIndex = {};
     auto message = ChangeStatusDoStationChecks(stationIndex);
@@ -3903,14 +3898,11 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         return message;
     }
 
-    if (newStatus != RideStatus::Simulating)
+    auto entranceExitCheck = ride_check_for_entrance_exit(id);
+    if (!entranceExitCheck.Successful)
     {
-        auto entranceExitCheck = ride_check_for_entrance_exit(id);
-        if (!entranceExitCheck.Successful)
-        {
-            ConstructMissingEntranceOrExit();
-            return { false, entranceExitCheck.Message };
-        }
+        ConstructMissingEntranceOrExit();
+        return { false, entranceExitCheck.Message };
     }
 
     CoordsXYE trackElement = {};
@@ -3920,13 +3912,10 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         return message;
     }
 
-    if (mode == RideMode::ContinuousCircuit || IsBlockSectioned())
+    message = ChangeStatusCheckCompleteCircuit(trackElement);
+    if (!message.Successful)
     {
-        if (FindTrackGap(trackElement, &problematicTrackElement) && (newStatus != RideStatus::Simulating || IsBlockSectioned()))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
-        }
+        return message;
     }
 
     message = ChangeStatusCheckTrackValidity(trackElement);
@@ -3937,6 +3926,44 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
 
     return ChangeStatusCreateVehicles(isApplying, trackElement);
 }
+
+ResultWithMessage Ride::Simulate(bool isApplying)
+{
+    CoordsXYE trackElement, problematicTrackElement = {};
+    if (type == RIDE_TYPE_NULL)
+    {
+        log_warning("Invalid ride type for ride %u", id.ToUnderlying());
+        return { false };
+    }
+
+    StationIndex stationIndex = {};
+    auto message = ChangeStatusDoStationChecks(stationIndex);
+    if (!message.Successful)
+    {
+        return message;
+    }
+
+    message = ChangeStatusGetStartElement(stationIndex, trackElement);
+    if (!message.Successful)
+    {
+        return message;
+    }
+
+    if (IsBlockSectioned() && FindTrackGap(trackElement, &problematicTrackElement))
+    {
+        ride_scroll_to_track_error(problematicTrackElement);
+        return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
+    }
+
+    message = ChangeStatusCheckTrackValidity(trackElement);
+    if (!message.Successful)
+    {
+        return message;
+    }
+
+    return ChangeStatusCreateVehicles(isApplying, trackElement);
+}
+
 /**
  *
  *  rct2: 0x006B4EEA

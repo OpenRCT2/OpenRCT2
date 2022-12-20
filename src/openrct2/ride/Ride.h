@@ -346,7 +346,8 @@ public:
     void ValidateStations();
 
     ResultWithMessage Open(bool isApplying);
-    ResultWithMessage Test(RideStatus newStatus, bool isApplying);
+    ResultWithMessage Test(bool isApplying);
+    ResultWithMessage Simulate(bool isApplying);
 
     RideMode GetDefaultMode() const;
 
