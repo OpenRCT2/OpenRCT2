@@ -11,17 +11,12 @@ namespace OpenRCT2::PaintScripting
     void PsPaintSession::Register(duk_context* context)
     {
         dukglue_register_constructor<PsPaintSession>(context, "PaintSession");
-        dukglue_register_method(context, &PsPaintSession::getTrackColour, "GetTrackColour");
+        dukglue_register_property(context, &PsPaintSession::getTrackColours, nullptr, "TrackColours");
     }
 
     void PsPaintSession::Update(PaintSession& paintSession)
     {
         _paintSession = &paintSession;
-
-        for (size_t i = 0; i < 4; i++)
-        {
-            _trackColours[i] = std::make_shared<PsImageId>(_paintSession->TrackColours[i]);
-        }
     }
 
     PaintSession* PsPaintSession::GetSession()
@@ -29,8 +24,12 @@ namespace OpenRCT2::PaintScripting
         return _paintSession;
     }
 
-    std::shared_ptr<PsImageId> PsPaintSession::getTrackColour(size_t index) const
+    std::vector<std::shared_ptr<PsImageId>> PsPaintSession::getTrackColours() const
     {
-        return _trackColours[index];
+        std::vector<std::shared_ptr<PsImageId>> result;
+        result.resize(4);
+        for (size_t i = 0; i < 4; i++)
+            result[i] = std::make_shared<PsImageId>(_paintSession->TrackColours[i]);
+        return result;
     }
 }

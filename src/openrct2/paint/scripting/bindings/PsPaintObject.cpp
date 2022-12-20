@@ -30,8 +30,6 @@ namespace OpenRCT2::PaintScripting
 
     void PsPaintObject::Register(duk_context* context)
     {
-        PsPaintSession::Register(context);
-
         dukglue_register_global(context, &PsPaintObject::PaintObject, "PaintObject");
         dukglue_register_property(context, &PsPaintObject::getHeight, nullptr, "Height");
         dukglue_register_property(context, &PsPaintObject::getDirection, nullptr, "Direction");

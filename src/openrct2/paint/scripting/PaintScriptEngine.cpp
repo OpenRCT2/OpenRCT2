@@ -45,11 +45,9 @@ namespace OpenRCT2::PaintScripting
             }
         }
 
-        //load the paintObject functions and singleton
-        PsPaintObject::Register(_context);
-
-        //load the image id constructors
         PsImageId::Register(_context);
+        PsPaintSession::Register(_context);
+        PsPaintObject::Register(_context);
 
         // register the global functions
         PsGlobalFunctions::Register(_context);
