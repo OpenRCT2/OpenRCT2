@@ -18,4 +18,9 @@ namespace OpenRCT2::PaintScripting
     {
         return _stationObject->Flags;
     }
+
+    const StationObject* PsStationObject::GetStationObject()
+    {
+        return _stationObject;
+    }
 }

@@ -4,7 +4,9 @@
 #include "../../Supports.h"
 #include "PsImageId.h"
 #include "PsPaintSession.h"
+#include "PsStationObject.h"
 #include "../../Paint.h"
+#include "../../../ride/TrackPaint.h"
 
 namespace OpenRCT2::PaintScripting
 {
@@ -25,9 +27,18 @@ namespace OpenRCT2::PaintScripting
         return true;
     }
 
+    void PsGlobalFunctions::TrackPaintUtilPaintFloor(
+        PsPaintSession* session, int8_t edges, PsImageId* imageId, int16_t height, std::vector<uint32_t> sprites,
+        PsStationObject* stationObject)
+    {
+        ::track_paint_util_paint_floor(
+            *session->GetSession(), edges, imageId->GetImageId(), height, sprites.data(), stationObject->GetStationObject());
+    }
+
     void PsGlobalFunctions::Register(duk_context* context)
     {
         dukglue_register_function(context, &PsGlobalFunctions::WoodenASupportsPaintSetup, "WoodenASupportsPaintSetup");
+        dukglue_register_function(context, &PsGlobalFunctions::TrackPaintUtilPaintFloor, "TrackPaintUtilPaintFloor");
         dukglue_register_function(context, &PsGlobalFunctions::IsEqual, "IsEqual");
         dukglue_register_function(context, &PsGlobalFunctions::TestSession, "TestSession");
     }

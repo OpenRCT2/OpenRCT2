@@ -11,6 +11,8 @@ namespace OpenRCT2::PaintScripting
     public:
         static void Register(duk_context* context);
         PsStationObject(const StationObject* stationObject);
+
+        const StationObject* GetStationObject();
     private:
         const StationObject* _stationObject;
         uint32_t getFlags() const;
