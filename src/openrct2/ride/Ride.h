@@ -310,6 +310,7 @@ private:
     void ConstructMissingEntranceOrExit() const;
 
     ResultWithMessage ChangeStatusDoStationChecks(StationIndex& stationIndex);
+    ResultWithMessage ChangeStatusGetStartElement(StationIndex stationIndex, CoordsXYE& trackElement);
     ResultWithMessage ChangeStatusCheckCompleteCircuit(const CoordsXYE& trackElement);
     ResultWithMessage ChangeStatusCheckTrackValidity(const CoordsXYE& trackElement);
     ResultWithMessage ChangeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement);

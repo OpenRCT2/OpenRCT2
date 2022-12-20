@@ -3883,7 +3883,7 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
 
 ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
 {
-    CoordsXYE trackElement, problematicTrackElement = {};
+    CoordsXYE problematicTrackElement = {};
 
     if (type == RIDE_TYPE_NULL)
     {
@@ -3913,17 +3913,11 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         }
     }
 
-    // z = ride->stations[i].GetBaseZ();
-    auto startLoc = GetStation(stationIndex).Start;
-    trackElement.x = startLoc.x;
-    trackElement.y = startLoc.y;
-    trackElement.element = reinterpret_cast<TileElement*>(GetOriginElement(stationIndex));
-    if (trackElement.element == nullptr)
+    CoordsXYE trackElement = {};
+    message = ChangeStatusGetStartElement(stationIndex, trackElement);
+    if (!message.Successful)
     {
-        // Maze is strange, station start is 0... investigation required
-        const auto& rtd = GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-            return { false };
+        return message;
     }
 
     if (mode == RideMode::ContinuousCircuit || IsBlockSectioned())
@@ -3949,8 +3943,6 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
  */
 ResultWithMessage Ride::Open(bool isApplying)
 {
-    CoordsXYE trackElement = {};
-
     // Check to see if construction tool is in use. If it is close the construction window
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
@@ -3981,17 +3973,11 @@ ResultWithMessage Ride::Open(bool isApplying)
         lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
     }
 
-    // z = ride->stations[i].GetBaseZ();
-    auto startLoc = GetStation(stationIndex).Start;
-    trackElement.x = startLoc.x;
-    trackElement.y = startLoc.y;
-    trackElement.element = reinterpret_cast<TileElement*>(GetOriginElement(stationIndex));
-    if (trackElement.element == nullptr)
+    CoordsXYE trackElement = {};
+    message = ChangeStatusGetStartElement(stationIndex, trackElement);
+    if (!message.Successful)
     {
-        // Maze is strange, station start is 0... investigation required
-        const auto& rtd = GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-            return { false };
+        return message;
     }
 
     message = ChangeStatusCheckCompleteCircuit(trackElement);
@@ -5799,6 +5785,23 @@ ResultWithMessage Ride::ChangeStatusDoStationChecks(StationIndex& stationIndex)
     auto stationNumbersCheck = ride_mode_check_valid_station_numbers(this);
     if (!stationNumbersCheck.Successful)
         return { false, stationNumbersCheck.Message };
+
+    return { true };
+}
+
+ResultWithMessage Ride::ChangeStatusGetStartElement(StationIndex stationIndex, CoordsXYE& trackElement)
+{
+    auto startLoc = GetStation(stationIndex).Start;
+    trackElement.x = startLoc.x;
+    trackElement.y = startLoc.y;
+    trackElement.element = reinterpret_cast<TileElement*>(GetOriginElement(stationIndex));
+    if (trackElement.element == nullptr)
+    {
+        // Maze is strange, station start is 0... investigation required
+        const auto& rtd = GetRideTypeDescriptor();
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            return { false };
+    }
 
     return { true };
 }
