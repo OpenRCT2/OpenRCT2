@@ -3881,63 +3881,44 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
     return nullptr;
 }
 
-ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
+ResultWithMessage Ride::Test(bool isApplying)
 {
-    CoordsXYE trackElement, problematicTrackElement = {};
-
     if (type == RIDE_TYPE_NULL)
     {
         log_warning("Invalid ride type for ride %u", id.ToUnderlying());
         return { false };
     }
 
-    if (newStatus != RideStatus::Simulating)
+    window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
+
+    StationIndex stationIndex = {};
+    auto message = ChangeStatusDoStationChecks(stationIndex);
+    if (!message.Successful)
     {
-        window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
+        return message;
     }
 
-    auto stationIndexCheck = ride_mode_check_station_present(this);
-    auto stationIndex = stationIndexCheck.StationIndex;
-    if (stationIndex.IsNull())
-        return { false, stationIndexCheck.Message };
-
-    auto stationNumbersCheck = ride_mode_check_valid_station_numbers(this);
-    if (!stationNumbersCheck.Successful)
-        return { false, stationNumbersCheck.Message };
-
-    if (newStatus != RideStatus::Simulating)
+    auto entranceExitCheck = ride_check_for_entrance_exit(id);
+    if (!entranceExitCheck.Successful)
     {
-        auto entranceExitCheck = ride_check_for_entrance_exit(id);
-        if (!entranceExitCheck.Successful)
-        {
-            ConstructMissingEntranceOrExit();
-            return { false, entranceExitCheck.Message };
-        }
+        ConstructMissingEntranceOrExit();
+        return { false, entranceExitCheck.Message };
     }
 
-    // z = ride->stations[i].GetBaseZ();
-    auto startLoc = GetStation(stationIndex).Start;
-    trackElement.x = startLoc.x;
-    trackElement.y = startLoc.y;
-    trackElement.element = reinterpret_cast<TileElement*>(GetOriginElement(stationIndex));
-    if (trackElement.element == nullptr)
+    CoordsXYE trackElement = {};
+    message = ChangeStatusGetStartElement(stationIndex, trackElement);
+    if (!message.Successful)
     {
-        // Maze is strange, station start is 0... investigation required
-        const auto& rtd = GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-            return { false };
+        return message;
     }
 
-    if (mode == RideMode::ContinuousCircuit || IsBlockSectioned())
+    message = ChangeStatusCheckCompleteCircuit(trackElement);
+    if (!message.Successful)
     {
-        if (FindTrackGap(trackElement, &problematicTrackElement) && (newStatus != RideStatus::Simulating || IsBlockSectioned()))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
-        }
+        return message;
     }
 
-    auto message = ChangeStatusCheckTrackValidity(trackElement);
+    message = ChangeStatusCheckTrackValidity(trackElement);
     if (!message.Successful)
     {
         return message;
@@ -3945,14 +3926,50 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
 
     return ChangeStatusCreateVehicles(isApplying, trackElement);
 }
+
+ResultWithMessage Ride::Simulate(bool isApplying)
+{
+    CoordsXYE trackElement, problematicTrackElement = {};
+    if (type == RIDE_TYPE_NULL)
+    {
+        log_warning("Invalid ride type for ride %u", id.ToUnderlying());
+        return { false };
+    }
+
+    StationIndex stationIndex = {};
+    auto message = ChangeStatusDoStationChecks(stationIndex);
+    if (!message.Successful)
+    {
+        return message;
+    }
+
+    message = ChangeStatusGetStartElement(stationIndex, trackElement);
+    if (!message.Successful)
+    {
+        return message;
+    }
+
+    if (IsBlockSectioned() && FindTrackGap(trackElement, &problematicTrackElement))
+    {
+        ride_scroll_to_track_error(problematicTrackElement);
+        return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
+    }
+
+    message = ChangeStatusCheckTrackValidity(trackElement);
+    if (!message.Successful)
+    {
+        return message;
+    }
+
+    return ChangeStatusCreateVehicles(isApplying, trackElement);
+}
+
 /**
  *
  *  rct2: 0x006B4EEA
  */
 ResultWithMessage Ride::Open(bool isApplying)
 {
-    CoordsXYE trackElement, problematicTrackElement = {};
-
     // Check to see if construction tool is in use. If it is close the construction window
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
@@ -3963,14 +3980,12 @@ ResultWithMessage Ride::Open(bool isApplying)
         window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
     }
 
-    auto stationIndexCheck = ride_mode_check_station_present(this);
-    auto stationIndex = stationIndexCheck.StationIndex;
-    if (stationIndex.IsNull())
-        return { false, stationIndexCheck.Message };
-
-    auto stationNumbersCheck = ride_mode_check_valid_station_numbers(this);
-    if (!stationNumbersCheck.Successful)
-        return { false, stationNumbersCheck.Message };
+    StationIndex stationIndex = {};
+    auto message = ChangeStatusDoStationChecks(stationIndex);
+    if (!message.Successful)
+    {
+        return message;
+    }
 
     auto entranceExitCheck = ride_check_for_entrance_exit(id);
     if (!entranceExitCheck.Successful)
@@ -3985,29 +4000,20 @@ ResultWithMessage Ride::Open(bool isApplying)
         lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
     }
 
-    // z = ride->stations[i].GetBaseZ();
-    auto startLoc = GetStation(stationIndex).Start;
-    trackElement.x = startLoc.x;
-    trackElement.y = startLoc.y;
-    trackElement.element = reinterpret_cast<TileElement*>(GetOriginElement(stationIndex));
-    if (trackElement.element == nullptr)
+    CoordsXYE trackElement = {};
+    message = ChangeStatusGetStartElement(stationIndex, trackElement);
+    if (!message.Successful)
     {
-        // Maze is strange, station start is 0... investigation required
-        const auto& rtd = GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-            return { false };
+        return message;
     }
 
-    if (mode == RideMode::Race || mode == RideMode::ContinuousCircuit || IsBlockSectioned())
+    message = ChangeStatusCheckCompleteCircuit(trackElement);
+    if (!message.Successful)
     {
-        if (FindTrackGap(trackElement, &problematicTrackElement))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
-        }
+        return message;
     }
 
-    auto message = ChangeStatusCheckTrackValidity(trackElement);
+    message = ChangeStatusCheckTrackValidity(trackElement);
     if (!message.Successful)
     {
         return message;
@@ -5794,6 +5800,52 @@ std::vector<RideId> GetTracklessRides()
         }
     }
     return result;
+}
+
+ResultWithMessage Ride::ChangeStatusDoStationChecks(StationIndex& stationIndex)
+{
+    auto stationIndexCheck = ride_mode_check_station_present(this);
+    stationIndex = stationIndexCheck.StationIndex;
+    if (stationIndex.IsNull())
+        return { false, stationIndexCheck.Message };
+
+    auto stationNumbersCheck = ride_mode_check_valid_station_numbers(this);
+    if (!stationNumbersCheck.Successful)
+        return { false, stationNumbersCheck.Message };
+
+    return { true };
+}
+
+ResultWithMessage Ride::ChangeStatusGetStartElement(StationIndex stationIndex, CoordsXYE& trackElement)
+{
+    auto startLoc = GetStation(stationIndex).Start;
+    trackElement.x = startLoc.x;
+    trackElement.y = startLoc.y;
+    trackElement.element = reinterpret_cast<TileElement*>(GetOriginElement(stationIndex));
+    if (trackElement.element == nullptr)
+    {
+        // Maze is strange, station start is 0... investigation required
+        const auto& rtd = GetRideTypeDescriptor();
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            return { false };
+    }
+
+    return { true };
+}
+
+ResultWithMessage Ride::ChangeStatusCheckCompleteCircuit(const CoordsXYE& trackElement)
+{
+    CoordsXYE problematicTrackElement = {};
+    if (mode == RideMode::Race || mode == RideMode::ContinuousCircuit || IsBlockSectioned())
+    {
+        if (FindTrackGap(trackElement, &problematicTrackElement))
+        {
+            ride_scroll_to_track_error(problematicTrackElement);
+            return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
+        }
+    }
+
+    return { true };
 }
 
 ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackElement)

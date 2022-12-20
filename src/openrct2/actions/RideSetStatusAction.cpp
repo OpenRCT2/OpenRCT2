@@ -90,25 +90,27 @@ GameActions::Result RideSetStatusAction::Query() const
             return res;
         }
 
-        if (_status == RideStatus::Testing || _status == RideStatus::Simulating)
+        ResultWithMessage modeSwitchResult = { true };
+        switch (_status)
         {
-            const auto modeSwitchResult = ride->Test(_status, false);
-            if (!modeSwitchResult.Successful)
-            {
-                res.Error = GameActions::Status::Unknown;
-                res.ErrorMessage = modeSwitchResult.Message;
-                return res;
-            }
+            case RideStatus::Open:
+                modeSwitchResult = ride->Open(false);
+                break;
+            case RideStatus::Testing:
+                modeSwitchResult = ride->Test(false);
+                break;
+            case RideStatus::Simulating:
+                modeSwitchResult = ride->Simulate(false);
+                break;
+            default:
+                break;
         }
-        else if (_status == RideStatus::Open)
+
+        if (!modeSwitchResult.Successful)
         {
-            const auto modeSwitchResult = ride->Open(false);
-            if (!modeSwitchResult.Successful)
-            {
-                res.Error = GameActions::Status::Unknown;
-                res.ErrorMessage = modeSwitchResult.Message;
-                return res;
-            }
+            res.Error = GameActions::Status::Unknown;
+            res.ErrorMessage = modeSwitchResult.Message;
+            return res;
         }
     }
     return GameActions::Result();
@@ -165,7 +167,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride_clear_for_construction(ride);
             ride->RemovePeeps();
 
-            const auto modeSwitchResult = ride->Test(_status, true);
+            const auto modeSwitchResult = ride->Simulate(true);
             if (!modeSwitchResult.Successful)
             {
                 res.Error = GameActions::Status::Unknown;
@@ -207,7 +209,7 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             if (_status == RideStatus::Testing)
             {
-                const auto modeSwitchResult = ride->Test(_status, true);
+                const auto modeSwitchResult = ride->Test(true);
                 if (!modeSwitchResult.Successful)
                 {
                     res.Error = GameActions::Status::Unknown;

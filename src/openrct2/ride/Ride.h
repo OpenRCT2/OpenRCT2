@@ -309,6 +309,9 @@ private:
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;
 
+    ResultWithMessage ChangeStatusDoStationChecks(StationIndex& stationIndex);
+    ResultWithMessage ChangeStatusGetStartElement(StationIndex stationIndex, CoordsXYE& trackElement);
+    ResultWithMessage ChangeStatusCheckCompleteCircuit(const CoordsXYE& trackElement);
     ResultWithMessage ChangeStatusCheckTrackValidity(const CoordsXYE& trackElement);
     ResultWithMessage ChangeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement);
 
@@ -343,7 +346,8 @@ public:
     void ValidateStations();
 
     ResultWithMessage Open(bool isApplying);
-    ResultWithMessage Test(RideStatus newStatus, bool isApplying);
+    ResultWithMessage Test(bool isApplying);
+    ResultWithMessage Simulate(bool isApplying);
 
     RideMode GetDefaultMode() const;
 
