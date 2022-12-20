@@ -3998,16 +3998,13 @@ ResultWithMessage Ride::Open(bool isApplying)
             return { false };
     }
 
-    if (mode == RideMode::Race || mode == RideMode::ContinuousCircuit || IsBlockSectioned())
+    auto message = ChangeStatusCheckCompleteCircuit(trackElement);
+    if (!message.Successful)
     {
-        if (FindTrackGap(trackElement, &problematicTrackElement))
-        {
-            ride_scroll_to_track_error(problematicTrackElement);
-            return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
-        }
+        return message;
     }
 
-    auto message = ChangeStatusCheckTrackValidity(trackElement);
+    message = ChangeStatusCheckTrackValidity(trackElement);
     if (!message.Successful)
     {
         return message;
@@ -5794,6 +5791,21 @@ std::vector<RideId> GetTracklessRides()
         }
     }
     return result;
+}
+
+ResultWithMessage Ride::ChangeStatusCheckCompleteCircuit(const CoordsXYE& trackElement)
+{
+    CoordsXYE problematicTrackElement = {};
+    if (mode == RideMode::Race || mode == RideMode::ContinuousCircuit || IsBlockSectioned())
+    {
+        if (FindTrackGap(trackElement, &problematicTrackElement))
+        {
+            ride_scroll_to_track_error(problematicTrackElement);
+            return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
+        }
+    }
+
+    return { true };
 }
 
 ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackElement)
