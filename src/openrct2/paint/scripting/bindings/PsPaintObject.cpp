@@ -33,6 +33,11 @@ namespace OpenRCT2::PaintScripting
         return std::make_shared<PsRide>(_ride);
     }
 
+    std::shared_ptr<PsTrackElement> PsPaintObject::getTrackElement() const
+    {
+        return std::make_shared<PsTrackElement>(_trackElement);
+    }
+
     void PsPaintObject::Register(duk_context* context)
     {
         dukglue_register_global(context, &PsPaintObject::PaintObject, "PaintObject");
@@ -41,6 +46,7 @@ namespace OpenRCT2::PaintScripting
         dukglue_register_property(context, &PsPaintObject::getTrackSequence, nullptr, "TrackSequence");
         dukglue_register_property(context, &PsPaintObject::getPaintSession, nullptr, "Session");
         dukglue_register_property(context, &PsPaintObject::getRide, nullptr, "Ride");
+        dukglue_register_property(context, &PsPaintObject::getTrackElement, nullptr, "TrackElement");
     }
 
     void PsPaintObject::Update(
@@ -51,6 +57,7 @@ namespace OpenRCT2::PaintScripting
         _trackSequence = trackSequence;
         _paintSession.Update(session);
         _ride.Update(ride);
+        _trackElement.Update(trackElement);
     }
 
     PsPaintObject PsPaintObject::PaintObject = PsPaintObject();
@@ -59,4 +66,5 @@ namespace OpenRCT2::PaintScripting
     uint8_t PsPaintObject::_trackSequence = 0;
     PsPaintSession PsPaintObject::_paintSession;
     PsRide PsPaintObject::_ride;
+    PsTrackElement PsPaintObject::_trackElement;
 }

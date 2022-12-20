@@ -13,6 +13,7 @@
 #include "bindings/PsGlobalFunctions.h"
 #include "bindings/PsRide.h"
 #include "bindings/PsStationObject.h"
+#include "bindings/PsTrackElement.h"
 
 using namespace OpenRCT2::Scripting;
 namespace OpenRCT2::PaintScripting
@@ -52,6 +53,7 @@ namespace OpenRCT2::PaintScripting
         PsPaintObject::Register(_context);
         PsRide::Register(_context);
         PsStationObject::Register(_context);
+        PsTrackElement::Register(_context);
 
         // register the global functions
         PsGlobalFunctions::Register(_context);
