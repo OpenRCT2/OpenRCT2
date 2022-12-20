@@ -309,6 +309,7 @@ private:
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;
 
+    ResultWithMessage ChangeStatusDoStationChecks(StationIndex& stationIndex);
     ResultWithMessage ChangeStatusCheckCompleteCircuit(const CoordsXYE& trackElement);
     ResultWithMessage ChangeStatusCheckTrackValidity(const CoordsXYE& trackElement);
     ResultWithMessage ChangeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement);

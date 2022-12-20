@@ -3896,14 +3896,12 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
     }
 
-    auto stationIndexCheck = ride_mode_check_station_present(this);
-    auto stationIndex = stationIndexCheck.StationIndex;
-    if (stationIndex.IsNull())
-        return { false, stationIndexCheck.Message };
-
-    auto stationNumbersCheck = ride_mode_check_valid_station_numbers(this);
-    if (!stationNumbersCheck.Successful)
-        return { false, stationNumbersCheck.Message };
+    StationIndex stationIndex = {};
+    auto message = ChangeStatusDoStationChecks(stationIndex);
+    if (!message.Successful)
+    {
+        return message;
+    }
 
     if (newStatus != RideStatus::Simulating)
     {
@@ -3937,7 +3935,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
         }
     }
 
-    auto message = ChangeStatusCheckTrackValidity(trackElement);
+    message = ChangeStatusCheckTrackValidity(trackElement);
     if (!message.Successful)
     {
         return message;
@@ -3951,7 +3949,7 @@ ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
  */
 ResultWithMessage Ride::Open(bool isApplying)
 {
-    CoordsXYE trackElement, problematicTrackElement = {};
+    CoordsXYE trackElement = {};
 
     // Check to see if construction tool is in use. If it is close the construction window
     // to set the track to its final state and clean up ghosts.
@@ -3963,14 +3961,12 @@ ResultWithMessage Ride::Open(bool isApplying)
         window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
     }
 
-    auto stationIndexCheck = ride_mode_check_station_present(this);
-    auto stationIndex = stationIndexCheck.StationIndex;
-    if (stationIndex.IsNull())
-        return { false, stationIndexCheck.Message };
-
-    auto stationNumbersCheck = ride_mode_check_valid_station_numbers(this);
-    if (!stationNumbersCheck.Successful)
-        return { false, stationNumbersCheck.Message };
+    StationIndex stationIndex = {};
+    auto message = ChangeStatusDoStationChecks(stationIndex);
+    if (!message.Successful)
+    {
+        return message;
+    }
 
     auto entranceExitCheck = ride_check_for_entrance_exit(id);
     if (!entranceExitCheck.Successful)
@@ -3998,7 +3994,7 @@ ResultWithMessage Ride::Open(bool isApplying)
             return { false };
     }
 
-    auto message = ChangeStatusCheckCompleteCircuit(trackElement);
+    message = ChangeStatusCheckCompleteCircuit(trackElement);
     if (!message.Successful)
     {
         return message;
@@ -5791,6 +5787,20 @@ std::vector<RideId> GetTracklessRides()
         }
     }
     return result;
+}
+
+ResultWithMessage Ride::ChangeStatusDoStationChecks(StationIndex& stationIndex)
+{
+    auto stationIndexCheck = ride_mode_check_station_present(this);
+    stationIndex = stationIndexCheck.StationIndex;
+    if (stationIndex.IsNull())
+        return { false, stationIndexCheck.Message };
+
+    auto stationNumbersCheck = ride_mode_check_valid_station_numbers(this);
+    if (!stationNumbersCheck.Successful)
+        return { false, stationNumbersCheck.Message };
+
+    return { true };
 }
 
 ResultWithMessage Ride::ChangeStatusCheckCompleteCircuit(const CoordsXYE& trackElement)
