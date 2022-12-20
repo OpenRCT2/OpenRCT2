@@ -3,6 +3,7 @@
 #include "../../../world/Location.hpp"
 #include "../../../scripting/Duktape.hpp"
 #include "PsPaintSession.h"
+#include "PsRide.h"
 #include <memory>
 
 struct Ride;
@@ -26,11 +27,13 @@ namespace OpenRCT2::PaintScripting
         static uint8_t _direction;
         static uint8_t _trackSequence;
         static PsPaintSession _paintSession;
+        static PsRide _ride;
 
         int32_t getHeight() const;
         uint8_t getDirection() const;
         uint8_t getTrackSequence() const;
         std::shared_ptr<PsPaintSession> getPaintSession() const;
+        std::shared_ptr<PsRide> getRide() const;
         //const Ride& _ride;
         //const TrackElement& _trackElement;
     };

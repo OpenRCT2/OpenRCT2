@@ -11,6 +11,8 @@
 #include "bindings/PsImageId.h"
 #include "bindings/PsPaintSession.h"
 #include "bindings/PsGlobalFunctions.h"
+#include "bindings/PsRide.h"
+#include "bindings/PsStationObject.h"
 
 using namespace OpenRCT2::Scripting;
 namespace OpenRCT2::PaintScripting
@@ -48,6 +50,8 @@ namespace OpenRCT2::PaintScripting
         PsImageId::Register(_context);
         PsPaintSession::Register(_context);
         PsPaintObject::Register(_context);
+        PsRide::Register(_context);
+        PsStationObject::Register(_context);
 
         // register the global functions
         PsGlobalFunctions::Register(_context);
