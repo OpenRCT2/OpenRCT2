@@ -1,12 +1,15 @@
 #include "PsGlobalFunctions.h"
 
+#include "../../../ride/TrackPaint.h"
 #include "../../../scripting/Duktape.hpp"
+#include "../../Paint.h"
 #include "../../Supports.h"
+#include "PsCoordsXY.h"
 #include "PsImageId.h"
 #include "PsPaintSession.h"
+#include "PsRide.h"
 #include "PsStationObject.h"
-#include "../../Paint.h"
-#include "../../../ride/TrackPaint.h"
+#include "PsTrackElement.h"
 
 namespace OpenRCT2::PaintScripting
 {
@@ -35,10 +38,20 @@ namespace OpenRCT2::PaintScripting
             *session->GetSession(), edges, imageId->GetImageId(), height, sprites.data(), stationObject->GetStationObject());
     }
 
+    void PsGlobalFunctions::TrackPaintUtilPaintFences(
+        PsPaintSession* session, uint8_t edges, PsCoordsXY* coords, PsTrackElement* trackElement, PsRide* ride,
+        PsImageId* imageId, uint16_t height, std::vector<uint32_t> sprites, uint8_t rotation)
+    {
+        ::track_paint_util_paint_fences(
+            *session->GetSession(), edges, coords->GetCoords(), trackElement->GetTrackElement(), ride->GetRide(),
+            imageId->GetImageId(), height, sprites.data(), rotation);
+    }
+
     void PsGlobalFunctions::Register(duk_context* context)
     {
         dukglue_register_function(context, &PsGlobalFunctions::WoodenASupportsPaintSetup, "WoodenASupportsPaintSetup");
         dukglue_register_function(context, &PsGlobalFunctions::TrackPaintUtilPaintFloor, "TrackPaintUtilPaintFloor");
+        dukglue_register_function(context, &PsGlobalFunctions::TrackPaintUtilPaintFences, "TrackPaintUtilPaintFences");
         dukglue_register_function(context, &PsGlobalFunctions::IsEqual, "IsEqual");
         dukglue_register_function(context, &PsGlobalFunctions::TestSession, "TestSession");
     }

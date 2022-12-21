@@ -25,6 +25,11 @@ namespace OpenRCT2::PaintScripting
         _ride = &ride;
     }
 
+    const Ride& PsRide::GetRide() const
+    {
+        return *_ride;
+    }
+
     std::shared_ptr<PsStationObject> PsRide::getStationObject() const
     {
         return std::make_shared<PsStationObject>(_ride->GetStationObject());

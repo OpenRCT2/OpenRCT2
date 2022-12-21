@@ -1,4 +1,6 @@
 #include "PsPaintSession.h"
+#include "PsImageId.h"
+#include "PsCoordsXY.h"
 #include "../../Paint.h"
 
 namespace OpenRCT2::PaintScripting
@@ -12,6 +14,8 @@ namespace OpenRCT2::PaintScripting
     {
         dukglue_register_constructor<PsPaintSession>(context, "PaintSession");
         dukglue_register_property(context, &PsPaintSession::getTrackColours, nullptr, "TrackColours");
+        dukglue_register_property(context, &PsPaintSession::getMapPosition, nullptr, "MapPosition");
+        dukglue_register_property(context, &PsPaintSession::getCurrentRotation, nullptr, "CurrentRotation");
     }
 
     void PsPaintSession::Update(PaintSession& paintSession)
@@ -31,5 +35,15 @@ namespace OpenRCT2::PaintScripting
         for (size_t i = 0; i < 4; i++)
             result[i] = std::make_shared<PsImageId>(_paintSession->TrackColours[i]);
         return result;
+    }
+
+    std::shared_ptr<PsCoordsXY> PsPaintSession::getMapPosition() const
+    {
+        return std::make_shared<PsCoordsXY>(_paintSession->MapPosition);
+    }
+
+    uint8_t PsPaintSession::getCurrentRotation() const
+    {
+        return _paintSession->CurrentRotation;
     }
 }

@@ -15,6 +15,8 @@ namespace OpenRCT2::PaintScripting
 
         void Update(const Ride& ride);
         static void Register(duk_context* context);
+
+        const Ride& GetRide() const;
     private:
         const Ride* _ride;
         std::shared_ptr<PsStationObject> getStationObject() const;

@@ -325,6 +325,7 @@
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
     <ClInclude Include="paint\Painter.h" />
+    <ClInclude Include="paint\scripting\bindings\PsCoordsXY.h" />
     <ClInclude Include="paint\scripting\bindings\PsGlobalFunctions.h" />
     <ClInclude Include="paint\scripting\bindings\PsImageId.h" />
     <ClInclude Include="paint\scripting\bindings\PsPaintSession.h" />
@@ -824,6 +825,7 @@
     <ClCompile Include="paint\Paint.Entity.cpp" />
     <ClCompile Include="paint\Painter.cpp" />
     <ClCompile Include="paint\PaintHelpers.cpp" />
+    <ClCompile Include="paint\scripting\bindings\PsCoordsXY.cpp" />
     <ClCompile Include="paint\scripting\bindings\PsGlobalFunctions.cpp" />
     <ClCompile Include="paint\scripting\bindings\PsImageId.cpp" />
     <ClCompile Include="paint\scripting\bindings\PsPaintObject.cpp" />
