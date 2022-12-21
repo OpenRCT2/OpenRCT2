@@ -7,6 +7,8 @@ struct Ride;
 namespace OpenRCT2::PaintScripting
 {
     class PsStationObject;
+    class PsRideEntry;
+    class PsVehicle;
     class PsRide
     {
     public:
@@ -20,5 +22,7 @@ namespace OpenRCT2::PaintScripting
     private:
         const Ride* _ride;
         std::shared_ptr<PsStationObject> getStationObject() const;
+        std::shared_ptr<PsRideEntry> getRideEntry() const;
+        std::shared_ptr<PsVehicle> getVehicle(uint8_t spriteIndex) const;
     };
 }

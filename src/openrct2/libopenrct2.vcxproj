@@ -330,8 +330,10 @@
     <ClInclude Include="paint\scripting\bindings\PsImageId.h" />
     <ClInclude Include="paint\scripting\bindings\PsPaintSession.h" />
     <ClInclude Include="paint\scripting\bindings\PsRide.h" />
+    <ClInclude Include="paint\scripting\bindings\PsRideEntry.h" />
     <ClInclude Include="paint\scripting\bindings\PsStationObject.h" />
     <ClInclude Include="paint\scripting\bindings\PsTrackElement.h" />
+    <ClInclude Include="paint\scripting\bindings\PsVehicle.h" />
     <ClInclude Include="paint\scripting\PaintScriptEngine.h" />
     <ClInclude Include="paint\scripting\PaintScriptRideEntry.h" />
     <ClInclude Include="paint\scripting\bindings\PsPaintObject.h" />
@@ -831,8 +833,10 @@
     <ClCompile Include="paint\scripting\bindings\PsPaintObject.cpp" />
     <ClCompile Include="paint\scripting\bindings\PsPaintSession.cpp" />
     <ClCompile Include="paint\scripting\bindings\PsRide.cpp" />
+    <ClCompile Include="paint\scripting\bindings\PsRideEntry.cpp" />
     <ClCompile Include="paint\scripting\bindings\PsStationObject.cpp" />
     <ClCompile Include="paint\scripting\bindings\PsTrackElement.cpp" />
+    <ClCompile Include="paint\scripting\bindings\PsVehicle.cpp" />
     <ClCompile Include="paint\scripting\PaintScriptEngine.cpp" />
     <ClCompile Include="paint\Supports.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Banner.cpp" />
