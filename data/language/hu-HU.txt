@@ -2817,7 +2817,7 @@ STR_5624    :Time Twister
 STR_5625    :„Igazi” parkok
 STR_5626    :Egyéb parkok
 STR_5627    :Pályák csoportosítása:
-STR_5628    :Eredeti játék
+STR_5628    :Forrásjáték
 STR_5629    :Nehézségi szint
 STR_5630    :Progresszív feloldás bekapcsolása
 STR_5631    :Eredeti DLC parkok
@@ -3047,7 +3047,7 @@ STR_5899    :Festési hibakeresés ablak be/ki
 STR_5900    :Eredeti rajzolókód használata
 STR_5901    :Szegmensek magasságának mutatása
 STR_5902    :Határolókeretek mutatása
-STR_5904    :Dátum visszaállítása
+STR_5904    :Dátum vissza
 STR_5905    :Térképgeneráló eszköz, amely automatikusan létrehoz egy egyedi tájat
 STR_5906    :Nagyítás a mutató helyzetére 
 STR_5907    :Ha be van kapcsolva, a nagyítás képernyő közepe helyett a mutatóra közelít
@@ -3624,6 +3624,8 @@ STR_6533    :{WINDOW_COLOUR_2}Izgalmi faktor: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Intenzitási faktor: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Émelygési faktor: {BLACK}-{COMMA16}%
 STR_6536    :Ezt a parkot az OpenRCT2 egy későbbi verziójában mentették el. A park v{INT32}, a jelenlegi verziód: {INT32}.
+STR_6537    :Normál utak lehetnek várósorok
+STR_6538    :Megjeleníti a normál utakat a várósorok legördülő menüjében az Utak ablakon belül.
 
 #############
 # Scenarios #
@@ -4277,8 +4279,8 @@ STR_PARK    :Bábel tornya
 STR_DTLS    :Hűű! Nézd csak, hova vitt minket az időgép! Hová tűnt mindenki?{NEWLINE}Szerző: Fossil
 
 <Transformation>
-STR_SCNR    :Átalakítás
-STR_PARK    :Átalakítás
+STR_SCNR    :Transzformáció
+STR_PARK    :Transzformáció
 STR_DTLS    :Vártunk téged…{NEWLINE}Szerző: Fossil
 
 <Urbis Incognitus>
