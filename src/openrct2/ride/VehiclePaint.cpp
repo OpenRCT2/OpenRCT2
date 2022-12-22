@@ -3678,7 +3678,7 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
     }
 
     int32_t zOffset = 0;
-    if (ride_subtype == OBJECT_ENTRY_INDEX_NULL)
+    if (IsCableLift())
     {
         carEntry = &CableLiftVehicle;
     }
