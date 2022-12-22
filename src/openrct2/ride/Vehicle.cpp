@@ -1853,7 +1853,6 @@ void Vehicle::GetLiftHillSound(Ride* curRide, SoundIdVolume& curSound)
  */
 void Vehicle::Update()
 {
-    // The cable lift uses a ride entry index of NULL
     if (IsCableLift())
     {
         CableLiftUpdate();
