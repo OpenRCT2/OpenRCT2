@@ -1854,7 +1854,7 @@ void Vehicle::GetLiftHillSound(Ride* curRide, SoundIdVolume& curSound)
 void Vehicle::Update()
 {
     // The cable lift uses a ride entry index of NULL
-    if (ride_subtype == OBJECT_ENTRY_INDEX_NULL)
+    if (IsCableLift())
     {
         CableLiftUpdate();
         return;
@@ -7067,6 +7067,11 @@ void Vehicle::UpdateReverserCarBogies()
     MoveTo({ TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y, z });
 }
 
+bool Vehicle::IsCableLift() const
+{
+    return ride_subtype == OBJECT_ENTRY_INDEX_NULL;
+}
+
 /**
  * Collision Detection
  *  rct2: 0x006DD078
@@ -7142,7 +7147,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             if (z_diff > 16)
                 continue;
 
-            if (vehicle2->ride_subtype == OBJECT_ENTRY_INDEX_NULL)
+            if (vehicle2->IsCableLift())
                 continue;
 
             auto collideCarEntry = vehicle2->Entry();
