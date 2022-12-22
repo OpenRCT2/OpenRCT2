@@ -65,17 +65,16 @@ constexpr int16_t VEHICLE_MAX_SPIN_SPEED_WATER_RIDE = 512;
 constexpr int16_t VEHICLE_MIN_SPIN_SPEED_WATER_RIDE = -VEHICLE_MAX_SPIN_SPEED_WATER_RIDE;
 constexpr int16_t VEHICLE_STOPPING_SPIN_SPEED = 600;
 
-Vehicle* gCurrentVehicle;
-
-static uint8_t _vehicleBreakdown;
-StationIndex _vehicleStationIndex;
-uint32_t _vehicleMotionTrackFlags;
-int32_t _vehicleVelocityF64E08;
-int32_t _vehicleVelocityF64E0C;
-int32_t _vehicleUnkF64E10;
-uint8_t _vehicleF64E2C;
-Vehicle* _vehicleFrontVehicle;
-CoordsXYZ _vehicleCurPosition;
+uint8_t Vehicle::_vehicleBreakdown;
+StationIndex Vehicle::_vehicleStationIndex;
+uint32_t Vehicle::_vehicleMotionTrackFlags;
+int32_t Vehicle::_vehicleVelocityF64E08;
+int32_t Vehicle::_vehicleVelocityF64E0C;
+int32_t Vehicle::_vehicleUnkF64E10;
+uint8_t Vehicle::_vehicleF64E2C;
+Vehicle* Vehicle::_vehicleFrontVehicle;
+CoordsXYZ Vehicle::_vehicleCurPosition;
+Vehicle* Vehicle::gCurrentVehicle;
 
 static constexpr const OpenRCT2::Audio::SoundId _screamSet0[] = {
     OpenRCT2::Audio::SoundId::Scream8,
@@ -5981,7 +5980,7 @@ std::optional<EntityId> Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords
  *
  *  rct2: 0x006DAB90
  */
-void Vehicle::UpdateTrackMotionUpStopCheck() const
+void Vehicle::UpdateTrackMotionUpStopCheck()
 {
     auto carEntry = Entry();
     if (carEntry == nullptr)
@@ -6989,7 +6988,7 @@ void Vehicle::UpdateLandscapeDoorBackwards() const
     }
 }
 
-static void vehicle_update_play_water_splash_sound()
+void Vehicle::UpdatePlayWaterSplashSound()
 {
     if (_vehicleVelocityF64E08 <= BLOCK_BRAKE_BASE_SPEED)
     {
@@ -7004,7 +7003,7 @@ static void vehicle_update_play_water_splash_sound()
  *
  *  rct2: 0x006DB59E
  */
-void Vehicle::UpdateHandleWaterSplash() const
+void Vehicle::UpdateHandleWaterSplash()
 {
     rct_ride_entry* rideEntry = GetRideEntry();
     auto trackType = GetTrackType();
@@ -7028,7 +7027,7 @@ void Vehicle::UpdateHandleWaterSplash() const
                     {
                         if (track_progress == 4)
                         {
-                            vehicle_update_play_water_splash_sound();
+                            UpdatePlayWaterSplashSound();
                         }
                     }
                 }
@@ -7041,7 +7040,7 @@ void Vehicle::UpdateHandleWaterSplash() const
         {
             if (track_progress == 12)
             {
-                vehicle_update_play_water_splash_sound();
+                UpdatePlayWaterSplashSound();
             }
         }
     }
@@ -7051,7 +7050,7 @@ void Vehicle::UpdateHandleWaterSplash() const
         {
             if (track_progress == 48)
             {
-                vehicle_update_play_water_splash_sound();
+                UpdatePlayWaterSplashSound();
             }
         }
     }

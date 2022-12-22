@@ -276,6 +276,18 @@ struct Vehicle : EntityBase
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);
 
 private:
+    static uint8_t _vehicleBreakdown;
+    static StationIndex _vehicleStationIndex;
+    static uint32_t _vehicleMotionTrackFlags;
+    static int32_t _vehicleVelocityF64E08;
+    static int32_t _vehicleVelocityF64E0C;
+    static int32_t _vehicleUnkF64E10;
+    static uint8_t _vehicleF64E2C;
+    static Vehicle* _vehicleFrontVehicle;
+    static CoordsXYZ _vehicleCurPosition;
+    static Vehicle* gCurrentVehicle;
+
+    void UpdatePlayWaterSplashSound();
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;
     const rct_vehicle_info* GetMoveInfo() const;
@@ -343,9 +355,9 @@ private:
     bool CanDepartSynchronised() const;
     void ReverseReverserCar();
     void UpdateReverserCarBogies();
-    void UpdateHandleWaterSplash() const;
+    void UpdateHandleWaterSplash();
     void Claxon() const;
-    void UpdateTrackMotionUpStopCheck() const;
+    void UpdateTrackMotionUpStopCheck();
     void ApplyNonStopBlockBrake();
     void ApplyStopBlockBrake();
     void CheckAndApplyBlockSectionStopSite();
@@ -532,13 +544,3 @@ uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, tr
 void RideUpdateMeasurementsSpecialElements_Default(Ride* ride, const track_type_t trackType);
 void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride* ride, const track_type_t trackType);
 void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride* ride, const track_type_t trackType);
-
-extern Vehicle* gCurrentVehicle;
-extern StationIndex _vehicleStationIndex;
-extern uint32_t _vehicleMotionTrackFlags;
-extern int32_t _vehicleVelocityF64E08;
-extern int32_t _vehicleVelocityF64E0C;
-extern int32_t _vehicleUnkF64E10;
-extern uint8_t _vehicleF64E2C;
-extern Vehicle* _vehicleFrontVehicle;
-extern CoordsXYZ _vehicleCurPosition;
