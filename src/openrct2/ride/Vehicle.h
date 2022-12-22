@@ -373,6 +373,8 @@ private:
     void UpdateLandscapeDoor() const;
     void UpdateLandscapeDoorBackwards() const;
     int32_t CalculateRiderBraking() const;
+
+    void Loc6DCE02(const Ride& curRide);
 };
 static_assert(sizeof(Vehicle) <= 512);
 
