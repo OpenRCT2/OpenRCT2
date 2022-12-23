@@ -3639,6 +3639,8 @@ STR_6533    :{WINDOW_COLOUR_2}Fator de emoção: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Fator de intensidade: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Fator de Náusea: {BLACK}-{COMMA16}%
 STR_6536    :Esse park foi salvo em uma versão posterior do OpenRCT2. O Park foi salvo na v{INT32}. Você atualmente está na v{INT32}.
+STR_6537    :Permitir o uso de caminhos normais como filas de espera
+STR_6538    :Mostra caminhos normais na lista da janela de Caminhos.
 
 #############
 # Scenarios #
