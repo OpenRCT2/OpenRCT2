@@ -8504,7 +8504,8 @@ Loc6DC985:
 Loc6DC99A:
     if (remaining_distance < 0x368A)
     {
-        goto Loc6DCDE4;
+        Loc6DCDE4(curRide);
+        return;
     }
     acceleration = AccelerationFromPitch[Pitch];
     _vehicleUnkF64E10++;
@@ -8614,7 +8615,8 @@ Loc6DCC2C:
 Loc6DCD2B:
     if (remaining_distance >= 0)
     {
-        goto Loc6DCDE4;
+        Loc6DCDE4(curRide);
+        return;
     }
     acceleration += AccelerationFromPitch[Pitch];
     _vehicleUnkF64E10++;
@@ -8648,8 +8650,10 @@ Loc6DCD6B:
     }
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
     goto Loc6DC99A;
+}
 
-Loc6DCDE4:
+void Vehicle::Loc6DCDE4(const Ride& curRide)
+{
     MoveTo(_vehicleCurPosition);
 
     Loc6DCE02(curRide);
