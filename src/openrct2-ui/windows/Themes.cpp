@@ -71,7 +71,7 @@ static constexpr const int32_t WW = 320;
 static constexpr const int32_t WH = 107;
 
 // clang-format off
-static rct_widget window_themes_widgets[] = {
+static Widget window_themes_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {320,  64}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                                     ), // tab content panel
     MakeTab   ({  3, 17},                                                                                                        STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab

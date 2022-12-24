@@ -56,7 +56,7 @@ static constexpr const StringId BannerColouredTextFormats[] = {
     STR_TEXT_COLOUR_PALESILVER,
 };
 
-static rct_widget window_banner_widgets[] = {
+static Widget window_banner_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
     MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_RENAME,         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
@@ -77,7 +77,7 @@ private:
 
     void CreateViewport()
     {
-        rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
+        Widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
             (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, Focus(_bannerViewPos));
@@ -144,7 +144,7 @@ public:
 
     void OnMouseDown(WidgetIndex widgetIndex) override
     {
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* widget = &widgets[widgetIndex];
         auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
         {
@@ -271,7 +271,7 @@ public:
         {
             return;
         }
-        rct_widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
+        Widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
         colourBtn->type = WindowWidgetType::Empty;
 
         auto* bannerEntry = GetBannerEntry(banner->type);
@@ -289,7 +289,7 @@ public:
                 | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
         }
         colourBtn->image = GetColourButtonImage(banner->colour).ToUInt32();
-        rct_widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
+        Widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
         dropDownWidget->text = BannerColouredTextFormats[banner->text_colour];
     }
 };

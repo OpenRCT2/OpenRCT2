@@ -40,7 +40,7 @@ enum WindowPatrolAreaWidgetIdx
 };
 
 // clang-format off
-static rct_widget PatrolAreaWidgets[] = {
+static Widget PatrolAreaWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , SPR_LAND_TOOL_SIZE_0                                           ), // preview box
     MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_PATROL_AREA_TIP), // decrement size

@@ -92,7 +92,7 @@ static constexpr int32_t TabWidth = 30;
         MakeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
 
 // clang-format off
-static rct_widget _guestWindowWidgetsOverview[] = {
+static Widget _guestWindowWidgetsOverview[] = {
     MAIN_GUEST_WIDGETS,
     MakeWidget({  3,  45}, {164, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Thought marquee
     MakeWidget({  3,  57}, {164, 87}, WindowWidgetType::Viewport,      WindowColour::Secondary                                               ), // Viewport
@@ -105,33 +105,33 @@ static rct_widget _guestWindowWidgetsOverview[] = {
 };
 // clang-format on
 
-static rct_widget _guestWindowWidgetsStats[] = {
+static Widget _guestWindowWidgetsStats[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget _guestWindowWidgetsRides[] = {
+static Widget _guestWindowWidgetsRides[] = {
     MAIN_GUEST_WIDGETS,
     MakeWidget({ 3, 57 }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     WIDGETS_END,
 };
 
-static rct_widget _guestWindowWidgetsFinance[] = {
+static Widget _guestWindowWidgetsFinance[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget _guestWindowWidgetsThoughts[] = {
+static Widget _guestWindowWidgetsThoughts[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget _guestWindowWidgetsInventory[] = {
+static Widget _guestWindowWidgetsInventory[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget _guestWindowWidgetsDebug[] = {
+static Widget _guestWindowWidgetsDebug[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
@@ -680,7 +680,7 @@ private:
         }
     }
 
-    void ShowLocateDropdown(rct_widget& widget)
+    void ShowLocateDropdown(Widget& widget)
     {
         gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
         gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
@@ -1757,7 +1757,7 @@ private:
             return;
         }
 
-        rct_widget* pageBackgroundWidget = &widgets[WIDX_PAGE_BACKGROUND];
+        Widget* pageBackgroundWidget = &widgets[WIDX_PAGE_BACKGROUND];
         auto screenCoords = windowPos + ScreenCoordsXY{ pageBackgroundWidget->left + 4, pageBackgroundWidget->top + 2 };
         int32_t itemNameWidth = pageBackgroundWidget->width() - 8;
 

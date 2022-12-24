@@ -59,7 +59,7 @@ validate_global_widx(WC_SCENERY, WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
 validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
 // clang-format off
-static rct_widget WindowSceneryBaseWidgets[] = {
+static Widget WindowSceneryBaseWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
     MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
     MakeWidget     ({  2,  47}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
@@ -125,7 +125,7 @@ private:
     };
 
     std::vector<SceneryTabInfo> _tabEntries;
-    std::vector<rct_widget> _widgets;
+    std::vector<Widget> _widgets;
     int32_t _requiredWidth;
     ScenerySelection _selectedScenery;
     int16_t _hoverCounter;

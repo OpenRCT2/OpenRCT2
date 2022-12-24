@@ -37,7 +37,7 @@ enum WindowAssetPacksWidgetIdx {
     WIDX_APPLY,
 };
 
-static rct_widget WindowAssetPacksWidgets[] = {
+static Widget WindowAssetPacksWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_HIGH_PRIORITY),
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL),

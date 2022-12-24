@@ -61,7 +61,7 @@ enum {
 
 validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
-static rct_widget window_track_place_widgets[] = {
+static Widget window_track_place_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({173,  83}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_ROTATE_ARROW,              STR_ROTATE_90_TIP                         ),
     MakeWidget({173,  59}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_MIRROR_ARROW,              STR_MIRROR_IMAGE_TIP                      ),

@@ -31,7 +31,7 @@ enum WindowWaterWidgetIdx {
     WIDX_INCREMENT
 };
 
-static rct_widget window_water_widgets[] = {
+static Widget window_water_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , SPR_LAND_TOOL_SIZE_0,   STR_NONE),                     // preview box
     MakeRemapWidget({17, 18}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size

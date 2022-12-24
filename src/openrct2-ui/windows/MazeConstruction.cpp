@@ -50,7 +50,7 @@ enum {
     WIDX_MAZE_EXIT,
 };
 
-static rct_widget window_maze_construction_widgets[] = {
+static Widget window_maze_construction_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({ 3,  17}, {160, 55}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_MODE                                                            ),
     MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),

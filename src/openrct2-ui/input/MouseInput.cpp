@@ -73,7 +73,7 @@ void TileElementRightClick(int32_t type, TileElement* tileElement, const ScreenC
 static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState state);
 static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, WidgetIndex widgetIndex);
 void InputStateWidgetPressed(
-    const ScreenCoordsXY& screenCoords, MouseState state, WidgetIndex widgetIndex, rct_window* w, rct_widget* widget);
+    const ScreenCoordsXY& screenCoords, MouseState state, WidgetIndex widgetIndex, rct_window* w, Widget* widget);
 void SetCursor(CursorID cursor_id);
 static void InputWindowPositionContinue(
     rct_window& w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords);
@@ -268,7 +268,7 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState stat
 static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState state)
 {
     rct_window* w;
-    rct_widget* widget;
+    Widget* widget;
     WidgetIndex widgetIndex;
 
     // Get window and widget under cursor position
@@ -916,7 +916,7 @@ static void InputWidgetOver(const ScreenCoordsXY& screenCoords, rct_window* w, W
 {
     WindowClass windowClass = WindowClass::Null;
     rct_windownumber windowNumber = 0;
-    rct_widget* widget = nullptr;
+    Widget* widget = nullptr;
 
     if (w != nullptr)
     {
@@ -1202,7 +1202,7 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
  *  rct2: 0x006E8DA7
  */
 void InputStateWidgetPressed(
-    const ScreenCoordsXY& screenCoords, MouseState state, WidgetIndex widgetIndex, rct_window* w, rct_widget* widget)
+    const ScreenCoordsXY& screenCoords, MouseState state, WidgetIndex widgetIndex, rct_window* w, Widget* widget)
 {
     WindowClass cursor_w_class;
     rct_windownumber cursor_w_number;

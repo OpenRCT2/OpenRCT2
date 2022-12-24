@@ -200,7 +200,7 @@ static constexpr const ScreenCoordsXY GroupByTrackTypeOrigin{ WindowWidth - 8 - 
 static constexpr const ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
 
 // clang-format off
-static rct_widget window_new_ride_widgets[] = {
+static Widget window_new_ride_widgets[] = {
     WINDOW_SHIM(WindowTitle, WindowWidth, WindowHeight),
     MakeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
     MakeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
@@ -812,7 +812,7 @@ private:
         int32_t scrollWidth = 0;
         int32_t scrollHeight = 0;
         window_get_scroll_size(this, 0, &scrollWidth, &scrollHeight);
-        const rct_widget& listWidget = widgets[WIDX_RIDE_LIST];
+        const Widget& listWidget = widgets[WIDX_RIDE_LIST];
         const int32_t listWidgetHeight = listWidget.bottom - listWidget.top - 1;
 
         // Ensure the current tab scroll is within range

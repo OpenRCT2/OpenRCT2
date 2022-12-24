@@ -57,7 +57,7 @@ enum WindowPlayerWidgetIdx {
     MakeTab   ({  3, 17}                                                                                      ), /* Tab 1              */ \
     MakeTab   ({ 34, 17}                                                                                      )  /* Tab 2              */
 
-static rct_widget window_player_overview_widgets[] = {
+static Widget window_player_overview_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
     MakeWidget({  3, 46}, {175, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                           ), // Permission group
     MakeWidget({167, 47}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                       ),
@@ -67,12 +67,12 @@ static rct_widget window_player_overview_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_player_statistics_widgets[] = {
+static Widget window_player_statistics_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget *window_player_page_widgets[] = {
+static Widget *window_player_page_widgets[] = {
     window_player_overview_widgets,
     window_player_statistics_widgets,
 };
@@ -84,7 +84,7 @@ static rct_widget *window_player_page_widgets[] = {
 static void WindowPlayerOverviewClose(rct_window *w);
 static void WindowPlayerOverviewMouseUp(rct_window *w, WidgetIndex widgetIndex);
 static void WindowPlayerOverviewResize(rct_window *w);
-static void WindowPlayerOverviewMouseDown(rct_window *w, WidgetIndex widgetIndex, rct_widget *widget);
+static void WindowPlayerOverviewMouseDown(rct_window *w, WidgetIndex widgetIndex, Widget *widget);
 static void WindowPlayerOverviewDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowPlayerOverviewUpdate(rct_window* w);
 static void WindowPlayerOverviewInvalidate(rct_window *w);
@@ -169,9 +169,9 @@ rct_window* WindowPlayerOpen(uint8_t id)
     return window;
 }
 
-static void WindowPlayerOverviewShowGroupDropdown(rct_window* w, rct_widget* widget)
+static void WindowPlayerOverviewShowGroupDropdown(rct_window* w, Widget* widget)
 {
-    rct_widget* dropdownWidget;
+    Widget* dropdownWidget;
     int32_t numItems, i;
     int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
     if (player == -1)
@@ -238,7 +238,7 @@ void WindowPlayerOverviewMouseUp(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-void WindowPlayerOverviewMouseDown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+void WindowPlayerOverviewMouseDown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -315,7 +315,7 @@ void WindowPlayerOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t groupindex = network_get_group_index(network_get_player_group(player));
     if (groupindex != -1)
     {
-        rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
+        Widget* widget = &window_player_overview_widgets[WIDX_GROUP];
 
         thread_local std::string _buffer;
         _buffer.assign("{WINDOW_COLOUR_2}");
@@ -398,7 +398,7 @@ void WindowPlayerOverviewInvalidate(rct_window* w)
     rct_viewport* viewport = w->viewport;
     if (viewport != nullptr)
     {
-        rct_widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
+        Widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
 
         viewport->pos = w->windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
         viewport->width = viewportWidget->width();
@@ -540,7 +540,7 @@ static void WindowPlayerSetPage(rct_window* w, int32_t page)
 
 static void WindowPlayerDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
 {
-    rct_widget* widget;
+    Widget* widget;
 
     // Tab 1
     if (!WidgetIsDisabled(*w, WIDX_TAB_1))

@@ -50,7 +50,7 @@ enum WindowGuestListWidgetIdx
 };
 
 // clang-format off
-static rct_widget window_guest_list_widgets[] = {
+static Widget window_guest_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {350, 287}, WindowWidgetType::Resize,   WindowColour::Secondary                                                   ), // tab content panel
     MakeWidget({  5, 59}, { 80,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown

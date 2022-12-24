@@ -63,7 +63,7 @@ static constexpr ScreenSize INVISIBLE_SIZE = {24, 12};
 
 #pragma endregion
 
-static rct_widget window_transparency_main_widgets[] =
+static Widget window_transparency_main_widgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_VEGETATION,  STR_SEE_THROUGH_VEGETATION),

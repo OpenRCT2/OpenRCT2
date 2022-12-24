@@ -64,7 +64,7 @@ enum
 };
 
 // clang-format off
-static rct_widget window_loadsave_widgets[] =
+static Widget window_loadsave_widgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({               0,  WH - 1}, { WW,   1}, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
@@ -715,7 +715,7 @@ public:
     {
         ResizeFrameWithPage();
 
-        rct_widget* date_widget = &window_loadsave_widgets[WIDX_SORT_DATE];
+        Widget* date_widget = &window_loadsave_widgets[WIDX_SORT_DATE];
         date_widget->right = width - 5;
         date_widget->left = date_widget->right - (maxDateWidth + maxTimeWidth + (4 * DATE_TIME_GAP) + (SCROLLBAR_WIDTH + 1));
 
@@ -758,7 +758,7 @@ public:
             id = STR_DOWN;
 
         // Draw name button indicator.
-        rct_widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
+        Widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
         ft = Formatter();
         ft.Add<StringId>(id);
         DrawTextBasic(
@@ -773,7 +773,7 @@ public:
         else
             id = STR_NONE;
 
-        rct_widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
+        Widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
         ft = Formatter();
         ft.Add<StringId>(id);
         DrawTextBasic(
@@ -1101,7 +1101,7 @@ enum
     WIDX_OVERWRITE_CANCEL
 };
 
-static rct_widget window_overwrite_prompt_widgets[] = {
+static Widget window_overwrite_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_FILEBROWSER_OVERWRITE_TITLE, OVERWRITE_WW, OVERWRITE_WH),
     { WindowWidgetType::Button, 0, 10, 94, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
     { WindowWidgetType::Button, 0, OVERWRITE_WW - 95, OVERWRITE_WW - 11, OVERWRITE_WH - 20, OVERWRITE_WH - 9,

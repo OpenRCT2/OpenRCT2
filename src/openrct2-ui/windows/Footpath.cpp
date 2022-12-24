@@ -82,7 +82,7 @@ enum WindowFootpathWidgetIdx
     WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL,
 };
 
-static rct_widget window_footpath_widgets[] = {
+static Widget window_footpath_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW_WINDOW, WH_WINDOW),
 
     // Type group
@@ -630,7 +630,7 @@ private:
      *
      *  rct2: 0x006A7F88
      */
-    void WindowFootpathShowFootpathTypesDialog(rct_widget* widget, bool showQueues)
+    void WindowFootpathShowFootpathTypesDialog(Widget* widget, bool showQueues)
     {
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
 
@@ -710,7 +710,7 @@ private:
             gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
     }
 
-    void WindowFootpathShowRailingsTypesDialog(rct_widget* widget)
+    void WindowFootpathShowRailingsTypesDialog(Widget* widget)
     {
         uint32_t numRailingsTypes = 0;
         // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor

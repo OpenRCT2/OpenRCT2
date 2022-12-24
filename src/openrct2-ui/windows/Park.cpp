@@ -93,7 +93,7 @@ enum WindowParkWidgetIdx {
     MakeTab   ({158, 17}, STR_PARK_OBJECTIVE_TAB_TIP                    ), /* tab 6 */ \
     MakeTab   ({189, 17}, STR_PARK_AWARDS_TAB_TIP                       )  /* tab 7 */
 
-static rct_widget _entranceWidgets[] = {
+static Widget _entranceWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
     MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
@@ -106,40 +106,40 @@ static rct_widget _entranceWidgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget _ratingWidgets[] = {
+static Widget _ratingWidgets[] = {
     MAIN_PARK_WIDGETS(255),
     WIDGETS_END,
 };
 
-static rct_widget _guestsWidgets[] = {
+static Widget _guestsWidgets[] = {
     MAIN_PARK_WIDGETS(255),
     WIDGETS_END,
 };
 
-static rct_widget _priceWidgets[] = {
+static Widget _priceWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
     MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
     WIDGETS_END,
 };
 
-static rct_widget _statsWidgets[] = {
+static Widget _statsWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     WIDGETS_END,
 };
 
-static rct_widget _objectiveWidgets[] = {
+static Widget _objectiveWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
     WIDGETS_END,
 };
 
-static rct_widget _awardsWidgets[] = {
+static Widget _awardsWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     WIDGETS_END,
 };
 
-static std::array<rct_widget*, WINDOW_PARK_PAGE_COUNT> _pagedWidgets = {
+static std::array<Widget*, WINDOW_PARK_PAGE_COUNT> _pagedWidgets = {
     _entranceWidgets,
     _ratingWidgets,
     _guestsWidgets,
@@ -640,7 +640,7 @@ private:
             // Create viewport
             if (viewport == nullptr)
             {
-                rct_widget* viewportWidget = &widgets[WIDX_VIEWPORT];
+                Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
                 viewport_create(
                     this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                     viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
@@ -690,7 +690,7 @@ private:
         DrawTabImages(dpi);
 
         auto screenPos = windowPos;
-        rct_widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
+        Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
         // Current value
         auto ft = Formatter();
@@ -763,7 +763,7 @@ private:
         DrawTabImages(dpi);
 
         auto screenPos = windowPos;
-        rct_widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
+        Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
         // Current value
         auto ft = Formatter();

@@ -409,7 +409,7 @@ namespace OpenRCT2::Scripting
             return window_find_by_number(_class, _number);
         }
 
-        rct_widget* GetWidget() const
+        Widget* GetWidget() const
         {
             auto w = GetWindow();
             if (w != nullptr)

@@ -60,7 +60,7 @@ enum WindowRideListWidgetIdx
 };
 
 // clang-format off
-static rct_widget window_ride_list_widgets[] = {
+static Widget window_ride_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
     MakeWidget({315, 60}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle

@@ -103,7 +103,7 @@ validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_EXIT);
 validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
 
 // clang-format off
-static rct_widget window_ride_construction_widgets[] = {
+static Widget window_ride_construction_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget        ({  3,  17}, {160,  57}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                              ),
     MakeWidget        ({  3,  76}, {160,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                  ),
@@ -1486,7 +1486,7 @@ public:
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
         rct_drawpixelinfo clipdpi;
-        rct_widget* widget;
+        Widget* widget;
         int32_t widgetWidth, widgetHeight;
 
         DrawWidgets(dpi);
@@ -2501,7 +2501,7 @@ private:
         window_ride_construction_update_active_elements();
     }
 
-    void ShowSpecialTrackDropdown(rct_widget* widget)
+    void ShowSpecialTrackDropdown(Widget* widget)
     {
         int32_t defaultIndex = -1;
         for (int32_t i = 0; i < _numCurrentPossibleRideConfigurations; i++)

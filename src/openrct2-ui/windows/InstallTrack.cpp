@@ -47,7 +47,7 @@ static constexpr const int32_t WH = 460;
 constexpr int32_t PREVIEW_BUTTONS_LEFT = WW - 25;
 constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
 
-static rct_widget window_install_track_widgets[] = {
+static Widget window_install_track_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({                   4,  18}, {372, 219}, WindowWidgetType::FlatBtn, WindowColour::Primary                                                              ),
     MakeWidget({PREVIEW_BUTTONS_LEFT, 422}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_ROTATE_ARROW,                     STR_ROTATE_90_TIP     ),
@@ -151,7 +151,7 @@ public:
         DrawWidgets(dpi);
 
         // Track preview
-        rct_widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
+        Widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
         auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
         int32_t colour = ColourMapA[colours[0]].darkest;
         gfx_fill_rect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);

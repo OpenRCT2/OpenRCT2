@@ -22,7 +22,7 @@ enum
     WIDX_LOGO
 };
 
-static rct_widget window_title_logo_widgets[] = {
+static Widget window_title_logo_widgets[] = {
     MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };

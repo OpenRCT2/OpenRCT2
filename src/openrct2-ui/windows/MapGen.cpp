@@ -132,7 +132,7 @@ static constexpr const int32_t WH = 273;
     MakeTab   ({65, 17}                                                ), /* WIDX_TAB_3 */ \
     MakeTab   ({96, 17}                                                )  /* WIDX_TAB_4 */
 
-static rct_widget MapWidgets[] = {
+static Widget MapWidgets[] = {
     SHARED_WIDGETS,
     MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                 ),
     MakeSpinnerWidgets({104,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
@@ -145,7 +145,7 @@ static rct_widget MapWidgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget RandomWidgets[] = {
+static Widget RandomWidgets[] = {
     SHARED_WIDGETS,
     MakeWidget({155, 255}, { 90, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE      ),
     MakeWidget({  4,  52}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN),
@@ -153,7 +153,7 @@ static rct_widget RandomWidgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget SimplexWidgets[] = {
+static Widget SimplexWidgets[] = {
     SHARED_WIDGETS,
     MakeWidget        ({155, 255}, { 90, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                       ), // WIDX_SIMPLEX_GENERATE
     MakeWidget        ({  4,  52}, {195, 12}, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_MAPGEN_SIMPLEX_NOISE                                         ), // WIDX_SIMPLEX_LABEL
@@ -172,7 +172,7 @@ static rct_widget SimplexWidgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget HeightmapWidgets[] = {
+static Widget HeightmapWidgets[] = {
     SHARED_WIDGETS,
     MakeWidget        ({ 95, 255}, {150, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_SELECT
     MakeWidget        ({  4,  52}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
@@ -186,7 +186,7 @@ static rct_widget HeightmapWidgets[] = {
 };
 // clang-format on
 
-static rct_widget* PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
+static Widget* PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     MapWidgets,
     RandomWidgets,
     SimplexWidgets,
@@ -201,7 +201,7 @@ static void WindowMapgenSharedClose(rct_window* w);
 static void WindowMapgenSharedMouseup(rct_window* w, WidgetIndex widgetIndex);
 
 static void WindowMapgenBaseMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowMapgenBaseMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowMapgenBaseMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowMapgenBaseDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowMapgenBaseUpdate(rct_window* w);
 static void WindowMapgenTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
@@ -209,20 +209,20 @@ static void WindowMapgenBaseInvalidate(rct_window* w);
 static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 static void WindowMapgenRandomMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowMapgenRandomMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowMapgenRandomMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowMapgenRandomUpdate(rct_window* w);
 static void WindowMapgenRandomInvalidate(rct_window* w);
 static void WindowMapgenRandomPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 static void WindowMapgenSimplexMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowMapgenSimplexMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowMapgenSimplexMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowMapgenSimplexDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowMapgenSimplexUpdate(rct_window* w);
 static void WindowMapgenSimplexInvalidate(rct_window* w);
 static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 static void WindowMapgenHeightmapMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowMapgenHeightmapMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowMapgenHeightmapMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowMapgenHeightmapInvalidate(rct_window* w);
 static void WindowMapgenHeightmapPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
@@ -523,7 +523,7 @@ static void WindowMapgenBaseMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowMapgenBaseMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowMapgenBaseMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -800,7 +800,7 @@ static void WindowMapgenRandomMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowMapgenRandomMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowMapgenRandomMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
 }
 
@@ -878,7 +878,7 @@ static void WindowMapgenSimplexMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowMapgenSimplexMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowMapgenSimplexMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -1114,7 +1114,7 @@ static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Heightmap page
 
-static void WindowMapgenHeightmapMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowMapgenHeightmapMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {

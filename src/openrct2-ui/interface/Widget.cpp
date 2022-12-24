@@ -443,7 +443,7 @@ static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     WidgetText(dpi, w, widgetIndex);
 }
 
-static std::pair<StringId, void*> WidgetGetStringidAndArgs(const rct_widget& widget)
+static std::pair<StringId, void*> WidgetGetStringidAndArgs(const Widget& widget)
 {
     auto stringId = widget.text;
     void* formatArgs = gCommonFormatArgs;
@@ -932,11 +932,11 @@ bool WidgetIsActiveTool(const rct_window& w, WidgetIndex widgetIndex)
  *  edi: widget
  */
 void WidgetScrollGetPart(
-    rct_window& w, const rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
+    rct_window& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id)
 {
     *scroll_id = 0;
-    for (rct_widget* iterator = w.widgets; iterator != widget; iterator++)
+    for (Widget* iterator = w.widgets; iterator != widget; iterator++)
     {
         if (iterator->type == WindowWidgetType::Scroll)
         {
@@ -1036,7 +1036,7 @@ void WidgetScrollGetPart(
     }
 }
 
-rct_widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
+Widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
 {
     // Make sure we don't go out of bounds if we are given a bad widget index
     WidgetIndex index = 0;
@@ -1056,7 +1056,7 @@ rct_widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
 
 static void SafeSetWidgetFlag(rct_window& w, WidgetIndex widgetIndex, WidgetFlags mask, bool value)
 {
-    rct_widget* widget = GetWidgetByIndex(w, widgetIndex);
+    Widget* widget = GetWidgetByIndex(w, widgetIndex);
     if (widget == nullptr)
     {
         return;

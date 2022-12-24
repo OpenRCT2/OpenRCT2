@@ -67,7 +67,7 @@ constexpr int32_t MAX_WW = 500;
 constexpr int32_t MAX_WH = 450;
 
 // clang-format off
-static rct_widget window_staff_list_widgets[] = {
+static Widget window_staff_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                 ), // tab content panel
     MakeTab   ({  3, 17},                                                                             STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab

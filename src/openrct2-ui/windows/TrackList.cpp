@@ -51,7 +51,7 @@ enum {
 
 validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
-static rct_widget window_track_list_widgets[] = {
+static Widget window_track_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_SELECT_OTHER_RIDE                                       ),
     MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,     WindowColour::Secondary                                                              ),

@@ -61,7 +61,7 @@ enum WindowAboutWidgetIdx {
     MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
     MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */
 
-static rct_widget _windowAboutOpenRCT2Widgets[] = {
+static Widget _windowAboutOpenRCT2Widgets[] = {
     WIDGETS_MAIN,
     MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
     MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // OpenRCT2 Logo
@@ -75,12 +75,12 @@ static rct_widget _windowAboutOpenRCT2Widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget _windowAboutRCT2Widgets[] = {
+static Widget _windowAboutRCT2Widgets[] = {
     WIDGETS_MAIN,
     WIDGETS_END,
 };
 
-static rct_widget *_windowAboutPageWidgets[] = {
+static Widget *_windowAboutPageWidgets[] = {
     _windowAboutOpenRCT2Widgets,
     _windowAboutRCT2Widgets,
 };

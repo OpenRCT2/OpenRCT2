@@ -20,7 +20,7 @@ enum WindowTitleExitWidgetIdx {
     WIDX_EXIT,
 };
 
-static rct_widget window_title_exit_widgets[] = {
+static Widget window_title_exit_widgets[] = {
     MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, SPR_MENU_EXIT, STR_EXIT),
     WIDGETS_END,
 };

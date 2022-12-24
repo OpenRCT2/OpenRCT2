@@ -39,7 +39,7 @@ enum WindowLandWidgetIdx {
     WIDX_WALL,
 };
 
-static rct_widget window_land_widgets[] = {
+static Widget window_land_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget     ({19,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_UP, STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
     MakeWidget     ({55,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_PAINTBRUSH,                 STR_DISABLE_ELEVATION),        // paint mode
@@ -117,7 +117,7 @@ public:
 
     void OnMouseDown(WidgetIndex widgetIndex) override
     {
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* widget = &widgets[widgetIndex];
         switch (widgetIndex)
         {
             case WIDX_FLOOR:
@@ -235,7 +235,7 @@ public:
         ScreenCoordsXY screenCoords;
         int32_t numTiles;
         money64 price;
-        rct_widget* previewWidget = &widgets[WIDX_PREVIEW];
+        Widget* previewWidget = &widgets[WIDX_PREVIEW];
 
         DrawWidgets(dpi);
         DrawDropdownButtons(dpi);

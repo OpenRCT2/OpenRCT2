@@ -100,7 +100,7 @@ enum WindowMapWidgetIdx
 validate_global_widx(WC_MAP, WIDX_ROTATE_90);
 
 // clang-format off
-static rct_widget window_map_widgets[] = {
+static Widget window_map_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::Secondary                                                                                  ),
     MakeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_PEOPLE_ON_MAP_TIP                     ),

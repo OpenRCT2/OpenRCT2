@@ -246,7 +246,7 @@ static constexpr const int32_t right_aligned_widgets_order[] = {
 
 #pragma endregion
 
-static rct_widget window_top_toolbar_widgets[] = {
+static Widget window_top_toolbar_widgets[] = {
     MakeRemapWidget({  0, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
     MakeRemapWidget({ 60, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
     MakeRemapWidget({250, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
@@ -279,7 +279,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 // clang-format on
 
 static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowTopToolbarToolUpdate(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowTopToolbarToolDown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
@@ -302,19 +302,19 @@ static WindowEventList window_top_toolbar_events([](auto& events) {
     events.paint = &WindowTopToolbarPaint;
 });
 
-static void TopToolbarInitViewMenu(rct_window* window, rct_widget* widget);
+static void TopToolbarInitViewMenu(rct_window* window, Widget* widget);
 static void TopToolbarViewMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitMapMenu(rct_window* window, rct_widget* widget);
+static void TopToolbarInitMapMenu(rct_window* window, Widget* widget);
 static void TopToolbarMapMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitFastforwardMenu(rct_window* window, rct_widget* widget);
+static void TopToolbarInitFastforwardMenu(rct_window* window, Widget* widget);
 static void TopToolbarFastforwardMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitRotateMenu(rct_window* window, rct_widget* widget);
+static void TopToolbarInitRotateMenu(rct_window* window, Widget* widget);
 static void TopToolbarRotateMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitCheatsMenu(rct_window* window, rct_widget* widget);
+static void TopToolbarInitCheatsMenu(rct_window* window, Widget* widget);
 static void TopToolbarCheatsMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitDebugMenu(rct_window* window, rct_widget* widget);
+static void TopToolbarInitDebugMenu(rct_window* window, Widget* widget);
 static void TopToolbarDebugMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitNetworkMenu(rct_window* window, rct_widget* widget);
+static void TopToolbarInitNetworkMenu(rct_window* window, Widget* widget);
 static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex);
 
 static void ToggleFootpathWindow();
@@ -435,7 +435,7 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x0066CA3B
  */
-static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     int32_t numItems = 0;
 
@@ -670,7 +670,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
 static void WindowTopToolbarInvalidate(rct_window* w)
 {
     int32_t x, widgetIndex, widgetWidth, firstAlignment;
-    rct_widget* widget;
+    Widget* widget;
 
     // Enable / disable buttons
     window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::TrnBtn;
@@ -3287,7 +3287,7 @@ static void WindowTopToolbarToolAbort(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void TopToolbarInitMapMenu(rct_window* w, rct_widget* widget)
+static void TopToolbarInitMapMenu(rct_window* w, Widget* widget)
 {
     auto i = 0;
     gDropdownItems[i++].Format = STR_SHORTCUT_SHOW_MAP;
@@ -3365,7 +3365,7 @@ static void TopToolbarMapMenuDropdown(int16_t dropdownIndex)
     }
 }
 
-static void TopToolbarInitFastforwardMenu(rct_window* w, rct_widget* widget)
+static void TopToolbarInitFastforwardMenu(rct_window* w, Widget* widget)
 {
     int32_t num_items = 4;
     gDropdownItems[0].Format = STR_TOGGLE_OPTION;
@@ -3428,7 +3428,7 @@ static void TopToolbarFastforwardMenuDropdown(int16_t dropdownIndex)
     }
 }
 
-static void TopToolbarInitRotateMenu(rct_window* w, rct_widget* widget)
+static void TopToolbarInitRotateMenu(rct_window* w, Widget* widget)
 {
     gDropdownItems[0].Format = STR_ROTATE_CLOCKWISE;
     gDropdownItems[1].Format = STR_ROTATE_ANTI_CLOCKWISE;
@@ -3457,7 +3457,7 @@ static void TopToolbarRotateMenuDropdown(int16_t dropdownIndex)
     }
 }
 
-static void TopToolbarInitCheatsMenu(rct_window* w, rct_widget* widget)
+static void TopToolbarInitCheatsMenu(rct_window* w, Widget* widget)
 {
     using namespace Dropdown;
 
@@ -3549,7 +3549,7 @@ static void TopToolbarCheatsMenuDropdown(int16_t dropdownIndex)
     }
 }
 
-static void TopToolbarInitDebugMenu(rct_window* w, rct_widget* widget)
+static void TopToolbarInitDebugMenu(rct_window* w, Widget* widget)
 {
     gDropdownItems[DDIDX_CONSOLE].Format = STR_TOGGLE_OPTION;
     gDropdownItems[DDIDX_CONSOLE].Args = STR_DEBUG_DROPDOWN_CONSOLE;
@@ -3563,7 +3563,7 @@ static void TopToolbarInitDebugMenu(rct_window* w, rct_widget* widget)
     Dropdown::SetChecked(DDIDX_DEBUG_PAINT, window_find_by_class(WindowClass::DebugPaint) != nullptr);
 }
 
-static void TopToolbarInitNetworkMenu(rct_window* w, rct_widget* widget)
+static void TopToolbarInitNetworkMenu(rct_window* w, Widget* widget)
 {
     gDropdownItems[DDIDX_MULTIPLAYER].Format = STR_MULTIPLAYER;
     gDropdownItems[DDIDX_MULTIPLAYER_RECONNECT].Format = STR_MULTIPLAYER_RECONNECT;
@@ -3625,7 +3625,7 @@ static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex)
  *
  *  rct2: 0x0066CDE4
  */
-static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
+static void TopToolbarInitViewMenu(rct_window* w, Widget* widget)
 {
     using namespace Dropdown;
     constexpr ItemExt items[] = {

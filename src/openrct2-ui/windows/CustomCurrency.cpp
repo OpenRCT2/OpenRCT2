@@ -35,7 +35,7 @@ enum WindowCustomCurrencyWidgetIdx {
     WIDX_AFFIX_DROPDOWN_BUTTON,
 };
 
-static rct_widget window_custom_currency_widgets[] = {
+static Widget window_custom_currency_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
     MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY          ),

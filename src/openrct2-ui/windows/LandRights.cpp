@@ -38,7 +38,7 @@ enum WindowLandRightsWidgetIdx {
     WIDX_BUY_CONSTRUCTION_RIGHTS
 };
 
-static rct_widget window_land_rights_widgets[] = {
+static Widget window_land_rights_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , SPR_LAND_TOOL_SIZE_0                                           ), // preview box
     MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_RIGHTS_TIP), // decrement size
