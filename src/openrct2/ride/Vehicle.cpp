@@ -8532,7 +8532,27 @@ loc_6DCC2C:
             otherVehicleIndex = EntityId::FromUnderlying(var_44); // Possibly wrong?.
             if (UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex))
             {
-                goto loc_6DCD6B;
+                _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+                remaining_distance = 0x368A;
+                {
+                    Vehicle* vEBP = GetEntity<Vehicle>(otherVehicleIndex);
+                    if (vEBP == nullptr)
+                    {
+                        return;
+                    }
+                    Vehicle* vEDI = gCurrentVehicle;
+                    if (abs(vEDI->velocity - vEBP->velocity) > 0xE0000)
+                    {
+                        if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+                        {
+                            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+                        }
+                    }
+                    vEDI->velocity = vEBP->velocity >> 1;
+                    vEBP->velocity = vEDI->velocity >> 1;
+                }
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+                goto loc_6DC99A;
             }
         }
     }
@@ -8551,29 +8571,6 @@ loc_6DCD4A:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
     remaining_distance = 0x368A;
-    goto loc_6DC99A;
-
-loc_6DCD6B:
-    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
-    remaining_distance = 0x368A;
-    {
-        Vehicle* vEBP = GetEntity<Vehicle>(otherVehicleIndex);
-        if (vEBP == nullptr)
-        {
-            return;
-        }
-        Vehicle* vEDI = gCurrentVehicle;
-        if (abs(vEDI->velocity - vEBP->velocity) > 0xE0000)
-        {
-            if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
-            {
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
-            }
-        }
-        vEDI->velocity = vEBP->velocity >> 1;
-        vEBP->velocity = vEDI->velocity >> 1;
-    }
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
     goto loc_6DC99A;
 }
 
