@@ -59,7 +59,7 @@ static void PaintSpaceRingsStructure(
             vehicleIndex = 0;
         }
 
-        if (imageColourFlags.ToUInt32() == IMAGE_TYPE_REMAP)
+        if (imageColourFlags == TrackGhost)
         {
             imageColourFlags = ImageId(0, ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
         }
