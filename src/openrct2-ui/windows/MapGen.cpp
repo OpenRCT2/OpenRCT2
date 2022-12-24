@@ -136,7 +136,7 @@ static Widget MapWidgets[] = {
     SHARED_WIDGETS,
     MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                 ),
     MakeSpinnerWidgets({104,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
-    MakeWidget        ({155,  52}, {21, 12}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_LINK_CHAIN,          STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
+    MakeWidget        ({155,  52}, {21, 12}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),          STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
     MakeSpinnerWidgets({177,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
     MakeSpinnerWidgets({104,  70}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
     MakeSpinnerWidgets({104,  88}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
@@ -162,7 +162,7 @@ static Widget SimplexWidgets[] = {
     MakeSpinnerWidgets({104, 106}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
     MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
     MakeSpinnerWidgets({104, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_COMMA16                                                      ), // WIDX_SIMPLEX_MAP_SIZE_Y{,_UP,_DOWN}
-    MakeWidget        ({155, 148}, { 21, 12}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_G2_LINK_CHAIN,                STR_MAINTAIN_SQUARE_MAP_TOOLTIP), // WIDX_SIMPLEX_MAP_SIZE_LINK
+    MakeWidget        ({155, 148}, { 21, 12}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),                STR_MAINTAIN_SQUARE_MAP_TOOLTIP), // WIDX_SIMPLEX_MAP_SIZE_LINK
     MakeSpinnerWidgets({177, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_POP16_COMMA16                                                ), // WIDX_SIMPLEX_MAP_SIZE_X{,_UP,_DOWN}
     MakeSpinnerWidgets({104, 166}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_WATER_LEVEL{,_UP,_DOWN}
     MakeWidget        ({104, 190}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN                                 ), // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX

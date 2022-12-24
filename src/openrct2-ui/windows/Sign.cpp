@@ -45,8 +45,8 @@ enum WindowSignWidgetIdx {
 static Widget window_sign_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, STR_VIEWPORT                                 ), // Viewport
-    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_RENAME,   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
-    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_DEMOLISH, STR_DEMOLISH_SIGN_TIP          ), // demolish button
+    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
+    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
     MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
     MakeWidget({     17, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
     WIDGETS_END,
@@ -275,8 +275,8 @@ public:
             }
         }
 
-        main_colour_btn->image = GetColourButtonImage(_mainColour).ToUInt32();
-        text_colour_btn->image = GetColourButtonImage(_textColour).ToUInt32();
+        main_colour_btn->image = GetColourButtonImage(_mainColour);
+        text_colour_btn->image = GetColourButtonImage(_textColour);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override

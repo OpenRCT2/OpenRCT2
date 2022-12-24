@@ -37,7 +37,7 @@ enum WindowNewsWidgetIdx {
 
 static Widget window_news_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_TAB_GEARS_0), // settings
+    MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_TAB_GEARS_0)), // settings
     MakeWidget({  4, 44}, {392, 252}, WindowWidgetType::Scroll,  WindowColour::Primary, SCROLL_VERTICAL), // scroll
     WIDGETS_END,
 };

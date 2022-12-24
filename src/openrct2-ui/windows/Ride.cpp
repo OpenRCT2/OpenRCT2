@@ -246,14 +246,14 @@ static Widget window_ride_main_widgets[] = {
     MakeWidget({245,  47}, { 11,  10}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_VIEW_SELECTION         ),
     MakeWidget({  3, 167}, {288,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                                         ),
     MakeWidget({291,  46}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_CLOSE_OR_TEST_RIDE),
-    MakeWidget({291,  70}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_CONSTRUCTION,           STR_CONSTRUCTION           ),
-    MakeWidget({291,  94}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,                 STR_NAME_RIDE_TIP          ),
-    MakeWidget({291, 118}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP     ),
-    MakeWidget({291, 142}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_DEMOLISH,               STR_DEMOLISH_RIDE_TIP      ),
-    MakeWidget({296,  48}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_RIDE_TIP         ),
-    MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_TEST_BUTTON_0,  STR_SIMULATE_RIDE_TIP      ),
-    MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_TEST_BUTTON_0,  STR_TEST_RIDE_TIP          ),
-    MakeWidget({296,  76}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_RIDE_TIP          ),
+    MakeWidget({291,  70}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_CONSTRUCTION),           STR_CONSTRUCTION           ),
+    MakeWidget({291,  94}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_RIDE_TIP          ),
+    MakeWidget({291, 118}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP     ),
+    MakeWidget({291, 142}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_DEMOLISH),               STR_DEMOLISH_RIDE_TIP      ),
+    MakeWidget({296,  48}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_RIDE_TIP         ),
+    MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_SIMULATE_RIDE_TIP      ),
+    MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_TEST_RIDE_TIP          ),
+    MakeWidget({296,  76}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_RIDE_TIP          ),
     MakeWidget({  3, 180}, {305,  12}, WindowWidgetType::DropdownMenu,      WindowColour::Secondary, STR_ARG_6_STRINGID                                     ),
     MakeWidget({297, 180}, { 11,  12}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH                                     ),
     WIDGETS_END,
@@ -299,8 +299,8 @@ static Widget window_ride_maintenance_widgets[] = {
     MakeWidget({107,  71}, {202, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY,          STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
     MakeWidget({297,  72}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
     MakeWidget({289, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF,         STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
-    MakeWidget({265, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION,   STR_REFURBISH_RIDE_TIP                                ),
-    MakeWidget({241, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_NO_ENTRY,       STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
+    MakeWidget({265, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CONSTRUCTION),   STR_REFURBISH_RIDE_TIP                                ),
+    MakeWidget({241, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_NO_ENTRY),       STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
     WIDGETS_END,
 };
 
@@ -315,7 +315,7 @@ static Widget window_ride_colour_widgets[] = {
     MakeWidget({119,  74}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP      ),
     MakeWidget({ 74,  49}, {239, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary                                                                    ),
     MakeWidget({301,  50}, { 11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                ),
-    MakeWidget({289,  68}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_PAINTBRUSH,      STR_PAINT_INDIVIDUAL_AREA_TIP                ),
+    MakeWidget({289,  68}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),      STR_PAINT_INDIVIDUAL_AREA_TIP                ),
     MakeWidget({245, 101}, { 68, 47}, WindowWidgetType::Spinner,   WindowColour::Secondary                                                                    ),
     MakeWidget({103, 103}, {139, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary, STR_EMPTY                                                         ),
     MakeWidget({230, 104}, { 11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH,  STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP),
@@ -343,7 +343,7 @@ static Widget window_ride_music_widgets[] = {
 // 0x009AE5DC
 static Widget window_ride_measurements_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    MakeWidget({288, 194}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_FLOPPY,                STR_SAVE_TRACK_DESIGN),
+    MakeWidget({288, 194}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_FLOPPY),                STR_SAVE_TRACK_DESIGN),
     MakeWidget({  4, 127}, {154, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_SELECT_NEARBY_SCENERY                       ),
     MakeWidget({158, 127}, {154, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RESET_SELECTION                             ),
     MakeWidget({  4, 177}, {154, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_DESIGN_SAVE                                 ),
@@ -377,9 +377,9 @@ static Widget window_ride_income_widgets[] = {
 // 0x009AE9C8
 static Widget window_ride_customer_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    MakeWidget({289,  54}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION, STR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION_TIP),
-    MakeWidget({289,  78}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION,             STR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION_TIP            ),
-    MakeWidget({289, 102}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION,    STR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION_TIP   ),
+    MakeWidget({289,  54}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION), STR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION_TIP),
+    MakeWidget({289,  78}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION),             STR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION_TIP            ),
+    MakeWidget({289, 102}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION),    STR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION_TIP   ),
     WIDGETS_END,
 };
 
@@ -2310,7 +2310,7 @@ static void WindowRideMainInvalidate(rct_window* w)
         SPR_TESTING,
         SPR_G2_SIMULATE,
     };
-    window_ride_main_widgets[WIDX_OPEN].image = spriteIds[EnumValue(ride->status)];
+    window_ride_main_widgets[WIDX_OPEN].image = ImageId(spriteIds[EnumValue(ride->status)]);
 
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
     window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
@@ -2320,16 +2320,18 @@ static void WindowRideMainInvalidate(rct_window* w)
     window_ride_main_widgets[WIDX_TEST_LIGHT].image = SPR_G2_RCT1_TEST_BUTTON_0 + (ride->status == RideStatus::Testing) * 2
         + WidgetIsPressed(*w, WIDX_TEST_LIGHT);
 #else
-    window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
+    const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
         + WidgetIsPressed(*w, WIDX_CLOSE_LIGHT);
+    window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
 
     auto baseSprite = ride->status == RideStatus::Simulating ? SPR_G2_RCT1_SIMULATE_BUTTON_0 : SPR_G2_RCT1_TEST_BUTTON_0;
-    window_ride_main_widgets[WIDX_TEST_LIGHT].image = baseSprite
-        + (ride->status == RideStatus::Testing || ride->status == RideStatus::Simulating) * 2
+    const auto testLightImage = baseSprite + (ride->status == RideStatus::Testing || ride->status == RideStatus::Simulating) * 2
         + WidgetIsPressed(*w, WIDX_TEST_LIGHT);
+    window_ride_main_widgets[WIDX_TEST_LIGHT].image = ImageId(testLightImage);
 #endif
-    window_ride_main_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RideStatus::Open) * 2
+    const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RideStatus::Open) * 2
         + WidgetIsPressed(*w, WIDX_OPEN_LIGHT);
+    window_ride_main_widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
     WindowRideAnchorBorderWidgets(w);
 
@@ -3547,7 +3549,7 @@ static void WindowRideOperatingInvalidate(rct_window* w)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
     {
         window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WindowWidgetType::Checkbox;
-        window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].image
+        window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text
             = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
         window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip
             = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
@@ -4670,7 +4672,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (WindowRideHasTrackColour(ride, 0))
     {
         window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].image = GetColourButtonImage(trackColour.main).ToUInt32();
+        window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].image = GetColourButtonImage(trackColour.main);
     }
     else
     {
@@ -4681,8 +4683,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (WindowRideHasTrackColour(ride, 1))
     {
         window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = GetColourButtonImage(trackColour.additional)
-                                                                             .ToUInt32();
+        window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = GetColourButtonImage(trackColour.additional);
     }
     else
     {
@@ -4711,7 +4712,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (WindowRideHasTrackColour(ride, 2) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].image = GetColourButtonImage(trackColour.supports).ToUInt32();
+        window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].image = GetColourButtonImage(trackColour.supports);
     }
     else
     {
@@ -4760,7 +4761,7 @@ static void WindowRideColourInvalidate(rct_window* w)
 
         window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WindowWidgetType::Scroll;
         window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body).ToUInt32();
+        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body);
 
         bool allowChangingTrimColour = false;
         bool allowChangingTernaryColour = false;
@@ -4783,12 +4784,11 @@ static void WindowRideColourInvalidate(rct_window* w)
         if (allowChangingTrimColour)
         {
             window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::ColourBtn;
-            window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].image = GetColourButtonImage(vehicleColour.Trim).ToUInt32();
+            window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].image = GetColourButtonImage(vehicleColour.Trim);
             if (allowChangingTernaryColour)
             {
                 window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::ColourBtn;
-                window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary)
-                                                                                    .ToUInt32();
+                window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary);
             }
             else
             {

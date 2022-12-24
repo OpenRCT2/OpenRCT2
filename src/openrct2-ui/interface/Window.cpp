@@ -466,20 +466,20 @@ static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_
 
     WidgetIndex buttonWidgetIndex;
     WindowWidgetType expectedType;
-    uint32_t expectedContent[2];
+    ImageId expectedContent[2];
     switch (widgetType)
     {
         case WindowWidgetType::ImgBtn:
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
             expectedType = WindowWidgetType::TrnBtn;
-            expectedContent[0] = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull).ToUInt32();
-            expectedContent[1] = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull).ToUInt32();
+            expectedContent[0] = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
+            expectedContent[1] = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
             break;
         case WindowWidgetType::Spinner:
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
             expectedType = WindowWidgetType::Button;
-            expectedContent[0] = ImageId(STR_NUMERIC_UP, FilterPaletteID::PaletteNull).ToUInt32();
-            expectedContent[1] = ImageId(STR_NUMERIC_DOWN, FilterPaletteID::PaletteNull).ToUInt32();
+            expectedContent[0] = ImageId(STR_NUMERIC_UP, FilterPaletteID::PaletteNull);
+            expectedContent[1] = ImageId(STR_NUMERIC_DOWN, FilterPaletteID::PaletteNull);
             break;
         default:
             return false;

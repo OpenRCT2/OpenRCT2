@@ -196,7 +196,7 @@ static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
     // Get the colour
     uint8_t colour = w.colours[widget.colour];
 
-    if (static_cast<int32_t>(widget.image) == -2)
+    if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
     {
         // Draw border with no fill
         gfx_fill_rect_inset(dpi, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
@@ -218,7 +218,7 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex wid
     // Get the widget
     auto& widget = w.widgets[widgetIndex];
 
-    if (widget.type != WindowWidgetType::Tab && static_cast<int32_t>(widget.image) == -1)
+    if (widget.type != WindowWidgetType::Tab && widget.image.GetIndex() == ImageIndexUndefined)
         return;
 
     if (widget.type == WindowWidgetType::Tab)
@@ -226,10 +226,10 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex wid
         if (WidgetIsDisabled(w, widgetIndex))
             return;
 
-        if (widget.image == static_cast<uint32_t>(SPR_NONE))
+        if (widget.image.GetIndex() == ImageIndexUndefined)
         {
             // Set standard tab sprite to use.
-            widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull).ToUInt32();
+            widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
         }
     }
 
@@ -251,7 +251,8 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex wid
 
     // Get the colour and disabled image
     auto colour = w.colours[widget.colour] & 0x7F;
-    auto image = ImageId::FromUInt32(widget.image + 2).WithPrimary(colour);
+    const auto newIndex = widget.image.GetIndex() + 2;
+    auto image = widget.image.WithIndex(newIndex).WithPrimary(colour);
 
     // Draw disabled image
     gfx_draw_sprite(dpi, image, leftTop);
@@ -282,7 +283,7 @@ static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIn
     // Check if the button is pressed down
     if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
     {
-        if (static_cast<int32_t>(widget.image) == -2)
+        if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
         {
             // Draw border with no fill
             gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
@@ -802,9 +803,9 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     const auto& widget = w.widgets[widgetIndex];
 
     // Get the image
-    if (static_cast<int32_t>(widget.image) == SPR_NONE)
+    if (static_cast<int32_t>(widget.image.ToUInt32()) == SPR_NONE)
         return;
-    auto image = ImageId::FromUInt32(widget.image);
+    auto image = widget.image;
 
     // Resolve the absolute ltrb
     auto screenCoords = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };

@@ -21,7 +21,7 @@ enum WindowTitleExitWidgetIdx {
 };
 
 static Widget window_title_exit_widgets[] = {
-    MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, SPR_MENU_EXIT, STR_EXIT),
+    MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT),
     WIDGETS_END,
 };
 // clang-format on

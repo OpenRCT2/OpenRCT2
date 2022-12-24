@@ -33,7 +33,7 @@ enum WindowWaterWidgetIdx {
 
 static Widget window_water_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , SPR_LAND_TOOL_SIZE_0,   STR_NONE),                     // preview box
+    MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0),   STR_NONE),                     // preview box
     MakeRemapWidget({17, 18}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
     MakeRemapWidget({43, 32}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP),  // increment size
     WIDGETS_END,
@@ -135,7 +135,7 @@ public:
         SetWidgetPressed(WIDX_PREVIEW, true);
 
         // Update the preview image
-        widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override

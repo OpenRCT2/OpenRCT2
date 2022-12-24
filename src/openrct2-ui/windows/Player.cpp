@@ -61,8 +61,8 @@ static Widget window_player_overview_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
     MakeWidget({  3, 46}, {175, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                           ), // Permission group
     MakeWidget({167, 47}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                       ),
-    MakeWidget({179, 45}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_LOCATE,         STR_LOCATE_PLAYER_TIP), // Locate button
-    MakeWidget({179, 69}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_DEMOLISH,       STR_KICK_PLAYER_TIP  ), // Kick button
+    MakeWidget({179, 45}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_LOCATE),         STR_LOCATE_PLAYER_TIP), // Locate button
+    MakeWidget({179, 69}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_DEMOLISH),       STR_KICK_PLAYER_TIP  ), // Kick button
     MakeWidget({  3, 60}, {175, 61}, WindowWidgetType::Viewport, WindowColour::Secondary                                           ), // Viewport
     WIDGETS_END,
 };

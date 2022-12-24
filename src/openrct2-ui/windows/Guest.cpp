@@ -97,10 +97,10 @@ static Widget _guestWindowWidgetsOverview[] = {
     MakeWidget({  3,  45}, {164, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Thought marquee
     MakeWidget({  3,  57}, {164, 87}, WindowWidgetType::Viewport,      WindowColour::Secondary                                               ), // Viewport
     MakeWidget({  3, 144}, {164, 11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Action
-    MakeWidget({167,  45}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_PICKUP_BTN, STR_PICKUP_TIP               ), // Pickup Button
-    MakeWidget({167,  69}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_GUEST_TIP           ), // Rename Button
-    MakeWidget({167,  93}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
-    MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_TRACK_PEEP, STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
+    MakeWidget({167,  45}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP               ), // Pickup Button
+    MakeWidget({167,  69}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_GUEST_TIP           ), // Rename Button
+    MakeWidget({167,  93}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
+    MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_TRACK_PEEP), STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
     WIDGETS_END,
 };
 // clang-format on

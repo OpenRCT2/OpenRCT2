@@ -88,11 +88,11 @@ static Widget window_staff_overview_widgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
     MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
-    MakeWidget     ({WW - 25,      45}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_PICKUP_BTN, STR_PICKUP_TIP        ), // Pickup Button
-    MakeWidget     ({WW - 25,      69}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_PATROL_BTN, STR_SET_PATROL_TIP    ), // Patrol Button
-    MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_STAFF_TIP    ), // Rename Button
-    MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP), // Locate Button
-    MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_DEMOLISH,   STR_FIRE_STAFF_TIP    ), // Fire Button
+    MakeWidget     ({WW - 25,      45}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP        ), // Pickup Button
+    MakeWidget     ({WW - 25,      69}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_PATROL_BTN), STR_SET_PATROL_TIP    ), // Patrol Button
+    MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
+    MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
+    MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    ), // Fire Button
     WIDGETS_END,
 };
 

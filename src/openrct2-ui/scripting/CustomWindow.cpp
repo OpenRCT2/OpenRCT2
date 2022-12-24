@@ -902,7 +902,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.right = widget.left + 30;
                 widget.top = 17;
                 widget.bottom = 43;
-                widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull).ToUInt32();
+                widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
                 widget.tooltip = STR_NONE;
                 widgetList.push_back(widget);
                 info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
@@ -974,7 +974,7 @@ namespace OpenRCT2::Ui::Windows
                 if (desc.Image.HasValue())
                 {
                     widget.type = desc.HasBorder ? WindowWidgetType::ImgBtn : WindowWidgetType::FlatBtn;
-                    widget.image = desc.Image.ToUInt32();
+                    widget.image = desc.Image;
                 }
                 else
                 {
@@ -1002,7 +1002,7 @@ namespace OpenRCT2::Ui::Windows
             else if (desc.Type == "colourpicker")
             {
                 widget.type = WindowWidgetType::ColourBtn;
-                widget.image = GetColourButtonImage(desc.Colour).ToUInt32();
+                widget.image = GetColourButtonImage(desc.Colour);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "custom")
@@ -1237,7 +1237,7 @@ namespace OpenRCT2::Ui::Windows
                 if (lastColour != colour && colour < COLOUR_COUNT)
                 {
                     customWidgetInfo->Colour = colour;
-                    widget.image = GetColourButtonImage(colour).ToUInt32();
+                    widget.image = GetColourButtonImage(colour);
                     widget_invalidate(*w, widgetIndex);
 
                     std::vector<DukValue> args;

@@ -45,9 +45,9 @@ static Widget window_viewport_widgets[] =
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
     MakeWidget({      3, 17}, {WW - 26, WH - 3}, WindowWidgetType::Viewport, WindowColour::Primary                                           ), // viewport
-    MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP       ), // zoom in
-    MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP      ), // zoom out
-    MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP), // locate
+    MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
+    MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
+    MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
     WIDGETS_END,
 };
 

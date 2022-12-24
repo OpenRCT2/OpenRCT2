@@ -214,7 +214,7 @@ static Widget window_new_ride_widgets[] = {
     MakeWidget({  3,  47},             {290,  70},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                  ),
     MakeWidget({  3, 124},             {290,  65},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                          ),
     MakeWidget({265, 161},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP),
-    MakeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  SPR_FINANCE,                     STR_FINANCES_RESEARCH_TIP    ),
+    MakeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  ImageId(SPR_FINANCE),                     STR_FINANCES_RESEARCH_TIP    ),
     MakeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,         STR_GROUP_BY_TRACK_TYPE_TIP  ),
     WIDGETS_END,
 };
@@ -379,8 +379,8 @@ public:
             {
                 auto type = gResearchLastItem->type;
                 widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-                widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == Research::EntryType::Ride) ? SPR_NEW_RIDE
-                                                                                                  : SPR_NEW_SCENERY;
+                const auto index = (type == Research::EntryType::Ride) ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+                widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = ImageId(index);
             }
         }
 

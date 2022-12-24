@@ -59,7 +59,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
     MakeWidget({142,  0}, {356, 34}, WindowWidgetType::ImgBtn,      WindowColour::Tertiary                                                    ), // Middle outset panel
     MakeWidget({144,  2}, {352, 30}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary                                                    ), // Middle inset panel
     MakeWidget({147,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
-    MakeWidget({469,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
+    MakeWidget({469,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
 
     MakeWidget({498,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right outset panel
     MakeWidget({500,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right inset panel

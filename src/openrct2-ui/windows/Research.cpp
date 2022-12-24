@@ -244,9 +244,8 @@ static void WindowResearchDevelopmentInvalidate(rct_window* w)
     {
         auto type = gResearchLastItem->type;
         window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = type == Research::EntryType::Ride
-            ? SPR_NEW_RIDE
-            : SPR_NEW_SCENERY;
+        const auto image = type == Research::EntryType::Ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = ImageId(image);
     }
 }
 

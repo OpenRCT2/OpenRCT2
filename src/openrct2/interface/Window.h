@@ -91,9 +91,9 @@ struct Widget
     int16_t bottom;
     union
     {
-        uint32_t image;
-        StringId text;
         uint32_t content;
+        ImageId image;
+        StringId text;
         utf8* string;
     };
     StringId tooltip;

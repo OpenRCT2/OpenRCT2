@@ -79,11 +79,28 @@ constexpr Widget MakeWidget(
     return out;
 }
 
+constexpr Widget MakeWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour, ImageId image,
+    StringId tooltip = STR_NONE)
+{
+    Widget out = {};
+    out.left = origin.x;
+    out.right = origin.x + size.width - 1;
+    out.top = origin.y;
+    out.bottom = origin.y + size.height - 1;
+    out.type = type;
+    out.colour = static_cast<uint8_t>(colour);
+    out.image = image;
+    out.tooltip = tooltip;
+
+    return out;
+}
+
 constexpr Widget MakeRemapWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour, ImageIndex content,
     StringId tooltip = STR_NONE)
 {
-    return MakeWidget(origin, size, type, colour, ImageId(content, FilterPaletteID::PaletteNull).ToUInt32(), tooltip);
+    return MakeWidget(origin, size, type, colour, ImageId(content, FilterPaletteID::PaletteNull), tooltip);
 }
 
 constexpr Widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NONE)
@@ -91,7 +108,7 @@ constexpr Widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NO
     const ScreenSize size = TAB_SIZE;
     const WindowWidgetType type = WindowWidgetType::Tab;
     const WindowColour colour = WindowColour::Secondary;
-    const uint32_t content = 0xFFFFFFFF;
+    const auto content = ImageId(ImageIndexUndefined);
 
     return MakeWidget(origin, size, type, colour, content, tooltip);
 }

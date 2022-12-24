@@ -168,7 +168,7 @@ public:
             | (gClearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
 
         // Update the preview image (for tool sizes up to 7)
-        window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        window_clear_scenery_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override

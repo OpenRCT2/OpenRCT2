@@ -63,13 +63,13 @@ static Widget WindowSceneryBaseWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
     MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
     MakeWidget     ({  2,  47}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
-    MakeWidget     ({609,  44}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_ROTATE_ARROW,    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
-    MakeWidget     ({609,  68}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_PAINTBRUSH,      STR_SCENERY_PAINTBRUSH_TIP ), // 4000000   0x009DE438
+    MakeWidget     ({609,  44}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
+    MakeWidget     ({609,  68}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),      STR_SCENERY_PAINTBRUSH_TIP ), // 4000000   0x009DE438
     MakeWidget     ({615,  93}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_COLOUR          ), // 8000000   0x009DE448
     MakeWidget     ({615, 105}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_SECONDARY_COLOUR), // 10000000  0x009DE458
     MakeWidget     ({615, 117}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_TERNARY_COLOUR  ), // 20000000  0x009DE468
-    MakeWidget     ({609, 130}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_G2_EYEDROPPER,   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
-    MakeWidget     ({609, 154}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_SCENERY_CLUSTER, STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
+    MakeWidget     ({609, 130}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_EYEDROPPER),   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
+    MakeWidget     ({609, 154}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_SCENERY_CLUSTER), STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
     WIDGETS_END,
 };
 // clang-format on
@@ -540,9 +540,9 @@ public:
             }
         }
 
-        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = GetColourButtonImage(gWindowSceneryPrimaryColour).ToUInt32();
-        widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = GetColourButtonImage(gWindowScenerySecondaryColour).ToUInt32();
-        widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = GetColourButtonImage(gWindowSceneryTertiaryColour).ToUInt32();
+        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = GetColourButtonImage(gWindowSceneryPrimaryColour);
+        widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = GetColourButtonImage(gWindowScenerySecondaryColour);
+        widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = GetColourButtonImage(gWindowSceneryTertiaryColour);
 
         widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
         widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
@@ -1036,7 +1036,7 @@ private:
 
             if (tabInfo.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
             {
-                widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull).ToUInt32();
+                widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull);
             }
 
             _widgets.push_back(widget);

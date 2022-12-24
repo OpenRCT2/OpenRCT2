@@ -58,8 +58,8 @@ static Widget window_track_list_widgets[] = {
     MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary  , STR_OBJECT_SEARCH_CLEAR                                     ),
     MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
     MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                                ),
-    MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
-    MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
+    MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
+    MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             ),
     WIDGETS_END,
 };
 

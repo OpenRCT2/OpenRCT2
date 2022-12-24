@@ -98,11 +98,11 @@ static Widget _entranceWidgets[] = {
     MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
     MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
     MakeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
-    MakeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
-    MakeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP                  ), // locate
-    MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,                 STR_NAME_PARK_TIP                       ), // rename
-    MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_PARK_TIP                      ),
-    MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_PARK_TIP                       ),
+    MakeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
+    MakeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
+    MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
+    MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
+    MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       ),
     WIDGETS_END,
 };
 
@@ -515,10 +515,11 @@ private:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(parkName);
         }
-        widgets[WIDX_OPEN_OR_CLOSE].image = ParkIsOpen() ? SPR_OPEN : SPR_CLOSED;
-        widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !ParkIsOpen() * 2
-            + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
-        widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + ParkIsOpen() * 2 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
+        widgets[WIDX_OPEN_OR_CLOSE].image = ImageId(ParkIsOpen() ? SPR_OPEN : SPR_CLOSED);
+        const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + !ParkIsOpen() * 2 + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
+        widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
+        const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + ParkIsOpen() * 2 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
+        widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
         // Only allow closing of park for guest / rating objective
         if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)

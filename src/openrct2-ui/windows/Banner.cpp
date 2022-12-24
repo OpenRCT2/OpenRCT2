@@ -59,9 +59,9 @@ static constexpr const StringId BannerColouredTextFormats[] = {
 static Widget window_banner_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
-    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_RENAME,         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
-    MakeWidget({WW - 25,      43}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_NO_ENTRY,       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
-    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_DEMOLISH,       STR_DEMOLISH_BANNER_TIP        ), // demolish button
+    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
+    MakeWidget({WW - 25,      43}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_NO_ENTRY),       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
+    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),       STR_DEMOLISH_BANNER_TIP        ), // demolish button
     MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,         STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
     MakeWidget({     43, WH - 16}, {39, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary                                                     ), // high money
     MakeWidget({     70, WH - 15}, {11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_TEXT_COLOUR_TIP     ), // high money
@@ -288,7 +288,7 @@ public:
             disabled_widgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
                 | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
         }
-        colourBtn->image = GetColourButtonImage(banner->colour).ToUInt32();
+        colourBtn->image = GetColourButtonImage(banner->colour);
         Widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
         dropDownWidget->text = BannerColouredTextFormats[banner->text_colour];
     }
