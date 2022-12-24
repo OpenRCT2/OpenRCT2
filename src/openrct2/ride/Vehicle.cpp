@@ -8516,23 +8516,19 @@ Loc6DC9BC:
     goto Loc6DCD2B;
 
 Loc6DCA9A:
-    if (track_progress != 0)
+    if (track_progress == 0)
     {
-        track_progress -= 1;
-        goto Loc6DCC2C;
-    }
-
-    tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
-    {
-        TrackBeginEnd trackBeginEnd;
-        if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
+        tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
         {
-            goto Loc6DC9BC;
+            TrackBeginEnd trackBeginEnd;
+            if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
+            {
+                goto Loc6DC9BC;
+            }
+            trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
+            direction = trackBeginEnd.begin_direction;
+            tileElement = trackBeginEnd.begin_element;
         }
-        trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
-        direction = trackBeginEnd.begin_direction;
-        tileElement = trackBeginEnd.begin_element;
-    }
 
     if (PitchAndRollStart(HasFlag(VehicleFlags::CarIsInverted), tileElement) != TrackPitchAndRollEnd(GetTrackType()))
     {
@@ -8548,31 +8544,35 @@ Loc6DCA9A:
             {
                 SetFlag(VehicleFlags::CarIsInverted);
             }
-        }
+            }
     }
 
     TrackLocation = trackPos;
 
     if (HasFlag(VehicleFlags::OnLiftHill))
-    {
-        ClearFlag(VehicleFlags::OnLiftHill);
-        if (next_vehicle_on_train.IsNull())
         {
-            if (_vehicleVelocityF64E08 < 0)
+            ClearFlag(VehicleFlags::OnLiftHill);
+            if (next_vehicle_on_train.IsNull())
             {
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
+                if (_vehicleVelocityF64E08 < 0)
+                {
+                    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
+                }
             }
         }
+
+        SetTrackType(tileElement->AsTrack()->GetTrackType());
+        SetTrackDirection(direction);
+        brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+
+        // There are two bytes before the move info list
+        track_progress = GetTrackProgress();
+    }
+    else
+    {
+        track_progress -= 1;
     }
 
-    SetTrackType(tileElement->AsTrack()->GetTrackType());
-    SetTrackDirection(direction);
-    brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
-
-    // There are two bytes before the move info list
-    track_progress = GetTrackProgress();
-
-Loc6DCC2C:
     moveInfo = GetMoveInfo();
     trackPos = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
                  TrackLocation.z + moveInfo->z + GetRideTypeDescriptor(curRide.type).Heights.VehicleZOffset };
