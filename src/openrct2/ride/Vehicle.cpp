@@ -8214,14 +8214,12 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideOb
         goto Loc6DCA9A;
 
 Loc6DC462:
-    if (var_D3 == 0)
+    if (var_D3 != 0)
     {
-        goto Loc6DC476;
+        var_D3--;
+        goto Loc6DC985;
     }
-    var_D3--;
-    goto Loc6DC985;
 
-Loc6DC476:
     if (mini_golf_flags & MiniGolfFlag::Flag2)
     {
         uint8_t nextFrame = animation_frame + 1;
