@@ -8139,14 +8139,12 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* ri
         goto loc_6DCA9A;
 
 loc_6DC462:
-    if (var_D3 == 0)
+    if (var_D3 != 0)
     {
-        goto loc_6DC476;
+        var_D3--;
+        goto loc_6DC985;
     }
-    var_D3--;
-    goto loc_6DC985;
 
-loc_6DC476:
     if (mini_golf_flags & MiniGolfFlag::Flag2)
     {
         uint8_t nextFrame = animation_frame + 1;
