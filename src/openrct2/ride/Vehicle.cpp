@@ -8434,7 +8434,13 @@ loc_6DC743:
             UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex);
         }
     }
-    goto loc_6DC99A;
+    if (remaining_distance < 0x368A)
+    {
+        Loc6DCDE4(*curRide);
+    }
+    acceleration = AccelerationFromPitch[Pitch];
+    _vehicleUnkF64E10++;
+    goto loc_6DC462;
 
 loc_6DC985:
     remaining_distance -= 0x368A;
@@ -8443,7 +8449,6 @@ loc_6DC985:
         remaining_distance = 0;
     }
 
-loc_6DC99A:
     if (remaining_distance < 0x368A)
     {
         Loc6DCDE4(*curRide);
@@ -8483,7 +8488,13 @@ loc_6DCA9A:
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
             _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
             remaining_distance = 0x368A;
-            goto loc_6DC99A;
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(*curRide);
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto loc_6DC462;
         }
 
         {
@@ -8576,7 +8587,13 @@ loc_6DCA9A:
                     vEBP->velocity = vEDI->velocity >> 1;
                 }
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
-                goto loc_6DC99A;
+                if (remaining_distance < 0x368A)
+                {
+                    Loc6DCDE4(*curRide);
+                }
+                acceleration = AccelerationFromPitch[Pitch];
+                _vehicleUnkF64E10++;
+                goto loc_6DC462;
             }
         }
     }
