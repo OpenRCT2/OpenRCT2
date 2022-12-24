@@ -8386,39 +8386,33 @@ Loc6DC462:
         mini_golf_flags &= ~MiniGolfFlag::Flag3;
     }
 
-    // There are two bytes before the move info list
     {
         uint16_t trackTotalProgress = GetTrackProgress();
-        if (track_progress + 1 < trackTotalProgress)
+        if (track_progress + 1 >= trackTotalProgress)
         {
-            track_progress += 1;
-            goto Loc6DC743;
-        }
-    }
-
-    tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
-    {
-        CoordsXYE output;
-        int32_t outZ{};
-        int32_t outDirection{};
-        CoordsXYE input = { TrackLocation, tileElement };
-        if (!TrackBlockGetNext(&input, &output, &outZ, &outDirection))
-        {
-            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-            _vehicleVelocityF64E0C -= remaining_distance + 1;
-            remaining_distance = -1;
-            if (remaining_distance >= 0)
+            tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
             {
-                Loc6DCDE4(curRide);
+                CoordsXYE output;
+                int32_t outZ{};
+                int32_t outDirection{};
+                CoordsXYE input = { TrackLocation, tileElement };
+                if (!TrackBlockGetNext(&input, &output, &outZ, &outDirection))
+                {
+                    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                    _vehicleVelocityF64E0C -= remaining_distance + 1;
+                    remaining_distance = -1;
+                    if (remaining_distance >= 0)
+                    {
+                        Loc6DCDE4(curRide);
+                    }
+                    acceleration += AccelerationFromPitch[Pitch];
+                    _vehicleUnkF64E10++;
+                    goto Loc6DCA9A;
+                }
+                tileElement = output.element;
+                trackPos = { output.x, output.y, outZ };
+                direction = outDirection;
             }
-            acceleration += AccelerationFromPitch[Pitch];
-            _vehicleUnkF64E10++;
-            goto Loc6DCA9A;
-        }
-        tileElement = output.element;
-        trackPos = { output.x, output.y, outZ };
-        direction = outDirection;
-    }
 
     if (PitchAndRollStart(HasFlag(VehicleFlags::CarIsInverted), tileElement) != TrackPitchAndRollEnd(GetTrackType()))
     {
@@ -8466,8 +8460,13 @@ Loc6DC462:
     SetTrackDirection(direction);
     brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     track_progress = 0;
+        }
+        else
+        {
+            track_progress += 1;
+        }
+    }
 
-Loc6DC743:
     if (!IsHead())
     {
         animation_frame++;
