@@ -8238,7 +8238,10 @@ loc_6DC462:
         CoordsXYE input = { TrackLocation, tileElement };
         if (!track_block_get_next(&input, &output, &outZ, &outDirection))
         {
-            goto loc_6DC9BC;
+            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+            _vehicleVelocityF64E0C -= remaining_distance + 1;
+            remaining_distance = -1;
+            goto loc_6DCD2B;
         }
         tileElement = output.element;
         trackPos = { output.x, output.y, outZ };
@@ -8248,7 +8251,10 @@ loc_6DC462:
     if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
         != TrackPitchAndRollEnd(GetTrackType()))
     {
-        goto loc_6DC9BC;
+        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+        _vehicleVelocityF64E0C -= remaining_distance + 1;
+        remaining_distance = -1;
+        goto loc_6DCD2B;
     }
 
     {
@@ -8435,12 +8441,6 @@ loc_6DC99A:
     _vehicleUnkF64E10++;
     goto loc_6DC462;
 
-loc_6DC9BC:
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    _vehicleVelocityF64E0C -= remaining_distance + 1;
-    remaining_distance = -1;
-    goto loc_6DCD2B;
-
 loc_6DCA9A:
     if (track_progress == 0)
     {
@@ -8449,7 +8449,10 @@ loc_6DCA9A:
             track_begin_end trackBeginEnd;
             if (!track_block_get_previous({ TrackLocation, tileElement }, &trackBeginEnd))
             {
-                goto loc_6DC9BC;
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                _vehicleVelocityF64E0C -= remaining_distance + 1;
+                remaining_distance = -1;
+                goto loc_6DCD2B;
             }
             trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
             direction = trackBeginEnd.begin_direction;
