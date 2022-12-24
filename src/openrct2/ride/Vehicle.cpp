@@ -8442,64 +8442,64 @@ loc_6DC9BC:
     goto loc_6DCD2B;
 
 loc_6DCA9A:
-    if (track_progress != 0)
+    if (track_progress == 0)
+    {
+        tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
+        {
+            track_begin_end trackBeginEnd;
+            if (!track_block_get_previous({ TrackLocation, tileElement }, &trackBeginEnd))
+            {
+                goto loc_6DC9BC;
+            }
+            trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
+            direction = trackBeginEnd.begin_direction;
+            tileElement = trackBeginEnd.begin_element;
+        }
+
+        if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
+            != TrackPitchAndRollEnd(GetTrackType()))
+        {
+            goto loc_6DCD4A;
+        }
+
+        {
+            int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
+            ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+            {
+                if (tileElement->AsTrack()->IsInverted())
+                {
+                    SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+                }
+            }
+        }
+
+        TrackLocation = trackPos;
+
+        if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
+        {
+            ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
+            if (next_vehicle_on_train.IsNull())
+            {
+                if (_vehicleVelocityF64E08 < 0)
+                {
+                    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
+                }
+            }
+        }
+
+        SetTrackType(tileElement->AsTrack()->GetTrackType());
+        SetTrackDirection(direction);
+        brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+
+        // There are two bytes before the move info list
+        track_progress = GetTrackProgress();
+    }
+    else
     {
         track_progress -= 1;
-        goto loc_6DCC2C;
     }
 
-    tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
-    {
-        track_begin_end trackBeginEnd;
-        if (!track_block_get_previous({ TrackLocation, tileElement }, &trackBeginEnd))
-        {
-            goto loc_6DC9BC;
-        }
-        trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
-        direction = trackBeginEnd.begin_direction;
-        tileElement = trackBeginEnd.begin_element;
-    }
-
-    if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
-        != TrackPitchAndRollEnd(GetTrackType()))
-    {
-        goto loc_6DCD4A;
-    }
-
-    {
-        int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
-        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
-        {
-            if (tileElement->AsTrack()->IsInverted())
-            {
-                SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
-            }
-        }
-    }
-
-    TrackLocation = trackPos;
-
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
-    {
-        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
-        if (next_vehicle_on_train.IsNull())
-        {
-            if (_vehicleVelocityF64E08 < 0)
-            {
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
-            }
-        }
-    }
-
-    SetTrackType(tileElement->AsTrack()->GetTrackType());
-    SetTrackDirection(direction);
-    brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
-
-    // There are two bytes before the move info list
-    track_progress = GetTrackProgress();
-
-loc_6DCC2C:
     moveInfo = GetMoveInfo();
     trackPos = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
                  TrackLocation.z + moveInfo->z + GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset };
