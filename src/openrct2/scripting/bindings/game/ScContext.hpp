@@ -466,6 +466,11 @@ namespace OpenRCT2::Scripting
             return GetIconByName(iconName);
         }
 
+        std::string getStringById(StringId stringId)
+        {
+            return language_get_string(stringId);
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -489,6 +494,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::clearInterval, "clearInterval");
             dukglue_register_method(ctx, &ScContext::clearTimeout, "clearTimeout");
             dukglue_register_method(ctx, &ScContext::getIcon, "getIcon");
+            dukglue_register_method(ctx, &ScContext::getStringById, "getStringById");
         }
     };
 

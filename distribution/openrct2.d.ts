@@ -240,6 +240,8 @@ declare global {
          */
         getIcon(iconName: IconName): number;
 
+        getStringById(stringId: number): string;
+
         /**
          * Gets a random integer within the specified range using the game's pseudo-
          * random number generator. This is part of the game state and shared across
