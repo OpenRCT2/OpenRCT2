@@ -8241,7 +8241,13 @@ loc_6DC462:
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
             _vehicleVelocityF64E0C -= remaining_distance + 1;
             remaining_distance = -1;
-            goto loc_6DCD2B;
+            if (remaining_distance >= 0)
+            {
+                Loc6DCDE4(*curRide);
+            }
+            acceleration += AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto loc_6DCA9A;
         }
         tileElement = output.element;
         trackPos = { output.x, output.y, outZ };
@@ -8254,7 +8260,13 @@ loc_6DC462:
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
         _vehicleVelocityF64E0C -= remaining_distance + 1;
         remaining_distance = -1;
-        goto loc_6DCD2B;
+        if (remaining_distance >= 0)
+        {
+            Loc6DCDE4(*curRide);
+        }
+        acceleration += AccelerationFromPitch[Pitch];
+        _vehicleUnkF64E10++;
+        goto loc_6DCA9A;
     }
 
     {
@@ -8452,7 +8464,13 @@ loc_6DCA9A:
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
                 remaining_distance = -1;
-                goto loc_6DCD2B;
+                if (remaining_distance >= 0)
+                {
+                    Loc6DCDE4(*curRide);
+                }
+                acceleration += AccelerationFromPitch[Pitch];
+                _vehicleUnkF64E10++;
+                goto loc_6DCA9A;
             }
             trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
             direction = trackBeginEnd.begin_direction;
@@ -8563,7 +8581,6 @@ loc_6DCA9A:
         }
     }
 
-loc_6DCD2B:
     if (remaining_distance >= 0)
     {
         Loc6DCDE4(*curRide);
