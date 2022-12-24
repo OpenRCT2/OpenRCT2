@@ -8142,7 +8142,20 @@ loc_6DC462:
     if (var_D3 != 0)
     {
         var_D3--;
-        goto loc_6DC985;
+        remaining_distance -= 0x368A;
+        if (remaining_distance < 0)
+        {
+            remaining_distance = 0;
+        }
+
+        if (remaining_distance < 0x368A)
+        {
+            Loc6DCDE4(*curRide);
+            return;
+        }
+        acceleration = AccelerationFromPitch[Pitch];
+        _vehicleUnkF64E10++;
+        goto loc_6DC462;
     }
 
     if (mini_golf_flags & MiniGolfFlag::Flag2)
@@ -8151,7 +8164,20 @@ loc_6DC462:
         if (nextFrame < MiniGolfPeepAnimationLengths[EnumValue(mini_golf_current_animation)])
         {
             animation_frame = nextFrame;
-            goto loc_6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(*curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto loc_6DC462;
         }
         mini_golf_flags &= ~MiniGolfFlag::Flag2;
     }
@@ -8166,11 +8192,37 @@ loc_6DC462:
         }
         if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag0) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
         {
-            goto loc_6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(*curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto loc_6DC462;
         }
         if (vEDI->var_D3 != 0)
         {
-            goto loc_6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(*curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto loc_6DC462;
         }
         vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag0;
         mini_golf_flags &= ~MiniGolfFlag::Flag0;
@@ -8186,11 +8238,37 @@ loc_6DC462:
         }
         if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag1) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
         {
-            goto loc_6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(*curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto loc_6DC462;
         }
         if (vEDI->var_D3 != 0)
         {
-            goto loc_6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(*curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto loc_6DC462;
         }
         vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag1;
         mini_golf_flags &= ~MiniGolfFlag::Flag1;
@@ -8213,7 +8291,20 @@ loc_6DC462:
                 continue;
             if (vEDI->TrackLocation != TrackLocation)
                 continue;
-            goto loc_6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(*curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto loc_6DC462;
         }
 
         mini_golf_flags |= MiniGolfFlag::Flag4;
@@ -8437,22 +8528,6 @@ loc_6DC743:
     if (remaining_distance < 0x368A)
     {
         Loc6DCDE4(*curRide);
-    }
-    acceleration = AccelerationFromPitch[Pitch];
-    _vehicleUnkF64E10++;
-    goto loc_6DC462;
-
-loc_6DC985:
-    remaining_distance -= 0x368A;
-    if (remaining_distance < 0)
-    {
-        remaining_distance = 0;
-    }
-
-    if (remaining_distance < 0x368A)
-    {
-        Loc6DCDE4(*curRide);
-        return;
     }
     acceleration = AccelerationFromPitch[Pitch];
     _vehicleUnkF64E10++;
