@@ -1036,7 +1036,7 @@ private:
 
             if (tabInfo.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
             {
-                widget.image = SPR_TAB_QUESTION | IMAGE_TYPE_REMAP;
+                widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull).ToUInt32();
             }
 
             _widgets.push_back(widget);

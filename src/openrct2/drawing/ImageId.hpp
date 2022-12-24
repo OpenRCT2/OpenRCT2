@@ -121,7 +121,7 @@ public:
     {
     }
 
-    [[nodiscard]] uint32_t ToUInt32() const
+    [[nodiscard]] constexpr uint32_t ToUInt32() const
     {
         auto result = (_index & MASK_INDEX);
         result |= (_primary << SHIFT_REMAP) & MASK_REMAP;

@@ -229,7 +229,7 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex wid
         if (widget.image == static_cast<uint32_t>(SPR_NONE))
         {
             // Set standard tab sprite to use.
-            widget.image = IMAGE_TYPE_REMAP | SPR_TAB;
+            widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull).ToUInt32();
         }
     }
 

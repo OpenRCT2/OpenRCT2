@@ -836,9 +836,9 @@ static void WindowTopToolbarInvalidate(rct_window* w)
         w->pressed_widgets &= ~(1uLL << WIDX_PAUSE);
 
     if (!OpenRCT2::Audio::gGameSoundsOff)
-        window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MUTE;
+        window_top_toolbar_widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, FilterPaletteID::PaletteNull).ToUInt32();
     else
-        window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_UNMUTE;
+        window_top_toolbar_widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, FilterPaletteID::PaletteNull).ToUInt32();
 
     // Set map button to the right image.
     if (window_top_toolbar_widgets[WIDX_MAP].type != WindowWidgetType::Empty)
@@ -851,7 +851,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
         };
 
         uint32_t mapImageId = _imageIdByRotation[get_current_rotation()];
-        window_top_toolbar_widgets[WIDX_MAP].image = IMAGE_TYPE_REMAP | mapImageId;
+        window_top_toolbar_widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::PaletteNull).ToUInt32();
     }
 
     // Zoomed out/in disable. Not sure where this code is in the original.

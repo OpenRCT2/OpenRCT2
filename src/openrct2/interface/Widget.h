@@ -81,9 +81,9 @@ constexpr rct_widget MakeWidget(
 
 constexpr rct_widget MakeRemapWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
-    uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
+    ImageIndex content, StringId tooltip = STR_NONE)
 {
-    return MakeWidget(origin, size, type, colour, IMAGE_TYPE_REMAP | content, tooltip);
+    return MakeWidget(origin, size, type, colour, ImageId(content, FilterPaletteID::PaletteNull).ToUInt32(), tooltip);
 }
 
 constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NONE)

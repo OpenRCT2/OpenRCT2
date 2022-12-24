@@ -902,7 +902,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.right = widget.left + 30;
                 widget.top = 17;
                 widget.bottom = 43;
-                widget.image = IMAGE_TYPE_REMAP | SPR_TAB;
+                widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull).ToUInt32();
                 widget.tooltip = STR_NONE;
                 widgetList.push_back(widget);
                 info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
