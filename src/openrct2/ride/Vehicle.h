@@ -378,6 +378,7 @@ private:
     void Loc6DCDE4(const Ride& curRide);
     void Loc6DC476();
     void Loc6DCA9A(const Ride& curRide, const rct_ride_entry& rideEntry, const CarEntry& carEntry);
+    void Loc6DBF3E();
 };
 static_assert(sizeof(Vehicle) <= 512);
 
