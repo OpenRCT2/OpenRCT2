@@ -8462,7 +8462,10 @@ loc_6DCA9A:
         if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
             != TrackPitchAndRollEnd(GetTrackType()))
         {
-            goto loc_6DCD4A;
+            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+            _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+            remaining_distance = 0x368A;
+            goto loc_6DC99A;
         }
 
         {
@@ -8569,12 +8572,6 @@ loc_6DCD2B:
     acceleration += AccelerationFromPitch[Pitch];
     _vehicleUnkF64E10++;
     goto loc_6DCA9A;
-
-loc_6DCD4A:
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
-    remaining_distance = 0x368A;
-    goto loc_6DC99A;
 }
 
 void Vehicle::Loc6DCDE4(const Ride& curRide)
