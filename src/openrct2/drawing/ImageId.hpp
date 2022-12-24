@@ -287,5 +287,16 @@ public:
             result._flags &= ~NEW_FLAG_BLEND;
         return result;
     }
+
+    constexpr bool operator==(const ImageId& rhs) const
+    {
+        return _index == rhs._index && _primary == rhs._primary && _secondary == rhs._secondary && _tertiary == rhs._tertiary
+            && _flags == rhs._flags;
+    }
+
+    constexpr bool operator!=(const ImageId& rhs) const
+    {
+        return !(*this == rhs);
+    }
 };
 static_assert(sizeof(ImageId) == 8, "The size of this struct is expected to fit in 64 bits for perfomance reasons. See #18555");
