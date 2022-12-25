@@ -3648,6 +3648,8 @@ STR_6533    :{WINDOW_COLOUR_2}Indice d’excitation : {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Indice d’intensité : {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Indice de nausée : {BLACK}-{COMMA16}%
 STR_6536    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il a été sauvegardé avec la version {INT32}, vous utilisez la version {INT32}.
+STR_6537    :Permettre l’utilisation d’allées normales{NEWLINE}dans les files d’attente
+STR_6538    :Affiche les allées normales dans le menu déroulant des files d’attente de la fenêtre des allées
 
 #############
 # Scenarios #
