@@ -8115,6 +8115,7 @@ bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, Ride* curRide, rct_
  *
  *
  */
+
 void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, CarEntry* carEntry)
 {
     EntityId otherVehicleIndex = EntityId::GetNull();
@@ -8130,7 +8131,8 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* ri
     }
     if (remaining_distance >= 0 && remaining_distance < 0x368A)
     {
-        goto loc_6DCE02;
+        Loc6DCE02(*curRide);
+        return;
     }
     sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
     _vehicleCurPosition.x = x;
@@ -8581,24 +8583,27 @@ loc_6DCD6B:
 loc_6DCDE4:
     MoveTo(_vehicleCurPosition);
 
-loc_6DCE02:
+    Loc6DCE02(*curRide);
+}
+
+void Vehicle::Loc6DCE02(const Ride& curRide)
+{
     acceleration /= _vehicleUnkF64E10;
     if (TrackSubposition == VehicleTrackSubposition::ChairliftGoingBack)
     {
         return;
     }
+
+    auto trackType = GetTrackType();
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
-        auto trackType = GetTrackType();
-        const auto& ted = GetTrackElementDescriptor(trackType);
-        if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
-        {
-            return;
-        }
-        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
-        if (trackType != TrackElemType::EndStation)
-        {
-            return;
-        }
+        return;
+    }
+    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
+    if (trackType != TrackElemType::EndStation)
+    {
+        return;
     }
     if (this != gCurrentVehicle)
     {
@@ -8618,7 +8623,7 @@ loc_6DCE02:
 
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 
-    for (const auto& station : curRide->GetStations())
+    for (const auto& station : curRide.GetStations())
     {
         if (TrackLocation != station.Start)
         {
@@ -8628,7 +8633,7 @@ loc_6DCE02:
         {
             continue;
         }
-        _vehicleStationIndex = curRide->GetStationIndex(&station);
+        _vehicleStationIndex = curRide.GetStationIndex(&station);
     }
 }
 
