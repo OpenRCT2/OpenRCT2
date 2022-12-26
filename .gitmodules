@@ -1,0 +1,6 @@
+[submodule "src/thirdparty/LuaJIT"]
+	path = src/thirdparty/LuaJIT
+	url = https://github.com/LuaJIT/LuaJIT.git
+[submodule "src/thirdparty/sol2"]
+	path = src/thirdparty/sol2
+	url = https://github.com/ThePhD/sol2.git

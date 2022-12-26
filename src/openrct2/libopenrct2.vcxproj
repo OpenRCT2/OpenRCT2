@@ -47,11 +47,15 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS) %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lucas\Documents\OpenRCT2\src\thirdparty\sol2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Lib>
       <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
       <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
       <TargetMachine Condition="'$(Platform)'=='arm64'">MachineARM64</TargetMachine>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <!-- Files -->
@@ -566,6 +570,7 @@
     <ClInclude Include="world\Wall.h" />
     <ClInclude Include="world\Water.h" />
     <ClInclude Include="..\thirdparty\*.h" />
+    <ClInclude Include="..\thirdparty\sol2\include\*.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resources\OpenRCT2.rc" />
