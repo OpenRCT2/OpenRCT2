@@ -1312,15 +1312,15 @@ private:
         {
             return true;
         }
-        else if (_FILTER_SELECTED == _FILTER_NONSELECTED)
+        if (_FILTER_SELECTED == _FILTER_NONSELECTED)
         {
             return true;
         }
-        else if (_FILTER_SELECTED && objectFlag & ObjectSelectionFlags::Selected)
+        if (_FILTER_SELECTED && objectFlag & ObjectSelectionFlags::Selected)
         {
             return true;
         }
-        else if (_FILTER_NONSELECTED && !(objectFlag & ObjectSelectionFlags::Selected))
+        if (_FILTER_NONSELECTED && !(objectFlag & ObjectSelectionFlags::Selected))
         {
             return true;
         }
