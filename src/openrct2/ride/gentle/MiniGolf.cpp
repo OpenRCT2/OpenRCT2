@@ -693,7 +693,7 @@ static void PaintMiniGolfStation(
         }
 
         bool hasSWFence = track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        if (hasFence)
+        if (hasSWFence)
         {
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfFlatFenceFrontNwSe);
             PaintAddImageAsParent(session, imageId, { 10, 0, height }, { 1, 32, 7 }, { 31, 0, height + 2 });
@@ -715,7 +715,7 @@ static void PaintMiniGolfStation(
         }
 
         bool hasSEFence = track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        if (hasFence)
+        if (hasSEFence)
         {
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfFlatFenceFrontSwNe);
             PaintAddImageAsParent(session, imageId, { 0, 10, height }, { 32, 1, 7 }, { 0, 31, height + 2 });
