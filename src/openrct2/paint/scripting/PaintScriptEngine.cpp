@@ -7,21 +7,11 @@
 #include "../../object/PaintObject.h"
 #include "../../ride/Ride.h"
 #include "../../ride/RideData.h"
-#include "bindings/PsPaintObject.h"
-#include "bindings/PsImageId.h"
-#include "bindings/PsPaintSession.h"
-#include "bindings/PsGlobalFunctions.h"
-#include "bindings/PsRide.h"
-#include "bindings/PsStationObject.h"
-#include "bindings/PsTrackElement.h"
-#include "bindings/PsCoordsXY.h"
-#include "bindings/PsRideEntry.h"
-#include "bindings/PsVehicle.h"
 
 using namespace OpenRCT2::Scripting;
 namespace OpenRCT2::PaintScripting
 {
-    PaintScriptEngine::PaintScriptEngine(): _scriptsCount(0)
+    PaintScriptEngine::PaintScriptEngine()
     {
     }
 
@@ -50,19 +40,6 @@ namespace OpenRCT2::PaintScripting
                 repoItem->LoadedObject->Load();
             }
         }
-
-        PsImageId::Register(_context);
-        PsPaintSession::Register(_context);
-        PsPaintObject::Register(_context);
-        PsRide::Register(_context);
-        PsStationObject::Register(_context);
-        PsTrackElement::Register(_context);
-        PsCoordsXY::Register(_context);
-        PsRideEntry::Register(_context);
-        PsVehicle::Register(_context);
-
-        // register the global functions
-        PsGlobalFunctions::Register(_context);
     }
 
     void PaintScriptEngine::CallScript(
@@ -75,26 +52,6 @@ namespace OpenRCT2::PaintScripting
         // if there was an error, don't run the script again
         if (!paintObject->Error.empty())
             return;
-
-        //update the static values of the Paint objects
-        PsPaintObject::Update(session, ride, trackSequence, direction, height, trackElement);
-
-        // run the script
-#pragma warning(disable : 4189)
-        auto rc = duk_peval_string(_context, paintObject->GetScript().c_str());
-        if (rc == DUK_EXEC_ERROR)
-        {
-            if (duk_is_error(_context, -1))
-            {
-                duk_get_prop_string(_context, -1, "stack");
-                paintObject->Error = duk_safe_to_string(_context, -1);
-                Console::Error::WriteLine(
-                    "Error with paint object %s : %s", paintObject->GetIdentifier().data(), paintObject->Error.c_str());
-            }
-        }
-
-        // pop the error/result
-        duk_pop(_context);
     }
 
 } // namespace OpenRCT2::PaintScripting

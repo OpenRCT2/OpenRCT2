@@ -23,9 +23,6 @@ namespace OpenRCT2::PaintScripting
             PaintObject* paintObject);
 
     private:
-        OpenRCT2::Scripting::DukContext _context;
-        uint32_t _scriptsCount;
-
         //it seems we need a mutex for multithreading
         std::mutex _mutex;
     };
