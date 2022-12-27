@@ -25,7 +25,6 @@ Any contribution to OpenRCT2 is welcome and valued. Contributions can be in the 
 
 # 3. Workflow
 OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to ```develop```. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. ```master``` only contains tagged releases, you should never branch off this.
-questions or concerns, please ask in the [Discord chat](https://discordapp.com/invite/fsEwSWs).
 
 # 4. Contribution Types
 
@@ -58,7 +57,7 @@ You can translate the game into other languages by editing the language files in
 You can help create new graphics for the game by visiting the [OpenGraphics project](https://github.com/OpenRCT2/OpenGraphics). 3D modellers needed!
 
 ## 4.6 Audio
-You can help create the music and sound effects for the game. Check out the OpenMusic repository and drop by our [#open-sound-and-music channel on Discord](https://discord.gg/9y8WbcX) to find out more.
+You can help create the music and sound effects for the game. Check out the [OpenMusic repository](https://github.com/OpenRCT2/OpenMusic) and drop by our [#open-sound-and-music channel on Discord](https://discord.gg/9y8WbcX) to find out more.
 
 ## 4.7 Scenarios
 We would also like to distribute additional scenarios with the game, when the time comes. For that, we need talented scenario makers! Check out the [OpenScenarios repository](https://github.com/OpenRCT2/OpenScenarios).
@@ -80,5 +79,4 @@ When coding, please also add a string constant for your strings to ```./src/loca
 Use [this](https://github.com/OpenRCT2/OpenRCT2/wiki/Coding-Style) code style as a reference for new or changed code.
 
 ## 5.3 Language
-For now, it is recommended that you only write C++ files as the majority of the game is currently in
-C++. Exceptions are to modules that have direct relationship to original code.
+Most of the codebase is in C++, with a few small exceptions here and there for plugin API (TypeScript), the Android-only files (Java) and some Mac-specific stuff (Objective-C++).
