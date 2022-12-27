@@ -3643,7 +3643,7 @@ STR_6533    :{WINDOW_COLOUR_2}Factor de emoción: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Factor de intensidad: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Factor de náusea: {BLACK}-{COMMA16}%
 STR_6536    :Este parque fue guardado en una versión más reciente de OpenRCT2. Este parque se guardó en la v{INT32}, actualmente estás en la v{INT32}.
-STR_6537    :Permitir el uso de caminos normales como cola
+STR_6537    :Permitir usar caminos normales como cola
 STR_6538    :Muestra caminos normales en el menú desplegable de colas de la ventana Senderos.
 
 ##############
