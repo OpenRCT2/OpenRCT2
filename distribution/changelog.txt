@@ -1,5 +1,6 @@
 0.4.4 (in development)
 ------------------------------------------------------------------------
+- Feature: [#18537] Add shift/control modifiers to window close buttons, closing all but the given window or all windows of the same type, respectively.
 - Feature: [#18744] Cheat to allow using a regular path as a queue path.
 - Improved: [#18826] [Plugin] Added all actions and their documentation to plugin API.
 
