@@ -14,7 +14,7 @@
 - [Best Practices](#5-best-practices)
     - [Adding New Strings](#51-adding-new-strings)
     - [Coding Style](#52-coding-style)
-    - [Language](#53)
+    - [Language](#53-language)
 
 
 # 1. Introduction
@@ -61,7 +61,7 @@ You can help create new graphics for the game by visiting the [OpenGraphics proj
 You can help create the music and sound effects for the game. Check out the OpenMusic repository and drop by our [#open-sound-and-music channel on Discord](https://discord.gg/9y8WbcX) to find out more.
 
 ## 4.7 Scenarios
-We would also like to distribute additional scenarios with the game, when the time comes. For that, we need talented scenario makers! Check out the [OpenScenarios repository](https://github.com/PFCKrutonium/OpenRCT2-OpenScenarios).
+We would also like to distribute additional scenarios with the game, when the time comes. For that, we need talented scenario makers! Check out the [OpenScenarios repository](https://github.com/OpenRCT2/OpenScenarios).
 
 # 5. Best Practices
 
