@@ -1,11 +1,11 @@
 0.4.4 (in development)
 ------------------------------------------------------------------------
+- Feature: [#18537] Add shift/control modifiers to window close buttons, closing all but the given window or all windows of the same type, respectively.
 - Feature: [#18744] Cheat to allow using a regular path as a queue path.
 - Improved: [#18826] [Plugin] Added all actions and their documentation to plugin API.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------
-- Feature: [#18537] Add shift/control modifiers to window close buttons
 - Feature: [#17782] The Flying Coaster now has access to boosters and can draw outside loops.
 - Feature: [#17997] The Log Flume can now draw steep pieces down (if vehicle allows it).
 - Feature: [#18312, objects#220, OpenSFX#13] New sound effects for the Hybrid and Single Rail roller coasters.
