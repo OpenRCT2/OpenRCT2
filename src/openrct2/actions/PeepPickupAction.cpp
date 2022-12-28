@@ -163,8 +163,10 @@ GameActions::Result PeepPickupAction::Execute() const
             {
                 pickedUpPeep->PickupAbort(_loc.x);
             }
-
-            network_set_pickup_peep(_owner, nullptr);
+            else
+            {
+                network_set_pickup_peep(_owner, nullptr);
+            }
         }
         break;
         case PeepPickupType::Place:

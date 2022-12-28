@@ -533,6 +533,16 @@ private:
             auto intent = Intent(WindowClass::Peep);
             intent.putExtra(INTENT_EXTRA_PEEP, staff);
             ContextOpenIntent(&intent);
+
+            // If autoposition of staff is disabled, set the pickup tool on the newly created staff window
+            if (staff->State == PeepState::Picked)
+            {
+                rct_window* wind = window_find_by_number(WindowClass::Peep, staff->sprite_index.ToUnderlying());
+                if (wind != nullptr)
+                {
+                    tool_set(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                }
+            }
         });
 
         GameActions::Execute(&hireStaffAction);
