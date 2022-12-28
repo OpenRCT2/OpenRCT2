@@ -24,7 +24,7 @@ public:
     void Unload() override;
     void ReadJson(IReadObjectContext* context, json_t& root) override;
 
-    const std::string GetScript() const
+    const std::string& GetScript() const
     {
         return _scriptContent;
     }

@@ -325,6 +325,10 @@
     <ClInclude Include="object\WallObject.h" />
     <ClInclude Include="object\WaterObject.h" />
     <ClInclude Include="OpenRCT2.h" />
+    <ClInclude Include="paint\scripting\bindings\PsGlobalFunctions.h" />
+    <ClInclude Include="paint\scripting\bindings\PsImageId.h" />
+    <ClInclude Include="paint\scripting\bindings\PsPaint.h" />
+    <ClInclude Include="paint\scripting\bindings\PsPaintSession.h" />
     <ClInclude Include="paint\Boundbox.h" />
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
@@ -818,6 +822,10 @@
     <ClCompile Include="object\WallObject.cpp" />
     <ClCompile Include="object\WaterObject.cpp" />
     <ClCompile Include="OpenRCT2.cpp" />
+    <ClCompile Include="paint\scripting\bindings\PsGlobalFunctions.cpp" />
+    <ClCompile Include="paint\scripting\bindings\PsImageId.cpp" />
+    <ClCompile Include="paint\scripting\bindings\PsPaint.cpp" />
+    <ClCompile Include="paint\scripting\bindings\PsPaintSession.cpp" />
     <ClCompile Include="paint\Paint.cpp" />
     <ClCompile Include="paint\Paint.Entity.cpp" />
     <ClCompile Include="paint\Painter.cpp" />
