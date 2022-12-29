@@ -24,7 +24,8 @@
                 "/Library/Frameworks"
             ],
             "cStandard": "c11",
-            "cppStandard": "c++17"
+            "cppStandard": "c++17",
+            "configurationProvider": "ms-vscode.cmake-tools"
         },
         {
             "name": "Linux",
