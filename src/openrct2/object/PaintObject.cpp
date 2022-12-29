@@ -43,7 +43,15 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 
             std::string scriptContent = result;
             auto& paintScriptEngine = OpenRCT2::GetContext()->GetPaintScriptEngine();
-            _loadedScriptIndex = static_cast<int32_t>(paintScriptEngine.LoadScript(scriptContent));
+
+            sol::error error = sol::error("");
+            _loadedScriptIndex = static_cast<int32_t>(paintScriptEngine.LoadScript(scriptContent, error));
+
+            if (_loadedScriptIndex == -1)
+            {
+                Console::Error::WriteLine("Error loading lua script of paint object %s : %s", GetName().c_str(), error.what());
+                Error = error.what();
+            }
         }
         //_scriptContent = scriptFile;
     }

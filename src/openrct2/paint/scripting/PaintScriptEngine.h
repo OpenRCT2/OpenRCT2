@@ -30,7 +30,7 @@ namespace OpenRCT2::PaintScripting
             PaintSession& session, int32_t trackSequence, Direction direction, int32_t height, const TrackElement& trackElement,
             Ride& ride, PaintObject& paintObject);
 
-        int LoadScript(const std::string& script);
+        int LoadScript(const std::string& script, sol::error& error);
 
     private:
         // it seems we need a mutex for multithreading

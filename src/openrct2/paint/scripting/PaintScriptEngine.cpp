@@ -30,12 +30,19 @@ namespace OpenRCT2::PaintScripting
     {
     }
 
-    int PaintScriptEngine::LoadScript(const std::string& script)
+    int PaintScriptEngine::LoadScript(const std::string& script, sol::error& error)
     {
         auto result = _lua.load(script);
-        _scripts.push_back(result.get<sol::protected_function>());
-
-        return static_cast<int>(_scripts.size() - 1);
+        if (result.valid())
+        {
+            _scripts.push_back(result.get<sol::protected_function>());
+            return static_cast<int>(_scripts.size() - 1);
+        }
+        else
+        {
+            error = result;
+            return -1;
+        }
     }
 
     void PaintScriptEngine::Initialize()
