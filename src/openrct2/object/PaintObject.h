@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include <optional>
+#include <sol/sol.hpp>
 
 struct Ride;
 struct TrackElement;
@@ -24,13 +25,13 @@ public:
     void Unload() override;
     void ReadJson(IReadObjectContext* context, json_t& root) override;
 
-    const std::string& GetScript() const
+    sol::load_result& GetLoadedScript()
     {
-        return _scriptContent;
+        return _loadedScript;
     }
 
     //this is set when it encounters an error
     std::string Error;
 private:
-    std::string _scriptContent;
+    sol::load_result _loadedScript;
 };

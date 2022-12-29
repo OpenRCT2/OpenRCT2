@@ -9,6 +9,7 @@
 
 #include "Paint.TileElement.h"
 
+#include "../../Context.h"
 #include "../../Game.h"
 #include "../../Input.h"
 #include "../../config/Config.h"
@@ -31,6 +32,7 @@
 #include "../Paint.h"
 #include "../Supports.h"
 #include "../VirtualFloor.h"
+#include "../scripting/PaintScriptEngine.h"
 #include "Paint.Surface.h"
 
 #include <algorithm>
@@ -215,6 +217,9 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     session.SpritePosition.y = coords.y;
     session.Flags &= ~PaintSessionFlags::PassedSurface;
 
+    auto& paintScriptEngine = OpenRCT2::GetContext()->GetPaintScriptEngine();
+    paintScriptEngine.SetPaintSession(session);
+
     int32_t previousBaseZ = 0;
     do
     {
@@ -228,7 +233,10 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             continue;
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);
+        paintScriptEngine.SetDirection(direction);
+
         int32_t baseZ = tile_element->GetBaseZ();
+        paintScriptEngine.SetHeight(baseZ);
 
         // If we are on a new baseZ level, look through elements on the
         //  same baseZ and store any types might be relevant to others

@@ -41,7 +41,9 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             u8string result(scriptBytes.size(), 0);
             std::copy(scriptBytes.begin(), scriptBytes.end(), result.begin());
 
-            _scriptContent = result;
+            std::string scriptContent = result;
+            auto& paintScriptEngine = OpenRCT2::GetContext()->GetPaintScriptEngine();
+            _loadedScript = paintScriptEngine.LoadScript(scriptContent);
         }
         //_scriptContent = scriptFile;
     }

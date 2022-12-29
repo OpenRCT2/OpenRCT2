@@ -22,6 +22,11 @@ namespace OpenRCT2::PaintScripting
     {
     }
 
+    sol::load_result PaintScriptEngine::LoadScript(const std::string& script)
+    {
+        return _lua.load(script);
+    }
+
     void PaintScriptEngine::Initialize()
     {
         // get all the paint object from the repository and load them
@@ -54,29 +59,53 @@ namespace OpenRCT2::PaintScripting
         PsPaint::Register(_lua);
         PsGlobalFunctions::Register(_lua);
 
-        _lua["Paint"] = _paint;
+        _lua["Paint"] = _lua.create_table();
     }
 
-    void PaintScriptEngine::CallScript(
-        PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
-        const TrackElement& trackElement, PaintObject* paintObject)
+    void PaintScriptEngine::SetPaintSession(PaintSession& session)
+    {
+        _lua["Paint"]["Session"] = PsPaintSession(session);
+    }
+
+    void PaintScriptEngine::SetRide(Ride& session)
+    {
+    }
+
+    void PaintScriptEngine::SetTrackSequence(uint8_t trackSequence)
+    {
+        _lua["Paint"]["TrackSequence"] = trackSequence;
+    }
+
+    void PaintScriptEngine::SetDirection(uint8_t direction)
+    {
+        _lua["Paint"]["Direction"] = direction;
+    }
+
+    void PaintScriptEngine::SetHeight(int32_t height)
+    {
+        _lua["Paint"]["Height"] = height;
+    }
+
+    void PaintScriptEngine::SetTrackElement(const TrackElement& trackElement)
+    {
+    }
+
+    void PaintScriptEngine::CallScript(PaintObject& paintObject)
     {
         // for now, use a mutex since the PaintObject is static
         std::lock_guard lockGuard(_mutex);
 
         // if there was an error, don't run the script again
-        if (!paintObject->Error.empty())
+        if (!paintObject.Error.empty())
             return;
 
-        _lua["Paint"] = PsPaint(session, trackSequence, direction, height);
-
-        auto& scriptContent = paintObject->GetScript();
-        auto result = _lua.safe_script(scriptContent, sol::script_pass_on_error);
+        auto& script = paintObject.GetLoadedScript();
+        auto result = script();
         if (!result.valid())
         {
             sol::error err = result;
-            Console::Error::WriteLine("Lua script crashes for paint object %s : %s", paintObject->GetName().c_str(), err.what());
-            paintObject->Error = err.what();
+            Console::Error::WriteLine("Lua script crashes for paint object %s : %s", paintObject.GetName().c_str(), err.what());
+            paintObject.Error = err.what();
         }
     }
 
