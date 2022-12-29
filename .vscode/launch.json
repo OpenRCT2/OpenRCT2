@@ -6,10 +6,10 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/Users/mbickerton/Developer/OpenRCT2/build/OpenRCT2.app",
+            "program": "${workspaceFolder}/bin/openrct2",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build",
+            "cwd": "${workspaceFolder}/bin",
             "environment": [],
             "externalConsole": false,
             "setupCommands": [
@@ -33,7 +33,7 @@
             "name": "C++ Attach",
             "type": "cppdbg",
             "request": "attach",
-            "program": "/Users/mbickerton/Developer/OpenRCT2/build/OpenRCT2.app",
+            "program": "${workspaceFolder}/bin/openrct2",
             "processId": "${command:pickProcess}",
             "setupCommands": [
                 {
@@ -49,17 +49,6 @@
             "windows": {
                 "MIMode": "gdb"
             }
-        },
-        {
-            "name": "Launch (lldb)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "/Users/mbickerton/Developer/OpenRCT2/build/OpenRCT2.app",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build",
-            "environment": [],
-            "externalConsole": false
         }
     ]
 }
