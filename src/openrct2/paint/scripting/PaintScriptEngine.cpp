@@ -13,6 +13,10 @@
 #include "bindings/PsImageId.h"
 #include "bindings/PsPaint.h"
 #include "bindings/PsGlobalFunctions.h"
+#include "bindings/PsStationObject.h"
+#include "bindings/PsRide.h"
+#include "bindings/PsCoordsXY.h"
+#include "bindings/PsTrackElement.h"
 
 using namespace OpenRCT2::Scripting;
 namespace OpenRCT2::PaintScripting
@@ -22,9 +26,16 @@ namespace OpenRCT2::PaintScripting
     {
     }
 
-    sol::load_result PaintScriptEngine::LoadScript(const std::string& script)
+    PaintScriptEngine::~PaintScriptEngine()
     {
-        return _lua.load(script);
+    }
+
+    int PaintScriptEngine::LoadScript(const std::string& script)
+    {
+        auto result = _lua.load(script);
+        _scripts.push_back(result.get<sol::protected_function>());
+
+        return static_cast<int>(_scripts.size() - 1);
     }
 
     void PaintScriptEngine::Initialize()
@@ -57,6 +68,10 @@ namespace OpenRCT2::PaintScripting
         PsPaintSession::Register(_lua);
         PsImageId::Register(_lua);
         PsPaint::Register(_lua);
+        PsStationObject::Register(_lua);
+        PsRide::Register(_lua);
+        PsCoordsXY::Register(_lua);
+        PsTrackElement::Register(_lua);
         PsGlobalFunctions::Register(_lua);
 
         _lua["Paint"] = _lua.create_table();
@@ -67,8 +82,9 @@ namespace OpenRCT2::PaintScripting
         _lua["Paint"]["Session"] = PsPaintSession(session);
     }
 
-    void PaintScriptEngine::SetRide(Ride& session)
+    void PaintScriptEngine::SetRide(Ride& ride)
     {
+        _lua["Paint"]["Ride"] = PsRide(ride);
     }
 
     void PaintScriptEngine::SetTrackSequence(uint8_t trackSequence)
@@ -88,9 +104,12 @@ namespace OpenRCT2::PaintScripting
 
     void PaintScriptEngine::SetTrackElement(const TrackElement& trackElement)
     {
+        _lua["Paint"]["TrackElement"] = PsTrackElement(trackElement);
     }
 
-    void PaintScriptEngine::CallScript(PaintObject& paintObject)
+    void PaintScriptEngine::CallScript(
+        PaintSession& session, int32_t trackSequence, Direction direction, int32_t height, const TrackElement& trackElement,
+        Ride& ride, PaintObject& paintObject)
     {
         // for now, use a mutex since the PaintObject is static
         std::lock_guard lockGuard(_mutex);
@@ -99,7 +118,16 @@ namespace OpenRCT2::PaintScripting
         if (!paintObject.Error.empty())
             return;
 
-        auto& script = paintObject.GetLoadedScript();
+        SetPaintSession(session);
+        SetRide(ride);
+        SetDirection(direction);
+        SetHeight(height);
+        SetTrackElement(trackElement);
+        SetTrackSequence(trackSequence);
+
+        auto scriptIndex = paintObject.GetLoadedScriptIndex();
+
+        auto& script = _scripts[scriptIndex];
         auto result = script();
         if (!result.valid())
         {

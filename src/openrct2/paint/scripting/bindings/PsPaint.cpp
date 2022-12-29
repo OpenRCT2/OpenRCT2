@@ -32,7 +32,6 @@ namespace OpenRCT2::PaintScripting
         _trackSequence = trackSequence;
         _direction = direction;
         _height = height;
-        _session.Update(session);
     }
 
     const PsPaintSession& PsPaint::GetPaintSession() const

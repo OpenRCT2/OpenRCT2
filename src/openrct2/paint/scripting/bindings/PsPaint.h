@@ -23,7 +23,5 @@ namespace OpenRCT2::PaintScripting
         uint8_t GetTrackSequence() const;
         uint8_t GetDirection() const;
         int32_t GetHeight() const;
-
-        static sol::usertype<PsPaint> _paintType;
     };
 }

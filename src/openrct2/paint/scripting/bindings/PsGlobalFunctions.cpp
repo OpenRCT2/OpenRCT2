@@ -1,10 +1,13 @@
 #include "PsGlobalFunctions.h"
 
+#include "../../../core/Console.hpp"
+#include "../../Paint.h"
 #include "../../Supports.h"
 #include "PsImageId.h"
 #include "PsPaintSession.h"
-#include "../../Paint.h"
-#include "../../../core/Console.hpp"
+#include "PsRide.h"
+#include "PsTrackElement.h"
+#include "../../../ride/TrackPaint.h"
 
 namespace OpenRCT2::PaintScripting
 {
@@ -30,9 +33,24 @@ namespace OpenRCT2::PaintScripting
             Console::WriteLine("imageId = %d", _imageId.ToUInt32());
         }
 
+        static void TrackPaintUtilPaintFences(
+            PsPaintSession& session, uint8_t edges, PsCoordsXY& coords, PsTrackElement& trackElement, PsRide& ride,
+            PsImageId& imageId, int32_t height, const sol::table& sprites, uint8_t currentRotation)
+        {
+            std::vector<uint32_t> spritesVector;
+            for (const auto& keyval : sprites)
+            {
+                spritesVector.push_back(keyval.second.as<uint32_t>());
+            }
+            ::track_paint_util_paint_fences(
+                session.GetPaintSession(), edges, coords.GetCoords(), trackElement.GetTrackElement(), ride.GetRide(),
+                imageId.GetImageId(), height, spritesVector.data(), currentRotation);
+        }
+
         void Register(sol::state& lua)
         {
             lua["WoodenASupportsPaintSetup"] = WoodenASupportsPaintSetup;
+            lua["TrackPaintUtilPaintFences"] = TrackPaintUtilPaintFences;
             lua["TestPaintSession"] = TestPaintSession;
             lua["TestImageId"] = TestImageId;
         }

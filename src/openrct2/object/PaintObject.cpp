@@ -43,7 +43,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 
             std::string scriptContent = result;
             auto& paintScriptEngine = OpenRCT2::GetContext()->GetPaintScriptEngine();
-            _loadedScript = paintScriptEngine.LoadScript(scriptContent);
+            _loadedScriptIndex = static_cast<int32_t>(paintScriptEngine.LoadScript(scriptContent));
         }
         //_scriptContent = scriptFile;
     }

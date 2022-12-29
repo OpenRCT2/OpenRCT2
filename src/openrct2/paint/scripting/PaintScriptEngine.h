@@ -3,8 +3,8 @@
 #include "../../drawing/ImageId.hpp"
 #include "../../world/Location.hpp"
 #include "bindings/PsImageId.h"
-#include "bindings/PsPaintSession.h"
 #include "bindings/PsPaint.h"
+#include "bindings/PsPaintSession.h"
 
 #include <memory>
 #include <mutex>
@@ -22,12 +22,22 @@ namespace OpenRCT2::PaintScripting
     {
     public:
         PaintScriptEngine();
+        ~PaintScriptEngine();
 
         void Initialize();
 
-        void CallScript(PaintObject& paintObject);
+        void CallScript(
+            PaintSession& session, int32_t trackSequence, Direction direction, int32_t height, const TrackElement& trackElement,
+            Ride& ride, PaintObject& paintObject);
 
-        sol::load_result LoadScript(const std::string& script);
+        int LoadScript(const std::string& script);
+
+    private:
+        // it seems we need a mutex for multithreading
+        std::mutex _mutex;
+        sol::state _lua;
+
+        std::vector<sol::protected_function> _scripts;
 
         void SetPaintSession(PaintSession& session);
         void SetRide(Ride& session);
@@ -35,12 +45,6 @@ namespace OpenRCT2::PaintScripting
         void SetDirection(uint8_t direction);
         void SetHeight(int32_t height);
         void SetTrackElement(const TrackElement& trackElement);
-    private:
-        // it seems we need a mutex for multithreading
-        std::mutex _mutex;
-        sol::state _lua;
-
-        PsPaint _paint;
     };
 
 } // namespace OpenRCT2::PaintScripting

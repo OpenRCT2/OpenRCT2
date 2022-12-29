@@ -25,13 +25,13 @@ public:
     void Unload() override;
     void ReadJson(IReadObjectContext* context, json_t& root) override;
 
-    sol::load_result& GetLoadedScript()
+    int32_t GetLoadedScriptIndex() const
     {
-        return _loadedScript;
+        return _loadedScriptIndex;
     }
 
     //this is set when it encounters an error
     std::string Error;
 private:
-    sol::load_result _loadedScript;
+    int32_t _loadedScriptIndex;
 };
