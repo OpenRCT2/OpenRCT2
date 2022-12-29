@@ -2493,7 +2493,172 @@ declare global {
          * Countdown between 0 and 255 that keeps track of how long the guest has been looking for its current destination.
          */
         lostCountdown: number;
+
+        /**
+         * The list of thoughts this guest has.
+         */
+        readonly thoughts: Thought[];
     }
+
+    /**
+     * Represents a guest's thought. This is a copy of a thought at a given time
+     * and its values will not update.
+     */
+     interface Thought {
+        /**
+         * The type of thought.
+         */
+        readonly type: ThoughtType;
+
+        /**
+         * The thought argument.
+         */
+        readonly item: number;
+
+        /**
+         * The freshness of the thought - the larger the number, the less fresh
+         * the thought.
+         */
+        readonly freshness: number;
+
+        /**
+         * The freshness timeout.
+         */
+        readonly freshTimeout: number;
+
+        /**
+         * Get the string for this thought.
+         * The result contains Unicode quotes on either end, e.g. “I feel sick”
+         */
+        toString(): string;
+    }
+
+    type ThoughtType =
+        "cant_afford_ride" |
+        "spent_money" |
+        "sick" |
+        "very_sick" |
+        "more_thrilling" |
+        "intense" |
+        "havent_finished" |
+        "sickening" |
+        "bad_value" |
+        "go_home" |
+        "good_value" |
+        "already_got" |
+        "cant_afford_item" |
+        "not_hungry" |
+        "not_thirsty" |
+        "drowning" |
+        "lost" |
+        "was_great" |
+        "queuing_ages" |
+        "tired" |
+        "hungry" |
+        "thirsty" |
+        "toilet" |
+        "cant_find" |
+        "not_paying" |
+        "not_while_raining" |
+        "bad_litter" |
+        "cant_find_exit" |
+        "get_off" |
+        "get_out" |
+        "not_safe" |
+        "path_disgusting" |
+        "crowded" |
+        "vandalism" |
+        "scenery" |
+        "very_clean" |
+        "fountains" |
+        "music" |
+        "balloon" |
+        "toy" |
+        "map" |
+        "photo" |
+        "umbrella" |
+        "drink" |
+        "burger" |
+        "chips" |
+        "ice_cream" |
+        "candyfloss" |
+        "pizza" |
+        "popcorn" |
+        "hot_dog" |
+        "tentacle" |
+        "hat" |
+        "toffee_apple" |
+        "tshirt" |
+        "doughnut" |
+        "coffee" |
+        "chicken" |
+        "lemonade" |
+        "wow" |
+        "wow2" |
+        "watched" |
+        "balloon_much" |
+        "toy_much" |
+        "map_much" |
+        "photo_much" |
+        "umbrella_much" |
+        "drink_much" |
+        "burger_much" |
+        "chips_much" |
+        "ice_cream_much" |
+        "candyfloss_much" |
+        "pizza_much" |
+        "popcorn_much" |
+        "hot_dog_much" |
+        "tentacle_much" |
+        "hat_much" |
+        "toffee_apple_much" |
+        "tshirt_much" |
+        "doughnut_much" |
+        "coffee_much" |
+        "chicken_much" |
+        "lemonade_much" |
+        "photo2" |
+        "photo3" |
+        "photo4" |
+        "pretzel" |
+        "hot_chocolate" |
+        "iced_tea" |
+        "funnel_cake" |
+        "sunglasses" |
+        "beef_noodles" |
+        "fried_rice_noodles" |
+        "wonton_soup" |
+        "meatball_soup" |
+        "fruit_juice" |
+        "soybean_milk" |
+        "sujongkwa" |
+        "sub_sandwich" |
+        "cookie" |
+        "roast_sausage" |
+        "photo2_much" |
+        "photo3_much" |
+        "photo4_much" |
+        "pretzel_much" |
+        "hot_chocolate_much" |
+        "iced_tea_much" |
+        "funnel_cake_much" |
+        "sunglasses_much" |
+        "beef_noodles_much" |
+        "fried_rice_noodles_much" |
+        "wonton_soup_much" |
+        "meatball_soup_much" |
+        "fruit_juice_much" |
+        "soybean_milk_much" |
+        "sujongkwa_much" |
+        "sub_sandwich_much" |
+        "cookie_much" |
+        "roast_sausage_much" |
+        "help" |
+        "running_out" |
+        "new_ride" |
+        "nice_ride_deprecated" |
+        "excited_deprecated" |
+        "here_we_are";
 
     /**
      * Represents a staff member.
