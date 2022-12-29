@@ -17,6 +17,8 @@
 #include "bindings/PsRide.h"
 #include "bindings/PsCoordsXY.h"
 #include "bindings/PsTrackElement.h"
+#include "bindings/PsRideEntry.h"
+#include "bindings/PsVehicle.h"
 
 using namespace OpenRCT2::Scripting;
 namespace OpenRCT2::PaintScripting
@@ -79,6 +81,8 @@ namespace OpenRCT2::PaintScripting
         PsRide::Register(_lua);
         PsCoordsXY::Register(_lua);
         PsTrackElement::Register(_lua);
+        PsRideEntry::Register(_lua);
+        PsVehicle::Register(_lua);
         PsGlobalFunctions::Register(_lua);
 
         _lua["Paint"] = _lua.create_table();

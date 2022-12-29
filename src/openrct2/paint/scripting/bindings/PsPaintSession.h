@@ -8,6 +8,7 @@
 struct PaintSession;
 namespace OpenRCT2::PaintScripting
 {
+    class PsVehicle;
     class PsPaintSession
     {
     public:
@@ -24,5 +25,7 @@ namespace OpenRCT2::PaintScripting
         uint8_t _currentRotation;
 
         PsImageId& GetTrackColour(uint8_t index);
+
+        void SetAsActiveEntity(PsVehicle& vehicle);
     };
 }

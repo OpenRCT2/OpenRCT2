@@ -3,6 +3,8 @@
 #include <sol/sol.hpp>
 #include <memory>
 #include "PsStationObject.h"
+#include "PsRideEntry.h"
+#include "PsVehicle.h"
 
 struct Ride;
 namespace OpenRCT2::PaintScripting
@@ -19,5 +21,8 @@ namespace OpenRCT2::PaintScripting
     private:
         Ride* _ride;
         PsStationObject GetStationObject();
+        PsRideEntry GetRideEntry();
+        uint32_t GetLifecycleFlags();
+        PsVehicle GetVehicle(size_t index);
     };
 }
