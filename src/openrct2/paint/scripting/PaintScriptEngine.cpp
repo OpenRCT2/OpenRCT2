@@ -22,6 +22,9 @@
 #include "bindings/PsCarEntry.h"
 #include "bindings/PsCoordsXYZ.h"
 #include "bindings/PsBoundBoxXYZ.h"
+#include "../../platform/Platform.h"
+#include "../../PlatformEnvironment.h"
+#include "../../core/Path.hpp"
 
 using namespace OpenRCT2::Scripting;
 namespace OpenRCT2::PaintScripting
@@ -40,6 +43,7 @@ namespace OpenRCT2::PaintScripting
         auto result = _lua.load(script);
         if (result.valid())
         {
+
             _scripts.push_back(result.get<sol::protected_function>());
             return static_cast<int>(_scripts.size() - 1);
         }
@@ -91,7 +95,14 @@ namespace OpenRCT2::PaintScripting
         PsBoundBoxXYZ::Register(_lua);
         PsGlobalFunctions::Register(_lua);
 
+        //create global constants
         _lua["Paint"] = _lua.create_table();
+
+        //run the globals lua file
+        auto context = GetContext()->GetPlatformEnvironment();
+        auto path = context->GetDirectoryPath(OpenRCT2::DIRBASE::USER);
+        path = Path::Combine(path, u8"lua", "globals.lua");
+        _lua.script_file(path);
     }
 
     void PaintScriptEngine::SetPaintSession(PaintSession& session)
