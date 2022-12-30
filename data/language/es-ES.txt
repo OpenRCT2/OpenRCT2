@@ -1273,17 +1273,17 @@ STR_1891    :¡Ningún {STRINGID} en el parque todavía!
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} vendidos: {BLACK}{COMMA32}
 STR_1895    :Construir nueva atracción
 STR_1896    :{WINDOW_COLOUR_2}Gastos/Ingresos
-STR_1897    :{WINDOW_COLOUR_2}Construcción
-STR_1898    :{WINDOW_COLOUR_2}Operación de atracciones
-STR_1899    :{WINDOW_COLOUR_2}Compra de terreno
+STR_1897    :{WINDOW_COLOUR_2}Construcción atracc.
+STR_1898    :{WINDOW_COLOUR_2}Operación de atracc.
+STR_1899    :{WINDOW_COLOUR_2}Compra de terrenos
 STR_1900    :{WINDOW_COLOUR_2}Decorado
 STR_1901    :{WINDOW_COLOUR_2}Entradas al parque
 STR_1902    :{WINDOW_COLOUR_2}Entradas a atracciones
 STR_1903    :{WINDOW_COLOUR_2}Ventas de tiendas
 STR_1904    :{WINDOW_COLOUR_2}Gastos de tiendas
-STR_1905    :{WINDOW_COLOUR_2}Ventas de comida y bebida
-STR_1906    :{WINDOW_COLOUR_2}Gastos de comida y bebida
-STR_1907    :{WINDOW_COLOUR_2}Salarios
+STR_1905    :{WINDOW_COLOUR_2}Ventas comida/bebida
+STR_1906    :{WINDOW_COLOUR_2}Gastos comida/bebida
+STR_1907    :{WINDOW_COLOUR_2}Salarios del personal
 STR_1908    :{WINDOW_COLOUR_2}Marketing
 STR_1909    :{WINDOW_COLOUR_2}Investigación
 STR_1910    :{WINDOW_COLOUR_2}Intereses del crédito
@@ -3468,8 +3468,8 @@ STR_6357    :Quitar todos los patos del mapa
 STR_6358    :Página {UINT16}
 STR_6359    :{POP16}{POP16}Página {UINT16}
 STR_6360    :{BLACK}{COMMA32}
-STR_6361    :Habilitar efectos de luz en atracciones (experimental)
-STR_6362    :Si está activado, vehículos para las atracciones con vías estarán iluminados de noche.
+STR_6361    :Efectos de luz en atracciones (experimental)
+STR_6362    :Si está activado, los vehículos para las atracciones con vías estarán iluminados de noche.
 STR_6363    :Copiar texto al portapapeles
 STR_6364    :{RED}{COMMA16} persona ha muerto en un accidente a bordo de {STRINGID}
 STR_6365    :Fallecimientos en la atracción
