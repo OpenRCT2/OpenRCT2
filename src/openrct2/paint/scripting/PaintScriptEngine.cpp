@@ -19,6 +19,9 @@
 #include "bindings/PsTrackElement.h"
 #include "bindings/PsRideEntry.h"
 #include "bindings/PsVehicle.h"
+#include "bindings/PsCarEntry.h"
+#include "bindings/PsCoordsXYZ.h"
+#include "bindings/PsBoundBoxXYZ.h"
 
 using namespace OpenRCT2::Scripting;
 namespace OpenRCT2::PaintScripting
@@ -83,6 +86,9 @@ namespace OpenRCT2::PaintScripting
         PsTrackElement::Register(_lua);
         PsRideEntry::Register(_lua);
         PsVehicle::Register(_lua);
+        PsCarEntry::Register(_lua);
+        PsCoordsXYZ::Register(_lua);
+        PsBoundBoxXYZ::Register(_lua);
         PsGlobalFunctions::Register(_lua);
 
         _lua["Paint"] = _lua.create_table();
@@ -123,7 +129,7 @@ namespace OpenRCT2::PaintScripting
         Ride& ride, PaintObject& paintObject)
     {
         // for now, use a mutex since the PaintObject is static
-        std::lock_guard lockGuard(_mutex);
+        //std::lock_guard lockGuard(_mutex);
 
         // if there was an error, don't run the script again
         if (!paintObject.Error.empty())

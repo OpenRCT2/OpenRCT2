@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sol/sol.hpp>
+#include "../../../drawing/ImageId.hpp"
 
 struct ImageId;
 namespace OpenRCT2::PaintScripting
@@ -10,11 +11,14 @@ namespace OpenRCT2::PaintScripting
     public:
         PsImageId();
         PsImageId(const ImageId& imageId);
+        PsImageId(uint32_t index, uint8_t primaryColour, uint8_t secondaryColour);
 
         static void Register(sol::state& lua);
 
         const ImageId& GetImageId() const;
     private:
-        const ImageId* _imageId;
+        ImageId _imageId;
+        bool IsRemap() const;
+        PsImageId WithIndex(uint32_t imageIndex);
     };
 }

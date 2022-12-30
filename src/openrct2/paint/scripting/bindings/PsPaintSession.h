@@ -27,5 +27,6 @@ namespace OpenRCT2::PaintScripting
         PsImageId& GetTrackColour(uint8_t index);
 
         void SetAsActiveEntity(PsVehicle& vehicle);
+        void SetInteractionTypeToRide();
     };
 }

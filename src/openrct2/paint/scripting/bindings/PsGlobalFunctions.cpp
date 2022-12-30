@@ -1,13 +1,15 @@
 #include "PsGlobalFunctions.h"
 
 #include "../../../core/Console.hpp"
+#include "../../../ride/TrackPaint.h"
 #include "../../Paint.h"
 #include "../../Supports.h"
+#include "PsBoundBoxXYZ.h"
+#include "PsCoordsXYZ.h"
 #include "PsImageId.h"
 #include "PsPaintSession.h"
 #include "PsRide.h"
 #include "PsTrackElement.h"
-#include "../../../ride/TrackPaint.h"
 
 namespace OpenRCT2::PaintScripting
 {
@@ -47,10 +49,45 @@ namespace OpenRCT2::PaintScripting
                 imageId.GetImageId(), height, spritesVector.data(), currentRotation);
         }
 
+        static void TrackPaintUtilPaintFloor(
+            PsPaintSession& session, int32_t edges, PsImageId& imageId, int32_t height, const sol::table& sprites,
+            PsStationObject& stationObject)
+        {
+            std::vector<uint32_t> spritesVector;
+            for (const auto& keyval : sprites)
+            {
+                spritesVector.push_back(keyval.second.as<uint32_t>());
+            }
+            ::track_paint_util_paint_floor(
+                session.GetPaintSession(), edges, imageId.GetImageId(), height, spritesVector.data(),
+                &stationObject.GetStationObject());
+        }
+
+        static void PaintAddImageAsParent(
+            PsPaintSession& session, PsImageId& imageId, PsCoordsXYZ& offset, PsBoundBoxXYZ& boundBox)
+        {
+            ::PaintAddImageAsParent(
+                session.GetPaintSession(), imageId.GetImageId(), offset.GetCoords(), boundBox.GetBoundBoxXYZ());
+        }
+
+        static void PaintUtilSetSegmentSupportHeight(PsPaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
+        {
+            ::PaintUtilSetSegmentSupportHeight(session.GetPaintSession(), segments, height, slope);
+        }
+
+        static void PaintUtilSetGeneralSupportHeight(PsPaintSession& session, int16_t height, uint8_t slope)
+        {
+            ::PaintUtilSetGeneralSupportHeight(session.GetPaintSession(), height, slope);
+        }
+
         void Register(sol::state& lua)
         {
             lua["WoodenASupportsPaintSetup"] = WoodenASupportsPaintSetup;
             lua["TrackPaintUtilPaintFences"] = TrackPaintUtilPaintFences;
+            lua["PaintAddImageAsParent"] = PaintAddImageAsParent;
+            lua["TrackPaintUtilPaintFloor"] = TrackPaintUtilPaintFloor;
+            lua["PaintUtilSetSegmentSupportHeight"] = PaintUtilSetSegmentSupportHeight;
+            lua["PaintUtilSetGeneralSupportHeight"] = PaintUtilSetGeneralSupportHeight;
             lua["TestPaintSession"] = TestPaintSession;
             lua["TestImageId"] = TestImageId;
         }

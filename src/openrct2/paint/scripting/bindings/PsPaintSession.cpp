@@ -39,6 +39,7 @@ namespace OpenRCT2::PaintScripting
         type["MapPosition"] = &PsPaintSession::_mapPosition;
         type["CurrentRotation"] = &PsPaintSession::_currentRotation;
         type["SetAsActiveEntity"] = &PsPaintSession::SetAsActiveEntity;
+        type["SetInteractionTypeToRide"] = &PsPaintSession::SetInteractionTypeToRide;
     }
 
     PsImageId& PsPaintSession::GetTrackColour(uint8_t index)
@@ -51,6 +52,12 @@ namespace OpenRCT2::PaintScripting
         auto vehicleStruct = vehicle.GetVehicle();
         _paintSession->InteractionType = ViewportInteractionItem::Entity;
         _paintSession->CurrentlyDrawnEntity = &vehicleStruct;
+    }
+
+    void PsPaintSession::SetInteractionTypeToRide()
+    {
+        _paintSession->CurrentlyDrawnEntity = nullptr;
+        _paintSession->InteractionType = ViewportInteractionItem::Ride;
     }
 
     /*std::vector<PsImageId> PsPaintSession::GetTrackColours() const

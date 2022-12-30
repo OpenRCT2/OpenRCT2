@@ -15,7 +15,7 @@ namespace OpenRCT2::PaintScripting
     void PsTrackElement::Register(sol::state& lua)
     {
         auto type = lua.new_usertype<PsTrackElement>(
-            "CoordsXY", sol::constructors<PsTrackElement(), PsTrackElement(const TrackElement&)>());
+            "TrackElement", sol::constructors<PsTrackElement(), PsTrackElement(const TrackElement&)>());
     }
 
     const TrackElement& PsTrackElement::GetTrackElement() const

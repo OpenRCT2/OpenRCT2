@@ -24,5 +24,8 @@ namespace OpenRCT2::PaintScripting
         PsRideEntry GetRideEntry();
         uint32_t GetLifecycleFlags();
         PsVehicle GetVehicle(size_t index);
+
+        uint8_t GetVehicleBodyColour(size_t colourIndex);
+        uint8_t GetVehicleTrimColour(size_t colourIndex);
     };
 }

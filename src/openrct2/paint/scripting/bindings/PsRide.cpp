@@ -18,6 +18,8 @@ namespace OpenRCT2::PaintScripting
         type["GetRideEntry"] = &PsRide::GetRideEntry;
         type["GetLifecyleFlags"] = &PsRide::GetLifecycleFlags;
         type["GetVehicle"] = &PsRide::GetVehicle;
+        type["GetVehicleBodyColour"] = &PsRide::GetVehicleBodyColour;
+        type["GetVehicleTrimColour"] = &PsRide::GetVehicleTrimColour;
     }
 
     Ride& PsRide::GetRide()
@@ -46,5 +48,15 @@ namespace OpenRCT2::PaintScripting
             return PsVehicle();
         auto vehicle = GetEntity<Vehicle>(_ride->vehicles[index]);
         return PsVehicle(*vehicle);
+    }
+
+    uint8_t PsRide::GetVehicleBodyColour(size_t colourIndex)
+    {
+        return _ride->vehicle_colours[colourIndex].Body;
+    }
+
+    uint8_t PsRide::GetVehicleTrimColour(size_t colourIndex)
+    {
+        return _ride->vehicle_colours[colourIndex].Body;
     }
 } // namespace OpenRCT2::PaintScripting
