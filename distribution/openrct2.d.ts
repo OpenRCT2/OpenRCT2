@@ -2504,7 +2504,7 @@ declare global {
      * Represents a guest's thought. This is a copy of a thought at a given time
      * and its values will not update.
      */
-     interface Thought {
+    interface Thought {
         /**
          * The type of thought.
          */
@@ -3471,7 +3471,7 @@ declare global {
     type Widget =
         ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
         LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
-        
+
     type IconName = "arrow_down" | "arrow_up" | "chat" | "cheats" | "copy" | "empty" | "eyedropper" |
         "fast_forward" | "game_speed_indicator" | "game_speed_indicator_double" | "glassy_recolourable" |
         "hide_full" | "hide_partial" | "hide_scenery" | "hide_supports" | "hide_vegetation" | "hide_vehicles" |
@@ -3481,7 +3481,7 @@ declare global {
         "mountain_tool_even" | "mountain_tool_odd" | "multiplayer" | "multiplayer_desync" | "multiplayer_sync" |
         "multiplayer_toolbar" | "multiplayer_toolbar_pressed" | "mute" | "mute_pressed" | "news_messages" |
         "normal_selection_6x6" | "paste" | "path_railings" | "path_surfaces" | "paths" | "placeholder" |
-        "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed"| "rct1_open_off" |
+        "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed" | "rct1_open_off" |
         "rct1_open_off_pressed" | "rct1_open_on" | "rct1_open_on_pressed" | "rct1_simulate_off" |
         "rct1_simulate_off_pressed" | "rct1_simulate_on" | "rct1_simulate_on_pressed" | "rct1_test_off" |
         "rct1_test_off_pressed" | "rct1_test_on" | "rct1_test_on_pressed" | "reload" | "ride_stations" |
@@ -3655,7 +3655,7 @@ declare global {
          * By default, text buttons have borders and image buttons do not but it can be overridden.
          */
         border?: boolean;
-        image?: number;
+        image?: number | IconName;
         isPressed?: boolean;
         text?: string;
         onClick?: () => void;
