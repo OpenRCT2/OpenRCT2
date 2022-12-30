@@ -304,7 +304,7 @@ private:
     void Update();
     void UpdateQueueLength(StationIndex stationIndex);
     ResultWithMessage CreateVehicles(const CoordsXYE& element, bool isApplying);
-    void MoveTrainsToBlockBrakes(TrackElement& firstBlock);
+    void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
     money64 CalculateIncomePerHour() const;
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;

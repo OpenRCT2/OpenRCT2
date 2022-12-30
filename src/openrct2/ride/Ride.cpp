@@ -3518,7 +3518,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
         {
             CoordsXYE firstBlock{};
             ride_create_vehicles_find_first_block(this, &firstBlock);
-            MoveTrainsToBlockBrakes(*firstBlock.element->AsTrack());
+            MoveTrainsToBlockBrakes(firstBlock.element->AsTrack());
         }
         else
         {
@@ -3551,7 +3551,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
  * preceding that block.
  *  rct2: 0x006DDF9C
  */
-void Ride::MoveTrainsToBlockBrakes(TrackElement& firstBlock)
+void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
 {
     for (int32_t i = 0; i < NumTrains; i++)
     {
@@ -3581,7 +3581,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement& firstBlock)
                 break;
             }
 
-            firstBlock.SetBrakeClosed(true);
+            firstBlock->SetBrakeClosed(true);
             for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
             {
                 car->velocity = 0;
@@ -3592,7 +3592,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement& firstBlock)
         } while (!(train->UpdateTrackMotion(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE));
 
         // All vehicles are in position, set the block brake directly before the station one last time
-        firstBlock.SetBrakeClosed(true);
+        firstBlock->SetBrakeClosed(true);
         for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
             car->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
