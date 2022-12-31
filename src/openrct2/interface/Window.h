@@ -22,6 +22,7 @@
 #include <limits>
 #include <list>
 #include <memory>
+#include <utility>
 #include <variant>
 
 struct rct_drawpixelinfo;
@@ -583,10 +584,11 @@ T* WindowCreate(WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width =
 {
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
 }
-template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
-T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
+template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0, TArgs&&... args)
 {
-    return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, {}, width, height, flags | WF_AUTO_POSITION));
+    return static_cast<T*>(
+        WindowCreate(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, width, height, flags | WF_AUTO_POSITION));
 }
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
 T* WindowFocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
