@@ -1307,6 +1307,11 @@ private:
 
     bool FilterSelected(uint8_t objectFlag)
     {
+        // Track Manager has no concept of selection filtering, so always return true
+        if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+        {
+            return true;
+        }
         if (_FILTER_SELECTED == _FILTER_NONSELECTED)
         {
             return true;
