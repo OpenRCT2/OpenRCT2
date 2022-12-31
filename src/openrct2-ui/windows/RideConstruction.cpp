@@ -1819,7 +1819,9 @@ public:
 
         // Only necessary because TD6 writes speed and seat rotation to the same bits. Remove for new track design format.
         bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::BlockBrakes
-            || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::BlockBrakes);
+            || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::BlockBrakes)
+            || _selectedTrackType > TrackElemType::HighestAlias
+            || _currentTrackCurve > (RideConstructionSpecialPieceSelected | TrackElemType::HighestAlias);
 
         const auto& rtd = GetRideTypeDescriptor(rideType);
         bool rideHasSeatRotation = rtd.HasFlag(RIDE_TYPE_FLAG_HAS_SEAT_ROTATION);
@@ -1911,7 +1913,9 @@ public:
         widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Empty;
         widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Empty;
 
-        if (rideHasSeatRotation && (!trackHasSpeedSetting || trackHasSpeedAndSeatRotation))
+        // Simplify this condition to "rideHasSeatRotation" for new track design format
+        if ((rideHasSeatRotation && !trackHasSpeedSetting)
+            || (rideHasSeatRotation && trackHasSpeedSetting && trackHasSpeedAndSeatRotation))
         {
             widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Groupbox;
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Spinner;
