@@ -2358,8 +2358,8 @@
     },
     {
         "path": "track/wooden/classic_wooden_preview_supports.png",
-        "x_offset": -32,
-        "y_offset": -49
+        "x_offset": 2,
+        "y_offset": 1
     },
     {
         "path": "track/wooden/25_60_swne_chained.png",
@@ -4499,96 +4499,96 @@
         "path": "track/flume/25-60-down-nesw.png",
         "x_offset": -26,
         "y_offset": -39,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/25-60-down-nwse.png",
         "x_offset": -28,
         "y_offset": -39,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/25-60-down-nesw-back-water.png",
         "y_offset": -23,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/25-60-down-nesw-back.png",
         "x_offset": -26,
         "y_offset": -12,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/25-60-down-nwse-back-water.png",
         "x_offset": -25,
         "y_offset": -22,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/25-60-down-nwse-back.png",
         "x_offset": -10,
         "y_offset": -12,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/60-down-nesw.png",
         "x_offset": -27,
         "y_offset": -71,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/60-down-nwse.png",
         "x_offset": -28,
         "y_offset": -70,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/60-down-nesw-back.png",
         "x_offset": -26,
         "y_offset": -53,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/60-down-nwse-back.png",
         "x_offset": -27,
         "y_offset": -55,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/60-25-down-nesw.png",
         "x_offset": -27,
         "y_offset": -39,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/60-25-down-nwse.png",
         "x_offset": -28,
         "y_offset": -39,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/60-25-down-nesw-back-water.png",
         "x_offset": -20,
         "y_offset": -6,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/60-25-down-nesw-back.png",
         "x_offset": -27,
         "y_offset": -22,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/60-25-down-nwse-back-water.png",
         "x_offset": 2,
         "y_offset": -6,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "track/flume/60-25-down-nwse-back.png",
         "x_offset": -26,
         "y_offset": -22,
-        "palette": "keep"
+        "palette" : "keep"
     },
     {
         "path": "support/flat_to_steep_1_1.png",
