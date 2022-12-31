@@ -605,6 +605,7 @@ void award_reset()
 void award_update_all()
 {
     PROFILED_FUNCTION();
+
     // Decrease award times
     for (auto& award : _currentAwards)
     {
@@ -618,6 +619,7 @@ void award_update_all()
         _currentAwards.erase(res, std::end(_currentAwards));
         window_invalidate_by_class(WindowClass::ParkInformation);
     }
+
     // Only add new awards if park is open
     if (gParkFlags & PARK_FLAGS_PARK_OPEN)
     {
