@@ -121,7 +121,7 @@ enum WindowTileInspectorWidgetIdx
     WIDX_TRACK_SPINNER_HEIGHT_INCREASE,
     WIDX_TRACK_SPINNER_HEIGHT_DECREASE,
     WIDX_TRACK_CHECK_CHAIN_LIFT,
-    WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED,
+    WIDX_TRACK_CHECK_BRAKE_CLOSED,
     WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE,
 
     // Scenery
@@ -316,7 +316,7 @@ static rct_widget TrackWidgets[] = {
     MakeWidget(PropertyRowCol({ 12, 0}, 0, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE), // WIDX_TRACK_CHECK_APPLY_TO_ALL
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 1, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_TRACK_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     MakeWidget(PropertyRowCol({ 12, 0}, 2, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT), // WIDX_TRACK_CHECK_CHAIN_LIFT
-    MakeWidget(PropertyRowCol({ 12, 0}, 3, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_TRACK_BLOCK_BRAKE), // WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED
+    MakeWidget(PropertyRowCol({ 12, 0}, 3, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED), // WIDX_TRACK_CHECK_BRAKE_CLOSED
     MakeWidget(PropertyRowCol({ 12, 0}, 4, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE), // WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE
     WIDGETS_END,
 };
@@ -644,8 +644,8 @@ public:
                         break;
                     }
 
-                    case WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED:
-                        TrackSetBlockBrake(windowTileInspectorSelectedIndex, !tileElement->AsTrack()->BlockBrakeClosed());
+                    case WIDX_TRACK_CHECK_BRAKE_CLOSED:
+                        TrackSetBrakeClosed(windowTileInspectorSelectedIndex, !tileElement->AsTrack()->IsBrakeClosed());
                         break;
 
                     case WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE:
@@ -1916,9 +1916,9 @@ private:
         GameActions::Execute(&modifyTile);
     }
 
-    void TrackSetBlockBrake(int32_t elementIndex, bool blockBrake)
+    void TrackSetBrakeClosed(int32_t elementIndex, bool isClosed)
     {
-        auto modifyTile = TileModifyAction(_toolMap, TileModifyType::TrackSetBlockBrake, elementIndex, blockBrake);
+        auto modifyTile = TileModifyAction(_toolMap, TileModifyType::TrackSetBrake, elementIndex, isClosed);
         GameActions::Execute(&modifyTile);
     }
 
@@ -2176,13 +2176,16 @@ private:
                 widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 1) - 4;
                 widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].top = GBBT(propertiesAnchor, 2);
                 widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].bottom = GBBB(propertiesAnchor, 2);
-                widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].top = GBBT(propertiesAnchor, 3);
-                widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].bottom = GBBB(propertiesAnchor, 3);
+                widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].top = GBBT(propertiesAnchor, 3);
+                widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].bottom = GBBB(propertiesAnchor, 3);
                 widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].top = GBBT(propertiesAnchor, 4);
                 widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].bottom = GBBB(propertiesAnchor, 4);
                 SetCheckboxValue(WIDX_TRACK_CHECK_APPLY_TO_ALL, _applyToAll);
                 SetCheckboxValue(WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->AsTrack()->HasChain());
-                SetCheckboxValue(WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED, tileElement->AsTrack()->BlockBrakeClosed());
+                SetCheckboxValue(WIDX_TRACK_CHECK_BRAKE_CLOSED, tileElement->AsTrack()->IsBrakeClosed());
+                widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].content = tileElement->AsTrack()->IsBlockStart()
+                    ? STR_TILE_INSPECTOR_TRACK_BLOCK_BRAKE
+                    : STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED;
                 SetCheckboxValue(WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->AsTrack()->IsIndestructible());
                 break;
 

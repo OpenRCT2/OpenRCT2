@@ -182,8 +182,6 @@ public:
         switch (widgetIndex)
         {
             case WIDX_SCENERY_CLOSE:
-                if (gWindowSceneryScatterEnabled)
-                    window_close_by_class(WindowClass::SceneryScatter);
                 Close();
                 break;
             case WIDX_SCENERY_ROTATE_OBJECTS_BUTTON:

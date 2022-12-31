@@ -6128,14 +6128,14 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
     switch (trackType)
     {
         case TrackElemType::BlockBrakes:
-            if (curRide->IsBlockSectioned() && trackElement->AsTrack()->BlockBrakeClosed())
+            if (curRide->IsBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed())
                 ApplyStopBlockBrake();
             else
                 ApplyNonStopBlockBrake();
 
             break;
         case TrackElemType::EndStation:
-            if (trackElement->AsTrack()->BlockBrakeClosed())
+            if (trackElement->AsTrack()->IsBrakeClosed())
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
 
             break;
@@ -6148,7 +6148,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
             {
                 if (trackType == TrackElemType::CableLiftHill || trackElement->AsTrack()->HasChain())
                 {
-                    if (trackElement->AsTrack()->BlockBrakeClosed())
+                    if (trackElement->AsTrack()->IsBrakeClosed())
                     {
                         ApplyStopBlockBrake();
                     }
@@ -6236,7 +6236,7 @@ static void block_brakes_open_previous_section(Ride& ride, const CoordsXYZ& vehi
     {
         return;
     }
-    trackElement->SetBlockBrakeClosed(false);
+    trackElement->SetBrakeClosed(false);
     MapInvalidateElement(location, reinterpret_cast<TileElement*>(trackElement));
 
     auto trackType = trackElement->GetTrackType();
@@ -7411,7 +7411,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
     {
         if (next_vehicle_on_train.IsNull())
         {
-            tileElement->AsTrack()->SetBlockBrakeClosed(true);
+            tileElement->AsTrack()->SetBrakeClosed(true);
+
             if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::EndStation)
             {
                 if (!(rideEntry->Cars[0].flags & CAR_ENTRY_FLAG_POWERED))
@@ -8115,6 +8116,7 @@ bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, Ride* curRide, rct_
  *
  *
  */
+
 void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, CarEntry* carEntry)
 {
     EntityId otherVehicleIndex = EntityId::GetNull();
@@ -8130,7 +8132,8 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* ri
     }
     if (remaining_distance >= 0 && remaining_distance < 0x368A)
     {
-        goto loc_6DCE02;
+        Loc6DCE02(*curRide);
+        return;
     }
     sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
     _vehicleCurPosition.x = x;
@@ -8581,24 +8584,27 @@ loc_6DCD6B:
 loc_6DCDE4:
     MoveTo(_vehicleCurPosition);
 
-loc_6DCE02:
+    Loc6DCE02(*curRide);
+}
+
+void Vehicle::Loc6DCE02(const Ride& curRide)
+{
     acceleration /= _vehicleUnkF64E10;
     if (TrackSubposition == VehicleTrackSubposition::ChairliftGoingBack)
     {
         return;
     }
+
+    auto trackType = GetTrackType();
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
-        auto trackType = GetTrackType();
-        const auto& ted = GetTrackElementDescriptor(trackType);
-        if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
-        {
-            return;
-        }
-        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
-        if (trackType != TrackElemType::EndStation)
-        {
-            return;
-        }
+        return;
+    }
+    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
+    if (trackType != TrackElemType::EndStation)
+    {
+        return;
     }
     if (this != gCurrentVehicle)
     {
@@ -8618,7 +8624,7 @@ loc_6DCE02:
 
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 
-    for (const auto& station : curRide->GetStations())
+    for (const auto& station : curRide.GetStations())
     {
         if (TrackLocation != station.Start)
         {
@@ -8628,7 +8634,7 @@ loc_6DCE02:
         {
             continue;
         }
-        _vehicleStationIndex = curRide->GetStationIndex(&station);
+        _vehicleStationIndex = curRide.GetStationIndex(&station);
     }
 }
 

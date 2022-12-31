@@ -183,11 +183,11 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
             res = TileInspector::TrackSetChain(_loc, elementIndex, false, setChain, isExecuting);
             break;
         }
-        case TileModifyType::TrackSetBlockBrake:
+        case TileModifyType::TrackSetBrake:
         {
             const auto elementIndex = _value1;
-            const bool blockBrake = _value2;
-            res = TileInspector::TrackSetBlockBrake(_loc, elementIndex, blockBrake, isExecuting);
+            const bool isClosed = _value2;
+            res = TileInspector::TrackSetBrakeClosed(_loc, elementIndex, isClosed, isExecuting);
             break;
         }
         case TileModifyType::TrackSetIndestructible:

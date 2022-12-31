@@ -107,7 +107,7 @@ static void mine_train_rc_track_station(
         { 32, 28, 1 }, { 0, 2, height });
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
-        bool isClosed = trackElement.BlockBrakeClosed();
+        bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsChildRotated(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_MineTrainBlockBrakeImages[direction][isClosed]),
             { 0, 0, height }, { 32, 20, 1 }, { 0, 0, height });
@@ -7505,7 +7505,7 @@ static void mine_train_rc_track_block_brakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool isClosed = trackElement.BlockBrakeClosed();
+    bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_MineTrainBlockBrakeImages[direction][isClosed]),
         { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
