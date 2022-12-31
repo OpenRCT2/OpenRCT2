@@ -61,7 +61,7 @@ static void ride_update_station_blocksection(Ride* ride, StationIndex stationInd
     auto& station = ride->GetStation(stationIndex);
 
     if ((ride->status == RideStatus::Closed && ride->num_riders == 0)
-        || (tileElement != nullptr && tileElement->AsTrack()->BlockBrakeClosed()))
+        || (tileElement != nullptr && tileElement->AsTrack()->IsBrakeClosed()))
     {
         station.Depart &= ~STATION_DEPART_FLAG;
 

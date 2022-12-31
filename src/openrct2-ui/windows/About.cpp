@@ -61,12 +61,12 @@ enum WindowAboutWidgetIdx {
     MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
     MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */
 
-static rct_widget _windowAboutOpenRCT2Widgets[] = {
+static Widget _windowAboutOpenRCT2Widgets[] = {
     WIDGETS_MAIN,
     MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
     MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // OpenRCT2 Logo
     MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // Build version
-    MakeWidget({344, 100 },     {24, 24},      WindowWidgetType::ImgBtn,       WindowColour::Secondary, SPR_G2_COPY, STR_COPY_BUILD_HASH   ), // "Copy build info" button
+    MakeWidget({344, 100 },     {24, 24},      WindowWidgetType::ImgBtn,       WindowColour::Secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
     MakeWidget({168, 115 + 24}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
     MakeWidget({168, 115 + 48}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
     MakeWidget({168, 115 + 72}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
@@ -75,12 +75,12 @@ static rct_widget _windowAboutOpenRCT2Widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget _windowAboutRCT2Widgets[] = {
+static Widget _windowAboutRCT2Widgets[] = {
     WIDGETS_MAIN,
     WIDGETS_END,
 };
 
-static rct_widget *_windowAboutPageWidgets[] = {
+static Widget *_windowAboutPageWidgets[] = {
     _windowAboutOpenRCT2Widgets,
     _windowAboutRCT2Widgets,
 };

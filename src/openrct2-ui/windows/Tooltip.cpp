@@ -21,7 +21,7 @@ enum {
     WIDX_BACKGROUND
 };
 
-static rct_widget window_tooltip_widgets[] = {
+static Widget window_tooltip_widgets[] = {
     MakeWidget({0, 0}, {200, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };

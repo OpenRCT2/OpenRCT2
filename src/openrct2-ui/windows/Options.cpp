@@ -227,7 +227,7 @@ static constexpr const int32_t WH = 332;
     MakeTab   ({158, 17}, STR_OPTIONS_MISCELLANEOUS_TIP                 ), \
     MakeTab   ({189, 17}, STR_OPTIONS_ADVANCED                          )
 
-static rct_widget window_options_display_widgets[] = {
+static Widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget        ({  5,  53}, {300, 170}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
     MakeWidget        ({ 10,  67}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
@@ -251,7 +251,7 @@ static rct_widget window_options_display_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_options_rendering_widgets[] = {
+static Widget window_options_rendering_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
     MakeWidget({  5,  FRAME_RENDERING_START + 0}, {300, 108}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_RENDERING_GROUP                                       ), // Rendering group
@@ -275,7 +275,7 @@ static rct_widget window_options_rendering_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_options_culture_widgets[] = {
+static Widget window_options_culture_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget({ 10,  53}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_LANGUAGE,   STR_LANGUAGE_TIP           ), // language
     MakeWidget({155,  53}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                         ),
@@ -298,7 +298,7 @@ static rct_widget window_options_culture_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_options_audio_widgets[] = {
+static Widget window_options_audio_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget({ 10,  53}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                ), // Audio device
     MakeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
@@ -315,7 +315,7 @@ static rct_widget window_options_audio_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_options_controls_and_interface_widgets[] = {
+static Widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define CONTROLS_GROUP_START 53
     MakeWidget({  5, CONTROLS_GROUP_START +  0}, {300, 92}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                          ), // Controls group
@@ -351,7 +351,7 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 #define SCENARIO_OPTIONS_START (SCENARIO_START + 55)
 #define TWEAKS_START (SCENARIO_OPTIONS_START + 39)
 
-static rct_widget window_options_misc_widgets[] = {
+static Widget window_options_misc_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget(         {  5, TITLE_SEQUENCE_START +  0}, {300, 31}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
     MakeDropdownWidgets({ 10, TITLE_SEQUENCE_START + 15}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
@@ -380,7 +380,7 @@ static rct_widget window_options_misc_widgets[] = {
 #undef SCENARIO_START
 #undef TITLE_SEQUENCE_START
 
-static rct_widget window_options_advanced_widgets[] = {
+static Widget window_options_advanced_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget        ({ 10,  54}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
     MakeWidget        ({ 10,  84}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
@@ -398,7 +398,7 @@ static rct_widget window_options_advanced_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget *window_options_page_widgets[] = {
+static Widget *window_options_page_widgets[] = {
     window_options_display_widgets,
     window_options_rendering_widgets,
     window_options_culture_widgets,
@@ -724,7 +724,7 @@ private:
 
     void DisplayMouseDown(WidgetIndex widgetIndex)
     {
-        rct_widget* widget = &widgets[widgetIndex - 1];
+        Widget* widget = &widgets[widgetIndex - 1];
 
         switch (widgetIndex)
         {
@@ -1002,7 +1002,7 @@ private:
                 gDropdownItems[1].Args = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
                 gDropdownItems[2].Args = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
 
-                rct_widget* widget = &widgets[widgetIndex - 1];
+                Widget* widget = &widgets[widgetIndex - 1];
                 ShowDropdown(widget, 3);
 
                 Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.VirtualFloorStyle), true);
@@ -1081,7 +1081,7 @@ private:
 #pragma region Culture tab events
     void CultureMouseDown(WidgetIndex widgetIndex)
     {
-        rct_widget* widget = &widgets[widgetIndex - 1];
+        Widget* widget = &widgets[widgetIndex - 1];
 
         switch (widgetIndex)
         {
@@ -1329,7 +1329,7 @@ private:
 
     void AudioMouseDown(WidgetIndex widgetIndex)
     {
-        rct_widget* widget = &widgets[widgetIndex - 1];
+        Widget* widget = &widgets[widgetIndex - 1];
 
         switch (widgetIndex)
         {
@@ -1604,7 +1604,7 @@ private:
 
     void ControlsMouseDown(WidgetIndex widgetIndex)
     {
-        rct_widget* widget = &widgets[widgetIndex - 1];
+        Widget* widget = &widgets[widgetIndex - 1];
 
         switch (widgetIndex)
         {
@@ -1707,7 +1707,7 @@ private:
 
     void MiscMouseDown(WidgetIndex widgetIndex)
     {
-        rct_widget* widget = &widgets[widgetIndex - 1];
+        Widget* widget = &widgets[widgetIndex - 1];
 
         switch (widgetIndex)
         {
@@ -1940,7 +1940,7 @@ private:
 
     void AdvancedMouseDown(WidgetIndex widgetIndex)
     {
-        rct_widget* widget = &widgets[widgetIndex - 1];
+        Widget* widget = &widgets[widgetIndex - 1];
 
         switch (widgetIndex)
         {
@@ -2009,7 +2009,7 @@ private:
         ft = Formatter();
         ft.Add<const utf8*>(normalisedPath.c_str());
 
-        rct_widget pathWidget = widgets[WIDX_PATH_TO_RCT1_BUTTON];
+        Widget pathWidget = widgets[WIDX_PATH_TO_RCT1_BUTTON];
 
         // Apply vertical alignment if appropriate.
         int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
@@ -2060,7 +2060,7 @@ private:
         pressed_widgets |= 1LL << (WIDX_FIRST_TAB + page);
     }
 
-    void ShowDropdown(rct_widget* widget, int32_t num_items)
+    void ShowDropdown(Widget* widget, int32_t num_items)
     {
         // helper function, all dropdown boxes have similar properties
         WindowDropdownShowTextCustomWidth(
@@ -2082,7 +2082,7 @@ private:
     void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* widget = &widgets[widgetIndex];
 
         auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
@@ -2117,7 +2117,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    uint8_t GetScrollPercentage(const rct_widget& widget, const rct_scroll& scroll)
+    uint8_t GetScrollPercentage(const Widget& widget, const rct_scroll& scroll)
     {
         uint8_t w = widget.width() - 1;
         return static_cast<float>(scroll.h_left) / (scroll.h_right - w) * 100;

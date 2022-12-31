@@ -3641,6 +3641,7 @@ STR_6535    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}-{COMMA16}%
 STR_6536    :This park was saved in a later version of OpenRCT2. The park was saved in v{INT32}, you are currently on v{INT32}.
 STR_6537    :Allow using regular paths as queue
 STR_6538    :Shows regular paths in the queues dropdown of the Footpaths window.
+STR_6539    :Brake Closed
 
 #############
 # Scenarios #

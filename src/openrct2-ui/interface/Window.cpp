@@ -307,10 +307,10 @@ rct_window* WindowCreateCentred(int32_t width, int32_t height, WindowEventList* 
     return WindowCreate(pos, width, height, event_handlers, cls, flags);
 }
 
-static int32_t WindowGetWidgetIndex(const rct_window& w, rct_widget* widget)
+static int32_t WindowGetWidgetIndex(const rct_window& w, Widget* widget)
 {
     int32_t i = 0;
-    for (rct_widget* widget2 = w.widgets; widget2->type != WindowWidgetType::Last; widget2++, i++)
+    for (Widget* widget2 = w.widgets; widget2->type != WindowWidgetType::Last; widget2++, i++)
         if (widget == widget2)
             return i;
     return -1;
@@ -323,7 +323,7 @@ static int32_t WindowGetScrollIndex(const rct_window& w, int32_t targetWidgetInd
 
     int32_t scrollIndex = 0;
     WidgetIndex widgetIndex = 0;
-    for (rct_widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
+    for (Widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
     {
         if (widgetIndex == targetWidgetIndex)
             break;
@@ -334,9 +334,9 @@ static int32_t WindowGetScrollIndex(const rct_window& w, int32_t targetWidgetInd
     return scrollIndex;
 }
 
-static rct_widget* WindowGetScrollWidget(const rct_window& w, int32_t scrollIndex)
+static Widget* WindowGetScrollWidget(const rct_window& w, int32_t scrollIndex)
 {
-    for (rct_widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
+    for (Widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
     {
         if (widget->type != WindowWidgetType::Scroll)
             continue;
@@ -356,7 +356,7 @@ static rct_widget* WindowGetScrollWidget(const rct_window& w, int32_t scrollInde
 static void WindowScrollWheelInput(rct_window& w, int32_t scrollIndex, int32_t wheel)
 {
     auto& scroll = w.scrolls[scrollIndex];
-    rct_widget* widget = WindowGetScrollWidget(w, scrollIndex);
+    Widget* widget = WindowGetScrollWidget(w, scrollIndex);
     WidgetIndex widgetIndex = WindowGetWidgetIndex(w, widget);
 
     if (scroll.flags & VSCROLLBAR_VISIBLE)
@@ -387,7 +387,7 @@ static void WindowScrollWheelInput(rct_window& w, int32_t scrollIndex, int32_t w
 static int32_t WindowWheelInput(rct_window& w, int32_t wheel)
 {
     int32_t i = 0;
-    for (rct_widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
+    for (Widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
     {
         if (widget->type != WindowWidgetType::Scroll)
             continue;
@@ -466,20 +466,20 @@ static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_
 
     WidgetIndex buttonWidgetIndex;
     WindowWidgetType expectedType;
-    uint32_t expectedContent[2];
+    ImageId expectedContent[2];
     switch (widgetType)
     {
         case WindowWidgetType::ImgBtn:
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
             expectedType = WindowWidgetType::TrnBtn;
-            expectedContent[0] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE;
-            expectedContent[1] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE;
+            expectedContent[0] = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
+            expectedContent[1] = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
             break;
         case WindowWidgetType::Spinner:
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
             expectedType = WindowWidgetType::Button;
-            expectedContent[0] = STR_NUMERIC_UP;
-            expectedContent[1] = STR_NUMERIC_DOWN;
+            expectedContent[0] = ImageId(STR_NUMERIC_UP, FilterPaletteID::PaletteNull);
+            expectedContent[1] = ImageId(STR_NUMERIC_DOWN, FilterPaletteID::PaletteNull);
             break;
         default:
             return false;
@@ -575,7 +575,7 @@ void ApplyScreenSaverLockSetting()
  */
 void WindowInitScrollWidgets(rct_window& w)
 {
-    rct_widget* widget;
+    Widget* widget;
     int32_t widget_index, scroll_index;
     int32_t width, height;
 
@@ -617,7 +617,7 @@ void WindowInitScrollWidgets(rct_window& w)
  */
 void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
 {
-    rct_widget* widget;
+    Widget* widget;
     WidgetIndex widgetIndex;
 
     if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
@@ -663,7 +663,7 @@ void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
 static void WindowInvalidatePressedImageButton(const rct_window& w)
 {
     WidgetIndex widgetIndex;
-    rct_widget* widget;
+    Widget* widget;
 
     widgetIndex = 0;
     for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)

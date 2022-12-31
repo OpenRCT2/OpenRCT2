@@ -32,7 +32,7 @@ enum WindowStaffFireWidgetIdx {
 };
 
 // 0x9AFB4C
-static rct_widget window_staff_fire_widgets[] = {
+static Widget window_staff_fire_widgets[] = {
     WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
     MakeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
     MakeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),

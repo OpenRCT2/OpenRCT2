@@ -16,7 +16,7 @@
 #include <openrct2/world/Footpath.h>
 
 // clang-format off
-static rct_widget _mainWidgets[] = {
+static Widget _mainWidgets[] = {
     MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
     WIDGETS_END,
 };

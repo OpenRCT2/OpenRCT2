@@ -32,7 +32,7 @@ enum class TileModifyType : uint8_t
     TrackBaseHeightOffset,
     TrackSetChain,
     TrackSetChainBlock,
-    TrackSetBlockBrake,
+    TrackSetBrake,
     TrackSetIndestructible,
     ScenerySetQuarterLocation,
     ScenerySetQuarterCollision,
