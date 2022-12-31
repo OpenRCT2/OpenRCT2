@@ -607,7 +607,7 @@ static void wooden_rc_track_60_deg_up(
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIdsChained[4][2] = {
-        { SPR_WOODEN_RC_60_DEG_SW_NE, SPR_WOODEN_RC_60_DEG_RAILS_SW_NE },
+        { SPR_G2_WOODEN_RC_60_SWNE_CHAINED, SPR_WOODEN_RC_60_DEG_RAILS_SW_NE },
         { SPR_WOODEN_RC_60_DEG_NW_SE, SPR_WOODEN_RC_60_DEG_RAILS_NW_SE },
         { SPR_WOODEN_RC_60_DEG_NE_SW, SPR_WOODEN_RC_60_DEG_RAILS_NE_SW },
         { SPR_G2_WOODEN_RC_60_SENW_CHAINED, SPR_WOODEN_RC_60_DEG_RAILS_SE_NW },
@@ -759,7 +759,7 @@ static void wooden_rc_track_25_deg_up_to_60_deg_up(
 {
     static constexpr const uint32_t imageIdsChained[4][4] = {
         {
-            SPR_WOODEN_RC_25_DEG_TO_60_DEG_SW_NE,
+            SPR_G2_WOODEN_RC_25_60_SWNE_CHAINED,
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_SW_NE,
             0,
             0,
@@ -867,7 +867,7 @@ static void wooden_rc_track_60_deg_up_to_25_deg_up(
 {
     static constexpr const uint32_t imageIdsChained[4][4] = {
         {
-            SPR_WOODEN_RC_60_DEG_TO_25_DEG_SW_NE,
+            SPR_G2_WOODEN_RC_60_25_SWNE_CHAINED,
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SW_NE,
             0,
             0,
