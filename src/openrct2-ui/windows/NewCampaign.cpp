@@ -44,7 +44,7 @@ enum WindowNewCampaignWidgetIdx {
     WIDX_START_BUTTON
 };
 
-static rct_widget window_new_campaign_widgets[] = {
+static Widget window_new_campaign_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
     MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
@@ -177,8 +177,8 @@ public:
 
     void OnMouseDown(WidgetIndex widgetIndex) override
     {
-        rct_widget* widget = &widgets[widgetIndex];
-        rct_widget* dropdownWidget;
+        Widget* widget = &widgets[widgetIndex];
+        Widget* dropdownWidget;
 
         switch (widgetIndex)
         {
@@ -349,7 +349,7 @@ public:
         DrawWidgets(dpi);
 
         // Number of weeks
-        rct_widget* spinnerWidget = &widgets[WIDX_WEEKS_SPINNER];
+        Widget* spinnerWidget = &widgets[WIDX_WEEKS_SPINNER];
         auto ft = Formatter();
         ft.Add<int16_t>(campaign.no_weeks);
         DrawTextBasic(

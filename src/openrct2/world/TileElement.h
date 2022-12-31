@@ -382,8 +382,8 @@ public:
     bool IsInverted() const;
     void SetInverted(bool inverted);
 
-    bool BlockBrakeClosed() const;
-    void SetBlockBrakeClosed(bool isClosed);
+    bool IsBrakeClosed() const;
+    void SetBrakeClosed(bool isClosed);
 
     bool IsIndestructible() const;
     void SetIsIndestructible(bool isIndestructible);

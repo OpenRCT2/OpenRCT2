@@ -36,7 +36,7 @@ enum WindowSavePromptWidgetIdx {
     WIDX_CANCEL
 };
 
-static rct_widget window_save_prompt_widgets[] = {
+static Widget window_save_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_NONE, WW_SAVE, WH_SAVE),
     MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, STR_EMPTY                ), // question/label
     MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
@@ -53,7 +53,7 @@ enum WindowQuitPromptWidgetIdx {
     WQIDX_CANCEL
 };
 
-static rct_widget window_quit_prompt_widgets[] = {
+static Widget window_quit_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
     MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
     MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel

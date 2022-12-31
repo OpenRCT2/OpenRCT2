@@ -68,12 +68,12 @@ enum WindowMultiplayerWidgetIdx {
     MakeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ), /* tab */ \
     MakeTab   ({ 96, 17},                                                                STR_OPTIONS_TIP         )  /* tab */
 
-static rct_widget window_multiplayer_information_widgets[] = {
+static Widget window_multiplayer_information_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget window_multiplayer_players_widgets[] = {
+static Widget window_multiplayer_players_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
     MakeWidget({  3, 46}, {173,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PLAYER     ), // Player name
     MakeWidget({176, 46}, { 83,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_GROUP      ), // Player name
@@ -83,7 +83,7 @@ static rct_widget window_multiplayer_players_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_multiplayer_groups_widgets[] = {
+static Widget window_multiplayer_groups_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
     MakeWidget({141, 46}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // default group
     MakeWidget({305, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
@@ -96,7 +96,7 @@ static rct_widget window_multiplayer_groups_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_multiplayer_options_widgets[] = {
+static Widget window_multiplayer_options_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
     MakeWidget({3, 50}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
     MakeWidget({3, 64}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
@@ -104,7 +104,7 @@ static rct_widget window_multiplayer_options_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget *window_multiplayer_page_widgets[] = {
+static Widget *window_multiplayer_page_widgets[] = {
     window_multiplayer_information_widgets,
     window_multiplayer_players_widgets,
     window_multiplayer_groups_widgets,
@@ -138,7 +138,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window *w, rct_drawpixelinfo
 
 static void WindowMultiplayerGroupsMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowMultiplayerGroupsResize(rct_window *w);
-static void WindowMultiplayerGroupsMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowMultiplayerGroupsMousedown(rct_window *w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowMultiplayerGroupsDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowMultiplayerGroupsUpdate(rct_window *w);
 static void WindowMultiplayerGroupsScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
@@ -278,9 +278,9 @@ static void WindowMultiplayerSetPressedTab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB1 + w->page);
 }
 
-static void WindowMultiplayerGroupsShowGroupDropdown(rct_window* w, rct_widget* widget)
+static void WindowMultiplayerGroupsShowGroupDropdown(rct_window* w, Widget* widget)
 {
-    rct_widget* dropdownWidget;
+    Widget* dropdownWidget;
     int32_t numItems, i;
 
     dropdownWidget = widget - 1;
@@ -724,7 +724,7 @@ static void WindowMultiplayerGroupsResize(rct_window* w)
     w->Invalidate();
 }
 
-static void WindowMultiplayerGroupsMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowMultiplayerGroupsMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -850,7 +850,7 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(*w, dpi);
     WindowMultiplayerDrawTabImages(w, dpi);
 
-    rct_widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
+    Widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
     int32_t group = network_get_group_index(network_get_default_group());
     if (group != -1)
     {

@@ -19,7 +19,7 @@ enum WindowTitleOptionsWidgetIdx {
     WIDX_OPTIONS,
 };
 
-static rct_widget _windowTitleOptionsWidgets[] = {
+static Widget _windowTitleOptionsWidgets[] = {
     MakeWidget({0, 0}, {80, 15}, WindowWidgetType::Button, WindowColour::Tertiary, STR_OPTIONS, STR_OPTIONS_TIP),
     WIDGETS_END,
 };

@@ -38,14 +38,14 @@ enum {
     WIDX_PROMPT_CANCEL = 4,
 };
 
-static rct_widget window_track_manage_widgets[] = {
+static Widget window_track_manage_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({ 10, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_RENAME),
     MakeWidget({130, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
     WIDGETS_END,
 };
 
-static rct_widget window_track_delete_prompt_widgets[] = {
+static Widget window_track_delete_prompt_widgets[] = {
     WINDOW_SHIM(STR_DELETE_FILE, WW_DELETE_PROMPT, WH_DELETE_PROMPT),
     MakeWidget({ 10, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
     MakeWidget({130, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL             ),

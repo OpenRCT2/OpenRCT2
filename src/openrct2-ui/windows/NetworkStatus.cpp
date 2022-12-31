@@ -22,7 +22,7 @@ enum WindowNetworkStatusWidgetIdx {
     WIDX_PASSWORD
 };
 
-static rct_widget window_network_status_widgets[] = {
+static Widget window_network_status_widgets[] = {
     MakeWidget({  0, 0}, {441, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                   ), // panel / background
     MakeWidget({  1, 1}, {438, 14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_NONE,    STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({427, 2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), // close x button

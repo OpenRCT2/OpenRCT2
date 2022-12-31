@@ -598,7 +598,7 @@ void window_update_scroll_widgets(rct_window& w)
 {
     int32_t scrollIndex, width, height, scrollPositionChanged;
     WidgetIndex widgetIndex;
-    rct_widget* widget;
+    Widget* widget;
 
     widgetIndex = 0;
     scrollIndex = 0;

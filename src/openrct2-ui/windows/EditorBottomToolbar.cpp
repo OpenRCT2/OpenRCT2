@@ -35,7 +35,7 @@ enum {
     WIDX_NEXT_STEP_BUTTON,      // 8
 };
 
-static rct_widget _editorBottomToolbarWidgets[] = {
+static Widget _editorBottomToolbarWidgets[] = {
     MakeWidget({  0, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
     MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
     MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),

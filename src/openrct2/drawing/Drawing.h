@@ -154,16 +154,6 @@ enum
     G1_FLAG_NO_ZOOM_DRAW = (1 << 5),    // Does not get drawn at higher zoom levels (only zoom 0)
 };
 
-enum : uint32_t
-{
-    IMAGE_TYPE_DEFAULT = 0,
-    IMAGE_TYPE_REMAP = (1 << 29),
-    IMAGE_TYPE_TRANSPARENT = (1 << 30),
-    IMAGE_TYPE_REMAP_2_PLUS = (1u << 31)
-    // REMAP_2_PLUS + REMAP = REMAP 2
-    // REMAP_2_PLUS = REMAP 3
-};
-
 using DrawBlendOp = uint8_t;
 
 constexpr DrawBlendOp BLEND_NONE = 0;

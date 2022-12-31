@@ -409,7 +409,7 @@ namespace OpenRCT2::Scripting
             return window_find_by_number(_class, _number);
         }
 
-        rct_widget* GetWidget() const
+        Widget* GetWidget() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -503,9 +503,9 @@ namespace OpenRCT2::Scripting
             {
                 if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
                 {
-                    return LegacyIconIndex(widget->image);
+                    return LegacyIconIndex(widget->image.GetIndex());
                 }
-                return widget->image;
+                return widget->image.GetIndex();
             }
             return 0;
         }
@@ -515,7 +515,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr && widget->type == WindowWidgetType::FlatBtn)
             {
-                widget->image = ImageFromDuk(value);
+                widget->image = ImageId(ImageFromDuk(value));
                 Invalidate();
             }
         }

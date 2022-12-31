@@ -1838,7 +1838,7 @@ void junior_rc_paint_station(
 {
     ImageId imageId;
 
-    bool isBraked = trackElement.BlockBrakeClosed();
+    bool isBraked = trackElement.IsBrakeClosed();
 
     if (direction == 0 || direction == 2)
     {
@@ -3877,7 +3877,7 @@ static void junior_rc_block_brake_paint_setup(
 {
     ImageId image_id;
 
-    bool isBraked = trackElement.BlockBrakeClosed();
+    bool isBraked = trackElement.IsBrakeClosed();
 
     image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
     if (direction & 1)

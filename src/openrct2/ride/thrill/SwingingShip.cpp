@@ -124,7 +124,7 @@ static void PaintSwingingShipStructure(
     auto supportsImageTemplate = session.TrackColours[SCHEME_TRACK];
     auto vehicleImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
+    if (imageFlags != TrackGhost)
     {
         vehicleImageTemplate = imageFlags;
     }

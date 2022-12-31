@@ -36,7 +36,7 @@ static constexpr const int32_t WH = 94;
 
 static constexpr ScreenSize CLEAR_SCENERY_BUTTON = { 24, 24 };
 
-static rct_widget window_clear_scenery_widgets[] = {
+static Widget window_clear_scenery_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget(
         { 27, 17 }, { 44, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_LAND_TOOL_SIZE_0, STR_NONE), // preview box
@@ -168,7 +168,7 @@ public:
             | (gClearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
 
         // Update the preview image (for tool sizes up to 7)
-        window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        window_clear_scenery_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override

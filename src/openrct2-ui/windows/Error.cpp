@@ -23,7 +23,7 @@ enum {
     WIDX_BACKGROUND
 };
 
-static rct_widget window_error_widgets[] = {
+static Widget window_error_widgets[] = {
     MakeWidget({0, 0}, {200, 42}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
