@@ -42,6 +42,7 @@ std::list<std::shared_ptr<rct_window>> g_window_list;
 rct_window* gWindowAudioExclusive;
 
 widget_identifier gCurrentTextBox = { { WindowClass::Null, 0 }, 0 };
+window_close_modifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::None };
 char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
 int32_t gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = false;
@@ -393,6 +394,19 @@ void window_close_all_except_class(WindowClass cls)
 void window_close_all_except_flags(uint16_t flags)
 {
     window_close_by_condition([flags](rct_window* w) -> bool { return !(w->flags & flags); });
+}
+
+/**
+ * Closes all windows except the specified window number and class.
+ * @param number (dx)
+ * @param cls (cl) without bit 15 set
+ */
+void window_close_all_except_number_and_class(rct_windownumber number, WindowClass cls)
+{
+    window_close_by_class(WindowClass::Dropdown);
+    window_close_by_condition([cls, number](rct_window* w) -> bool {
+        return (!(w->number == number && w->classification == cls) && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)));
+    });
 }
 
 /**

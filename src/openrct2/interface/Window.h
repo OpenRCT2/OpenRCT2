@@ -29,10 +29,12 @@ struct rct_window;
 struct TrackDesignFileRef;
 struct TextInputSession;
 struct scenario_index_entry;
+struct window_close_modifier;
 
 enum class VisibilityCache : uint8_t;
 enum class CursorID : uint8_t;
 enum class RideConstructionState : uint8_t;
+enum class CloseWindowModifier : uint8_t;
 
 #define SCROLLABLE_ROW_HEIGHT 12
 #define LIST_ROW_HEIGHT 12
@@ -63,6 +65,7 @@ struct widget_identifier
 };
 
 extern widget_identifier gCurrentTextBox;
+extern window_close_modifier gLastCloseModifier;
 
 using WidgetFlags = uint32_t;
 namespace WIDGET_FLAGS
@@ -295,6 +298,12 @@ struct error_variables
     uint16_t var_480;
 };
 
+struct window_close_modifier
+{
+    window_identifier window;
+    CloseWindowModifier modifier;
+};
+
 struct rct_window;
 
 #define RCT_WINDOW_RIGHT(w) ((w)->windowPos.x + (w)->width)
@@ -499,6 +508,13 @@ enum class VisibilityCache : uint8_t
     Covered
 };
 
+enum class CloseWindowModifier : uint8_t
+{
+    None,
+    Shift,
+    Control
+};
+
 enum class GuestListFilterType : int32_t
 {
     GuestsOnRide,
@@ -608,6 +624,7 @@ void window_close_top();
 void window_close_all();
 void window_close_all_except_class(WindowClass cls);
 void window_close_all_except_flags(uint16_t flags);
+void window_close_all_except_number_and_class(rct_windownumber number, WindowClass cls);
 rct_window* window_find_by_class(WindowClass cls);
 rct_window* window_find_by_number(WindowClass cls, rct_windownumber number);
 rct_window* window_find_by_number(WindowClass cls, EntityId id);

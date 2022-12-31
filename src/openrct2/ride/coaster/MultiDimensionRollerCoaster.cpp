@@ -135,7 +135,7 @@ static void multi_dimension_rc_track_station(
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
-        bool isClosed = trackElement.BlockBrakeClosed();
+        bool isClosed = trackElement.IsBrakeClosed();
         uint8_t offset = isClosed ? 2 : 1;
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][offset]), { 0, 0, height },
@@ -12442,7 +12442,7 @@ static void multi_dimension_rc_track_block_brakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool isClosed = trackElement.BlockBrakeClosed();
+    bool isClosed = trackElement.IsBrakeClosed();
 
     if (!trackElement.IsInverted())
     {
