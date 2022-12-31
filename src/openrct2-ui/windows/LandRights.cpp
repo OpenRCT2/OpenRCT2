@@ -38,9 +38,9 @@ enum WindowLandRightsWidgetIdx {
     WIDX_BUY_CONSTRUCTION_RIGHTS
 };
 
-static rct_widget window_land_rights_widgets[] = {
+static Widget window_land_rights_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , SPR_LAND_TOOL_SIZE_0                                           ), // preview box
+    MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0)                                           ), // preview box
     MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_RIGHTS_TIP), // decrement size
     MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_RIGHTS_TIP ), // increment size
     MakeRemapWidget({22, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_BUY_LAND_RIGHTS,         STR_BUY_LAND_RIGHTS_TIP           ), // land rights
@@ -185,7 +185,7 @@ public:
             SetWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
         }
 
-        window_land_rights_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        window_land_rights_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
 
         if (gLandRemainingOwnershipSales == 0)
         {

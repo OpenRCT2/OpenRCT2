@@ -55,7 +55,7 @@ uint32_t LandTool::SizeToSpriteIndex(uint16_t size)
     return 0xFFFFFFFF;
 }
 
-void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentSurfaceType)
+void LandTool::ShowSurfaceStyleDropdown(rct_window* w, Widget* widget, ObjectEntryIndex currentSurfaceType)
 {
     auto& objManager = GetContext()->GetObjectManager();
 
@@ -89,7 +89,7 @@ void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, Objec
     gDropdownDefaultIndex = defaultIndex;
 }
 
-void LandTool::ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentEdgeType)
+void LandTool::ShowEdgeStyleDropdown(rct_window* w, Widget* widget, ObjectEntryIndex currentEdgeType)
 {
     auto& objManager = GetContext()->GetObjectManager();
 

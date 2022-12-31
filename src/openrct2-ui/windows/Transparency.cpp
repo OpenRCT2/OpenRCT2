@@ -63,16 +63,16 @@ static constexpr ScreenSize INVISIBLE_SIZE = {24, 12};
 
 #pragma endregion
 
-static rct_widget window_transparency_main_widgets[] =
+static Widget window_transparency_main_widgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_VEGETATION,  STR_SEE_THROUGH_VEGETATION),
-    MakeWidget({ 27, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_SCENERY,     STR_SEE_THROUGH_SCENERY),
-    MakeWidget({ 52, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,         STR_SEE_THROUGH_PATHS),
-    MakeWidget({ 77, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_RIDE,                       STR_SEE_THROUGH_RIDES),
-    MakeWidget({102, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_VEHICLES,    STR_SEE_THROUGH_VEHICLES),
-    MakeWidget({127, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_SUPPORTS,    STR_SEE_THROUGH_SUPPORTS),
-    MakeWidget({152, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_GUESTS,                     STR_SEE_THROUGH_GUESTS),
+    MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEGETATION),  STR_SEE_THROUGH_VEGETATION),
+    MakeWidget({ 27, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_SCENERY),     STR_SEE_THROUGH_SCENERY),
+    MakeWidget({ 52, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_FOOTPATH),         STR_SEE_THROUGH_PATHS),
+    MakeWidget({ 77, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_RIDE),                       STR_SEE_THROUGH_RIDES),
+    MakeWidget({102, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEHICLES),    STR_SEE_THROUGH_VEHICLES),
+    MakeWidget({127, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_SUPPORTS),    STR_SEE_THROUGH_SUPPORTS),
+    MakeWidget({152, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_GUESTS),                     STR_SEE_THROUGH_GUESTS),
     MakeWidget({177, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_SEE_THROUGH_STAFF),
 
     MakeWidget({  2, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEGETATION),
@@ -141,7 +141,7 @@ public:
 
         for (WidgetIndex i = WIDX_INVISIBLE_VEGETATION; i <= WIDX_INVISIBLE_SUPPORTS; i++)
         {
-            widgets[i].image = IsWidgetPressed(i) ? SPR_G2_BUTTON_HIDE_FULL : SPR_G2_BUTTON_HIDE_PARTIAL;
+            widgets[i].image = ImageId(IsWidgetPressed(i) ? SPR_G2_BUTTON_HIDE_FULL : SPR_G2_BUTTON_HIDE_PARTIAL);
         }
     }
 

@@ -68,7 +68,7 @@ enum WindowNewsOptionsWidgetIdx
     WIDX_CHECKBOX_0
 };
 
-static rct_widget WindowNewsOptionsWidgets[] = {
+static Widget WindowNewsOptionsWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // Tab content panel
     MakeTab   ({ 3, 17}                                                                 ), // Park tab
@@ -158,7 +158,7 @@ public:
         int32_t y = baseCheckBox.top;
 
         int32_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
-        rct_widget* checkboxWidget = &widgets[checkboxWidgetIndex];
+        Widget* checkboxWidget = &widgets[checkboxWidgetIndex];
         for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
         {
             const NotificationDef* ndef = &NewsItemOptionDefinitions[i];

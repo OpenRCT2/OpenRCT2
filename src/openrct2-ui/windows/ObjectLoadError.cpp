@@ -272,7 +272,7 @@ constexpr int32_t NAME_COL_LEFT = 4;
 constexpr int32_t SOURCE_COL_LEFT = (WW_LESS_PADDING / 4) + 1;
 constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
-static rct_widget window_object_load_error_widgets[] = {
+static Widget window_object_load_error_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                                   ), // 'Object name' header
     MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                                 ), // 'Object source' header

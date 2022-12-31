@@ -46,7 +46,7 @@ enum {
     WIDX_RANDOM_SHUFFLE
 };
 
-static rct_widget _inventionListWidgets[] = {
+static Widget _inventionListWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
     MakeTab   ({  3,  17}                                                                                               ),
@@ -59,7 +59,7 @@ static rct_widget _inventionListWidgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget _inventionListDragWidgets[] = {
+static Widget _inventionListDragWidgets[] = {
     MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };

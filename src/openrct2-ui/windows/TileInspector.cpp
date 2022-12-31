@@ -246,13 +246,13 @@ constexpr ScreenCoordsXY CheckboxGroupOffset(
     MakeSpinnerWidgets({20, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner X (3 widgets) */ \
     MakeSpinnerWidgets({90, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner Y (3 widgets) */ \
     /* Top buttons */ \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 0,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_DEMOLISH,     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */         \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 0,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, ImageId(SPR_DEMOLISH),     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */         \
     MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 1,                     ToolbarButtonHalfSize, WindowWidgetType::Button,      WindowColour::Secondary, STR_UP,           STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */               \
     MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 1 + ScreenSize{0, 12}, ToolbarButtonHalfSize, WindowWidgetType::Button,      WindowColour::Secondary, STR_DOWN,         STR_MOVE_SELECTED_ELEMENT_DOWN_TIP),  /* Move down */             \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 2,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_ROTATE_ARROW, STR_ROTATE_SELECTED_ELEMENT_TIP),     /* Rotate button */         \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 3,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_SORT,      STR_TILE_INSPECTOR_SORT_TIP),         /* Sort button */           \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 4,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_PASTE,     STR_TILE_INSPECTOR_PASTE_TIP),        /* Paste button */          \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 5,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_COPY,      STR_TILE_INSPECTOR_COPY_TIP),         /* Copy button */           \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 2,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_SELECTED_ELEMENT_TIP),     /* Rotate button */         \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 3,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, ImageId(SPR_G2_SORT),      STR_TILE_INSPECTOR_SORT_TIP),         /* Sort button */           \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 4,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, ImageId(SPR_G2_PASTE),     STR_TILE_INSPECTOR_PASTE_TIP),        /* Paste button */          \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 5,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, ImageId(SPR_G2_COPY),      STR_TILE_INSPECTOR_COPY_TIP),         /* Copy button */           \
     /* Column headers */ \
     MakeWidget(InvisibleFlagColumnXY,   InvisibleFlagColumnSize,   WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_INVISIBLE_SHORT,        STR_TILE_INSPECTOR_FLAG_INVISIBLE),   /* Invisible flag */    \
     MakeWidget(TypeColumnXY,            TypeColumnSize,            WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_ELEMENT_TYPE),                                                /* Type */              \
@@ -265,7 +265,7 @@ constexpr ScreenCoordsXY CheckboxGroupOffset(
     MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_NONE,                               STR_NONE ), /* Details group box */     \
     MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, STR_NONE )  /* Properties group box */
 
-static rct_widget DefaultWidgets[] = {
+static Widget DefaultWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     WIDGETS_END,
 };
@@ -274,7 +274,7 @@ constexpr int32_t NumSurfaceProperties = 4;
 constexpr int32_t NumSurfaceDetails = 4;
 constexpr int32_t SurfacePropertiesHeight = 16 + NumSurfaceProperties * 21;
 constexpr int32_t SurfaceDetailsHeight = 20 + NumSurfaceDetails * 11;
-static rct_widget SurfaceWidgets[] = {
+static Widget SurfaceWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_SURFACE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     MakeWidget(PropertyRowCol({ 12, 0 }, 1, 0),         PropertyButtonSize, WindowWidgetType::Button,  WindowColour::Secondary, STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES), // WIDX_SURFACE_BUTTON_REMOVE_FENCES
@@ -291,7 +291,7 @@ constexpr int32_t NumPathProperties = 5;
 constexpr int32_t NumPathDetails = 3;
 constexpr int32_t PathPropertiesHeight = 16 + NumPathProperties * 21;
 constexpr int32_t PathDetailsHeight = 20 + NumPathDetails * 11;
-static rct_widget PathWidgets[] = {
+static Widget PathWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     MakeWidget(PropertyRowCol({ 12, 0 }, 1, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_PATH_BROKEN), // WIDX_PATH_CHECK_BROKEN
@@ -311,7 +311,7 @@ constexpr int32_t NumTrackProperties = 5;
 constexpr int32_t NumTrackDetails = 7;
 constexpr int32_t TrackPropertiesHeight = 16 + NumTrackProperties * 21;
 constexpr int32_t TrackDetailsHeight = 20 + NumTrackDetails * 11;
-static rct_widget TrackWidgets[] = {
+static Widget TrackWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     MakeWidget(PropertyRowCol({ 12, 0}, 0, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE), // WIDX_TRACK_CHECK_APPLY_TO_ALL
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 1, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_TRACK_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
@@ -325,7 +325,7 @@ constexpr int32_t NumSceneryProperties = 4; // The checkbox groups both count fo
 constexpr int32_t NumSceneryDetails = 4;
 constexpr int32_t SceneryPropertiesHeight = 16 + NumSceneryProperties * 21;
 constexpr int32_t SceneryDetailsHeight = 20 + NumSceneryDetails * 11;
-static rct_widget SceneryWidgets[] = {
+static Widget SceneryWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 0), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_QUARTER_N
@@ -343,7 +343,7 @@ constexpr int32_t NumEntranceProperties = 2;
 constexpr int32_t NumEntranceDetails = 4;
 constexpr int32_t EntrancePropertiesHeight = 16 + NumEntranceProperties * 21;
 constexpr int32_t EntranceDetailsHeight = 20 + NumEntranceDetails * 11;
-static rct_widget EntranceWidgets[] = {
+static Widget EntranceWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_ENTRANCE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     MakeWidget(PropertyRowCol({ 12, 0 }, 1, 0),         PropertyButtonSize, WindowWidgetType::Button,  WindowColour::Secondary, STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE, STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE_TIP), // WIDX_ENTRANCE_BUTTON_MAKE_USABLE
@@ -354,7 +354,7 @@ constexpr int32_t NumWallProperties = 3;
 constexpr int32_t NumWallDetails = 2;
 constexpr int32_t WallPropertiesHeight = 16 + NumWallProperties * 21;
 constexpr int32_t WallDetailsHeight = 20 + NumWallDetails * 11;
-static rct_widget WallWidgets[] = {
+static Widget WallWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1),                 PropertyButtonSize, WindowWidgetType::Spinner,      WindowColour::Secondary), // WIDX_WALL_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1),                         PropertyButtonSize, WindowWidgetType::DropdownMenu, WindowColour::Secondary), // WIDX_WALL_DROPDOWN_SLOPE
@@ -367,7 +367,7 @@ constexpr int32_t NumLargeSceneryProperties = 1;
 constexpr int32_t NumLargeSceneryDetails = 3;
 constexpr int32_t LargeSceneryPropertiesHeight = 16 + NumLargeSceneryProperties * 21;
 constexpr int32_t LargeSceneryDetailsHeight = 20 + NumLargeSceneryDetails * 11;
-static rct_widget LargeSceneryWidgets[] = {
+static Widget LargeSceneryWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_LARGE_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     WIDGETS_END,
@@ -377,7 +377,7 @@ constexpr int32_t NumBannerProperties = 3;
 constexpr int32_t NumBannerDetails = 1;
 constexpr int32_t BannerPropertiesHeight = 16 + NumBannerProperties * 21;
 constexpr int32_t BannerDetailsHeight = 20 + NumBannerDetails * 11;
-static rct_widget BannerWidgets[] = {
+static Widget BannerWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_NE
@@ -388,7 +388,7 @@ static rct_widget BannerWidgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget *PageWidgets[] = {
+static Widget *PageWidgets[] = {
     DefaultWidgets,
     SurfaceWidgets,
     PathWidgets,
@@ -847,7 +847,7 @@ public:
 
                     case WIDX_WALL_DROPDOWN_SLOPE_BUTTON:
                     {
-                        rct_widget* widget = &widgets[widgetIndex];
+                        Widget* widget = &widgets[widgetIndex];
                         // Use dropdown instead of dropdown button
                         widget--;
                         // Fill dropdown list

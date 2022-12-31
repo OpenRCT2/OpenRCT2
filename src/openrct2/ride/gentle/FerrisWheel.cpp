@@ -79,7 +79,7 @@ static void PaintFerrisWheelStructure(
     auto supportsImageTemplate = session.TrackColours[SCHEME_TRACK];
     auto wheelImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto wheelImageFlags = session.TrackColours[SCHEME_MISC];
-    if (wheelImageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
+    if (wheelImageFlags != TrackGhost)
     {
         wheelImageTemplate = wheelImageFlags;
     }

@@ -18,7 +18,7 @@
 #include <openrct2/localisation/Localisation.h>
 
 // clang-format off
-static rct_widget window_map_tooltip_widgets[] = {
+static Widget window_map_tooltip_widgets[] = {
     MakeWidget({0, 0}, {200, 30}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };

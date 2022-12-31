@@ -81,7 +81,7 @@ enum {
     WIDX_SCENARIOLIST
 };
 
-static rct_widget window_scenarioselect_widgets[] = {
+static Widget window_scenarioselect_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget     ({ TabWidth + 1, WidgetsStart }, { WW, 284}, WindowWidgetType::Resize, WindowColour::Secondary),                                                 // tab content panel
     MakeRemapWidget({  3, TabsStart + (TabHeight * 0) }, { TabWidth,  TabHeight}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB),   // tab 01
@@ -115,7 +115,7 @@ static void WindowScenarioselectInitTabs(rct_window *w);
 
 static void WindowScenarioselectClose(rct_window *w);
 static void WindowScenarioselectMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowScenarioselectMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowScenarioselectMousedown(rct_window *w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowScenarioselectScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void WindowScenarioselectScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowScenarioselectScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
@@ -268,7 +268,7 @@ static void WindowScenarioselectMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
     {
@@ -436,7 +436,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Text for each tab
     for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
     {
-        rct_widget* widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
+        Widget* widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
         if (widget->type == WindowWidgetType::Empty)
             continue;
 

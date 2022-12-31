@@ -36,7 +36,7 @@ struct rct_window
     uint64_t disabled_widgets{};
     uint64_t pressed_widgets{};
     uint64_t hold_down_widgets{};
-    rct_widget* widgets{};
+    Widget* widgets{};
     ScreenCoordsXY windowPos;
     int16_t width{};
     int16_t height{};
