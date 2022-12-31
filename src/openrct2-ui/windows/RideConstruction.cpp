@@ -212,10 +212,6 @@ public:
 
         InitScrollWidgets();
 
-        colours[0] = COLOUR_DARK_BROWN;
-        colours[1] = COLOUR_DARK_BROWN;
-        colours[2] = COLOUR_DARK_BROWN;
-
         window_push_others_right(*this);
         show_gridlines();
 
