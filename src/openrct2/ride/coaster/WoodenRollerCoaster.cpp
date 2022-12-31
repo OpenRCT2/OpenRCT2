@@ -608,8 +608,8 @@ static void wooden_rc_track_60_deg_up(
 {
     static constexpr const uint32_t imageIdsChained[4][2] = {
         { SPR_G2_WOODEN_RC_60_SWNE_CHAINED, SPR_WOODEN_RC_60_DEG_RAILS_SW_NE },
-        { SPR_WOODEN_RC_60_DEG_NW_SE, SPR_WOODEN_RC_60_DEG_RAILS_NW_SE },
-        { SPR_WOODEN_RC_60_DEG_NE_SW, SPR_WOODEN_RC_60_DEG_RAILS_NE_SW },
+        { SPR_G2_WOODEN_RC_60_SWNE_CHAINED_BACK, SPR_WOODEN_RC_60_DEG_RAILS_NW_SE },
+        { SPR_G2_WOODEN_RC_60_SENW_CHAINED_BACK, SPR_WOODEN_RC_60_DEG_RAILS_NE_SW },
         { SPR_G2_WOODEN_RC_60_SENW_CHAINED, SPR_WOODEN_RC_60_DEG_RAILS_SE_NW },
     };
 
@@ -767,13 +767,13 @@ static void wooden_rc_track_25_deg_up_to_60_deg_up(
         {
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_NW_SE,
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_NW_SE,
-            SPR_WOODEN_RC_25_DEG_TO_60_DEG_FRONT_NW_SE,
+            SPR_G2_WOODEN_RC_25_60_SENW_CHAINED_BACK,
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_FRONT_NW_SE,
         },
         {
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_NE_SW,
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_NE_SW,
-            SPR_WOODEN_RC_25_DEG_TO_60_DEG_FRONT_NE_SW,
+            SPR_G2_WOODEN_RC_25_60_SWNE_CHAINED_BACK,
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_FRONT_NE_SW,
         },
         {
@@ -875,13 +875,13 @@ static void wooden_rc_track_60_deg_up_to_25_deg_up(
         {
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_NW_SE,
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NW_SE,
-            SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NW_SE,
+            SPR_G2_WOODEN_RC_60_25_SWNE_CHAINED_BACK,
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NW_SE,
         },
         {
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_NE_SW,
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NE_SW,
-            SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NE_SW,
+            SPR_G2_WOODEN_RC_60_25_SENW_CHAINED_BACK,
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NE_SW,
         },
         {
