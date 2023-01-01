@@ -46,12 +46,6 @@ If you want to help translate the game to your language, please stop by the Loca
   - 3.1 - [Building prerequisites](#31-building-prerequisites)
   - 3.2 - [Compiling and running](#32-compiling-and-running)
 - 4 - [Contributing](#4-contributing)
-  - 4.1 - [Bug fixes](#41-bug-fixes)
-  - 4.2 - [New features](#42-new-features)
-  - 4.3 - [Translation](#43-translation)
-  - 4.4 - [Graphics](#44-graphics)
-  - 4.5 - [Audio](#45-audio)
-  - 4.6 - [Scenarios](#46-scenarios)
 - 5 - [Licence](#5-licence)
 - 6 - [More information](#6-more-information)
 - 7 - [Sponsors](#7-sponsors)
@@ -212,28 +206,11 @@ cmake --build . --target install
 ---
 
 # 4. Contributing
-OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to ```develop```. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. ```master``` only contains tagged releases, you should never branch off this.
 
-Please read our [contributing guidelines](https://github.com/OpenRCT2/OpenRCT2/blob/develop/CONTRIBUTING.md) for information.
+There are two places to find information on how to contribute:
+- See [CONTRIBUTING.md](https://github.com/OpenRCT2/OpenRCT2/blob/develop/CONTRIBUTING.md) for a brief, high-level overview of the different types of contributions relevant to the project. There are also recommendations regarding coding style and best practices.
 
-## 4.1 Bug fixes
-A list of bugs can be found on the [issue tracker](https://github.com/OpenRCT2/OpenRCT2/issues). Feel free to work on any bug and submit a pull request to the develop branch with the fix. Mentioning that you intend to fix a bug on the issue will prevent other people from trying as well.
-
-## 4.2 New features
-Please talk to the OpenRCT2 team first before starting to develop a new feature. We may already have plans for or reasons against something that you'd like to work on. Therefore contacting us will allow us to help you or prevent you from wasting any time. You can talk to us via Discord, see links at the top of this page.
-
-## 4.3 Translation
-You can translate the game into other languages by editing the language files in ```data/language``` directory. Please join discussions in the [#localisation channel on Discord](https://discordapp.com/invite/sxnrvX9) and submit pull requests to [OpenRCT2/Localisation](https://github.com/OpenRCT2/Localisation).
-
-## 4.4 Graphics
-You can help create new graphics for the game by visiting the [OpenGraphics project](https://github.com/OpenRCT2/OpenGraphics). 3D modellers needed!
-
-## 4.5 Audio
-You can help create the music and sound effects for the game. Check out the OpenMusic repository and drop by our [#open-sound-and-music channel on Discord](https://discord.gg/9y8WbcX) to find out more.
-
-## 4.6 Scenarios
-We would also like to distribute additional scenarios with the game, when the time comes. For that, we need talented scenario makers! Check out the [OpenScenarios repository](https://github.com/PFCKrutonium/OpenRCT2-OpenScenarios).
-
+- See the [How To Contribute](https://github.com/OpenRCT2/OpenRCT2/wiki/How-To-Contribute) section of the wiki for a more in-depth explanation of the concrete steps required to contribute (forking, cloning, pull requests, etc.). The wiki contains other documentation contributors may find useful, such as detailed descriptions of data structures used in the game.
 ---
 
 # 5. Licence
