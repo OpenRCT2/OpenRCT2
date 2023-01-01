@@ -1397,9 +1397,6 @@ public:
                 _currentTrackBankEnd = TRACK_BANK_NONE;
                 _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
                 break;
-            case TrackElemType::BlockBrakes:
-                _currentBrakeSpeed2 = RCT2DefaultBlockBrakeSpeed;
-                break;
         }
         _currentTrackCurve = trackPiece | RideConstructionSpecialPieceSelected;
         WindowRideConstructionUpdateActiveElements();
