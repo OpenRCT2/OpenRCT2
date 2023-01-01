@@ -36,7 +36,6 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/Context.h>
 #include <string>
 #include <vector>
 
@@ -270,7 +269,7 @@ static void Select(const char* path)
     {
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
             SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
-            if (OpenRCT2::GetContext()->LoadParkFromFile(pathBuffer))
+            if (Editor::LoadLandscape(pathBuffer))
             {
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 window_close_by_class(WindowClass::Loadsave);
