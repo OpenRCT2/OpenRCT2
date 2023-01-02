@@ -633,6 +633,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
 ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
+bool TrackTypeIsHelix(track_type_t trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
 
 /**

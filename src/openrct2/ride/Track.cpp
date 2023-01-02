@@ -658,6 +658,17 @@ bool TrackTypeHasSpeedSetting(track_type_t trackType)
     return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster;
 }
 
+bool TrackTypeIsHelix(track_type_t trackType)
+{
+    if (trackType >= TrackElemType::LeftHalfBankedHelixUpSmall && trackType <= TrackElemType::RightHalfBankedHelixDownLarge)
+        return true;
+
+    if (trackType >= TrackElemType::LeftQuarterBankedHelixLargeUp && trackType <= TrackElemType::RightQuarterHelixLargeDown)
+        return true;
+
+    return false;
+}
+
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
 {
     auto trackEl = posEl.element->AsTrack();
