@@ -2278,11 +2278,9 @@ private:
             viewport_set_visibility(1);
         }
 
-        if ((_currentTrackCurve >= (TrackElemType::LeftHalfBankedHelixUpSmall | RideConstructionSpecialPieceSelected)
-             && _currentTrackCurve <= (TrackElemType::RightHalfBankedHelixDownLarge | RideConstructionSpecialPieceSelected))
-            || (_currentTrackCurve >= (TrackElemType::LeftQuarterBankedHelixLargeUp | RideConstructionSpecialPieceSelected)
-                && _currentTrackCurve <= (TrackElemType::RightQuarterHelixLargeDown | RideConstructionSpecialPieceSelected))
-            || (_currentTrackSlopeEnd != TRACK_SLOPE_NONE))
+        const bool helixSelected = (_currentTrackCurve & RideConstructionSpecialPieceSelected)
+            && TrackTypeIsHelix(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
+        if (helixSelected || (_currentTrackSlopeEnd != TRACK_SLOPE_NONE))
         {
             viewport_set_visibility(2);
         }
