@@ -142,7 +142,7 @@ FileWatcher::FileWatcher(u8string_view directoryPath)
 #elif defined(__APPLE__)
     CFStringRef path = CFStringCreateWithCString(kCFAllocatorDefault, directoryPath.data(), kCFStringEncodingUTF8);
     CFArrayRef pathsToWatch = CFArrayCreate(kCFAllocatorDefault, reinterpret_cast<const void**>(&path), 1, nullptr);
-    CFAbsoluteTime latencyInSeconds = 3.0;
+    CFAbsoluteTime latencyInSeconds = 0.5;
     FSEventStreamContext context = { 0, this, nullptr, nullptr, nullptr };
 
     _stream = FSEventStreamCreate(
