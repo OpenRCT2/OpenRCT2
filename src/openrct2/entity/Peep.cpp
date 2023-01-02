@@ -2267,7 +2267,9 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                     // Without this fix guests can overlap at the queue entrance, and the logic to determine if a queue is full
                     // can fail allowing more guests to join to the queue. Also the logic to update the queue position of the
                     // guest can fail allowing a guest to walk and reach the ride entrance ignoring the next guest in the queue.
-                    auto queueMiddle = CoordsXY{ CoordsXY{ guest->NextLoc.ToTileStart() } + CoordsDirectionDelta[guest->PeepDirection] }.ToTileCentre();
+                    auto queueMiddle = CoordsXY{ CoordsXY{ guest->NextLoc.ToTileStart() }
+                                                 + CoordsDirectionDelta[guest->PeepDirection] }
+                                           .ToTileCentre();
                     guest->SetDestination(queueMiddle);
 
                     peep_footpath_move_forward(guest, { coords, tile_element }, vandalism_present);
