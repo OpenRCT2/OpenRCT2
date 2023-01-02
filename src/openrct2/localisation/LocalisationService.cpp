@@ -108,6 +108,13 @@ void LocalisationService::OpenLanguage(int32_t id)
         throw std::runtime_error("Unable to open language " + std::to_string(id));
     }
 
+    const auto fallback = LanguagesDescriptors[id].fallback;
+    if (fallback != LANGUAGE_UNDEFINED)
+    {
+        filename = GetLanguagePath(fallback);
+        _loadedLanguages.emplace_back(LanguagePackFactory::FromFile(fallback, filename.c_str()));
+    }
+
     if (id != LANGUAGE_ENGLISH_UK)
     {
         filename = GetLanguagePath(LANGUAGE_ENGLISH_UK);
