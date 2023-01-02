@@ -12,7 +12,7 @@
 #include "../world/Map.h"
 #include "GameAction.h"
 
-class MapChangeSizeAction final : public GameActionBase<GameCommand::MapChangeSize>
+class MapChangeSizeAction final : public GameActionBase<GameCommand::ChangeMapSize>
 {
 public:
     MapChangeSizeAction() = default;

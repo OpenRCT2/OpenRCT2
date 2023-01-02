@@ -198,7 +198,7 @@ const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> N
             GameCommand::PlaceParkEntrance,
             GameCommand::RemoveParkEntrance,
             GameCommand::PlacePeepSpawn,
-            GameCommand::MapChangeSize,
+            GameCommand::ChangeMapSize,
         },
     },
     NetworkAction{

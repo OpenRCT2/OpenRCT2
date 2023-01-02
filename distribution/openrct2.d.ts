@@ -313,6 +313,7 @@ declare global {
         queryAction(action: "parkentranceremove", args: ParkEntranceRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parkmarketing", args: ParkMarketingArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetdate", args: ParkSetDateArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetentrancefee", args: ParkSetEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetloan", args: ParkSetLoanArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetname", args: ParkSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetparameter", args: ParkSetParameterArgs, callback?: (result: GameActionResult) => void): void;
@@ -335,7 +336,6 @@ declare global {
         queryAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "setparkentrancefee", args: SetParkEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -404,6 +404,7 @@ declare global {
         executeAction(action: "parkentranceremove", args: ParkEntranceRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parkmarketing", args: ParkMarketingArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetdate", args: ParkSetDateArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetentrancefee", args: ParkSetEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetloan", args: ParkSetLoanArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetname", args: ParkSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetparameter", args: ParkSetParameterArgs, callback?: (result: GameActionResult) => void): void;
@@ -426,7 +427,6 @@ declare global {
         executeAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "setparkentrancefee", args: SetParkEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -637,6 +637,7 @@ declare global {
         "parkentranceremove" |
         "parkmarketing" |
         "parksetdate" |
+        "parksetentrancefee" |
         "parksetloan" |
         "parksetname" |
         "parksetparameter" |
@@ -659,7 +660,6 @@ declare global {
         "ridesetstatus" |
         "ridesetvehicle" |
         "scenariosetsetting" |
-        "setparkentrancefee" |
         "signsetname" |
         "signsetstyle" |
         "smallsceneryplace" |
@@ -949,6 +949,10 @@ declare global {
         day: number;
     }
 
+    interface ParkSetEntranceFeeArgs extends GameActionArgs {
+        value: number;
+    }
+
     interface ParkSetLoanArgs extends GameActionArgs {
         value: number;
     }
@@ -1083,10 +1087,6 @@ declare global {
 
     interface ScenarioSetSettingArgs extends GameActionArgs {
         setting: number; // see ScenarioSetSetting in openrct2/actions/ScenarioSetSettingAction.h
-        value: number;
-    }
-
-    interface SetParkEntranceFeeArgs extends GameActionArgs {
         value: number;
     }
 

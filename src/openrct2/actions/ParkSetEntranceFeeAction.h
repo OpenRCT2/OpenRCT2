@@ -11,14 +11,14 @@
 
 #include "GameAction.h"
 
-class SetParkEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
+class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
 {
 private:
     money16 _fee{ MONEY16_UNDEFINED };
 
 public:
-    SetParkEntranceFeeAction() = default;
-    SetParkEntranceFeeAction(money16 fee);
+    ParkSetEntranceFeeAction() = default;
+    ParkSetEntranceFeeAction(money16 fee);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

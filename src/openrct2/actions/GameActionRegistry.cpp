@@ -43,6 +43,7 @@
 #include "ParkEntranceRemoveAction.h"
 #include "ParkMarketingAction.h"
 #include "ParkSetDateAction.h"
+#include "ParkSetEntranceFeeAction.h"
 #include "ParkSetLoanAction.h"
 #include "ParkSetNameAction.h"
 #include "ParkSetParameterAction.h"
@@ -65,7 +66,6 @@
 #include "RideSetStatusAction.h"
 #include "RideSetVehicleAction.h"
 #include "ScenarioSetSettingAction.h"
-#include "SetParkEntranceFeeAction.h"
 #include "SignSetNameAction.h"
 #include "SignSetStyleAction.h"
 #include "SmallSceneryPlaceAction.h"
@@ -165,7 +165,7 @@ namespace GameActions
         REGISTER_ACTION(RideSetVehicleAction);
         REGISTER_ACTION(RideSetSettingAction);
         REGISTER_ACTION(ScenarioSetSettingAction);
-        REGISTER_ACTION(SetParkEntranceFeeAction);
+        REGISTER_ACTION(ParkSetEntranceFeeAction);
         REGISTER_ACTION(SignSetNameAction);
         REGISTER_ACTION(SignSetStyleAction);
         REGISTER_ACTION(StaffFireAction);

@@ -98,6 +98,7 @@
     <ClInclude Include="actions\ParkEntranceRemoveAction.h" />
     <ClInclude Include="actions\ParkMarketingAction.h" />
     <ClInclude Include="actions\ParkSetDateAction.h" />
+    <ClInclude Include="actions\ParkSetEntranceFeeAction.h" />
     <ClInclude Include="actions\ParkSetLoanAction.h" />
     <ClInclude Include="actions\ParkSetNameAction.h" />
     <ClInclude Include="actions\ParkSetParameterAction.h" />
@@ -121,7 +122,6 @@
     <ClInclude Include="actions\RideSetStatusAction.h" />
     <ClInclude Include="actions\RideSetVehicleAction.h" />
     <ClInclude Include="actions\ScenarioSetSettingAction.h" />
-    <ClInclude Include="actions\SetParkEntranceFeeAction.h" />
     <ClInclude Include="actions\SignSetNameAction.h" />
     <ClInclude Include="actions\SignSetStyleAction.h" />
     <ClInclude Include="actions\SmallSceneryPlaceAction.h" />
@@ -598,6 +598,7 @@
     <ClCompile Include="actions\ParkEntranceRemoveAction.cpp" />
     <ClCompile Include="actions\ParkMarketingAction.cpp" />
     <ClCompile Include="actions\ParkSetDateAction.cpp" />
+    <ClCompile Include="actions\ParkSetEntranceFeeAction.cpp" />
     <ClCompile Include="actions\ParkSetLoanAction.cpp" />
     <ClCompile Include="actions\ParkSetNameAction.cpp" />
     <ClCompile Include="actions\ParkSetParameterAction.cpp" />
@@ -621,7 +622,6 @@
     <ClCompile Include="actions\RideSetStatusAction.cpp" />
     <ClCompile Include="actions\RideSetVehicleAction.cpp" />
     <ClCompile Include="actions\ScenarioSetSettingAction.cpp" />
-    <ClCompile Include="actions\SetParkEntranceFeeAction.cpp" />
     <ClCompile Include="actions\SignSetNameAction.cpp" />
     <ClCompile Include="actions\SignSetStyleAction.cpp" />
     <ClCompile Include="actions\SmallSceneryPlaceAction.cpp" />
