@@ -436,12 +436,15 @@ void FootpathInterruptQueuingPeeps(const CoordsXYZ& footpathPos)
     if (tileElement == nullptr)
         return;
 
-    auto isQueue = tileElement->AsPath()->IsQueue();
+    // Do not interrupt guests if the footpath is a queue.
+    if (tileElement->AsPath()->IsQueue())
+        return;
+
     auto quad = EntityTileList<Peep>(footpathPos);
 
     for (auto peep : quad)
     {
-        if (!isQueue && peep->State == PeepState::Queuing)
+        if (peep->State == PeepState::Queuing)
         {
             // Use the base Z coord to compare against the Z coord of the footpath.
             auto peepBaseZ = peep->GetLocation().z / COORDS_Z_STEP * COORDS_Z_STEP;
