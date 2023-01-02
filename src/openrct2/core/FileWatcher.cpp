@@ -18,8 +18,11 @@
 #    include <sys/inotify.h>
 #    include <sys/types.h>
 #    include <unistd.h>
+#elif defined(__APPLE__)
+#    include <CoreServices/CoreServices.h>
 #endif
 
+#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "FileSystem.hpp"
@@ -82,6 +85,53 @@ FileWatcher::WatchDescriptor::~WatchDescriptor()
 }
 #endif
 
+#if defined(__APPLE__)
+
+static int eventModified = kFSEventStreamEventFlagItemFinderInfoMod | kFSEventStreamEventFlagItemModified
+    | kFSEventStreamEventFlagItemInodeMetaMod | kFSEventStreamEventFlagItemChangeOwner | kFSEventStreamEventFlagItemXattrMod;
+
+static int eventRenamed = kFSEventStreamEventFlagItemCreated | kFSEventStreamEventFlagItemRemoved
+    | kFSEventStreamEventFlagItemRenamed;
+
+static int eventSystem = kFSEventStreamEventFlagUserDropped | kFSEventStreamEventFlagKernelDropped
+    | kFSEventStreamEventFlagEventIdsWrapped | kFSEventStreamEventFlagHistoryDone | kFSEventStreamEventFlagMount
+    | kFSEventStreamEventFlagUnmount | kFSEventStreamEventFlagRootChanged;
+
+void OnFileChangedCallback(
+    ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
+    const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
+{
+    // Get the FileWatcher instance
+    FSEventStreamContext* context = static_cast<FSEventStreamContext*>(clientCallBackInfo);
+    FileWatcher* fileWatcher = static_cast<FileWatcher*>(context->info);
+    auto onFileChanged = fileWatcher->OnFileChanged;
+
+    Guard::Assert(context != nullptr, "FSEventStreamContext is null");
+    Guard::Assert(fileWatcher != nullptr, "FileWatcher is null");
+
+    char** paths = static_cast<char**>(eventPaths);
+    for (size_t i = 0; i < numEvents; i++)
+    {
+        // Print changed, modified, renamed, or system events
+        if (eventFlags[i] & eventModified)
+            log_info("Modified: %s\n", paths[i]);
+        if (eventFlags[i] & eventRenamed)
+            log_info("Renamed: %s\n", paths[i]);
+        if (eventFlags[i] & eventSystem)
+            log_info("System: %s\n", paths[i]);
+
+        if (onFileChanged)
+        {
+            if (eventFlags[i] & eventModified || eventFlags[i] & eventRenamed)
+            {
+                log_info("Calling OnFileChanged for %s", paths[i]);
+                onFileChanged(paths[i]);
+            }
+        }
+    }
+}
+#endif
+
 FileWatcher::FileWatcher(u8string_view directoryPath)
 {
 #ifdef _WIN32
@@ -103,6 +153,18 @@ FileWatcher::FileWatcher(u8string_view directoryPath)
             _watchDescs.emplace_back(_fileDesc.Fd, p.path().string());
         }
     }
+#elif defined(__APPLE__)
+    CFStringRef path = CFStringCreateWithCString(kCFAllocatorDefault, directoryPath.data(), kCFStringEncodingUTF8);
+    CFArrayRef pathsToWatch = CFArrayCreate(kCFAllocatorDefault, reinterpret_cast<const void**>(&path), 1, nullptr);
+    CFAbsoluteTime latency = 3.0; /* Latency in seconds */
+    FSEventStreamContext context = { 0, this, nullptr, nullptr, nullptr };
+
+    /* Create the stream, passing in a callback */
+    _stream = FSEventStreamCreate(
+        NULL, &OnFileChangedCallback, &context, pathsToWatch, kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
+        latency, kFSEventStreamCreateFlagFileEvents                                          /* Flags explained in reference */
+    );
+
 #else
     throw std::runtime_error("FileWatcher not supported on this platform.");
 #endif
@@ -119,6 +181,11 @@ FileWatcher::~FileWatcher()
     _finished = true;
     _watchThread.join();
     _fileDesc.Close();
+#elif defined(__APPLE__)
+    FSEventStreamStop(_stream);
+    FSEventStreamInvalidate(_stream);
+    FSEventStreamRelease(_stream);
+    _watchThread.join();
 #else
     return;
 #endif
@@ -186,5 +253,9 @@ void FileWatcher::WatchDirectory()
         // Sleep for 1/2 second
         usleep(500000);
     }
+#elif defined(__APPLE__)
+    FSEventStreamScheduleWithRunLoop(_stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+    FSEventStreamStart(_stream);
+    CFRunLoopRun();
 #endif
 }

@@ -20,6 +20,8 @@
 #    include "FileSystem.hpp"
 
 typedef void* HANDLE;
+#elif defined(__APPLE__)
+#    include <CoreServices/CoreServices.h>
 #endif
 
 /**
@@ -54,6 +56,8 @@ private:
 
     FileDescriptor _fileDesc;
     std::vector<WatchDescriptor> _watchDescs;
+#elif defined(__APPLE__)
+    FSEventStreamRef _stream{};
 #endif
 
 public:
