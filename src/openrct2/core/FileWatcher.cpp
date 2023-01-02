@@ -97,17 +97,16 @@ static int eventSystem = kFSEventStreamEventFlagUserDropped | kFSEventStreamEven
     | kFSEventStreamEventFlagEventIdsWrapped | kFSEventStreamEventFlagHistoryDone | kFSEventStreamEventFlagMount
     | kFSEventStreamEventFlagUnmount | kFSEventStreamEventFlagRootChanged;
 
-void OnFileChangedCallback(
+void FileWatcher::FSEventsCallback(
     ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
     const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
 {
     // Get the FileWatcher instance
-    FSEventStreamContext* context = static_cast<FSEventStreamContext*>(clientCallBackInfo);
-    FileWatcher* fileWatcher = static_cast<FileWatcher*>(context->info);
+    FileWatcher* fileWatcher = static_cast<FileWatcher*>(clientCallBackInfo);
     auto onFileChanged = fileWatcher->OnFileChanged;
 
-    Guard::Assert(context != nullptr, "FSEventStreamContext is null");
     Guard::Assert(fileWatcher != nullptr, "FileWatcher is null");
+    Guard::Assert(onFileChanged != nullptr, "OnFileChanged is null");
 
     char** paths = static_cast<char**>(eventPaths);
     for (size_t i = 0; i < numEvents; i++)
@@ -120,13 +119,10 @@ void OnFileChangedCallback(
         if (eventFlags[i] & eventSystem)
             log_info("System: %s\n", paths[i]);
 
-        if (onFileChanged)
+        if (eventFlags[i] & eventModified || eventFlags[i] & eventRenamed)
         {
-            if (eventFlags[i] & eventModified || eventFlags[i] & eventRenamed)
-            {
-                log_info("Calling OnFileChanged for %s", paths[i]);
-                onFileChanged(paths[i]);
-            }
+            log_info("Calling OnFileChanged for %s", paths[i]);
+            onFileChanged(paths[i]);
         }
     }
 }
@@ -161,10 +157,14 @@ FileWatcher::FileWatcher(u8string_view directoryPath)
 
     /* Create the stream, passing in a callback */
     _stream = FSEventStreamCreate(
-        NULL, &OnFileChangedCallback, &context, pathsToWatch, kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
-        latency, kFSEventStreamCreateFlagFileEvents                                          /* Flags explained in reference */
+        NULL, &FSEventsCallback, &context, pathsToWatch, kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
+        latency, kFSEventStreamCreateFlagFileEvents                                     /* Flags explained in reference */
     );
 
+    if (!_stream)
+    {
+        throw std::runtime_error("Unable to create FSEventStream");
+    }
 #else
     throw std::runtime_error("FileWatcher not supported on this platform.");
 #endif
@@ -182,10 +182,14 @@ FileWatcher::~FileWatcher()
     _watchThread.join();
     _fileDesc.Close();
 #elif defined(__APPLE__)
-    FSEventStreamStop(_stream);
-    FSEventStreamInvalidate(_stream);
-    FSEventStreamRelease(_stream);
+    if (_stream)
+    {
+        FSEventStreamStop(_stream);
+        FSEventStreamInvalidate(_stream);
+        FSEventStreamRelease(_stream);
+    }
     _watchThread.join();
+    _stream = nullptr;
 #else
     return;
 #endif
@@ -254,8 +258,11 @@ void FileWatcher::WatchDirectory()
         usleep(500000);
     }
 #elif defined(__APPLE__)
-    FSEventStreamScheduleWithRunLoop(_stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-    FSEventStreamStart(_stream);
-    CFRunLoopRun();
+    if (_stream)
+    {
+        FSEventStreamScheduleWithRunLoop(_stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+        FSEventStreamStart(_stream);
+        CFRunLoopRun();
+    }
 #endif
 }

@@ -69,6 +69,10 @@ public:
 private:
 #if defined(_WIN32) || defined(__linux__)
     bool _finished{};
+#elif defined(__APPLE__)
+    static void FSEventsCallback(
+        ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
+        const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
 #endif
 
     void WatchDirectory();
