@@ -14,7 +14,7 @@
 class ParkSetLoanAction final : public GameActionBase<GameCommand::SetCurrentLoan>
 {
 private:
-    money32 _value{ MONEY32_UNDEFINED };
+    money64 _value{ MONEY64_UNDEFINED };
 
 public:
     ParkSetLoanAction() = default;
