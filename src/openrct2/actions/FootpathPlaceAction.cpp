@@ -121,6 +121,15 @@ GameActions::Result FootpathPlaceAction::Execute() const
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         FootpathInterruptPeeps(_loc);
+
+        // This fixes a source of #17814, if a guest is queuing for a ride and the queue is removed, guests
+        // will still remain in the queue. This is a behaviour from the original game, but it also causes
+        // the fail of the logic to determine if the queue is full allowing all guests to join to the queue
+        // and reach the entrance of the ride.
+        //
+        // To prevent that, we need to interrupt all peeps that are queuing at this coordinate of the new
+        // footpath if the new footpath is no longer a queue.
+        FootpathInterruptQueuingPeeps(_loc);
     }
 
     gFootpathGroundFlags = 0;

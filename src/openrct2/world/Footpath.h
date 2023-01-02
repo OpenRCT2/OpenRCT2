@@ -233,6 +233,7 @@ extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];
 
 TileElement* MapGetFootpathElement(const CoordsXYZ& coords);
 void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
+void FootpathInterruptQueuingPeeps(const CoordsXYZ& footpathPos);
 money32 FootpathProvisionalSet(
     ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
     PathConstructFlags constructFlags);

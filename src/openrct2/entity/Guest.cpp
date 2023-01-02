@@ -1844,7 +1844,7 @@ Ride* Guest::FindBestRideToGoOn()
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
             {
-                if (ShouldGoOnRide(&ride, StationIndex::FromUnderlying(0), false, true) && ride_has_ratings(&ride))
+                if (ShouldGoOnRide(&ride, StationIndex::FromUnderlying(0), false, true, nullptr) && ride_has_ratings(&ride))
                 {
                     if (mostExcitingRide == nullptr || ride.excitement > mostExcitingRide->excitement)
                     {
@@ -1919,7 +1919,7 @@ BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
  * ride/shop, or they may just be thinking about it.
  *  rct2: 0x006960AB
  */
-bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, bool thinking)
+bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, bool thinking, TileElement* queueTileElement)
 {
     // Indicates whether a peep is physically at the ride, or is just thinking about going on the ride.
     bool peepAtRide = !thinking;
@@ -1964,20 +1964,40 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                 Guest* lastPeepInQueue = GetEntity<Guest>(station.LastPeepInQueue);
                 if (lastPeepInQueue != nullptr && (abs(lastPeepInQueue->z - z) <= 6))
                 {
-                    int32_t dx = abs(lastPeepInQueue->x - x);
-                    int32_t dy = abs(lastPeepInQueue->y - y);
-                    int32_t maxD = std::max(dx, dy);
+                    // Fixes a source of #17814, this fix will ensure that the distance between the last guest
+                    // in the queue and the guest attempting to join to the queue is only calculated using the
+                    // relevant axis, using the direction of the queue banner (that is located at the queue
+                    // entrance).
+                    //
+                    // This fix is needed because sometimes a guest can join to the queue from the edge of the
+                    // queue instead from the middle of the queue, and if we uses both axis to determine the
+                    // distance, guests can overlap at queue entrance.
+                    // A side effect of guests overlaping at queue entrance is that logic to update the queue
+                    // position of the guest can fail, allowing a guest to walk and reach the ride entrance
+                    // ignoring the next guest in the queue, so this fix will also prevent such case.
+                    auto direction = queueTileElement->AsPath()->GetQueueBannerDirection();
+                    int32_t distance;
+                    if (direction == 0 || direction == 2)
+                    {
+                        // X Axis
+                        distance = abs(lastPeepInQueue->x - x);
+                    }
+                    else
+                    {
+                        // Y Axis
+                        distance = abs(lastPeepInQueue->y - y);
+                    }
 
                     // Unlike normal paths, peeps cannot overlap when queueing for a ride.
                     // This check enforces a minimum distance between peeps entering the queue.
-                    if (maxD < 8)
+                    if (distance < 8)
                     {
                         peep_tried_to_enter_full_queue(this, ride);
                         return false;
                     }
 
                     // This checks if there's a peep standing still at the very end of the queue.
-                    if (maxD <= 13 && lastPeepInQueue->TimeInQueue > 10)
+                    if (distance <= 13 && lastPeepInQueue->TimeInQueue > 10)
                     {
                         peep_tried_to_enter_full_queue(this, ride);
                         return false;
@@ -3193,7 +3213,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
             {
-                if (peep->ShouldGoOnRide(&ride, StationIndex::FromUnderlying(0), false, true))
+                if (peep->ShouldGoOnRide(&ride, StationIndex::FromUnderlying(0), false, true, nullptr))
                 {
                     potentialRides[numPotentialRides++] = ride.id;
                 }
@@ -7401,6 +7421,45 @@ void Guest::RemoveFromQueue()
             return;
         }
     }
+}
+
+void Guest::RemoveFromQueueAndAllGuestsAfter()
+{
+    auto ride = get_ride(CurrentRide);
+    if (ride == nullptr)
+        return;
+
+    if (State != PeepState::Queuing)
+        return;
+
+    auto& station = ride->GetStation(CurrentRideStation);
+
+    auto* otherGuest = GetEntity<Guest>(station.LastPeepInQueue);
+    if (otherGuest == nullptr)
+    {
+        log_error("Invalid Guest Queue list!");
+        return;
+    }
+
+    // Iterate from the last guest in the queue to the guest that will be removed from the queue
+    for (; otherGuest != nullptr; otherGuest = GetEntity<Guest>(otherGuest->GuestNextInQueue))
+    {
+        // Remove the guest from the queue.
+        otherGuest->SetState(PeepState::Walking);
+        otherGuest->UpdateCurrentActionSpriteType();
+
+        if (station.QueueLength > 0)
+        {
+            station.QueueLength--;
+        }
+
+        // Finish the iteration if the other guest is the guest that we want to remove from the queue
+        if (sprite_index == otherGuest->sprite_index)
+            break;
+    }
+
+    // Set the next guest in queue as the last guest in the queue.
+    station.LastPeepInQueue = GuestNextInQueue;
 }
 
 uint64_t Guest::GetItemFlags() const

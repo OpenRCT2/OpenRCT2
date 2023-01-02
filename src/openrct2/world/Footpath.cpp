@@ -429,6 +429,37 @@ void FootpathInterruptPeeps(const CoordsXYZ& footpathPos)
     }
 }
 
+void FootpathInterruptQueuingPeeps(const CoordsXYZ& footpathPos)
+{
+    auto tileElement = MapGetFootpathElement(footpathPos);
+
+    if (tileElement == nullptr)
+        return;
+
+    auto isQueue = tileElement->AsPath()->IsQueue();
+    auto quad = EntityTileList<Peep>(footpathPos);
+
+    for (auto peep : quad)
+    {
+        if (!isQueue && peep->State == PeepState::Queuing)
+        {
+            // Use the base Z coord to compare against the Z coord of the footpath.
+            auto peepBaseZ = peep->GetLocation().z / COORDS_Z_STEP * COORDS_Z_STEP;
+
+            // Some guests can have a Z value that matches the Z of the upper tile on sloped queues,
+            // so we also need to check the Z coordinate of the upper tile.
+            if (peepBaseZ == footpathPos.z || peepBaseZ == footpathPos.z + COORDS_Z_STEP)
+            {
+                auto* guest = peep->As<Guest>();
+                if (guest != nullptr)
+                {
+                    guest->RemoveFromQueueAndAllGuestsAfter();
+                }
+            }
+        }
+    }
+}
+
 /**
  * Returns true if the edge of tile x, y specified by direction is occupied by a fence
  * between heights z0 and z1.

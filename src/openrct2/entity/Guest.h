@@ -337,7 +337,7 @@ public:
     void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
     void PickRideToGoOn();
     void ReadMap();
-    bool ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, bool thinking);
+    bool ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, bool thinking, TileElement* queueTileElement);
     bool ShouldGoToShop(Ride* ride, bool peepAtShop);
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
@@ -365,6 +365,7 @@ public:
     static Guest* Generate(const CoordsXYZ& coords);
     bool UpdateQueuePosition(PeepActionType previous_action);
     void RemoveFromQueue();
+    void RemoveFromQueueAndAllGuestsAfter();
 
     uint64_t GetItemFlags() const;
     void SetItemFlags(uint64_t itemFlags);

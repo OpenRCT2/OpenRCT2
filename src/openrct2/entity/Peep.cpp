@@ -1747,6 +1747,24 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
 
         if (guest->State == PeepState::Queuing)
         {
+            // Fixes a source of #17814, sometimes a guest can reach the ride entrance ignoring the next guest in the
+            // queue, so this fix will ensure that the Queue state of the guest is still valid when guest reaches the
+            // ride entrance.
+            //
+            // If the Queue state is not valid, this guest and all guests in queue after this guest should be removed
+            // from the queue, and the last guest in the queue should be recalculated.
+            auto* guestNext = GetEntity<Guest>(guest->GuestNextInQueue);
+            if (guestNext != nullptr)
+            {
+                // If the next guest in the queue is still in queue, then this guest has reached the ride entrance ignoring
+                // the next guest in the queue.
+                if (guestNext->RideSubState == PeepRideSubState::InQueue)
+                {
+                    guest->RemoveFromQueueAndAllGuestsAfter();
+                    return false;
+                }
+            }
+
             // Guest is in the ride queue.
             guest->RideSubState = PeepRideSubState::AtQueueFront;
             guest->ActionSpriteImageOffset = _unk_F1AEF0;
@@ -1769,7 +1787,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
         // the path tile.
-        if (!guest->ShouldGoOnRide(ride, stationNum, false, false))
+        if (!guest->ShouldGoOnRide(ride, stationNum, false, false, nullptr))
         {
             // Peep remembers that this is the last ride they
             // considered while on this path tile.
@@ -2202,7 +2220,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                 /* Peep is approaching the entrance of a ride queue.
                  * Decide whether to go on the ride. */
                 auto ride = get_ride(rideIndex);
-                if (ride != nullptr && guest->ShouldGoOnRide(ride, stationNum, true, false))
+                if (ride != nullptr && guest->ShouldGoOnRide(ride, stationNum, true, false, tile_element))
                 {
                     // Peep has decided to go on the ride at the queue.
                     guest->InteractionRideIndex = rideIndex;
@@ -2235,6 +2253,22 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                                 News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->sprite_index, ft);
                         }
                     }
+
+                    // Fixes a source of #17814: sometimes a guest can enter to the queue with a destination that does not
+                    // belongs to the middle of the queue and it is fixed by the game at the second queue tile due to the
+                    // pathfinding (peep_move_one_tile method). An example of this problem can be reproduced by placing a queue
+                    // at left or right from a ride exit, guests will try to join to the queue from the edge of the ride exit
+                    // instead from the middle of the path.
+                    //
+                    // This fix will ensure that the destination of the guest is always to the middle of the queue, so guest
+                    // will always attempt to align to the middle of the queue from the first queue tile instead of do it at the
+                    // second queue tile.
+                    //
+                    // Without this fix guests can overlap at the queue entrance, and the logic to determine if a queue is full
+                    // can fail allowing more guests to join to the queue. Also the logic to update the queue position of the
+                    // guest can fail allowing a guest to walk and reach the ride entrance ignoring the next guest in the queue.
+                    auto queueMiddle = CoordsXY{ CoordsXY{ guest->NextLoc.ToTileStart() } + CoordsDirectionDelta[guest->PeepDirection] }.ToTileCentre();
+                    guest->SetDestination(queueMiddle);
 
                     peep_footpath_move_forward(guest, { coords, tile_element }, vandalism_present);
                 }
@@ -2312,7 +2346,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
     {
         guest->TimeLost = 0;
-        if (!guest->ShouldGoOnRide(ride, StationIndex::FromUnderlying(0), false, false))
+        if (!guest->ShouldGoOnRide(ride, StationIndex::FromUnderlying(0), false, false, nullptr))
         {
             peep_return_to_centre_of_tile(guest);
             return true;
