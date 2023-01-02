@@ -93,36 +93,26 @@ static int eventModified = kFSEventStreamEventFlagItemFinderInfoMod | kFSEventSt
 static int eventRenamed = kFSEventStreamEventFlagItemCreated | kFSEventStreamEventFlagItemRemoved
     | kFSEventStreamEventFlagItemRenamed;
 
-static int eventSystem = kFSEventStreamEventFlagUserDropped | kFSEventStreamEventFlagKernelDropped
-    | kFSEventStreamEventFlagEventIdsWrapped | kFSEventStreamEventFlagHistoryDone | kFSEventStreamEventFlagMount
-    | kFSEventStreamEventFlagUnmount | kFSEventStreamEventFlagRootChanged;
-
 void FileWatcher::FSEventsCallback(
     ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
     const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
 {
-    // Get the FileWatcher instance
     FileWatcher* fileWatcher = static_cast<FileWatcher*>(clientCallBackInfo);
-    auto onFileChanged = fileWatcher->OnFileChanged;
 
     Guard::Assert(fileWatcher != nullptr, "FileWatcher is null");
-    Guard::Assert(onFileChanged != nullptr, "OnFileChanged is null");
+    Guard::Assert(fileWatcher->OnFileChanged != nullptr, "OnFileChanged is null");
 
     char** paths = static_cast<char**>(eventPaths);
     for (size_t i = 0; i < numEvents; i++)
     {
-        // Print changed, modified, renamed, or system events
         if (eventFlags[i] & eventModified)
-            log_info("Modified: %s\n", paths[i]);
+            log_verbose("Modified: %s\n", paths[i]);
         if (eventFlags[i] & eventRenamed)
-            log_info("Renamed: %s\n", paths[i]);
-        if (eventFlags[i] & eventSystem)
-            log_info("System: %s\n", paths[i]);
+            log_verbose("Renamed: %s\n", paths[i]);
 
         if (eventFlags[i] & eventModified || eventFlags[i] & eventRenamed)
         {
-            log_info("Calling OnFileChanged for %s", paths[i]);
-            onFileChanged(paths[i]);
+            fileWatcher->OnFileChanged(paths[i]);
         }
     }
 }
@@ -152,14 +142,12 @@ FileWatcher::FileWatcher(u8string_view directoryPath)
 #elif defined(__APPLE__)
     CFStringRef path = CFStringCreateWithCString(kCFAllocatorDefault, directoryPath.data(), kCFStringEncodingUTF8);
     CFArrayRef pathsToWatch = CFArrayCreate(kCFAllocatorDefault, reinterpret_cast<const void**>(&path), 1, nullptr);
-    CFAbsoluteTime latency = 3.0; /* Latency in seconds */
+    CFAbsoluteTime latencyInSeconds = 3.0;
     FSEventStreamContext context = { 0, this, nullptr, nullptr, nullptr };
 
-    /* Create the stream, passing in a callback */
     _stream = FSEventStreamCreate(
-        NULL, &FSEventsCallback, &context, pathsToWatch, kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
-        latency, kFSEventStreamCreateFlagFileEvents                                     /* Flags explained in reference */
-    );
+        NULL, &FSEventsCallback, &context, pathsToWatch, kFSEventStreamEventIdSinceNow, latencyInSeconds,
+        kFSEventStreamCreateFlagFileEvents);
 
     if (!_stream)
     {
