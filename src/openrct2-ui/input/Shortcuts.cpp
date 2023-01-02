@@ -21,8 +21,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
-#include <openrct2/actions/SetCheatAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
@@ -612,8 +612,8 @@ static void ShortcutDecreaseElementHeight()
 
 static void ShortcutToggleClearanceChecks()
 {
-    auto setCheatAction = SetCheatAction(CheatType::DisableClearanceChecks, gCheatsDisableClearanceChecks ? 0 : 1);
-    GameActions::Execute(&setCheatAction);
+    auto cheatSetAction = CheatSetAction(CheatType::DisableClearanceChecks, gCheatsDisableClearanceChecks ? 0 : 1);
+    GameActions::Execute(&cheatSetAction);
 }
 
 static void ShortcutToggleConsole()

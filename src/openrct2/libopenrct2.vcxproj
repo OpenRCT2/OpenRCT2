@@ -67,6 +67,7 @@
     <ClInclude Include="actions\BannerSetColourAction.h" />
     <ClInclude Include="actions\BannerSetNameAction.h" />
     <ClInclude Include="actions\BannerSetStyleAction.h" />
+    <ClInclude Include="actions\CheatSetAction.h" />
     <ClInclude Include="actions\ClearAction.h" />
     <ClInclude Include="actions\ClimateSetAction.h" />
     <ClInclude Include="actions\CustomAction.h" />
@@ -120,7 +121,6 @@
     <ClInclude Include="actions\RideSetStatusAction.h" />
     <ClInclude Include="actions\RideSetVehicleAction.h" />
     <ClInclude Include="actions\ScenarioSetSettingAction.h" />
-    <ClInclude Include="actions\SetCheatAction.h" />
     <ClInclude Include="actions\SetParkEntranceFeeAction.h" />
     <ClInclude Include="actions\SignSetNameAction.h" />
     <ClInclude Include="actions\SignSetStyleAction.h" />
@@ -567,6 +567,7 @@
     <ClCompile Include="actions\BannerSetColourAction.cpp" />
     <ClCompile Include="actions\BannerSetNameAction.cpp" />
     <ClCompile Include="actions\BannerSetStyleAction.cpp" />
+    <ClCompile Include="actions\CheatSetAction.cpp" />
     <ClCompile Include="actions\ClearAction.cpp" />
     <ClCompile Include="actions\ClimateSetAction.cpp" />
     <ClCompile Include="actions\CustomAction.cpp" />
@@ -620,7 +621,6 @@
     <ClCompile Include="actions\RideSetStatusAction.cpp" />
     <ClCompile Include="actions\RideSetVehicleAction.cpp" />
     <ClCompile Include="actions\ScenarioSetSettingAction.cpp" />
-    <ClCompile Include="actions\SetCheatAction.cpp" />
     <ClCompile Include="actions\SetParkEntranceFeeAction.cpp" />
     <ClCompile Include="actions\SignSetNameAction.cpp" />
     <ClCompile Include="actions\SignSetStyleAction.cpp" />

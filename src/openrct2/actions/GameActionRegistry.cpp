@@ -13,6 +13,7 @@
 #include "BannerSetColourAction.h"
 #include "BannerSetNameAction.h"
 #include "BannerSetStyleAction.h"
+#include "CheatSetAction.h"
 #include "ClearAction.h"
 #include "ClimateSetAction.h"
 #include "CustomAction.h"
@@ -64,7 +65,6 @@
 #include "RideSetStatusAction.h"
 #include "RideSetVehicleAction.h"
 #include "ScenarioSetSettingAction.h"
-#include "SetCheatAction.h"
 #include "SetParkEntranceFeeAction.h"
 #include "SignSetNameAction.h"
 #include "SignSetStyleAction.h"
@@ -204,7 +204,7 @@ namespace GameActions
         REGISTER_ACTION(WaterRaiseAction);
         REGISTER_ACTION(GuestSetFlagsAction);
         REGISTER_ACTION(ParkSetDateAction);
-        REGISTER_ACTION(SetCheatAction);
+        REGISTER_ACTION(CheatSetAction);
         REGISTER_ACTION(MapChangeSizeAction);
 #ifdef ENABLE_SCRIPTING
         REGISTER_ACTION(CustomAction);

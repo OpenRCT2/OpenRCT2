@@ -285,6 +285,7 @@ declare global {
         queryAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "cheatset", args: CheatSetArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -334,7 +335,6 @@ declare global {
         queryAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "setcheat", args: SetCheatArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "setparkentrancefee", args: SetParkEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
@@ -376,7 +376,7 @@ declare global {
         executeAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "changemapsize", args: ChangeMapSizeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "cheatset", args: CheatSetArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -396,6 +396,7 @@ declare global {
         executeAction(action: "largesceneryremove", args: LargeSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "largescenerysetcolour", args: LargeScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "loadorquit", args: LoadOrQuitArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "mapchangesize", args: MapChangeSizeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "mazeplacetrack", args: MazePlaceTrackArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "mazesettrack", args: MazeSetTrackArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "networkmodifygroup", args: NetworkModifyGroupArgs, callback?: (result: GameActionResult) => void): void;
@@ -425,7 +426,6 @@ declare global {
         executeAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "setcheat", args: SetCheatArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "setparkentrancefee", args: SetParkEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
@@ -609,7 +609,7 @@ declare global {
         "bannersetcolour" |
         "bannersetname" |
         "bannersetstyle" |
-        "changemapsize" |
+        "cheatset" |
         "clearscenery" |
         "climateset" |
         "footpathadditionplace" |
@@ -629,6 +629,7 @@ declare global {
         "largesceneryremove" |
         "largescenerysetcolour" |
         "loadorquit" |
+        "mapchangesize" |
         "mazeplacetrack" |
         "mazesettrack" |
         "networkmodifygroup" |
@@ -658,7 +659,6 @@ declare global {
         "ridesetstatus" |
         "ridesetvehicle" |
         "scenariosetsetting" |
-        "setcheat" |
         "setparkentrancefee" |
         "signsetname" |
         "signsetstyle" |
@@ -727,6 +727,12 @@ declare global {
         id: number;
         type: number; // 0: primary colour, 1: secondary colour: 2: no entry
         parameter: number; // primary colour | secondary colour | 0: disable, 1: enable
+    }
+
+    interface CheatSetArgs extends GameActionArgs {
+        type: number; // see CheatType in openrct2/Cheats.h
+        param1: number; // see openrct2/actions/CheatSetAction.cpp
+        param2: number; // see openrct2/actions/CheatSetAction.cpp
     }
 
     interface ClearSceneryArgs extends GameActionArgs {
@@ -1078,12 +1084,6 @@ declare global {
     interface ScenarioSetSettingArgs extends GameActionArgs {
         setting: number; // see ScenarioSetSetting in openrct2/actions/ScenarioSetSettingAction.h
         value: number;
-    }
-
-    interface SetCheatArgs extends GameActionArgs {
-        type: number; // see CheatType in openrct2/Cheats.h
-        param1: number; // see openrct2/actions/SetCheatAction.cpp
-        param2: number; // see openrct2/actions/SetCheatAction.cpp
     }
 
     interface SetParkEntranceFeeArgs extends GameActionArgs {

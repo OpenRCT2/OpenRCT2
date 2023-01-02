@@ -15,7 +15,7 @@
 #include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../actions/SetCheatAction.h"
+#include "../actions/CheatSetAction.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"

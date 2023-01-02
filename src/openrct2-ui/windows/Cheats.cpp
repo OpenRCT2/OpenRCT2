@@ -15,8 +15,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
-#include <openrct2/actions/SetCheatAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
@@ -798,8 +798,8 @@ private:
                 InvalidateWidget(WIDX_PARK_RATING_SPINNER);
                 if (ParkGetForcedRating() >= 0)
                 {
-                    auto setCheatAction = SetCheatAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
-                    GameActions::Execute(&setCheatAction);
+                    auto cheatSetAction = CheatSetAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
+                    GameActions::Execute(&cheatSetAction);
                 }
                 break;
             case WIDX_DECREASE_PARK_RATING:

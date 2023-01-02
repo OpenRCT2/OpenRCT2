@@ -10,8 +10,8 @@
 #include "Cheats.h"
 
 #include "GameState.h"
+#include "actions/CheatSetAction.h"
 #include "actions/ParkSetLoanAction.h"
-#include "actions/SetCheatAction.h"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "localisation/Localisation.h"
@@ -83,8 +83,8 @@ void CheatsReset()
 
 void CheatsSet(CheatType cheatType, int32_t param1 /* = 0*/, int32_t param2 /* = 0*/)
 {
-    auto setCheatAction = SetCheatAction(cheatType, param1, param2);
-    GameActions::Execute(&setCheatAction);
+    auto cheatSetAction = CheatSetAction(cheatType, param1, param2);
+    GameActions::Execute(&cheatSetAction);
 }
 
 template<typename T> static void CheatEntrySerialise(DataSerialiser& ds, CheatType type, const T& value, uint16_t& count)
