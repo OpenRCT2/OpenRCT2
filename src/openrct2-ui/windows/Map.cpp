@@ -17,8 +17,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/ChangeMapSizeAction.h>
 #include <openrct2/actions/LandSetRightsAction.h>
+#include <openrct2/actions/MapChangeSizeAction.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
 #include <openrct2/actions/PeepSpawnPlaceAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.h>
@@ -630,8 +630,8 @@ public:
                     if (_resizeDirection != ResizeDirection::Y)
                         newMapSize.x = size;
 
-                    auto changeMapSizeAction = ChangeMapSizeAction(newMapSize);
-                    GameActions::Execute(&changeMapSizeAction);
+                    auto mapChangeSizeAction = MapChangeSizeAction(newMapSize);
+                    GameActions::Execute(&mapChangeSizeAction);
                     Invalidate();
                 }
                 break;
@@ -978,7 +978,7 @@ private:
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
             newMapSize.x++;
 
-        auto increaseMapSizeAction = ChangeMapSizeAction(newMapSize);
+        auto increaseMapSizeAction = MapChangeSizeAction(newMapSize);
         GameActions::Execute(&increaseMapSizeAction);
     }
 
@@ -990,7 +990,7 @@ private:
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
             newMapSize.x--;
 
-        auto decreaseMapSizeAction = ChangeMapSizeAction(newMapSize);
+        auto decreaseMapSizeAction = MapChangeSizeAction(newMapSize);
         GameActions::Execute(&decreaseMapSizeAction);
     }
 

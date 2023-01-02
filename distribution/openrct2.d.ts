@@ -285,7 +285,6 @@ declare global {
         queryAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "changemapsize", args: ChangeMapSizeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -305,6 +304,7 @@ declare global {
         queryAction(action: "largesceneryremove", args: LargeSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "largescenerysetcolour", args: LargeScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "loadorquit", args: LoadOrQuitArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "mapchangesize", args: MapChangeSizeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "mazeplacetrack", args: MazePlaceTrackArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "mazesettrack", args: MazeSetTrackArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "networkmodifygroup", args: NetworkModifyGroupArgs, callback?: (result: GameActionResult) => void): void;
@@ -729,11 +729,6 @@ declare global {
         parameter: number; // primary colour | secondary colour | 0: disable, 1: enable
     }
 
-    interface ChangeMapSizeArgs extends GameActionArgs {
-        targetSizeX: number;
-        targetSizeY: number;
-    }
-
     interface ClearSceneryArgs extends GameActionArgs {
         itemsToClear: number; // Bit mask. 1: small scenery and walls, 2: large scenery, 4: footpaths.
     }
@@ -889,6 +884,11 @@ declare global {
     interface LoadOrQuitArgs extends GameActionArgs {
         mode: number; // 0: open save prompt, 1: close save prompt
         savePromptMode: number; // 0: save before load, 1: save before quit. Only used if mode = 0 (open save prompt).
+    }
+
+    interface MapChangeSizeArgs extends GameActionArgs {
+        targetSizeX: number;
+        targetSizeY: number;
     }
 
     interface MazePlaceTrackArgs extends GameActionArgs {

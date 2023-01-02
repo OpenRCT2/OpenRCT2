@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ChangeMapSizeAction.h"
+#include "MapChangeSizeAction.h"
 
 #include "../Context.h"
 #include "../drawing/IDrawingEngine.h"
@@ -16,23 +16,23 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 
-ChangeMapSizeAction::ChangeMapSizeAction(const TileCoordsXY& targetSize)
+MapChangeSizeAction::MapChangeSizeAction(const TileCoordsXY& targetSize)
     : _targetSize(targetSize)
 {
 }
 
-uint16_t ChangeMapSizeAction::GetActionFlags() const
+uint16_t MapChangeSizeAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
-void ChangeMapSizeAction::Serialise(DataSerialiser& stream)
+void MapChangeSizeAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
     stream << DS_TAG(_targetSize);
 }
 
-GameActions::Result ChangeMapSizeAction::Query() const
+GameActions::Result MapChangeSizeAction::Query() const
 {
     if (_targetSize.x > MAXIMUM_MAP_SIZE_TECHNICAL || _targetSize.y > MAXIMUM_MAP_SIZE_TECHNICAL)
     {
@@ -45,7 +45,7 @@ GameActions::Result ChangeMapSizeAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result ChangeMapSizeAction::Execute() const
+GameActions::Result MapChangeSizeAction::Execute() const
 {
     // Expand map
     while (_targetSize.x > gMapSize.x)
@@ -76,7 +76,7 @@ GameActions::Result ChangeMapSizeAction::Execute() const
     return GameActions::Result();
 }
 
-void ChangeMapSizeAction::AcceptParameters(GameActionParameterVisitor& visitor)
+void MapChangeSizeAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("targetSizeX", _targetSize.x);
     visitor.Visit("targetSizeY", _targetSize.y);

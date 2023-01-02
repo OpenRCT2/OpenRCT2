@@ -67,7 +67,6 @@
     <ClInclude Include="actions\BannerSetColourAction.h" />
     <ClInclude Include="actions\BannerSetNameAction.h" />
     <ClInclude Include="actions\BannerSetStyleAction.h" />
-    <ClInclude Include="actions\ChangeMapSizeAction.h" />
     <ClInclude Include="actions\ClearAction.h" />
     <ClInclude Include="actions\ClimateSetAction.h" />
     <ClInclude Include="actions\CustomAction.h" />
@@ -90,6 +89,7 @@
     <ClInclude Include="actions\LargeSceneryRemoveAction.h" />
     <ClInclude Include="actions\LargeScenerySetColourAction.h" />
     <ClInclude Include="actions\LoadOrQuitAction.h" />
+    <ClInclude Include="actions\MapChangeSizeAction.h" />
     <ClInclude Include="actions\MazePlaceTrackAction.h" />
     <ClInclude Include="actions\MazeSetTrackAction.h" />
     <ClInclude Include="actions\NetworkModifyGroupAction.h" />
@@ -567,7 +567,6 @@
     <ClCompile Include="actions\BannerSetColourAction.cpp" />
     <ClCompile Include="actions\BannerSetNameAction.cpp" />
     <ClCompile Include="actions\BannerSetStyleAction.cpp" />
-    <ClCompile Include="actions\ChangeMapSizeAction.cpp" />
     <ClCompile Include="actions\ClearAction.cpp" />
     <ClCompile Include="actions\ClimateSetAction.cpp" />
     <ClCompile Include="actions\CustomAction.cpp" />
@@ -591,6 +590,7 @@
     <ClCompile Include="actions\LargeSceneryRemoveAction.cpp" />
     <ClCompile Include="actions\LargeScenerySetColourAction.cpp" />
     <ClCompile Include="actions\LoadOrQuitAction.cpp" />
+    <ClCompile Include="actions\MapChangeSizeAction.cpp" />
     <ClCompile Include="actions\MazePlaceTrackAction.cpp" />
     <ClCompile Include="actions\MazeSetTrackAction.cpp" />
     <ClCompile Include="actions\NetworkModifyGroupAction.cpp" />

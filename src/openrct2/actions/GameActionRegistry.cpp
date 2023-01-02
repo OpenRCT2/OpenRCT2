@@ -13,7 +13,6 @@
 #include "BannerSetColourAction.h"
 #include "BannerSetNameAction.h"
 #include "BannerSetStyleAction.h"
-#include "ChangeMapSizeAction.h"
 #include "ClearAction.h"
 #include "ClimateSetAction.h"
 #include "CustomAction.h"
@@ -35,6 +34,7 @@
 #include "LargeSceneryRemoveAction.h"
 #include "LargeScenerySetColourAction.h"
 #include "LoadOrQuitAction.h"
+#include "MapChangeSizeAction.h"
 #include "MazePlaceTrackAction.h"
 #include "MazeSetTrackAction.h"
 #include "NetworkModifyGroupAction.h"
@@ -205,7 +205,7 @@ namespace GameActions
         REGISTER_ACTION(GuestSetFlagsAction);
         REGISTER_ACTION(ParkSetDateAction);
         REGISTER_ACTION(SetCheatAction);
-        REGISTER_ACTION(ChangeMapSizeAction);
+        REGISTER_ACTION(MapChangeSizeAction);
 #ifdef ENABLE_SCRIPTING
         REGISTER_ACTION(CustomAction);
 #endif

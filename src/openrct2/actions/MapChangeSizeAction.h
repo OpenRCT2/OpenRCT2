@@ -12,11 +12,11 @@
 #include "../world/Map.h"
 #include "GameAction.h"
 
-class ChangeMapSizeAction final : public GameActionBase<GameCommand::ChangeMapSize>
+class MapChangeSizeAction final : public GameActionBase<GameCommand::MapChangeSize>
 {
 public:
-    ChangeMapSizeAction() = default;
-    ChangeMapSizeAction(const TileCoordsXY& targetSize);
+    MapChangeSizeAction() = default;
+    MapChangeSizeAction(const TileCoordsXY& targetSize);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
     uint16_t GetActionFlags() const override;
