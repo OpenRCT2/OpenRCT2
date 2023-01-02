@@ -24,13 +24,13 @@ class PeepPickupAction final : public GameActionBase<GameCommand::PickupGuest>
 {
 private:
     PeepPickupType _type{ PeepPickupType::Count };
-    EntityId _spriteId{ EntityId::GetNull() };
+    EntityId _entityId{ EntityId::GetNull() };
     CoordsXYZ _loc;
     NetworkPlayerId_t _owner{ -1 };
 
 public:
     PeepPickupAction() = default;
-    PeepPickupAction(PeepPickupType type, EntityId spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner);
+    PeepPickupAction(PeepPickupType type, EntityId entityId, const CoordsXYZ& loc, NetworkPlayerId_t owner);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
