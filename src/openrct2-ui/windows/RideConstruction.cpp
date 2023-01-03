@@ -2783,10 +2783,9 @@ rct_window* WindowRideConstructionOpen()
             return ContextOpenWindowView(WV_MAZE_CONSTRUCTION);
         case RideConstructionWindowContext::Default:
             return WindowCreate<RideConstructionWindow>(
-                WindowClass::RideConstruction, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
+                WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
     }
-    return WindowCreate<RideConstructionWindow>(
-        WindowClass::RideConstruction, ScreenCoordsXY(0, 29), 166, 394, WF_NO_AUTO_CLOSE);
+    return WindowCreate<RideConstructionWindow>(WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
 }
 
 static void CloseConstructWindowOnCompletion(Ride* ride)
