@@ -58,6 +58,7 @@ private:
     std::vector<WatchDescriptor> _watchDescs;
 #elif defined(__APPLE__)
     FSEventStreamRef _stream{};
+    CFRunLoopRef _runLoop{};
 #endif
 
 public:

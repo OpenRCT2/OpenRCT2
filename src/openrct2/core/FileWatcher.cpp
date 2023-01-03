@@ -153,6 +153,8 @@ FileWatcher::FileWatcher(u8string_view directoryPath)
     {
         throw std::runtime_error("Unable to create FSEventStream");
     }
+
+    _runLoop = CFRunLoopGetCurrent();
 #else
     throw std::runtime_error("FileWatcher not supported on this platform.");
 #endif
@@ -173,6 +175,7 @@ FileWatcher::~FileWatcher()
     if (_stream)
     {
         FSEventStreamStop(_stream);
+        FSEventStreamUnscheduleFromRunLoop(_stream, _runLoop, kCFRunLoopDefaultMode);
         FSEventStreamInvalidate(_stream);
         FSEventStreamRelease(_stream);
     }
@@ -248,7 +251,7 @@ void FileWatcher::WatchDirectory()
 #elif defined(__APPLE__)
     if (_stream)
     {
-        FSEventStreamScheduleWithRunLoop(_stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+        FSEventStreamScheduleWithRunLoop(_stream, _runLoop, kCFRunLoopDefaultMode);
         FSEventStreamStart(_stream);
         CFRunLoopRun();
     }
