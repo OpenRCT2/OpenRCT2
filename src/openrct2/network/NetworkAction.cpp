@@ -149,7 +149,7 @@ const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> N
         "PERMISSION_PATH",
         {
             GameCommand::PlacePath,
-            GameCommand::PlacePathFromTrack,
+            GameCommand::PlacePathLayout,
             GameCommand::RemovePath,
             GameCommand::PlaceFootpathAddition,
             GameCommand::RemoveFootpathAddition,

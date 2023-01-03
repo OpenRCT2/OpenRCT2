@@ -38,7 +38,7 @@ enum class GameCommand : int32_t
     PlaceScenery,             // GA
     SetWaterHeight,           // GA
     PlacePath,                // GA
-    PlacePathFromTrack,       // GA
+    PlacePathLayout,          // GA
     RemovePath,               // GA
     ChangeSurfaceStyle,       // GA
     SetRidePrice,             // GA
