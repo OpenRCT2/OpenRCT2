@@ -481,16 +481,29 @@ public:
         {
             case WIDX_LOAN_INCREASE:
             {
+                // If loan can be increased, do so.
+                // If not, action shows error message.
                 auto newLoan = gBankLoan + 1000.00_GBP;
+                if (gBankLoan < gMaxBankLoan)
+                {
+                    newLoan = std::min(gMaxBankLoan, newLoan);
+                }
                 auto gameAction = ParkSetLoanAction(newLoan);
                 GameActions::Execute(&gameAction);
                 break;
             }
             case WIDX_LOAN_DECREASE:
             {
-                if (gBankLoan > 0)
+                // If loan is positive, decrease it.
+                // If loan is negative, action shows error message.
+                // If loan is exactly 0, prevent error message.
+                if (gBankLoan != 0)
                 {
                     auto newLoan = gBankLoan - 1000.00_GBP;
+                    if (gBankLoan > 0)
+                    {
+                        newLoan = std::max(static_cast<money64>(0LL), newLoan);
+                    }
                     auto gameAction = ParkSetLoanAction(newLoan);
                     GameActions::Execute(&gameAction);
                 }
