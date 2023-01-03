@@ -1,0 +1,12 @@
+# STR_XXXX part is read and XXXX becomes the string id number.
+# Everything after the colon and before the new line will be saved as the string.
+# Use # at the beginning of a line to leave a comment.
+# Follow the translation guidelines here:
+# https://github.com/OpenRCT2/Localisation/wiki/Translator-guidelines:-fr_FR
+STR_1526    :« Cette crème glacée de {STRINGID} est vraiment une bonne affaire »
+STR_1560    :« Je ne paierai pas si cher pour une crème glacée de {STRINGID} »
+STR_1968    :{WINDOW_COLOUR_2}Prix d’une crème glacée :
+STR_1996    :Crème glacée
+STR_2024    :Crème glacées
+STR_2052    :une crème glacée
+STR_2080    :Crème glacée
