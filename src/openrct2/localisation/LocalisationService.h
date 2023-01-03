@@ -34,6 +34,7 @@ namespace OpenRCT2::Localisation
         const std::shared_ptr<IPlatformEnvironment> _env;
         int32_t _currentLanguage{};
         bool _useTrueTypeFont{};
+        std::vector<int32_t> _languageOrder;
         std::vector<std::unique_ptr<ILanguagePack>> _loadedLanguages;
         std::stack<StringId> _availableObjectStringIds;
         std::vector<std::string> _objectStrings;
@@ -65,6 +66,7 @@ namespace OpenRCT2::Localisation
         void CloseLanguages();
         StringId AllocateObjectString(const std::string& target);
         void FreeObjectString(StringId stringId);
+        const std::vector<int32_t>& GetLanguageOrder() const;
     };
 } // namespace OpenRCT2::Localisation
 

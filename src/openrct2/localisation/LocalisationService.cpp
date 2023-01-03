@@ -100,6 +100,7 @@ void LocalisationService::OpenLanguage(int32_t id)
     if (preferredLanguage != nullptr)
     {
         _currentLanguage = id;
+        _languageOrder.emplace_back(id);
         _loadedLanguages.emplace_back(std::move(preferredLanguage));
         TryLoadFonts(*this);
     }
@@ -108,15 +109,21 @@ void LocalisationService::OpenLanguage(int32_t id)
         throw std::runtime_error("Unable to open language " + std::to_string(id));
     }
 
-    const auto fallback = LanguagesDescriptors[id].fallback;
-    if (fallback != LANGUAGE_UNDEFINED)
+    auto checkLanguage = LanguagesDescriptors[id].fallback;
+    while (true)
     {
-        filename = GetLanguagePath(fallback);
-        _loadedLanguages.emplace_back(LanguagePackFactory::FromFile(fallback, filename.c_str()));
+        if (checkLanguage == LANGUAGE_UNDEFINED)
+            break;
+
+        _languageOrder.emplace_back(checkLanguage);
+        filename = GetLanguagePath(checkLanguage);
+        _loadedLanguages.emplace_back(LanguagePackFactory::FromFile(checkLanguage, filename.c_str()));
+        checkLanguage = LanguagesDescriptors[checkLanguage].fallback;
     }
 
     if (id != LANGUAGE_ENGLISH_UK)
     {
+        _languageOrder.emplace_back(LANGUAGE_ENGLISH_UK);
         filename = GetLanguagePath(LANGUAGE_ENGLISH_UK);
         _loadedLanguages.emplace_back(LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename.c_str()));
     }
@@ -128,6 +135,7 @@ void LocalisationService::CloseLanguages()
     {
         language = nullptr;
     }
+    _languageOrder.clear();
     _loadedLanguages.clear();
     _currentLanguage = LANGUAGE_UNDEFINED;
 }
@@ -181,6 +189,11 @@ void LocalisationService::FreeObjectString(StringId stringId)
         }
         _availableObjectStringIds.push(stringId);
     }
+}
+
+const std::vector<int32_t>& LocalisationService::GetLanguageOrder() const
+{
+    return _languageOrder;
 }
 
 int32_t LocalisationService_GetCurrentLanguage()

@@ -9,6 +9,7 @@
 
 #include "StringTable.h"
 
+#include "../Context.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
@@ -154,47 +155,29 @@ void StringTable::SetString(ObjectStringID id, uint8_t language, const std::stri
 
 void StringTable::Sort()
 {
-    auto targetLanguage = LocalisationService_GetCurrentLanguage();
-    auto fallbackLanguage = LanguagesDescriptors[targetLanguage].fallback;
-    std::sort(
-        _strings.begin(), _strings.end(),
-        [targetLanguage, fallbackLanguage](const StringTableEntry& a, const StringTableEntry& b) -> bool {
-            if (a.Id == b.Id)
+    const auto& languageOrder = OpenRCT2::GetContext()->GetLocalisationService().GetLanguageOrder();
+    std::sort(_strings.begin(), _strings.end(), [languageOrder](const StringTableEntry& a, const StringTableEntry& b) -> bool {
+        if (a.Id == b.Id)
+        {
+            if (a.LanguageId == b.LanguageId)
             {
-                if (a.LanguageId == b.LanguageId)
-                {
-                    return String::Compare(a.Text, b.Text, true) < 0;
-                }
-
-                if (a.LanguageId == targetLanguage)
-                {
-                    return true;
-                }
-                if (b.LanguageId == targetLanguage)
-                {
-                    return false;
-                }
-
-                if (fallbackLanguage != LANGUAGE_UNDEFINED)
-                {
-                    if (a.LanguageId == fallbackLanguage)
-                        return true;
-
-                    if (b.LanguageId == fallbackLanguage)
-                        return false;
-                }
-
-                if (a.LanguageId == LANGUAGE_ENGLISH_UK)
-                {
-                    return true;
-                }
-                if (b.LanguageId == LANGUAGE_ENGLISH_UK)
-                {
-                    return false;
-                }
-
-                return a.LanguageId < b.LanguageId;
+                return String::Compare(a.Text, b.Text, true) < 0;
             }
-            return a.Id < b.Id;
-        });
+
+            for (const auto& language : languageOrder)
+            {
+                if (a.LanguageId == language)
+                {
+                    return true;
+                }
+                if (b.LanguageId == language)
+                {
+                    return false;
+                }
+            }
+
+            return a.LanguageId < b.LanguageId;
+        }
+        return a.Id < b.Id;
+    });
 }
