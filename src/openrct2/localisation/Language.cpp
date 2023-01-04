@@ -36,6 +36,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "eo-ZZ", "Esperanto",             "Esperanto",             LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ESPERANTO
     { "es-ES", "Spanish",               u8"Español",             LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_SPANISH
     { "fr-FR", "French",                u8"Français",            LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_FRENCH
+    { "fr-CA", "French (CA)",           u8"Français (CA)",       LANGUAGE_FRENCH,    FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_FRENCH_CA
     { "it-IT", "Italian",               "Italiano",              LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ITALIAN
     { "ja-JP", "Japanese",              "Japanese",              LANGUAGE_UNDEFINED, FAMILY(&TTFFamilyJapanese),            false }, // LANGUAGE_JAPANESE
     { "ko-KR", "Korean",                "Korean",                LANGUAGE_UNDEFINED, FAMILY(&TTFFamilyKorean),              false }, // LANGUAGE_KOREAN
