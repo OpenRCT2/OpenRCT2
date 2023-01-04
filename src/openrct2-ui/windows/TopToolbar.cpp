@@ -532,8 +532,6 @@ static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, rc
     }
 }
 
-
-
 /**
  *
  *  rct2: 0x0066C9EA
