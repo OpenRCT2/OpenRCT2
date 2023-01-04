@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
+#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../interface/Fonts.h"
 #include "../object/ObjectManager.h"
@@ -94,9 +95,7 @@ void LocalisationService::OpenLanguage(int32_t id)
         throw std::invalid_argument("id was undefined");
     }
 
-    std::string filename;
-    filename = GetLanguagePath(id);
-    auto preferredLanguage = LanguagePackFactory::FromFile(id, filename.c_str());
+    auto preferredLanguage = LanguagePackFactory::FromLanguageId(id);
     if (preferredLanguage != nullptr)
     {
         _currentLanguage = id;
@@ -110,31 +109,35 @@ void LocalisationService::OpenLanguage(int32_t id)
     }
 
     auto checkLanguage = LanguagesDescriptors[id].fallback;
-    while (true)
+    while (checkLanguage != LANGUAGE_UNDEFINED)
     {
-        if (checkLanguage == LANGUAGE_UNDEFINED)
-            break;
-
         _languageOrder.emplace_back(checkLanguage);
-        filename = GetLanguagePath(checkLanguage);
-        _loadedLanguages.emplace_back(LanguagePackFactory::FromFile(checkLanguage, filename.c_str()));
+        auto fallbackLanguagePack = LanguagePackFactory::FromLanguageId(checkLanguage);
+        if (fallbackLanguagePack != nullptr)
+        {
+            _loadedLanguages.emplace_back(std::move(fallbackLanguagePack));
+        }
+
         checkLanguage = LanguagesDescriptors[checkLanguage].fallback;
     }
 
     if (id != LANGUAGE_ENGLISH_UK)
     {
         _languageOrder.emplace_back(LANGUAGE_ENGLISH_UK);
-        filename = GetLanguagePath(LANGUAGE_ENGLISH_UK);
-        _loadedLanguages.emplace_back(LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename.c_str()));
+        auto englishLanguagePack = LanguagePackFactory::FromLanguageId(LANGUAGE_ENGLISH_UK);
+        if (englishLanguagePack != nullptr)
+        {
+            _loadedLanguages.emplace_back(std::move(englishLanguagePack));
+        }
+        else
+        {
+            throw std::runtime_error("Unable to open the English language file!");
+        }
     }
 }
 
 void LocalisationService::CloseLanguages()
 {
-    for (auto& language : _loadedLanguages)
-    {
-        language = nullptr;
-    }
     _languageOrder.clear();
     _loadedLanguages.clear();
     _currentLanguage = LANGUAGE_UNDEFINED;
@@ -143,6 +146,7 @@ void LocalisationService::CloseLanguages()
 std::tuple<StringId, StringId, StringId> LocalisationService::GetLocalisedScenarioStrings(
     const std::string& scenarioFilename) const
 {
+    Guard::Assert(!_loadedLanguages.empty());
     auto result0 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename.c_str(), 0);
     auto result1 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename.c_str(), 1);
     auto result2 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename.c_str(), 2);

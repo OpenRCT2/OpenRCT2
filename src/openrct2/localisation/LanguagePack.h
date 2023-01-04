@@ -33,5 +33,6 @@ struct ILanguagePack
 namespace LanguagePackFactory
 {
     std::unique_ptr<ILanguagePack> FromFile(uint16_t id, const utf8* path);
+    std::unique_ptr<ILanguagePack> FromLanguageId(uint16_t id);
     std::unique_ptr<ILanguagePack> FromText(uint16_t id, const utf8* text);
 } // namespace LanguagePackFactory
