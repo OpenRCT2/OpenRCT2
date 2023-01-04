@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -118,7 +118,7 @@ enum {
     WIDX_HARD_GUEST_GENERATION
 };
 
-static rct_widget window_editor_scenario_options_financial_widgets[] = {
+static Widget window_editor_scenario_options_financial_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
     MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                            ),
     MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
@@ -133,7 +133,7 @@ static rct_widget window_editor_scenario_options_financial_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_editor_scenario_options_guests_widgets[] = {
+static Widget window_editor_scenario_options_guests_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
     MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
     MakeRemapWidget   ({  3,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
@@ -148,7 +148,7 @@ static rct_widget window_editor_scenario_options_guests_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_editor_scenario_options_park_widgets[] = {
+static Widget window_editor_scenario_options_park_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
     MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                  ),
     MakeRemapWidget   ({  3,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
@@ -169,7 +169,7 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget *window_editor_scenario_options_widgets[] = {
+static Widget *window_editor_scenario_options_widgets[] = {
     window_editor_scenario_options_financial_widgets,
     window_editor_scenario_options_guests_widgets,
     window_editor_scenario_options_park_widgets,
@@ -322,7 +322,7 @@ private:
 
     void DrawTabImages(rct_drawpixelinfo& dpi)
     {
-        rct_widget* widget;
+        Widget* widget;
         int32_t spriteIndex;
 
         // Tab 1
@@ -545,7 +545,7 @@ private:
 
     void FinancialPrepareDraw()
     {
-        rct_widget* newWidgets = window_editor_scenario_options_widgets[page];
+        Widget* newWidgets = window_editor_scenario_options_widgets[page];
         if (widgets != newWidgets)
         {
             widgets = newWidgets;
@@ -803,7 +803,7 @@ private:
 
     void GuestsPrepareDraw()
     {
-        rct_widget* newWidgets = window_editor_scenario_options_widgets[page];
+        Widget* newWidgets = window_editor_scenario_options_widgets[page];
         if (widgets != newWidgets)
         {
             widgets = newWidgets;
@@ -956,8 +956,8 @@ private:
 
     void ParkMouseDown(WidgetIndex widgetIndex)
     {
-        rct_widget* dropdownWidget;
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* dropdownWidget;
+        Widget* widget = &widgets[widgetIndex];
 
         switch (widgetIndex)
         {
@@ -1102,7 +1102,7 @@ private:
 
     void ParkPrepareDraw()
     {
-        rct_widget* newWidgets = window_editor_scenario_options_widgets[page];
+        Widget* newWidgets = window_editor_scenario_options_widgets[page];
         if (widgets != newWidgets)
         {
             widgets = newWidgets;

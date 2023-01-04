@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -200,7 +200,7 @@ static constexpr const ScreenCoordsXY GroupByTrackTypeOrigin{ WindowWidth - 8 - 
 static constexpr const ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
 
 // clang-format off
-static rct_widget window_new_ride_widgets[] = {
+static Widget window_new_ride_widgets[] = {
     WINDOW_SHIM(WindowTitle, WindowWidth, WindowHeight),
     MakeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
     MakeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
@@ -214,7 +214,7 @@ static rct_widget window_new_ride_widgets[] = {
     MakeWidget({  3,  47},             {290,  70},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                  ),
     MakeWidget({  3, 124},             {290,  65},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                          ),
     MakeWidget({265, 161},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP),
-    MakeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  SPR_FINANCE,                     STR_FINANCES_RESEARCH_TIP    ),
+    MakeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  ImageId(SPR_FINANCE),                     STR_FINANCES_RESEARCH_TIP    ),
     MakeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,         STR_GROUP_BY_TRACK_TYPE_TIP  ),
     WIDGETS_END,
 };
@@ -379,8 +379,8 @@ public:
             {
                 auto type = gResearchLastItem->type;
                 widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-                widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == Research::EntryType::Ride) ? SPR_NEW_RIDE
-                                                                                                  : SPR_NEW_SCENERY;
+                const auto index = (type == Research::EntryType::Ride) ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+                widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = ImageId(index);
             }
         }
 
@@ -812,7 +812,7 @@ private:
         int32_t scrollWidth = 0;
         int32_t scrollHeight = 0;
         window_get_scroll_size(this, 0, &scrollWidth, &scrollHeight);
-        const rct_widget& listWidget = widgets[WIDX_RIDE_LIST];
+        const Widget& listWidget = widgets[WIDX_RIDE_LIST];
         const int32_t listWidgetHeight = listWidget.bottom - listWidget.top - 1;
 
         // Ensure the current tab scroll is within range

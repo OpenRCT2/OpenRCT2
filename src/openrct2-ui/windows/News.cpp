@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,9 +35,9 @@ enum WindowNewsWidgetIdx {
 };
 
 
-static rct_widget window_news_widgets[] = {
+static Widget window_news_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_TAB_GEARS_0), // settings
+    MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_TAB_GEARS_0)), // settings
     MakeWidget({  4, 44}, {392, 252}, WindowWidgetType::Scroll,  WindowColour::Primary, SCROLL_VERTICAL), // scroll
     WIDGETS_END,
 };
@@ -61,7 +61,7 @@ public:
         _pressedNewsItemIndex = -1;
 
         int32_t w = 0, h = 0;
-        rct_widget* widget = &widgets[WIDX_SCROLL];
+        Widget* widget = &widgets[WIDX_SCROLL];
         window_get_scroll_size(this, 0, &w, &h);
         scrolls[0].v_top = std::max(0, h - (widget->height() - 1));
         WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -816,7 +816,7 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
     return result;
 }
 
-rct_widget* CustomListView::GetWidget() const
+Widget* CustomListView::GetWidget() const
 {
     size_t scrollIndex = 0;
     for (auto widget = ParentWindow->widgets; widget->type != WindowWidgetType::Last; widget++)

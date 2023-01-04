@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "LanguagePack.h"
 
+#include "../Context.h"
 #include "../common.h"
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
@@ -18,6 +19,7 @@
 #include "../core/StringReader.h"
 #include "Language.h"
 #include "Localisation.h"
+#include "LocalisationService.h"
 
 #include <algorithm>
 #include <memory>
@@ -578,6 +580,12 @@ namespace LanguagePackFactory
     {
         auto languagePack = LanguagePack::FromFile(id, path);
         return languagePack;
+    }
+
+    std::unique_ptr<ILanguagePack> FromLanguageId(uint16_t id)
+    {
+        auto path = OpenRCT2::GetContext()->GetLocalisationService().GetLanguagePath(id);
+        return LanguagePack::FromFile(id, path.c_str());
     }
 
     std::unique_ptr<ILanguagePack> FromText(uint16_t id, const utf8* text)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@ enum WindowTitleOptionsWidgetIdx {
     WIDX_OPTIONS,
 };
 
-static rct_widget _windowTitleOptionsWidgets[] = {
+static Widget _windowTitleOptionsWidgets[] = {
     MakeWidget({0, 0}, {80, 15}, WindowWidgetType::Button, WindowColour::Tertiary, STR_OPTIONS, STR_OPTIONS_TIP),
     WIDGETS_END,
 };

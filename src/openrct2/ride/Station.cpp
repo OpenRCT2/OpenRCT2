@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,7 +61,7 @@ static void ride_update_station_blocksection(Ride* ride, StationIndex stationInd
     auto& station = ride->GetStation(stationIndex);
 
     if ((ride->status == RideStatus::Closed && ride->num_riders == 0)
-        || (tileElement != nullptr && tileElement->AsTrack()->BlockBrakeClosed()))
+        || (tileElement != nullptr && tileElement->AsTrack()->IsBrakeClosed()))
     {
         station.Depart &= ~STATION_DEPART_FLAG;
 

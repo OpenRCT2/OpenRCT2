@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -152,16 +152,6 @@ enum
     G1_FLAG_PALETTE = (1 << 3),         // Image data is a sequence of palette entries R8G8B8
     G1_FLAG_HAS_ZOOM_SPRITE = (1 << 4), // Use a different sprite for higher zoom levels
     G1_FLAG_NO_ZOOM_DRAW = (1 << 5),    // Does not get drawn at higher zoom levels (only zoom 0)
-};
-
-enum : uint32_t
-{
-    IMAGE_TYPE_DEFAULT = 0,
-    IMAGE_TYPE_REMAP = (1 << 29),
-    IMAGE_TYPE_TRANSPARENT = (1 << 30),
-    IMAGE_TYPE_REMAP_2_PLUS = (1u << 31)
-    // REMAP_2_PLUS + REMAP = REMAP 2
-    // REMAP_2_PLUS = REMAP 3
 };
 
 using DrawBlendOp = uint8_t;

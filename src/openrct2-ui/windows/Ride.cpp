@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -239,28 +239,28 @@ constexpr int32_t RCT1_LIGHT_OFFSET = 4;
     MakeTab   ({282, 17}, STR_CUSTOMER_INFORMATION_TIP                   )
 
 // 0x009ADC34
-static rct_widget window_ride_main_widgets[] = {
+static Widget window_ride_main_widgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeWidget({  3,  60}, {288, 107}, WindowWidgetType::Viewport,      WindowColour::Secondary, STR_VIEWPORT                                           ),
     MakeWidget({ 35,  46}, {222,  12}, WindowWidgetType::DropdownMenu,      WindowColour::Secondary, 0xFFFFFFFF,                 STR_VIEW_SELECTION         ),
     MakeWidget({245,  47}, { 11,  10}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_VIEW_SELECTION         ),
     MakeWidget({  3, 167}, {288,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                                         ),
     MakeWidget({291,  46}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_CLOSE_OR_TEST_RIDE),
-    MakeWidget({291,  70}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_CONSTRUCTION,           STR_CONSTRUCTION           ),
-    MakeWidget({291,  94}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,                 STR_NAME_RIDE_TIP          ),
-    MakeWidget({291, 118}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP     ),
-    MakeWidget({291, 142}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_DEMOLISH,               STR_DEMOLISH_RIDE_TIP      ),
-    MakeWidget({296,  48}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_RIDE_TIP         ),
-    MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_TEST_BUTTON_0,  STR_SIMULATE_RIDE_TIP      ),
-    MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_TEST_BUTTON_0,  STR_TEST_RIDE_TIP          ),
-    MakeWidget({296,  76}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_RIDE_TIP          ),
+    MakeWidget({291,  70}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_CONSTRUCTION),           STR_CONSTRUCTION           ),
+    MakeWidget({291,  94}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_RIDE_TIP          ),
+    MakeWidget({291, 118}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP     ),
+    MakeWidget({291, 142}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_DEMOLISH),               STR_DEMOLISH_RIDE_TIP      ),
+    MakeWidget({296,  48}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_RIDE_TIP         ),
+    MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_SIMULATE_RIDE_TIP      ),
+    MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_TEST_RIDE_TIP          ),
+    MakeWidget({296,  76}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_RIDE_TIP          ),
     MakeWidget({  3, 180}, {305,  12}, WindowWidgetType::DropdownMenu,      WindowColour::Secondary, STR_ARG_6_STRINGID                                     ),
     MakeWidget({297, 180}, { 11,  12}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH                                     ),
     WIDGETS_END,
 };
 
 // 0x009ADDA8
-static rct_widget window_ride_vehicle_widgets[] = {
+static Widget window_ride_vehicle_widgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeWidget        ({  7,  50}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                    ),
     MakeWidget        ({297,  51}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                ),
@@ -271,7 +271,7 @@ static rct_widget window_ride_vehicle_widgets[] = {
 };
 
 // 0x009ADEFC
-static rct_widget window_ride_operating_widgets[] = {
+static Widget window_ride_operating_widgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeSpinnerWidgets({157,  61}, {152, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_ARG_18_STRINGID                                                                 ), // NB: 3 widgets
     MakeSpinnerWidgets({157,  75}, {152, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_LIFT_HILL_CHAIN_SPEED_VALUE                                                     ), // NB: 3 widgets
@@ -294,18 +294,18 @@ static rct_widget window_ride_operating_widgets[] = {
 };
 
 // 0x009AE190
-static rct_widget window_ride_maintenance_widgets[] = {
+static Widget window_ride_maintenance_widgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeWidget({107,  71}, {202, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY,          STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
     MakeWidget({297,  72}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
     MakeWidget({289, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF,         STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
-    MakeWidget({265, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION,   STR_REFURBISH_RIDE_TIP                                ),
-    MakeWidget({241, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_NO_ENTRY,       STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
+    MakeWidget({265, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CONSTRUCTION),   STR_REFURBISH_RIDE_TIP                                ),
+    MakeWidget({241, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_NO_ENTRY),       STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
     WIDGETS_END,
 };
 
 // 0x009AE2A4
-static rct_widget window_ride_colour_widgets[] = {
+static Widget window_ride_colour_widgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeWidget({  3,  47}, { 68, 47}, WindowWidgetType::Spinner,   WindowColour::Secondary                                                                    ),
     MakeWidget({ 74,  49}, {239, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary, STR_ARG_14_STRINGID                                               ),
@@ -315,7 +315,7 @@ static rct_widget window_ride_colour_widgets[] = {
     MakeWidget({119,  74}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP      ),
     MakeWidget({ 74,  49}, {239, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary                                                                    ),
     MakeWidget({301,  50}, { 11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                ),
-    MakeWidget({289,  68}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_PAINTBRUSH,      STR_PAINT_INDIVIDUAL_AREA_TIP                ),
+    MakeWidget({289,  68}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),      STR_PAINT_INDIVIDUAL_AREA_TIP                ),
     MakeWidget({245, 101}, { 68, 47}, WindowWidgetType::Spinner,   WindowColour::Secondary                                                                    ),
     MakeWidget({103, 103}, {139, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary, STR_EMPTY                                                         ),
     MakeWidget({230, 104}, { 11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH,  STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP),
@@ -332,7 +332,7 @@ static rct_widget window_ride_colour_widgets[] = {
 };
 
 // 0x009AE4C8
-static rct_widget window_ride_music_widgets[] = {
+static Widget window_ride_music_widgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeWidget({  7, 47}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
     MakeWidget({  7, 62}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY                                     ),
@@ -341,9 +341,9 @@ static rct_widget window_ride_music_widgets[] = {
 };
 
 // 0x009AE5DC
-static rct_widget window_ride_measurements_widgets[] = {
+static Widget window_ride_measurements_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    MakeWidget({288, 194}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_FLOPPY,                STR_SAVE_TRACK_DESIGN),
+    MakeWidget({288, 194}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_FLOPPY),                STR_SAVE_TRACK_DESIGN),
     MakeWidget({  4, 127}, {154, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_SELECT_NEARBY_SCENERY                       ),
     MakeWidget({158, 127}, {154, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RESET_SELECTION                             ),
     MakeWidget({  4, 177}, {154, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_DESIGN_SAVE                                 ),
@@ -352,7 +352,7 @@ static rct_widget window_ride_measurements_widgets[] = {
 };
 
 // 0x009AE710
-static rct_widget window_ride_graphs_widgets[] = {
+static Widget window_ride_graphs_widgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeWidget({  3,  46}, {306, 112}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_HORIZONTAL,       STR_LOGGING_DATA_FROM_TIP                               ),
     MakeWidget({  3, 163}, { 73,  14}, WindowWidgetType::Button, WindowColour::Secondary, STR_RIDE_STATS_VELOCITY, STR_SHOW_GRAPH_OF_VELOCITY_AGAINST_TIME_TIP             ),
@@ -363,7 +363,7 @@ static rct_widget window_ride_graphs_widgets[] = {
 };
 
 // 0x009AE844
-static rct_widget window_ride_income_widgets[] = {
+static Widget window_ride_income_widgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeWidget        ({ 19,  50}, {126, 14}, WindowWidgetType::Label,    WindowColour::Secondary                                                                    ),
     MakeSpinnerWidgets({147,  50}, {162, 14}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_ARG_6_CURRENCY2DP                                             ), // NB: 3 widgets
@@ -375,15 +375,15 @@ static rct_widget window_ride_income_widgets[] = {
 };
 
 // 0x009AE9C8
-static rct_widget window_ride_customer_widgets[] = {
+static Widget window_ride_customer_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    MakeWidget({289,  54}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION, STR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION_TIP),
-    MakeWidget({289,  78}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION,             STR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION_TIP            ),
-    MakeWidget({289, 102}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION,    STR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION_TIP   ),
+    MakeWidget({289,  54}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION), STR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION_TIP),
+    MakeWidget({289,  78}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION),             STR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION_TIP            ),
+    MakeWidget({289, 102}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION),    STR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION_TIP   ),
     WIDGETS_END,
 };
 
-static rct_widget *window_ride_page_widgets[] = {
+static Widget *window_ride_page_widgets[] = {
     window_ride_main_widgets,
     window_ride_vehicle_widgets,
     window_ride_operating_widgets,
@@ -433,7 +433,7 @@ static void WindowRideInitViewport(rct_window* w);
 
 static void WindowRideMainMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowRideMainResize(rct_window* w);
-static void WindowRideMainMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowRideMainMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideMainDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowRideMainUpdate(rct_window* w);
 static void WindowRideMainTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
@@ -444,7 +444,7 @@ static void WindowRideMainFollowRide(rct_window* w);
 
 static void WindowRideVehicleMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowRideVehicleResize(rct_window* w);
-static void WindowRideVehicleMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowRideVehicleMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideVehicleDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowRideVehicleUpdate(rct_window* w);
 static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const WidgetIndex widgetIndex, StringId fallback);
@@ -454,7 +454,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 
 static void WindowRideOperatingMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowRideOperatingResize(rct_window* w);
-static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideOperatingLengthWindow(rct_window* w, WidgetIndex widgetIndex);
 static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride);
 static void WindowRideOperatingDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
@@ -465,7 +465,7 @@ static void WindowRideOperatingPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 static void WindowRideMaintenanceMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowRideMaintenanceResize(rct_window* w);
-static void WindowRideMaintenanceMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowRideMaintenanceMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideMaintenanceDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowRideMaintenanceUpdate(rct_window* w);
 static void WindowRideMaintenanceInvalidate(rct_window* w);
@@ -474,7 +474,7 @@ static void WindowRideMaintenancePaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowRideColourClose(rct_window* w);
 static void WindowRideColourMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowRideColourResize(rct_window* w);
-static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideColourDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowRideColourUpdate(rct_window* w);
 static void WindowRideColourTooldown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
@@ -485,7 +485,7 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 
 static void WindowRideMusicMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowRideMusicResize(rct_window* w);
-static void WindowRideMusicMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowRideMusicMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideMusicDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowRideMusicUpdate(rct_window* w);
 static void WindowRideMusicInvalidate(rct_window* w);
@@ -494,7 +494,7 @@ static void WindowRideMusicPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowRideMeasurementsClose(rct_window* w);
 static void WindowRideMeasurementsMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowRideMeasurementsResize(rct_window* w);
-static void WindowRideMeasurementsMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowRideMeasurementsMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideMeasurementsDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowRideMeasurementsUpdate(rct_window* w);
 static void WindowRideMeasurementsTooldown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
@@ -505,7 +505,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 static void WindowRideGraphsMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowRideGraphsResize(rct_window* w);
-static void WindowRideGraphsMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowRideGraphsMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideGraphsUpdate(rct_window* w);
 static void WindowRideGraphsScrollgetheight(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
 static void WindowRideGraphs15(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
@@ -516,7 +516,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 
 static void WindowRideIncomeMouseup(rct_window* w, WidgetIndex widgetIndex);
 static void WindowRideIncomeResize(rct_window* w);
-static void WindowRideIncomeMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowRideIncomeMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideIncomeUpdate(rct_window* w);
 static void WindowRideIncomeTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
 static void WindowRideIncomeInvalidate(rct_window* w);
@@ -1728,9 +1728,9 @@ static void WindowRideMainResize(rct_window* w)
  *
  *  rct2: 0x006AF825
  */
-static void WindowRideShowViewDropdown(rct_window* w, rct_widget* widget)
+static void WindowRideShowViewDropdown(rct_window* w, Widget* widget)
 {
-    rct_widget* dropdownWidget = widget - 1;
+    Widget* dropdownWidget = widget - 1;
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
         return;
@@ -1840,7 +1840,7 @@ static void WindowRideSetDropdown(RideStatusDropdownInfo& info, RideStatus statu
     }
 }
 
-static void WindowRideShowOpenDropdown(rct_window* w, rct_widget* widget)
+static void WindowRideShowOpenDropdown(rct_window* w, Widget* widget)
 {
     RideStatusDropdownInfo info;
     info.Ride = get_ride(w->rideId);
@@ -1909,7 +1909,7 @@ static void PopulateRideTypeDropdown()
     RideDropdownDataLanguage = ls.GetCurrentLanguage();
 }
 
-static void WindowRideShowRideTypeDropdown(rct_window* w, rct_widget* widget)
+static void WindowRideShowRideTypeDropdown(rct_window* w, Widget* widget)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -1923,7 +1923,7 @@ static void WindowRideShowRideTypeDropdown(rct_window* w, rct_widget* widget)
         gDropdownItems[i].Args = RideDropdownData[i].label_id;
     }
 
-    rct_widget* dropdownWidget = widget - 1;
+    Widget* dropdownWidget = widget - 1;
     WindowDropdownShowText(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
         w->colours[1], Dropdown::Flag::StayOpen, RIDE_TYPE_COUNT);
@@ -1944,7 +1944,7 @@ static void WindowRideShowRideTypeDropdown(rct_window* w, rct_widget* widget)
     Dropdown::SetChecked(pos, true);
 }
 
-static void WindowRideShowLocateDropdown(rct_window* w, rct_widget* widget)
+static void WindowRideShowLocateDropdown(rct_window* w, Widget* widget)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -2052,7 +2052,7 @@ static void PopulateVehicleTypeDropdown(Ride* ride, bool forceRefresh)
     VehicleDropdownDataLanguage = ls.GetCurrentLanguage();
 }
 
-static void WindowRideShowVehicleTypeDropdown(rct_window* w, rct_widget* widget)
+static void WindowRideShowVehicleTypeDropdown(rct_window* w, Widget* widget)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -2068,7 +2068,7 @@ static void WindowRideShowVehicleTypeDropdown(rct_window* w, rct_widget* widget)
         gDropdownItems[i].Args = VehicleDropdownData[i].label_id;
     }
 
-    rct_widget* dropdownWidget = widget - 1;
+    Widget* dropdownWidget = widget - 1;
     auto width = WindowDropDownHasMultipleColumns(numItems) ? dropdownWidget->width() - 24 : dropdownWidget->width();
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -2094,7 +2094,7 @@ static void WindowRideShowVehicleTypeDropdown(rct_window* w, rct_widget* widget)
  *
  *  rct2: 0x006AF1BD
  */
-static void WindowRideMainMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowRideMainMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -2281,7 +2281,7 @@ static void WindowRideMainViewportRotate(rct_window* w)
  */
 static void WindowRideMainInvalidate(rct_window* w)
 {
-    rct_widget* widgets;
+    Widget* widgets;
     int32_t i, height;
 
     widgets = window_ride_page_widgets[w->page];
@@ -2310,7 +2310,7 @@ static void WindowRideMainInvalidate(rct_window* w)
         SPR_TESTING,
         SPR_G2_SIMULATE,
     };
-    window_ride_main_widgets[WIDX_OPEN].image = spriteIds[EnumValue(ride->status)];
+    window_ride_main_widgets[WIDX_OPEN].image = ImageId(spriteIds[EnumValue(ride->status)]);
 
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
     window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
@@ -2320,16 +2320,18 @@ static void WindowRideMainInvalidate(rct_window* w)
     window_ride_main_widgets[WIDX_TEST_LIGHT].image = SPR_G2_RCT1_TEST_BUTTON_0 + (ride->status == RideStatus::Testing) * 2
         + WidgetIsPressed(*w, WIDX_TEST_LIGHT);
 #else
-    window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
+    const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
         + WidgetIsPressed(*w, WIDX_CLOSE_LIGHT);
+    window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
 
     auto baseSprite = ride->status == RideStatus::Simulating ? SPR_G2_RCT1_SIMULATE_BUTTON_0 : SPR_G2_RCT1_TEST_BUTTON_0;
-    window_ride_main_widgets[WIDX_TEST_LIGHT].image = baseSprite
-        + (ride->status == RideStatus::Testing || ride->status == RideStatus::Simulating) * 2
+    const auto testLightImage = baseSprite + (ride->status == RideStatus::Testing || ride->status == RideStatus::Simulating) * 2
         + WidgetIsPressed(*w, WIDX_TEST_LIGHT);
+    window_ride_main_widgets[WIDX_TEST_LIGHT].image = ImageId(testLightImage);
 #endif
-    window_ride_main_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RideStatus::Open) * 2
+    const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RideStatus::Open) * 2
         + WidgetIsPressed(*w, WIDX_OPEN_LIGHT);
+    window_ride_main_widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
     WindowRideAnchorBorderWidgets(w);
 
@@ -2560,7 +2562,7 @@ static StringId WindowRideGetStatus(rct_window* w, Formatter& ft)
  */
 static void WindowRideMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    rct_widget* widget;
+    Widget* widget;
 
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -2654,7 +2656,7 @@ static void WindowRideVehicleResize(rct_window* w)
  *
  *  rct2: 0x006B2748
  */
-static void WindowRideVehicleMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowRideVehicleMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -2775,7 +2777,7 @@ static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const Widget
  */
 static void WindowRideVehicleInvalidate(rct_window* w)
 {
-    rct_widget* widgets;
+    Widget* widgets;
     rct_ride_entry* rideEntry;
     StringId stringId;
     int32_t carsPerTrain;
@@ -2953,7 +2955,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
     // Background
     gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, PALETTE_INDEX_12);
 
-    rct_widget* widget = &window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
+    Widget* widget = &window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
     int32_t startX = std::max(2, (widget->width() - ((ride->NumTrains - 1) * 36)) / 2 - 25);
     int32_t startY = widget->height() - 4;
 
@@ -3080,9 +3082,9 @@ static void WindowRideModeTweakDecrease(rct_window* w)
  *
  *  rct2: 0x006B1631
  */
-static void WindowRideModeDropdown(rct_window* w, rct_widget* widget)
+static void WindowRideModeDropdown(rct_window* w, Widget* widget)
 {
-    rct_widget* dropdownWidget;
+    Widget* dropdownWidget;
 
     dropdownWidget = widget - 1;
     auto ride = get_ride(w->rideId);
@@ -3122,7 +3124,7 @@ static void WindowRideModeDropdown(rct_window* w, rct_widget* widget)
  *
  *  rct2: 0x006B15C0
  */
-static void WindowRideLoadDropdown(rct_window* w, rct_widget* widget)
+static void WindowRideLoadDropdown(rct_window* w, Widget* widget)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -3202,7 +3204,7 @@ static void WindowRideOperatingResize(rct_window* w)
  *
  *  rct2: 0x006B10F4
  */
-static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     const auto rideId = w->rideId;
     auto ride = get_ride(rideId);
@@ -3459,7 +3461,7 @@ static void WindowRideOperatingTextinput(rct_window* w, WidgetIndex widgetIndex,
  */
 static void WindowRideOperatingInvalidate(rct_window* w)
 {
-    rct_widget* widgets;
+    Widget* widgets;
     StringId format, caption, tooltip;
 
     widgets = window_ride_page_widgets[w->page];
@@ -3547,7 +3549,7 @@ static void WindowRideOperatingInvalidate(rct_window* w)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
     {
         window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WindowWidgetType::Checkbox;
-        window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].image
+        window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text
             = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
         window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip
             = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
@@ -3826,7 +3828,7 @@ static void WindowRideMaintenanceResize(rct_window* w)
  *
  *  rct2: 0x006B1ACE
  */
-static void WindowRideMaintenanceMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowRideMaintenanceMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -3836,7 +3838,7 @@ static void WindowRideMaintenanceMousedown(rct_window* w, WidgetIndex widgetInde
     if (rideEntry == nullptr)
         return;
 
-    rct_widget* dropdownWidget = widget;
+    Widget* dropdownWidget = widget;
     int32_t j, num_items;
 
     switch (widgetIndex)
@@ -4108,7 +4110,7 @@ static void WindowRideMaintenancePaint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     // Locate mechanic button image
-    rct_widget* widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
+    Widget* widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
     auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
     gfx_draw_sprite(dpi, image, screenCoords);
@@ -4335,7 +4337,7 @@ static void WindowRideColourResize(rct_window* w)
  *
  *  rct2: 0x006B02C6
  */
-static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     VehicleColour vehicleColour;
     int32_t i, numItems;
@@ -4670,7 +4672,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (WindowRideHasTrackColour(ride, 0))
     {
         window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].image = GetColourButtonImage(trackColour.main).ToUInt32();
+        window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].image = GetColourButtonImage(trackColour.main);
     }
     else
     {
@@ -4681,8 +4683,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (WindowRideHasTrackColour(ride, 1))
     {
         window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = GetColourButtonImage(trackColour.additional)
-                                                                             .ToUInt32();
+        window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = GetColourButtonImage(trackColour.additional);
     }
     else
     {
@@ -4711,7 +4712,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (WindowRideHasTrackColour(ride, 2) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].image = GetColourButtonImage(trackColour.supports).ToUInt32();
+        window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].image = GetColourButtonImage(trackColour.supports);
     }
     else
     {
@@ -4760,7 +4761,7 @@ static void WindowRideColourInvalidate(rct_window* w)
 
         window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WindowWidgetType::Scroll;
         window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body).ToUInt32();
+        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body);
 
         bool allowChangingTrimColour = false;
         bool allowChangingTernaryColour = false;
@@ -4783,12 +4784,11 @@ static void WindowRideColourInvalidate(rct_window* w)
         if (allowChangingTrimColour)
         {
             window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::ColourBtn;
-            window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].image = GetColourButtonImage(vehicleColour.Trim).ToUInt32();
+            window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].image = GetColourButtonImage(vehicleColour.Trim);
             if (allowChangingTernaryColour)
             {
                 window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::ColourBtn;
-                window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary)
-                                                                                    .ToUInt32();
+                window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary);
             }
             else
             {
@@ -5088,7 +5088,7 @@ static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
  *
  *  rct2: 0x006B1EFC
  */
-static void WindowRideMusicMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowRideMusicMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     if (widgetIndex != WIDX_MUSIC_DROPDOWN)
         return;
@@ -5447,7 +5447,7 @@ static void WindowRideMeasurementsResize(rct_window* w)
  *
  *  rct2: 0x006AD4AB
  */
-static void WindowRideMeasurementsMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowRideMeasurementsMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
         return;
@@ -5629,7 +5629,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (window_ride_measurements_widgets[WIDX_SAVE_DESIGN].type == WindowWidgetType::Button)
     {
-        rct_widget* widget = &window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND];
+        Widget* widget = &window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND];
 
         ScreenCoordsXY widgetCoords(w->windowPos.x + widget->width() / 2, w->windowPos.y + widget->top + 40);
         DrawTextWrapped(dpi, widgetCoords, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, {}, { TextAlignment::CENTRE });
@@ -5928,7 +5928,7 @@ static void WindowRideGraphsResize(rct_window* w)
  *
  *  rct2: 0x006AE878
  */
-static void WindowRideGraphsMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowRideGraphsMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -5953,7 +5953,7 @@ static void WindowRideGraphsMousedown(rct_window* w, WidgetIndex widgetIndex, rc
  */
 static void WindowRideGraphsUpdate(rct_window* w)
 {
-    rct_widget* widget;
+    Widget* widget;
     int32_t x;
 
     w->frame_no++;
@@ -6549,7 +6549,7 @@ static void WindowRideIncomeResize(rct_window* w)
  *
  *  rct2: 0x006ADED4
  */
-static void WindowRideIncomeMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowRideIncomeMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {

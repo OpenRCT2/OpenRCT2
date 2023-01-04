@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -200,7 +200,7 @@ static constexpr const int32_t TAB_START = 3;
     MakeTab   ({65, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 3 */ \
     MakeTab   ({96, 17}, STR_RIDE_CHEATS_TIP                           )  /* tab 4 */
 
-static rct_widget window_cheats_money_widgets[] =
+static Widget window_cheats_money_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({ 11,  48}, CHEAT_BUTTON,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY), // No money
@@ -218,7 +218,7 @@ static rct_widget window_cheats_money_widgets[] =
     WIDGETS_END,
 };
 
-static rct_widget window_cheats_guests_widgets[] =
+static Widget window_cheats_guests_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget({  5,  48}, {238, 279},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_SET_GUESTS_PARAMETERS                                 ), // Guests parameters group frame
@@ -252,7 +252,7 @@ static rct_widget window_cheats_guests_widgets[] =
 };
 
 //Strings for following moved to window_cheats_paint()
-static rct_widget window_cheats_misc_widgets[] =
+static Widget window_cheats_misc_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238,  60},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
@@ -290,7 +290,7 @@ static rct_widget window_cheats_misc_widgets[] =
 
     WIDGETS_END,
 };
-static rct_widget window_cheats_rides_widgets[] =
+static Widget window_cheats_rides_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget({ 11,  48}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_FIX_ALL_RIDES,                        STR_CHEAT_FIX_ALL_RIDES_TIP                    ), // Fix all rides
@@ -317,7 +317,7 @@ static rct_widget window_cheats_rides_widgets[] =
     WIDGETS_END,
 };
 
-static rct_widget *window_cheats_page_widgets[] =
+static Widget *window_cheats_page_widgets[] =
 {
     window_cheats_money_widgets,
     window_cheats_guests_widgets,
@@ -812,7 +812,7 @@ private:
                 break;
             case WIDX_WEATHER_DROPDOWN_BUTTON:
             {
-                rct_widget* dropdownWidget = widget - 1;
+                Widget* dropdownWidget = widget - 1;
 
                 for (size_t i = 0; i < std::size(WeatherTypes); i++)
                 {
@@ -829,7 +829,7 @@ private:
             break;
             case WIDX_STAFF_SPEED_DROPDOWN_BUTTON:
             {
-                rct_widget* dropdownWidget;
+                Widget* dropdownWidget;
 
                 dropdownWidget = widget - 1;
 

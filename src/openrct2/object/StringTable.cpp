@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "StringTable.h"
 
+#include "../Context.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
@@ -154,8 +155,8 @@ void StringTable::SetString(ObjectStringID id, uint8_t language, const std::stri
 
 void StringTable::Sort()
 {
-    auto targetLanguage = LocalisationService_GetCurrentLanguage();
-    std::sort(_strings.begin(), _strings.end(), [targetLanguage](const StringTableEntry& a, const StringTableEntry& b) -> bool {
+    const auto& languageOrder = OpenRCT2::GetContext()->GetLocalisationService().GetLanguageOrder();
+    std::sort(_strings.begin(), _strings.end(), [languageOrder](const StringTableEntry& a, const StringTableEntry& b) -> bool {
         if (a.Id == b.Id)
         {
             if (a.LanguageId == b.LanguageId)
@@ -163,22 +164,16 @@ void StringTable::Sort()
                 return String::Compare(a.Text, b.Text, true) < 0;
             }
 
-            if (a.LanguageId == targetLanguage)
+            for (const auto& language : languageOrder)
             {
-                return true;
-            }
-            if (b.LanguageId == targetLanguage)
-            {
-                return false;
-            }
-
-            if (a.LanguageId == LANGUAGE_ENGLISH_UK)
-            {
-                return true;
-            }
-            if (b.LanguageId == LANGUAGE_ENGLISH_UK)
-            {
-                return false;
+                if (a.LanguageId == language)
+                {
+                    return true;
+                }
+                if (b.LanguageId == language)
+                {
+                    return false;
+                }
             }
 
             return a.LanguageId < b.LanguageId;

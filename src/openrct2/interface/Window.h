@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,6 +22,7 @@
 #include <limits>
 #include <list>
 #include <memory>
+#include <utility>
 #include <variant>
 
 struct rct_drawpixelinfo;
@@ -80,26 +81,22 @@ namespace WIDGET_FLAGS
 
 enum class WindowWidgetType : uint8_t;
 
-/**
- * Widget structure
- * size: 0x10
- */
-struct rct_widget
+struct Widget
 {
-    WindowWidgetType type; // 0x00
-    uint8_t colour;        // 0x01
-    int16_t left;          // 0x02
-    int16_t right;         // 0x04
-    int16_t top;           // 0x06
-    int16_t bottom;        // 0x08
+    WindowWidgetType type;
+    uint8_t colour;
+    int16_t left;
+    int16_t right;
+    int16_t top;
+    int16_t bottom;
     union
-    { // 0x0A
-        uint32_t image;
-        StringId text;
+    {
         uint32_t content;
+        ImageId image;
+        StringId text;
         utf8* string;
     };
-    StringId tooltip; // 0x0E
+    StringId tooltip;
 
     // New properties
     WidgetFlags flags{};
@@ -228,7 +225,7 @@ struct WindowEventList
     void (*close)(struct rct_window*){};
     void (*mouse_up)(struct rct_window*, WidgetIndex){};
     void (*resize)(struct rct_window*){};
-    void (*mouse_down)(struct rct_window*, WidgetIndex, rct_widget*){};
+    void (*mouse_down)(struct rct_window*, WidgetIndex, Widget*){};
     void (*dropdown)(struct rct_window*, WidgetIndex, int32_t){};
     void (*unknown_05)(struct rct_window*){};
     void (*update)(struct rct_window*){};
@@ -414,9 +411,9 @@ enum WindowDetail
 #define WC_TOP_TOOLBAR__WIDX_SCENERY 10
 #define WC_TOP_TOOLBAR__WIDX_PATH 11
 #define WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY 17
-#define WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT 23
-#define WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE 29
-#define WC_RIDE_CONSTRUCTION__WIDX_EXIT 30
+#define WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT 25
+#define WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE 30
+#define WC_RIDE_CONSTRUCTION__WIDX_EXIT 31
 #define WC_RIDE_CONSTRUCTION__WIDX_ROTATE 32
 #define WC_SCENERY__WIDX_SCENERY_TAB_1 12
 #define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON 5
@@ -584,10 +581,11 @@ T* WindowCreate(WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width =
 {
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
 }
-template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
-T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
+template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0, TArgs&&... args)
 {
-    return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, {}, width, height, flags | WF_AUTO_POSITION));
+    return static_cast<T*>(
+        WindowCreate(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, width, height, flags | WF_AUTO_POSITION));
 }
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
 T* WindowFocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)

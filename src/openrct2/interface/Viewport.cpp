@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,6 +44,13 @@
 #include <unordered_map>
 
 using namespace OpenRCT2;
+
+enum : uint32_t
+{
+    IMAGE_TYPE_DEFAULT = 0,
+    IMAGE_TYPE_REMAP = (1 << 29),
+    IMAGE_TYPE_TRANSPARENT = (1 << 30),
+};
 
 uint8_t gShowGridLinesRefCount;
 uint8_t gShowLandRightsRefCount;
@@ -1818,7 +1825,7 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, ImageId imageId, c
     }
     else
     {
-        _currentImageType = 0;
+        _currentImageType = IMAGE_TYPE_DEFAULT;
     }
     return is_sprite_interacted_with_palette_set(dpi, imageId, coords, paletteMap);
 }

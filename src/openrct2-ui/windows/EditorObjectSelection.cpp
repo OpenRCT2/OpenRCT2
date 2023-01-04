@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -191,7 +191,7 @@ validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 static bool _window_editor_object_selection_widgets_initialised;
 
 // clang-format off
-static std::vector<rct_widget> _window_editor_object_selection_widgets = {
+static std::vector<Widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
     MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
@@ -1307,6 +1307,11 @@ private:
 
     bool FilterSelected(uint8_t objectFlag)
     {
+        // Track Manager has no concept of selection filtering, so always return true
+        if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+        {
+            return true;
+        }
         if (_FILTER_SELECTED == _FILTER_NONSELECTED)
         {
             return true;

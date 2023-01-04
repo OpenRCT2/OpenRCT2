@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,7 +39,7 @@ enum
     WIDX_BACKGROUND,
 };
 
-static rct_widget window_dropdown_widgets[] = {
+static Widget window_dropdown_widgets[] = {
     MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -446,7 +446,7 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
 /**
  *  rct2: 0x006ED43D
  */
-void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
+void WindowDropdownShowColour(rct_window* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
     int32_t defaultIndex = -1;
     // Set items

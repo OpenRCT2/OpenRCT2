@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -109,7 +109,7 @@ static constexpr const int32_t RSW_OTHER_TABS = WW_OTHER_TABS;
     MakeTab({127, 17}, STR_FINANCES_SHOW_MARKETING_TAB_TIP    ), \
     MakeTab({158, 17}, STR_FINANCES_RESEARCH_TIP              )
 
-static rct_widget _windowFinancesSummaryWidgets[] =
+static Widget _windowFinancesSummaryWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
     MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
@@ -117,25 +117,25 @@ static rct_widget _windowFinancesSummaryWidgets[] =
     WIDGETS_END,
 };
 
-static rct_widget _windowFinancesCashWidgets[] =
+static Widget _windowFinancesCashWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
     WIDGETS_END,
 };
 
-static rct_widget _windowFinancesParkValueWidgets[] =
+static Widget _windowFinancesParkValueWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
     WIDGETS_END,
 };
 
-static rct_widget _windowFinancesProfitWidgets[] =
+static Widget _windowFinancesProfitWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
     WIDGETS_END,
 };
 
-static rct_widget _windowFinancesMarketingWidgets[] =
+static Widget _windowFinancesMarketingWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
     MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
@@ -149,7 +149,7 @@ static rct_widget _windowFinancesMarketingWidgets[] =
     WIDGETS_END,
 };
 
-static rct_widget _windowFinancesResearchWidgets[] =
+static Widget _windowFinancesResearchWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_RESEARCH_FUNDING, RSW_RESEARCH, RSH_RESEARCH, WW_RESEARCH, WH_RESEARCH),
     MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
@@ -167,7 +167,7 @@ static rct_widget _windowFinancesResearchWidgets[] =
 };
 // clang-format on
 
-static rct_widget* _windowFinancesPageWidgets[] = {
+static Widget* _windowFinancesPageWidgets[] = {
     _windowFinancesSummaryWidgets,   // WINDOW_FINANCES_PAGE_SUMMARY
     _windowFinancesCashWidgets,      // WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH
     _windowFinancesParkValueWidgets, // WINDOW_FINANCES_PAGE_VALUE_GRAPH
@@ -363,7 +363,7 @@ public:
 
         auto screenCoords = ScreenCoordsXY{ 0, TABLE_CELL_HEIGHT + 2 };
 
-        rct_widget self = widgets[WIDX_SUMMARY_SCROLL];
+        Widget self = widgets[WIDX_SUMMARY_SCROLL];
         int32_t row_width = std::max<uint16_t>(scrolls[0].h_right, self.width());
 
         // Expenditure / Income row labels
@@ -587,7 +587,7 @@ public:
 
     void OnDrawFinancialGraph(rct_drawpixelinfo& dpi)
     {
-        rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+        Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
@@ -650,7 +650,7 @@ public:
 
     void OnDrawParkValueGraph(rct_drawpixelinfo& dpi)
     {
-        rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+        Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
@@ -707,7 +707,7 @@ public:
 
     void OnDrawProfitGraph(rct_drawpixelinfo& dpi)
     {
-        rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+        Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
@@ -902,7 +902,7 @@ public:
         if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
             return;
 
-        rct_widget* dropdownWidget = &widgets[widgetIndex - 1];
+        Widget* dropdownWidget = &widgets[widgetIndex - 1];
 
         for (std::size_t i = 0; i < std::size(ResearchFundingLevelNames); i++)
         {
