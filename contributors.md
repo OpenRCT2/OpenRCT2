@@ -204,6 +204,7 @@ The following people are not part of the development team, but have been contrib
 * Xixiang Chen (jacknull1991)
 * (ReticulatingSplines)
 * Conrad Cash (HouseholdVTuber)
+* Nehemiah Negussie (nehemiah-negussie)
 
 
 ## Toolchain
