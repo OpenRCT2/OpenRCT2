@@ -30,6 +30,7 @@ enum
     LANGUAGE_ESPERANTO,
     LANGUAGE_SPANISH,
     LANGUAGE_FRENCH,
+    LANGUAGE_FRENCH_CA,
     LANGUAGE_ITALIAN,
     LANGUAGE_JAPANESE,
     LANGUAGE_KOREAN,
@@ -75,6 +76,7 @@ struct language_descriptor
     const char* locale;
     const utf8* english_name;
     const utf8* native_name;
+    uint8_t fallback;
 #if !defined(NO_TTF)
     TTFontFamily const* font_family;
 #else

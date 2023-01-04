@@ -609,6 +609,7 @@ namespace Platform
             { L"eo", LANGUAGE_ESPERANTO },
             { L"es", LANGUAGE_SPANISH },
             { L"fr", LANGUAGE_FRENCH },
+            { L"fr-CA", LANGUAGE_FRENCH_CA },
             { L"it", LANGUAGE_ITALIAN },
             { L"ja", LANGUAGE_JAPANESE },
             { L"ko", LANGUAGE_KOREAN },
