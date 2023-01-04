@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -609,6 +609,7 @@ namespace Platform
             { L"eo", LANGUAGE_ESPERANTO },
             { L"es", LANGUAGE_SPANISH },
             { L"fr", LANGUAGE_FRENCH },
+            { L"fr-CA", LANGUAGE_FRENCH_CA },
             { L"it", LANGUAGE_ITALIAN },
             { L"ja", LANGUAGE_JAPANESE },
             { L"ko", LANGUAGE_KOREAN },
