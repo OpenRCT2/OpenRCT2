@@ -3635,6 +3635,8 @@ STR_6533    :{WINDOW_COLOUR_2}Nervenkitzelfaktor: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Intensitätsfaktor: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Übelkeitsfaktor: {BLACK}-{COMMA16}%
 STR_6536    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert. Der Park wurde in v{INT32} gespeichert. Sie benutzen im Moment v{INT32}.
+STR_6537    :Normale Fußwege als Warteschlangen erlauben
+STR_6538    :Zeigt reguläre Pfade in der Warteschlangenliste im Fußwegfenster an
 
 
 #############
