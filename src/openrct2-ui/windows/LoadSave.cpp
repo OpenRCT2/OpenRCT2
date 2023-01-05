@@ -269,7 +269,7 @@ static void Select(const char* path)
     {
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
             SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
-            if (Editor::LoadLandscape(pathBuffer))
+            if (OpenRCT2::GetContext()->LoadParkFromFile(pathBuffer))
             {
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 window_close_by_class(WindowClass::Loadsave);
