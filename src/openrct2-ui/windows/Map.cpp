@@ -19,8 +19,8 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ChangeMapSizeAction.h>
 #include <openrct2/actions/LandSetRightsAction.h>
-#include <openrct2/actions/PlaceParkEntranceAction.h>
-#include <openrct2/actions/PlacePeepSpawnAction.h>
+#include <openrct2/actions/ParkEntrancePlaceAction.h>
+#include <openrct2/actions/PeepSpawnPlaceAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/entity/EntityList.h>
@@ -516,7 +516,7 @@ public:
 
         ParkEntranceRemoveGhost();
 
-        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
+        auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId);
         gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
         auto result = GameActions::Execute(&gameAction);
@@ -534,7 +534,7 @@ public:
         CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
         if (!parkEntrancePosition.IsNull())
         {
-            auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
+            auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId);
             auto result = GameActions::Execute(&gameAction);
             if (result.Error == GameActions::Status::Ok)
             {
@@ -584,7 +584,7 @@ public:
 
         int32_t mapZ = tileElement->GetBaseZ();
 
-        auto gameAction = PlacePeepSpawnAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
+        auto gameAction = PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
         auto result = GameActions::Execute(&gameAction);
         if (result.Error == GameActions::Status::Ok)
         {

@@ -11,15 +11,15 @@
 
 #include "GameAction.h"
 
-class PlaceParkEntranceAction final : public GameActionBase<GameCommand::PlaceParkEntrance>
+class ParkEntrancePlaceAction final : public GameActionBase<GameCommand::PlaceParkEntrance>
 {
 private:
     CoordsXYZD _loc;
     ObjectEntryIndex _pathType;
 
 public:
-    PlaceParkEntranceAction() = default;
-    PlaceParkEntranceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
+    ParkEntrancePlaceAction() = default;
+    ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

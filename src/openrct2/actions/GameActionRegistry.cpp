@@ -38,6 +38,7 @@
 #include "MazePlaceTrackAction.h"
 #include "MazeSetTrackAction.h"
 #include "NetworkModifyGroupAction.h"
+#include "ParkEntrancePlaceAction.h"
 #include "ParkEntranceRemoveAction.h"
 #include "ParkMarketingAction.h"
 #include "ParkSetDateAction.h"
@@ -47,8 +48,7 @@
 #include "ParkSetResearchFundingAction.h"
 #include "PauseToggleAction.h"
 #include "PeepPickupAction.h"
-#include "PlaceParkEntranceAction.h"
-#include "PlacePeepSpawnAction.h"
+#include "PeepSpawnPlaceAction.h"
 #include "PlayerKickAction.h"
 #include "PlayerSetGroupAction.h"
 #include "RideCreateAction.h"
@@ -148,8 +148,8 @@ namespace GameActions
         REGISTER_ACTION(ParkSetParameterAction);
         REGISTER_ACTION(ParkSetResearchFundingAction);
         REGISTER_ACTION(PeepPickupAction);
-        REGISTER_ACTION(PlaceParkEntranceAction);
-        REGISTER_ACTION(PlacePeepSpawnAction);
+        REGISTER_ACTION(ParkEntrancePlaceAction);
+        REGISTER_ACTION(PeepSpawnPlaceAction);
         REGISTER_ACTION(PlayerKickAction);
         REGISTER_ACTION(PlayerSetGroupAction);
         REGISTER_ACTION(RideCreateAction);

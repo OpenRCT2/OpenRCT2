@@ -93,6 +93,7 @@
     <ClInclude Include="actions\MazePlaceTrackAction.h" />
     <ClInclude Include="actions\MazeSetTrackAction.h" />
     <ClInclude Include="actions\NetworkModifyGroupAction.h" />
+    <ClInclude Include="actions\ParkEntrancePlaceAction.h" />
     <ClInclude Include="actions\ParkEntranceRemoveAction.h" />
     <ClInclude Include="actions\ParkMarketingAction.h" />
     <ClInclude Include="actions\ParkSetDateAction.h" />
@@ -102,8 +103,7 @@
     <ClInclude Include="actions\ParkSetResearchFundingAction.h" />
     <ClInclude Include="actions\PauseToggleAction.h" />
     <ClInclude Include="actions\PeepPickupAction.h" />
-    <ClInclude Include="actions\PlaceParkEntranceAction.h" />
-    <ClInclude Include="actions\PlacePeepSpawnAction.h" />
+    <ClInclude Include="actions\PeepSpawnPlaceAction.h" />
     <ClInclude Include="actions\PlayerKickAction.h" />
     <ClInclude Include="actions\PlayerSetGroupAction.h" />
     <ClInclude Include="actions\ResultWithMessage.h" />
@@ -603,8 +603,8 @@
     <ClCompile Include="actions\ParkSetResearchFundingAction.cpp" />
     <ClCompile Include="actions\PauseToggleAction.cpp" />
     <ClCompile Include="actions\PeepPickupAction.cpp" />
-    <ClCompile Include="actions\PlaceParkEntranceAction.cpp" />
-    <ClCompile Include="actions\PlacePeepSpawnAction.cpp" />
+    <ClCompile Include="actions\ParkEntrancePlaceAction.cpp" />
+    <ClCompile Include="actions\PeepSpawnPlaceAction.cpp" />
     <ClCompile Include="actions\PlayerKickAction.cpp" />
     <ClCompile Include="actions\PlayerSetGroupAction.cpp" />
     <ClCompile Include="actions\RideCreateAction.cpp" />
