@@ -1275,7 +1275,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "clearscenery", GameCommand::ClearScenery },
     { "climateset", GameCommand::SetClimate },
     { "footpathplace", GameCommand::PlacePath },
-    { "footpathlayoutplace", GameCommand::PlacePathFromTrack },
+    { "footpathlayoutplace", GameCommand::PlacePathLayout },
     { "footpathremove", GameCommand::RemovePath },
     { "footpathadditionplace", GameCommand::PlaceFootpathAddition },
     { "footpathadditionremove", GameCommand::RemoveFootpathAddition },

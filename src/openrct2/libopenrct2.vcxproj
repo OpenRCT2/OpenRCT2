@@ -71,8 +71,8 @@
     <ClInclude Include="actions\ClearAction.h" />
     <ClInclude Include="actions\ClimateSetAction.h" />
     <ClInclude Include="actions\CustomAction.h" />
+    <ClInclude Include="actions\FootpathLayoutPlaceAction.h" />
     <ClInclude Include="actions\FootpathPlaceAction.h" />
-    <ClInclude Include="actions\FootpathPlaceFromTrackAction.h" />
     <ClInclude Include="actions\FootpathRemoveAction.h" />
     <ClInclude Include="actions\FootpathAdditionPlaceAction.h" />
     <ClInclude Include="actions\FootpathAdditionRemoveAction.h" />
@@ -573,8 +573,8 @@
     <ClCompile Include="actions\CustomAction.cpp" />
     <ClCompile Include="actions\FootpathAdditionPlaceAction.cpp" />
     <ClCompile Include="actions\FootpathAdditionRemoveAction.cpp" />
+    <ClCompile Include="actions\FootpathLayoutPlaceAction.cpp" />
     <ClCompile Include="actions\FootpathPlaceAction.cpp" />
-    <ClCompile Include="actions\FootpathPlaceFromTrackAction.cpp" />
     <ClCompile Include="actions\FootpathRemoveAction.cpp" />
     <ClCompile Include="actions\GameAction.cpp" />
     <ClCompile Include="actions\GameActionRegistry.cpp" />

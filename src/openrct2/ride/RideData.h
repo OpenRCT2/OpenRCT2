@@ -186,7 +186,7 @@ struct RideTypeDescriptor
     RideTrackGroup ExtraTrackPieces;
     RideTrackGroup CoveredTrackPieces;
     /** rct2: 0x0097CC68 */
-    uint64_t StartTrackPiece;
+    track_type_t StartTrackPiece;
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
     uint64_t Flags;
     /** rct2: 0x0097C8AC */
