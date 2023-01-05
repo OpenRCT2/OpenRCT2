@@ -19,8 +19,8 @@
 #include "CustomAction.h"
 #include "FootpathAdditionPlaceAction.h"
 #include "FootpathAdditionRemoveAction.h"
+#include "FootpathLayoutPlaceAction.h"
 #include "FootpathPlaceAction.h"
-#include "FootpathPlaceFromTrackAction.h"
 #include "FootpathRemoveAction.h"
 #include "GameAction.h"
 #include "GuestSetFlagsAction.h"
@@ -133,7 +133,7 @@ namespace GameActions
         REGISTER_ACTION(BannerSetStyleAction);
         REGISTER_ACTION(ClimateSetAction);
         REGISTER_ACTION(FootpathPlaceAction);
-        REGISTER_ACTION(FootpathPlaceFromTrackAction);
+        REGISTER_ACTION(FootpathLayoutPlaceAction);
         REGISTER_ACTION(FootpathRemoveAction);
         REGISTER_ACTION(FootpathAdditionPlaceAction);
         REGISTER_ACTION(FootpathAdditionRemoveAction);

@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "FootpathPlaceFromTrackAction.h"
+#include "FootpathLayoutPlaceAction.h"
 
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
@@ -23,7 +23,7 @@
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 
-FootpathPlaceFromTrackAction::FootpathPlaceFromTrackAction(
+FootpathLayoutPlaceAction::FootpathLayoutPlaceAction(
     const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
     PathConstructFlags constructFlags)
     : _loc(loc)
@@ -35,7 +35,7 @@ FootpathPlaceFromTrackAction::FootpathPlaceFromTrackAction(
 {
 }
 
-void FootpathPlaceFromTrackAction::Serialise(DataSerialiser& stream)
+void FootpathLayoutPlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
@@ -43,7 +43,7 @@ void FootpathPlaceFromTrackAction::Serialise(DataSerialiser& stream)
            << DS_TAG(_constructFlags);
 }
 
-void FootpathPlaceFromTrackAction::AcceptParameters(GameActionParameterVisitor& visitor)
+void FootpathLayoutPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("slope", _slope);
@@ -53,12 +53,12 @@ void FootpathPlaceFromTrackAction::AcceptParameters(GameActionParameterVisitor& 
     visitor.Visit("constructFlags", _constructFlags);
 }
 
-uint16_t FootpathPlaceFromTrackAction::GetActionFlags() const
+uint16_t FootpathLayoutPlaceAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();
 }
 
-GameActions::Result FootpathPlaceFromTrackAction::Query() const
+GameActions::Result FootpathLayoutPlaceAction::Query() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
@@ -94,7 +94,7 @@ GameActions::Result FootpathPlaceFromTrackAction::Query() const
     return ElementInsertQuery(std::move(res));
 }
 
-GameActions::Result FootpathPlaceFromTrackAction::Execute() const
+GameActions::Result FootpathLayoutPlaceAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
@@ -114,7 +114,7 @@ GameActions::Result FootpathPlaceFromTrackAction::Execute() const
     return ElementInsertExecute(std::move(res));
 }
 
-GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions::Result res) const
+GameActions::Result FootpathLayoutPlaceAction::ElementInsertQuery(GameActions::Result res) const
 {
     bool entrancePath = false, entranceIsSamePath = false;
 
@@ -186,7 +186,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions
     return res;
 }
 
-GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActions::Result res) const
+GameActions::Result FootpathLayoutPlaceAction::ElementInsertExecute(GameActions::Result res) const
 {
     bool entrancePath = false, entranceIsSamePath = false;
 
@@ -294,7 +294,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
     return res;
 }
 
-bool FootpathPlaceFromTrackAction::IsSameAsEntranceElement(const EntranceElement& entranceElement) const
+bool FootpathLayoutPlaceAction::IsSameAsEntranceElement(const EntranceElement& entranceElement) const
 {
     if (entranceElement.HasLegacyPathEntry())
     {
