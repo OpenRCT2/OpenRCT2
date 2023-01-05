@@ -308,6 +308,7 @@
     <ClInclude Include="object\ObjectList.h" />
     <ClInclude Include="object\ObjectManager.h" />
     <ClInclude Include="object\ObjectRepository.h" />
+    <ClInclude Include="object\PaintObject.h" />
     <ClInclude Include="object\ResourceTable.h" />
     <ClInclude Include="object\RideObject.h" />
     <ClInclude Include="object\SceneryGroupObject.h" />
@@ -797,6 +798,7 @@
     <ClCompile Include="object\ObjectList.cpp" />
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />
+    <ClCompile Include="object\PaintObject.cpp" />
     <ClCompile Include="object\ResourceTable.cpp" />
     <ClCompile Include="object\RideObject.cpp" />
     <ClCompile Include="object\SceneryGroupObject.cpp" />

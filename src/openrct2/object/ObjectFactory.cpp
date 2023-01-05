@@ -33,6 +33,7 @@
 #include "Object.h"
 #include "ObjectLimits.h"
 #include "ObjectList.h"
+#include "PaintObject.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
@@ -380,6 +381,9 @@ namespace ObjectFactory
             case ObjectType::Audio:
                 result = std::make_unique<AudioObject>();
                 break;
+            case ObjectType::Paint:
+                result = std::make_unique<PaintObject>();
+                break;
             default:
                 throw std::runtime_error("Invalid object type");
         }
@@ -420,6 +424,8 @@ namespace ObjectFactory
             return ObjectType::FootpathRailings;
         if (s == "audio")
             return ObjectType::Audio;
+        if (s == "paint")
+            return ObjectType::Paint;
         return ObjectType::None;
     }
 

@@ -41,6 +41,7 @@ int32_t object_entry_group_counts[] = {
     MAX_FOOTPATH_SURFACE_OBJECTS,
     MAX_FOOTPATH_RAILINGS_OBJECTS,
     MAX_AUDIO_OBJECTS,
+    MAX_PAINT_OBJECTS,
 };
 static_assert(std::size(object_entry_group_counts) == EnumValue(ObjectType::Count));
 
