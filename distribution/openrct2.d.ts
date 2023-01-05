@@ -3573,14 +3573,16 @@ declare global {
         column: number;
     }
 
+    type ListViewItem = ListViewItemSeperator | string[] | string;
+
     interface ListViewWidget extends WidgetBase {
         type: "listview";
         scrollbars: ScrollbarType;
         isStriped: boolean;
         showColumnHeaders: boolean;
         columns: ListViewColumn[];
-        items: string[];
-        selectedCell: RowColumn;
+        items: ListViewItem[];
+        selectedCell: RowColumn | null;
         readonly highlightedCell: RowColumn;
         canSelect: boolean;
     }
@@ -3702,8 +3704,6 @@ declare global {
         text?: string;
     }
 
-    type ListViewItem = ListViewItemSeperator | string[];
-
     interface RowColumn {
         row: number;
         column: number;
@@ -3715,7 +3715,7 @@ declare global {
         isStriped?: boolean;
         showColumnHeaders?: boolean;
         columns?: Partial<ListViewColumn>[];
-        items?: string[] | ListViewItem[];
+        items?: ListViewItem[];
         selectedCell?: RowColumn;
         canSelect?: boolean;
         onHighlight?: (item: number, column: number) => void;
