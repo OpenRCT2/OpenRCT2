@@ -11,7 +11,7 @@
 - Fix: [#18905] Ride Construction window theme is not applied correctly.
 - Fix: [#18911] Mini Golf station does not draw correctly from all angles.
 - Fix: [#19026] Park loan is clamped to a 32-bit integer.
-- Fix [#18971] Fix New Game not prompting for save before quitting.
+- Fix: [#18971] Fix New Game not prompting for save before quitting.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------
