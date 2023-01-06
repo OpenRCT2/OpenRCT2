@@ -9,20 +9,16 @@
 
 #pragma once
 
+#include "../world/Map.h"
 #include "GameAction.h"
 
-class PlaceParkEntranceAction final : public GameActionBase<GameCommand::PlaceParkEntrance>
+class MapChangeSizeAction final : public GameActionBase<GameCommand::ChangeMapSize>
 {
-private:
-    CoordsXYZD _loc;
-    ObjectEntryIndex _pathType;
-
 public:
-    PlaceParkEntranceAction() = default;
-    PlaceParkEntranceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
+    MapChangeSizeAction() = default;
+    MapChangeSizeAction(const TileCoordsXY& targetSize);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
-
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
@@ -30,5 +26,5 @@ public:
     GameActions::Result Execute() const override;
 
 private:
-    bool CheckMapCapacity(int16_t numTiles) const;
+    TileCoordsXY _targetSize;
 };

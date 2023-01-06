@@ -16,10 +16,10 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/actions/ParkSetEntranceFeeAction.h>
 #include <openrct2/actions/ParkSetParameterAction.h>
 #include <openrct2/actions/RideSetPriceAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
-#include <openrct2/actions/SetParkEntranceFeeAction.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
 #include <openrct2/entity/Peep.h>
@@ -99,7 +99,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
 
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
-    execute<SetParkEntranceFeeAction>(0);
+    execute<ParkSetEntranceFeeAction>(0);
     gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find ferris wheel
@@ -160,7 +160,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
 
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
-    execute<SetParkEntranceFeeAction>(0);
+    execute<ParkSetEntranceFeeAction>(0);
     gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find car ride

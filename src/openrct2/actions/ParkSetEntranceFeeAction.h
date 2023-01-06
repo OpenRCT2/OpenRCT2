@@ -9,22 +9,22 @@
 
 #pragma once
 
-#include "../world/Map.h"
 #include "GameAction.h"
 
-class ChangeMapSizeAction final : public GameActionBase<GameCommand::ChangeMapSize>
+class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
 {
+private:
+    money16 _fee{ MONEY16_UNDEFINED };
+
 public:
-    ChangeMapSizeAction() = default;
-    ChangeMapSizeAction(const TileCoordsXY& targetSize);
+    ParkSetEntranceFeeAction() = default;
+    ParkSetEntranceFeeAction(money16 fee);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;
-
-private:
-    TileCoordsXY _targetSize;
 };
