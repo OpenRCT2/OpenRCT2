@@ -3642,6 +3642,8 @@ STR_6536    :This park was saved in a later version of OpenRCT2. The park was sa
 STR_6537    :Allow using regular paths as queue
 STR_6538    :Shows regular paths in the queues dropdown of the Footpaths window.
 STR_6539    :Brake Closed
+STR_6540    :{WINDOW_COLOUR_2}Special thanks to the following companies for allowing their likeness:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
 
 #############
 # Scenarios #
