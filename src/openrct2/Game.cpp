@@ -736,7 +736,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
     }
 }
 
-static void game_new_game_window_callback(const utf8* path)
+static void NewGameWindowCallback(const utf8* path)
 {
     window_close_by_class(WindowClass::EditorObjectSelection);
     game_notify_map_change();
@@ -787,13 +787,13 @@ void game_load_or_quit_no_save_prompt()
             title_load();
             break;
         }
-        case PromptMode::SaveBeforeNew:
+        case PromptMode::SaveBeforeNewGame:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             tool_cancel();
             auto intent = Intent(WindowClass::ScenarioSelect);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(game_new_game_window_callback));
+            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(NewGameWindowCallback));
             ContextOpenIntent(&intent);
             break;
         }

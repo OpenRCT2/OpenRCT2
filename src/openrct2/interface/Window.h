@@ -469,7 +469,7 @@ enum class PromptMode : uint8_t
     SaveBeforeLoad = 0,
     SaveBeforeQuit,
     SaveBeforeQuit2,
-    SaveBeforeNew,
+    SaveBeforeNewGame,
     Quit
 };
 

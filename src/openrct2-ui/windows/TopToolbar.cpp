@@ -564,7 +564,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
             {
                 case DDIDX_NEW_GAME:
                 {
-                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeNew);
+                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeNewGame);
                     GameActions::Execute(&loadOrQuitAction);
                     break;
                 }
