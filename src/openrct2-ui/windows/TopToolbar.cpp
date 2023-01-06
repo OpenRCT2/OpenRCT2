@@ -532,15 +532,6 @@ static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, Wi
     }
 }
 
-static void WindowTopToolbarScenarioselectCallback(const utf8* path)
-{
-    window_close_by_class(WindowClass::EditorObjectSelection);
-    game_notify_map_change();
-    GetContext()->LoadParkFromFile(path, false, true);
-    game_load_scripts();
-    game_notify_map_changed();
-}
-
 /**
  *
  *  rct2: 0x0066C9EA
@@ -573,9 +564,8 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
             {
                 case DDIDX_NEW_GAME:
                 {
-                    auto intent = Intent(WindowClass::ScenarioSelect);
-                    intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowTopToolbarScenarioselectCallback));
-                    ContextOpenIntent(&intent);
+                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeNewGame);
+                    GameActions::Execute(&loadOrQuitAction);
                     break;
                 }
                 case DDIDX_LOAD_GAME:

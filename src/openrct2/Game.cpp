@@ -736,6 +736,15 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
     }
 }
 
+static void NewGameWindowCallback(const utf8* path)
+{
+    window_close_by_class(WindowClass::EditorObjectSelection);
+    game_notify_map_change();
+    GetContext()->LoadParkFromFile(path, false, true);
+    game_load_scripts();
+    game_notify_map_changed();
+}
+
 /**
  *
  *  rct2: 0x0066DB79
@@ -776,6 +785,16 @@ void game_load_or_quit_no_save_prompt()
             game_notify_map_change();
             game_unload_scripts();
             title_load();
+            break;
+        }
+        case PromptMode::SaveBeforeNewGame:
+        {
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            GameActions::Execute(&loadOrQuitAction);
+            tool_cancel();
+            auto intent = Intent(WindowClass::ScenarioSelect);
+            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(NewGameWindowCallback));
+            ContextOpenIntent(&intent);
             break;
         }
         default:

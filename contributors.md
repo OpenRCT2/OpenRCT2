@@ -205,6 +205,7 @@ The following people are not part of the development team, but have been contrib
 * (ReticulatingSplines)
 * Conrad Cash (HouseholdVTuber)
 * Michael Bickerton (mdbckrtn)
+* Nehemiah Negussie (nehemiah-negussie)
 
 
 ## Toolchain
