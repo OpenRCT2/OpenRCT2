@@ -356,7 +356,7 @@ class CheatsWindow final : public Window
 {
 private:
     char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
-    money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
+    money64 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
     int32_t _selectedStaffSpeed = 1;
     int32_t _parkRatingSpinnerValue{};
     int32_t _yearSpinnerValue = 1;
@@ -589,7 +589,7 @@ public:
         if (page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER)
         {
             auto val = string_to_money(std::string(text).c_str());
-            if (val != MONEY32_UNDEFINED)
+            if (val != MONEY64_UNDEFINED)
             {
                 _moneySpinnerValue = val;
             }

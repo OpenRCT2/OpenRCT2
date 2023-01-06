@@ -6423,14 +6423,13 @@ static void WindowRideIncomeDecreasePrimaryPrice(rct_window* w)
     WindowRideIncomeSetPrimaryPrice(w, price);
 }
 
-static money16 WindowRideIncomeGetSecondaryPrice(rct_window* w)
+static money64 WindowRideIncomeGetSecondaryPrice(rct_window* w)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
         return 0;
 
-    money16 price = ride->price[1];
-    return price;
+    return ride->price[1];
 }
 
 static void WindowRideIncomeSetSecondaryPrice(rct_window* w, money16 price)
@@ -6457,7 +6456,7 @@ static bool WindowRideIncomeCanModifyPrimaryPrice(rct_window* w)
  */
 static void WindowRideIncomeIncreaseSecondaryPrice(rct_window* w)
 {
-    money16 price = WindowRideIncomeGetSecondaryPrice(w);
+    auto price = WindowRideIncomeGetSecondaryPrice(w);
 
     if (price < 20.00_GBP)
         price++;
@@ -6471,7 +6470,7 @@ static void WindowRideIncomeIncreaseSecondaryPrice(rct_window* w)
  */
 static void WindowRideIncomeDecreaseSecondaryPrice(rct_window* w)
 {
-    money16 price = WindowRideIncomeGetSecondaryPrice(w);
+    auto price = WindowRideIncomeGetSecondaryPrice(w);
 
     if (price > 0.00_GBP)
         price--;
@@ -6510,7 +6509,7 @@ static void WindowRideIncomeMouseup(rct_window* w, WidgetIndex widgetIndex)
             auto ride = get_ride(w->rideId);
             if (ride != nullptr)
             {
-                money_to_string(static_cast<money32>(ride->price[0]), _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+                money_to_string(static_cast<money64>(ride->price[0]), _moneyInputText, MONEY_STRING_MAXLENGTH, true);
                 WindowTextInputRawOpen(
                     w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
                     MONEY_STRING_MAXLENGTH);
@@ -6522,9 +6521,9 @@ static void WindowRideIncomeMouseup(rct_window* w, WidgetIndex widgetIndex)
             break;
         case WIDX_SECONDARY_PRICE:
         {
-            money32 price32 = static_cast<money32>(WindowRideIncomeGetSecondaryPrice(w));
+            auto price64 = WindowRideIncomeGetSecondaryPrice(w);
 
-            money_to_string(price32, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+            money_to_string(price64, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
             WindowTextInputRawOpen(
                 w, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText, MONEY_STRING_MAXLENGTH);
         }
@@ -6590,8 +6589,8 @@ static void WindowRideIncomeTextinput(rct_window* w, WidgetIndex widgetIndex, ch
     if ((widgetIndex != WIDX_PRIMARY_PRICE && widgetIndex != WIDX_SECONDARY_PRICE) || text == nullptr)
         return;
 
-    money32 price = string_to_money(text);
-    if (price == MONEY32_UNDEFINED)
+    money64 price = string_to_money(text);
+    if (price == MONEY64_UNDEFINED)
     {
         return;
     }

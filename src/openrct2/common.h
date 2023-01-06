@@ -92,18 +92,17 @@ using money64 = fixed64_1dp;
 #define FIXED_1DP(whole, fraction) FIXED_XDP(1, whole, fraction)
 #define FIXED_2DP(whole, fraction) FIXED_XDP(10, whole, fraction)
 
-// User defined literal to convert money literal to money32
-constexpr money32 operator"" _GBP(long double money) noexcept
+constexpr money64 operator"" _GBP(long double money) noexcept
 {
     return money * 10;
 }
 
-constexpr money32 ToMoney32FromGBP(int32_t money) noexcept
+constexpr money64 ToMoney64FromGBP(int32_t money) noexcept
 {
     return money * 10;
 }
 
-constexpr money32 ToMoney32FromGBP(double money) noexcept
+constexpr money64 ToMoney64FromGBP(int64_t money) noexcept
 {
     return money * 10;
 }
@@ -125,16 +124,6 @@ constexpr money64 ToMoney64(money32 value)
 constexpr money64 ToMoney64(money16 value)
 {
     return value == MONEY16_UNDEFINED ? MONEY64_UNDEFINED : value;
-}
-
-constexpr money32 ToMoney32(money64 value)
-{
-    return value == MONEY64_UNDEFINED ? MONEY32_UNDEFINED : static_cast<money32>(value);
-}
-
-constexpr money16 ToMoney16(money64 value)
-{
-    return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : static_cast<money16>(value);
 }
 
 using StringId = uint16_t;
