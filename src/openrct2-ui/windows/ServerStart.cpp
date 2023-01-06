@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,7 +45,7 @@ enum {
 static constexpr const int32_t WW = 300;
 static constexpr const int32_t WH = 154;
 
-static rct_widget _windowServerStartWidgets[] = {
+static Widget _windowServerStartWidgets[] = {
     MakeWidget({ 0, 0 }, { WW, WH }, WindowWidgetType::Frame, WindowColour::Primary), // panel / background
     MakeWidget({ 1, 1 }, { 298, 14 }, WindowWidgetType::Caption, WindowColour::Primary, STR_START_SERVER,STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({ WW - 13, 2 }, { 11, 12 }, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,STR_CLOSE_WINDOW_TIP), // close x button

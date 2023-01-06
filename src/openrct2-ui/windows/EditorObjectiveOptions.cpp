@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -92,7 +92,7 @@ enum {
     MakeTab   ({  3,  17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
     MakeTab   ({ 34,  17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP           )
 
-static rct_widget window_editor_objective_options_main_widgets[] = {
+static Widget window_editor_objective_options_main_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
     MakeWidget        ({ 98,  48}, {344,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
     MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
@@ -106,13 +106,13 @@ static rct_widget window_editor_objective_options_main_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_editor_objective_options_rides_widgets[] = {
+static Widget window_editor_objective_options_rides_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
     MakeWidget({  3,  60}, {374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     WIDGETS_END,
 };
 
-static rct_widget *window_editor_objective_options_widgets[] = {
+static Widget *window_editor_objective_options_widgets[] = {
     window_editor_objective_options_main_widgets,
     window_editor_objective_options_rides_widgets,
 };
@@ -123,7 +123,7 @@ static rct_widget *window_editor_objective_options_widgets[] = {
 
 static void WindowEditorObjectiveOptionsMainMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowEditorObjectiveOptionsMainResize(rct_window *w);
-static void WindowEditorObjectiveOptionsMainMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowEditorObjectiveOptionsMainMousedown(rct_window *w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowEditorObjectiveOptionsMainDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowEditorObjectiveOptionsMainUpdate(rct_window *w);
 static void WindowEditorObjectiveOptionsMainTextinput(rct_window *w, WidgetIndex widgetIndex, char *text);
@@ -230,7 +230,7 @@ static void WindowEditorObjectiveOptionsAnchorBorderWidgets(rct_window* w)
 
 static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    rct_widget* widget;
+    Widget* widget;
     int32_t spriteIndex;
 
     // Tab 1
@@ -372,7 +372,7 @@ static void WindowEditorObjectiveOptionsMainResize(rct_window* w)
 static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
 {
     int32_t numItems = 0, objectiveType;
-    rct_widget* dropdownWidget;
+    Widget* dropdownWidget;
     uint32_t parkFlags;
 
     dropdownWidget = &w->widgets[WIDX_OBJECTIVE];
@@ -412,7 +412,7 @@ static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
 static void WindowEditorObjectiveOptionsShowCategoryDropdown(rct_window* w)
 {
     int32_t i;
-    rct_widget* dropdownWidget;
+    Widget* dropdownWidget;
 
     dropdownWidget = &w->widgets[WIDX_CATEGORY];
 
@@ -585,7 +585,7 @@ static void WindowEditorObjectiveOptionsArg2Decrease(rct_window* w)
  *
  *  rct2: 0x00671A0D
  */
-static void WindowEditorObjectiveOptionsMainMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowEditorObjectiveOptionsMainMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -1013,7 +1013,7 @@ static void WindowEditorObjectiveOptionsRidesScrollmouseover(
  */
 static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
 {
-    rct_widget* widgets;
+    Widget* widgets;
 
     widgets = window_editor_objective_options_widgets[w->page];
     if (w->widgets != widgets)

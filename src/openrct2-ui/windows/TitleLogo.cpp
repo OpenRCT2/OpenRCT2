@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,7 @@ enum
     WIDX_LOGO
 };
 
-static rct_widget window_title_logo_widgets[] = {
+static Widget window_title_logo_widgets[] = {
     MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };

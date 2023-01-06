@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,9 +15,9 @@
 #include "../network/network.h"
 #include "../util/Util.h"
 
-PeepPickupAction::PeepPickupAction(PeepPickupType type, EntityId spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner)
+PeepPickupAction::PeepPickupAction(PeepPickupType type, EntityId entityId, const CoordsXYZ& loc, NetworkPlayerId_t owner)
     : _type(type)
-    , _spriteId(spriteId)
+    , _entityId(entityId)
     , _loc(loc)
     , _owner(owner)
 {
@@ -26,7 +26,7 @@ PeepPickupAction::PeepPickupAction(PeepPickupType type, EntityId spriteId, const
 void PeepPickupAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("type", _type);
-    visitor.Visit("id", _spriteId);
+    visitor.Visit("id", _entityId);
     visitor.Visit(_loc);
     visitor.Visit("playerId", _owner);
 }
@@ -40,14 +40,14 @@ void PeepPickupAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_type) << DS_TAG(_spriteId) << DS_TAG(_loc) << DS_TAG(_owner);
+    stream << DS_TAG(_type) << DS_TAG(_entityId) << DS_TAG(_loc) << DS_TAG(_owner);
 }
 
 GameActions::Result PeepPickupAction::Query() const
 {
-    if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
+    if (_entityId.ToUnderlying() >= MAX_ENTITIES || _entityId.IsNull())
     {
-        log_error("Failed to pick up peep for sprite %d", _spriteId);
+        log_error("Failed to pick up peep for sprite %d", _entityId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
 
@@ -56,10 +56,10 @@ GameActions::Result PeepPickupAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
 
-    auto* const peep = TryGetEntity<Peep>(_spriteId);
+    auto* const peep = TryGetEntity<Peep>(_entityId);
     if (peep == nullptr)
     {
-        log_error("Failed to pick up peep for sprite %d", _spriteId);
+        log_error("Failed to pick up peep for sprite %d", _entityId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
 
@@ -114,10 +114,10 @@ GameActions::Result PeepPickupAction::Query() const
 
 GameActions::Result PeepPickupAction::Execute() const
 {
-    Peep* const peep = TryGetEntity<Peep>(_spriteId);
+    Peep* const peep = TryGetEntity<Peep>(_entityId);
     if (peep == nullptr)
     {
-        log_error("Failed to pick up peep for sprite %d", _spriteId);
+        log_error("Failed to pick up peep for sprite %d", _entityId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
 

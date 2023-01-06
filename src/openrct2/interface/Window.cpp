@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -598,7 +598,7 @@ void window_update_scroll_widgets(rct_window& w)
 {
     int32_t scrollIndex, width, height, scrollPositionChanged;
     WidgetIndex widgetIndex;
-    rct_widget* widget;
+    Widget* widget;
 
     widgetIndex = 0;
     scrollIndex = 0;

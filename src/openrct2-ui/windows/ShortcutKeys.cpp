@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,7 @@ enum WindowShortcutWidgetIdx
 };
 
 // clang-format off
-static rct_widget window_shortcut_widgets[] = {
+static Widget window_shortcut_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
     MakeWidget({4,    47}, {412, 245}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
@@ -57,7 +57,7 @@ enum
 };
 
 // clang-format off
-static rct_widget window_shortcut_change_widgets[] = {
+static Widget window_shortcut_change_widgets[] = {
     WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
     MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
     WIDGETS_END,
@@ -174,7 +174,7 @@ private:
     };
 
     std::vector<ShortcutTabDesc> _tabs;
-    std::vector<rct_widget> _widgets;
+    std::vector<Widget> _widgets;
     std::vector<ShortcutStringPair> _list;
     int_fast16_t _highlightedItem;
     size_t _currentTabIndex{};

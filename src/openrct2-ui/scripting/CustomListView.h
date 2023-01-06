@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
             rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text,
             bool isHighlighted) const;
         std::optional<RowColumn> GetItemIndexAt(const ScreenCoordsXY& pos);
-        rct_widget* GetWidget() const;
+        Widget* GetWidget() const;
         void Invalidate();
     };
 } // namespace OpenRCT2::Ui::Windows

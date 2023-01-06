@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -196,7 +196,7 @@ static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
     // Get the colour
     uint8_t colour = w.colours[widget.colour];
 
-    if (static_cast<int32_t>(widget.image) == -2)
+    if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
     {
         // Draw border with no fill
         gfx_fill_rect_inset(dpi, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
@@ -218,7 +218,7 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex wid
     // Get the widget
     auto& widget = w.widgets[widgetIndex];
 
-    if (widget.type != WindowWidgetType::Tab && static_cast<int32_t>(widget.image) == -1)
+    if (widget.type != WindowWidgetType::Tab && widget.image.GetIndex() == ImageIndexUndefined)
         return;
 
     if (widget.type == WindowWidgetType::Tab)
@@ -226,10 +226,10 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex wid
         if (WidgetIsDisabled(w, widgetIndex))
             return;
 
-        if (widget.image == static_cast<uint32_t>(SPR_NONE))
+        if (widget.image.GetIndex() == ImageIndexUndefined)
         {
             // Set standard tab sprite to use.
-            widget.image = IMAGE_TYPE_REMAP | SPR_TAB;
+            widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
         }
     }
 
@@ -251,7 +251,8 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex wid
 
     // Get the colour and disabled image
     auto colour = w.colours[widget.colour] & 0x7F;
-    auto image = ImageId::FromUInt32(widget.image + 2).WithPrimary(colour);
+    const auto newIndex = widget.image.GetIndex() + 2;
+    auto image = widget.image.WithIndex(newIndex).WithPrimary(colour);
 
     // Draw disabled image
     gfx_draw_sprite(dpi, image, leftTop);
@@ -282,7 +283,7 @@ static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIn
     // Check if the button is pressed down
     if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
     {
-        if (static_cast<int32_t>(widget.image) == -2)
+        if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
         {
             // Draw border with no fill
             gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
@@ -443,7 +444,7 @@ static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     WidgetText(dpi, w, widgetIndex);
 }
 
-static std::pair<StringId, void*> WidgetGetStringidAndArgs(const rct_widget& widget)
+static std::pair<StringId, void*> WidgetGetStringidAndArgs(const Widget& widget)
 {
     auto stringId = widget.text;
     void* formatArgs = gCommonFormatArgs;
@@ -802,9 +803,9 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     const auto& widget = w.widgets[widgetIndex];
 
     // Get the image
-    if (static_cast<int32_t>(widget.image) == SPR_NONE)
+    if (static_cast<int32_t>(widget.image.ToUInt32()) == SPR_NONE)
         return;
-    auto image = ImageId::FromUInt32(widget.image);
+    auto image = widget.image;
 
     // Resolve the absolute ltrb
     auto screenCoords = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
@@ -932,11 +933,11 @@ bool WidgetIsActiveTool(const rct_window& w, WidgetIndex widgetIndex)
  *  edi: widget
  */
 void WidgetScrollGetPart(
-    rct_window& w, const rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
+    rct_window& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id)
 {
     *scroll_id = 0;
-    for (rct_widget* iterator = w.widgets; iterator != widget; iterator++)
+    for (Widget* iterator = w.widgets; iterator != widget; iterator++)
     {
         if (iterator->type == WindowWidgetType::Scroll)
         {
@@ -1036,7 +1037,7 @@ void WidgetScrollGetPart(
     }
 }
 
-rct_widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
+Widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
 {
     // Make sure we don't go out of bounds if we are given a bad widget index
     WidgetIndex index = 0;
@@ -1056,7 +1057,7 @@ rct_widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
 
 static void SafeSetWidgetFlag(rct_window& w, WidgetIndex widgetIndex, WidgetFlags mask, bool value)
 {
-    rct_widget* widget = GetWidgetByIndex(w, widgetIndex);
+    Widget* widget = GetWidgetByIndex(w, widgetIndex);
     if (widget == nullptr)
     {
         return;

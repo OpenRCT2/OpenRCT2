@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,7 +47,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_0,
     };
 
-    static rct_widget CustomDefaultWidgets[] = {
+    static Widget CustomDefaultWidgets[] = {
         { WindowWidgetType::Frame, 0, 0, 0, 0, 0, 0xFFFFFFFF, STR_NONE },                  // panel / background
         { WindowWidgetType::Caption, 0, 1, 0, 1, 14, STR_STRING, STR_WINDOW_TITLE_TIP },   // title bar
         { WindowWidgetType::CloseBox, 0, 0, 0, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }, // close x button
@@ -335,7 +335,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         std::shared_ptr<Plugin> Owner;
         CustomWindowDesc Desc;
-        std::vector<rct_widget> Widgets;
+        std::vector<Widget> Widgets;
         std::vector<size_t> WidgetIndexMap;
         std::vector<CustomListView> ListViews;
 
@@ -895,14 +895,14 @@ namespace OpenRCT2::Ui::Windows
             }
             for (size_t tabDescIndex = 0; tabDescIndex < info.Desc.Tabs.size(); tabDescIndex++)
             {
-                rct_widget widget{};
+                Widget widget{};
                 widget.type = WindowWidgetType::Tab;
                 widget.colour = 1;
                 widget.left = static_cast<int16_t>(3 + (tabDescIndex * 31));
                 widget.right = widget.left + 30;
                 widget.top = 17;
                 widget.bottom = 43;
-                widget.image = IMAGE_TYPE_REMAP | SPR_TAB;
+                widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
                 widget.tooltip = STR_NONE;
                 widgetList.push_back(widget);
                 info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
@@ -952,9 +952,9 @@ namespace OpenRCT2::Ui::Windows
             UpdateViewport();
         }
 
-        static void CreateWidget(std::vector<rct_widget>& widgetList, const CustomWidgetDesc& desc)
+        static void CreateWidget(std::vector<Widget>& widgetList, const CustomWidgetDesc& desc)
         {
-            rct_widget widget{};
+            Widget widget{};
             widget.colour = 1;
             widget.left = desc.X;
             widget.top = desc.Y;
@@ -974,7 +974,7 @@ namespace OpenRCT2::Ui::Windows
                 if (desc.Image.HasValue())
                 {
                     widget.type = desc.HasBorder ? WindowWidgetType::ImgBtn : WindowWidgetType::FlatBtn;
-                    widget.image = desc.Image.ToUInt32();
+                    widget.image = desc.Image;
                 }
                 else
                 {
@@ -1002,7 +1002,7 @@ namespace OpenRCT2::Ui::Windows
             else if (desc.Type == "colourpicker")
             {
                 widget.type = WindowWidgetType::ColourBtn;
-                widget.image = GetColourButtonImage(desc.Colour).ToUInt32();
+                widget.image = GetColourButtonImage(desc.Colour);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "custom")
@@ -1237,7 +1237,7 @@ namespace OpenRCT2::Ui::Windows
                 if (lastColour != colour && colour < COLOUR_COUNT)
                 {
                     customWidgetInfo->Colour = colour;
-                    widget.image = GetColourButtonImage(colour).ToUInt32();
+                    widget.image = GetColourButtonImage(colour);
                     widget_invalidate(*w, widgetIndex);
 
                     std::vector<DukValue> args;

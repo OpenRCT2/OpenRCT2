@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -94,7 +94,7 @@ enum
     TRACK_ELEMENT_FLAGS2_CABLE_LIFT = 1 << 2,
     TRACK_ELEMENT_FLAGS2_HIGHLIGHT = 1 << 3,
     TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT = 1 << 4,
-    TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED = 1 << 5,
+    TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED = 1 << 5,
     TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE = 1 << 6,
 };
 
@@ -633,6 +633,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
 ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
+bool TrackTypeIsHelix(track_type_t trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
 
 /**

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -103,7 +103,7 @@ static void PaintTopSpinSeat(
 
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
+    if (imageFlags != TrackGhost)
     {
         imageTemplate = imageFlags;
     }
@@ -152,7 +152,7 @@ static void PaintTopSpinVehicle(
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto supportImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].supports);
     auto armImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].additional);
-    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
+    if (imageFlags != TrackGhost)
     {
         supportImageTemplate = imageFlags;
         armImageTemplate = supportImageTemplate;

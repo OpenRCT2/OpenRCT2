@@ -45,7 +45,7 @@ BEGIN
             VALUE "CompanyName", "OpenRCT2 Team"
             VALUE "FileDescription", "Main executable for OpenRCT2"
             VALUE "FileVersion", OPENRCT2_PRODUCT_VERSION
-            VALUE "LegalCopyright", "Copyright (c) 2014-2022 OpenRCT2 developers"
+            VALUE "LegalCopyright", "Copyright (c) 2014-2023 OpenRCT2 developers"
             VALUE "ProductName", "OpenRCT2"
             VALUE "ProductVersion", OPENRCT2_PRODUCT_VERSION
         END

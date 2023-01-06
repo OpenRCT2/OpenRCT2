@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -71,7 +71,7 @@ static constexpr const int32_t WW = 320;
 static constexpr const int32_t WH = 107;
 
 // clang-format off
-static rct_widget window_themes_widgets[] = {
+static Widget window_themes_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {320,  64}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                                     ), // tab content panel
     MakeTab   ({  3, 17},                                                                                                        STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab

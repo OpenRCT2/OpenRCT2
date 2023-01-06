@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -822,8 +822,7 @@ bool track_paint_util_draw_station_covers_2(
     PaintAddImageAsParent(session, imageId, offset, boundBox);
 
     // Glass
-    if (session.TrackColours[SCHEME_MISC].ToUInt32() == IMAGE_TYPE_REMAP
-        && (stationObject->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT))
+    if (session.TrackColours[SCHEME_MISC] == TrackGhost && (stationObject->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT))
     {
         imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparency(imageTemplate.GetPrimary());
         PaintAddImageAsChild(session, imageId, offset, boundBox);

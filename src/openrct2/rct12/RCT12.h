@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -466,7 +466,7 @@ private:
         struct
         {
             // The lower 4 bits are the track sequence.
-            // The upper 4 bits are either station bits or on-ride photo bits.
+            // The upper 4 bits are either station bits, brake speed bits, or on-ride photo bits.
             //
             // Station bits:
             // - Bit 8 marks green light

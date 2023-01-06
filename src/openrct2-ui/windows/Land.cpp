@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,11 +39,11 @@ enum WindowLandWidgetIdx {
     WIDX_WALL,
 };
 
-static rct_widget window_land_widgets[] = {
+static Widget window_land_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({19,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_UP, STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
-    MakeWidget     ({55,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_PAINTBRUSH,                 STR_DISABLE_ELEVATION),        // paint mode
-    MakeWidget     ({27,  48}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary  , SPR_LAND_TOOL_SIZE_0,           STR_NONE),                     // preview box
+    MakeWidget     ({19,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP), STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
+    MakeWidget     ({55,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),                 STR_DISABLE_ELEVATION),        // paint mode
+    MakeWidget     ({27,  48}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary  , ImageId(SPR_LAND_TOOL_SIZE_0),           STR_NONE),                     // preview box
     MakeRemapWidget({28,  49}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,         STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
     MakeRemapWidget({54,  63}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,         STR_ADJUST_LARGER_LAND_TIP),   // increment size
     MakeWidget     ({ 2, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_BASE_LAND_TIP),     // floor texture
@@ -117,7 +117,7 @@ public:
 
     void OnMouseDown(WidgetIndex widgetIndex) override
     {
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* widget = &widgets[widgetIndex];
         switch (widgetIndex)
         {
             case WIDX_FLOOR:
@@ -227,7 +227,7 @@ public:
             SetWidgetPressed(WIDX_PAINTMODE, true);
 
         // Update the preview image (for tool sizes up to 7)
-        widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -235,7 +235,7 @@ public:
         ScreenCoordsXY screenCoords;
         int32_t numTiles;
         money64 price;
-        rct_widget* previewWidget = &widgets[WIDX_PREVIEW];
+        Widget* previewWidget = &widgets[WIDX_PREVIEW];
 
         DrawWidgets(dpi);
         DrawDropdownButtons(dpi);

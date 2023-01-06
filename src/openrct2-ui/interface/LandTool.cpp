@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,7 +55,7 @@ uint32_t LandTool::SizeToSpriteIndex(uint16_t size)
     return 0xFFFFFFFF;
 }
 
-void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentSurfaceType)
+void LandTool::ShowSurfaceStyleDropdown(rct_window* w, Widget* widget, ObjectEntryIndex currentSurfaceType)
 {
     auto& objManager = GetContext()->GetObjectManager();
 
@@ -89,7 +89,7 @@ void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, Objec
     gDropdownDefaultIndex = defaultIndex;
 }
 
-void LandTool::ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentEdgeType)
+void LandTool::ShowEdgeStyleDropdown(rct_window* w, Widget* widget, ObjectEntryIndex currentEdgeType)
 {
     auto& objManager = GetContext()->GetObjectManager();
 

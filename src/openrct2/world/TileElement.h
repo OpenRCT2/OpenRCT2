@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -382,8 +382,8 @@ public:
     bool IsInverted() const;
     void SetInverted(bool inverted);
 
-    bool BlockBrakeClosed() const;
-    void SetBlockBrakeClosed(bool isClosed);
+    bool IsBrakeClosed() const;
+    void SetBrakeClosed(bool isClosed);
 
     bool IsIndestructible() const;
     void SetIsIndestructible(bool isIndestructible);

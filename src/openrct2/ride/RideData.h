@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -186,7 +186,7 @@ struct RideTypeDescriptor
     RideTrackGroup ExtraTrackPieces;
     RideTrackGroup CoveredTrackPieces;
     /** rct2: 0x0097CC68 */
-    uint64_t StartTrackPiece;
+    track_type_t StartTrackPiece;
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
     uint64_t Flags;
     /** rct2: 0x0097C8AC */

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -62,7 +62,7 @@ enum {
 
 #pragma region Widgets
 
-static rct_widget window_research_development_widgets[] = {
+static Widget window_research_development_widgets[] = {
     WINDOW_SHIM(STR_RESEARCH_AND_DEVELOPMENT, WW_DEVELOPMENT, WH_DEVELOPMENT),
     MakeWidget({  0,  43}, {     WW_DEVELOPMENT, 153}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
     MakeTab   ({  3,  17},                                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
@@ -73,7 +73,7 @@ static rct_widget window_research_development_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_research_funding_widgets[] = {
+static Widget window_research_funding_widgets[] = {
     WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_FUNDING, WH_FUNDING),
     MakeWidget({  0,  43}, {     WW_FUNDING, 164}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                                    ),
     MakeTab   ({  3,  17},                                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
@@ -92,7 +92,7 @@ static rct_widget window_research_funding_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget *window_research_page_widgets[] = {
+static Widget *window_research_page_widgets[] = {
     window_research_development_widgets,
     window_research_funding_widgets,
 };
@@ -107,7 +107,7 @@ static void WindowResearchDevelopmentInvalidate(rct_window *w);
 static void WindowResearchDevelopmentPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void WindowResearchFundingMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowResearchFundingMousedown(rct_window *w, WidgetIndex widgetIndex, rct_widget* widget);
+static void WindowResearchFundingMousedown(rct_window *w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowResearchFundingDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowResearchFundingUpdate(rct_window *w);
 static void WindowResearchFundingInvalidate(rct_window *w);
@@ -244,9 +244,8 @@ static void WindowResearchDevelopmentInvalidate(rct_window* w)
     {
         auto type = gResearchLastItem->type;
         window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = type == Research::EntryType::Ride
-            ? SPR_NEW_RIDE
-            : SPR_NEW_SCENERY;
+        const auto image = type == Research::EntryType::Ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = ImageId(image);
     }
 }
 
@@ -424,12 +423,12 @@ static void WindowResearchFundingMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x0069DB66
  */
-static void WindowResearchFundingMousedown(rct_window* w, WidgetIndex widgetIndex, rct_widget* widget)
+static void WindowResearchFundingMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
         return;
 
-    rct_widget* dropdownWidget = widget - 1;
+    Widget* dropdownWidget = widget - 1;
 
     for (std::size_t i = 0; i < std::size(ResearchFundingLevelNames); i++)
     {

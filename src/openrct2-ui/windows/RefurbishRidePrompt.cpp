@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,7 +30,7 @@ enum WindowRideRefurbishWidgetIdx
     WIDX_CANCEL
 };
 
-static rct_widget window_ride_refurbish_widgets[] =
+static Widget window_ride_refurbish_widgets[] =
 {
     WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
     MakeWidget({ 10, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_REFURBISH),

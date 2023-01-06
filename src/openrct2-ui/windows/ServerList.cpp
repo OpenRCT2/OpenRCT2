@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,7 +60,7 @@ enum
 };
 
 // clang-format off
-static rct_widget window_server_list_widgets[] = {
+static Widget window_server_list_widgets[] = {
     MakeWidget({  0,  0}, {341, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
     MakeWidget({  1,  1}, {338, 14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({327,  2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button

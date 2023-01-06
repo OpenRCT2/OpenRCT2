@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -658,6 +658,17 @@ bool TrackTypeHasSpeedSetting(track_type_t trackType)
     return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster;
 }
 
+bool TrackTypeIsHelix(track_type_t trackType)
+{
+    if (trackType >= TrackElemType::LeftHalfBankedHelixUpSmall && trackType <= TrackElemType::RightHalfBankedHelixDownLarge)
+        return true;
+
+    if (trackType >= TrackElemType::LeftQuarterBankedHelixLargeUp && trackType <= TrackElemType::RightQuarterHelixLargeDown)
+        return true;
+
+    return false;
+}
+
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
 {
     auto trackEl = posEl.element->AsTrack();
@@ -852,20 +863,20 @@ void TrackElement::SetInverted(bool inverted)
     }
 }
 
-bool TrackElement::BlockBrakeClosed() const
+bool TrackElement::IsBrakeClosed() const
 {
-    return (Flags2 & TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED) != 0;
 }
 
-void TrackElement::SetBlockBrakeClosed(bool isClosed)
+void TrackElement::SetBrakeClosed(bool isClosed)
 {
     if (isClosed)
     {
-        Flags2 |= TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED;
     }
     else
     {
-        Flags2 &= ~TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED;
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED;
     }
 }
 
