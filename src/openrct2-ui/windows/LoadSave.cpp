@@ -269,9 +269,18 @@ static void Select(const char* path)
     {
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
             SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
-            InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-            window_close_by_class(WindowClass::Loadsave);
-            gfx_invalidate_screen();
+            if (OpenRCT2::GetContext()->LoadParkFromFile(pathBuffer))
+            {
+                InvokeCallback(MODAL_RESULT_OK, pathBuffer);
+                window_close_by_class(WindowClass::Loadsave);
+                gfx_invalidate_screen();
+            }
+            else
+            {
+                // Not the best message...
+                ContextShowError(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
+                InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
+            }
             break;
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):

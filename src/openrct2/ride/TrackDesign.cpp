@@ -14,7 +14,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../TrackImporter.h"
-#include "../actions/FootpathPlaceFromTrackAction.h"
+#include "../actions/FootpathLayoutPlaceAction.h"
 #include "../actions/FootpathRemoveAction.h"
 #include "../actions/LargeSceneryPlaceAction.h"
 #include "../actions/LargeSceneryRemoveAction.h"
@@ -1237,7 +1237,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     constructFlags |= PathConstructFlag::IsQueue;
                 if (entryInfo->Type == ObjectType::Paths)
                     constructFlags |= PathConstructFlag::IsLegacyPathObject;
-                auto footpathPlaceAction = FootpathPlaceFromTrackAction(
+                auto footpathPlaceAction = FootpathLayoutPlaceAction(
                     { mapCoord.x, mapCoord.y, z }, slope, entryInfo->Index, entryInfo->SecondaryIndex, edges, constructFlags);
                 footpathPlaceAction.SetFlags(flags);
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
