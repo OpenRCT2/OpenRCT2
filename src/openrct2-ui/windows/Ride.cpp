@@ -4638,7 +4638,7 @@ static void WindowRideColourInvalidate(rct_window* w)
 
     // Track colours
     int32_t colourScheme = w->ride_colour;
-    trackColour = ride_get_track_colour(ride, colourScheme);
+    trackColour = ride->track_colour[colourScheme];
 
     // Maze style
     const auto& rtd = ride->GetRideTypeDescriptor();
@@ -4880,7 +4880,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
               { w->windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
             PALETTE_INDEX_12);
 
-    auto trackColour = ride_get_track_colour(ride, w->ride_colour);
+    auto trackColour = ride->track_colour[w->ride_colour];
 
     //
     auto rideEntry = ride->GetRideEntry();
@@ -4940,7 +4940,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Entrance preview
-    trackColour = ride_get_track_colour(ride, 0);
+    trackColour = ride->track_colour[0];
     const auto& entrancePreviewWidget = w->widgets[WIDX_ENTRANCE_PREVIEW];
     if (entrancePreviewWidget.type != WindowWidgetType::Empty)
     {
