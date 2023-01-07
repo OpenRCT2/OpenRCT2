@@ -521,7 +521,7 @@ namespace ObjectFactory
             if (id == OpenRCT2::Audio::AudioObjectIdentifiers::Rct2cBase)
                 id = OpenRCT2::Audio::AudioObjectIdentifiers::Rct2Base;
 
-            auto version = Json::GetString(jRoot["version"]);
+            auto version = VersionTuple(Json::GetString(jRoot["version"]));
             ObjectEntryDescriptor descriptor;
             auto originalId = Json::GetString(jRoot["originalId"]);
             if (originalId.length() == 8 + 1 + 8 + 1 + 8)

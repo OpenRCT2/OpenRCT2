@@ -43,7 +43,7 @@ struct ObjectRepositoryItem
     rct_object_entry ObjectEntry;
     std::string Path;
     std::string Name;
-    std::string Version;
+    ObjectVersion Version;
     std::vector<std::string> Authors;
     std::vector<ObjectSourceGame> Sources;
     std::shared_ptr<Object> LoadedObject{};

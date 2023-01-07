@@ -329,6 +329,54 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
     return {};
 }
 
+u8string VersionString(const ObjectVersion& version)
+{
+    return std::to_string(std::get<0>(version)) + "." + std::to_string(std::get<1>(version)) + "."
+        + std::to_string(std::get<2>(version));
+}
+
+ObjectVersion VersionTuple(std::string_view version)
+{
+    if (version.empty())
+    {
+        return std::make_tuple(0, 0, 0);
+    }
+
+    auto nums = String::Split(version, ".");
+    uint16_t versions[VersionNumFields] = {};
+    if (nums.size() > VersionNumFields)
+    {
+        log_warning("%i fields found in version string '%s', expected X.Y.Z", nums.size(), version);
+    }
+    if (nums.size() == 0)
+    {
+        log_warning("No fields found in version string '%s', expected X.Y.Z", version);
+        return std::make_tuple(0, 0, 0);
+    }
+    try
+    {
+        size_t highestIndex = std::min(nums.size(), VersionNumFields);
+        for (size_t i = 0; i < highestIndex; i++)
+        {
+            auto value = stoi(nums.at(i));
+            constexpr auto maxValue = std::numeric_limits<uint16_t>().max();
+            if (value > maxValue)
+            {
+                log_warning(
+                    "Version value too high in version string '%s', version value will be capped to %i.", version, maxValue);
+                value = maxValue;
+            }
+            versions[i] = value;
+        }
+    }
+    catch (const std::exception&)
+    {
+        log_warning("Malformed version string '%s', expected X.Y.Z", version);
+    }
+
+    return std::make_tuple(versions[0], versions[1], versions[2]);
+}
+
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
 #    pragma GCC diagnostic pop
 #endif
