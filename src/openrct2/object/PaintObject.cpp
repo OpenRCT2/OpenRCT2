@@ -5,14 +5,213 @@
 #include "../ride/Ride.h"
 #include "../ride/TrackPaint.h"
 #include "../core/Json.hpp"
+#include <map>
 
 void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
+    //read the track sequence mapping tables and edges tables first
+    std::map<std::string, PaintStructSequenceMapping> paintMapping;
+    std::map<std::string, PaintStructEdgesTable> edgesMapping;
+
+    auto trackSequenceTables = root["trackSequenceTables"];
+    if (trackSequenceTables.is_array())
+    {
+        for (const auto& trackSequenceTable : trackSequenceTables)
+        {
+            PaintStructSequenceMapping table;
+            auto dir0 = trackSequenceTable["dir0"];
+            if (dir0.is_array())
+            {
+                for (const auto& sequence : dir0)
+                    table[0].push_back(sequence);
+            }
+
+            auto dir1 = trackSequenceTable["dir1"];
+            if (dir1.is_array())
+            {
+                for (const auto& sequence : dir1)
+                    table[1].push_back(sequence);
+            }
+
+            auto dir2 = trackSequenceTable["dir2"];
+            if (dir2.is_array())
+            {
+                for (const auto& sequence : dir2)
+                    table[2].push_back(sequence);
+            }
+
+            auto dir3 = trackSequenceTable["dir3"];
+            if (dir3.is_array())
+            {
+                for (const auto& sequence : dir3)
+                    table[3].push_back(sequence);
+            }
+
+            auto id = trackSequenceTable["id"];
+            paintMapping[id] = table;
+        }
+    }
+
+    auto edgesTables = root["edgesTables"];
+    if (edgesTables.is_array())
+    {
+        for (const auto& edgeTable : edgesTables)
+        {
+            PaintStructEdgesTable table;
+
+            auto edges = edgeTable["edges"];
+            if (edges.is_array())
+            {
+                for (const auto& edge : edges)
+                {
+                    if (edge == "none")
+                        table.push_back(static_cast<edge_t>(0));
+                    else if (edge == "ne_nw")
+                        table.push_back(static_cast<edge_t>(EDGE_NE | EDGE_NW));
+                    else if (edge == "ne")
+                        table.push_back(EDGE_NE);
+                    else if (edge == "ne_se")
+                        table.push_back(static_cast<edge_t>(EDGE_NE | EDGE_SE));
+                    else if (edge == "nw")
+                        table.push_back(EDGE_NW);
+                    else if (edge == "se")
+                        table.push_back(EDGE_SE);
+                    else if (edge == "sw_nw")
+                        table.push_back(static_cast<edge_t>(EDGE_SW | EDGE_NW));
+                    else if (edge == "sw_se")
+                        table.push_back(static_cast<edge_t>(EDGE_SW | EDGE_SE));
+                    else if (edge == "sw")
+                        table.push_back(EDGE_SW);
+                }
+            }
+
+            auto id = edgeTable["id"];
+            edgesMapping[id] = table;
+        }
+    }
+
     auto paintStructs = root["paintStructs"];
     if (paintStructs.is_array())
     {
         for (const auto& paintStruct : paintStructs)
         {
+            PaintStruct paint;
+            auto trackElement = paintStruct["trackElement"];
+            if (trackElement == "flat_track_3x3")
+                paint.Element = TrackElemType::FlatTrack3x3;
+
+            auto supports = paintStruct["supports"];
+            if (supports.is_string())
+            {
+                if (supports == "wooden_a")
+                    paint.Supports = SupportsType::WoodenA;
+            }
+
+            auto floor = paintStruct["floor"];
+            if (floor.is_string())
+            {
+                if (floor == "cork")
+                    paint.Floor = FloorType::Cork;
+            }
+
+            auto edges = paintStruct["edges"];
+            if (edges.is_string())
+            {
+                if (edgesMapping.find(edges) != edgesMapping.end())
+                    paint.Edges = edgesMapping[edges];
+            }
+
+            auto fences = paintStruct["fences"];
+            if (fences.is_string())
+            {
+                if (fences == "ropes")
+                    paint.Fences = FenceType::Ropes;
+            }
+
+            auto trackSequence = paintStruct["trackSequence"];
+            if (trackSequence.is_number())
+            {
+                paint.TrackSequence = trackSequence;
+            }
+
+            auto trackSequenceMapping = paintStruct["trackSequenceMapping"];
+            if (trackSequenceMapping.is_string())
+            {
+                if (paintMapping.find(trackSequenceMapping) != paintMapping.end())
+                    paint.TrackSequenceMapping = paintMapping[trackSequenceMapping];
+            }
+
+            auto direction = paintStruct["direction"];
+            if (direction.is_number())
+            {
+                paint.Direction = direction;
+            }
+
+            auto paintType = paintStruct["paintType"];
+            if (paintType.is_string())
+            {
+                if (paintType == "addImageAsParent")
+                    paint.PaintType = PaintType::AddImageAsParent;
+            }
+
+            auto imageIdBase = paintStruct["imageIdBase"];
+            if (imageIdBase.is_string())
+            {
+                if (imageIdBase == "car0")
+                    paint.ImageIdBase = ImageIdBase::Car0;
+            }
+
+            auto imageIdOffset = paintStruct["imageIdOffset"];
+            if (imageIdOffset.is_number())
+            {
+                paint.ImageIdOffset = imageIdOffset;
+            }
+
+            auto imageIdScheme = paintStruct["imageIdScheme"];
+            if (imageIdScheme.is_string())
+            {
+                if (imageIdScheme == "misc")
+                    paint.ImageIdScheme = Scheme::Misc;
+            }
+
+            auto offsetX = paintStruct["offset_x"];
+            if (offsetX.is_number())
+                paint.Offset.x = offsetX;
+
+            auto offsetY = paintStruct["offset_y"];
+            if (offsetY.is_number())
+                paint.Offset.y = offsetY;
+
+            auto offsetZ = paintStruct["offset_z"];
+            if (offsetZ.is_number())
+                paint.Offset.z = offsetZ;
+
+
+            auto bbOffsetX = paintStruct["bb_offset_x"];
+            if (bbOffsetX.is_number())
+                paint.BoundBox.offset.x = bbOffsetX;
+
+            auto bbOffsetY = paintStruct["bb_offset_y"];
+            if (bbOffsetY.is_number())
+                paint.BoundBox.offset.y = bbOffsetY;
+
+            auto bbOffsetZ = paintStruct["bb_offset_z"];
+            if (bbOffsetZ.is_number())
+                paint.BoundBox.offset.z = bbOffsetZ;
+
+            auto bbLengthX = paintStruct["bb_length_x"];
+            if (bbLengthX.is_number())
+                paint.BoundBox.length.x = bbLengthX;
+
+            auto bbLengthY = paintStruct["bb_length_y"];
+            if (bbLengthY.is_number())
+                paint.BoundBox.length.y = bbLengthY;
+
+            auto bbLengthZ = paintStruct["bb_length_z"];
+            if (bbLengthZ.is_number())
+                paint.BoundBox.length.z = bbLengthZ;
+
+            _paintStructs.push_back(paint);
         }
     }
 }
