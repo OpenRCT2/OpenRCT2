@@ -30,7 +30,6 @@ int32_t bitscanforward(int32_t source);
 int32_t bitscanforward(int64_t source);
 void bitcount_init();
 int32_t bitcount(uint32_t source);
-int32_t strcicmp(char const* a, char const* b);
 int32_t strlogicalcmp(char const* a, char const* b);
 char* safe_strcpy(char* destination, const char* source, size_t num);
 char* safe_strcat(char* destination, const char* source, size_t size);

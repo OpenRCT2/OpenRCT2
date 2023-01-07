@@ -216,17 +216,6 @@ int32_t bitcount(uint32_t source)
     return bitcount_fn(source);
 }
 
-/* case insensitive compare */
-int32_t strcicmp(char const* a, char const* b)
-{
-    for (;; a++, b++)
-    {
-        int32_t d = tolower(static_cast<unsigned char>(*a)) - tolower(static_cast<unsigned char>(*b));
-        if (d != 0 || !*a)
-            return d;
-    }
-}
-
 /* Case insensitive logical compare */
 // Example:
 // - Guest 10
