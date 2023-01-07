@@ -9,6 +9,7 @@
 
 #include "TrackPaint.h"
 
+#include "../Context.h"
 #include "../Game.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
@@ -16,6 +17,8 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../object/ObjectManager.h"
+#include "../object/PaintObject.h"
 #include "../object/StationObject.h"
 #include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"
@@ -2246,13 +2249,26 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
 
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
-        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = rtd.TrackPaintFunction;
-        if (paintFunctionGetter != nullptr)
+
+        if (rtd.PaintObjectId.empty())
         {
-            TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);
-            if (paintFunction != nullptr)
+            TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = rtd.TrackPaintFunction;
+            if (paintFunctionGetter != nullptr)
             {
-                paintFunction(session, *ride, trackSequence, direction, height, trackElement);
+                TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);
+                if (paintFunction != nullptr)
+                {
+                    paintFunction(session, *ride, trackSequence, direction, height, trackElement);
+                }
+            }
+        }
+        else
+        {
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            const auto* paintObject = static_cast<PaintObject*>(objManager.LoadObject(rtd.PaintObjectId));
+            if (paintObject != nullptr)
+            {
+                paintObject->Paint(session, *ride, trackSequence, direction, height, trackElement);
             }
         }
     }

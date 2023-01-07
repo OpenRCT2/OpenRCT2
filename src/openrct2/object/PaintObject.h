@@ -10,9 +10,9 @@
 #pragma once
 
 #include "../paint/Boundbox.h"
+#include "../paint/tile_element/Paint.TileElement.h"
 #include "../ride/Track.h"
 #include "Object.h"
-#include "../paint/tile_element/Paint.TileElement.h"
 
 #include <array>
 #include <optional>
@@ -40,7 +40,8 @@ private:
     };
     enum class PaintType
     {
-        AddImageAsParent
+        AddImageAsParent,
+        SetSegmentsSupportsHeight,
     };
     enum class Scheme
     {
@@ -50,6 +51,12 @@ private:
 
     using PaintStructSequenceMapping = std::array<std::vector<uint32_t>, 4>;
     using PaintStructEdgesTable = std::vector<edge_t>;
+
+    struct HeightSupportsTable
+    {
+        uint32_t HeightOffset;
+        std::map<uint8_t, uint32_t> Segments;
+    };
 
     struct PaintStruct
     {
@@ -70,6 +77,7 @@ private:
         uint32_t ImageIdOffset;
         CoordsXYZ Offset;
         BoundBoxXYZ BoundBox;
+        HeightSupportsTable HeightSupports;
 
         // helper method to check for the keys
         bool MatchWithKeys(track_type_t trackElement, uint32_t direction, uint32_t trackSequence) const;
@@ -87,5 +95,9 @@ public:
 
     void Paint(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement);
+        const TrackElement& trackElement) const;
+
+    // used to load the paint objects at the start of the game
+    // when RTD become a thing, load these when they are required by rtds
+    static void LoadPaintObjects();
 };

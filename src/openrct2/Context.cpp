@@ -56,6 +56,7 @@
 #include "network/network.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "object/PaintObject.h"
 #include "paint/Painter.h"
 #include "park/ParkFile.h"
 #include "platform/Crash.h"
@@ -438,6 +439,7 @@ namespace OpenRCT2
             //      still open the game window and draw a progress screen for the creation
             //      of the object cache.
             _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
+            PaintObject::LoadPaintObjects();
 
             if (!gOpenRCT2Headless)
             {
