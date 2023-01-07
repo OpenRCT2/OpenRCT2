@@ -41,7 +41,6 @@ using colour_t = uint8_t;
 #    define _strcmpi _stricmp
 #    define _stricmp(x, y) strcasecmp((x), (y))
 #    define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
-#    define _strdup(x) strdup((x))
 
 #    if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #        define RCT2_ENDIANNESS __ORDER_LITTLE_ENDIAN__
