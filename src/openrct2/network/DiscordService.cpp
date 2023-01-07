@@ -118,7 +118,7 @@ void DiscordService::RefreshPresence() const
                 state = serverName;
 
                 // NOTE: the party size is displayed next to state
-                discordPresence.partyId = network_get_server_name();
+                discordPresence.partyId = network_get_server_name().c_str();
                 discordPresence.partySize = network_get_num_players();
                 discordPresence.partyMax = 256;
 
