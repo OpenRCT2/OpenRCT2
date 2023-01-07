@@ -80,7 +80,7 @@ namespace OpenRCT2
         void UpdateHistories();
 
     private:
-        money64 CalculateRideValue(const Ride* ride) const;
+        money64 CalculateRideValue(const Ride& ride) const;
         money16 CalculateTotalRideValueForMoney() const;
         uint32_t CalculateSuggestedMaxGuests() const;
         uint32_t CalculateGuestGenerationProbability() const;

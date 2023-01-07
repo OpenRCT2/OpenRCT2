@@ -1017,61 +1017,61 @@ void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
 void ride_check_all_reachable();
 
-bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
-void ride_clear_blocked_tiles(Ride* ride);
-Staff* ride_get_mechanic(Ride* ride);
-Staff* ride_get_assigned_mechanic(Ride* ride);
-VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
+bool ride_try_get_origin_element(const Ride& ride, CoordsXYE* output);
+void ride_clear_blocked_tiles(const Ride& ride);
+Staff* ride_get_mechanic(const Ride& ride);
+Staff* ride_get_assigned_mechanic(const Ride& ride);
+VehicleColour ride_get_vehicle_colour(const Ride& ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType);
-void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
+void ride_set_vehicle_colours_to_random_preset(Ride& ride, uint8_t preset_index);
 void ride_measurements_update();
-void ride_breakdown_add_news_item(Ride* ride);
-Staff* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
-int32_t ride_initialise_construction_window(Ride* ride);
+void ride_breakdown_add_news_item(const Ride& ride);
+Staff* ride_find_closest_mechanic(const Ride& ride, int32_t forInspection);
+int32_t ride_initialise_construction_window(Ride& ride);
 void ride_set_map_tooltip(TileElement* tileElement);
-void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
-TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex stationIndex);
+void ride_prepare_breakdown(Ride& ride, int32_t breakdownReason);
+TileElement* ride_get_station_start_track_element(const Ride& ride, StationIndex stationIndex);
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos);
-int32_t ride_get_refund_price(const Ride* ride);
+int32_t ride_get_refund_price(const Ride& ride);
 int32_t ride_get_random_colour_preset_index(ride_type_t rideType);
-money32 ride_get_common_price(Ride* forRide);
+money32 ride_get_common_price(const Ride& forRide);
 
-void ride_clear_for_construction(Ride* ride);
-void invalidate_test_results(Ride* ride);
+void ride_clear_for_construction(Ride& ride);
+void invalidate_test_results(Ride& ride);
 
-void increment_turn_count_1_element(Ride* ride, uint8_t type);
-void increment_turn_count_2_elements(Ride* ride, uint8_t type);
-void increment_turn_count_3_elements(Ride* ride, uint8_t type);
-void increment_turn_count_4_plus_elements(Ride* ride, uint8_t type);
-int32_t get_turn_count_1_element(Ride* ride, uint8_t type);
-int32_t get_turn_count_2_elements(Ride* ride, uint8_t type);
-int32_t get_turn_count_3_elements(Ride* ride, uint8_t type);
-int32_t get_turn_count_4_plus_elements(Ride* ride, uint8_t type);
+void increment_turn_count_1_element(Ride& ride, uint8_t type);
+void increment_turn_count_2_elements(Ride& ride, uint8_t type);
+void increment_turn_count_3_elements(Ride& ride, uint8_t type);
+void increment_turn_count_4_plus_elements(Ride& ride, uint8_t type);
+int32_t get_turn_count_1_element(const Ride& ride, uint8_t type);
+int32_t get_turn_count_2_elements(const Ride& ride, uint8_t type);
+int32_t get_turn_count_3_elements(const Ride& ride, uint8_t type);
+int32_t get_turn_count_4_plus_elements(const Ride& ride, uint8_t type);
 
-uint8_t ride_get_helix_sections(Ride* ride);
+uint8_t ride_get_helix_sections(const Ride& ride);
 
-bool ride_has_any_track_elements(const Ride* ride);
+bool ride_has_any_track_elements(const Ride& ride);
 
 bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction);
 bool track_block_get_next_from_zero(
-    const CoordsXYZ& startPos, Ride* ride, uint8_t direction_start, CoordsXYE* output, int32_t* z, int32_t* direction,
+    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction_start, CoordsXYE* output, int32_t* z, int32_t* direction,
     bool isGhost);
 
 bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTrackBeginEnd);
 bool track_block_get_previous_from_zero(
-    const CoordsXYZ& startPos, Ride* ride, uint8_t direction, track_begin_end* outTrackBeginEnd);
+    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction, track_begin_end* outTrackBeginEnd);
 
 void ride_get_start_of_track(CoordsXYE* output);
 
 void window_ride_construction_update_active_elements();
 money32 RideEntranceExitPlaceGhost(
-    Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
+    const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
 
-ResultWithMessage ride_are_all_possible_entrances_and_exits_built(Ride* ride);
-void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);
+ResultWithMessage ride_are_all_possible_entrances_and_exits_built(const Ride& ride);
+void ride_fix_breakdown(Ride& ride, int32_t reliabilityIncreaseFactor);
 
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
-void ride_update_vehicle_colours(Ride* ride);
+void ride_update_vehicle_colours(const Ride& ride);
 
 OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
 
@@ -1081,17 +1081,17 @@ money32 set_operating_setting_nested(RideId rideId, RideSetSetting setting, uint
 
 void UpdateGhostTrackAndArrow();
 
-uint32_t ride_customers_per_hour(const Ride* ride);
-uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
+uint32_t ride_customers_per_hour(const Ride& ride);
+uint32_t ride_customers_in_last_5_minutes(const Ride& ride);
 
-Vehicle* ride_get_broken_vehicle(const Ride* ride);
+Vehicle* ride_get_broken_vehicle(const Ride& ride);
 
-money16 ride_get_price(const Ride* ride);
+money16 ride_get_price(const Ride& ride);
 
 TileElement* get_station_platform(const CoordsXYRangedZ& coords);
-bool ride_has_adjacent_station(Ride* ride);
-bool ride_has_station_shelter(Ride* ride);
-bool ride_has_ratings(const Ride* ride);
+bool ride_has_adjacent_station(const Ride& ride);
+bool ride_has_station_shelter(const Ride& ride);
+bool ride_has_ratings(const Ride& ride);
 
 int32_t get_booster_speed(ride_type_t rideType, int32_t rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
@@ -1100,9 +1100,9 @@ bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
 int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
 
 void determine_ride_entrance_and_exit_locations();
-void ride_clear_leftover_entrances(Ride* ride);
+void ride_clear_leftover_entrances(const Ride& ride);
 
 std::vector<RideId> GetTracklessRides();
 
-void CircusMusicUpdate(Ride* ride);
-void DefaultMusicUpdate(Ride* ride);
+void CircusMusicUpdate(Ride& ride);
+void DefaultMusicUpdate(Ride& ride);

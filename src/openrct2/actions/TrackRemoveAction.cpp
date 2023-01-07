@@ -438,7 +438,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             surfaceElement->SetHasTrackThatNeedsWater(false);
         }
 
-        invalidate_test_results(ride);
+        invalidate_test_results(*ride);
         FootpathQueueChainReset();
         if (!gCheatsDisableClearanceChecks || !(tileElement->IsGhost()))
         {

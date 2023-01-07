@@ -1954,26 +1954,26 @@ void Staff::UpdateFixing(int32_t steps)
         {
             case PEEP_FIXING_ENTER_STATION:
                 NextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
-                progressToNextSubstate = UpdateFixingEnterStation(ride);
+                progressToNextSubstate = UpdateFixingEnterStation(*ride);
                 break;
 
             case PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE:
-                progressToNextSubstate = UpdateFixingMoveToBrokenDownVehicle(firstRun, ride);
+                progressToNextSubstate = UpdateFixingMoveToBrokenDownVehicle(firstRun, *ride);
                 break;
 
             case PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS:
             case PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS:
             case PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS:
             case PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS:
-                progressToNextSubstate = UpdateFixingFixVehicle(firstRun, ride);
+                progressToNextSubstate = UpdateFixingFixVehicle(firstRun, *ride);
                 break;
 
             case PEEP_FIXING_FIX_VEHICLE_MALFUNCTION:
-                progressToNextSubstate = UpdateFixingFixVehicleMalfunction(firstRun, ride);
+                progressToNextSubstate = UpdateFixingFixVehicleMalfunction(firstRun, *ride);
                 break;
 
             case PEEP_FIXING_MOVE_TO_STATION_END:
-                progressToNextSubstate = UpdateFixingMoveToStationEnd(firstRun, ride);
+                progressToNextSubstate = UpdateFixingMoveToStationEnd(firstRun, *ride);
                 break;
 
             case PEEP_FIXING_FIX_STATION_END:
@@ -1981,27 +1981,27 @@ void Staff::UpdateFixing(int32_t steps)
                 break;
 
             case PEEP_FIXING_MOVE_TO_STATION_START:
-                progressToNextSubstate = UpdateFixingMoveToStationStart(firstRun, ride);
+                progressToNextSubstate = UpdateFixingMoveToStationStart(firstRun, *ride);
                 break;
 
             case PEEP_FIXING_FIX_STATION_START:
-                progressToNextSubstate = UpdateFixingFixStationStart(firstRun, ride);
+                progressToNextSubstate = UpdateFixingFixStationStart(firstRun, *ride);
                 break;
 
             case PEEP_FIXING_FIX_STATION_BRAKES:
-                progressToNextSubstate = UpdateFixingFixStationBrakes(firstRun, ride);
+                progressToNextSubstate = UpdateFixingFixStationBrakes(firstRun, *ride);
                 break;
 
             case PEEP_FIXING_MOVE_TO_STATION_EXIT:
-                progressToNextSubstate = UpdateFixingMoveToStationExit(firstRun, ride);
+                progressToNextSubstate = UpdateFixingMoveToStationExit(firstRun, *ride);
                 break;
 
             case PEEP_FIXING_FINISH_FIX_OR_INSPECT:
-                progressToNextSubstate = UpdateFixingFinishFixOrInspect(firstRun, steps, ride);
+                progressToNextSubstate = UpdateFixingFinishFixOrInspect(firstRun, steps, *ride);
                 break;
 
             case PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT:
-                progressToNextSubstate = UpdateFixingLeaveByEntranceExit(firstRun, ride);
+                progressToNextSubstate = UpdateFixingLeaveByEntranceExit(firstRun, *ride);
                 break;
 
             default:
@@ -2037,10 +2037,10 @@ void Staff::UpdateFixing(int32_t steps)
  * rct2: 0x006C0EEC
  * fixing SubState: enter_station - applies to fixing all break down reasons and ride inspections.
  */
-bool Staff::UpdateFixingEnterStation(Ride* ride) const
+bool Staff::UpdateFixingEnterStation(Ride& ride) const
 {
-    ride->mechanic_status = RIDE_MECHANIC_STATUS_FIXING;
-    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+    ride.mechanic_status = RIDE_MECHANIC_STATUS_FIXING;
+    ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     return true;
 }
@@ -2050,7 +2050,7 @@ bool Staff::UpdateFixingEnterStation(Ride* ride) const
  * fixing SubState: move_to_broken_down_vehicle - applies to fixing all vehicle specific breakdown reasons
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride)
+bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
@@ -2103,7 +2103,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride)
  * 4. doors stuck open.
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride* ride)
+bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
@@ -2145,7 +2145,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride* ride)
  * fixing SubState: fix_vehicle_malfunction - applies fixing to vehicle malfunction.
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride* ride)
+bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
@@ -2195,16 +2195,16 @@ static constexpr const CoordsXY _StationFixingOffsets[] = {
  * inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
+bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             return true;
         }
 
-        auto stationPos = ride->GetStation(CurrentRideStation).GetStart();
+        auto stationPos = ride.GetStation(CurrentRideStation).GetStart();
         if (stationPos.IsNull())
         {
             return true;
@@ -2281,16 +2281,16 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
  * 3. applies to inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
+bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             return true;
         }
 
-        auto stationPosition = ride->GetStation(CurrentRideStation).GetStart();
+        auto stationPosition = ride.GetStation(CurrentRideStation).GetStart();
         if (stationPosition.IsNull())
         {
             return true;
@@ -2357,11 +2357,11 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
  * 2. applies to inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride* ride)
+bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             return true;
         }
@@ -2390,7 +2390,7 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride* ride)
  * fixing SubState: fix_station_brakes - applies to fixing brake failure
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
 {
     if (!firstRun)
     {
@@ -2413,8 +2413,8 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 
     if (ActionFrame == 0x28)
     {
-        ride->mechanic_status = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
-        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+        ride.mechanic_status = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
+        ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     }
 
     if (ActionFrame == 0x13 || ActionFrame == 0x19 || ActionFrame == 0x1F || ActionFrame == 0x25 || ActionFrame == 0x2B)
@@ -2430,14 +2430,14 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
  * fixing SubState: move_to_station_exit - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
+bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        auto stationPosition = ride->GetStation(CurrentRideStation).Exit.ToCoordsXY();
+        auto stationPosition = ride.GetStation(CurrentRideStation).Exit.ToCoordsXY();
         if (stationPosition.IsNull())
         {
-            stationPosition = ride->GetStation(CurrentRideStation).Entrance.ToCoordsXY();
+            stationPosition = ride.GetStation(CurrentRideStation).Entrance.ToCoordsXY();
 
             if (stationPosition.IsNull())
             {
@@ -2468,7 +2468,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
  * fixing SubState: finish_fix_or_inspect - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride)
+bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& ride)
 {
     if (!firstRun)
     {
@@ -2478,7 +2478,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
 
             StaffRidesInspected++;
             WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
-            ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
+            ride.mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
             return true;
         }
 
@@ -2501,7 +2501,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
     }
 
     ride_fix_breakdown(ride, steps);
-    ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
+    ride.mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
     return true;
 }
 
@@ -2510,14 +2510,14 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
  * fixing SubState: leave_by_entrance_exit - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
+bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        auto exitPosition = ride->GetStation(CurrentRideStation).Exit.ToCoordsXY();
+        auto exitPosition = ride.GetStation(CurrentRideStation).Exit.ToCoordsXY();
         if (exitPosition.IsNull())
         {
-            exitPosition = ride->GetStation(CurrentRideStation).Entrance.ToCoordsXY();
+            exitPosition = ride.GetStation(CurrentRideStation).Entrance.ToCoordsXY();
 
             if (exitPosition.IsNull())
             {
@@ -2538,10 +2538,10 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
     int16_t xy_distance;
     if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
-        auto stationHeight = ride->GetStation(CurrentRideStation).GetBaseZ();
+        auto stationHeight = ride.GetStation(CurrentRideStation).GetBaseZ();
         if (xy_distance >= 16)
         {
-            stationHeight += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
+            stationHeight += ride.GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ loc.value(), stationHeight });

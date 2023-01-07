@@ -327,25 +327,25 @@ public:
     bool HasDrink() const;
     bool HasFoodOrDrink() const;
     bool HasEmptyContainer() const;
-    void OnEnterRide(Ride* ride);
-    void OnExitRide(Ride* ride);
+    void OnEnterRide(Ride& ride);
+    void OnExitRide(Ride& ride);
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
     void StopPurchaseThought(ride_type_t rideType);
     void TryGetUpFromSitting();
     bool ShouldRideWhileRaining(const Ride& ride);
-    void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
+    void ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
     void PickRideToGoOn();
     void ReadMap();
-    bool ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, bool thinking);
-    bool ShouldGoToShop(Ride* ride, bool peepAtShop);
+    bool ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking);
+    bool ShouldGoToShop(Ride& ride, bool peepAtShop);
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
     bool UpdateWalkingFindBin();
     void SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureType type);
     void SpendMoney(money32 amount, ExpenditureType type);
-    void SetHasRidden(const Ride* ride);
-    bool HasRidden(const Ride* ride) const;
+    void SetHasRidden(const Ride& ride);
+    bool HasRidden(const Ride& ride) const;
     void SetHasRiddenRideType(int32_t rideType);
     bool HasRiddenRideType(int32_t rideType) const;
     void SetParkEntryTime(int32_t entryTime);
@@ -353,7 +353,7 @@ public:
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
-    bool DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price);
+    bool DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price);
     void SetSpriteType(PeepSpriteType new_sprite_type);
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;
@@ -395,7 +395,7 @@ private:
     void UpdateRideLeaveEntranceWaypoints(const Ride& ride);
     uint8_t GetWaypointedSeatLocation(const Ride& ride, CarEntry* vehicle_type, uint8_t track_direction) const;
     void UpdateRideFreeVehicleCheck();
-    void UpdateRideFreeVehicleEnterRide(Ride* ride);
+    void UpdateRideFreeVehicleEnterRide(Ride& ride);
     void UpdateRideApproachVehicle();
     void UpdateRideEnterVehicle();
     void UpdateRideLeaveVehicle();
@@ -423,8 +423,8 @@ private:
     void GivePassingPeepsIceCream(Guest* passingPeep);
     Ride* FindBestRideToGoOn();
     OpenRCT2::BitSet<OpenRCT2::Limits::MaxRidesInPark> FindRidesToGoOn();
-    bool FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array);
-    void GoToRideEntrance(Ride* ride);
+    bool FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array);
+    void GoToRideEntrance(const Ride& ride);
 };
 
 void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
@@ -479,9 +479,9 @@ void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
 
-void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
-void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
-void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
+void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
+void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
+void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
 
 CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
 CoordsXY GetGuestWaypointLocationEnterprise(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);

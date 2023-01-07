@@ -119,9 +119,9 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
     if (!isGhost)
     {
-        ride_clear_for_construction(ride);
+        ride_clear_for_construction(*ride);
         ride->RemovePeeps();
-        invalidate_test_results(ride);
+        invalidate_test_results(*ride);
     }
 
     auto* entranceElement = FindEntranceElement(

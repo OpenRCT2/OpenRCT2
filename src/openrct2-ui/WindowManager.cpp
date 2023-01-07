@@ -190,9 +190,9 @@ public:
             case WD_NEW_CAMPAIGN:
                 return WindowNewCampaignOpen(id);
             case WD_DEMOLISH_RIDE:
-                return WindowRideDemolishPromptOpen(get_ride(RideId::FromUnderlying(id)));
+                return WindowRideDemolishPromptOpen(*get_ride(RideId::FromUnderlying(id)));
             case WD_REFURBISH_RIDE:
-                return WindowRideRefurbishPromptOpen(get_ride(RideId::FromUnderlying(id)));
+                return WindowRideRefurbishPromptOpen(*get_ride(RideId::FromUnderlying(id)));
             case WD_SIGN:
                 return WindowSignOpen(id);
             case WD_SIGN_SMALL:
@@ -269,7 +269,7 @@ public:
             {
                 const auto rideId = RideId::FromUnderlying(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
                 auto ride = get_ride(rideId);
-                return ride == nullptr ? nullptr : WindowRideMainOpen(ride);
+                return ride == nullptr ? nullptr : WindowRideMainOpen(*ride);
             }
             case WindowClass::TrackDesignPlace:
                 return WindowTrackPlaceOpen(

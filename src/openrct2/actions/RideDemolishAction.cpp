@@ -93,7 +93,7 @@ GameActions::Result RideDemolishAction::Query() const
         }
 
         result.ErrorTitle = STR_CANT_REFURBISH_RIDE;
-        result.Cost = GetRefurbishPrice(ride);
+        result.Cost = GetRefurbishPrice(*ride);
     }
 
     return result;
@@ -111,34 +111,34 @@ GameActions::Result RideDemolishAction::Execute() const
     switch (_modifyType)
     {
         case RIDE_MODIFY_DEMOLISH:
-            return DemolishRide(ride);
+            return DemolishRide(*ride);
         case RIDE_MODIFY_RENEW:
-            return RefurbishRide(ride);
+            return RefurbishRide(*ride);
     }
 
     return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_NONE);
 }
 
-GameActions::Result RideDemolishAction::DemolishRide(Ride* ride) const
+GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
 {
     money32 refundPrice = DemolishTracks();
 
     ride_clear_for_construction(ride);
-    ride->RemovePeeps();
-    ride->StopGuestsQueuing();
+    ride.RemovePeeps();
+    ride.StopGuestsQueuing();
 
-    ride->ValidateStations();
+    ride.ValidateStations();
     ride_clear_leftover_entrances(ride);
 
-    const auto rideId = ride->id;
+    const auto rideId = ride.id;
     News::DisableNewsItems(News::ItemType::Ride, rideId.ToUnderlying());
 
-    UnlinkAllBannersForRide(ride->id);
+    UnlinkAllBannersForRide(ride.id);
 
-    RideUse::GetHistory().RemoveValue(ride->id);
+    RideUse::GetHistory().RemoveValue(ride.id);
     for (auto peep : EntityList<Guest>())
     {
-        peep->RemoveRideFromMemory(ride->id);
+        peep->RemoveRideFromMemory(ride.id);
     }
 
     MarketingCancelCampaignsForRide(_rideIndex);
@@ -147,13 +147,13 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride* ride) const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Cost = refundPrice;
 
-    if (!ride->overall_view.IsNull())
+    if (!ride.overall_view.IsNull())
     {
-        auto xy = ride->overall_view.ToTileCentre();
+        auto xy = ride.overall_view.ToTileCentre();
         res.Position = { xy, TileElementHeight(xy) };
     }
 
-    ride->Delete();
+    ride.Delete();
     gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
     // Close windows related to the demolished ride
@@ -265,22 +265,22 @@ money32 RideDemolishAction::DemolishTracks() const
     return refundPrice;
 }
 
-GameActions::Result RideDemolishAction::RefurbishRide(Ride* ride) const
+GameActions::Result RideDemolishAction::RefurbishRide(Ride& ride) const
 {
     auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Cost = GetRefurbishPrice(ride);
 
-    ride->Renew();
+    ride.Renew();
 
-    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
-    ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
+    ride.lifecycle_flags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
+    ride.last_crash_type = RIDE_CRASH_TYPE_NONE;
 
-    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
+    ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-    if (!ride->overall_view.IsNull())
+    if (!ride.overall_view.IsNull())
     {
-        auto location = ride->overall_view.ToTileCentre();
+        auto location = ride.overall_view.ToTileCentre();
         res.Position = { location, TileElementHeight(location) };
     }
 
@@ -289,12 +289,12 @@ GameActions::Result RideDemolishAction::RefurbishRide(Ride* ride) const
     return res;
 }
 
-money32 RideDemolishAction::GetRefurbishPrice(const Ride* ride) const
+money32 RideDemolishAction::GetRefurbishPrice(const Ride& ride) const
 {
     return -GetRefundPrice(ride) / 2;
 }
 
-money32 RideDemolishAction::GetRefundPrice(const Ride* ride) const
+money32 RideDemolishAction::GetRefundPrice(const Ride& ride) const
 {
     return ride_get_refund_price(ride);
 }

@@ -45,9 +45,9 @@ class DemolishRidePromptWindow final : public Window
     money32 _demolishRideCost;
 
 public:
-    void SetRide(Ride* currentRide)
+    void SetRide(const Ride& currentRide)
     {
-        rideId = currentRide->id;
+        rideId = currentRide.id;
         _demolishRideCost = -ride_get_refund_price(currentRide);
     }
 
@@ -92,7 +92,7 @@ public:
     }
 };
 
-rct_window* WindowRideDemolishPromptOpen(Ride* ride)
+rct_window* WindowRideDemolishPromptOpen(const Ride& ride)
 {
     rct_window* w;
     DemolishRidePromptWindow* newWindow;

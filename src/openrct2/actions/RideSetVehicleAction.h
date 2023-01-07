@@ -40,7 +40,7 @@ public:
     GameActions::Result Execute() const override;
 
 private:
-    bool ride_is_vehicle_type_valid(Ride* ride) const;
+    bool ride_is_vehicle_type_valid(const Ride& ride) const;
 
     static_assert(sizeof(_value) >= sizeof(ObjectEntryIndex));
 };

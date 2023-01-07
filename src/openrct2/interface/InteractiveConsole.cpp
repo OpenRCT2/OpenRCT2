@@ -242,7 +242,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     else
                     {
                         ride->mode = static_cast<RideMode>(mode & 0xFF);
-                        invalidate_test_results(ride);
+                        invalidate_test_results(*ride);
                     }
                 }
             }

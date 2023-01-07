@@ -607,7 +607,7 @@ public:
                     break;
                 case INFORMATION_TYPE_CUSTOMERS:
                     formatSecondary = STR_RIDE_LIST_CUSTOMERS_PER_HOUR_LABEL;
-                    ft.Add<uint32_t>(ride_customers_per_hour(ridePtr));
+                    ft.Add<uint32_t>(ride_customers_per_hour(*ridePtr));
                     break;
                 case INFORMATION_TYPE_AGE:
                 {
@@ -696,7 +696,7 @@ public:
                     break;
                 case INFORMATION_TYPE_EXCITEMENT:
                     formatSecondary = STR_RATING_UKNOWN_LABEL;
-                    if (ride_has_ratings(ridePtr))
+                    if (ride_has_ratings(*ridePtr))
                     {
                         formatSecondary = STR_EXCITEMENT_LABEL;
                         ft.Add<uint16_t>(ridePtr->excitement);
@@ -704,7 +704,7 @@ public:
                     break;
                 case INFORMATION_TYPE_INTENSITY:
                     formatSecondary = STR_RATING_UKNOWN_LABEL;
-                    if (ride_has_ratings(ridePtr))
+                    if (ride_has_ratings(*ridePtr))
                     {
                         formatSecondary = STR_INTENSITY_LABEL;
                         ft.Add<uint16_t>(ridePtr->intensity);
@@ -712,7 +712,7 @@ public:
                     break;
                 case INFORMATION_TYPE_NAUSEA:
                     formatSecondary = STR_RATING_UKNOWN_LABEL;
-                    if (ride_has_ratings(ridePtr))
+                    if (ride_has_ratings(*ridePtr))
                     {
                         formatSecondary = STR_NAUSEA_LABEL;
                         ft.Add<uint16_t>(ridePtr->nausea);
@@ -796,7 +796,7 @@ private:
         for (auto& rideRef : GetRideManager())
         {
             if (rideRef.GetClassification() != static_cast<RideClassification>(page)
-                || (rideRef.status == RideStatus::Closed && !ride_has_any_track_elements(&rideRef)))
+                || (rideRef.status == RideStatus::Closed && !ride_has_any_track_elements(rideRef)))
                 continue;
 
             if (rideRef.window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST)
@@ -847,7 +847,7 @@ private:
                 case INFORMATION_TYPE_CUSTOMERS:
                     currentListPosition = SortList(
                         currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return ride_customers_per_hour(&thisRide) <= ride_customers_per_hour(&otherRide);
+                            return ride_customers_per_hour(thisRide) <= ride_customers_per_hour(otherRide);
                         });
                     break;
                 case INFORMATION_TYPE_AGE:

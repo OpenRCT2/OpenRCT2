@@ -163,7 +163,7 @@ public:
         if (mapCoords == _placementLoc)
         {
             TrackDesignPreviewDrawOutlines(
-                tds, _trackDesign.get(), GetOrAllocateRide(PreviewRideId), { mapCoords, 0, _currentTrackPieceDirection });
+                tds, _trackDesign.get(), *GetOrAllocateRide(PreviewRideId), { mapCoords, 0, _currentTrackPieceDirection });
             return;
         }
 
@@ -203,7 +203,7 @@ public:
             widget_invalidate(*this, WIDX_PRICE);
         }
 
-        TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), GetOrAllocateRide(PreviewRideId), trackLoc);
+        TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), *GetOrAllocateRide(PreviewRideId), trackLoc);
     }
 
     void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -247,7 +247,7 @@ public:
                         }
                         else
                         {
-                            ride_initialise_construction_window(getRide);
+                            ride_initialise_construction_window(*getRide);
                             auto wnd = window_find_by_class(WindowClass::RideConstruction);
                             window_event_mouse_up_call(wnd, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                         }
@@ -319,7 +319,7 @@ public:
             auto provRide = get_ride(_placementGhostRideId);
             if (provRide != nullptr)
             {
-                TrackDesignPreviewRemoveGhosts(_trackDesign.get(), provRide, _placementGhostLoc);
+                TrackDesignPreviewRemoveGhosts(_trackDesign.get(), *provRide, _placementGhostLoc);
             }
         }
     }
@@ -395,7 +395,7 @@ private:
             auto newRide = get_ride(_placementGhostRideId);
             if (newRide != nullptr)
             {
-                TrackDesignPreviewRemoveGhosts(_trackDesign.get(), newRide, _placementGhostLoc);
+                TrackDesignPreviewRemoveGhosts(_trackDesign.get(), *newRide, _placementGhostLoc);
                 _hasPlacementGhost = false;
             }
         }
@@ -425,7 +425,7 @@ private:
 
         return z
             + TrackDesignGetZPlacement(
-                   _trackDesign.get(), GetOrAllocateRide(PreviewRideId), { loc, z, _currentTrackPieceDirection });
+                   _trackDesign.get(), *GetOrAllocateRide(PreviewRideId), { loc, z, _currentTrackPieceDirection });
     }
 
     void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)

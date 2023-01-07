@@ -170,10 +170,10 @@ static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
 
 static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type);
 
-static int32_t RideGetAlternativeType(Ride* ride)
+static int32_t RideGetAlternativeType(const Ride& ride)
 {
-    return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? ride->GetRideTypeDescriptor().AlternateType
-                                                                         : ride->type;
+    return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? ride.GetRideTypeDescriptor().AlternateType
+                                                                         : ride.type;
 }
 
 /* move to ride.c */
@@ -186,7 +186,7 @@ static void CloseRideWindowForConstruction(RideId rideId)
 
 static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActions::Result* result);
 static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActions::Result* result);
-static void CloseConstructWindowOnCompletion(Ride* ride);
+static void CloseConstructWindowOnCompletion(const Ride& ride);
 
 class RideConstructionWindow final : public Window
 {
@@ -265,7 +265,7 @@ public:
             return;
         }
 
-        if (ride_try_get_origin_element(currentRide, nullptr))
+        if (ride_try_get_origin_element(*currentRide, nullptr))
         {
             // Auto open shops if required.
             if (currentRide->mode == RideMode::ShopStall && gConfigGeneral.AutoOpenShops)
@@ -306,7 +306,7 @@ public:
             return;
         }
 
-        int32_t rideType = RideGetAlternativeType(currentRide);
+        int32_t rideType = RideGetAlternativeType(*currentRide);
 
         uint64_t disabledWidgets = 0;
 
@@ -1531,7 +1531,7 @@ public:
         {
             return;
         }
-        int32_t rideType = RideGetAlternativeType(currentRide);
+        int32_t rideType = RideGetAlternativeType(*currentRide);
 
         hold_down_widgets = 0;
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
@@ -2372,7 +2372,7 @@ private:
             const auto& rtd = currentRide->GetRideTypeDescriptor();
             if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
             {
-                ride_initialise_construction_window(currentRide);
+                ride_initialise_construction_window(*currentRide);
             }
         }
 
@@ -2412,9 +2412,9 @@ private:
         if (tool_set(*this, WIDX_ENTRANCE, Tool::Crosshair))
         {
             auto currentRide = get_ride(_currentRideIndex);
-            if (currentRide != nullptr && !ride_try_get_origin_element(currentRide, nullptr))
+            if (currentRide != nullptr && !ride_try_get_origin_element(*currentRide, nullptr))
             {
-                ride_initialise_construction_window(currentRide);
+                ride_initialise_construction_window(*currentRide);
             }
         }
         else
@@ -2438,9 +2438,9 @@ private:
         if (tool_set(*this, WIDX_EXIT, Tool::Crosshair))
         {
             auto currentRide = get_ride(_currentRideIndex);
-            if (!ride_try_get_origin_element(currentRide, nullptr))
+            if (!ride_try_get_origin_element(*currentRide, nullptr))
             {
-                ride_initialise_construction_window(currentRide);
+                ride_initialise_construction_window(*currentRide);
             }
         }
         else
@@ -2569,7 +2569,7 @@ private:
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
             auto currentRide = get_ride(gRideEntranceExitPlaceRideIndex);
-            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(currentRide).Successful)
+            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(*currentRide).Successful)
             {
                 tool_cancel();
                 if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
@@ -2788,7 +2788,7 @@ rct_window* WindowRideConstructionOpen()
     return WindowCreate<RideConstructionWindow>(WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
 }
 
-static void CloseConstructWindowOnCompletion(Ride* ride)
+static void CloseConstructWindowOnCompletion(const Ride& ride)
 {
     if (_rideConstructionState == RideConstructionState::State0)
     {
@@ -2821,7 +2821,7 @@ static void window_ride_construction_do_entrance_exit_check()
         w = window_find_by_class(WindowClass::RideConstruction);
         if (w != nullptr)
         {
-            if (!ride_are_all_possible_entrances_and_exits_built(ride).Successful)
+            if (!ride_are_all_possible_entrances_and_exits_built(*ride).Successful)
             {
                 window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
             }
@@ -2847,7 +2847,7 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
         }
 
         CoordsXYE next_track;
-        if (track_block_get_next_from_zero(trackPos, ride, trackDirection, &next_track, &trackPos.z, &trackDirection, false))
+        if (track_block_get_next_from_zero(trackPos, *ride, trackDirection, &next_track, &trackPos.z, &trackDirection, false))
         {
             _currentTrackBegin.x = next_track.x;
             _currentTrackBegin.y = next_track.y;
@@ -2870,7 +2870,8 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
     }
 
     window_close_by_class(WindowClass::Error);
-    CloseConstructWindowOnCompletion(ride);
+    if (ride != nullptr)
+        CloseConstructWindowOnCompletion(*ride);
 }
 
 static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActions::Result* result)
@@ -2891,7 +2892,7 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
         }
 
         track_begin_end trackBeginEnd;
-        if (track_block_get_previous_from_zero(trackPos, ride, trackDirection, &trackBeginEnd))
+        if (track_block_get_previous_from_zero(trackPos, *ride, trackDirection, &trackBeginEnd))
         {
             _currentTrackBegin.x = trackBeginEnd.begin_x;
             _currentTrackBegin.y = trackBeginEnd.begin_y;
@@ -2913,7 +2914,8 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
     }
 
     window_close_by_class(WindowClass::Error);
-    CloseConstructWindowOnCompletion(ride);
+    if (ride != nullptr)
+        CloseConstructWindowOnCompletion(*ride);
 }
 
 /**
@@ -3078,7 +3080,7 @@ void WindowRideConstructionUpdateEnabledTrackPieces()
     if (rideEntry == nullptr)
         return;
 
-    int32_t rideType = RideGetAlternativeType(ride);
+    int32_t rideType = RideGetAlternativeType(*ride);
     UpdateEnabledRidePieces(rideType);
 }
 
@@ -3461,7 +3463,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
         if (ride != nullptr)
         {
             _currentTrackPrice = RideEntranceExitPlaceGhost(
-                ride, entranceOrExitCoords, entranceOrExitCoords.direction, gRideEntranceExitPlaceType, stationNum);
+                *ride, entranceOrExitCoords, entranceOrExitCoords.direction, gRideEntranceExitPlaceType, stationNum);
         }
         window_ride_construction_update_active_elements();
     }
@@ -3653,7 +3655,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                 int32_t saveCurrentTrackAlternative = _currentTrackAlternative;
                 int32_t saveCurrentTrackLiftHill = _currentTrackLiftHill;
 
-                ride_initialise_construction_window(ride);
+                ride_initialise_construction_window(*ride);
 
                 _currentTrackPieceDirection = saveTrackDirection;
                 _currentTrackCurve = saveCurrentTrackCurve;
@@ -4562,9 +4564,9 @@ static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZ
         ride_construction_set_default_next_piece();
         window_ride_construction_update_active_elements();
         auto ride = get_ride(_currentRideIndex);
-        if (!ride_try_get_origin_element(ride, nullptr))
+        if (!ride_try_get_origin_element(*ride, nullptr))
         {
-            ride_initialise_construction_window(ride);
+            ride_initialise_construction_window(*ride);
             _currentTrackPieceDirection = piecePos.direction & 3;
             if (!(savedCurrentTrackCurve & RideConstructionSpecialPieceSelected))
             {

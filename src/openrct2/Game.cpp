@@ -382,7 +382,7 @@ void game_fix_save_vars()
             log_warning(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->sprite_index, curName.c_str(),
                 srcStation.ToUnderlying(), rideIdx);
-            auto station = ride_get_first_valid_station_exit(ride);
+            auto station = ride_get_first_valid_station_exit(*ride);
             if (station.IsNull())
             {
                 log_warning("Couldn't find station, removing peep %u", peep->sprite_index);
