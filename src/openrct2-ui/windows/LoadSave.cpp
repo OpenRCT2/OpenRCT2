@@ -589,7 +589,7 @@ public:
             }
 
             // Disable the Up button if the current directory is the root directory
-            if (str_is_null_or_empty(_parentDirectory) && !drives)
+            if (String::IsNullOrEmpty(_parentDirectory) && !drives)
                 disabled_widgets |= (1uLL << WIDX_UP);
             else
                 disabled_widgets &= ~(1uLL << WIDX_UP);

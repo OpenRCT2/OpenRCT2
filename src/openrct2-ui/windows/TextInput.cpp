@@ -290,7 +290,7 @@ public:
         }
 
         // IME composition
-        if (!str_is_null_or_empty(gTextInput->ImeBuffer))
+        if (!String::IsNullOrEmpty(gTextInput->ImeBuffer))
         {
             DrawIMEComposition(dpi, cursorX, cursorY);
         }

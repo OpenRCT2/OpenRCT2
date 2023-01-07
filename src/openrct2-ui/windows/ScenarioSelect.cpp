@@ -540,7 +540,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         // TODO: Should probably be translatable
         const utf8* completedByName = "???";
-        if (!str_is_null_or_empty(scenario->highscore->name))
+        if (!String::IsNullOrEmpty(scenario->highscore->name))
         {
             completedByName = scenario->highscore->name;
         }
@@ -624,7 +624,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
 
                     // Draw completion score
                     const utf8* completedByName = "???";
-                    if (!str_is_null_or_empty(scenario->highscore->name))
+                    if (!String::IsNullOrEmpty(scenario->highscore->name))
                     {
                         completedByName = scenario->highscore->name;
                     }
