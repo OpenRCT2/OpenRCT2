@@ -2127,15 +2127,6 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
 
 #pragma region Colour functions
 
-TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme)
-{
-    TrackColour result;
-    result.main = ride->track_colour[colourScheme].main;
-    result.additional = ride->track_colour[colourScheme].additional;
-    result.supports = ride->track_colour[colourScheme].supports;
-    return result;
-}
-
 VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex)
 {
     // Prevent indexing array out of bounds

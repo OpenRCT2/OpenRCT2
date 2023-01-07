@@ -1021,7 +1021,6 @@ bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);
-TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);

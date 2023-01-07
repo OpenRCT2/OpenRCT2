@@ -417,7 +417,6 @@ private:
     void loc_68F9F3();
     void loc_68FA89();
     int32_t CheckEasterEggName(int32_t index) const;
-    bool GuestHasValidXY() const;
     void GivePassingPeepsPurpleClothes(Guest* passingPeep);
     void GivePassingPeepsPizza(Guest* passingPeep);
     void MakePassingPeepsSick(Guest* passingPeep);
