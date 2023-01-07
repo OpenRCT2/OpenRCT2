@@ -266,32 +266,6 @@ int32_t strlogicalcmp(const char* s1, const char* s2)
     }
 }
 
-utf8* safe_strtrunc(utf8* text, size_t size)
-{
-    assert(text != nullptr);
-
-    if (size == 0)
-        return text;
-
-    const char* sourceLimit = text + size - 1;
-    char* ch = text;
-    char* last = text;
-    while (utf8_get_next(ch, const_cast<const utf8**>(&ch)) != 0)
-    {
-        if (ch <= sourceLimit)
-        {
-            last = ch;
-        }
-        else
-        {
-            break;
-        }
-    }
-    *last = 0;
-
-    return text;
-}
-
 char* safe_strcpy(char* destination, const char* source, size_t size)
 {
     assert(destination != nullptr);
