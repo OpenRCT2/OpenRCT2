@@ -1242,7 +1242,7 @@ private:
         uint8_t currListPosition = 0;
         for (const auto& r : GetRideManager())
         {
-            if (r.IsRide() && guest->HasRidden(&r))
+            if (r.IsRide() && guest->HasRidden(r))
             {
                 list_item_positions[currListPosition] = r.id.ToUnderlying();
                 currListPosition++;

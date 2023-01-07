@@ -89,8 +89,8 @@ rct_window* WindowParkObjectiveOpen();
 rct_window* WindowParkRatingOpen();
 
 rct_window* WindowBannerOpen(rct_windownumber number);
-rct_window* WindowRideDemolishPromptOpen(Ride* ride);
-rct_window* WindowRideRefurbishPromptOpen(Ride* ride);
+rct_window* WindowRideDemolishPromptOpen(const Ride& ride);
+rct_window* WindowRideRefurbishPromptOpen(const Ride& ride);
 rct_window* WindowSignOpen(rct_windownumber number);
 rct_window* WindowSignSmallOpen(rct_windownumber number);
 rct_window* WindowPlayerOpen(uint8_t id);
@@ -131,7 +131,7 @@ void WindowNewRideFocus(RideSelection rideItem);
 rct_window* WindowRideListOpen();
 void WindowRideListRefreshList(rct_window* w);
 
-rct_window* WindowRideMainOpen(Ride* ride);
+rct_window* WindowRideMainOpen(const Ride& ride);
 rct_window* WindowRideOpenTrack(TileElement* tileElement);
 rct_window* WindowRideOpenVehicle(Vehicle* vehicle);
 void WindowRideMeasurementsDesignCancel();

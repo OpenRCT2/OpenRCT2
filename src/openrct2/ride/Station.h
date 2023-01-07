@@ -15,7 +15,7 @@
 struct Ride;
 struct TileCoordsXYZD;
 
-void ride_update_station(Ride* ride, StationIndex stationIndex);
-StationIndex ride_get_first_valid_station_exit(Ride* ride);
-StationIndex ride_get_first_valid_station_start(const Ride* ride);
-StationIndex ride_get_first_empty_station_start(const Ride* ride);
+void ride_update_station(Ride& ride, StationIndex stationIndex);
+StationIndex ride_get_first_valid_station_exit(const Ride& ride);
+StationIndex ride_get_first_valid_station_start(const Ride& ride);
+StationIndex ride_get_first_empty_station_start(const Ride& ride);

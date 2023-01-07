@@ -93,15 +93,15 @@ static TileElement* find_station_element(const CoordsXYZD& loc, RideId rideIndex
     return nullptr;
 }
 
-static void ride_remove_station(Ride* ride, const CoordsXYZ& location)
+static void ride_remove_station(Ride& ride, const CoordsXYZ& location)
 {
-    for (auto& station : ride->GetStations())
+    for (auto& station : ride.GetStations())
     {
         auto stationStart = station.GetStart();
         if (stationStart == location)
         {
             station.Start.SetNull();
-            ride->num_stations--;
+            ride.num_stations--;
             break;
         }
     }
@@ -129,7 +129,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
         }
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
-            auto stationIndex = ride_get_first_empty_station_start(ride);
+            auto stationIndex = ride_get_first_empty_station_start(*ride);
             assert(!stationIndex.IsNull());
 
             auto& station = ride->GetStation(stationIndex);
@@ -158,7 +158,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
-                    ride_remove_station(ride, loc);
+                    ride_remove_station(*ride, loc);
                 }
             }
 
@@ -180,7 +180,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
-                    ride_remove_station(ride, loc);
+                    ride_remove_station(*ride, loc);
                 }
             }
 
@@ -217,7 +217,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
                 track_type_t targetTrackType;
                 if (stationFrontLoc == loc)
                 {
-                    auto stationIndex = ride_get_first_empty_station_start(ride);
+                    auto stationIndex = ride_get_first_empty_station_start(*ride);
                     if (stationIndex.IsNull())
                     {
                         log_verbose("No empty station starts, not updating metadata! This can happen with hacked rides.");
@@ -280,7 +280,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                ride_remove_station(ride, loc);
+                ride_remove_station(*ride, loc);
             }
         }
         return { true };
@@ -296,7 +296,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                ride_remove_station(ride, currentLoc);
+                ride_remove_station(*ride, currentLoc);
             }
         }
 
@@ -319,7 +319,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
-                    ride_remove_station(ride, currentLoc);
+                    ride_remove_station(*ride, currentLoc);
                 }
             }
             stationFrontLoc = currentLoc;
@@ -352,7 +352,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
                 track_type_t targetTrackType;
                 if ((currentLoc == stationFrontLoc) || (currentLoc + CoordsDirectionDelta[currentLoc.direction] == removeLoc))
                 {
-                    auto stationIndex = ride_get_first_empty_station_start(ride);
+                    auto stationIndex = ride_get_first_empty_station_start(*ride);
                     if (stationIndex.IsNull())
                     {
                         log_verbose("No empty station starts, not updating metadata! This can happen with hacked rides.");

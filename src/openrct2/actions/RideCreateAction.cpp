@@ -239,7 +239,7 @@ GameActions::Result RideCreateAction::Execute() const
         {
             if (shop_item_has_common_price(ShopItem::Admission))
             {
-                money32 price = ride_get_common_price(ride);
+                money32 price = ride_get_common_price(*ride);
                 if (price != MONEY32_UNDEFINED)
                 {
                     ride->price[0] = static_cast<money16>(price);
@@ -318,7 +318,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->mode = ride->GetDefaultMode();
     ride->MinCarsPerTrain = rideEntry->min_cars_in_train;
     ride->MaxCarsPerTrain = rideEntry->max_cars_in_train;
-    ride_set_vehicle_colours_to_random_preset(ride, _colour2);
+    ride_set_vehicle_colours_to_random_preset(*ride, _colour2);
     window_invalidate_by_class(WindowClass::RideList);
 
     res.Expenditure = ExpenditureType::RideConstruction;

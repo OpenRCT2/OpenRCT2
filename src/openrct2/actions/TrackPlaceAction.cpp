@@ -527,7 +527,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            invalidate_test_results(ride);
+            invalidate_test_results(*ride);
             switch (_trackType)
             {
                 case TrackElemType::OnRidePhoto:

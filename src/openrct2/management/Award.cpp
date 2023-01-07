@@ -415,7 +415,7 @@ static bool award_is_deserved_most_disappointing(int32_t activeAwardTypes)
     auto disappointingRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride_has_ratings(&ride) && ride.popularity != 0xFF)
+        if (ride_has_ratings(ride) && ride.popularity != 0xFF)
         {
             countedRides++;
             if (ride.popularity <= 6)

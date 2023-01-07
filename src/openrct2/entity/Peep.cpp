@@ -1769,7 +1769,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
         // the path tile.
-        if (!guest->ShouldGoOnRide(ride, stationNum, false, false))
+        if (!guest->ShouldGoOnRide(*ride, stationNum, false, false))
         {
             // Peep remembers that this is the last ride they
             // considered while on this path tile.
@@ -2202,7 +2202,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                 /* Peep is approaching the entrance of a ride queue.
                  * Decide whether to go on the ride. */
                 auto ride = get_ride(rideIndex);
-                if (ride != nullptr && guest->ShouldGoOnRide(ride, stationNum, true, false))
+                if (ride != nullptr && guest->ShouldGoOnRide(*ride, stationNum, true, false))
                 {
                     // Peep has decided to go on the ride at the queue.
                     guest->InteractionRideIndex = rideIndex;
@@ -2312,7 +2312,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
     {
         guest->TimeLost = 0;
-        if (!guest->ShouldGoOnRide(ride, StationIndex::FromUnderlying(0), false, false))
+        if (!guest->ShouldGoOnRide(*ride, StationIndex::FromUnderlying(0), false, false))
         {
             peep_return_to_centre_of_tile(guest);
             return true;

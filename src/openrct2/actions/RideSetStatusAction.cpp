@@ -150,7 +150,7 @@ GameActions::Result RideSetStatusAction::Execute() const
                 if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
                 {
                     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-                    ride_clear_for_construction(ride);
+                    ride_clear_for_construction(*ride);
                     ride->RemovePeeps();
                 }
             }
@@ -164,7 +164,7 @@ GameActions::Result RideSetStatusAction::Execute() const
         case RideStatus::Simulating:
         {
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-            ride_clear_for_construction(ride);
+            ride_clear_for_construction(*ride);
             ride->RemovePeeps();
 
             const auto modeSwitchResult = ride->Simulate(true);
@@ -195,7 +195,7 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             if (ride->status == RideStatus::Simulating)
             {
-                ride_clear_for_construction(ride);
+                ride_clear_for_construction(*ride);
                 ride->RemovePeeps();
             }
 
