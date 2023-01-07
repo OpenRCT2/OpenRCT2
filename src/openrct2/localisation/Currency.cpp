@@ -40,10 +40,10 @@ void currency_load_custom_currency_config()
 {
     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = gConfigGeneral.CustomCurrencyRate;
     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = gConfigGeneral.CustomCurrencyAffix;
-    if (gConfigGeneral.CustomCurrencySymbol != nullptr)
+    if (!gConfigGeneral.CustomCurrencySymbol.empty())
     {
         safe_strcpy(
-            CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, gConfigGeneral.CustomCurrencySymbol,
+            CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, gConfigGeneral.CustomCurrencySymbol.c_str(),
             CURRENCY_SYMBOL_MAX_SIZE);
     }
 }

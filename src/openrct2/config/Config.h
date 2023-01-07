@@ -77,7 +77,7 @@ struct GeneralConfiguration
     CurrencyType CurrencyFormat;
     int32_t CustomCurrencyRate;
     CurrencyAffix CustomCurrencyAffix;
-    utf8* CustomCurrencySymbol;
+    u8string CustomCurrencySymbol;
 
     // Controls
     bool EdgeScrolling;
@@ -130,8 +130,8 @@ struct InterfaceConfiguration
     bool ToolbarShowZoom;
     bool ConsoleSmallFont;
     bool RandomTitleSequence;
-    utf8* CurrentThemePreset;
-    utf8* CurrentTitleSequencePreset;
+    u8string CurrentThemePreset;
+    u8string CurrentTitleSequencePreset;
     int32_t ObjectSelectionFilterFlags;
     int32_t ScenarioselectLastTab;
     bool ListRideVehiclesSeparately;
@@ -139,7 +139,7 @@ struct InterfaceConfiguration
 
 struct SoundConfiguration
 {
-    std::string Device;
+    u8string Device;
     bool MasterSoundEnabled;
     uint8_t MasterVolume;
     TitleMusicKind TitleMusic;
@@ -152,21 +152,21 @@ struct SoundConfiguration
 
 struct NetworkConfiguration
 {
-    std::string PlayerName;
+    u8string PlayerName;
     int32_t DefaultPort;
-    std::string ListenAddress;
-    std::string DefaultPassword;
+    u8string ListenAddress;
+    u8string DefaultPassword;
     bool StayConnected;
     bool Advertise;
-    std::string AdvertiseAddress;
+    u8string AdvertiseAddress;
     int32_t Maxplayers;
-    std::string ServerName;
-    std::string ServerDescription;
-    std::string ServerGreeting;
-    std::string MasterServerUrl;
-    std::string ProviderName;
-    std::string ProviderEmail;
-    std::string ProviderWebsite;
+    u8string ServerName;
+    u8string ServerDescription;
+    u8string ServerGreeting;
+    u8string MasterServerUrl;
+    u8string ProviderName;
+    u8string ProviderEmail;
+    u8string ProviderWebsite;
     bool KnownKeysOnly;
     bool LogChat;
     bool LogServerActions;
@@ -198,8 +198,8 @@ struct NotificationConfiguration
 
 struct FontConfiguration
 {
-    utf8* FileName;
-    utf8* FontName;
+    u8string FileName;
+    u8string FontName;
     int32_t OffsetX;
     int32_t OffsetY;
     int32_t SizeTiny;
@@ -217,7 +217,7 @@ struct FontConfiguration
 struct PluginConfiguration
 {
     bool EnableHotReloading;
-    std::string AllowedHosts;
+    u8string AllowedHosts;
 };
 
 enum class Sort : int32_t
@@ -268,7 +268,6 @@ bool ConfigOpen(u8string_view path);
 bool ConfigSave(u8string_view path);
 u8string ConfigGetDefaultPath();
 void ConfigSetDefaults();
-void ConfigRelease();
 bool ConfigSaveDefault();
 bool ConfigFindOrBrowseInstallDirectory();
 

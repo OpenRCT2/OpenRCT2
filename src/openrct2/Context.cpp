@@ -199,7 +199,6 @@ namespace OpenRCT2
             gfx_unload_g2();
             gfx_unload_g1();
             Audio::Close();
-            ConfigRelease();
 
             Instance = nullptr;
         }

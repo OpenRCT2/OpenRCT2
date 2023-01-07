@@ -45,8 +45,6 @@ struct IIniReader
 
         return configEnum.GetValue(szValue, defaultValue);
     }
-
-    utf8* GetCString(const std::string& name, const utf8* defaultValue) const;
 };
 
 [[nodiscard]] std::unique_ptr<IIniReader> CreateIniReader(OpenRCT2::IStream* stream);
