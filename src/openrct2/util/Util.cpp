@@ -336,45 +336,6 @@ char* safe_strcat(char* destination, const char* source, size_t size)
     return result;
 }
 
-#if defined(_WIN32)
-char* strcasestr(const char* haystack, const char* needle)
-{
-    const char* p1 = haystack;
-    const char* p2 = needle;
-    const char* r = *p2 == 0 ? haystack : nullptr;
-
-    while (*p1 != 0 && *p2 != 0)
-    {
-        if (tolower(static_cast<unsigned char>(*p1)) == tolower(static_cast<unsigned char>(*p2)))
-        {
-            if (r == nullptr)
-                r = p1;
-            p2++;
-        }
-        else
-        {
-            p2 = needle;
-            if (r != nullptr)
-                p1 = r + 1;
-
-            if (tolower(static_cast<unsigned char>(*p1)) == tolower(static_cast<unsigned char>(*p2)))
-            {
-                r = p1;
-                p2++;
-            }
-            else
-            {
-                r = nullptr;
-            }
-        }
-
-        p1++;
-    }
-
-    return *p2 == 0 ? const_cast<char*>(r) : nullptr;
-}
-#endif
-
 bool str_is_null_or_empty(const char* str)
 {
     return str == nullptr || str[0] == 0;
