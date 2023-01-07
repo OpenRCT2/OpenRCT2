@@ -1290,7 +1290,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "largesceneryremove", GameCommand::RemoveLargeScenery },
     { "largescenerysetcolour", GameCommand::SetLargeSceneryColour },
     { "loadorquit", GameCommand::LoadOrQuit },
-    { "mapChangeSize", GameCommand::ChangeMapSize },
+    { "mapchangesize", GameCommand::ChangeMapSize },
     { "mazeplacetrack", GameCommand::PlaceMazeDesign },
     { "mazesettrack", GameCommand::SetMazeTrack },
     { "networkmodifygroup", GameCommand::ModifyGroups },
