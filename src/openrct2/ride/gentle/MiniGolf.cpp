@@ -444,23 +444,6 @@ const size_t MiniGolfPeepAnimationLengths[] = {
 };
 // clang-format on
 
-static PaintStruct* MiniGolfPaintUtil7C(
-    PaintSession& session, uint8_t direction, ImageId imageId, int8_t x_offset, int8_t yOffset, int16_t boundBoxLengthX,
-    int16_t boundBoxLengthY, int8_t boundBoxLengthZ, int16_t zOffset, int16_t boundBoxOffsetX, int16_t boundBoxOffsetY,
-    int16_t boundBoxOffsetZ, uint32_t rotation)
-{
-    if (direction & 1)
-    {
-        return PaintAddImageAsParent(
-            session, imageId, { yOffset, x_offset, zOffset },
-            { { boundBoxOffsetY, boundBoxOffsetX, boundBoxOffsetZ }, { boundBoxLengthY, boundBoxLengthX, boundBoxLengthZ } });
-    }
-
-    return PaintAddImageAsParent(
-        session, imageId, { x_offset, yOffset, zOffset },
-        { { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ }, { boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ } });
-}
-
 static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackElement& trackElement)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
@@ -538,17 +521,17 @@ static void PaintMiniGolfTrack25DegUp(
     ImageId imageId;
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MiniGolfTrackSprites25DegUp[direction][0]);
-    MiniGolfPaintUtil7C(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, {0, 0, height}, {32, 20, 1});
 
     MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSprites25DegUp[direction][1]);
-    MiniGolfPaintUtil7C(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 10, height + 2, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, {0, 0, height}, {32, 1, 15}, {0, 10, height + 2});
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSprites25DegUp[direction][2]);
-    MiniGolfPaintUtil7C(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 22, height + 2, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, {0, 0, height}, {32, 1, 15}, {0, 22, height + 2});
 
     switch (direction)
     {
@@ -577,17 +560,17 @@ static void PaintMiniGolfTrackFlatTo25DegUp(
     ImageId imageId;
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MiniGolfTrackSpritesFlatTo25DegUp[direction][0]);
-    MiniGolfPaintUtil7C(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, {0, 0, height}, {32, 20, 1}, {0, 6, height});
 
     MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSpritesFlatTo25DegUp[direction][1]);
-    MiniGolfPaintUtil7C(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 10, height + 2, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, {0, 0, height}, {32, 1, 11}, {0, 10, height + 2});
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSpritesFlatTo25DegUp[direction][2]);
-    MiniGolfPaintUtil7C(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 22, height + 2, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, {0, 0, height}, {32, 1, 11}, {0, 22, height + 2});
 
     switch (direction)
     {
@@ -616,17 +599,17 @@ static void PaintMiniGolfTrack25DegUpToFlat(
     ImageId imageId;
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MiniGolfTrackSprites25DegUpToFlat[direction][0]);
-    MiniGolfPaintUtil7C(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, {0, 0, height}, {32, 20, 1}, {0, 6, height});
 
     MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSprites25DegUpToFlat[direction][1]);
-    MiniGolfPaintUtil7C(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 10, height + 2, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, {0, 0, height}, {32, 1, 11}, {0, 10, height + 2});
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSprites25DegUpToFlat[direction][2]);
-    MiniGolfPaintUtil7C(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 22, height + 2, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, {0, 0, height}, {32, 1, 11}, {0, 22, height + 2});
 
     switch (direction)
     {
@@ -681,7 +664,7 @@ static void PaintMiniGolfStation(
     bool hasFence;
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMiniGolfStationFloor);
-    MiniGolfPaintUtil7C(session, direction, imageId, 0, 0, 32, 28, 1, height, 0, 0, height, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, {0, 0, height}, {32, 28, 1}, {0, 0, height});
 
     if (direction & 1)
     {
