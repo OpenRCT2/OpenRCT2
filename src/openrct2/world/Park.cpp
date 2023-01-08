@@ -500,7 +500,7 @@ money64 Park::CalculateRideValue(const Ride& ride) const
     if (ride.value != RIDE_VALUE_UNDEFINED)
     {
         const auto& rtd = ride.GetRideTypeDescriptor();
-        result = ToMoney32FromGBP(static_cast<int32_t>(ride.value))
+        result = ToMoney64FromGBP(ride.value)
             * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4LL);
     }
     return result;
