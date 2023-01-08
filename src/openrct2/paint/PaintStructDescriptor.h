@@ -7,7 +7,6 @@
 
 struct PaintStructDescriptor
 {
-    using PaintStructSequenceMapping = std::array<std::vector<uint32_t>, 4>;
     using PaintStructEdgesTable = std::vector<edge_t>;
     enum class SupportsType
     {
@@ -38,8 +37,15 @@ struct PaintStructDescriptor
 
     struct HeightSupportsTable
     {
+        std::string Id;
         uint32_t HeightOffset;
         std::map<uint8_t, uint32_t> Segments;
+    };
+
+    struct PaintStructSequenceMapping
+    {
+        std::string Id;
+        std::array<std::vector<uint32_t>, 4> Values;
     };
 
     // key fields
@@ -67,4 +73,6 @@ struct PaintStructDescriptor
     void Paint(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement) const;
+
+    void ToJson(json_t& json) const;
 };

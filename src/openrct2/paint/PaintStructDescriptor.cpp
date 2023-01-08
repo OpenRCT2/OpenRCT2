@@ -2,6 +2,7 @@
 
 #include "../paint/Supports.h"
 #include "../ride/Ride.h"
+#include "../core/Json.hpp"
 
 // helper method to check for the keys
 bool PaintStructDescriptor::MatchWithKeys(track_type_t trackElement, uint32_t direction, uint32_t trackSequence) const
@@ -21,7 +22,8 @@ bool PaintStructDescriptor::MatchWithKeys(track_type_t trackElement, uint32_t di
         // check if we need to transform the track sequence with the mapping
         if (TrackSequenceMapping.has_value())
         {
-            trackSequence = TrackSequenceMapping.value()[direction][trackSequence];
+            const auto& sequenceMapping = TrackSequenceMapping.value();
+            trackSequence = sequenceMapping.Values[direction][trackSequence];
             if (TrackSequence != trackSequence)
                 return false;
         }
@@ -53,7 +55,8 @@ void PaintStructDescriptor::Paint(
     // transform the track sequence with the track mapping if there is one
     if (TrackSequenceMapping.has_value())
     {
-        const auto& mapping = TrackSequenceMapping.value()[direction];
+        const auto& sequenceMapping = TrackSequenceMapping.value().Values;
+        const auto& mapping = sequenceMapping[direction];
         if (trackSequence < mapping.size())
             trackSequence = mapping[trackSequence];
     }
@@ -149,5 +152,55 @@ void PaintStructDescriptor::Paint(
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~segments, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + HeightSupports.HeightOffset, 0x20);
         }
+    }
+}
+
+void PaintStructDescriptor::ToJson(json_t& json) const
+{
+    switch (Element)
+    {
+        case TrackElemType::FlatTrack3x3:
+            json["trackElement"] = "flat_track_3x3";
+            break;
+    }
+
+    if (Direction.has_value())
+    {
+        json["direction"] = Direction.value();
+    }
+
+    if (TrackSequence.has_value())
+    {
+        json["trackSequence"] = TrackSequence.value();
+    }
+
+    if (TrackSequenceMapping.has_value())
+    {
+        //just store the id
+        json["trackSequenceMapping"] = TrackSequenceMapping.value().Id;
+    }
+
+    if (Supports.has_value())
+    {
+        switch (Supports.value())
+        {
+            case SupportsType::WoodenA:
+                json["supports"] = "wooden_a";
+                break;
+        }
+    }
+
+    if (Floor.has_value())
+    {
+        switch (Floor.value())
+        {
+            case FloorType::Cork:
+                json["floor"] = "cork";
+                break;
+        }
+    }
+
+    if (Edges.has_value())
+    {
     }
 }

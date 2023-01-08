@@ -17,6 +17,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
     // read the track sequence mapping tables and edges tables first
     std::map<std::string, PaintStructDescriptor::PaintStructSequenceMapping> paintMapping;
     std::map<std::string, PaintStructDescriptor::PaintStructEdgesTable> edgesMapping;
+    std::map<std::string, PaintStructDescriptor::HeightSupportsTable> heightMapping;
 
     if (root.contains("trackSequenceTables"))
     {
@@ -30,31 +31,32 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 if (dir0.is_array())
                 {
                     for (const auto& sequence : dir0)
-                        table[0].push_back(sequence);
+                        table.Values[0].push_back(sequence);
                 }
 
                 auto dir1 = trackSequenceTable["dir1"];
                 if (dir1.is_array())
                 {
                     for (const auto& sequence : dir1)
-                        table[1].push_back(sequence);
+                        table.Values[1].push_back(sequence);
                 }
 
                 auto dir2 = trackSequenceTable["dir2"];
                 if (dir2.is_array())
                 {
                     for (const auto& sequence : dir2)
-                        table[2].push_back(sequence);
+                        table.Values[2].push_back(sequence);
                 }
 
                 auto dir3 = trackSequenceTable["dir3"];
                 if (dir3.is_array())
                 {
                     for (const auto& sequence : dir3)
-                        table[3].push_back(sequence);
+                        table.Values[3].push_back(sequence);
                 }
 
                 auto id = trackSequenceTable["id"];
+                table.Id = id;
                 paintMapping[id] = table;
             }
         }
@@ -95,6 +97,53 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 
                 auto id = edgeTable["id"];
                 edgesMapping[id] = table;
+            }
+        }
+    }
+
+    if (root.contains("heightSupportsTables"))
+    {
+        auto heightTables = root["heightSupportsTables"];
+        if (heightTables.is_array())
+        {
+            for (const auto& heightTable : heightTables)
+            {
+                PaintStructDescriptor::HeightSupportsTable table;
+                table.Id = heightTable["id"];
+                table.HeightOffset = heightTable["heightOffset"];
+
+                const auto& segments = heightTable["segments"];
+                for (const auto& segment : segments)
+                {
+                    uint32_t trackSequence = segment["trackSequence"];
+                    uint32_t edge = 0;
+
+                    const auto& values = segment["values"];
+                    for (const auto& value : values)
+                    {
+                        if (value == "b4")
+                            edge |= SEGMENT_B4;
+                        else if (value == "cc")
+                            edge |= SEGMENT_CC;
+                        else if (value == "bc")
+                            edge |= SEGMENT_BC;
+                        else if (value == "d4")
+                            edge |= SEGMENT_D4;
+                        else if (value == "c0")
+                            edge |= SEGMENT_C0;
+                        else if (value == "d0")
+                            edge |= SEGMENT_D0;
+                        else if (value == "b8")
+                            edge |= SEGMENT_B8;
+                        else if (value == "c8")
+                            edge |= SEGMENT_C8;
+                        else if (value == "c4")
+                            edge |= SEGMENT_C4;
+                    }
+
+                    table.Segments[trackSequence] = edge;
+                }
+                heightMapping[table.Id] = table;
             }
         }
     }
@@ -282,6 +331,15 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 auto bbLengthZ = paintStruct["bb_length_z"];
                 if (bbLengthZ.is_number())
                     paint.BoundBox.length.z = bbLengthZ;
+            }
+
+            if (paintStruct.contains("supportsHeightId"))
+            {
+                const auto& id = paintStruct["supportsHeightId"];
+                if (heightMapping.find(id) != heightMapping.end())
+                {
+                    paint.HeightSupports = heightMapping[id];
+                }
             }
 
             _paintStructs.push_back(paint);
