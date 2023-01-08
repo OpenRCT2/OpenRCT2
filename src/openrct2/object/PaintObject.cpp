@@ -15,8 +15,8 @@
 void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     // read the track sequence mapping tables and edges tables first
-    std::map<std::string, PaintStructSequenceMapping> paintMapping;
-    std::map<std::string, PaintStructEdgesTable> edgesMapping;
+    std::map<std::string, PaintStructDescriptor::PaintStructSequenceMapping> paintMapping;
+    std::map<std::string, PaintStructDescriptor::PaintStructEdgesTable> edgesMapping;
 
     if (root.contains("trackSequenceTables"))
     {
@@ -25,7 +25,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         {
             for (const auto& trackSequenceTable : trackSequenceTables)
             {
-                PaintStructSequenceMapping table;
+                PaintStructDescriptor::PaintStructSequenceMapping table;
                 auto dir0 = trackSequenceTable["dir0"];
                 if (dir0.is_array())
                 {
@@ -67,7 +67,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         {
             for (const auto& edgeTable : edgesTables)
             {
-                PaintStructEdgesTable table;
+                PaintStructDescriptor::PaintStructEdgesTable table;
 
                 auto edges = edgeTable["edges"];
                 if (edges.is_array())
@@ -104,7 +104,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         for (const auto& paintStruct : paintStructs)
         {
-            PaintStruct paint;
+            PaintStructDescriptor paint;
             if (paintStruct.contains("trackElement"))
             {
                 auto trackElement = paintStruct["trackElement"];
@@ -118,7 +118,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 if (supports.is_string())
                 {
                     if (supports == "wooden_a")
-                        paint.Supports = SupportsType::WoodenA;
+                        paint.Supports = PaintStructDescriptor::SupportsType::WoodenA;
                 }
             }
 
@@ -128,7 +128,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 if (floor.is_string())
                 {
                     if (floor == "cork")
-                        paint.Floor = FloorType::Cork;
+                        paint.Floor = PaintStructDescriptor::FloorType::Cork;
                 }
             }
 
@@ -148,7 +148,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 if (fences.is_string())
                 {
                     if (fences == "ropes")
-                        paint.Fences = FenceType::Ropes;
+                        paint.Fences = PaintStructDescriptor::FenceType::Ropes;
                 }
             }
 
@@ -186,9 +186,9 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 if (paintType.is_string())
                 {
                     if (paintType == "addImageAsParent")
-                        paint.PaintType = PaintType::AddImageAsParent;
+                        paint.PaintType = PaintStructDescriptor::PaintType::AddImageAsParent;
                     else if (paintType == "setSegmentSupportHeight")
-                        paint.PaintType = PaintType::SetSegmentsSupportsHeight;
+                        paint.PaintType = PaintStructDescriptor::PaintType::SetSegmentsSupportsHeight;
                 }
             }
 
@@ -198,7 +198,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 if (imageIdBase.is_string())
                 {
                     if (imageIdBase == "car0")
-                        paint.ImageIdBase = ImageIdBase::Car0;
+                        paint.ImageIdBase = PaintStructDescriptor::ImageIdBase::Car0;
                 }
             }
 
@@ -217,7 +217,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 if (imageIdScheme.is_string())
                 {
                     if (imageIdScheme == "misc")
-                        paint.ImageIdScheme = Scheme::Misc;
+                        paint.ImageIdScheme = PaintStructDescriptor::Scheme::Misc;
                 }
             }
 
@@ -306,155 +306,6 @@ void PaintObject::Paint(
     {
         if (paintStruct.MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence))
             paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
-    }
-}
-
-// helper method to check for the keys
-bool PaintObject::PaintStruct::MatchWithKeys(track_type_t trackElement, uint32_t direction, uint32_t trackSequence) const
-{
-    // when the field is not set, it is intended as a wild card
-    if (Element != trackElement)
-        return false;
-
-    if (Direction.has_value())
-    {
-        if (Direction != direction)
-            return false;
-    }
-
-    if (TrackSequence.has_value())
-    {
-        // check if we need to transform the track sequence with the mapping
-        if (TrackSequenceMapping.has_value())
-        {
-            trackSequence = TrackSequenceMapping.value()[direction][trackSequence];
-            if (TrackSequence != trackSequence)
-                return false;
-        }
-        else if (TrackSequence != trackSequence)
-            return false;
-    }
-    return true;
-}
-
-void PaintObject::PaintStruct::Paint(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement) const
-{
-    auto rideEntry = ride.GetRideEntry();
-    if (rideEntry == nullptr)
-        return;
-
-    if (Supports.has_value())
-    {
-        switch (Supports.value())
-        {
-            case SupportsType::WoodenA:
-            default:
-                WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
-                break;
-        }
-    }
-
-    // transform the track sequence with the track mapping if there is one
-    if (TrackSequenceMapping.has_value())
-    {
-        const auto& mapping = TrackSequenceMapping.value()[direction];
-        if (trackSequence < mapping.size())
-            trackSequence = mapping[trackSequence];
-    }
-
-    uint8_t edges = 0;
-    if (Edges.has_value())
-    {
-        if (trackSequence < Edges.value().size())
-            edges = Edges.value()[trackSequence];
-    }
-
-    if (Floor.has_value())
-    {
-        const uint32_t* sprites = nullptr;
-        switch (Floor.value())
-        {
-            case FloorType::Cork:
-            default:
-                sprites = floorSpritesCork;
-                break;
-        }
-
-        const StationObject* stationObject = ride.GetStationObject();
-
-        if (stationObject != nullptr)
-        {
-            track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, sprites, stationObject);
-        }
-    }
-
-    if (Fences.has_value())
-    {
-        const uint32_t* sprites = nullptr;
-        switch (Fences.value())
-        {
-            case FenceType::Ropes:
-            default:
-                sprites = fenceSpritesRope;
-                break;
-        }
-
-        track_paint_util_paint_fences(
-            session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_SUPPORTS], height, sprites,
-            session.CurrentRotation);
-    }
-
-    if (PaintType.has_value())
-    {
-        auto type = PaintType.value();
-        if (type == PaintType::AddImageAsParent)
-        {
-            ImageId imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-            ImageId imageFlags;
-            switch (ImageIdScheme)
-            {
-                case Scheme::Track:
-                    imageFlags = session.TrackColours[SCHEME_TRACK];
-                    break;
-                default:
-                case Scheme::Misc:
-                    imageFlags = session.TrackColours[SCHEME_MISC];
-                    break;
-            }
-            if (imageFlags != TrackGhost)
-            {
-                imageTemplate = imageFlags;
-            }
-
-            uint32_t imageIndex = 0;
-            switch (ImageIdBase)
-            {
-                case ImageIdBase::Car0:
-                default:
-                    imageIndex = rideEntry->Cars[0].base_image_id;
-                    break;
-            }
-            imageIndex = imageIndex + ImageIdOffset;
-
-            auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
-            auto newBoundBox = BoundBox;
-            newBoundBox.offset.z += height;
-            PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
-        }
-        else if (type == PaintType::SetSegmentsSupportsHeight)
-        {
-            uint32_t segments = 0;
-            if (HeightSupports.Segments.find(trackSequence) != HeightSupports.Segments.end())
-            {
-                segments = HeightSupports.Segments.at(trackSequence);
-            }
-
-            PaintUtilSetSegmentSupportHeight(session, segments, height + 2, 0x20);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~segments, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + HeightSupports.HeightOffset, 0x20);
-        }
     }
 }
 

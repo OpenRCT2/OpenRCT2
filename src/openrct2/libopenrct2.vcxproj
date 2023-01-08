@@ -325,6 +325,7 @@
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
     <ClInclude Include="paint\Painter.h" />
+    <ClInclude Include="paint\PaintStructDescriptor.h" />
     <ClInclude Include="paint\Supports.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
@@ -815,6 +816,7 @@
     <ClCompile Include="paint\Paint.Entity.cpp" />
     <ClCompile Include="paint\Painter.cpp" />
     <ClCompile Include="paint\PaintHelpers.cpp" />
+    <ClCompile Include="paint\PaintStructDescriptor.cpp" />
     <ClCompile Include="paint\Supports.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Banner.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Entrance.cpp" />
