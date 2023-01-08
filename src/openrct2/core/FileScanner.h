@@ -16,18 +16,21 @@
 #include <string>
 #include <vector>
 
-struct FileInfo
+namespace FileScanner
 {
-    const utf8* Name;
-    uint64_t Size;
-    uint64_t LastModified;
-};
+    struct FileInfo
+    {
+        const utf8* Name;
+        uint64_t Size;
+        uint64_t LastModified;
+    };
+} // namespace FileScanner
 
 struct IFileScanner
 {
     virtual ~IFileScanner() = default;
 
-    virtual const FileInfo* GetFileInfo() const abstract;
+    virtual const FileScanner::FileInfo* GetFileInfo() const abstract;
     virtual const utf8* GetPath() const abstract;
     virtual const utf8* GetPathRelative() const abstract;
 

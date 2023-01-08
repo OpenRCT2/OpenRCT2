@@ -73,7 +73,7 @@ private:
     std::stack<DirectoryState> _directoryStack;
 
     // Current
-    FileInfo* _currentFileInfo;
+    FileScanner::FileInfo* _currentFileInfo;
     utf8* _currentPath;
 
 public:
@@ -84,7 +84,7 @@ public:
         _patterns = GetPatterns(Path::GetFileName(pattern));
 
         _currentPath = Memory::Allocate<utf8>(MAX_PATH);
-        _currentFileInfo = Memory::Allocate<FileInfo>();
+        _currentFileInfo = Memory::Allocate<FileScanner::FileInfo>();
 
         Reset();
     }
@@ -95,7 +95,7 @@ public:
         Memory::Free(_currentFileInfo);
     }
 
-    const FileInfo* GetFileInfo() const override
+    const FileScanner::FileInfo* GetFileInfo() const override
     {
         return _currentFileInfo;
     }
@@ -349,7 +349,7 @@ void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& patte
     auto scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())
     {
-        const FileInfo* fileInfo = scanner->GetFileInfo();
+        const FileScanner::FileInfo* fileInfo = scanner->GetFileInfo();
         const utf8* path = scanner->GetPath();
 
         result->TotalFiles++;
