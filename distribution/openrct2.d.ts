@@ -265,10 +265,10 @@ declare global {
          * @param execute Logic for validating and executing the action.
          * @throws An error if the action has already been registered by this or another plugin.
          */
-        registerAction(
+        registerAction<T = object>(
             action: string,
-            query: (args: object) => GameActionResult,
-            execute: (args: object) => GameActionResult): void;
+            query: (args: GameActionEventArgs<T>) => GameActionResult,
+            execute: (args: GameActionEventArgs<T>) => GameActionResult): void;
 
         /**
          * Query the result of running a game action. This allows you to check the outcome and validity of
@@ -1278,12 +1278,12 @@ declare global {
         height: number;
     }
 
-    interface GameActionEventArgs {
+    interface GameActionEventArgs<T = object> {
         readonly player: number;
         readonly type: number;
         readonly action: string;
         readonly isClientOnly: boolean;
-        readonly args: object;
+        readonly args: T;
         result: GameActionResult;
     }
 
