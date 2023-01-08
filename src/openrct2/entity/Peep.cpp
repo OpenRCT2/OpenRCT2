@@ -24,6 +24,7 @@
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
+#include "../entity/guest/GuestRideHelper.h"
 #include "../interface/Window.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
@@ -1769,7 +1770,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
         // the path tile.
-        if (!guest->ShouldGoOnRide(*ride, stationNum, false, false))
+        if (!GuestRideHelper(*guest).ShouldGoOnRide(*ride, stationNum, false, false))
         {
             // Peep remembers that this is the last ride they
             // considered while on this path tile.
@@ -2183,7 +2184,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
             {
                 // Queue got disconnected from the original ride.
                 guest->InteractionRideIndex = RideId::GetNull();
-                guest->RemoveFromQueue();
+                GuestRideHelper(*guest).RemoveFromQueue();
                 guest->SetState(PeepState::One);
                 peep_footpath_move_forward(guest, { coords, tile_element }, vandalism_present);
             }
@@ -2202,7 +2203,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                 /* Peep is approaching the entrance of a ride queue.
                  * Decide whether to go on the ride. */
                 auto ride = get_ride(rideIndex);
-                if (ride != nullptr && guest->ShouldGoOnRide(*ride, stationNum, true, false))
+                if (ride != nullptr && GuestRideHelper(*guest).ShouldGoOnRide(*ride, stationNum, true, false))
                 {
                     // Peep has decided to go on the ride at the queue.
                     guest->InteractionRideIndex = rideIndex;
@@ -2257,7 +2258,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
         peep->InteractionRideIndex = RideId::GetNull();
         if (guest != nullptr && peep->State == PeepState::Queuing)
         {
-            guest->RemoveFromQueue();
+            GuestRideHelper(*guest).RemoveFromQueue();
             guest->SetState(PeepState::One);
         }
         peep_footpath_move_forward(peep, { coords, tile_element }, vandalism_present);
@@ -2312,7 +2313,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
     {
         guest->TimeLost = 0;
-        if (!guest->ShouldGoOnRide(*ride, StationIndex::FromUnderlying(0), false, false))
+        if (!GuestRideHelper(*guest).ShouldGoOnRide(*ride, StationIndex::FromUnderlying(0), false, false))
         {
             peep_return_to_centre_of_tile(guest);
             return true;
@@ -2384,7 +2385,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     auto* guest = As<Guest>();
     if (State == PeepState::Queuing && guest != nullptr)
     {
-        if (guest->UpdateQueuePosition(previousAction))
+        if (GuestRideHelper(*guest).UpdateQueuePosition(previousAction))
             return;
     }
 
@@ -2478,7 +2479,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             InteractionRideIndex = RideId::GetNull();
             if (guest != nullptr && State == PeepState::Queuing)
             {
-                guest->RemoveFromQueue();
+                GuestRideHelper(*guest).RemoveFromQueue();
                 SetState(PeepState::One);
             }
 
@@ -2705,7 +2706,7 @@ void Peep::RemoveFromRide()
     auto* guest = As<Guest>();
     if (guest != nullptr && State == PeepState::Queuing)
     {
-        guest->RemoveFromQueue();
+        GuestRideHelper(*guest).RemoveFromQueue();
     }
     StateReset();
 }

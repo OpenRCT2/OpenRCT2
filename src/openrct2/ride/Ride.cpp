@@ -30,6 +30,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
+#include "../entity/guest/GuestRideHelper.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
@@ -4075,7 +4076,7 @@ void Ride::StopGuestsQueuing()
         if (peep->CurrentRide != id)
             continue;
 
-        peep->RemoveFromQueue();
+        GuestRideHelper(*peep).RemoveFromQueue();
         peep->SetState(PeepState::Falling);
     }
 }

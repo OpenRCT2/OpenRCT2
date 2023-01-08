@@ -21,6 +21,7 @@
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
+#include "../entity/guest/GuestRideHelper.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
@@ -283,7 +284,7 @@ void Ride::RemovePeeps()
 
             peep_decrement_num_riders(peep);
             if (peep->State == PeepState::QueuingFront && peep->RideSubState == PeepRideSubState::AtEntrance)
-                peep->RemoveFromQueue();
+                GuestRideHelper(*peep).RemoveFromQueue();
 
             if (exitPosition.direction == INVALID_DIRECTION)
             {

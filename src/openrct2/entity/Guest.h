@@ -259,6 +259,7 @@ public:
 struct Guest : Peep
 {
     static constexpr auto cEntityType = EntityType::Guest;
+    friend class GuestRideHelper;
 
 public:
     uint8_t GuestNumRides;
@@ -327,27 +328,16 @@ public:
     bool HasDrink() const;
     bool HasFoodOrDrink() const;
     bool HasEmptyContainer() const;
-    void OnEnterRide(Ride& ride);
-    void OnExitRide(Ride& ride);
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
     void StopPurchaseThought(ride_type_t rideType);
     void TryGetUpFromSitting();
-    bool ShouldRideWhileRaining(const Ride& ride);
-    void ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
-    void PickRideToGoOn();
     void ReadMap();
-    bool ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking);
-    bool ShouldGoToShop(Ride& ride, bool peepAtShop);
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
     bool UpdateWalkingFindBin();
     void SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureType type);
     void SpendMoney(money32 amount, ExpenditureType type);
-    void SetHasRidden(const Ride& ride);
-    bool HasRidden(const Ride& ride) const;
-    void SetHasRiddenRideType(int32_t rideType);
-    bool HasRiddenRideType(int32_t rideType) const;
     void SetParkEntryTime(int32_t entryTime);
     int32_t GetParkEntryTime() const;
     void CheckIfLost();
@@ -363,8 +353,6 @@ public:
     void InsertNewThought(PeepThoughtType thought_type, RideId rideId);
     void InsertNewThought(PeepThoughtType thought_type, uint16_t thought_arguments);
     static Guest* Generate(const CoordsXYZ& coords);
-    bool UpdateQueuePosition(PeepActionType previous_action);
-    void RemoveFromQueue();
 
     uint64_t GetItemFlags() const;
     void SetItemFlags(uint64_t itemFlags);
@@ -372,48 +360,18 @@ public:
     void RemoveItem(ShopItem item);
     void GiveItem(ShopItem item);
     bool HasItem(ShopItem peepItem) const;
+
     void Serialise(DataSerialiser& stream);
 
-    // Removes the ride from the guests memory, this includes
-    // the history, thoughts, etc.
-    void RemoveRideFromMemory(RideId rideId);
-
 private:
-    void UpdateRide();
-    void UpdateOnRide(){}; // TODO
     void UpdateWalking();
     void UpdateWaitingAtCrossing();
-    void UpdateQueuing();
     void UpdateSitting();
     void UpdateEnteringPark();
     void UpdateLeavingPark();
     void UpdateBuying();
     void UpdateWatching();
     void UpdateUsingBin();
-    void UpdateRideAtEntrance();
-    void UpdateRideAdvanceThroughEntrance();
-    void UpdateRideLeaveEntranceWaypoints(const Ride& ride);
-    uint8_t GetWaypointedSeatLocation(const Ride& ride, CarEntry* vehicle_type, uint8_t track_direction) const;
-    void UpdateRideFreeVehicleCheck();
-    void UpdateRideFreeVehicleEnterRide(Ride& ride);
-    void UpdateRideApproachVehicle();
-    void UpdateRideEnterVehicle();
-    void UpdateRideLeaveVehicle();
-    void UpdateRideApproachExit();
-    void UpdateRideInExit();
-
-    void UpdateRideApproachVehicleWaypoints();
-
-    void UpdateRideApproachExitWaypoints();
-    void UpdateRideApproachSpiralSlide();
-    void UpdateRideOnSpiralSlide();
-    void UpdateRideLeaveSpiralSlide();
-    void UpdateRideMazePathfinding();
-    void UpdateRideLeaveExit();
-    void UpdateRideShopApproach();
-    void UpdateRideShopInteract();
-    void UpdateRideShopLeave();
-    void UpdateRidePrepareForExit();
     void loc_68F9F3();
     void loc_68FA89();
     int32_t CheckEasterEggName(int32_t index) const;
@@ -421,10 +379,11 @@ private:
     void GivePassingPeepsPizza(Guest* passingPeep);
     void MakePassingPeepsSick(Guest* passingPeep);
     void GivePassingPeepsIceCream(Guest* passingPeep);
-    Ride* FindBestRideToGoOn();
-    OpenRCT2::BitSet<OpenRCT2::Limits::MaxRidesInPark> FindRidesToGoOn();
-    bool FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array);
-    void GoToRideEntrance(const Ride& ride);
+
+    void DecideWhetherToLeavePark();
+    void LeavePark();
+
+    void UpdateHunger();
 };
 
 void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
@@ -479,9 +438,4 @@ void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
 
-void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
-void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
-void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
-
-CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
-CoordsXY GetGuestWaypointLocationEnterprise(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
+bool IsThoughtShopItemRelated(const PeepThoughtType type);

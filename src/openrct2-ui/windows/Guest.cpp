@@ -22,6 +22,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Staff.h>
+#include <openrct2/entity/guest/GuestRideHelper.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
@@ -1242,7 +1243,7 @@ private:
         uint8_t currListPosition = 0;
         for (const auto& r : GetRideManager())
         {
-            if (r.IsRide() && guest->HasRidden(r))
+            if (r.IsRide() && GuestRideHelper(*guest).HasRidden(r))
             {
                 list_item_positions[currListPosition] = r.id.ToUnderlying();
                 currListPosition++;

@@ -221,6 +221,7 @@
     <ClInclude Include="drawing\X8DrawingEngine.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorObjectSelectionSession.h" />
+    <ClInclude Include="entity\guest\GuestRideHelper.h" />
     <ClInclude Include="entity\Balloon.h" />
     <ClInclude Include="entity\Duck.h" />
     <ClInclude Include="entity\EntityBase.h" />
@@ -717,6 +718,7 @@
     <ClCompile Include="drawing\X8DrawingEngine.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EditorObjectSelectionSession.cpp" />
+    <ClCompile Include="entity\guest\GuestRideHelper.cpp" />
     <ClCompile Include="entity\Balloon.cpp" />
     <ClCompile Include="entity\Duck.cpp" />
     <ClCompile Include="entity\EntityBase.cpp" />

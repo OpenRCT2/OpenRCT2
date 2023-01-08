@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../entity/guest/GuestRideHelper.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"

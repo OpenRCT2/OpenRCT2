@@ -35,6 +35,7 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
+#include "../entity/guest/GuestRideHelper.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -2527,7 +2528,7 @@ namespace RCT1
                 {
                     if (peep->State == PeepState::QueuingFront && peep->CurrentRide == merryGoRoundId)
                     {
-                        peep->RemoveFromQueue();
+                        GuestRideHelper(*peep).RemoveFromQueue();
                         peep->SetState(PeepState::Falling);
                         break;
                     }

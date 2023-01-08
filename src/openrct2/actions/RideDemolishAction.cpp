@@ -15,6 +15,7 @@
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../entity/EntityList.h"
+#include "../entity/guest/GuestRideHelper.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
@@ -138,7 +139,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     RideUse::GetHistory().RemoveValue(ride.id);
     for (auto peep : EntityList<Guest>())
     {
-        peep->RemoveRideFromMemory(ride.id);
+        GuestRideHelper(*peep).RemoveRideFromMemory(ride.id);
     }
 
     MarketingCancelCampaignsForRide(_rideIndex);
