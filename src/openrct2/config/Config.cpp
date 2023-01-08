@@ -147,7 +147,7 @@ namespace Config
             model->CustomCurrencyRate = reader->GetInt32("custom_currency_rate", 10);
             model->CustomCurrencyAffix = reader->GetEnum<CurrencyAffix>(
                 "custom_currency_affix", CurrencyAffix::Suffix, Enum_CurrencySymbolAffix);
-            model->CustomCurrencySymbol = reader->GetCString("custom_currency_symbol", "Ctm");
+            model->CustomCurrencySymbol = reader->GetString("custom_currency_symbol", "Ctm");
             model->EdgeScrolling = reader->GetBoolean("edge_scrolling", true);
             model->EdgeScrollingSpeed = reader->GetInt32("edge_scrolling_speed", 12);
             model->FullscreenMode = reader->GetInt32("fullscreen_mode", 0);
@@ -325,8 +325,8 @@ namespace Config
             model->ToolbarShowChat = reader->GetBoolean("toolbar_show_chat", false);
             model->ToolbarShowZoom = reader->GetBoolean("toolbar_show_zoom", true);
             model->ConsoleSmallFont = reader->GetBoolean("console_small_font", false);
-            model->CurrentThemePreset = reader->GetCString("current_theme", "*RCT2");
-            model->CurrentTitleSequencePreset = reader->GetCString("current_title_sequence", "*OPENRCT2");
+            model->CurrentThemePreset = reader->GetString("current_theme", "*RCT2");
+            model->CurrentTitleSequencePreset = reader->GetString("current_title_sequence", "*OPENRCT2");
             model->RandomTitleSequence = reader->GetBoolean("random_title_sequence", false);
             model->ObjectSelectionFilterFlags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
             model->ScenarioselectLastTab = reader->GetInt32("scenarioselect_last_tab", 0);
@@ -511,8 +511,8 @@ namespace Config
         if (reader->ReadSection("font"))
         {
             auto model = &gConfigFonts;
-            model->FileName = reader->GetCString("file_name", nullptr);
-            model->FontName = reader->GetCString("font_name", nullptr);
+            model->FileName = reader->GetString("file_name", "");
+            model->FontName = reader->GetString("font_name", "");
             model->OffsetX = reader->GetInt32("x_offset", false);
             model->OffsetY = reader->GetInt32("y_offset", true);
             model->SizeTiny = reader->GetInt32("size_tiny", true);
@@ -775,7 +775,6 @@ PluginConfiguration gConfigPlugin;
 
 void ConfigSetDefaults()
 {
-    ConfigRelease();
     Config::SetDefaults();
 }
 
@@ -786,7 +785,6 @@ bool ConfigOpen(u8string_view path)
         return false;
     }
 
-    ConfigRelease();
     auto result = Config::ReadFile(path);
     if (result)
     {
@@ -798,15 +796,6 @@ bool ConfigOpen(u8string_view path)
 bool ConfigSave(u8string_view path)
 {
     return Config::WriteFile(path);
-}
-
-void ConfigRelease()
-{
-    SafeFree(gConfigGeneral.CustomCurrencySymbol);
-    SafeFree(gConfigInterface.CurrentThemePreset);
-    SafeFree(gConfigInterface.CurrentTitleSequencePreset);
-    SafeFree(gConfigFonts.FileName);
-    SafeFree(gConfigFonts.FontName);
 }
 
 u8string ConfigGetDefaultPath()

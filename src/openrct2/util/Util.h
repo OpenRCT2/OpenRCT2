@@ -30,14 +30,9 @@ int32_t bitscanforward(int32_t source);
 int32_t bitscanforward(int64_t source);
 void bitcount_init();
 int32_t bitcount(uint32_t source);
-int32_t strcicmp(char const* a, char const* b);
 int32_t strlogicalcmp(char const* a, char const* b);
-utf8* safe_strtrunc(utf8* text, size_t size);
 char* safe_strcpy(char* destination, const char* source, size_t num);
 char* safe_strcat(char* destination, const char* source, size_t size);
-#if defined(_WIN32)
-char* strcasestr(const char* haystack, const char* needle);
-#endif
 
 bool str_is_null_or_empty(const char* str);
 

@@ -785,7 +785,7 @@ private:
             Formatter ft;
             peep.FormatNameTo(ft);
             format_string(name, sizeof(name), STR_STRINGID, ft.Data());
-            if (strcasestr(name, _filterName.c_str()) == nullptr)
+            if (!String::Contains(name, _filterName.c_str(), true))
             {
                 return false;
             }

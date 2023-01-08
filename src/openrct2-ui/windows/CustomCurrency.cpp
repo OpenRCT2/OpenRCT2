@@ -164,9 +164,7 @@ public:
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
                     CURRENCY_SYMBOL_MAX_SIZE);
 
-                safe_strcpy(
-                    gConfigGeneral.CustomCurrencySymbol, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
-                    CURRENCY_SYMBOL_MAX_SIZE);
+                gConfigGeneral.CustomCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode;
 
                 ConfigSaveDefault();
                 window_invalidate_all();

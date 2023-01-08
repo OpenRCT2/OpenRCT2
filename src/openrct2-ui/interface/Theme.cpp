@@ -617,9 +617,9 @@ namespace ThemeManager
         ActiveAvailableThemeIndex = 1;
 
         bool configValid = false;
-        if (!String::IsNullOrEmpty(gConfigInterface.CurrentThemePreset))
+        if (!gConfigInterface.CurrentThemePreset.empty())
         {
-            if (LoadThemeByConfigName(gConfigInterface.CurrentThemePreset))
+            if (LoadThemeByConfigName(gConfigInterface.CurrentThemePreset.c_str()))
             {
                 configValid = true;
             }
@@ -627,7 +627,7 @@ namespace ThemeManager
 
         if (!configValid)
         {
-            String::DiscardDuplicate(&gConfigInterface.CurrentThemePreset, ThemeManagerGetAvailableThemeConfigName(1));
+            gConfigInterface.CurrentThemePreset = ThemeManagerGetAvailableThemeConfigName(1);
         }
     }
 
@@ -709,7 +709,7 @@ void ThemeManagerSetActiveAvailableTheme(size_t index)
         }
     }
     ThemeManager::ActiveAvailableThemeIndex = index;
-    String::DiscardDuplicate(&gConfigInterface.CurrentThemePreset, ThemeManagerGetAvailableThemeConfigName(index));
+    gConfigInterface.CurrentThemePreset = ThemeManagerGetAvailableThemeConfigName(index);
 
     ColourSchemeUpdateAll();
 }
@@ -805,7 +805,7 @@ void ThemeRename(const utf8* name)
         if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
         {
             ThemeManager::ActiveAvailableThemeIndex = i;
-            String::DiscardDuplicate(&gConfigInterface.CurrentThemePreset, ThemeManagerGetAvailableThemeConfigName(1));
+            gConfigInterface.CurrentThemePreset = ThemeManagerGetAvailableThemeConfigName(1);
             break;
         }
     }
@@ -830,7 +830,7 @@ void ThemeDuplicate(const utf8* name)
         if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
         {
             ThemeManager::ActiveAvailableThemeIndex = i;
-            String::DiscardDuplicate(&gConfigInterface.CurrentThemePreset, ThemeManagerGetAvailableThemeConfigName(i));
+            gConfigInterface.CurrentThemePreset = ThemeManagerGetAvailableThemeConfigName(i);
             break;
         }
     }
@@ -841,7 +841,7 @@ void ThemeDelete()
     File::Delete(ThemeManager::CurrentThemePath);
     ThemeManager::LoadTheme(const_cast<UITheme*>(&PredefinedThemeRCT2));
     ThemeManager::ActiveAvailableThemeIndex = 1;
-    String::DiscardDuplicate(&gConfigInterface.CurrentThemePreset, ThemeManagerGetAvailableThemeConfigName(1));
+    gConfigInterface.CurrentThemePreset = ThemeManagerGetAvailableThemeConfigName(1);
 }
 
 void ThemeManagerInitialise()

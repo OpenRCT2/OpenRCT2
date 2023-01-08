@@ -128,12 +128,12 @@ static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescrip
 static bool LoadCustomConfigFont(LocalisationService& localisationService)
 {
     static TTFFontSetDescriptor TTFFontCustom = { {
-        { gConfigFonts.FileName, gConfigFonts.FontName, gConfigFonts.SizeTiny, gConfigFonts.OffsetX, gConfigFonts.OffsetY,
-          gConfigFonts.HeightTiny, gConfigFonts.HintingThreshold, nullptr },
-        { gConfigFonts.FileName, gConfigFonts.FontName, gConfigFonts.SizeSmall, gConfigFonts.OffsetX, gConfigFonts.OffsetY,
-          gConfigFonts.HeightSmall, gConfigFonts.HintingThreshold, nullptr },
-        { gConfigFonts.FileName, gConfigFonts.FontName, gConfigFonts.SizeMedium, gConfigFonts.OffsetX, gConfigFonts.OffsetY,
-          gConfigFonts.HeightMedium, gConfigFonts.HintingThreshold, nullptr },
+        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeTiny, gConfigFonts.OffsetX,
+          gConfigFonts.OffsetY, gConfigFonts.HeightTiny, gConfigFonts.HintingThreshold, nullptr },
+        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeSmall, gConfigFonts.OffsetX,
+          gConfigFonts.OffsetY, gConfigFonts.HeightSmall, gConfigFonts.HintingThreshold, nullptr },
+        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeMedium, gConfigFonts.OffsetX,
+          gConfigFonts.OffsetY, gConfigFonts.HeightMedium, gConfigFonts.HintingThreshold, nullptr },
     } };
 
     ttf_dispose();
@@ -153,7 +153,7 @@ void TryLoadFonts(LocalisationService& localisationService)
 
     if (fontFamily != FAMILY_OPENRCT2_SPRITE)
     {
-        if (!String::IsNullOrEmpty(gConfigFonts.FileName))
+        if (!gConfigFonts.FileName.empty())
         {
             if (LoadCustomConfigFont(localisationService))
             {
