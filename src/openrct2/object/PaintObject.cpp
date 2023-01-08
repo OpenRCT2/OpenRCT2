@@ -320,8 +320,12 @@ void PaintObject::LoadPaintObjects()
         {
             auto repoItem = repoManager.FindObject(rtd.PaintObjectId);
             auto test = repoManager.LoadObject(repoItem);
-            repoManager.RegisterLoadedObject(repoItem, std::move(test));
-            repoItem->LoadedObject->Load();
+
+            if (repoItem->LoadedObject == nullptr)
+            {
+                repoManager.RegisterLoadedObject(repoItem, std::move(test));
+                repoItem->LoadedObject->Load();
+            }
         }
     }
 }
