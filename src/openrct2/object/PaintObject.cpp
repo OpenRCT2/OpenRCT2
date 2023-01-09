@@ -27,32 +27,22 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             for (const auto& trackSequenceTable : trackSequenceTables)
             {
                 PaintStructDescriptor::PaintStructSequenceMapping table;
-                auto dir0 = trackSequenceTable["dir0"];
-                if (dir0.is_array())
+                auto sequences = trackSequenceTable["sequences"];
+                if (sequences.is_array())
                 {
-                    for (const auto& sequence : dir0)
-                        table.Values[0].push_back(sequence);
-                }
-
-                auto dir1 = trackSequenceTable["dir1"];
-                if (dir1.is_array())
-                {
-                    for (const auto& sequence : dir1)
-                        table.Values[1].push_back(sequence);
-                }
-
-                auto dir2 = trackSequenceTable["dir2"];
-                if (dir2.is_array())
-                {
-                    for (const auto& sequence : dir2)
-                        table.Values[2].push_back(sequence);
-                }
-
-                auto dir3 = trackSequenceTable["dir3"];
-                if (dir3.is_array())
-                {
-                    for (const auto& sequence : dir3)
-                        table.Values[3].push_back(sequence);
+                    size_t index = 0;
+                    for (const auto& sequence : sequences)
+                    {
+                        if (sequence.is_array())
+                        {
+                            for (const auto& value : sequence)
+                            {
+                                if (value.is_number())
+                                    table.Values[index].push_back(value);
+                            }
+                        }
+                        index++;
+                    }
                 }
 
                 auto id = trackSequenceTable["id"];

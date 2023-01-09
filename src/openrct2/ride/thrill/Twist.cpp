@@ -18,6 +18,7 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
+#include "../../core/Console.hpp"
 
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(
@@ -44,6 +45,8 @@ static void paint_twist_structure(
     uint32_t frameNum = (direction * 88) % 216;
     if (vehicle != nullptr)
     {
+        Console::WriteLine("spriteDirection=%d", vehicle->sprite_direction);
+        Console::WriteLine("pitch=%d", vehicle->Pitch);
         frameNum += (vehicle->sprite_direction >> 3) << 4;
         frameNum += vehicle->Pitch;
         frameNum = frameNum % 216;
@@ -67,6 +70,7 @@ static void paint_twist_structure(
 
     if (session.DPI.zoom_level < ZoomLevel{ 1 } && ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
+        Console::WriteLine("numPeeps=%d", vehicle->num_peeps);
         for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {
             imageTemplate = ImageId(0, vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
