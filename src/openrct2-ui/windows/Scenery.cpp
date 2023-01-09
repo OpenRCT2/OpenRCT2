@@ -37,6 +37,8 @@ constexpr int32_t MaxTabs = 32;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
 
+static char _filter_string[MAX_PATH];
+
 enum WindowSceneryListWidgetIdx
 {
     WIDX_SCENERY_BACKGROUND,
@@ -51,6 +53,8 @@ enum WindowSceneryListWidgetIdx
     WIDX_SCENERY_TERTIARY_COLOUR_BUTTON,
     WIDX_SCENERY_EYEDROPPER_BUTTON,
     WIDX_SCENERY_BUILD_CLUSTER_BUTTON,
+    WIDX_FILTER_TEXT_BOX,
+    WIDX_FILTER_CLEAR_BUTTON,
     WIDX_SCENERY_TAB_1,
 };
 
@@ -62,7 +66,7 @@ validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 static Widget WindowSceneryBaseWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
     MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
-    MakeWidget     ({  2,  47}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
+    MakeWidget     ({  2,  62}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
     MakeWidget     ({609,  44}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
     MakeWidget     ({609,  68}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),      STR_SCENERY_PAINTBRUSH_TIP ), // 4000000   0x009DE438
     MakeWidget     ({615,  93}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_COLOUR          ), // 8000000   0x009DE448
@@ -70,6 +74,8 @@ static Widget WindowSceneryBaseWidgets[] = {
     MakeWidget     ({615, 117}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_TERNARY_COLOUR  ), // 20000000  0x009DE468
     MakeWidget     ({609, 130}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_EYEDROPPER),   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
     MakeWidget     ({609, 154}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_SCENERY_CLUSTER), STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
+    MakeWidget     ({  4,  46}, {211, 14}, WindowWidgetType::TextBox,   WindowColour::Secondary                          ),
+    MakeWidget     ({218,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
     WIDGETS_END,
 };
 // clang-format on
@@ -134,6 +140,9 @@ public:
     void OnOpen() override
     {
         Init();
+
+        widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
+        std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
         InitScrollWidgets();
         ContentUpdateScroll();
@@ -220,6 +229,15 @@ public:
                 {
                     ContextShowError(STR_CANT_DO_THIS, STR_PERMISSION_DENIED, {});
                 }
+                Invalidate();
+                break;
+            case WIDX_FILTER_TEXT_BOX:
+                window_start_textbox(*this, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
+                break;
+            case WIDX_FILTER_CLEAR_BUTTON:
+                std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
+                RefreshSceneryTabs();
+                scrolls->v_top = 0;
                 Invalidate();
                 break;
         }
@@ -386,6 +404,12 @@ public:
             }
         }
 
+        if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+        {
+            window_update_textbox_caret();
+            widget_invalidate(*this, WIDX_FILTER_TEXT_BOX);
+        }
+
         Invalidate();
 
         if (!scenery_tool_is_active())
@@ -430,6 +454,24 @@ public:
                 }
             }
         }
+    }
+
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+    {
+        if (widgetIndex != WIDX_FILTER_TEXT_BOX)
+            return;
+
+        std::string tempText = text.data();
+        const char* c = tempText.c_str();
+
+        if (strcmp(_filter_string, c) == 0)
+            return;
+
+        safe_strcpy(_filter_string, c, sizeof(_filter_string));
+
+        RefreshSceneryTabs();
+        scrolls->v_top = 0;
+        Invalidate();
     }
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
@@ -739,8 +781,22 @@ public:
         return GetSelectedScenery(_activeTabIndex);
     }
 
-    void Init()
+    void RefreshSceneryTabs()
     {
+        bool tabSelected = false;
+        bool lastTabSelected = false;
+        StringId lastTabName = 0;
+
+        if (!_tabEntries.empty())
+        {
+            tabSelected = true;
+            if (_activeTabIndex == _tabEntries.size() - 1)
+                lastTabSelected = true;
+            else
+                lastTabName = _tabEntries[_activeTabIndex].GetSceneryGroupEntry()->name;
+        }
+
+        WindowSceneryResetSelectedSceneryItems();
         _tabEntries.clear();
 
         for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - 1; scenerySetIndex++)
@@ -752,6 +808,9 @@ public:
                 tabInfo.SceneryGroupIndex = scenerySetIndex;
                 for (const auto& sceneryEntry : sceneryGroupEntry->SceneryEntries)
                 {
+                    if (!FilterString(sceneryEntry))
+                        continue;
+
                     if (IsSceneryAvailableToBuild(sceneryEntry))
                     {
                         tabInfo.Entries.push_back(sceneryEntry);
@@ -817,6 +876,24 @@ public:
             }
         }
 
+        if (tabSelected)
+        {
+            if (lastTabSelected && _tabEntries.back().Entries.size() == 0)
+                _activeTabIndex = _tabEntries.size() - 1;
+            else if (!lastTabSelected)
+            {
+                for (int index = 0; index < _tabEntries.size() - 1; index++)
+                {
+                    auto tabEntry = _tabEntries[index];
+                    if (tabEntry.GetSceneryGroupEntry()->name == lastTabName)
+                    {
+                        _activeTabIndex = index;
+                        break;
+                    }
+                }
+            }
+        }
+
         // Remove misc tab if empty
         if (_tabEntries.back().Entries.size() == 0)
         {
@@ -827,6 +904,11 @@ public:
         _requiredWidth = static_cast<int32_t>(_tabEntries.size()) * TabWidth + 5;
 
         SortTabs();
+    }
+
+    void Init()
+    {
+        RefreshSceneryTabs();
         PrepareWidgets();
         window_invalidate_by_class(WindowClass::Scenery);
     }
@@ -969,6 +1051,9 @@ private:
     {
         Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, OBJECT_ENTRY_INDEX_NULL);
 
+        if (!FilterString(selection))
+            return;
+
         if (IsSceneryAvailableToBuild(selection))
         {
             // Get current tab
@@ -995,6 +1080,17 @@ private:
                 }
             }
         }
+    }
+
+    bool FilterString(const ScenerySelection& selection)
+    {
+        auto filter = std::string_view(_filter_string);
+
+        if (filter.empty())
+            return true;
+
+        auto [name, _] = GetNameAndPrice(selection);
+        return String::Contains(std::string_view(language_get_string(name)), filter, true);
     }
 
     void SortTabs()
@@ -1305,6 +1401,7 @@ private:
         {
             const auto& currentSceneryGlobal = tabInfo.Entries[sceneryTabItemIndex];
             const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
+
             if (gWindowSceneryPaintEnabled == 1 || gWindowSceneryEyedropperEnabled)
             {
                 if (_selectedScenery == currentSceneryGlobal)
