@@ -29,6 +29,7 @@ struct PaintStructDescriptor
     enum class PaintType
     {
         AddImageAsParent,
+        AddImageAsChild,
         SetSegmentsSupportsHeight,
     };
     enum class Scheme

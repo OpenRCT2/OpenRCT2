@@ -154,7 +154,7 @@ void PaintStructDescriptor::Paint(
     if (PaintType.has_value())
     {
         auto type = PaintType.value();
-        if (type == PaintType::AddImageAsParent)
+        if (type == PaintType::AddImageAsParent || type == PaintType::AddImageAsChild)
         {
             colour_t primaryColour = 0;
             colour_t secondaryColour = 0;
@@ -224,7 +224,11 @@ void PaintStructDescriptor::Paint(
             auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
             auto newBoundBox = BoundBox;
             newBoundBox.offset.z += height;
-            PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+
+            if (type == PaintType::AddImageAsParent)
+                PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+            else if (type == PaintType::AddImageAsChild)
+                PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
         }
         else if (type == PaintType::SetSegmentsSupportsHeight)
         {
