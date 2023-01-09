@@ -229,6 +229,34 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 }
             }
 
+            if (paintStruct.contains("vehicleIndex"))
+            {
+                auto vehicleIndex = paintStruct["vehicleIndex"];
+                if (vehicleIndex.is_number())
+                    paint.VehicleIndex = vehicleIndex;
+            }
+
+            if (paintStruct.contains("vehicleSpriteDirection"))
+            {
+                auto vehicleSpriteDirection = paintStruct["vehicleSpriteDirection"];
+                if (vehicleSpriteDirection.is_number())
+                    paint.VehicleSpriteDirection = vehicleSpriteDirection;
+            }
+
+            if (paintStruct.contains("vehiclePitch"))
+            {
+                auto vehiclePitch = paintStruct["vehiclePitch"];
+                if (vehiclePitch.is_number())
+                    paint.VehiclePitch = vehiclePitch;
+            }
+
+            if (paintStruct.contains("vehicleNumPeeps"))
+            {
+                auto vehicleNumPeeps = paintStruct["vehicleNumPeeps"];
+                if (vehicleNumPeeps.is_number())
+                    paint.VehicleNumPeeps = vehicleNumPeeps;
+            }
+
             if (paintStruct.contains("paintType"))
             {
                 auto paintType = paintStruct["paintType"];
@@ -249,6 +277,48 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     if (imageIdBase == "car0")
                         paint.ImageIdBase = PaintStructDescriptor::ImageIdBase::Car0;
                 }
+            }
+
+            if (paintStruct.contains("primaryColour"))
+            {
+                auto primaryColour = paintStruct["primaryColour"];
+                if (primaryColour.is_string())
+                {
+                    if (primaryColour == "vehicleBody")
+                        paint.PrimaryColour = PaintStructDescriptor::Colour::VehicleBody;
+                    else if (primaryColour == "vehicleTrim")
+                        paint.PrimaryColour = PaintStructDescriptor::Colour::VehicleTrim;
+                    else if (primaryColour == "peepTShirt")
+                        paint.PrimaryColour = PaintStructDescriptor::Colour::PeepTShirt;
+                }
+            }
+
+            if (paintStruct.contains("secondaryColour"))
+            {
+                auto secondaryColour = paintStruct["secondaryColour"];
+                if (secondaryColour.is_string())
+                {
+                    if (secondaryColour == "vehicleBody")
+                        paint.SecondaryColour = PaintStructDescriptor::Colour::VehicleBody;
+                    else if (secondaryColour == "vehicleTrim")
+                        paint.SecondaryColour = PaintStructDescriptor::Colour::VehicleTrim;
+                    else if (secondaryColour == "peepTShirt")
+                        paint.SecondaryColour = PaintStructDescriptor::Colour::PeepTShirt;
+                }
+            }
+
+            if (paintStruct.contains("primaryColourIndex"))
+            {
+                auto primaryColourIndex = paintStruct["primaryColourIndex"];
+                if (primaryColourIndex.is_number())
+                    paint.PrimaryColourIndex = primaryColourIndex;
+            }
+
+            if (paintStruct.contains("secondaryColourIndex"))
+            {
+                auto secondaryColourIndex = paintStruct["secondaryColourIndex"];
+                if (secondaryColourIndex.is_number())
+                    paint.SecondaryColourIndex = secondaryColourIndex;
             }
 
             if (paintStruct.contains("imageIdOffset"))
@@ -359,12 +429,8 @@ void PaintObject::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement) const
 {
-    // iterate through the paint structs
     for (const auto& paintStruct : _paintStructs)
-    {
-        if (paintStruct.MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence))
-            paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
-    }
+        paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
 }
 
 void PaintObject::LoadPaintObjects()

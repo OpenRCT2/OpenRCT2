@@ -1,11 +1,22 @@
 #include "PaintStructDescriptor.h"
 
+#include "../core/Json.hpp"
+#include "../entity/EntityRegistry.h"
 #include "../paint/Supports.h"
 #include "../ride/Ride.h"
-#include "../core/Json.hpp"
+#include "../ride/Vehicle.h"
+
+PaintStructDescriptor::PaintStructDescriptor()
+    : PrimaryColour(Colour::VehicleBody)
+    , PrimaryColourIndex(0)
+    , SecondaryColour(Colour::VehicleTrim)
+    , SecondaryColourIndex(0)
+{
+}
 
 // helper method to check for the keys
-bool PaintStructDescriptor::MatchWithKeys(track_type_t trackElement, uint32_t direction, uint32_t trackSequence) const
+bool PaintStructDescriptor::MatchWithKeys(
+    track_type_t trackElement, uint32_t direction, uint32_t trackSequence, const Vehicle* vehicle) const
 {
     // when the field is not set, it is intended as a wild card
     if (Element != trackElement)
@@ -30,6 +41,27 @@ bool PaintStructDescriptor::MatchWithKeys(track_type_t trackElement, uint32_t di
         else if (TrackSequence != trackSequence)
             return false;
     }
+
+    if (vehicle != nullptr)
+    {
+        if (VehicleSpriteDirection.has_value())
+        {
+            if (vehicle->sprite_direction != VehicleSpriteDirection.value())
+                return false;
+        }
+
+        if (VehiclePitch.has_value())
+        {
+            if (vehicle->Pitch != VehiclePitch.value())
+                return false;
+        }
+
+        if (VehicleNumPeeps.has_value())
+        {
+            if (vehicle->num_peeps != VehicleNumPeeps.value())
+                return false;
+        }
+    }
     return true;
 }
 
@@ -37,6 +69,22 @@ void PaintStructDescriptor::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement) const
 {
+    // first, check if the paint struct key matches with the call
+    Vehicle* vehicle = nullptr;
+    if (VehicleIndex.has_value())
+    {
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+        {
+            vehicle = GetEntity<Vehicle>(ride.vehicles[VehicleIndex.value()]);
+
+            session.InteractionType = ViewportInteractionItem::Entity;
+            session.CurrentlyDrawnEntity = vehicle;
+        }
+    }
+
+    if (!MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle))
+        return;
+
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
         return;
@@ -108,21 +156,59 @@ void PaintStructDescriptor::Paint(
         auto type = PaintType.value();
         if (type == PaintType::AddImageAsParent)
         {
-            ImageId imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-            ImageId imageFlags;
-            switch (ImageIdScheme)
+            colour_t primaryColour = 0;
+            colour_t secondaryColour = 0;
+
+            switch (PrimaryColour)
             {
-                case Scheme::Track:
-                    imageFlags = session.TrackColours[SCHEME_TRACK];
+                case Colour::VehicleBody:
+                    primaryColour = ride.vehicle_colours[PrimaryColourIndex].Body;
                     break;
-                default:
-                case Scheme::Misc:
-                    imageFlags = session.TrackColours[SCHEME_MISC];
+                case Colour::VehicleTrim:
+                    primaryColour = ride.vehicle_colours[PrimaryColourIndex].Trim;
+                    break;
+                case Colour::PeepTShirt:
+                    if (vehicle != nullptr)
+                    {
+                        primaryColour = vehicle->peep_tshirt_colours[PrimaryColourIndex];
+                    }
                     break;
             }
-            if (imageFlags != TrackGhost)
+
+            switch (SecondaryColour)
             {
-                imageTemplate = imageFlags;
+                case Colour::VehicleBody:
+                    secondaryColour = ride.vehicle_colours[SecondaryColourIndex].Body;
+                    break;
+                case Colour::VehicleTrim:
+                    secondaryColour = ride.vehicle_colours[SecondaryColourIndex].Trim;
+                    break;
+                case Colour::PeepTShirt:
+                    if (vehicle != nullptr)
+                    {
+                        secondaryColour = vehicle->peep_tshirt_colours[SecondaryColourIndex];
+                    }
+                    break;
+            }
+            ImageId imageTemplate = ImageId(0, primaryColour, secondaryColour);
+
+            if (ImageIdScheme.has_value())
+            {
+                ImageId imageFlags;
+                switch (ImageIdScheme.value())
+                {
+                    case Scheme::Track:
+                        imageFlags = session.TrackColours[SCHEME_TRACK];
+                        break;
+                    default:
+                    case Scheme::Misc:
+                        imageFlags = session.TrackColours[SCHEME_MISC];
+                        break;
+                }
+                if (imageFlags != TrackGhost)
+                {
+                    imageTemplate = imageFlags;
+                }
             }
 
             uint32_t imageIndex = 0;
@@ -176,7 +262,7 @@ void PaintStructDescriptor::ToJson(json_t& json) const
 
     if (TrackSequenceMapping.has_value())
     {
-        //just store the id
+        // just store the id
         json["trackSequenceMapping"] = TrackSequenceMapping.value().Id;
     }
 
