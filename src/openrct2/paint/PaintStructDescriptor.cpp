@@ -15,7 +15,7 @@ PaintStructDescriptor::PaintStructDescriptor()
 }
 
 // helper method to check for the keys
-bool PaintStructDescriptor::MatchWithKeys(
+bool PaintStructDescriptorKey::MatchWithKeys(
     track_type_t trackElement, uint32_t direction, uint32_t trackSequence, const Vehicle* vehicle) const
 {
     // when the field is not set, it is intended as a wild card
@@ -71,18 +71,18 @@ void PaintStructDescriptor::Paint(
 {
     // first, check if the paint struct key matches with the call
     Vehicle* vehicle = nullptr;
-    if (VehicleIndex.has_value())
+    if (Key.VehicleIndex.has_value())
     {
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
         {
-            vehicle = GetEntity<Vehicle>(ride.vehicles[VehicleIndex.value()]);
+            vehicle = GetEntity<Vehicle>(ride.vehicles[Key.VehicleIndex.value()]);
 
             session.InteractionType = ViewportInteractionItem::Entity;
             session.CurrentlyDrawnEntity = vehicle;
         }
     }
 
-    if (!MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle))
+    if (!Key.MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle))
         return;
 
     auto rideEntry = ride.GetRideEntry();
@@ -101,9 +101,9 @@ void PaintStructDescriptor::Paint(
     }
 
     // transform the track sequence with the track mapping if there is one
-    if (TrackSequenceMapping.has_value())
+    if (Key.TrackSequenceMapping.has_value())
     {
-        const auto& sequenceMapping = TrackSequenceMapping.value().Values;
+        const auto& sequenceMapping = Key.TrackSequenceMapping.value().Values;
         const auto& mapping = sequenceMapping[direction];
         if (trackSequence < mapping.size())
             trackSequence = mapping[trackSequence];
@@ -247,27 +247,27 @@ void PaintStructDescriptor::Paint(
 
 void PaintStructDescriptor::ToJson(json_t& json) const
 {
-    switch (Element)
+    switch (Key.Element)
     {
         case TrackElemType::FlatTrack3x3:
             json["trackElement"] = "flat_track_3x3";
             break;
     }
 
-    if (Direction.has_value())
+    if (Key.Direction.has_value())
     {
-        json["direction"] = Direction.value();
+        json["direction"] = Key.Direction.value();
     }
 
-    if (TrackSequence.has_value())
+    if (Key.TrackSequence.has_value())
     {
-        json["trackSequence"] = TrackSequence.value();
+        json["trackSequence"] = Key.TrackSequence.value();
     }
 
-    if (TrackSequenceMapping.has_value())
+    if (Key.TrackSequenceMapping.has_value())
     {
         // just store the id
-        json["trackSequenceMapping"] = TrackSequenceMapping.value().Id;
+        json["trackSequenceMapping"] = Key.TrackSequenceMapping.value().Id;
     }
 
     if (Supports.has_value())

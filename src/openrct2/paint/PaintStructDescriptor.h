@@ -7,6 +7,28 @@
 #include <vector>
 
 struct Vehicle;
+
+struct PaintStructSequenceMapping
+{
+    std::string Id;
+    std::array<std::vector<uint32_t>, 4> Values;
+};
+
+struct PaintStructDescriptorKey
+{
+    track_type_t Element;
+    std::optional<uint32_t> Direction;
+    std::optional<uint32_t> TrackSequence;
+    std::optional<PaintStructSequenceMapping> TrackSequenceMapping;
+    std::optional<uint32_t> VehicleIndex;
+    std::optional<uint32_t> VehicleSpriteDirection;
+    std::optional<uint32_t> VehiclePitch;
+    std::optional<uint32_t> VehicleNumPeeps;
+
+    // helper method to check for the keys
+    bool MatchWithKeys(track_type_t trackElement, uint32_t direction, uint32_t trackSequence, const Vehicle* vehicle) const;
+};
+
 struct PaintStructDescriptor
 {
     using PaintStructEdgesTable = std::vector<edge_t>;
@@ -45,12 +67,6 @@ struct PaintStructDescriptor
         std::map<uint8_t, uint32_t> Segments;
     };
 
-    struct PaintStructSequenceMapping
-    {
-        std::string Id;
-        std::array<std::vector<uint32_t>, 4> Values;
-    };
-
     enum class Colour
     {
         VehicleBody,
@@ -59,14 +75,7 @@ struct PaintStructDescriptor
     };
 
     // key fields
-    track_type_t Element;
-    std::optional<uint32_t> Direction;
-    std::optional<uint32_t> TrackSequence;
-    std::optional<PaintStructSequenceMapping> TrackSequenceMapping;
-    std::optional<uint32_t> VehicleIndex;
-    std::optional<uint32_t> VehicleSpriteDirection;
-    std::optional<uint32_t> VehiclePitch;
-    std::optional<uint32_t> VehicleNumPeeps;
+    PaintStructDescriptorKey Key;
 
     // output fields
     std::optional<SupportsType> Supports;
@@ -84,10 +93,6 @@ struct PaintStructDescriptor
     CoordsXYZ Offset;
     BoundBoxXYZ BoundBox;
     HeightSupportsTable HeightSupports;
-
-    // helper method to check for the keys
-    bool MatchWithKeys(
-        track_type_t trackElement, uint32_t direction, uint32_t trackSequence, const Vehicle* vehicle) const;
 
     void Paint(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
