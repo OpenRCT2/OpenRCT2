@@ -3650,6 +3650,9 @@ STR_6535    :{WINDOW_COLOUR_2}Factor de nàusea: {BLACK}-{COMMA16} %
 STR_6536    :Aquest parc es va desar en una versió posterior de l’OpenRCT2. Es va desar amb la versió v{INT32} i ara mateix esteu fent servir la v{INT32}.
 STR_6537    :Permet fer servir els camins normals per a fer cues
 STR_6538    :Mostra els camins normals al menú desplegable de les cues de la finestra de construcció corresponent.
+STR_6539    :Fre tancat
+STR_6540    :{WINDOW_COLOUR_2}Donem les gràcies a les companyies següents per permetre fer servir les seves imatges:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
 
 #############
 # Scenarios #

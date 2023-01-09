@@ -3640,6 +3640,9 @@ STR_6535    :{WINDOW_COLOUR_2}Misselijkheidsfactor: {BLACK}-{COMMA16}%
 STR_6536    :Dit park is opgeslagen in een latere versie van OpenRCT2. Het park is opgeslagen in v{INT32}, je huidige versie is v{INT32}.
 STR_6537    :Gewone paden als wachtrij bruikbaar maken
 STR_6538    :Zorgt ervoor dat je wachtrijen kunt bouwen met paden die daar niet voor bedoeld zijn.
+STR_6539    :Rem is gesloten
+STR_6540    :{WINDOW_COLOUR_2}Onze dank gaat uit naar de volgende bedrijven voor hun toestemming om voertuigen op hun ontwerpen te baseren:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
 
 #############
 # Scenarios #
