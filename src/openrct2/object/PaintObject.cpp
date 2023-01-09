@@ -21,6 +21,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         std::map<std::string, PaintStructSequenceMapping> paintMapping;
         std::map<std::string, PaintStructDescriptor::PaintStructEdgesTable> edgesMapping;
         std::map<std::string, PaintStructDescriptor::HeightSupportsTable> heightMapping;
+        std::map<std::string, ImageIdOffset> imageIdOffsetMapping;
 
         if (root.contains("trackSequenceTables"))
         {
@@ -138,6 +139,32 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     }
                     heightMapping[table.Id] = table;
                 }
+            }
+        }
+
+        auto imageIdOffsets = root["imageIdOffsets"];
+        if (imageIdOffsets.is_array())
+        {
+            for (const auto& imageIdOffset : imageIdOffsets)
+            {
+                ImageIdOffset offset;
+                offset.Id = imageIdOffset["id"];
+
+                const auto& entries = imageIdOffset["entries"];
+                if (entries.is_array())
+                {
+                    for (const auto& entry: entries)
+                    {
+                        PaintStructDescriptorKey key;
+                        if (entry.contains("direction"))
+                        {
+                            key.Direction = entry["direction"];
+                        }
+                        auto keyVal = std::tuple<PaintStructDescriptorKey, uint32_t>(key, entry["imageIdOffset"]);
+                        offset.Entries.push_back(keyVal);
+                    }
+                }
+                imageIdOffsetMapping[offset.Id] = offset;
             }
         }
 
@@ -319,9 +346,9 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 if (paintStruct.contains("imageIdOffset"))
                 {
                     auto imageIdOffset = paintStruct["imageIdOffset"];
-                    if (imageIdOffset.is_number())
+                    if (imageIdOffset.is_string())
                     {
-                        paint.ImageIdOffset = imageIdOffset;
+                        paint.ImageIdOffset = imageIdOffsetMapping[imageIdOffset];
                     }
                 }
 

@@ -4,6 +4,7 @@
 
 #include <array>
 #include <optional>
+#include <tuple>
 #include <vector>
 
 struct Vehicle;
@@ -27,6 +28,12 @@ struct PaintStructDescriptorKey
 
     // helper method to check for the keys
     bool MatchWithKeys(track_type_t trackElement, uint32_t direction, uint32_t trackSequence, const Vehicle* vehicle) const;
+};
+
+struct ImageIdOffset
+{
+    std::string Id;
+    std::vector<std::tuple<PaintStructDescriptorKey, uint32_t>> Entries;
 };
 
 struct PaintStructDescriptor
@@ -89,7 +96,7 @@ struct PaintStructDescriptor
     uint32_t PrimaryColourIndex;
     Colour SecondaryColour;
     uint32_t SecondaryColourIndex;
-    uint32_t ImageIdOffset;
+    ImageIdOffset ImageIdOffset;
     CoordsXYZ Offset;
     BoundBoxXYZ BoundBox;
     HeightSupportsTable HeightSupports;

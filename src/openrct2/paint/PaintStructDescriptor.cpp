@@ -219,7 +219,15 @@ void PaintStructDescriptor::Paint(
                     imageIndex = rideEntry->Cars[0].base_image_id;
                     break;
             }
-            imageIndex = imageIndex + ImageIdOffset;
+
+            const auto it = std::find_if(ImageIdOffset.Entries.begin(), ImageIdOffset.Entries.end(), [&](const auto& tuple) {
+                return std::get<0>(tuple).MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle);
+            });
+            if (it != ImageIdOffset.Entries.end())
+            {
+                const auto& tuple = *it;
+                imageIndex = imageIndex + std::get<1>(tuple);
+            }
 
             auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
             auto newBoundBox = BoundBox;
