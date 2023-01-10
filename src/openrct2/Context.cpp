@@ -559,16 +559,19 @@ namespace OpenRCT2
         {
             log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
 
-            // Register the file for crash upload if it asserts while loading.
-            crash_register_additional_file("load_park", path);
-            // Deregister park file in case it was processed without hitting an assert.
-            struct foo
+            struct CrashAdditionalFileRegistration
             {
-                ~foo()
+                CrashAdditionalFileRegistration(const std::string& path)
                 {
+                    // Register the file for crash upload if it asserts while loading.
+                    crash_register_additional_file("load_park", path);
+                }
+                ~CrashAdditionalFileRegistration()
+                {
+                    // Deregister park file in case it was processed without hitting an assert.
                     crash_unregister_additional_file("load_park");
                 }
-            } f;
+            } crash_additional_file_registration(path);
 
             try
             {
