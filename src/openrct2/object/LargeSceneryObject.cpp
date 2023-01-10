@@ -26,7 +26,7 @@
 
 static rct_large_scenery_text ReadLegacy3DFont(OpenRCT2::IStream& stream)
 {
-    rct_large_scenery_text _3dFontLegacy = {0};
+    rct_large_scenery_text _3dFontLegacy = { 0 };
     _3dFontLegacy.offset[0].x = stream.ReadValue<int16_t>();
     _3dFontLegacy.offset[0].y = stream.ReadValue<int16_t>();
     _3dFontLegacy.offset[1].x = stream.ReadValue<int16_t>();
@@ -45,7 +45,7 @@ static rct_large_scenery_text ReadLegacy3DFont(OpenRCT2::IStream& stream)
         return glyph;
     };
 
-    for (auto i = 0; i < std::size(_3dFontLegacy.glyphs); ++i)
+    for (size_t i = 0; i < std::size(_3dFontLegacy.glyphs); ++i)
     {
         _3dFontLegacy.glyphs[i] = ReadLegacyTextGlyph();
     }
