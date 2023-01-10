@@ -4214,7 +4214,7 @@ void Ride::SetNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-RideNaming get_ride_naming(const ride_type_t rideType, rct_ride_entry* rideEntry)
+RideNaming get_ride_naming(const ride_type_t rideType, const rct_ride_entry* rideEntry)
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {

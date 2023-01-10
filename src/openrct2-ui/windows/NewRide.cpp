@@ -27,6 +27,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/ride/RideData.h>
@@ -45,6 +46,7 @@ static constexpr const int32_t WindowWidth = 601;
 static constexpr const int32_t RideListItemsMax = 384;
 static constexpr const int32_t RideTabCount = 6;
 static constexpr const int32_t GroupByTrackTypeWidth = 172;
+static std::string _filter;
 
 #pragma region Ride type view order
 
@@ -193,6 +195,8 @@ enum
     WIDX_LAST_DEVELOPMENT_BUTTON,
     WIDX_RESEARCH_FUNDING_BUTTON,
 
+    WIDX_FILTER_TEXT_BOX,
+    WIDX_FILTER_CLEAR_BUTTON,
     WIDX_GROUP_BY_TRACK_TYPE,
 };
 
@@ -215,6 +219,8 @@ static Widget window_new_ride_widgets[] = {
     MakeWidget({  3, 124},             {290,  65},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                          ),
     MakeWidget({265, 161},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP),
     MakeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  ImageId(SPR_FINANCE),                     STR_FINANCES_RESEARCH_TIP    ),
+    MakeWidget({  4,  46},             {211, 14},          WindowWidgetType::TextBox,  WindowColour::Secondary                          ),
+    MakeWidget({218,  46},             { 70, 14},          WindowWidgetType::Button,   WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
     MakeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,         STR_GROUP_BY_TRACK_TYPE_TIP  ),
     WIDGETS_END,
 };
@@ -286,6 +292,10 @@ public:
         PopulateRideList();
         InitScrollWidgets();
 
+        _filter.resize(MAX_PATH);
+        widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
+        _filter.clear();
+
         frame_no = 0;
         new_ride.SelectedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
         _lastTrackDesignCountRideType.Type = RIDE_TYPE_NULL;
@@ -308,6 +318,12 @@ public:
             frame_no = 0;
 
         widget_invalidate(*this, WIDX_TAB_1 + _currentTab);
+
+        if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+        {
+            window_update_textbox_caret();
+            widget_invalidate(*this, WIDX_FILTER_TEXT_BOX);
+        }
 
         if (new_ride.SelectedRide.Type != RIDE_TYPE_NULL && new_ride.selected_ride_countdown-- == 0)
         {
@@ -346,6 +362,14 @@ public:
                 gConfigInterface.ListRideVehiclesSeparately = !gConfigInterface.ListRideVehiclesSeparately;
                 ConfigSaveDefault();
                 SetPage(_currentTab);
+                break;
+            case WIDX_FILTER_TEXT_BOX:
+                window_start_textbox(*this, widgetIndex, STR_STRING, _filter.data(), MAX_PATH);
+                break;
+            case WIDX_FILTER_CLEAR_BUTTON:
+                _filter.clear();
+                scrolls->v_top = 0;
+                Invalidate();
                 break;
         }
     }
@@ -486,6 +510,20 @@ public:
             // Next item
             listItem++;
         }
+    }
+
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+    {
+        if (widgetIndex != WIDX_FILTER_TEXT_BOX)
+            return;
+
+        if (text == _filter)
+            return;
+
+        _filter.assign(text);
+
+        scrolls->v_top = 0;
+        Invalidate();
     }
 
     void SetPage(int tab)
@@ -653,6 +691,11 @@ private:
                 continue;
             }
 
+            if (!IsFiltered(*rideEntry))
+            {
+                continue;
+            }
+
             highestVehiclePriority = rideEntry->BuildMenuPriority;
 
             // Determines how and where to draw a button for this ride type/vehicle.
@@ -698,6 +741,55 @@ private:
         return nextListItem;
     }
 
+    bool IsFiltered(const rct_ride_entry& rideEntry)
+    {
+        if (_filter.empty())
+            return true;
+
+        return IsFilterInRideType(rideEntry) || IsFilterInRideName(rideEntry) || IsFilterInIdentifier(rideEntry)
+            || IsFilterInAuthors(rideEntry) || IsFilterInFilename(rideEntry);
+    }
+
+    bool IsFilterInRideType(const rct_ride_entry& rideEntry)
+    {
+        auto rideTypeName = get_ride_naming(rideEntry.ride_type[0], &rideEntry).Name;
+        return String::Contains(std::string_view(language_get_string(rideTypeName)), _filter, true);
+    }
+
+    bool IsFilterInRideName(const rct_ride_entry& rideEntry)
+    {
+        auto rideName = rideEntry.naming.Name;
+        return String::Contains(std::string_view(language_get_string(rideName)), _filter, true);
+    }
+
+    bool IsFilterInAuthors(const rct_ride_entry& rideEntry)
+    {
+        auto rideObject = static_cast<RideObject*>(rideEntry.obj);
+        auto authors = rideObject->GetAuthors();
+
+        for (auto author : authors)
+            if (String::Contains(author, _filter, true))
+                return true;
+
+        return false;
+    }
+
+    bool IsFilterInIdentifier(const rct_ride_entry& rideEntry)
+    {
+        auto rideObject = static_cast<RideObject*>(rideEntry.obj);
+        auto objectName = rideObject->GetObjectEntry().GetName();
+
+        return String::Contains(objectName, _filter, true);
+    }
+
+    bool IsFilterInFilename(const rct_ride_entry& rideEntry)
+    {
+        auto rideObject = static_cast<RideObject*>(rideEntry.obj);
+        auto repoItem = object_repository_find_object_by_entry(&(rideObject->GetObjectEntry()));
+
+        return String::Contains(repoItem->Path, _filter, true);
+    }
+
     void SetPressedTab()
     {
         int32_t i{};
@@ -735,6 +827,8 @@ private:
         if (_currentTab != RESEARCH_TAB)
         {
             widgets[WIDX_RIDE_LIST].type = WindowWidgetType::Scroll;
+            widgets[WIDX_FILTER_TEXT_BOX].type = WindowWidgetType::TextBox;
+            widgets[WIDX_FILTER_CLEAR_BUTTON].type = WindowWidgetType::Button;
             widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Empty;
             widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Empty;
             widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
@@ -746,6 +840,8 @@ private:
         else
         {
             widgets[WIDX_RIDE_LIST].type = WindowWidgetType::Empty;
+            widgets[WIDX_FILTER_TEXT_BOX].type = WindowWidgetType::Empty;
+            widgets[WIDX_FILTER_CLEAR_BUTTON].type = WindowWidgetType::Empty;
             widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
             widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
             widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
