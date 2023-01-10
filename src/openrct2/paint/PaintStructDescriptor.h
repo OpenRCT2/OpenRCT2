@@ -198,9 +198,9 @@ struct ImageIdOffset
     PaintStructContainer<std::vector<uint32_t>> Entries;
 };
 
+using PaintStructEdgesTable = std::vector<edge_t>;
 struct PaintStructDescriptor
 {
-    using PaintStructEdgesTable = std::vector<edge_t>;
     enum class SupportsType
     {
         WoodenA
@@ -249,7 +249,7 @@ struct PaintStructDescriptor
     // output fields
     std::optional<SupportsType> Supports;
     std::optional<FloorType> Floor;
-    std::optional<PaintStructEdgesTable> Edges;
+    PaintStructEdgesTable* Edges = nullptr;
     std::optional<FenceType> Fences;
     std::optional<PaintType> PaintType;
     std::optional<Scheme> ImageIdScheme;

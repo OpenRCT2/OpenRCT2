@@ -18,7 +18,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
     try
     {
         // read the track sequence mapping tables and edges tables first
-        std::map<std::string, PaintStructDescriptor::PaintStructEdgesTable> edgesMapping;
         std::map<std::string, PaintStructDescriptor::HeightSupportsTable> heightMapping;
         std::map<std::string, ImageIdOffset> imageIdOffsetMapping;
 
@@ -62,7 +61,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             {
                 for (const auto& edgeTable : edgesTables)
                 {
-                    PaintStructDescriptor::PaintStructEdgesTable table;
+                    PaintStructEdgesTable table;
 
                     auto edges = edgeTable["edges"];
                     if (edges.is_array())
@@ -89,7 +88,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     }
 
                     auto id = edgeTable["id"];
-                    edgesMapping[id] = table;
+                    _edgeMappings[id] = table;
                 }
             }
         }
@@ -230,8 +229,10 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     auto edges = paintStruct["edges"];
                     if (edges.is_string())
                     {
-                        if (edgesMapping.find(edges) != edgesMapping.end())
-                            paint.Edges = edgesMapping[edges];
+                        if (_edgeMappings.find(edges) != _edgeMappings.end())
+                        {
+                            paint.Edges = &_edgeMappings[edges];
+                        }
                     }
                 }
 

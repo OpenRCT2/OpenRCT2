@@ -111,10 +111,10 @@ void PaintStructDescriptor::Paint(
     }
 
     uint8_t edges = 0;
-    if (Edges.has_value())
+    if (Edges != nullptr)
     {
-        if (trackSequence < Edges.value().size())
-            edges = Edges.value()[trackSequence];
+        if (trackSequence < Edges->size())
+            edges = (*Edges)[trackSequence];
     }
 
     if (Floor.has_value())

@@ -26,6 +26,7 @@ class PaintObject final : public Object
 private:
     std::vector<PaintStructDescriptor> _paintStructs;
     std::map<std::string, PaintStructSequenceMapping> _sequenceMappings;
+    std::map<std::string, PaintStructEdgesTable> _edgeMappings;
 public:
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
