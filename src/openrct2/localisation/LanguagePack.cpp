@@ -70,7 +70,8 @@ public:
         Guard::ArgumentNotNull(path);
 
         // Load file directly into memory
-        utf8* fileData = nullptr;
+        std::vector<utf8> fileData;
+
         try
         {
             OpenRCT2::FileStream fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
@@ -81,22 +82,16 @@ public:
                 throw IOException("Language file too large.");
             }
 
-            fileData = Memory::Allocate<utf8>(fileLength + 1);
-            fs.Read(fileData, fileLength);
-            fileData[fileLength] = '\0';
+            fileData.resize(fileLength);
+            fs.Read(fileData.data(), fileLength);
         }
         catch (const std::exception& ex)
         {
-            Memory::Free(fileData);
             log_error("Unable to open %s: %s", path, ex.what());
             return nullptr;
         }
 
-        // Parse the memory as text
-        auto result = FromText(id, fileData);
-
-        Memory::Free(fileData);
-        return result;
+        return FromText(id, fileData.data());
     }
 
     static std::unique_ptr<LanguagePack> FromText(uint16_t id, const utf8* text)
