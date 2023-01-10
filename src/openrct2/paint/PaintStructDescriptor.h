@@ -33,7 +33,7 @@ struct PaintStructDescriptorKey
 struct ImageIdOffset
 {
     std::string Id;
-    std::vector<std::tuple<PaintStructDescriptorKey, uint32_t>> Entries;
+    std::vector<std::tuple<PaintStructDescriptorKey, std::vector<uint32_t>>> Entries;
 };
 
 struct PaintStructDescriptor
@@ -96,7 +96,10 @@ struct PaintStructDescriptor
     uint32_t PrimaryColourIndex;
     Colour SecondaryColour;
     uint32_t SecondaryColourIndex;
+
     ImageIdOffset ImageIdOffset;
+    uint32_t ImageIdOffsetIndex;
+
     CoordsXYZ Offset;
     BoundBoxXYZ BoundBox;
     HeightSupportsTable HeightSupports;

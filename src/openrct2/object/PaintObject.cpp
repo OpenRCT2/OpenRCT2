@@ -160,7 +160,14 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         {
                             key.Direction = entry["direction"];
                         }
-                        auto keyVal = std::tuple<PaintStructDescriptorKey, uint32_t>(key, entry["imageIdOffset"]);
+
+                        const auto& table = entry["imageIdOffset"];
+                        std::vector<uint32_t> imageIds;
+
+                        for (const auto& elem : table)
+                            imageIds.push_back(elem);
+
+                        auto keyVal = std::tuple<PaintStructDescriptorKey, std::vector<uint32_t>>(key, imageIds);
                         offset.Entries.push_back(keyVal);
                     }
                 }
@@ -350,6 +357,13 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     {
                         paint.ImageIdOffset = imageIdOffsetMapping[imageIdOffset];
                     }
+                }
+
+                if (paintStruct.contains("imageIdOffsetIndex"))
+                {
+                    auto imageIdOffsetIndex = paintStruct["imageIdOffsetIndex"];
+                    if (imageIdOffsetIndex.is_number())
+                        paint.ImageIdOffsetIndex = imageIdOffsetIndex;
                 }
 
                 if (paintStruct.contains("imageIdScheme"))

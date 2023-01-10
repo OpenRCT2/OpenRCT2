@@ -11,6 +11,7 @@ PaintStructDescriptor::PaintStructDescriptor()
     , PrimaryColourIndex(0)
     , SecondaryColour(Colour::VehicleTrim)
     , SecondaryColourIndex(0)
+    , ImageIdOffsetIndex(0)
 {
 }
 
@@ -226,7 +227,7 @@ void PaintStructDescriptor::Paint(
             if (it != ImageIdOffset.Entries.end())
             {
                 const auto& tuple = *it;
-                imageIndex = imageIndex + std::get<1>(tuple);
+                imageIndex = imageIndex + std::get<1>(tuple).at(ImageIdOffsetIndex);
             }
 
             auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
