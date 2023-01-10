@@ -160,6 +160,22 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         {
                             key.Direction = entry["direction"];
                         }
+                        if (entry.contains("trackElement"))
+                        {
+                            key.Element = entry["trackElement"];
+                        }
+                        if (entry.contains("vehicleSpriteDirection"))
+                        {
+                            key.VehicleSpriteDirection = entry["vehicleSpriteDirection"];
+                        }
+                        if (entry.contains("vehiclePitch"))
+                        {
+                            key.VehiclePitch = entry["vehiclePitch"];
+                        }
+                        if (entry.contains("vehicleNumPeeps"))
+                        {
+                            key.VehicleNumPeeps = entry["vehicleNumPeeps"];
+                        }
 
                         const auto& table = entry["imageIdOffset"];
                         std::vector<uint32_t> imageIds;
@@ -168,7 +184,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                             imageIds.push_back(elem);
 
                         auto keyVal = std::tuple<PaintStructDescriptorKey, std::vector<uint32_t>>(key, imageIds);
-                        offset.Entries.push_back(keyVal);
+                        offset.Entries.Add(key, imageIds);
                     }
                 }
                 imageIdOffsetMapping[offset.Id] = offset;
@@ -491,7 +507,9 @@ void PaintObject::LoadPaintObjects()
                 if (repoItem->LoadedObject == nullptr)
                 {
                     repoManager.RegisterLoadedObject(repoItem, std::move(test));
-                    repoItem->LoadedObject->Load();
+
+                    if (repoItem->LoadedObject != nullptr)
+                        repoItem->LoadedObject->Load();
                 }
             }
         }
