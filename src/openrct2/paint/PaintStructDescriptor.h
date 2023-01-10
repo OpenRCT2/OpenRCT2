@@ -198,6 +198,13 @@ struct ImageIdOffset
     PaintStructContainer<std::vector<uint32_t>> Entries;
 };
 
+struct HeightSupportsTable
+{
+    std::string Id;
+    uint32_t HeightOffset;
+    std::map<uint8_t, uint32_t> Segments;
+};
+
 using PaintStructEdgesTable = std::vector<edge_t>;
 struct PaintStructDescriptor
 {
@@ -229,13 +236,6 @@ struct PaintStructDescriptor
         Track
     };
 
-    struct HeightSupportsTable
-    {
-        std::string Id;
-        uint32_t HeightOffset;
-        std::map<uint8_t, uint32_t> Segments;
-    };
-
     enum class Colour
     {
         VehicleBody,
@@ -264,7 +264,7 @@ struct PaintStructDescriptor
 
     CoordsXYZ Offset;
     BoundBoxXYZ BoundBox;
-    HeightSupportsTable HeightSupports;
+    HeightSupportsTable* HeightSupports;
 
     void Paint(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,

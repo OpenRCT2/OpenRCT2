@@ -235,14 +235,17 @@ void PaintStructDescriptor::Paint(
         else if (type == PaintType::SetSegmentsSupportsHeight)
         {
             uint32_t segments = 0;
-            if (HeightSupports.Segments.find(trackSequence) != HeightSupports.Segments.end())
+            if (HeightSupports != nullptr)
             {
-                segments = HeightSupports.Segments.at(trackSequence);
+                if (HeightSupports->Segments.find(trackSequence) != HeightSupports->Segments.end())
+                {
+                    segments = HeightSupports->Segments.at(trackSequence);
+                }
             }
 
             PaintUtilSetSegmentSupportHeight(session, segments, height + 2, 0x20);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~segments, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + HeightSupports.HeightOffset, 0x20);
+            PaintUtilSetGeneralSupportHeight(session, height + HeightSupports->HeightOffset, 0x20);
         }
     }
 }

@@ -18,7 +18,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
     try
     {
         // read the track sequence mapping tables and edges tables first
-        std::map<std::string, PaintStructDescriptor::HeightSupportsTable> heightMapping;
         std::map<std::string, ImageIdOffset> imageIdOffsetMapping;
 
         if (root.contains("trackSequenceTables"))
@@ -100,7 +99,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             {
                 for (const auto& heightTable : heightTables)
                 {
-                    PaintStructDescriptor::HeightSupportsTable table;
+                    HeightSupportsTable table;
                     table.Id = heightTable["id"];
                     table.HeightOffset = heightTable["heightOffset"];
 
@@ -135,7 +134,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 
                         table.Segments[trackSequence] = edge;
                     }
-                    heightMapping[table.Id] = table;
+                    _heightMapping[table.Id] = table;
                 }
             }
         }
@@ -460,9 +459,9 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 if (paintStruct.contains("supportsHeightId"))
                 {
                     const auto& id = paintStruct["supportsHeightId"];
-                    if (heightMapping.find(id) != heightMapping.end())
+                    if (_heightMapping.find(id) != _heightMapping.end())
                     {
-                        paint.HeightSupports = heightMapping[id];
+                        paint.HeightSupports = &_heightMapping[id];
                     }
                 }
 
