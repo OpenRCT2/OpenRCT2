@@ -26,19 +26,18 @@ bool PaintStructDescriptorKey::MatchWithKeys(
     if (Direction != direction)
         return false;
 
-    if (TrackSequence.has_value())
+
+    // check if we need to transform the track sequence with the mapping
+    if (TrackSequenceMapping != nullptr)
     {
-        // check if we need to transform the track sequence with the mapping
-        if (TrackSequenceMapping != nullptr)
-        {
-            const auto& sequenceMapping = *TrackSequenceMapping;
-            trackSequence = sequenceMapping[direction][trackSequence];
-            if (TrackSequence != trackSequence)
-                return false;
-        }
-        else if (TrackSequence != trackSequence)
+        const auto& sequenceMapping = *TrackSequenceMapping;
+        trackSequence = sequenceMapping[direction][trackSequence];
+        if (TrackSequence != trackSequence)
             return false;
     }
+    else if (TrackSequence != trackSequence)
+        return false;
+
 
     if (vehicle != nullptr)
     {
