@@ -32,9 +32,9 @@ bool PaintStructDescriptorKey::MatchWithKeys(
     if (TrackSequence.has_value())
     {
         // check if we need to transform the track sequence with the mapping
-        if (TrackSequenceMapping.has_value())
+        if (TrackSequenceMapping != nullptr)
         {
-            const auto& sequenceMapping = TrackSequenceMapping.value();
+            const auto& sequenceMapping = *TrackSequenceMapping;
             trackSequence = sequenceMapping.Values[direction][trackSequence];
             if (TrackSequence != trackSequence)
                 return false;
@@ -102,9 +102,9 @@ void PaintStructDescriptor::Paint(
     }
 
     // transform the track sequence with the track mapping if there is one
-    if (Key.TrackSequenceMapping.has_value())
+    if (Key.TrackSequenceMapping != nullptr)
     {
-        const auto& sequenceMapping = Key.TrackSequenceMapping.value().Values;
+        const auto& sequenceMapping = Key.TrackSequenceMapping->Values;
         const auto& mapping = sequenceMapping[direction];
         if (trackSequence < mapping.size())
             trackSequence = mapping[trackSequence];

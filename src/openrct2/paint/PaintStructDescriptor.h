@@ -21,7 +21,7 @@ struct PaintStructDescriptorKey
     std::optional<track_type_t> Element;
     std::optional<uint32_t> Direction;
     std::optional<uint32_t> TrackSequence;
-    std::optional<PaintStructSequenceMapping> TrackSequenceMapping;
+    PaintStructSequenceMapping* TrackSequenceMapping = nullptr;
     std::optional<uint32_t> VehicleIndex;
     std::optional<uint32_t> VehicleSpriteDirection;
     std::optional<uint32_t> VehiclePitch;

@@ -18,7 +18,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
     try
     {
         // read the track sequence mapping tables and edges tables first
-        std::map<std::string, PaintStructSequenceMapping> paintMapping;
         std::map<std::string, PaintStructDescriptor::PaintStructEdgesTable> edgesMapping;
         std::map<std::string, PaintStructDescriptor::HeightSupportsTable> heightMapping;
         std::map<std::string, ImageIdOffset> imageIdOffsetMapping;
@@ -51,7 +50,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 
                     auto id = trackSequenceTable["id"];
                     table.Id = id;
-                    paintMapping[id] = table;
+                    _sequenceMappings[id] = table;
                 }
             }
         }
@@ -162,7 +161,9 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         }
                         if (entry.contains("trackElement"))
                         {
-                            key.Element = entry["trackElement"];
+                            const auto& element = entry["trackElement"];
+                            if (element == "flat_track_3x3")
+                                key.Element = TrackElemType::FlatTrack3x3;
                         }
                         if (entry.contains("vehicleSpriteDirection"))
                         {
@@ -258,8 +259,8 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     auto trackSequenceMapping = paintStruct["trackSequenceMapping"];
                     if (trackSequenceMapping.is_string())
                     {
-                        if (paintMapping.find(trackSequenceMapping) != paintMapping.end())
-                            paint.Key.TrackSequenceMapping = paintMapping[trackSequenceMapping];
+                        if (_sequenceMappings.find(trackSequenceMapping) != _sequenceMappings.end())
+                            paint.Key.TrackSequenceMapping = &_sequenceMappings[trackSequenceMapping];
                     }
                 }
 

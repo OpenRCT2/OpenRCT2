@@ -18,12 +18,14 @@
 #include <array>
 #include <optional>
 #include <vector>
+#include <map>
 
 struct TrackElement;
 class PaintObject final : public Object
 {
 private:
     std::vector<PaintStructDescriptor> _paintStructs;
+    std::map<std::string, PaintStructSequenceMapping> _sequenceMappings;
 public:
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
