@@ -25,7 +25,7 @@ class PaintObject final : public Object
 {
 private:
     std::vector<PaintStructDescriptor> _paintStructs;
-    std::map<std::string, PaintStructSequenceMapping> _sequenceMappings;
+    std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;
     std::map<std::string, HeightSupportsTable> _heightMapping;
     std::map<std::string, ImageIdOffset> _imageIdOffsetMapping;

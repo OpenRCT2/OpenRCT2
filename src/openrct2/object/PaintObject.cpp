@@ -11,8 +11,6 @@
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 
-#include <map>
-
 void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     try
@@ -36,16 +34,18 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                                 for (const auto& value : sequence)
                                 {
                                     if (value.is_number())
-                                        table.Values[index].push_back(value);
+                                        table[index].push_back(value);
                                 }
                             }
                             index++;
                         }
                     }
 
-                    auto id = trackSequenceTable["id"];
-                    table.Id = id;
-                    _sequenceMappings[id] = table;
+                    const auto& trackElement = trackSequenceTable["trackElement"];
+                    track_type_t element = 0;
+                    if (trackElement == "flat_track_3x3")
+                        element = TrackElemType::FlatTrack3x3;
+                    _sequenceMappings[element] = table;
                 }
             }
         }
@@ -198,6 +198,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     auto trackElement = paintStruct["trackElement"];
                     if (trackElement == "flat_track_3x3")
                         paint.Key.Element = TrackElemType::FlatTrack3x3;
+                    paint.Key.TrackSequenceMapping = &_sequenceMappings.at(paint.Key.Element.value());
                 }
 
                 if (paintStruct.contains("supports"))
@@ -248,16 +249,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     if (trackSequence.is_number())
                     {
                         paint.Key.TrackSequence = trackSequence;
-                    }
-                }
-
-                if (paintStruct.contains("trackSequenceMapping"))
-                {
-                    auto trackSequenceMapping = paintStruct["trackSequenceMapping"];
-                    if (trackSequenceMapping.is_string())
-                    {
-                        if (_sequenceMappings.find(trackSequenceMapping) != _sequenceMappings.end())
-                            paint.Key.TrackSequenceMapping = &_sequenceMappings[trackSequenceMapping];
                     }
                 }
 

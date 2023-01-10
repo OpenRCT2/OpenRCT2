@@ -35,7 +35,7 @@ bool PaintStructDescriptorKey::MatchWithKeys(
         if (TrackSequenceMapping != nullptr)
         {
             const auto& sequenceMapping = *TrackSequenceMapping;
-            trackSequence = sequenceMapping.Values[direction][trackSequence];
+            trackSequence = sequenceMapping[direction][trackSequence];
             if (TrackSequence != trackSequence)
                 return false;
         }
@@ -104,7 +104,7 @@ void PaintStructDescriptor::Paint(
     // transform the track sequence with the track mapping if there is one
     if (Key.TrackSequenceMapping != nullptr)
     {
-        const auto& sequenceMapping = Key.TrackSequenceMapping->Values;
+        const auto& sequenceMapping = *Key.TrackSequenceMapping;
         const auto& mapping = sequenceMapping[direction];
         if (trackSequence < mapping.size())
             trackSequence = mapping[trackSequence];
@@ -221,16 +221,21 @@ void PaintStructDescriptor::Paint(
                     break;
             }
 
-            imageIndex = imageIndex + ImageIdOffset->Entries.Get(Key, ImageIdOffsetIndex);
+            if (ImageIdOffset != nullptr)
+            {
+                auto offset = ImageIdOffset->Entries.Get(Key, ImageIdOffsetIndex);
+                if (offset != nullptr)
+                    imageIndex = imageIndex + *offset;
 
-            auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
-            auto newBoundBox = BoundBox;
-            newBoundBox.offset.z += height;
+                auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
+                auto newBoundBox = BoundBox;
+                newBoundBox.offset.z += height;
 
-            if (type == PaintType::AddImageAsParent)
-                PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
-            else if (type == PaintType::AddImageAsChild)
-                PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                if (type == PaintType::AddImageAsParent)
+                    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                else if (type == PaintType::AddImageAsChild)
+                    PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+            }
         }
         else if (type == PaintType::SetSegmentsSupportsHeight)
         {
