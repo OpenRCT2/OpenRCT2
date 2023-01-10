@@ -18,6 +18,7 @@ struct PaintStructDescriptorKey
         , Direction(0)
         , TrackSequence(0)
         , VehicleIndex(0)
+        , VehicleSpriteDirection(0)
     {
     }
 
@@ -26,7 +27,7 @@ struct PaintStructDescriptorKey
     uint32_t TrackSequence;
     PaintStructSequenceMapping* TrackSequenceMapping = nullptr;
     uint32_t VehicleIndex;
-    std::optional<uint32_t> VehicleSpriteDirection;
+    uint32_t VehicleSpriteDirection;
     std::optional<uint32_t> VehiclePitch;
     std::optional<uint32_t> VehicleNumPeeps;
 
@@ -178,8 +179,8 @@ void PaintStructContainer<T>::GetNonNullKeys(
     else
         vehiclePitch = 0;
 
-    if (key.VehicleSpriteDirection.has_value() && _vehicleSpriteDirectionKey)
-        vehicleSpriteDirection = key.VehicleSpriteDirection.value();
+    if (_vehicleSpriteDirectionKey)
+        vehicleSpriteDirection = key.VehicleSpriteDirection;
     else
         vehicleSpriteDirection = 0;
 
@@ -214,8 +215,7 @@ template<class T> void PaintStructContainer<T>::UpdateKeys(const PaintStructDesc
         _vehicleNumPeepsKey = true;
     if (key.VehiclePitch.has_value())
         _vehiclePitchKey = true;
-    if (key.VehicleSpriteDirection.has_value())
-        _vehicleSpriteDirectionKey = true;
+    _vehicleSpriteDirectionKey = true;
 }
 
 template<class T>
