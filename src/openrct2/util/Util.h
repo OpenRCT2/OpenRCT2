@@ -34,8 +34,6 @@ int32_t strlogicalcmp(char const* a, char const* b);
 char* safe_strcpy(char* destination, const char* source, size_t num);
 char* safe_strcat(char* destination, const char* source, size_t size);
 
-bool str_is_null_or_empty(const char* str);
-
 uint32_t util_rand();
 float util_rand_normal_distributed();
 

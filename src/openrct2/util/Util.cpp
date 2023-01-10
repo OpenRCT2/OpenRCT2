@@ -336,11 +336,6 @@ char* safe_strcat(char* destination, const char* source, size_t size)
     return result;
 }
 
-bool str_is_null_or_empty(const char* str)
-{
-    return str == nullptr || str[0] == 0;
-}
-
 uint32_t util_rand()
 {
     thread_local std::mt19937 _prng(std::random_device{}());
