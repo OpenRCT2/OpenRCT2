@@ -221,7 +221,7 @@ void PaintStructDescriptor::Paint(
                     break;
             }
 
-            imageIndex = imageIndex + ImageIdOffset->Entries.Get(Key)[ImageIdOffsetIndex];
+            imageIndex = imageIndex + ImageIdOffset->Entries.Get(Key, ImageIdOffsetIndex);
 
             auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
             auto newBoundBox = BoundBox;

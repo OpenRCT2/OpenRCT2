@@ -37,10 +37,12 @@ public:
     PaintStructContainer();
 
     void Add(const PaintStructDescriptorKey& key, const T& value);
-    const T& Get(const PaintStructDescriptorKey& key) const;
+    const std::vector<T>& Get(const PaintStructDescriptorKey& key) const;
+    const T& Get(const PaintStructDescriptorKey& key, size_t index) const;
 private:
     // is it efficient? not too sure about that...
-    using ElementMap = std::vector<T>;
+    using FinalStage = std::vector<T>;
+    using ElementMap = std::vector<FinalStage>;
     using DirectionMap = std::vector<ElementMap>;
     using TrackSequenceMap = std::vector<DirectionMap>;
     using VehicleIndexMap = std::vector<TrackSequenceMap>;
@@ -117,10 +119,10 @@ template<class T> void PaintStructContainer<T>::Add(const PaintStructDescriptorK
         vector6.resize(elem + 1);
 
     // not too sure about multi indexing... marvelous piece of code
-    _elements[vehicleNumPeeps][vehiclePitch][vehicleSpriteDirection][vehicleIndex][trackSequence][direction][elem] = value;
+    _elements[vehicleNumPeeps][vehiclePitch][vehicleSpriteDirection][vehicleIndex][trackSequence][direction][elem].push_back(value);
 }
 
-template<class T> const T& PaintStructContainer<T>::Get(const PaintStructDescriptorKey& key) const
+template<class T> const std::vector<T>& PaintStructContainer<T>::Get(const PaintStructDescriptorKey& key) const
 {
     size_t vehicleNumPeeps = 0;
     size_t vehiclePitch = 0;
@@ -133,6 +135,21 @@ template<class T> const T& PaintStructContainer<T>::Get(const PaintStructDescrip
 
     return _elements[vehicleNumPeeps][vehiclePitch][vehicleSpriteDirection][vehicleIndex][trackSequence][direction][elem];
 }
+
+template<class T> const T& PaintStructContainer<T>::Get(const PaintStructDescriptorKey& key, size_t index) const
+{
+    size_t vehicleNumPeeps = 0;
+    size_t vehiclePitch = 0;
+    size_t vehicleSpriteDirection = 0;
+    size_t vehicleIndex = 0;
+    size_t trackSequence = 0;
+    size_t direction = 0;
+    size_t elem = 0;
+    GetNonNullKeys(key, vehicleNumPeeps, vehiclePitch, vehicleSpriteDirection, vehicleIndex, trackSequence, direction, elem);
+    return _elements[vehicleNumPeeps][vehiclePitch][vehicleSpriteDirection][vehicleIndex][trackSequence][direction][elem][index];
+}
+
+
 template<class T>
 void PaintStructContainer<T>::GetNonNullKeys(
     const PaintStructDescriptorKey& key, size_t& vehicleNumPeeps, size_t& vehiclePitch, size_t& vehicleSpriteDirection,
@@ -195,7 +212,7 @@ template<class T> void PaintStructContainer<T>::UpdateKeys(const PaintStructDesc
 struct ImageIdOffset
 {
     std::string Id;
-    PaintStructContainer<std::vector<uint32_t>> Entries;
+    PaintStructContainer<uint32_t> Entries;
 };
 
 struct HeightSupportsTable

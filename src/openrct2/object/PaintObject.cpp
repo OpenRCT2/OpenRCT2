@@ -179,8 +179,8 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         for (const auto& elem : table)
                             imageIds.push_back(elem);
 
-                        auto keyVal = std::tuple<PaintStructDescriptorKey, std::vector<uint32_t>>(key, imageIds);
-                        offset.Entries.Add(key, imageIds);
+                        for (const auto& imageId : imageIds)
+                            offset.Entries.Add(key, imageId);
                     }
                 }
                 _imageIdOffsetMapping[offset.Id] = offset;
