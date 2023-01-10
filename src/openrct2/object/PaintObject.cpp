@@ -17,9 +17,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     try
     {
-        // read the track sequence mapping tables and edges tables first
-        std::map<std::string, ImageIdOffset> imageIdOffsetMapping;
-
         if (root.contains("trackSequenceTables"))
         {
             auto trackSequenceTables = root["trackSequenceTables"];
@@ -186,7 +183,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         offset.Entries.Add(key, imageIds);
                     }
                 }
-                imageIdOffsetMapping[offset.Id] = offset;
+                _imageIdOffsetMapping[offset.Id] = offset;
             }
         }
 
@@ -372,7 +369,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     auto imageIdOffset = paintStruct["imageIdOffset"];
                     if (imageIdOffset.is_string())
                     {
-                        paint.ImageIdOffset = imageIdOffsetMapping[imageIdOffset];
+                        paint.ImageIdOffset = &_imageIdOffsetMapping[imageIdOffset];
                     }
                 }
 

@@ -259,7 +259,7 @@ struct PaintStructDescriptor
     Colour SecondaryColour;
     uint32_t SecondaryColourIndex;
 
-    ImageIdOffset ImageIdOffset;
+    ImageIdOffset* ImageIdOffset;
     uint32_t ImageIdOffsetIndex;
 
     CoordsXYZ Offset;

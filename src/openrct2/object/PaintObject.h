@@ -28,6 +28,7 @@ private:
     std::map<std::string, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;
     std::map<std::string, HeightSupportsTable> _heightMapping;
+    std::map<std::string, ImageIdOffset> _imageIdOffsetMapping;
 public:
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
