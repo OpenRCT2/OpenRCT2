@@ -307,7 +307,7 @@ public:
         if (frame_no >= TabAnimationLoops[_currentTab])
             frame_no = 0;
 
-        widget_invalidate(*this, WIDX_TAB_1 + _currentTab);
+        widget_invalidate(*this, WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
 
         if (new_ride.SelectedRide.Type != RIDE_TYPE_NULL && new_ride.selected_ride_countdown-- == 0)
         {
@@ -705,7 +705,7 @@ private:
         {
             pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
         }
-        pressed_widgets |= 1LL << (WIDX_TAB_1 + _currentTab);
+        pressed_widgets |= 1LL << (WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
     }
 
     void RefreshWidgetSizing()
@@ -880,7 +880,7 @@ private:
 
     void DrawTabImage(rct_drawpixelinfo& dpi, NewRideTabId tab, int32_t spriteIndex)
     {
-        WidgetIndex widgetIndex = WIDX_TAB_1 + tab;
+        WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(tab);
 
         if (widgets[widgetIndex].type != WindowWidgetType::Empty && !WidgetIsDisabled(*this, widgetIndex))
         {

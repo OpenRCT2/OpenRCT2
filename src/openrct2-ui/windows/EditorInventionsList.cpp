@@ -641,7 +641,8 @@ public:
         auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 
         DrawResearchItem(
-            dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, { COLOUR_BLACK | COLOUR_FLAG_OUTLINE });
+            dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID,
+            { COLOUR_BLACK | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE) });
     }
 
     void Init(ResearchItem& researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)

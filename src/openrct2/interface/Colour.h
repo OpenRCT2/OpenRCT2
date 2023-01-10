@@ -189,8 +189,8 @@ enum
     COLOUR_FLAG_8 = (1 << 8)
 };
 
-#define TRANSLUCENT(x) ((x) | COLOUR_FLAG_TRANSLUCENT)
-#define NOT_TRANSLUCENT(x) ((x) & ~COLOUR_FLAG_TRANSLUCENT)
+#define TRANSLUCENT(x) ((x) | static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
+#define NOT_TRANSLUCENT(x) ((x) & ~static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
 #define BASE_COLOUR(x) ((x)&0x1F)
 
 struct rct_colour_map
