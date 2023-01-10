@@ -294,7 +294,6 @@ struct PaintStructDescriptor
     {
         AddImageAsParent,
         AddImageAsChild,
-        SetSegmentsSupportsHeight,
     };
     enum class Scheme
     {
@@ -330,7 +329,7 @@ struct PaintStructDescriptor
 
     CoordsXYZ Offset;
     BoundBoxXYZ BoundBox;
-    HeightSupportsTable* HeightSupports;
+    HeightSupportsTable* HeightSupports = nullptr;
 
     void Paint(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,

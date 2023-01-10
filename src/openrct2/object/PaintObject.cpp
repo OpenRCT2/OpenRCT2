@@ -296,8 +296,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     {
                         if (paintType == "addImageAsParent")
                             paint.PaintType = PaintStructDescriptor::PaintType::AddImageAsParent;
-                        else if (paintType == "setSegmentSupportHeight")
-                            paint.PaintType = PaintStructDescriptor::PaintType::SetSegmentsSupportsHeight;
                         else if (paintType == "addImageAsChild")
                             paint.PaintType = PaintStructDescriptor::PaintType::AddImageAsChild;
                     }
