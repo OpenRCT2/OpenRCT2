@@ -561,7 +561,7 @@ namespace OpenRCT2
 
             struct CrashAdditionalFileRegistration
             {
-                CrashAdditionalFileRegistration(const std::string& path)
+                CrashAdditionalFileRegistration()
                 {
                     // Register the file for crash upload if it asserts while loading.
                     crash_register_additional_file("load_park", path);
