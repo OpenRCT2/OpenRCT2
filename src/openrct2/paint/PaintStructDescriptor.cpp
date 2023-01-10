@@ -44,11 +44,9 @@ bool PaintStructDescriptorKey::MatchWithKeys(
         if (vehicle->sprite_direction != VehicleSpriteDirection)
             return false;
 
-        if (VehiclePitch.has_value())
-        {
-            if (vehicle->Pitch != VehiclePitch.value())
-                return false;
-        }
+
+        if (vehicle->Pitch != VehiclePitch)
+            return false;
 
         if (VehicleNumPeeps.has_value())
         {
