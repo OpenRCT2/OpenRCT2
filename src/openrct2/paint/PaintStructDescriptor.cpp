@@ -23,11 +23,8 @@ bool PaintStructDescriptorKey::MatchWithKeys(
     if (Element != trackElement)
         return false;
 
-    if (Direction.has_value())
-    {
-        if (Direction != direction)
-            return false;
-    }
+    if (Direction != direction)
+        return false;
 
     if (TrackSequence.has_value())
     {
