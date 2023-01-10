@@ -21,6 +21,7 @@
 #include <openrct2/management/Research.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectList.h>
+#include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Park.h>

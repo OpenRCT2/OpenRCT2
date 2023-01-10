@@ -11,6 +11,7 @@
 
 #include "../Game.h"
 #include "../localisation/Formatter.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"

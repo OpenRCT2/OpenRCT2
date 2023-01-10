@@ -19,6 +19,7 @@
 #include "../localisation/StringIds.h"
 #include "../object/Object.h"
 #include "../object/ObjectManager.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../platform/Platform.h"

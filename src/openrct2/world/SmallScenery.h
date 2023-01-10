@@ -13,6 +13,8 @@
 #include "Map.h"
 #include "Scenery.h"
 
+struct SmallSceneryEntry;
+
 enum SMALL_SCENERY_FLAGS : uint32_t
 {
     SMALL_SCENERY_FLAG_FULL_TILE = (1 << 0),            // 0x1
