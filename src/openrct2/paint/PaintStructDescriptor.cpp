@@ -48,11 +48,10 @@ bool PaintStructDescriptorKey::MatchWithKeys(
         if (vehicle->Pitch != VehiclePitch)
             return false;
 
-        if (VehicleNumPeeps.has_value())
-        {
-            if (vehicle->num_peeps != VehicleNumPeeps.value())
-                return false;
-        }
+
+        if (vehicle->num_peeps != VehicleNumPeeps)
+            return false;
+
     }
     return true;
 }

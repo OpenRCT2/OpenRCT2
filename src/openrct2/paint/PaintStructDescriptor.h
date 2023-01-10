@@ -20,6 +20,7 @@ struct PaintStructDescriptorKey
         , VehicleIndex(0)
         , VehicleSpriteDirection(0)
         , VehiclePitch(0)
+        , VehicleNumPeeps(0)
     {
     }
 
@@ -30,7 +31,7 @@ struct PaintStructDescriptorKey
     uint32_t VehicleIndex;
     uint32_t VehicleSpriteDirection;
     uint32_t VehiclePitch;
-    std::optional<uint32_t> VehicleNumPeeps;
+    uint32_t VehicleNumPeeps;
 
     // helper method to check for the keys
     bool MatchWithKeys(track_type_t trackElement, uint32_t direction, uint32_t trackSequence, const Vehicle* vehicle) const;
@@ -170,8 +171,8 @@ void PaintStructContainer<T>::GetNonNullKeys(
     const PaintStructDescriptorKey& key, size_t& vehicleNumPeeps, size_t& vehiclePitch, size_t& vehicleSpriteDirection,
     size_t& vehicleIndex, size_t& trackSequence, size_t& direction, size_t& elem) const
 {
-    if (key.VehicleNumPeeps.has_value() && _vehicleNumPeepsKey)
-        vehicleNumPeeps = key.VehicleNumPeeps.value();
+    if (_vehicleNumPeepsKey)
+        vehicleNumPeeps = key.VehicleNumPeeps;
     else
         vehicleNumPeeps = 0;
 
@@ -212,8 +213,7 @@ template<class T> void PaintStructContainer<T>::UpdateKeys(const PaintStructDesc
     _elementKey = true;
     _trackSequenceKey = true;
     _vehicleIndexKey = true;
-    if (key.VehicleNumPeeps.has_value())
-        _vehicleNumPeepsKey = true;
+    _vehicleNumPeepsKey = true;
     _vehiclePitchKey = true;
     _vehicleSpriteDirectionKey = true;
 }
