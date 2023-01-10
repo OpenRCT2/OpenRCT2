@@ -13,7 +13,7 @@ using PaintStructSequenceMapping = std::array<std::vector<uint32_t>, 4>;
 
 struct PaintStructDescriptorKey
 {
-    std::optional<track_type_t> Element;
+    track_type_t Element;
     std::optional<uint32_t> Direction;
     std::optional<uint32_t> TrackSequence;
     PaintStructSequenceMapping* TrackSequenceMapping = nullptr;
@@ -190,8 +190,8 @@ void PaintStructContainer<T>::GetNonNullKeys(
     else
         direction = 0;
 
-    if (key.Element.has_value() && _elementKey)
-        elem = key.Element.value();
+    if (_elementKey)
+        elem = key.Element;
     else
         elem = 0;
 }
@@ -200,8 +200,7 @@ template<class T> void PaintStructContainer<T>::UpdateKeys(const PaintStructDesc
 {
     if (key.Direction.has_value())
         _directionKey = true;
-    if (key.Element.has_value())
-        _elementKey = true;
+    _elementKey = true;
     if (key.TrackSequence.has_value())
         _trackSequenceKey = true;
     if (key.VehicleIndex.has_value())
