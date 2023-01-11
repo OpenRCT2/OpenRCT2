@@ -19,12 +19,15 @@
 #include <optional>
 #include <vector>
 #include <map>
+#include <memory>
 
 struct TrackElement;
 class PaintObject final : public Object
 {
 private:
+    std::vector<PaintStructDescriptor> _paintStructs;
     TreeContainer<PaintStructDescriptorKey, PaintStructDescriptor, PaintStructKeyInserter> _paintStructsTree;
+
     std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;
     std::map<std::string, HeightSupportsTable> _heightMapping;

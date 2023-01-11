@@ -5,7 +5,6 @@
 #include "../paint/Supports.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
-#include "TreeContainerImpl.h"
 
 PaintStructDescriptor::PaintStructDescriptor()
     : PrimaryColour(Colour::VehicleBody)
@@ -13,6 +12,9 @@ PaintStructDescriptor::PaintStructDescriptor()
     , SecondaryColour(Colour::VehicleTrim)
     , SecondaryColourIndex(0)
     , ImageIdOffsetIndex(0)
+    , Edges(nullptr)
+    , ImageIdOffset(nullptr)
+    , HeightSupports(nullptr)
 {
 }
 
@@ -200,7 +202,7 @@ void PaintStructDescriptor::Paint(
     }
 }
 
-std::vector<size_t> PaintStructKeyInserter::operator()(const PaintStructDescriptorKey& key) const
+std::vector<size_t> PaintStructKeyInserter::GetParams(const PaintStructDescriptorKey& key) const
 {
     return std::vector<size_t>{ key.Direction,           key.Element,
                                 key.TrackSequence,       key.VehicleKey[0].NumPeeps,
@@ -208,7 +210,7 @@ std::vector<size_t> PaintStructKeyInserter::operator()(const PaintStructDescript
 }
 
 //don't put the track sequence for the image id 
-std::vector<size_t> ImageIdKeyInserter::operator()(const PaintStructDescriptorKey& key) const
+std::vector<size_t> ImageIdKeyInserter::GetParams(const PaintStructDescriptorKey& key) const
 {
     return std::vector<size_t>{ key.Direction, key.Element, key.VehicleKey[0].NumPeeps, key.VehicleKey[0].Pitch,
                                 key.VehicleKey[0].SpriteDirection };

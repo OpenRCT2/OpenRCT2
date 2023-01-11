@@ -67,11 +67,11 @@ void TreeContainer<KeyType, ValueType, KeyInserter>::Add(const std::vector<size_
 template<class KeyType, class ValueType, class KeyInserter>
 void TreeContainer<KeyType, ValueType, KeyInserter>::Add(const KeyType& location, const ValueType& value)
 {
-    Add(_keyInserter(location), value);
+    Add(_keyInserter.GetParams(location), value);
 }
 
 template<class KeyType, class ValueType, class KeyInserter>
 const std::vector<ValueType>* TreeContainer<KeyType, ValueType, KeyInserter>::Get(const KeyType& location) const
 {
-    return Get(_keyInserter(location));
+    return Get(_keyInserter.GetParams(location));
 }

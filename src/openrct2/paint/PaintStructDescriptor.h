@@ -48,13 +48,13 @@ bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptor
 class PaintStructKeyInserter
 {
 public:
-    std::vector<size_t> operator()(const PaintStructDescriptorKey& key) const;
+    std::vector<size_t> GetParams(const PaintStructDescriptorKey& key) const;
 };
 
 class ImageIdKeyInserter
 {
 public:
-    std::vector<size_t> operator()(const PaintStructDescriptorKey& key) const;
+    std::vector<size_t> GetParams(const PaintStructDescriptorKey& key) const;
 };
 
 struct ImageIdOffset
@@ -108,12 +108,12 @@ struct PaintStructDescriptor
     };
 
     // key fields
-    PaintStructDescriptorKey* Key;
+    std::shared_ptr<PaintStructDescriptorKey> Key;
 
     // output fields
     std::optional<SupportsType> Supports;
     std::optional<FloorType> Floor;
-    PaintStructEdgesTable* Edges = nullptr;
+    PaintStructEdgesTable* Edges;
     std::optional<FenceType> Fences;
     std::optional<PaintType> PaintType;
     std::optional<Scheme> ImageIdScheme;
@@ -123,12 +123,12 @@ struct PaintStructDescriptor
     Colour SecondaryColour;
     uint32_t SecondaryColourIndex;
 
-    ImageIdOffset* ImageIdOffset = nullptr;
+    ImageIdOffset* ImageIdOffset;
     uint32_t ImageIdOffsetIndex;
 
     CoordsXYZ Offset;
     BoundBoxXYZ BoundBox;
-    HeightSupportsTable* HeightSupports = nullptr;
+    HeightSupportsTable* HeightSupports;
 
     //to-do : in the future, send a list of vehicle pointers so we can get the peep tshirt colours from every vehicle...
     void Paint(
