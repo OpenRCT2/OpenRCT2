@@ -8,7 +8,7 @@
 
 template<>
 template<>
-const uint32_t* TreeContainer<uint32_t>::Get<PaintStructDescriptorKey>(const PaintStructDescriptorKey& location) const
+std::vector<uint32_t>* TreeContainer<uint32_t>::Get<PaintStructDescriptorKey>(const PaintStructDescriptorKey& location)
 {
     return Get(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence });
 }
@@ -225,7 +225,7 @@ void PaintStructDescriptor::Paint(
                 auto offset = ImageIdOffset->Entries.Get(
                     Key);
                 if (offset != nullptr)
-                    imageIndex = imageIndex + *offset;
+                    imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
 
                 auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
                 auto newBoundBox = BoundBox;

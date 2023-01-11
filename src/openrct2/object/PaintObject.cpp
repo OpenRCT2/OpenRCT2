@@ -450,7 +450,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         paint.HeightSupports = &_heightMapping[id];
                     }
                 }
-
                 _paintStructs.push_back(paint);
             }
         }
@@ -475,6 +474,7 @@ void PaintObject::Paint(
 {
     for (const auto& paintStruct : _paintStructs)
         paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
+
 }
 
 void PaintObject::LoadPaintObjects()
