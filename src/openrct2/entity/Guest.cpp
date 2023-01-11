@@ -30,6 +30,7 @@
 #include "../management/NewsItem.h"
 #include "../network/network.h"
 #include "../object/FootpathItemEntry.h"
+#include "../object/LargeSceneryEntry.h"
 #include "../object/MusicObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"

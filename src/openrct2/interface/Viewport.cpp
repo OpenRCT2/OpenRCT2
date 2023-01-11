@@ -22,6 +22,7 @@
 #include "../entity/Guest.h"
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
+#include "../object/LargeSceneryEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../paint/Paint.h"

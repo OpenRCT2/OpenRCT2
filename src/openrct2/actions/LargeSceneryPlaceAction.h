@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../world/LargeScenery.h"
-#include "../world/Scenery.h"
 #include "GameAction.h"
 
 struct LargeSceneryPlaceActionResult
@@ -19,6 +17,9 @@ struct LargeSceneryPlaceActionResult
     int32_t firstTileHeight{ 0 };
     BannerIndex bannerId = BannerIndex::GetNull();
 };
+
+struct LargeSceneryTile;
+struct LargeSceneryElement;
 
 class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceLargeScenery>
 {

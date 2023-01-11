@@ -24,6 +24,7 @@
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../object/FootpathItemEntry.h"
+#include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/SmallSceneryEntry.h"

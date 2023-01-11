@@ -11,6 +11,7 @@
 
 #include "../Game.h"
 #include "../localisation/Formatter.h"
+#include "../object/LargeSceneryEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../openrct2/Cheats.h"
