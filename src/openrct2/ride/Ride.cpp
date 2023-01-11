@@ -4489,7 +4489,7 @@ bool ride_has_any_track_elements(const Ride& ride)
  *
  *  rct2: 0x006847BA
  */
-void set_vehicle_type_image_max_sizes(CarEntry* vehicle_type, int32_t num_images)
+void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 {
     uint8_t bitmap[200][200] = { 0 };
 
@@ -4503,9 +4503,9 @@ void set_vehicle_type_image_max_sizes(CarEntry* vehicle_type, int32_t num_images
         /*.zoom_level = */ ZoomLevel{ 0 },
     };
 
-    for (int32_t i = 0; i < num_images; ++i)
+    for (int32_t i = 0; i < numImages; ++i)
     {
-        gfx_draw_sprite_software(&dpi, ImageId(vehicle_type->base_image_id + i), { 0, 0 });
+        gfx_draw_sprite_software(&dpi, ImageId(carEntry.base_image_id + i), { 0, 0 });
     }
     int32_t al = -1;
     for (int32_t i = 99; i != 0; --i)
@@ -4574,14 +4574,14 @@ void set_vehicle_type_image_max_sizes(CarEntry* vehicle_type, int32_t num_images
 
     // Moved from object paint
 
-    if (vehicle_type->flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
+    if (carEntry.flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
     {
         bl += 16;
     }
 
-    vehicle_type->sprite_width = al;
-    vehicle_type->sprite_height_negative = bl;
-    vehicle_type->sprite_height_positive = bh;
+    carEntry.sprite_width = al;
+    carEntry.sprite_height_negative = bl;
+    carEntry.sprite_height_positive = bh;
 }
 
 /**
