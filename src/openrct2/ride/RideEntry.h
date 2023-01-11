@@ -10,11 +10,11 @@
 #pragma once
 
 #include "../rct2/DATLimits.h"
+#include "CarEntry.h"
 #include "RideColour.h"
 #include "RideTypes.h"
 #include "ShopItem.h"
 #include "VehicleColour.h"
-#include "VehicleEntry.h"
 
 #include <cstdint>
 

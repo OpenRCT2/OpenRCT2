@@ -15,9 +15,9 @@
 #include "../entity/EntityBase.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
+#include "CarEntry.h"
 #include "Station.h"
 #include "VehicleColour.h"
-#include "VehicleEntry.h"
 #include "VehicleSubpositionData.h"
 
 #include <array>

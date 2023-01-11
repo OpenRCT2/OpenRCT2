@@ -458,7 +458,7 @@
     <ClInclude Include="ride\Vehicle.h" />
     <ClInclude Include="ride\VehicleColour.h" />
     <ClInclude Include="ride\VehicleData.h" />
-    <ClInclude Include="ride\VehicleEntry.h" />
+    <ClInclude Include="ride\CarEntry.h" />
     <ClInclude Include="ride\VehiclePaint.h" />
     <ClInclude Include="ride\VehicleRiderControl.h" />
     <ClInclude Include="ride\VehicleSubpositionData.h" />
