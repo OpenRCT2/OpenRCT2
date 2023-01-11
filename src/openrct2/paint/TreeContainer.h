@@ -1,45 +1,59 @@
 #pragma once
 
 #include <vector>
-template<class T> class Node
+template<class KeyType, class ValueType> class Node
 {
 public:
-    Node(const T& value);
     Node(){};
     void Insert(size_t index);
-    template<class T> friend class TreeContainer;
+    template<class KeyType, class ValueType> friend class TreeContainer;
 
 protected:
-    std::vector<T> _values;
+    std::vector<ValueType> _values;
     std::vector<Node> _children;
 };
 
-template<class T> class TreeContainer : public Node<T>
+struct PaintStructDescriptorKey;
+template<class KeyType, class ValueType> class TreeContainer : public Node<KeyType, ValueType>
 {
 public:
     TreeContainer();
 
-    template<class KeyType> const std::vector<T>* Get(const KeyType& location) const;
-    template<class KeyType> void Add(const KeyType& location, const T& value);
+    template<class ValueType>
+    friend void Add(
+        TreeContainer<PaintStructDescriptorKey, ValueType>& treeContainer, const PaintStructDescriptorKey& location,
+        const ValueType& value);
+
+    template<class ValueType>
+    friend const std::vector<ValueType>* Get(
+        const TreeContainer<PaintStructDescriptorKey, ValueType>& treeContainer, const PaintStructDescriptorKey& location);
+
 private:
-    const std::vector<T>* Get(const std::vector<size_t>& location) const;
-    void Add(const std::vector<size_t>& location, const T& value);
+    const std::vector<ValueType>* Get(const std::vector<size_t>& location) const;
+    void Add(const std::vector<size_t>& location, const ValueType& value);
 };
 
-template<class T> TreeContainer<T>::TreeContainer()
+template<class KeyType, class ValueType>
+const std::vector<ValueType>* Get(const TreeContainer<KeyType, ValueType>& treeContainer, const KeyType& location);
+
+template<class KeyType, class ValueType>
+void Add(TreeContainer<KeyType, ValueType>& treeContainer, const KeyType& location, const ValueType& value);
+
+template<class KeyType, class ValueType> TreeContainer<KeyType, ValueType>::TreeContainer()
 {
 }
 
-template<class T> void Node<T>::Insert(size_t index)
+template<class KeyType, class ValueType> void Node<KeyType, ValueType>::Insert(size_t index)
 {
     if (_children.size() <= index)
         _children.resize(index + 1);
-    _children[index] = Node<T>();
+    _children[index] = Node<ValueType>();
 }
 
-template<class T> const std::vector<T>* TreeContainer<T>::Get(const std::vector<size_t>& location) const
+template<class KeyType, class ValueType>
+const std::vector<ValueType>* TreeContainer<KeyType, ValueType>::Get(const std::vector<size_t>& location) const
 {
-    const Node<T>* nextNode = this;
+    const Node<KeyType, ValueType>* nextNode = this;
     for (const auto& loc : location)
     {
         if (loc < nextNode->_children.size())
@@ -50,9 +64,10 @@ template<class T> const std::vector<T>* TreeContainer<T>::Get(const std::vector<
     return &nextNode->_values;
 }
 
-template<class T> void TreeContainer<T>::Add(const std::vector<size_t>& location, const T& value)
+template<class KeyType, class ValueType>
+void TreeContainer<KeyType, ValueType>::Add(const std::vector<size_t>& location, const ValueType& value)
 {
-    Node<T>* nextNode = this;
+    Node<KeyType, ValueType>* nextNode = this;
     for (const auto& loc : location)
     {
         if (nextNode->_children.size() <= loc)

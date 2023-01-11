@@ -11,25 +11,7 @@
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 #include "../entity/EntityRegistry.h"
-
-template<>
-template<>
-const std::vector<PaintStructDescriptor>* TreeContainer<PaintStructDescriptor>::Get<PaintStructDescriptorKey>(
-    const PaintStructDescriptorKey& location) const
-{
-    return Get(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence,
-                                    location.VehicleKey[0].NumPeeps, location.VehicleKey[0].Pitch,
-                                    location.VehicleKey[0].SpriteDirection });
-}
-
-template<>
-template<>
-void TreeContainer<PaintStructDescriptor>::Add(const PaintStructDescriptorKey& location, const PaintStructDescriptor& value)
-{
-    Add(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence, location.VehicleKey[0].NumPeeps,
-                             location.VehicleKey[0].Pitch, location.VehicleKey[0].SpriteDirection },
-        value);
-}
+#include "../paint/TreeContainerImpl.h"
 
 void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
@@ -200,7 +182,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                             imageIds.push_back(elem);
 
                         for (const auto& imageId : imageIds)
-                            offset.Entries.Add(key, imageId);
+                            Add(offset.Entries, key, imageId);
                     }
                 }
                 _imageIdOffsetMapping[offset.Id] = offset;
@@ -474,7 +456,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         paint.HeightSupports = &_heightMapping[id];
                     }
                 }
-                _paintStructsTree.Add(paint.Key, paint);
+                Add(_paintStructsTree, paint.Key, paint);
             }
         }
     }
@@ -531,7 +513,7 @@ void PaintObject::Paint(
         key.VehicleKey[0].SpriteDirection = vehicle->sprite_direction;
     }
 
-    auto paintStructs = _paintStructsTree.Get(key);
+    auto paintStructs = Get(_paintStructsTree, key);
     if (paintStructs != nullptr)
     {
         for (const auto& paintStruct : *paintStructs)

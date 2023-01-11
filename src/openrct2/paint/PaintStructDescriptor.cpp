@@ -5,18 +5,7 @@
 #include "../paint/Supports.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
-
-template<>
-template<>
-const std::vector<uint32_t>* TreeContainer<uint32_t>::Get<PaintStructDescriptorKey>(const PaintStructDescriptorKey& location) const
-{
-    return Get(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence });
-}
-
-template<> template<> void TreeContainer<uint32_t>::Add(const PaintStructDescriptorKey& location, const uint32_t& value)
-{
-    Add(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence }, value);
-}
+#include "TreeContainerImpl.h"
 
 PaintStructDescriptor::PaintStructDescriptor()
     : PrimaryColour(Colour::VehicleBody)
@@ -31,8 +20,8 @@ void PaintStructDescriptor::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, const Vehicle* vehicle) const
 {
-    //if (!Key.MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle))
-        //return;
+    // if (!Key.MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle))
+    // return;
 
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -171,8 +160,7 @@ void PaintStructDescriptor::Paint(
 
             if (ImageIdOffset != nullptr)
             {
-                auto offset = ImageIdOffset->Entries.Get(
-                    Key);
+                auto offset = Get(ImageIdOffset->Entries, Key);
                 if (offset != nullptr)
                     imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
 
@@ -200,7 +188,6 @@ void PaintStructDescriptor::Paint(
         }
     }
 }
-
 
 void PaintStructDescriptor::ToJson(json_t& json) const
 {

@@ -44,7 +44,7 @@ struct PaintStructDescriptorKey
 struct ImageIdOffset
 {
     std::string Id;
-    TreeContainer<uint32_t> Entries;
+    TreeContainer<PaintStructDescriptorKey, uint32_t> Entries;
 };
 
 struct HeightSupportsTable

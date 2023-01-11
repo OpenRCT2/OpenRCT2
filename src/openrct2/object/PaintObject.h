@@ -24,7 +24,7 @@ struct TrackElement;
 class PaintObject final : public Object
 {
 private:
-    TreeContainer<PaintStructDescriptor> _paintStructsTree;
+    TreeContainer<PaintStructDescriptorKey, PaintStructDescriptor> _paintStructsTree;
     std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;
     std::map<std::string, HeightSupportsTable> _heightMapping;
