@@ -16,6 +16,7 @@
 #include "../entity/Yaw.hpp"
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
+#include "../ride/CarEntry.h"
 #include "../ride/RideData.h"
 #include "../ride/Vehicle.h"
 #include "Track.h"

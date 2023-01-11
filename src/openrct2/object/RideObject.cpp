@@ -24,6 +24,7 @@
 #include "../localisation/Language.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/RCT2.h"
+#include "../ride/CarEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"

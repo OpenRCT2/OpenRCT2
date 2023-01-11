@@ -100,5 +100,4 @@ struct rct_ride_entry
     }
 };
 
-void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages);
 RideNaming get_ride_naming(const ride_type_t rideType, const rct_ride_entry& rideEntry);
