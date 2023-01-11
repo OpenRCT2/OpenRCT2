@@ -323,7 +323,7 @@ private:
     void UpdateDoingCircusShow();
     void UpdateCrossings() const;
     void UpdateSound();
-    void GetLiftHillSound(Ride* curRide, SoundIdVolume& curSound);
+    void GetLiftHillSound(const Ride& curRide, SoundIdVolume& curSound);
     OpenRCT2::Audio::SoundId UpdateScreamSound();
     OpenRCT2::Audio::SoundId ProduceScreamSound(const int32_t totalNumPeeps);
     void UpdateCrashSetup();
@@ -333,8 +333,8 @@ private:
     void UpdateAdditionalAnimation();
     void CheckIfMissing();
     bool CurrentTowerElementIsTop();
-    bool UpdateTrackMotionForwards(CarEntry* carEntry, Ride* curRide, const rct_ride_entry& rideEntry);
-    bool UpdateTrackMotionBackwards(CarEntry* carEntry, Ride* curRide, const rct_ride_entry& rideEntry);
+    bool UpdateTrackMotionForwards(CarEntry* carEntry, const Ride& curRide, const rct_ride_entry& rideEntry);
+    bool UpdateTrackMotionBackwards(CarEntry* carEntry, const Ride& curRide, const rct_ride_entry& rideEntry);
     int32_t UpdateTrackMotionPoweredRideAcceleration(CarEntry* carEntry, uint32_t totalMass, const int32_t curAcceleration);
     int32_t NumPeepsUntilTrainTail() const;
     void InvalidateWindow();
@@ -360,13 +360,13 @@ private:
     void CrashOnLand();
     void SimulateCrash() const;
     void KillAllPassengersInTrain();
-    void KillPassengers(Ride* curRide);
+    void KillPassengers(const Ride& curRide);
     void TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats);
     int32_t UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& carEntry);
     int32_t UpdateTrackMotionMiniGolf(int32_t* outStation);
-    void UpdateTrackMotionMiniGolfVehicle(Ride* curRide, const rct_ride_entry& rideEntry, CarEntry* carEntry);
-    bool UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* curRide, const rct_ride_entry& rideEntry);
-    bool UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* curRide, uint16_t* progress);
+    void UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const rct_ride_entry& rideEntry, CarEntry* carEntry);
+    bool UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Ride& curRide, const rct_ride_entry& rideEntry);
+    bool UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ride& curRide, uint16_t* progress);
     bool UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* otherVehicleIndex);
     void UpdateGoKartAttemptSwitchLanes();
     void UpdateSceneryDoor() const;
