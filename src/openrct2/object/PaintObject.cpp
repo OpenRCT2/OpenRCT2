@@ -12,6 +12,17 @@
 #include "ObjectRepository.h"
 #include "../entity/EntityRegistry.h"
 
+struct PaintStructKeyJson
+{
+    using VehicleParam = std::array<std::optional<uint32_t>, OpenRCT2::Limits::MaxTrainsPerRide + 1>;
+    std::optional<uint32_t> Element;
+    std::optional<uint32_t> Direction;
+    std::optional<uint32_t> TrackSequence;
+    VehicleParam VehicleSpriteDirection;
+    VehicleParam VehiclePitch;
+    VehicleParam VehicleNumPeeps;
+};
+
 void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     try
@@ -203,15 +214,18 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         auto paintStructs = root["paintStructs"];
         if (paintStructs.is_array())
         {
+            std::vector<PaintStructKeyJson> keysJson;
+
             for (const auto& paintStruct : paintStructs)
             {
                 PaintStructDescriptor paint;
                 PaintStructDescriptorKey key;
+                PaintStructKeyJson keyJson;
                 if (paintStruct.contains("trackElement"))
                 {
                     auto trackElement = paintStruct["trackElement"];
                     if (trackElement == "flat_track_3x3")
-                        key.Element = TrackElemType::FlatTrack3x3;
+                        keyJson.Element = TrackElemType::FlatTrack3x3;
                 }
 
                 if (paintStruct.contains("supports"))
@@ -261,7 +275,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     auto trackSequence = paintStruct["trackSequence"];
                     if (trackSequence.is_number())
                     {
-                        key.TrackSequence = trackSequence;
+                        keyJson.TrackSequence = trackSequence;
                     }
                 }
 
@@ -270,7 +284,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     auto direction = paintStruct["direction"];
                     if (direction.is_number())
                     {
-                        key.Direction = direction;
+                        keyJson.Direction = direction;
                     }
                 }
 
@@ -278,21 +292,21 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 {
                     auto vehicleSpriteDirection = paintStruct["vehicleSpriteDirection"];
                     if (vehicleSpriteDirection.is_number())
-                        key.VehicleKey[0].SpriteDirection = vehicleSpriteDirection;
+                        keyJson.VehicleSpriteDirection[0] = vehicleSpriteDirection;
                 }
 
                 if (paintStruct.contains("vehiclePitch"))
                 {
                     auto vehiclePitch = paintStruct["vehiclePitch"];
                     if (vehiclePitch.is_number())
-                        key.VehicleKey[0].Pitch = vehiclePitch;
+                        keyJson.VehiclePitch[0] = vehiclePitch;
                 }
 
                 if (paintStruct.contains("vehicleNumPeeps"))
                 {
                     auto vehicleNumPeeps = paintStruct["vehicleNumPeeps"];
                     if (vehicleNumPeeps.is_number())
-                        key.VehicleKey[0].NumPeeps = vehicleNumPeeps;
+                        keyJson.VehicleNumPeeps[0] = vehicleNumPeeps;
                 }
 
                 if (paintStruct.contains("paintType"))
@@ -458,12 +472,42 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 }
 
                 //we need to check if the key exists
-                auto it = std::find(_keys.begin(), _keys.end(), key);
-                if (it == _keys.end())
-                    _keys.push_back(key);
+                //_keys.push_back(key);
+                keysJson.push_back(keyJson);
                 _paintStructs.push_back(paint);
 
-                auto ptr = std::make_shared<PaintStructDescriptor>(paint);
+                //auto ptr = std::make_shared<PaintStructDescriptor>(paint);
+                //_paintStructsTree.Add(key, ptr);
+            }
+
+            for (size_t index = 0; index < keysJson.size(); index++)
+            {
+                const auto& keyJson = keysJson[index];
+
+                //to do: make a key generation from the optionals
+                //this is temporary for this commit
+                PaintStructDescriptorKey key;
+
+                if (keyJson.Direction.has_value())
+                    key.Direction = keyJson.Direction.value();
+
+                if (keyJson.Element.has_value())
+                    key.Element = keyJson.Element.value();
+
+                if (keyJson.TrackSequence.has_value())
+                    key.TrackSequence = keyJson.TrackSequence.value();
+
+                if (keyJson.VehicleNumPeeps[0].has_value())
+                    key.VehicleKey[0].NumPeeps = keyJson.VehicleNumPeeps[0].value();
+
+                if (keyJson.VehiclePitch[0].has_value())
+                    key.VehicleKey[0].Pitch = keyJson.VehiclePitch[0].value();
+
+                if (keyJson.VehicleSpriteDirection[0].has_value())
+                    key.VehicleKey[0].SpriteDirection = keyJson.VehicleSpriteDirection[0].value();
+
+                const auto& paintStruct = _paintStructs[index];
+                auto ptr = std::make_shared<PaintStructDescriptor>(paintStruct);
                 _paintStructsTree.Add(key, ptr);
             }
         }
