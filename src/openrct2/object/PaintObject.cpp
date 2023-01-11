@@ -10,6 +10,7 @@
 #include "../ride/TrackPaint.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
+#include "../entity/EntityRegistry.h"
 
 template<>
 template<>
@@ -202,6 +203,18 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             }
         }
 
+        if (root.contains("vehicleIndices"))
+        {
+            const auto& vehicleIndices = root["vehicleIndices"];
+            if (vehicleIndices.is_array())
+            {
+                for (const auto& vehicleIndex : vehicleIndices)
+                {
+                    _vehicleIndices.push_back(vehicleIndex);
+                }
+            }
+        }
+
         auto paintStructs = root["paintStructs"];
         if (paintStructs.is_array())
         {
@@ -274,13 +287,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     {
                         paint.Key.Direction = direction;
                     }
-                }
-
-                if (paintStruct.contains("vehicleIndex"))
-                {
-                    auto vehicleIndex = paintStruct["vehicleIndex"];
-                    if (vehicleIndex.is_number())
-                        paint.Key.VehicleIndex = vehicleIndex;
                 }
 
                 if (paintStruct.contains("vehicleSpriteDirection"))
@@ -466,7 +472,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     }
                 }
                 _paintStructsTree.Add(paint.Key, paint);
-                _paintStructs.push_back(paint);
             }
         }
     }
@@ -500,12 +505,35 @@ void PaintObject::Paint(
         trackSequence = it->second[direction][trackSequence];
     key.TrackSequence = trackSequence;
 
+    //check the first vehicle in the list
+    //to-do: add vehicle state variables in the key for every vehicle index in the list
+    Vehicle* vehicle = nullptr;
+    if (!_vehicleIndices.empty())
+    {
+        // first, check if the paint struct key matches with the call
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+        {
+            vehicle = GetEntity<Vehicle>(ride.vehicles[_vehicleIndices[0]]);
+
+            session.InteractionType = ViewportInteractionItem::Entity;
+            session.CurrentlyDrawnEntity = vehicle;
+        }
+    }
+
+    //to-do: in the future, add a key val for every vehicle index, not just the first in the list
+    if (vehicle != nullptr)
+    {
+        key.VehicleNumPeeps = vehicle->num_peeps;
+        key.VehiclePitch = vehicle->Pitch;
+        key.VehicleSpriteDirection = vehicle->sprite_direction;
+    }
+
     auto paintStructs = _paintStructsTree.Get(key);
     if (paintStructs != nullptr)
     {
         for (const auto& paintStruct : *paintStructs)
         {
-            paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
+            paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement, vehicle);
         }
     }
 }

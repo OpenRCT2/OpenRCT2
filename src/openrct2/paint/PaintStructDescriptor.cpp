@@ -70,18 +70,8 @@ bool PaintStructDescriptorKey::MatchWithKeys(
 
 void PaintStructDescriptor::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement) const
+    const TrackElement& trackElement, const Vehicle* vehicle) const
 {
-    // first, check if the paint struct key matches with the call
-    Vehicle* vehicle = nullptr;
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
-    {
-        vehicle = GetEntity<Vehicle>(ride.vehicles[Key.VehicleIndex]);
-
-        session.InteractionType = ViewportInteractionItem::Entity;
-        session.CurrentlyDrawnEntity = vehicle;
-    }
-
     //if (!Key.MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle))
         //return;
 

@@ -18,7 +18,6 @@ struct PaintStructDescriptorKey
         : Element(0)
         , Direction(0)
         , TrackSequence(0)
-        , VehicleIndex(0)
         , VehicleSpriteDirection(0)
         , VehiclePitch(0)
         , VehicleNumPeeps(0)
@@ -29,7 +28,8 @@ struct PaintStructDescriptorKey
     uint32_t Direction;
     uint32_t TrackSequence;
     PaintStructSequenceMapping* TrackSequenceMapping = nullptr;
-    uint32_t VehicleIndex;
+
+    //for now, supports only the first vehicle index in the vehicleIndices list in the object
     uint32_t VehicleSpriteDirection;
     uint32_t VehiclePitch;
     uint32_t VehicleNumPeeps;
@@ -111,9 +111,10 @@ struct PaintStructDescriptor
     BoundBoxXYZ BoundBox;
     HeightSupportsTable* HeightSupports = nullptr;
 
+    //to-do : in the future, send a list of vehicle pointers so we can get the peep tshirt colours from every vehicle...
     void Paint(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement) const;
+        const TrackElement& trackElement, const Vehicle* vehicle) const;
 
     void ToJson(json_t& json) const;
 

@@ -25,12 +25,12 @@ class PaintObject final : public Object
 {
 private:
     TreeContainer<PaintStructDescriptor> _paintStructsTree;
-
-    std::vector<PaintStructDescriptor> _paintStructs;
     std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;
     std::map<std::string, HeightSupportsTable> _heightMapping;
     std::map<std::string, ImageIdOffset> _imageIdOffsetMapping;
+
+    std::vector<uint32_t> _vehicleIndices;
 public:
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
