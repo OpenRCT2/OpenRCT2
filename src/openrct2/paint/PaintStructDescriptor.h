@@ -107,7 +107,6 @@ struct PaintStructDescriptor
         PeepTShirt
     };
 
-    // output fields
     std::optional<SupportsType> Supports;
     std::optional<FloorType> Floor;
     PaintStructEdgesTable* Edges;

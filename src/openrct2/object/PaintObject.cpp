@@ -462,7 +462,9 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 if (it == _keys.end())
                     _keys.push_back(key);
                 _paintStructs.push_back(paint);
-                _paintStructsTree.Add(key, paint);
+
+                auto ptr = std::make_shared<PaintStructDescriptor>(paint);
+                _paintStructsTree.Add(key, ptr);
             }
         }
     }
@@ -522,9 +524,9 @@ void PaintObject::Paint(
     auto paintStructs = _paintStructsTree.Get(key);
     if (paintStructs != nullptr)
     {
-        for (const auto& paintStruct : *paintStructs)
+        for (const auto paintStruct : *paintStructs)
         {
-            paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement, key, vehicle);
+            paintStruct->Paint(session, ride, trackSequence, direction, height, trackElement, key, vehicle);
         }
     }
 }
