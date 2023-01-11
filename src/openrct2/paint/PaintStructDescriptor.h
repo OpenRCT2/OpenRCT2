@@ -26,6 +26,8 @@ struct VehicleKey
     }
 };
 
+bool operator==(const VehicleKey& lhs, const VehicleKey& rhs);
+
 struct PaintStructDescriptorKey
 {
     PaintStructDescriptorKey()
@@ -40,6 +42,8 @@ struct PaintStructDescriptorKey
     uint32_t TrackSequence;
     std::array<VehicleKey, OpenRCT2::Limits::MaxTrainsPerRide + 1> VehicleKey;
 };
+
+bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptorKey& rhs);
 
 struct ImageIdOffset
 {
@@ -92,7 +96,7 @@ struct PaintStructDescriptor
     };
 
     // key fields
-    PaintStructDescriptorKey Key;
+    PaintStructDescriptorKey* Key;
 
     // output fields
     std::optional<SupportsType> Supports;

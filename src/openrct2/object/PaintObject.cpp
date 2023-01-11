@@ -207,11 +207,12 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             for (const auto& paintStruct : paintStructs)
             {
                 PaintStructDescriptor paint;
+                PaintStructDescriptorKey key;
                 if (paintStruct.contains("trackElement"))
                 {
                     auto trackElement = paintStruct["trackElement"];
                     if (trackElement == "flat_track_3x3")
-                        paint.Key.Element = TrackElemType::FlatTrack3x3;
+                        key.Element = TrackElemType::FlatTrack3x3;
                 }
 
                 if (paintStruct.contains("supports"))
@@ -261,7 +262,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     auto trackSequence = paintStruct["trackSequence"];
                     if (trackSequence.is_number())
                     {
-                        paint.Key.TrackSequence = trackSequence;
+                        key.TrackSequence = trackSequence;
                     }
                 }
 
@@ -270,7 +271,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     auto direction = paintStruct["direction"];
                     if (direction.is_number())
                     {
-                        paint.Key.Direction = direction;
+                        key.Direction = direction;
                     }
                 }
 
@@ -278,21 +279,21 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 {
                     auto vehicleSpriteDirection = paintStruct["vehicleSpriteDirection"];
                     if (vehicleSpriteDirection.is_number())
-                        paint.Key.VehicleKey[0].SpriteDirection = vehicleSpriteDirection;
+                        key.VehicleKey[0].SpriteDirection = vehicleSpriteDirection;
                 }
 
                 if (paintStruct.contains("vehiclePitch"))
                 {
                     auto vehiclePitch = paintStruct["vehiclePitch"];
                     if (vehiclePitch.is_number())
-                        paint.Key.VehicleKey[0].Pitch = vehiclePitch;
+                        key.VehicleKey[0].Pitch = vehiclePitch;
                 }
 
                 if (paintStruct.contains("vehicleNumPeeps"))
                 {
                     auto vehicleNumPeeps = paintStruct["vehicleNumPeeps"];
                     if (vehicleNumPeeps.is_number())
-                        paint.Key.VehicleKey[0].NumPeeps = vehicleNumPeeps;
+                        key.VehicleKey[0].NumPeeps = vehicleNumPeeps;
                 }
 
                 if (paintStruct.contains("paintType"))
@@ -456,7 +457,17 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         paint.HeightSupports = &_heightMapping[id];
                     }
                 }
-                Add(_paintStructsTree, paint.Key, paint);
+
+                //we need to check if the key exists
+                auto it = std::find(_keys.begin(), _keys.end(), key);
+                if (it != _keys.end())
+                    paint.Key = &(*it);
+                else
+                {
+                    _keys.push_back(key);
+                    paint.Key = &_keys.back();
+                }
+                Add(_paintStructsTree, *paint.Key, paint);
             }
         }
     }

@@ -31,6 +31,7 @@ private:
     std::map<std::string, ImageIdOffset> _imageIdOffsetMapping;
 
     std::vector<uint32_t> _vehicleIndices;
+    std::vector<PaintStructDescriptorKey> _keys;
 public:
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;

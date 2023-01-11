@@ -16,6 +16,17 @@ PaintStructDescriptor::PaintStructDescriptor()
 {
 }
 
+bool operator==(const VehicleKey& lhs, const VehicleKey& rhs)
+{
+    return lhs.SpriteDirection == rhs.SpriteDirection && lhs.Pitch == rhs.Pitch && lhs.NumPeeps == rhs.NumPeeps;
+}
+
+bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptorKey& rhs)
+{
+    return lhs.Element == rhs.Element && lhs.Direction == rhs.Direction && lhs.TrackSequence == rhs.TrackSequence
+        && lhs.VehicleKey == rhs.VehicleKey;
+}
+
 void PaintStructDescriptor::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, const Vehicle* vehicle) const
@@ -160,7 +171,7 @@ void PaintStructDescriptor::Paint(
 
             if (ImageIdOffset != nullptr)
             {
-                auto offset = Get(ImageIdOffset->Entries, Key);
+                auto offset = Get(ImageIdOffset->Entries, *Key);
                 if (offset != nullptr)
                     imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
 
