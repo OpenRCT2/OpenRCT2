@@ -4214,14 +4214,14 @@ void Ride::SetNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-RideNaming get_ride_naming(const ride_type_t rideType, rct_ride_entry* rideEntry)
+RideNaming get_ride_naming(const ride_type_t rideType, const rct_ride_entry& rideEntry)
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         return GetRideTypeDescriptor(rideType).Naming;
     }
 
-    return rideEntry->naming;
+    return rideEntry.naming;
 }
 
 /*
@@ -4711,7 +4711,7 @@ struct NecessarySpriteGroup
 };
 
 // Finds track pieces that a given ride entry has sprites for
-OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
+OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry& rideEntry)
 {
     // TODO: Use a std::span when C++20 available as 6 is due to jagged array
     static const std::array<NecessarySpriteGroup, 6> trackPieceRequiredSprites[TRACK_GROUP_COUNT] = {
@@ -4858,7 +4858,7 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const 
     // exception, at least)
     auto supportedPieces = OpenRCT2::BitSet<TRACK_GROUP_COUNT>();
     supportedPieces.flip();
-    auto defaultVehicle = rideEntry->GetDefaultCar();
+    auto defaultVehicle = rideEntry.GetDefaultCar();
     if (defaultVehicle != nullptr)
     {
         for (size_t i = 0; i < std::size(trackPieceRequiredSprites); i++)
@@ -5424,9 +5424,9 @@ void fix_invalid_vehicle_sprite_sizes()
     }
 }
 
-bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category)
+bool ride_entry_has_category(const rct_ride_entry& rideEntry, uint8_t category)
 {
-    auto rideType = rideEntry->GetFirstNonNullRideType();
+    auto rideType = rideEntry.GetFirstNonNullRideType();
     return GetRideTypeDescriptor(rideType).Category == category;
 }
 

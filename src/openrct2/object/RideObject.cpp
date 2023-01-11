@@ -50,19 +50,14 @@ static constexpr SpritePrecision PrecisionFromNumFrames(uint8_t numRotationFrame
         return static_cast<SpritePrecision>(bitscanforward(numRotationFrames) + 1);
 }
 
-static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
+static void RideObjectUpdateRideType(rct_ride_entry& rideEntry)
 {
-    if (rideEntry == nullptr)
-    {
-        return;
-    }
-
     for (auto i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
-        auto oldRideType = rideEntry->ride_type[i];
+        auto oldRideType = rideEntry.ride_type[i];
         if (oldRideType != RIDE_TYPE_NULL)
         {
-            rideEntry->ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
+            rideEntry.ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
         }
     }
 }
@@ -199,7 +194,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         context->LogError(ObjectError::InvalidProperty, "Nausea multiplier too high.");
     }
-    RideObjectUpdateRideType(&_legacyType);
+    RideObjectUpdateRideType(_legacyType);
 }
 
 void RideObject::Load()
@@ -568,7 +563,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
             });
     }
 
-    RideObjectUpdateRideType(&_legacyType);
+    RideObjectUpdateRideType(_legacyType);
     PopulateTablesFromJson(context, root);
 }
 

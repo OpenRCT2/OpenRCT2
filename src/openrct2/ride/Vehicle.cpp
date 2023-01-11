@@ -7390,7 +7390,7 @@ void Vehicle::Sub6DBF3E()
  *
  *  rct2: 0x006DB08C
  */
-bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* curRide, rct_ride_entry* rideEntry)
+bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* curRide, const rct_ride_entry& rideEntry)
 {
     CoordsXYZD location = {};
 
@@ -7415,7 +7415,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
 
             if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::EndStation)
             {
-                if (!(rideEntry->Cars[0].flags & CAR_ENTRY_FLAG_POWERED))
+                if (!(rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_POWERED))
                 {
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeRelease, TrackLocation);
                 }
@@ -7571,7 +7571,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
  *
  *  rct2: 0x006DAEB9
  */
-bool Vehicle::UpdateTrackMotionForwards(CarEntry* carEntry, Ride* curRide, rct_ride_entry* rideEntry)
+bool Vehicle::UpdateTrackMotionForwards(CarEntry* carEntry, Ride* curRide, const rct_ride_entry& rideEntry)
 {
     EntityId otherVehicleIndex = EntityId::GetNull();
 loc_6DAEB9:
@@ -7622,7 +7622,7 @@ loc_6DAEB9:
                 << 16; //_vehicleVelocityF64E08 * 1.2;
         }
     }
-    else if (rideEntry->flags & RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED && num_peeps > 0)
+    else if (rideEntry.flags & RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED && num_peeps > 0)
     {
         acceleration += CalculateRiderBraking();
     }
@@ -7764,7 +7764,7 @@ loc_6DAEB9:
                     auto head = otherVeh->TrainHead();
 
                     auto velocityDelta = abs(velocity - head->velocity);
-                    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
+                    if (!(rideEntry.flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
                     {
                         if (velocityDelta > 0xE0000)
                         {
@@ -7969,7 +7969,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
  *
  *  rct2: 0x006DBA33
  */
-bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, Ride* curRide, rct_ride_entry* rideEntry)
+bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, Ride* curRide, const rct_ride_entry& rideEntry)
 {
     EntityId otherVehicleIndex = EntityId::GetNull();
 
@@ -8071,7 +8071,7 @@ bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, Ride* curRide, rct_
                             return false;
                         }
 
-                        if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
+                        if (!(rideEntry.flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
                         {
                             if (abs(v4->velocity - v3->velocity) > 0xE0000)
                             {
@@ -8117,7 +8117,7 @@ bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, Ride* curRide, rct_
  *
  */
 
-void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, CarEntry* carEntry)
+void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, const rct_ride_entry& rideEntry, CarEntry* carEntry)
 {
     EntityId otherVehicleIndex = EntityId::GetNull();
     TileElement* tileElement = nullptr;
@@ -8405,7 +8405,7 @@ loc_6DC743:
     bank_rotation = moveInfo->bank_rotation;
     Pitch = moveInfo->Pitch;
 
-    if (rideEntry->Cars[0].flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
+    if (rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
     {
         if (Pitch != 0)
         {
@@ -8521,7 +8521,7 @@ loc_6DCC2C:
     bank_rotation = moveInfo->bank_rotation;
     Pitch = moveInfo->Pitch;
 
-    if (rideEntry->Cars[0].flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
+    if (rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
     {
         if (Pitch != 0)
         {
@@ -8740,6 +8740,9 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         return 0;
 
     rct_ride_entry* rideEntry = GetRideEntry();
+    if (rideEntry == nullptr)
+        return 0;
+
     CarEntry* carEntry = Entry();
 
     gCurrentVehicle = this;
@@ -8751,7 +8754,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
 
     for (Vehicle* vehicle = _vehicleFrontVehicle; vehicle != nullptr;)
     {
-        vehicle->UpdateTrackMotionMiniGolfVehicle(curRide, rideEntry, carEntry);
+        vehicle->UpdateTrackMotionMiniGolfVehicle(curRide, *rideEntry, carEntry);
         if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
@@ -8978,7 +8981,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
             if (car->remaining_distance < 0)
             {
                 // Backward loop
-                if (car->UpdateTrackMotionBackwards(carEntry, curRide, rideEntry))
+                if (car->UpdateTrackMotionBackwards(carEntry, curRide, *rideEntry))
                 {
                     break;
                 }
@@ -8996,7 +8999,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
                 // Location found
                 goto loc_6DBF3E;
             }
-            if (car->UpdateTrackMotionForwards(carEntry, curRide, rideEntry))
+            if (car->UpdateTrackMotionForwards(carEntry, curRide, *rideEntry))
             {
                 break;
             }

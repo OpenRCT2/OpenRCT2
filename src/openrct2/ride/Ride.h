@@ -1073,7 +1073,7 @@ void ride_fix_breakdown(Ride& ride, int32_t reliabilityIncreaseFactor);
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void ride_update_vehicle_colours(const Ride& ride);
 
-OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
+OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry& rideEntry);
 
 enum class RideSetSetting : uint8_t;
 money32 set_operating_setting(RideId rideId, RideSetSetting setting, uint8_t value);
@@ -1095,7 +1095,7 @@ bool ride_has_ratings(const Ride& ride);
 
 int32_t get_booster_speed(ride_type_t rideType, int32_t rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
-bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
+bool ride_entry_has_category(const rct_ride_entry& rideEntry, uint8_t category);
 
 int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
 
