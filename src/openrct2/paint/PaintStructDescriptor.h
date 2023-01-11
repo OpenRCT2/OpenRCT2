@@ -107,9 +107,6 @@ struct PaintStructDescriptor
         PeepTShirt
     };
 
-    // key fields
-    std::shared_ptr<PaintStructDescriptorKey> Key;
-
     // output fields
     std::optional<SupportsType> Supports;
     std::optional<FloorType> Floor;
@@ -133,7 +130,7 @@ struct PaintStructDescriptor
     //to-do : in the future, send a list of vehicle pointers so we can get the peep tshirt colours from every vehicle...
     void Paint(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TrackElement& trackElement, const Vehicle* vehicle) const;
+        const TrackElement& trackElement, const PaintStructDescriptorKey& key, const Vehicle* vehicle) const;
 
     PaintStructDescriptor();
 };

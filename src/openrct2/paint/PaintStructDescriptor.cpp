@@ -31,7 +31,7 @@ bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptor
 
 void PaintStructDescriptor::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, const Vehicle* vehicle) const
+    const TrackElement& trackElement, const PaintStructDescriptorKey& key, const Vehicle* vehicle) const
 {
     // if (!Key.MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle))
     // return;
@@ -173,7 +173,7 @@ void PaintStructDescriptor::Paint(
 
             if (ImageIdOffset != nullptr)
             {
-                auto offset = ImageIdOffset->Entries.Get(*Key);
+                auto offset = ImageIdOffset->Entries.Get(key);
                 if (offset != nullptr)
                     imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
 

@@ -459,15 +459,10 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 
                 //we need to check if the key exists
                 auto it = std::find(_keys.begin(), _keys.end(), key);
-                if (it != _keys.end())
-                    paint.Key = std::make_shared<PaintStructDescriptorKey>(*it);
-                else
-                {
+                if (it == _keys.end())
                     _keys.push_back(key);
-                    paint.Key = std::make_shared<PaintStructDescriptorKey>(key);
-                }
                 _paintStructs.push_back(paint);
-                _paintStructsTree.Add(*paint.Key, paint);
+                _paintStructsTree.Add(key, paint);
             }
         }
     }
@@ -529,9 +524,7 @@ void PaintObject::Paint(
     {
         for (const auto& paintStruct : *paintStructs)
         {
-            /*if (paintStruct != nullptr)
-                paintStruct->Paint(session, ride, trackSequence, direction, height, trackElement, vehicle);*/
-            paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement, vehicle);
+            paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement, key, vehicle);
         }
     }
 }
