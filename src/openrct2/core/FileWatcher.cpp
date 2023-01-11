@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,8 +18,11 @@
 #    include <sys/inotify.h>
 #    include <sys/types.h>
 #    include <unistd.h>
+#elif defined(__APPLE__)
+#    include <CoreServices/CoreServices.h>
 #endif
 
+#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "FileSystem.hpp"
@@ -82,6 +85,39 @@ FileWatcher::WatchDescriptor::~WatchDescriptor()
 }
 #endif
 
+#if defined(__APPLE__)
+
+static int eventModified = kFSEventStreamEventFlagItemFinderInfoMod | kFSEventStreamEventFlagItemModified
+    | kFSEventStreamEventFlagItemInodeMetaMod | kFSEventStreamEventFlagItemChangeOwner | kFSEventStreamEventFlagItemXattrMod;
+
+static int eventRenamed = kFSEventStreamEventFlagItemCreated | kFSEventStreamEventFlagItemRemoved
+    | kFSEventStreamEventFlagItemRenamed;
+
+void FileWatcher::FSEventsCallback(
+    ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
+    const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
+{
+    FileWatcher* fileWatcher = static_cast<FileWatcher*>(clientCallBackInfo);
+
+    Guard::Assert(fileWatcher != nullptr, "FileWatcher is null");
+    Guard::Assert(fileWatcher->OnFileChanged != nullptr, "OnFileChanged is null");
+
+    char** paths = static_cast<char**>(eventPaths);
+    for (size_t i = 0; i < numEvents; i++)
+    {
+        if (eventFlags[i] & eventModified)
+            log_verbose("Modified: %s\n", paths[i]);
+        if (eventFlags[i] & eventRenamed)
+            log_verbose("Renamed: %s\n", paths[i]);
+
+        if (eventFlags[i] & eventModified || eventFlags[i] & eventRenamed)
+        {
+            fileWatcher->OnFileChanged(paths[i]);
+        }
+    }
+}
+#endif
+
 FileWatcher::FileWatcher(u8string_view directoryPath)
 {
 #ifdef _WIN32
@@ -103,6 +139,22 @@ FileWatcher::FileWatcher(u8string_view directoryPath)
             _watchDescs.emplace_back(_fileDesc.Fd, p.path().string());
         }
     }
+#elif defined(__APPLE__)
+    CFStringRef path = CFStringCreateWithCString(kCFAllocatorDefault, directoryPath.data(), kCFStringEncodingUTF8);
+    CFArrayRef pathsToWatch = CFArrayCreate(kCFAllocatorDefault, reinterpret_cast<const void**>(&path), 1, nullptr);
+    CFAbsoluteTime latencyInSeconds = 0.5;
+    FSEventStreamContext context = { 0, this, nullptr, nullptr, nullptr };
+
+    _stream = FSEventStreamCreate(
+        NULL, &FSEventsCallback, &context, pathsToWatch, kFSEventStreamEventIdSinceNow, latencyInSeconds,
+        kFSEventStreamCreateFlagFileEvents);
+
+    if (!_stream)
+    {
+        throw std::runtime_error("Unable to create FSEventStream");
+    }
+
+    _runLoop = CFRunLoopGetCurrent();
 #else
     throw std::runtime_error("FileWatcher not supported on this platform.");
 #endif
@@ -119,6 +171,16 @@ FileWatcher::~FileWatcher()
     _finished = true;
     _watchThread.join();
     _fileDesc.Close();
+#elif defined(__APPLE__)
+    if (_stream)
+    {
+        FSEventStreamStop(_stream);
+        FSEventStreamUnscheduleFromRunLoop(_stream, _runLoop, kCFRunLoopDefaultMode);
+        FSEventStreamInvalidate(_stream);
+        FSEventStreamRelease(_stream);
+    }
+    _watchThread.join();
+    _stream = nullptr;
 #else
     return;
 #endif
@@ -185,6 +247,13 @@ void FileWatcher::WatchDirectory()
 
         // Sleep for 1/2 second
         usleep(500000);
+    }
+#elif defined(__APPLE__)
+    if (_stream)
+    {
+        FSEventStreamScheduleWithRunLoop(_stream, _runLoop, kCFRunLoopDefaultMode);
+        FSEventStreamStart(_stream);
+        CFRunLoopRun();
     }
 #endif
 }

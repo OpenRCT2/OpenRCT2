@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -269,9 +269,18 @@ static void Select(const char* path)
     {
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
             SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
-            InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-            window_close_by_class(WindowClass::Loadsave);
-            gfx_invalidate_screen();
+            if (OpenRCT2::GetContext()->LoadParkFromFile(pathBuffer))
+            {
+                InvokeCallback(MODAL_RESULT_OK, pathBuffer);
+                window_close_by_class(WindowClass::Loadsave);
+                gfx_invalidate_screen();
+            }
+            else
+            {
+                // Not the best message...
+                ContextShowError(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
+                InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
+            }
             break;
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
@@ -580,7 +589,7 @@ public:
             }
 
             // Disable the Up button if the current directory is the root directory
-            if (str_is_null_or_empty(_parentDirectory) && !drives)
+            if (String::IsNullOrEmpty(_parentDirectory) && !drives)
                 disabled_widgets |= (1uLL << WIDX_UP);
             else
                 disabled_widgets &= ~(1uLL << WIDX_UP);

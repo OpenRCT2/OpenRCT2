@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -423,7 +423,7 @@ int32_t Park::CalculateParkRating() const
         for (auto& ride : GetRideManager())
         {
             totalRideUptime += 100 - ride.downtime;
-            if (ride_has_ratings(&ride))
+            if (ride_has_ratings(ride))
             {
                 totalRideExcitement += ride.excitement / 8;
                 totalRideIntensity += ride.intensity / 8;
@@ -485,7 +485,7 @@ money64 Park::CalculateParkValue() const
     money64 result = 0;
     for (const auto& ride : GetRideManager())
     {
-        result += CalculateRideValue(&ride);
+        result += CalculateRideValue(ride);
     }
 
     // +7.00 per guest
@@ -494,13 +494,13 @@ money64 Park::CalculateParkValue() const
     return result;
 }
 
-money64 Park::CalculateRideValue(const Ride* ride) const
+money64 Park::CalculateRideValue(const Ride& ride) const
 {
     money64 result = 0;
-    if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
+    if (ride.value != RIDE_VALUE_UNDEFINED)
     {
-        const auto& rtd = ride->GetRideTypeDescriptor();
-        result = ToMoney32FromGBP(static_cast<int32_t>(ride->value))
+        const auto& rtd = ride.GetRideTypeDescriptor();
+        result = ToMoney64FromGBP(ride.value)
             * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4LL);
     }
     return result;

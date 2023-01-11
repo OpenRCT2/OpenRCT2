@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1266,7 +1266,7 @@ bool Vehicle::CloseRestraints()
             {
                 curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
 
-                ride_breakdown_add_news_item(curRide);
+                ride_breakdown_add_news_item(*curRide);
 
                 curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -1382,7 +1382,7 @@ bool Vehicle::OpenRestraints()
             {
                 curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
 
-                ride_breakdown_add_news_item(curRide);
+                ride_breakdown_add_news_item(*curRide);
 
                 curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -1413,33 +1413,33 @@ bool Vehicle::OpenRestraints()
     return restraintsOpen;
 }
 
-void RideUpdateMeasurementsSpecialElements_Default(Ride* ride, const track_type_t trackType)
+void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const track_type_t trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
     uint16_t trackFlags = ted.Flags;
     if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
     {
-        if (ride->inversions < OpenRCT2::Limits::MaxInversions)
-            ride->inversions++;
+        if (ride.inversions < OpenRCT2::Limits::MaxInversions)
+            ride.inversions++;
     }
 }
 
-void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride* ride, const track_type_t trackType)
+void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const track_type_t trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
     uint16_t trackFlags = ted.Flags;
     if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
     {
-        if (ride->holes < OpenRCT2::Limits::MaxGolfHoles)
-            ride->holes++;
+        if (ride.holes < OpenRCT2::Limits::MaxGolfHoles)
+            ride.holes++;
     }
 }
 
-void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride* ride, const track_type_t trackType)
+void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const track_type_t trackType)
 {
     if (trackType >= TrackElemType::FlatCovered && trackType <= TrackElemType::RightQuarterTurn3TilesCovered)
     {
-        ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+        ride.special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
     }
 }
 
@@ -1548,7 +1548,7 @@ void Vehicle::UpdateMeasurements()
         }
 
         const auto& rtd = curRide->GetRideTypeDescriptor();
-        rtd.UpdateMeasurementsSpecialElements(curRide, trackElemType);
+        rtd.UpdateMeasurementsSpecialElements(*curRide, trackElemType);
 
         switch (trackElemType)
         {
@@ -1600,16 +1600,16 @@ void Vehicle::UpdateMeasurements()
             switch (curRide->turn_count_default >> 11)
             {
                 case 0:
-                    increment_turn_count_1_element(curRide, turnType);
+                    increment_turn_count_1_element(*curRide, turnType);
                     break;
                 case 1:
-                    increment_turn_count_2_elements(curRide, turnType);
+                    increment_turn_count_2_elements(*curRide, turnType);
                     break;
                 case 2:
-                    increment_turn_count_3_elements(curRide, turnType);
+                    increment_turn_count_3_elements(*curRide, turnType);
                     break;
                 default:
-                    increment_turn_count_4_plus_elements(curRide, turnType);
+                    increment_turn_count_4_plus_elements(*curRide, turnType);
                     break;
             }
         }
@@ -1711,7 +1711,7 @@ void Vehicle::UpdateMeasurements()
 
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
         {
-            uint8_t helixes = ride_get_helix_sections(curRide);
+            uint8_t helixes = ride_get_helix_sections(*curRide);
             if (helixes != OpenRCT2::Limits::MaxHelices)
                 helixes++;
 
@@ -2129,20 +2129,20 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     SetState(Vehicle::Status::WaitingForPassengers);
 }
 
-static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, EntityId spriteIndex)
+static std::optional<uint32_t> ride_get_train_index_from_vehicle(const Ride& ride, EntityId spriteIndex)
 {
     uint32_t trainIndex = 0;
-    while (ride->vehicles[trainIndex] != spriteIndex)
+    while (ride.vehicles[trainIndex] != spriteIndex)
     {
         trainIndex++;
-        if (trainIndex >= ride->NumTrains)
+        if (trainIndex >= ride.NumTrains)
         {
             // This should really return nullopt, but doing so
             // would break some hacked parks that hide track by setting tracked rides'
             // track type to, e.g., Crooked House
             break;
         }
-        if (trainIndex >= std::size(ride->vehicles))
+        if (trainIndex >= std::size(ride.vehicles))
         {
             return std::nullopt;
         }
@@ -2175,7 +2175,7 @@ void Vehicle::UpdateWaitingForPassengers()
             return;
         }
 
-        auto trainIndex = ride_get_train_index_from_vehicle(curRide, sprite_index);
+        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, sprite_index);
         if (!trainIndex.has_value())
         {
             return;
@@ -2460,7 +2460,7 @@ void Vehicle::UpdateWaitingToDepart()
         int32_t direction;
 
         uint8_t trackDirection = GetTrackDirection();
-        if (track_block_get_next_from_zero(TrackLocation, curRide, trackDirection, &track, &zUnused, &direction, false))
+        if (track_block_get_next_from_zero(TrackLocation, *curRide, trackDirection, &track, &zUnused, &direction, false))
         {
             if (track.element->AsTrack()->HasCableLift())
             {
@@ -3111,7 +3111,7 @@ void Vehicle::UpdateDeparting()
                 return;
 
             curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-            ride_breakdown_add_news_item(curRide);
+            ride_breakdown_add_news_item(*curRide);
 
             curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -3452,7 +3452,7 @@ void Vehicle::UpdateCollisionSetup()
     if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
+        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->sprite_index);
         if (!trainIndex.has_value())
         {
             return;
@@ -4141,7 +4141,7 @@ void Vehicle::UpdateTravellingCableLift()
                 return;
 
             curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-            ride_breakdown_add_news_item(curRide);
+            ride_breakdown_add_news_item(*curRide);
             curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
@@ -5147,24 +5147,24 @@ static TileElement* vehicle_check_collision(const CoordsXYZ& vehiclePosition)
     return nullptr;
 }
 
-static void ride_train_crash(Ride* ride, uint16_t numFatalities)
+static void ride_train_crash(Ride& ride, uint16_t numFatalities)
 {
     Formatter ft;
     ft.Add<uint16_t>(numFatalities);
 
     uint8_t crashType = numFatalities == 0 ? RIDE_CRASH_TYPE_NO_FATALITIES : RIDE_CRASH_TYPE_FATALITIES;
 
-    if (crashType >= ride->last_crash_type)
-        ride->last_crash_type = crashType;
+    if (crashType >= ride.last_crash_type)
+        ride.last_crash_type = crashType;
 
     if (numFatalities != 0)
     {
         if (gConfigNotifications.RideCasualties)
         {
-            ride->FormatNameTo(ft);
+            ride.FormatNameTo(ft);
             News::AddItemToQueue(
                 News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X,
-                ride->id.ToUnderlying(), ft);
+                ride.id.ToUnderlying(), ft);
         }
 
         if (gParkRatingCasualtyPenalty < 500)
@@ -5183,7 +5183,7 @@ void Vehicle::KillAllPassengersInTrain()
     if (curRide == nullptr)
         return;
 
-    ride_train_crash(curRide, NumPeepsUntilTrainTail());
+    ride_train_crash(*curRide, NumPeepsUntilTrainTail());
 
     for (Vehicle* trainCar = GetEntity<Vehicle>(sprite_index); trainCar != nullptr;
          trainCar = GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
@@ -5239,7 +5239,7 @@ void Vehicle::CrashOnLand()
     if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
+        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->sprite_index);
         if (!trainIndex.has_value())
         {
             return;
@@ -5307,7 +5307,7 @@ void Vehicle::CrashOnWater()
     if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
+        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->sprite_index);
         if (!trainIndex.has_value())
         {
             return;
@@ -6667,7 +6667,7 @@ void Vehicle::UpdateAdditionalAnimation()
                     auto curRide = GetRide();
                     if (curRide != nullptr)
                     {
-                        if (!ride_has_station_shelter(curRide)
+                        if (!ride_has_station_shelter(*curRide)
                             || (status != Vehicle::Status::MovingToEndOfStation && status != Vehicle::Status::Arriving))
                         {
                             int32_t typeIndex = [&] {

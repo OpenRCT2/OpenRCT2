@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -3430,8 +3430,8 @@ void network_chat_show_connected_message()
 // Display server greeting if one exists
 void network_chat_show_server_greeting()
 {
-    auto greeting = network_get_server_greeting();
-    if (!str_is_null_or_empty(greeting))
+    const auto& greeting = network_get_server_greeting();
+    if (!greeting.empty())
     {
         thread_local std::string greeting_formatted;
         greeting_formatted.assign("{OUTLINE}{GREEN}");
@@ -3886,35 +3886,35 @@ static u8string network_get_public_key_path(u8string_view playerName, u8string_v
     return Path::Combine(network_get_keys_directory(), filename);
 }
 
-const utf8* network_get_server_name()
+u8string network_get_server_name()
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
-    return network.ServerName.c_str();
+    return network.ServerName;
 }
-const utf8* network_get_server_description()
+u8string network_get_server_description()
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
-    return network.ServerDescription.c_str();
+    return network.ServerDescription;
 }
-const utf8* network_get_server_greeting()
+u8string network_get_server_greeting()
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
-    return network.ServerGreeting.c_str();
+    return network.ServerGreeting;
 }
-const utf8* network_get_server_provider_name()
+u8string network_get_server_provider_name()
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
-    return network.ServerProviderName.c_str();
+    return network.ServerProviderName;
 }
-const utf8* network_get_server_provider_email()
+u8string network_get_server_provider_email()
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
-    return network.ServerProviderEmail.c_str();
+    return network.ServerProviderEmail;
 }
-const utf8* network_get_server_provider_website()
+u8string network_get_server_provider_website()
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
-    return network.ServerProviderWebsite.c_str();
+    return network.ServerProviderWebsite;
 }
 
 std::string network_get_version()
@@ -4168,29 +4168,29 @@ void network_append_chat_log(std::string_view)
 void network_append_server_log(const utf8* text)
 {
 }
-const utf8* network_get_server_name()
+u8string network_get_server_name()
 {
-    return nullptr;
+    return u8string();
 }
-const utf8* network_get_server_description()
+u8string network_get_server_description()
 {
-    return nullptr;
+    return u8string();
 }
-const utf8* network_get_server_greeting()
+u8string network_get_server_greeting()
 {
-    return nullptr;
+    return u8string();
 }
-const utf8* network_get_server_provider_name()
+u8string network_get_server_provider_name()
 {
-    return nullptr;
+    return u8string();
 }
-const utf8* network_get_server_provider_email()
+u8string network_get_server_provider_email()
 {
-    return nullptr;
+    return u8string();
 }
-const utf8* network_get_server_provider_website()
+u8string network_get_server_provider_website()
 {
-    return nullptr;
+    return u8string();
 }
 std::string network_get_version()
 {

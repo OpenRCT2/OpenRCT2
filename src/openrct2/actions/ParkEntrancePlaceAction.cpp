@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "PlaceParkEntranceAction.h"
+#include "ParkEntrancePlaceAction.h"
 
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
@@ -21,24 +21,24 @@
 #include "../world/Park.h"
 #include "../world/Surface.h"
 
-PlaceParkEntranceAction::PlaceParkEntranceAction(const CoordsXYZD& location, ObjectEntryIndex pathType)
+ParkEntrancePlaceAction::ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType)
     : _loc(location)
     , _pathType(pathType)
 {
 }
 
-void PlaceParkEntranceAction::AcceptParameters(GameActionParameterVisitor& visitor)
+void ParkEntrancePlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("footpathSurfaceObject", _pathType);
 }
 
-uint16_t PlaceParkEntranceAction::GetActionFlags() const
+uint16_t ParkEntrancePlaceAction::GetActionFlags() const
 {
     return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly;
 }
 
-void PlaceParkEntranceAction::Serialise(DataSerialiser& stream)
+void ParkEntrancePlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
@@ -46,7 +46,7 @@ void PlaceParkEntranceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_pathType);
 }
 
-GameActions::Result PlaceParkEntranceAction::Query() const
+GameActions::Result ParkEntrancePlaceAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
@@ -109,7 +109,7 @@ GameActions::Result PlaceParkEntranceAction::Query() const
     return res;
 }
 
-GameActions::Result PlaceParkEntranceAction::Execute() const
+GameActions::Result ParkEntrancePlaceAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::LandPurchase;
@@ -183,7 +183,7 @@ GameActions::Result PlaceParkEntranceAction::Execute() const
     return res;
 }
 
-bool PlaceParkEntranceAction::CheckMapCapacity(int16_t numTiles) const
+bool ParkEntrancePlaceAction::CheckMapCapacity(int16_t numTiles) const
 {
     CoordsXYZ entranceLoc = _loc;
     for (uint8_t index = 0; index < 3; index++)

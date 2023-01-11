@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,7 @@
 using namespace OpenRCT2;
 
 static constexpr const int32_t WW = 400;
-static constexpr const int32_t WH = 352;
+static constexpr const int32_t WH = 400;
 static constexpr const StringId WINDOW_TITLE = STR_ABOUT;
 static constexpr const int32_t TABHEIGHT = 50;
 
@@ -72,6 +72,8 @@ static Widget _windowAboutOpenRCT2Widgets[] = {
     MakeWidget({168, 115 + 72}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
     MakeWidget({10, 250},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_2), // Contributors
     MakeWidget({10, 300},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_3), // Copyright
+    MakeWidget({10, 350},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_1), // Special Thanks
+    MakeWidget({10, 375},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_2), // Company names
     WIDGETS_END,
 };
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -112,10 +112,10 @@ void RideEntranceExitRemoveGhost()
  *  rct2: 0x006CA28C
  */
 money32 RideEntranceExitPlaceGhost(
-    Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
+    const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
 {
     ride_construction_remove_ghosts();
-    money32 result = RideEntranceExitPlaceGhost(ride->id, entranceExitCoords, direction, placeType, stationNum);
+    money32 result = RideEntranceExitPlaceGhost(ride.id, entranceExitCoords, direction, placeType, stationNum);
 
     if (result != MONEY32_UNDEFINED)
     {

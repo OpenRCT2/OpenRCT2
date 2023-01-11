@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,18 +75,18 @@ private:
     void UpdateWatering();
     void UpdateAnswering();
     void UpdateFixing(int32_t steps);
-    bool UpdateFixingEnterStation(Ride* ride) const;
-    bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride);
-    bool UpdateFixingFixVehicle(bool firstRun, const Ride* ride);
-    bool UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride* ride);
-    bool UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride);
+    bool UpdateFixingEnterStation(Ride& ride) const;
+    bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride);
+    bool UpdateFixingFixVehicle(bool firstRun, const Ride& ride);
+    bool UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride);
+    bool UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride);
     bool UpdateFixingFixStationEnd(bool firstRun);
-    bool UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride);
-    bool UpdateFixingFixStationStart(bool firstRun, const Ride* ride);
-    bool UpdateFixingFixStationBrakes(bool firstRun, Ride* ride);
-    bool UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride);
-    bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride);
-    bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride);
+    bool UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride);
+    bool UpdateFixingFixStationStart(bool firstRun, const Ride& ride);
+    bool UpdateFixingFixStationBrakes(bool firstRun, Ride& ride);
+    bool UpdateFixingMoveToStationExit(bool firstRun, const Ride& ride);
+    bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& ride);
+    bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride);
     void UpdateRideInspected(RideId rideIndex);
     void UpdateHeadingToInspect();
 

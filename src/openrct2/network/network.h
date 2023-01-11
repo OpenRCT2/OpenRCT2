@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -103,12 +103,12 @@ void network_set_password(const char* password);
 
 void network_append_chat_log(std::string_view text);
 void network_append_server_log(const utf8* text);
-[[nodiscard]] const utf8* network_get_server_name();
-[[nodiscard]] const utf8* network_get_server_description();
-[[nodiscard]] const utf8* network_get_server_greeting();
-[[nodiscard]] const utf8* network_get_server_provider_name();
-[[nodiscard]] const utf8* network_get_server_provider_email();
-[[nodiscard]] const utf8* network_get_server_provider_website();
+[[nodiscard]] u8string network_get_server_name();
+[[nodiscard]] u8string network_get_server_description();
+[[nodiscard]] u8string network_get_server_greeting();
+[[nodiscard]] u8string network_get_server_provider_name();
+[[nodiscard]] u8string network_get_server_provider_email();
+[[nodiscard]] u8string network_get_server_provider_website();
 
 [[nodiscard]] std::string network_get_version();
 

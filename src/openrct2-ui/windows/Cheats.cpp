@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,8 +15,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
-#include <openrct2/actions/SetCheatAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
@@ -356,7 +356,7 @@ class CheatsWindow final : public Window
 {
 private:
     char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
-    money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
+    money64 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
     int32_t _selectedStaffSpeed = 1;
     int32_t _parkRatingSpinnerValue{};
     int32_t _yearSpinnerValue = 1;
@@ -589,7 +589,7 @@ public:
         if (page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER)
         {
             auto val = string_to_money(std::string(text).c_str());
-            if (val != MONEY32_UNDEFINED)
+            if (val != MONEY64_UNDEFINED)
             {
                 _moneySpinnerValue = val;
             }
@@ -798,8 +798,8 @@ private:
                 InvalidateWidget(WIDX_PARK_RATING_SPINNER);
                 if (ParkGetForcedRating() >= 0)
                 {
-                    auto setCheatAction = SetCheatAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
-                    GameActions::Execute(&setCheatAction);
+                    auto cheatSetAction = CheatSetAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
+                    GameActions::Execute(&cheatSetAction);
                 }
                 break;
             case WIDX_DECREASE_PARK_RATING:

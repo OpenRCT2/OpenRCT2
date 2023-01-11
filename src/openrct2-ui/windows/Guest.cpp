@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1242,7 +1242,7 @@ private:
         uint8_t currListPosition = 0;
         for (const auto& r : GetRideManager())
         {
-            if (r.IsRide() && guest->HasRidden(&r))
+            if (r.IsRide() && guest->HasRidden(r))
             {
                 list_item_positions[currListPosition] = r.id.ToUnderlying();
                 currListPosition++;

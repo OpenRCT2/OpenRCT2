@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,13 +16,13 @@
 #include "../PlatformEnvironment.h"
 #include "../ReplayManager.h"
 #include "../Version.h"
+#include "../actions/CheatSetAction.h"
 #include "../actions/ClimateSetAction.h"
 #include "../actions/ParkSetParameterAction.h"
 #include "../actions/RideFreezeRatingAction.h"
 #include "../actions/RideSetPriceAction.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/ScenarioSetSettingAction.h"
-#include "../actions/SetCheatAction.h"
 #include "../actions/StaffSetCostumeAction.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
@@ -242,7 +242,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     else
                     {
                         ride->mode = static_cast<RideMode>(mode & 0xFF);
-                        invalidate_test_results(ride);
+                        invalidate_test_results(*ride);
                     }
                 }
             }
@@ -764,14 +764,14 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             money32 money = ToMoney64FromGBP(double_val[0]);
             if (gCash != money)
             {
-                auto setCheatAction = SetCheatAction(CheatType::SetMoney, money);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                auto cheatSetAction = CheatSetAction(CheatType::SetMoney, money);
+                cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                     if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("set money command failed, likely due to permissions.");
                     else
                         console.Execute("get money");
                 });
-                GameActions::Execute(&setCheatAction);
+                GameActions::Execute(&cheatSetAction);
             }
             else
             {
@@ -781,7 +781,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "scenario_initial_cash" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::InitialCash, std::clamp(ToMoney32FromGBP(int_val[0]), 0.00_GBP, 1000000.00_GBP));
+                ScenarioSetSetting::InitialCash, std::clamp(ToMoney64FromGBP(int_val[0]), 0.00_GBP, 1000000.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set scenario_initial_cash command failed, likely due to permissions.");
@@ -792,10 +792,9 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "current_loan" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::InitialLoan,
-                std::clamp<money64>(
-                    ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan));
+            auto amount = std::clamp(
+                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan);
+            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::InitialLoan, amount);
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set current_loan command failed, likely due to permissions.");
@@ -806,9 +805,9 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "max_loan" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::MaximumLoanSize,
-                std::clamp(ToMoney32FromGBP(int_val[0]) - ToMoney32FromGBP(int_val[0] % 1000), 0.00_GBP, 5000000.00_GBP));
+            auto amount = std::clamp(
+                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, 5000000.00_GBP);
+            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::MaximumLoanSize, amount);
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set max_loan command failed, likely due to permissions.");
@@ -820,7 +819,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "guest_initial_cash" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::AverageCashPerGuest, std::clamp(ToMoney32FromGBP(double_val[0]), 0.00_GBP, 1000.00_GBP));
+                ScenarioSetSetting::AverageCashPerGuest, std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 1000.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set guest_initial_cash command failed, likely due to permissions.");
@@ -938,14 +937,14 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "no_money" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto setCheatAction = SetCheatAction(CheatType::NoMoney, int_val[0] != 0);
-            setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+            auto cheatSetAction = CheatSetAction(CheatType::NoMoney, int_val[0] != 0);
+            cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set no_money command failed, likely due to permissions.");
                 else
                     console.Execute("get no_money");
             });
-            GameActions::Execute(&setCheatAction);
+            GameActions::Execute(&cheatSetAction);
         }
         else if (argv[0] == "difficult_park_rating" && invalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -984,7 +983,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "land_rights_cost" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::CostToBuyLand, std::clamp(ToMoney32FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
+                ScenarioSetSetting::CostToBuyLand, std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set land_rights_cost command failed, likely due to permissions.");
@@ -997,7 +996,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
                 ScenarioSetSetting::CostToBuyConstructionRights,
-                std::clamp(ToMoney32FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
+                std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set construction_rights_cost command failed, likely due to permissions.");
@@ -1094,14 +1093,14 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             if (gCheatsSandboxMode != (int_val[0] != 0))
             {
-                auto setCheatAction = SetCheatAction(CheatType::SandboxMode, int_val[0] != 0);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                auto cheatSetAction = CheatSetAction(CheatType::SandboxMode, int_val[0] != 0);
+                cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                     if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get cheat_sandbox_mode");
                 });
-                GameActions::Execute(&setCheatAction);
+                GameActions::Execute(&cheatSetAction);
             }
             else
             {
@@ -1112,14 +1111,14 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             if (gCheatsDisableClearanceChecks != (int_val[0] != 0))
             {
-                auto setCheatAction = SetCheatAction(CheatType::DisableClearanceChecks, int_val[0] != 0);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                auto cheatSetAction = CheatSetAction(CheatType::DisableClearanceChecks, int_val[0] != 0);
+                cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                     if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get cheat_disable_clearance_checks");
                 });
-                GameActions::Execute(&setCheatAction);
+                GameActions::Execute(&cheatSetAction);
             }
             else
             {
@@ -1130,14 +1129,14 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             if (gCheatsDisableSupportLimits != (int_val[0] != 0))
             {
-                auto setCheatAction = SetCheatAction(CheatType::DisableSupportLimits, int_val[0] != 0);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                auto cheatSetAction = CheatSetAction(CheatType::DisableSupportLimits, int_val[0] != 0);
+                cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                     if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get cheat_disable_support_limits");
                 });
-                GameActions::Execute(&setCheatAction);
+                GameActions::Execute(&cheatSetAction);
             }
             else
             {

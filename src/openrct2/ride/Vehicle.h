@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -532,9 +532,9 @@ void vehicle_update_all();
 void vehicle_sounds_update();
 uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction);
 
-void RideUpdateMeasurementsSpecialElements_Default(Ride* ride, const track_type_t trackType);
-void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride* ride, const track_type_t trackType);
-void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride* ride, const track_type_t trackType);
+void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const track_type_t trackType);
+void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const track_type_t trackType);
+void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const track_type_t trackType);
 
 extern Vehicle* gCurrentVehicle;
 extern StationIndex _vehicleStationIndex;

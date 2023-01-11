@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -118,7 +118,7 @@ void DiscordService::RefreshPresence() const
                 state = serverName;
 
                 // NOTE: the party size is displayed next to state
-                discordPresence.partyId = network_get_server_name();
+                discordPresence.partyId = network_get_server_name().c_str();
                 discordPresence.partySize = network_get_num_players();
                 discordPresence.partyMax = 256;
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -785,7 +785,7 @@ private:
             Formatter ft;
             peep.FormatNameTo(ft);
             format_string(name, sizeof(name), STR_STRINGID, ft.Data());
-            if (strcasestr(name, _filterName.c_str()) == nullptr)
+            if (!String::Contains(name, _filterName.c_str(), true))
             {
                 return false;
             }

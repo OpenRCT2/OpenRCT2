@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,10 +17,10 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/ChangeMapSizeAction.h>
 #include <openrct2/actions/LandSetRightsAction.h>
-#include <openrct2/actions/PlaceParkEntranceAction.h>
-#include <openrct2/actions/PlacePeepSpawnAction.h>
+#include <openrct2/actions/MapChangeSizeAction.h>
+#include <openrct2/actions/ParkEntrancePlaceAction.h>
+#include <openrct2/actions/PeepSpawnPlaceAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/entity/EntityList.h>
@@ -516,7 +516,7 @@ public:
 
         ParkEntranceRemoveGhost();
 
-        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
+        auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId);
         gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
         auto result = GameActions::Execute(&gameAction);
@@ -534,7 +534,7 @@ public:
         CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
         if (!parkEntrancePosition.IsNull())
         {
-            auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
+            auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId);
             auto result = GameActions::Execute(&gameAction);
             if (result.Error == GameActions::Status::Ok)
             {
@@ -584,7 +584,7 @@ public:
 
         int32_t mapZ = tileElement->GetBaseZ();
 
-        auto gameAction = PlacePeepSpawnAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
+        auto gameAction = PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
         auto result = GameActions::Execute(&gameAction);
         if (result.Error == GameActions::Status::Ok)
         {
@@ -630,8 +630,8 @@ public:
                     if (_resizeDirection != ResizeDirection::Y)
                         newMapSize.x = size;
 
-                    auto changeMapSizeAction = ChangeMapSizeAction(newMapSize);
-                    GameActions::Execute(&changeMapSizeAction);
+                    auto mapChangeSizeAction = MapChangeSizeAction(newMapSize);
+                    GameActions::Execute(&mapChangeSizeAction);
                     Invalidate();
                 }
                 break;
@@ -978,7 +978,7 @@ private:
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
             newMapSize.x++;
 
-        auto increaseMapSizeAction = ChangeMapSizeAction(newMapSize);
+        auto increaseMapSizeAction = MapChangeSizeAction(newMapSize);
         GameActions::Execute(&increaseMapSizeAction);
     }
 
@@ -990,7 +990,7 @@ private:
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
             newMapSize.x--;
 
-        auto decreaseMapSizeAction = ChangeMapSizeAction(newMapSize);
+        auto decreaseMapSizeAction = MapChangeSizeAction(newMapSize);
         GameActions::Execute(&decreaseMapSizeAction);
     }
 

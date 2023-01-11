@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,14 +11,14 @@
 
 #include "GameAction.h"
 
-class PlacePeepSpawnAction final : public GameActionBase<GameCommand::PlacePeepSpawn>
+class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
 {
 private:
-    CoordsXYZD _location;
+    money16 _fee{ MONEY16_UNDEFINED };
 
 public:
-    PlacePeepSpawnAction() = default;
-    PlacePeepSpawnAction(const CoordsXYZD& location);
+    ParkSetEntranceFeeAction() = default;
+    ParkSetEntranceFeeAction(money16 fee);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

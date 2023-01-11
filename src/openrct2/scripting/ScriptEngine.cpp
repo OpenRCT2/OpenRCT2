@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1271,11 +1271,10 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "bannersetcolour", GameCommand::SetBannerColour },
     { "bannersetname", GameCommand::SetBannerName },
     { "bannersetstyle", GameCommand::SetBannerStyle },
-    { "changemapsize", GameCommand::ChangeMapSize },
     { "clearscenery", GameCommand::ClearScenery },
     { "climateset", GameCommand::SetClimate },
     { "footpathplace", GameCommand::PlacePath },
-    { "footpathlayoutplace", GameCommand::PlacePathFromTrack },
+    { "footpathlayoutplace", GameCommand::PlacePathLayout },
     { "footpathremove", GameCommand::RemovePath },
     { "footpathadditionplace", GameCommand::PlaceFootpathAddition },
     { "footpathadditionremove", GameCommand::RemoveFootpathAddition },
@@ -1291,6 +1290,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "largesceneryremove", GameCommand::RemoveLargeScenery },
     { "largescenerysetcolour", GameCommand::SetLargeSceneryColour },
     { "loadorquit", GameCommand::LoadOrQuit },
+    { "mapchangesize", GameCommand::ChangeMapSize },
     { "mazeplacetrack", GameCommand::PlaceMazeDesign },
     { "mazesettrack", GameCommand::SetMazeTrack },
     { "networkmodifygroup", GameCommand::ModifyGroups },
@@ -1298,6 +1298,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "parkentranceremove", GameCommand::RemoveParkEntrance },
     { "parkmarketing", GameCommand::StartMarketingCampaign },
     { "parksetdate", GameCommand::SetDate },
+    { "parksetentrancefee", GameCommand::SetParkEntranceFee },
     { "parksetloan", GameCommand::SetCurrentLoan },
     { "parksetname", GameCommand::SetParkName },
     { "parksetparameter", GameCommand::SetParkOpen },
@@ -1321,7 +1322,6 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "ridesetvehicle", GameCommand::SetRideVehicles },
     { "scenariosetsetting", GameCommand::EditScenarioOptions },
     { "setcheat", GameCommand::Cheat },
-    { "setparkentrancefee", GameCommand::SetParkEntranceFee },
     { "signsetname", GameCommand::SetSignName },
     { "signsetstyle", GameCommand::SetSignStyle },
     { "smallsceneryplace", GameCommand::PlaceScenery },

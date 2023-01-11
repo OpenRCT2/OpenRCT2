@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -527,7 +527,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            invalidate_test_results(ride);
+            invalidate_test_results(*ride);
             switch (_trackType)
             {
                 case TrackElemType::OnRidePhoto:

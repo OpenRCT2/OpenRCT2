@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,11 +15,11 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
+#include "actions/CheatSetAction.h"
 #include "actions/FootpathPlaceAction.h"
 #include "actions/GameAction.h"
 #include "actions/RideEntranceExitPlaceAction.h"
 #include "actions/RideSetSettingAction.h"
-#include "actions/SetCheatAction.h"
 #include "actions/TileModifyAction.h"
 #include "actions/TrackPlaceAction.h"
 #include "config/Config.h"

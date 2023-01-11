@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -164,9 +164,7 @@ public:
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
                     CURRENCY_SYMBOL_MAX_SIZE);
 
-                safe_strcpy(
-                    gConfigGeneral.CustomCurrencySymbol, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
-                    CURRENCY_SYMBOL_MAX_SIZE);
+                gConfigGeneral.CustomCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode;
 
                 ConfigSaveDefault();
                 window_invalidate_all();

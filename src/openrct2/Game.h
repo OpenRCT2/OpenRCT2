@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,7 @@ enum class GameCommand : int32_t
     PlaceScenery,             // GA
     SetWaterHeight,           // GA
     PlacePath,                // GA
-    PlacePathFromTrack,       // GA
+    PlacePathLayout,          // GA
     RemovePath,               // GA
     ChangeSurfaceStyle,       // GA
     SetRidePrice,             // GA

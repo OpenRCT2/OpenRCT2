@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -189,8 +189,8 @@ enum
     COLOUR_FLAG_8 = (1 << 8)
 };
 
-#define TRANSLUCENT(x) ((x) | COLOUR_FLAG_TRANSLUCENT)
-#define NOT_TRANSLUCENT(x) ((x) & ~COLOUR_FLAG_TRANSLUCENT)
+#define TRANSLUCENT(x) ((x) | static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
+#define NOT_TRANSLUCENT(x) ((x) & ~static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
 #define BASE_COLOUR(x) ((x)&0x1F)
 
 struct rct_colour_map

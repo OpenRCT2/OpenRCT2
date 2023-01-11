@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -90,7 +90,7 @@ GameActions::Result RideSetVehicleAction::Query() const
             break;
         case RideSetVehicleType::RideEntry:
         {
-            if (!ride_is_vehicle_type_valid(ride))
+            if (!ride_is_vehicle_type_valid(*ride))
             {
                 log_error("Invalid vehicle type. type = %d", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
@@ -133,7 +133,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
     switch (_type)
     {
         case RideSetVehicleType::NumTrains:
-            ride_clear_for_construction(ride);
+            ride_clear_for_construction(*ride);
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
@@ -141,11 +141,11 @@ GameActions::Result RideSetVehicleAction::Execute() const
             break;
         case RideSetVehicleType::NumCarsPerTrain:
         {
-            ride_clear_for_construction(ride);
+            ride_clear_for_construction(*ride);
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
-            invalidate_test_results(ride);
+            invalidate_test_results(*ride);
             auto rideEntry = get_ride_entry(ride->subtype);
             if (rideEntry == nullptr)
             {
@@ -163,11 +163,11 @@ GameActions::Result RideSetVehicleAction::Execute() const
         }
         case RideSetVehicleType::RideEntry:
         {
-            ride_clear_for_construction(ride);
+            ride_clear_for_construction(*ride);
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
-            invalidate_test_results(ride);
+            invalidate_test_results(*ride);
             ride->subtype = _value;
             auto rideEntry = get_ride_entry(ride->subtype);
             if (rideEntry == nullptr)
@@ -176,7 +176,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
-            ride_set_vehicle_colours_to_random_preset(ride, _colour);
+            ride_set_vehicle_colours_to_random_preset(*ride, _colour);
             if (!gCheatsDisableTrainLengthLimit)
             {
                 ride->proposed_num_cars_per_train = std::clamp(
@@ -208,17 +208,17 @@ GameActions::Result RideSetVehicleAction::Execute() const
     return res;
 }
 
-bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
+bool RideSetVehicleAction::ride_is_vehicle_type_valid(const Ride& ride) const
 {
     bool selectionShouldBeExpanded;
     int32_t rideTypeIterator, rideTypeIteratorMax;
 
     {
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride.GetRideTypeDescriptor();
         if (gCheatsShowVehiclesFromOtherTrackTypes
             && !(
-                ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE)
-                || ride->type == RIDE_TYPE_MINI_GOLF))
+                ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE)
+                || ride.type == RIDE_TYPE_MINI_GOLF))
         {
             selectionShouldBeExpanded = true;
             rideTypeIterator = 0;
@@ -227,8 +227,8 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
         else
         {
             selectionShouldBeExpanded = false;
-            rideTypeIterator = ride->type;
-            rideTypeIteratorMax = ride->type;
+            rideTypeIterator = ride.type;
+            rideTypeIteratorMax = ride.type;
         }
     }
 

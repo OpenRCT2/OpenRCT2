@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -570,7 +570,8 @@ static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     }
     topLeft.x += width / 2;
     DrawTextEllipsised(
-        dpi, topLeft, width, widget->text, Formatter::Common(), { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::CENTRE });
+        dpi, topLeft, width, widget->text, Formatter::Common(),
+        { COLOUR_WHITE | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
 }
 
 /**

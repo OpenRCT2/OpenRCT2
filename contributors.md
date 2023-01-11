@@ -101,6 +101,7 @@ The following people are not part of the development team, but have been contrib
 * Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
 * Karst van Galen Last (AuraSpecs) - Ride paint (bounding boxes, extra track pieces), soundtrack, sound effects, misc.
 * (8street) - Misc.
+* Umar Ahmed (umar-ahmed) - MacOS file watcher
 
 ## Bug fixes
 * (KirilAngelov)
@@ -205,6 +206,7 @@ The following people are not part of the development team, but have been contrib
 * (ReticulatingSplines)
 * Conrad Cash (HouseholdVTuber)
 * Michael Bickerton (mdbckrtn)
+* Nehemiah Negussie (nehemiah-negussie)
 
 
 ## Toolchain

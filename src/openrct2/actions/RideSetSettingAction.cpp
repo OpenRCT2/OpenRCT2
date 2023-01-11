@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,7 +64,7 @@ GameActions::Result RideSetSettingAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);
             }
 
-            if (!ride_is_mode_valid(ride) && !gCheatsShowAllOperatingModes)
+            if (!ride_is_mode_valid(*ride) && !gCheatsShowAllOperatingModes)
             {
                 log_warning("Invalid ride mode: %u", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
@@ -87,11 +87,11 @@ GameActions::Result RideSetSettingAction::Query() const
             }
             break;
         case RideSetSetting::Operation:
-            if (!ride_is_valid_operation_option(ride))
+            if (!ride_is_valid_operation_option(*ride))
             {
                 log_warning("Invalid operation option value: %u", _value);
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, GetOperationErrorMessage(ride));
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, GetOperationErrorMessage(*ride));
             }
             break;
         case RideSetSetting::InspectionInterval:
@@ -115,7 +115,7 @@ GameActions::Result RideSetSettingAction::Query() const
             break;
         }
         case RideSetSetting::LiftHillSpeed:
-            if (!ride_is_valid_lift_hill_speed(ride))
+            if (!ride_is_valid_lift_hill_speed(*ride))
             {
                 log_warning("Invalid lift hill speed: %u", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
@@ -162,8 +162,8 @@ GameActions::Result RideSetSettingAction::Execute() const
     switch (_setting)
     {
         case RideSetSetting::Mode:
-            invalidate_test_results(ride);
-            ride_clear_for_construction(ride);
+            invalidate_test_results(*ride);
+            ride_clear_for_construction(*ride);
             ride->RemovePeeps();
 
             ride->mode = static_cast<RideMode>(_value);
@@ -182,7 +182,7 @@ GameActions::Result RideSetSettingAction::Execute() const
             ride->min_waiting_time = std::min(_value, ride->min_waiting_time);
             break;
         case RideSetSetting::Operation:
-            invalidate_test_results(ride);
+            invalidate_test_results(*ride);
             ride->operation_option = _value;
             break;
         case RideSetSetting::InspectionInterval:
@@ -212,14 +212,14 @@ GameActions::Result RideSetSettingAction::Execute() const
             if (_value != ride->lift_hill_speed)
             {
                 ride->lift_hill_speed = _value;
-                invalidate_test_results(ride);
+                invalidate_test_results(*ride);
             }
             break;
         case RideSetSetting::NumCircuits:
             if (_value != ride->num_circuits)
             {
                 ride->num_circuits = _value;
-                invalidate_test_results(ride);
+                invalidate_test_results(*ride);
             }
 
             break;
@@ -240,15 +240,15 @@ GameActions::Result RideSetSettingAction::Execute() const
     return res;
 }
 
-bool RideSetSettingAction::ride_is_mode_valid(Ride* ride) const
+bool RideSetSettingAction::ride_is_mode_valid(const Ride& ride) const
 {
-    return ride->GetRideTypeDescriptor().RideModes & (1uLL << _value);
+    return ride.GetRideTypeDescriptor().RideModes & (1uLL << _value);
 }
 
-bool RideSetSettingAction::ride_is_valid_lift_hill_speed(Ride* ride) const
+bool RideSetSettingAction::ride_is_valid_lift_hill_speed(const Ride& ride) const
 {
-    int32_t minSpeed = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
-    int32_t maxSpeed = gCheatsUnlockOperatingLimits ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
+    int32_t minSpeed = gCheatsUnlockOperatingLimits ? 0 : ride.GetRideTypeDescriptor().LiftData.minimum_speed;
+    int32_t maxSpeed = gCheatsUnlockOperatingLimits ? 255 : ride.GetRideTypeDescriptor().LiftData.maximum_speed;
     return _value >= minSpeed && _value <= maxSpeed;
 }
 
@@ -259,9 +259,9 @@ bool RideSetSettingAction::ride_is_valid_num_circuits() const
     return _value >= minNumCircuits && _value <= maxNumCircuits;
 }
 
-bool RideSetSettingAction::ride_is_valid_operation_option(Ride* ride) const
+bool RideSetSettingAction::ride_is_valid_operation_option(const Ride& ride) const
 {
-    const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
+    const auto& operatingSettings = ride.GetRideTypeDescriptor().OperatingSettings;
     uint8_t minValue = operatingSettings.MinValue;
     uint8_t maxValue = operatingSettings.MaxValue;
     if (gCheatsUnlockOperatingLimits)
@@ -273,9 +273,9 @@ bool RideSetSettingAction::ride_is_valid_operation_option(Ride* ride) const
     return _value >= minValue && _value <= maxValue;
 }
 
-StringId RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
+StringId RideSetSettingAction::GetOperationErrorMessage(const Ride& ride) const
 {
-    switch (ride->mode)
+    switch (ride.mode)
     {
         case RideMode::StationToStation:
             return STR_CANT_CHANGE_SPEED;
@@ -290,7 +290,7 @@ StringId RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
         case RideMode::BackwardRotation:
             return STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
         default:
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+            if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
             {
                 return STR_CANT_CHANGE_THIS;
             }

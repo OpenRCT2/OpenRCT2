@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -225,10 +225,10 @@ extern RideId gTrackDesignSaveRideIndex;
 
 void TrackDesignMirror(TrackDesign* td6);
 
-GameActions::Result TrackDesignPlace(TrackDesign* td6, uint32_t flags, bool placeScenery, Ride* ride, const CoordsXYZD& coords);
-void TrackDesignPreviewRemoveGhosts(TrackDesign* td6, Ride* ride, const CoordsXYZD& coords);
-void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, TrackDesign* td6, Ride* ride, const CoordsXYZD& coords);
-int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride* ride, const CoordsXYZD& coords);
+GameActions::Result TrackDesignPlace(TrackDesign* td6, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewRemoveGhosts(TrackDesign* td6, Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, TrackDesign* td6, Ride& ride, const CoordsXYZD& coords);
+int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride& ride, const CoordsXYZD& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview

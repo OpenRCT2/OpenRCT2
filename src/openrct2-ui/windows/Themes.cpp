@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -533,7 +533,7 @@ public:
                 }
                 else
                 {
-                    ThemeSetFlags(ThemeGetFlags() ^ UITHEME_FLAG_USE_LIGHTS_PARK);
+                    ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_LIGHTS_PARK));
                     ThemeSave();
                     window_invalidate_all();
                 }
@@ -545,7 +545,7 @@ public:
                 }
                 else
                 {
-                    ThemeSetFlags(ThemeGetFlags() ^ UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
+                    ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT));
                     ThemeSave();
                     window_invalidate_all();
                 }
@@ -557,7 +557,7 @@ public:
                 }
                 else
                 {
-                    ThemeSetFlags(ThemeGetFlags() ^ UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+                    ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
                     ThemeSave();
                     window_invalidate_all();
                 }

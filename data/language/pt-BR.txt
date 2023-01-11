@@ -3641,6 +3641,9 @@ STR_6535    :{WINDOW_COLOUR_2}Fator de Náusea: {BLACK}-{COMMA16}%
 STR_6536    :Esse park foi salvo em uma versão posterior do OpenRCT2. O Park foi salvo na v{INT32}. Você atualmente está na v{INT32}.
 STR_6537    :Permitir o uso de caminhos normais como filas de espera
 STR_6538    :Mostra caminhos normais na lista da janela de Caminhos.
+STR_6539    :Freio Travado
+STR_6540    :{WINDOW_COLOUR_2}Agradecimento especial às seguintes empresas por permitirem semelhança com elas:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
 
 #############
 # Scenarios #

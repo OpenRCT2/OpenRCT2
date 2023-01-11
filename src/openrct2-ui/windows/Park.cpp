@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,8 +22,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/ParkSetEntranceFeeAction.h>
 #include <openrct2/actions/ParkSetNameAction.h>
-#include <openrct2/actions/SetParkEntranceFeeAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
@@ -828,14 +828,14 @@ private:
             case WIDX_INCREASE_PRICE:
             {
                 const auto newFee = std::min(MAX_ENTRANCE_FEE, gParkEntranceFee + 1.00_GBP);
-                auto gameAction = SetParkEntranceFeeAction(static_cast<money16>(newFee));
+                auto gameAction = ParkSetEntranceFeeAction(static_cast<money16>(newFee));
                 GameActions::Execute(&gameAction);
                 break;
             }
             case WIDX_DECREASE_PRICE:
             {
                 const auto newFee = std::max(0.00_GBP, gParkEntranceFee - 1.00_GBP);
-                auto gameAction = SetParkEntranceFeeAction(static_cast<money16>(newFee));
+                auto gameAction = ParkSetEntranceFeeAction(static_cast<money16>(newFee));
                 GameActions::Execute(&gameAction);
                 break;
             }

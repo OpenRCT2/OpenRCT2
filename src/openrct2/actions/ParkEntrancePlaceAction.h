@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,16 +9,20 @@
 
 #pragma once
 
-#include "../world/Map.h"
 #include "GameAction.h"
 
-class ChangeMapSizeAction final : public GameActionBase<GameCommand::ChangeMapSize>
+class ParkEntrancePlaceAction final : public GameActionBase<GameCommand::PlaceParkEntrance>
 {
+private:
+    CoordsXYZD _loc;
+    ObjectEntryIndex _pathType;
+
 public:
-    ChangeMapSizeAction() = default;
-    ChangeMapSizeAction(const TileCoordsXY& targetSize);
+    ParkEntrancePlaceAction() = default;
+    ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
@@ -26,5 +30,5 @@ public:
     GameActions::Result Execute() const override;
 
 private:
-    TileCoordsXY _targetSize;
+    bool CheckMapCapacity(int16_t numTiles) const;
 };

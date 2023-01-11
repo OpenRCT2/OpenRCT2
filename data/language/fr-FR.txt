@@ -3432,7 +3432,7 @@ STR_6315    :{WINDOW_COLOUR_2}Objectif recherche chemin : {BLACK}{INT32}, {INT3
 STR_6316    :{WINDOW_COLOUR_2}Historique recherche chemin :
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6318    :Desynchronisation réseau détectée.{NEWLINE}Fichier journal : {STRING}
-STR_6319    :Bloc de frein fermé
+STR_6319    :Freins de bloc serrés
 STR_6320    :Indestructible
 STR_6321    :L’ajout est cassé
 STR_6322    :{WINDOW_COLOUR_2}ID de l’entité : {BLACK}{INT32}
@@ -3650,6 +3650,9 @@ STR_6535    :{WINDOW_COLOUR_2}Indice de nausée : {BLACK}-{COMMA16}%
 STR_6536    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il a été sauvegardé avec la version {INT32}, vous utilisez la version {INT32}.
 STR_6537    :Permettre l’utilisation d’allées normales{NEWLINE}dans les files d’attente
 STR_6538    :Affiche les allées normales dans le menu déroulant des files d’attente de la fenêtre des allées
+STR_6539    :Freins serrés
+STR_6540    :{WINDOW_COLOUR_2}Remerciements particuliers aux entreprises suivantes pour l’autorisation d’utilisation de leur image :
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
 
 #############
 # Scenarios #

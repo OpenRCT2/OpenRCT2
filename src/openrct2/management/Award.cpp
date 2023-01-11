@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -415,7 +415,7 @@ static bool award_is_deserved_most_disappointing(int32_t activeAwardTypes)
     auto disappointingRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride_has_ratings(&ride) && ride.popularity != 0xFF)
+        if (ride_has_ratings(ride) && ride.popularity != 0xFF)
         {
             countedRides++;
             if (ride.popularity <= 6)
@@ -606,6 +606,20 @@ void award_update_all()
 {
     PROFILED_FUNCTION();
 
+    // Decrease award times
+    for (auto& award : _currentAwards)
+    {
+        --award.Time;
+    }
+    // Remove any 0 time awards
+    auto res = std::remove_if(
+        std::begin(_currentAwards), std::end(_currentAwards), [](const Award& award) { return award.Time == 0; });
+    if (res != std::end(_currentAwards))
+    {
+        _currentAwards.erase(res, std::end(_currentAwards));
+        window_invalidate_by_class(WindowClass::ParkInformation);
+    }
+
     // Only add new awards if park is open
     if (gParkFlags & PARK_FLAGS_PARK_OPEN)
     {
@@ -638,20 +652,5 @@ void award_update_all()
                 window_invalidate_by_class(WindowClass::ParkInformation);
             }
         }
-    }
-
-    // Decrease award times
-    for (auto& award : _currentAwards)
-    {
-        --award.Time;
-    }
-
-    // Remove any 0 time awards
-    auto res = std::remove_if(
-        std::begin(_currentAwards), std::end(_currentAwards), [](const Award& award) { return award.Time == 0; });
-    if (res != std::end(_currentAwards))
-    {
-        _currentAwards.erase(res, std::end(_currentAwards));
-        window_invalidate_by_class(WindowClass::ParkInformation);
     }
 }

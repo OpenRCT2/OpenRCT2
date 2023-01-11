@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -216,17 +216,6 @@ int32_t bitcount(uint32_t source)
     return bitcount_fn(source);
 }
 
-/* case insensitive compare */
-int32_t strcicmp(char const* a, char const* b)
-{
-    for (;; a++, b++)
-    {
-        int32_t d = tolower(static_cast<unsigned char>(*a)) - tolower(static_cast<unsigned char>(*b));
-        if (d != 0 || !*a)
-            return d;
-    }
-}
-
 /* Case insensitive logical compare */
 // Example:
 // - Guest 10
@@ -264,32 +253,6 @@ int32_t strlogicalcmp(const char* s1, const char* s2)
             s2 = lim2;
         }
     }
-}
-
-utf8* safe_strtrunc(utf8* text, size_t size)
-{
-    assert(text != nullptr);
-
-    if (size == 0)
-        return text;
-
-    const char* sourceLimit = text + size - 1;
-    char* ch = text;
-    char* last = text;
-    while (utf8_get_next(ch, const_cast<const utf8**>(&ch)) != 0)
-    {
-        if (ch <= sourceLimit)
-        {
-            last = ch;
-        }
-        else
-        {
-            break;
-        }
-    }
-    *last = 0;
-
-    return text;
 }
 
 char* safe_strcpy(char* destination, const char* source, size_t size)
@@ -371,50 +334,6 @@ char* safe_strcat(char* destination, const char* source, size_t size)
     }
 
     return result;
-}
-
-#if defined(_WIN32)
-char* strcasestr(const char* haystack, const char* needle)
-{
-    const char* p1 = haystack;
-    const char* p2 = needle;
-    const char* r = *p2 == 0 ? haystack : nullptr;
-
-    while (*p1 != 0 && *p2 != 0)
-    {
-        if (tolower(static_cast<unsigned char>(*p1)) == tolower(static_cast<unsigned char>(*p2)))
-        {
-            if (r == nullptr)
-                r = p1;
-            p2++;
-        }
-        else
-        {
-            p2 = needle;
-            if (r != nullptr)
-                p1 = r + 1;
-
-            if (tolower(static_cast<unsigned char>(*p1)) == tolower(static_cast<unsigned char>(*p2)))
-            {
-                r = p1;
-                p2++;
-            }
-            else
-            {
-                r = nullptr;
-            }
-        }
-
-        p1++;
-    }
-
-    return *p2 == 0 ? const_cast<char*>(r) : nullptr;
-}
-#endif
-
-bool str_is_null_or_empty(const char* str)
-{
-    return str == nullptr || str[0] == 0;
 }
 
 uint32_t util_rand()

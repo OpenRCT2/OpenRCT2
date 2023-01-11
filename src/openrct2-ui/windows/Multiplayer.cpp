@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -349,8 +349,8 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     }
 
     // Likewise, for the optional server description -- which can be a little longer.
-    const utf8* descString = network_get_server_description();
-    if (!str_is_null_or_empty(descString))
+    const auto& descString = network_get_server_description();
+    if (!descString.empty())
     {
         u8string buffer = descString;
         gfx_wrap_string(buffer.data(), width, FontStyle::Medium, &numLines);
@@ -359,16 +359,16 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
 
     // Finally, account for provider info, if present.
     {
-        const utf8* providerName = network_get_server_provider_name();
-        if (!str_is_null_or_empty(providerName))
+        const auto& providerName = network_get_server_provider_name();
+        if (!providerName.empty())
             height += LIST_ROW_HEIGHT;
 
-        const utf8* providerEmail = network_get_server_provider_email();
-        if (!str_is_null_or_empty(providerEmail))
+        const auto& providerEmail = network_get_server_provider_email();
+        if (!providerEmail.empty())
             height += LIST_ROW_HEIGHT;
 
-        const utf8* providerWebsite = network_get_server_provider_website();
-        if (!str_is_null_or_empty(providerWebsite))
+        const auto& providerWebsite = network_get_server_provider_website();
+        if (!providerWebsite.empty())
             height += LIST_ROW_HEIGHT;
     }
 
@@ -409,46 +409,46 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
         auto screenCoords = ScreenCoordsXY{ 3, 50 };
         int32_t width = w->width - 6;
 
-        const utf8* name = network_get_server_name();
+        const auto& name = network_get_server_name();
         {
             auto ft = Formatter();
-            ft.Add<const char*>(name);
+            ft.Add<const char*>(name.c_str());
             screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_STRING, ft, { w->colours[1] });
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
-        const utf8* description = network_get_server_description();
-        if (!str_is_null_or_empty(description))
+        const auto& description = network_get_server_description();
+        if (!description.empty())
         {
             auto ft = Formatter();
-            ft.Add<const char*>(description);
+            ft.Add<const char*>(description.c_str());
             screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_STRING, ft, { w->colours[1] });
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
-        const utf8* providerName = network_get_server_provider_name();
-        if (!str_is_null_or_empty(providerName))
+        const auto& providerName = network_get_server_provider_name();
+        if (!providerName.empty())
         {
             auto ft = Formatter();
-            ft.Add<const char*>(providerName);
+            ft.Add<const char*>(providerName.c_str());
             DrawTextBasic(dpi, screenCoords, STR_PROVIDER_NAME, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
-        const utf8* providerEmail = network_get_server_provider_email();
-        if (!str_is_null_or_empty(providerEmail))
+        const auto& providerEmail = network_get_server_provider_email();
+        if (!providerEmail.empty())
         {
             auto ft = Formatter();
-            ft.Add<const char*>(providerEmail);
+            ft.Add<const char*>(providerEmail.c_str());
             DrawTextBasic(dpi, screenCoords, STR_PROVIDER_EMAIL, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
-        const utf8* providerWebsite = network_get_server_provider_website();
-        if (!str_is_null_or_empty(providerWebsite))
+        const auto& providerWebsite = network_get_server_provider_website();
+        if (!providerWebsite.empty())
         {
             auto ft = Formatter();
-            ft.Add<const char*>(providerWebsite);
+            ft.Add<const char*>(providerWebsite.c_str());
             DrawTextBasic(dpi, screenCoords, STR_PROVIDER_WEBSITE, ft);
         }
     }

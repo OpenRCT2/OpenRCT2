@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -411,10 +411,13 @@ enum WindowDetail
 #define WC_TOP_TOOLBAR__WIDX_SCENERY 10
 #define WC_TOP_TOOLBAR__WIDX_PATH 11
 #define WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY 17
-#define WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT 23
-#define WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE 29
-#define WC_RIDE_CONSTRUCTION__WIDX_EXIT 30
+#define WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT 25
+#define WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE 30
+#define WC_RIDE_CONSTRUCTION__WIDX_EXIT 31
 #define WC_RIDE_CONSTRUCTION__WIDX_ROTATE 32
+#define WC_MAZE_CONSTRUCTION__WIDX_MAZE_DIRECTION_GROUPBOX WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT
+#define WC_MAZE_CONSTRUCTION__WIDX_MAZE_ENTRANCE WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
+#define WC_MAZE_CONSTRUCTION__WIDX_MAZE_EXIT WC_RIDE_CONSTRUCTION__WIDX_EXIT
 #define WC_SCENERY__WIDX_SCENERY_TAB_1 12
 #define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON 5
 #define WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON 10
@@ -466,6 +469,7 @@ enum class PromptMode : uint8_t
     SaveBeforeLoad = 0,
     SaveBeforeQuit,
     SaveBeforeQuit2,
+    SaveBeforeNewGame,
     Quit
 };
 

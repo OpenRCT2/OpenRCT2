@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -99,11 +99,11 @@ GameActions::Result TrackDesignAction::Query() const
     if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
         flags |= GAME_COMMAND_FLAG_REPLAY;
 
-    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
     }
 
     auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
@@ -172,11 +172,11 @@ GameActions::Result TrackDesignAction::Execute() const
     if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
         flags |= GAME_COMMAND_FLAG_REPLAY;
 
-    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
     }
 
     if (queryRes.Error != GameActions::Status::Ok)
@@ -196,7 +196,7 @@ GameActions::Result TrackDesignAction::Execute() const
     // Execute.
     flags |= GAME_COMMAND_FLAG_APPLY;
 
-    auto execRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+    auto execRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
     if (execRes.Error != GameActions::Status::Ok)
     {
         auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);

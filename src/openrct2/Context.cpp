@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -199,7 +199,6 @@ namespace OpenRCT2
             gfx_unload_g2();
             gfx_unload_g1();
             Audio::Close();
-            ConfigRelease();
 
             Instance = nullptr;
         }
@@ -560,16 +559,19 @@ namespace OpenRCT2
         {
             log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
 
-            // Register the file for crash upload if it asserts while loading.
-            crash_register_additional_file("load_park", path);
-            // Deregister park file in case it was processed without hitting an assert.
-            struct foo
+            struct CrashAdditionalFileRegistration
             {
-                ~foo()
+                CrashAdditionalFileRegistration(const std::string& path)
                 {
+                    // Register the file for crash upload if it asserts while loading.
+                    crash_register_additional_file("load_park", path);
+                }
+                ~CrashAdditionalFileRegistration()
+                {
+                    // Deregister park file in case it was processed without hitting an assert.
                     crash_unregister_additional_file("load_park");
                 }
-            } f;
+            } crash_additional_file_registration(path);
 
             try
             {
