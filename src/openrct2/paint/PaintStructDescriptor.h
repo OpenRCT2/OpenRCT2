@@ -45,10 +45,22 @@ struct PaintStructDescriptorKey
 
 bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptorKey& rhs);
 
+class PaintStructKeyInserter
+{
+public:
+    std::vector<size_t> operator()(const PaintStructDescriptorKey& key) const;
+};
+
+class ImageIdKeyInserter
+{
+public:
+    std::vector<size_t> operator()(const PaintStructDescriptorKey& key) const;
+};
+
 struct ImageIdOffset
 {
     std::string Id;
-    TreeContainer<PaintStructDescriptorKey, uint32_t> Entries;
+    TreeContainer<PaintStructDescriptorKey, uint32_t, ImageIdKeyInserter> Entries;
 };
 
 struct HeightSupportsTable
@@ -122,8 +134,6 @@ struct PaintStructDescriptor
     void Paint(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, const Vehicle* vehicle) const;
-
-    void ToJson(json_t& json) const;
 
     PaintStructDescriptor();
 };

@@ -182,7 +182,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                             imageIds.push_back(elem);
 
                         for (const auto& imageId : imageIds)
-                            Add(offset.Entries, key, imageId);
+                            offset.Entries.Add(key, imageId);
                     }
                 }
                 _imageIdOffsetMapping[offset.Id] = offset;
@@ -467,7 +467,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     _keys.push_back(key);
                     paint.Key = &_keys.back();
                 }
-                Add(_paintStructsTree, *paint.Key, paint);
+                _paintStructsTree.Add(*paint.Key, paint);
             }
         }
     }
@@ -524,7 +524,7 @@ void PaintObject::Paint(
         key.VehicleKey[0].SpriteDirection = vehicle->sprite_direction;
     }
 
-    auto paintStructs = Get(_paintStructsTree, key);
+    auto paintStructs = _paintStructsTree.Get(key);
     if (paintStructs != nullptr)
     {
         for (const auto& paintStruct : *paintStructs)

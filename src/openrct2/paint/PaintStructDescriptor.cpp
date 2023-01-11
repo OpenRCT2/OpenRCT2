@@ -171,7 +171,7 @@ void PaintStructDescriptor::Paint(
 
             if (ImageIdOffset != nullptr)
             {
-                auto offset = Get(ImageIdOffset->Entries, *Key);
+                auto offset = ImageIdOffset->Entries.Get(*Key);
                 if (offset != nullptr)
                     imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
 
@@ -200,52 +200,16 @@ void PaintStructDescriptor::Paint(
     }
 }
 
-void PaintStructDescriptor::ToJson(json_t& json) const
+std::vector<size_t> PaintStructKeyInserter::operator()(const PaintStructDescriptorKey& key) const
 {
-    /*switch (Key.Element)
-    {
-        case TrackElemType::FlatTrack3x3:
-            json["trackElement"] = "flat_track_3x3";
-            break;
-    }
+    return std::vector<size_t>{ key.Direction,           key.Element,
+                                key.TrackSequence,       key.VehicleKey[0].NumPeeps,
+                                key.VehicleKey[0].Pitch, key.VehicleKey[0].SpriteDirection };
+}
 
-    if (Key.Direction.has_value())
-    {
-        json["direction"] = Key.Direction.value();
-    }
-
-    if (Key.TrackSequence.has_value())
-    {
-        json["trackSequence"] = Key.TrackSequence.value();
-    }
-
-    if (Key.TrackSequenceMapping.has_value())
-    {
-        // just store the id
-        json["trackSequenceMapping"] = Key.TrackSequenceMapping.value().Id;
-    }
-
-    if (Supports.has_value())
-    {
-        switch (Supports.value())
-        {
-            case SupportsType::WoodenA:
-                json["supports"] = "wooden_a";
-                break;
-        }
-    }
-
-    if (Floor.has_value())
-    {
-        switch (Floor.value())
-        {
-            case FloorType::Cork:
-                json["floor"] = "cork";
-                break;
-        }
-    }
-
-    if (Edges.has_value())
-    {
-    }*/
+//don't put the track sequence for the image id 
+std::vector<size_t> ImageIdKeyInserter::operator()(const PaintStructDescriptorKey& key) const
+{
+    return std::vector<size_t>{ key.Direction, key.Element, key.VehicleKey[0].NumPeeps, key.VehicleKey[0].Pitch,
+                                key.VehicleKey[0].SpriteDirection };
 }
