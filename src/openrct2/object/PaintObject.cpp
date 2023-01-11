@@ -17,14 +17,18 @@ template<>
 const std::vector<PaintStructDescriptor>* TreeContainer<PaintStructDescriptor>::Get<PaintStructDescriptorKey>(
     const PaintStructDescriptorKey& location) const
 {
-    return Get(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence });
+    return Get(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence,
+                                    location.VehicleKey[0].NumPeeps, location.VehicleKey[0].Pitch,
+                                    location.VehicleKey[0].SpriteDirection });
 }
 
 template<>
 template<>
 void TreeContainer<PaintStructDescriptor>::Add(const PaintStructDescriptorKey& location, const PaintStructDescriptor& value)
 {
-    Add(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence }, value);
+    Add(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence, location.VehicleKey[0].NumPeeps,
+                             location.VehicleKey[0].Pitch, location.VehicleKey[0].SpriteDirection },
+        value);
 }
 
 void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
@@ -178,15 +182,15 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         }
                         if (entry.contains("vehicleSpriteDirection"))
                         {
-                            key.VehicleSpriteDirection = entry["vehicleSpriteDirection"];
+                            key.VehicleKey[0].SpriteDirection = entry["vehicleSpriteDirection"];
                         }
                         if (entry.contains("vehiclePitch"))
                         {
-                            key.VehiclePitch = entry["vehiclePitch"];
+                            key.VehicleKey[0].Pitch = entry["vehiclePitch"];
                         }
                         if (entry.contains("vehicleNumPeeps"))
                         {
-                            key.VehicleNumPeeps = entry["vehicleNumPeeps"];
+                            key.VehicleKey[0].NumPeeps = entry["vehicleNumPeeps"];
                         }
 
                         const auto& table = entry["imageIdOffset"];
@@ -293,21 +297,21 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 {
                     auto vehicleSpriteDirection = paintStruct["vehicleSpriteDirection"];
                     if (vehicleSpriteDirection.is_number())
-                        paint.Key.VehicleSpriteDirection = vehicleSpriteDirection;
+                        paint.Key.VehicleKey[0].SpriteDirection = vehicleSpriteDirection;
                 }
 
                 if (paintStruct.contains("vehiclePitch"))
                 {
                     auto vehiclePitch = paintStruct["vehiclePitch"];
                     if (vehiclePitch.is_number())
-                        paint.Key.VehiclePitch = vehiclePitch;
+                        paint.Key.VehicleKey[0].Pitch = vehiclePitch;
                 }
 
                 if (paintStruct.contains("vehicleNumPeeps"))
                 {
                     auto vehicleNumPeeps = paintStruct["vehicleNumPeeps"];
                     if (vehicleNumPeeps.is_number())
-                        paint.Key.VehicleNumPeeps = vehicleNumPeeps;
+                        paint.Key.VehicleKey[0].NumPeeps = vehicleNumPeeps;
                 }
 
                 if (paintStruct.contains("paintType"))
@@ -523,9 +527,9 @@ void PaintObject::Paint(
     //to-do: in the future, add a key val for every vehicle index, not just the first in the list
     if (vehicle != nullptr)
     {
-        key.VehicleNumPeeps = vehicle->num_peeps;
-        key.VehiclePitch = vehicle->Pitch;
-        key.VehicleSpriteDirection = vehicle->sprite_direction;
+        key.VehicleKey[0].NumPeeps = vehicle->num_peeps;
+        key.VehicleKey[0].Pitch = vehicle->Pitch;
+        key.VehicleKey[0].SpriteDirection = vehicle->sprite_direction;
     }
 
     auto paintStructs = _paintStructsTree.Get(key);

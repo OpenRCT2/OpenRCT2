@@ -27,47 +27,6 @@ PaintStructDescriptor::PaintStructDescriptor()
 {
 }
 
-// helper method to check for the keys
-bool PaintStructDescriptorKey::MatchWithKeys(
-    track_type_t trackElement, uint32_t direction, uint32_t trackSequence, const Vehicle* vehicle) const
-{
-    // when the field is not set, it is intended as a wild card
-    if (Element != trackElement)
-        return false;
-
-    if (Direction != direction)
-        return false;
-
-
-    // check if we need to transform the track sequence with the mapping
-    if (TrackSequenceMapping != nullptr)
-    {
-        const auto& sequenceMapping = *TrackSequenceMapping;
-        trackSequence = sequenceMapping[direction][trackSequence];
-        if (TrackSequence != trackSequence)
-            return false;
-    }
-    else if (TrackSequence != trackSequence)
-        return false;
-
-
-    if (vehicle != nullptr)
-    {
-        if (vehicle->sprite_direction != VehicleSpriteDirection)
-            return false;
-
-
-        if (vehicle->Pitch != VehiclePitch)
-            return false;
-
-
-        if (vehicle->num_peeps != VehicleNumPeeps)
-            return false;
-
-    }
-    return true;
-}
-
 void PaintStructDescriptor::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, const Vehicle* vehicle) const

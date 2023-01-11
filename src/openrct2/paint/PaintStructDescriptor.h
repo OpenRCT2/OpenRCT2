@@ -12,15 +12,26 @@
 struct Vehicle;
 using PaintStructSequenceMapping = std::array<std::vector<uint32_t>, 4>;
 
+struct VehicleKey
+{
+    uint32_t SpriteDirection;
+    uint32_t Pitch;
+    uint32_t NumPeeps;
+
+    VehicleKey()
+        : SpriteDirection(0)
+        , Pitch(0)
+        , NumPeeps(0)
+    {
+    }
+};
+
 struct PaintStructDescriptorKey
 {
     PaintStructDescriptorKey()
         : Element(0)
         , Direction(0)
         , TrackSequence(0)
-        , VehicleSpriteDirection(0)
-        , VehiclePitch(0)
-        , VehicleNumPeeps(0)
     {
     }
 
@@ -29,13 +40,7 @@ struct PaintStructDescriptorKey
     uint32_t TrackSequence;
     PaintStructSequenceMapping* TrackSequenceMapping = nullptr;
 
-    //for now, supports only the first vehicle index in the vehicleIndices list in the object
-    uint32_t VehicleSpriteDirection;
-    uint32_t VehiclePitch;
-    uint32_t VehicleNumPeeps;
-
-    // helper method to check for the keys
-    bool MatchWithKeys(track_type_t trackElement, uint32_t direction, uint32_t trackSequence, const Vehicle* vehicle) const;
+    std::array<VehicleKey, OpenRCT2::Limits::MaxTrainsPerRide + 1> VehicleKey;
 };
 
 struct ImageIdOffset
