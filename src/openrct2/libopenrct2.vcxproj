@@ -330,6 +330,7 @@
     <ClInclude Include="paint\Supports.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
+    <ClInclude Include="paint\TreeContainer.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
     <ClInclude Include="ParkImporter.h" />
     <ClInclude Include="park\Legacy.h" />

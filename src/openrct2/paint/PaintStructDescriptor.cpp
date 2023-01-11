@@ -6,6 +6,18 @@
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
 
+template<>
+template<>
+const uint32_t* TreeContainer<uint32_t>::Get<PaintStructDescriptorKey>(const PaintStructDescriptorKey& location) const
+{
+    return Get(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence });
+}
+
+template<> template<> void TreeContainer<uint32_t>::Add(const PaintStructDescriptorKey& location, const uint32_t& value)
+{
+    Add(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence }, value);
+}
+
 PaintStructDescriptor::PaintStructDescriptor()
     : PrimaryColour(Colour::VehicleBody)
     , PrimaryColourIndex(0)
@@ -210,7 +222,8 @@ void PaintStructDescriptor::Paint(
 
             if (ImageIdOffset != nullptr)
             {
-                auto offset = ImageIdOffset->Entries.Get(Key, ImageIdOffsetIndex);
+                auto offset = ImageIdOffset->Entries.Get(
+                    Key);
                 if (offset != nullptr)
                     imageIndex = imageIndex + *offset;
 
@@ -238,6 +251,7 @@ void PaintStructDescriptor::Paint(
         }
     }
 }
+
 
 void PaintStructDescriptor::ToJson(json_t& json) const
 {
