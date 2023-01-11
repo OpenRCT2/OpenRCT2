@@ -21,7 +21,58 @@ struct PaintStructKeyJson
     VehicleParam VehicleSpriteDirection;
     VehicleParam VehiclePitch;
     VehicleParam VehicleNumPeeps;
+
+    void FromJson(const json_t& element);
 };
+
+void PaintStructKeyJson::FromJson(const json_t& paintStruct)
+{
+    if (paintStruct.contains("trackElement"))
+    {
+        auto trackElement = paintStruct["trackElement"];
+        if (trackElement == "flat_track_3x3")
+            Element = TrackElemType::FlatTrack3x3;
+    }
+
+    if (paintStruct.contains("trackSequence"))
+    {
+        auto trackSequence = paintStruct["trackSequence"];
+        if (trackSequence.is_number())
+        {
+            TrackSequence = trackSequence;
+        }
+    }
+
+    if (paintStruct.contains("direction"))
+    {
+        auto direction = paintStruct["direction"];
+        if (direction.is_number())
+        {
+            Direction = direction;
+        }
+    }
+
+    if (paintStruct.contains("vehicleSpriteDirection"))
+    {
+        auto vehicleSpriteDirection = paintStruct["vehicleSpriteDirection"];
+        if (vehicleSpriteDirection.is_number())
+            VehicleSpriteDirection[0] = vehicleSpriteDirection;
+    }
+
+    if (paintStruct.contains("vehiclePitch"))
+    {
+        auto vehiclePitch = paintStruct["vehiclePitch"];
+        if (vehiclePitch.is_number())
+            VehiclePitch[0] = vehiclePitch;
+    }
+
+    if (paintStruct.contains("vehicleNumPeeps"))
+    {
+        auto vehicleNumPeeps = paintStruct["vehicleNumPeeps"];
+        if (vehicleNumPeeps.is_number())
+            VehicleNumPeeps[0] = vehicleNumPeeps;
+    }
+}
 
 void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
@@ -159,39 +210,53 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 const auto& entries = imageIdOffset["entries"];
                 if (entries.is_array())
                 {
+                    std::vector<PaintStructKeyJson> keysJson;
+                    std::vector<std::vector<uint32_t>> imageIdTables;
                     for (const auto& entry: entries)
                     {
                         PaintStructDescriptorKey key;
-                        if (entry.contains("direction"))
-                        {
-                            key.Direction = entry["direction"];
-                        }
-                        if (entry.contains("trackElement"))
-                        {
-                            const auto& element = entry["trackElement"];
-                            if (element == "flat_track_3x3")
-                                key.Element = TrackElemType::FlatTrack3x3;
-                        }
-                        if (entry.contains("vehicleSpriteDirection"))
-                        {
-                            key.VehicleKey[0].SpriteDirection = entry["vehicleSpriteDirection"];
-                        }
-                        if (entry.contains("vehiclePitch"))
-                        {
-                            key.VehicleKey[0].Pitch = entry["vehiclePitch"];
-                        }
-                        if (entry.contains("vehicleNumPeeps"))
-                        {
-                            key.VehicleKey[0].NumPeeps = entry["vehicleNumPeeps"];
-                        }
+                        PaintStructKeyJson keyJson;
+                        keyJson.FromJson(entry);
+                        keysJson.push_back(keyJson);
 
                         const auto& table = entry["imageIdOffset"];
                         std::vector<uint32_t> imageIds;
 
                         for (const auto& elem : table)
                             imageIds.push_back(elem);
-
+                        imageIdTables.push_back(imageIds);
                         for (const auto& imageId : imageIds)
+                            offset.Entries.Add(key, imageId);
+                    }
+
+                    for (size_t index = 0; index < keysJson.size(); index++)
+                    {
+                        const auto& keyJson = keysJson[index];
+
+                        // to do: make a key generation from the optionals
+                        // this is temporary for this commit
+                        PaintStructDescriptorKey key;
+
+                        if (keyJson.Direction.has_value())
+                            key.Direction = keyJson.Direction.value();
+
+                        if (keyJson.Element.has_value())
+                            key.Element = keyJson.Element.value();
+
+                        if (keyJson.TrackSequence.has_value())
+                            key.TrackSequence = keyJson.TrackSequence.value();
+
+                        if (keyJson.VehicleNumPeeps[0].has_value())
+                            key.VehicleKey[0].NumPeeps = keyJson.VehicleNumPeeps[0].value();
+
+                        if (keyJson.VehiclePitch[0].has_value())
+                            key.VehicleKey[0].Pitch = keyJson.VehiclePitch[0].value();
+
+                        if (keyJson.VehicleSpriteDirection[0].has_value())
+                            key.VehicleKey[0].SpriteDirection = keyJson.VehicleSpriteDirection[0].value();
+
+                        const auto& imageIdTable = imageIdTables[index];
+                        for (const auto& imageId : imageIdTable)
                             offset.Entries.Add(key, imageId);
                     }
                 }
@@ -221,12 +286,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 PaintStructDescriptor paint;
                 PaintStructDescriptorKey key;
                 PaintStructKeyJson keyJson;
-                if (paintStruct.contains("trackElement"))
-                {
-                    auto trackElement = paintStruct["trackElement"];
-                    if (trackElement == "flat_track_3x3")
-                        keyJson.Element = TrackElemType::FlatTrack3x3;
-                }
+                keyJson.FromJson(paintStruct);
 
                 if (paintStruct.contains("supports"))
                 {
@@ -268,45 +328,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         if (fences == "ropes")
                             paint.Fences = PaintStructDescriptor::FenceType::Ropes;
                     }
-                }
-
-                if (paintStruct.contains("trackSequence"))
-                {
-                    auto trackSequence = paintStruct["trackSequence"];
-                    if (trackSequence.is_number())
-                    {
-                        keyJson.TrackSequence = trackSequence;
-                    }
-                }
-
-                if (paintStruct.contains("direction"))
-                {
-                    auto direction = paintStruct["direction"];
-                    if (direction.is_number())
-                    {
-                        keyJson.Direction = direction;
-                    }
-                }
-
-                if (paintStruct.contains("vehicleSpriteDirection"))
-                {
-                    auto vehicleSpriteDirection = paintStruct["vehicleSpriteDirection"];
-                    if (vehicleSpriteDirection.is_number())
-                        keyJson.VehicleSpriteDirection[0] = vehicleSpriteDirection;
-                }
-
-                if (paintStruct.contains("vehiclePitch"))
-                {
-                    auto vehiclePitch = paintStruct["vehiclePitch"];
-                    if (vehiclePitch.is_number())
-                        keyJson.VehiclePitch[0] = vehiclePitch;
-                }
-
-                if (paintStruct.contains("vehicleNumPeeps"))
-                {
-                    auto vehicleNumPeeps = paintStruct["vehicleNumPeeps"];
-                    if (vehicleNumPeeps.is_number())
-                        keyJson.VehicleNumPeeps[0] = vehicleNumPeeps;
                 }
 
                 if (paintStruct.contains("paintType"))
