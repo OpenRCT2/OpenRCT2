@@ -39,7 +39,6 @@ struct rct_large_scenery_tile
     // CCCC WWWW 0SS0 0000
     uint16_t flags;
 };
-assert_struct_size(rct_large_scenery_tile, 9);
 
 enum
 {
@@ -54,7 +53,6 @@ struct rct_large_scenery_text_glyph
     uint8_t height;
     uint8_t pad_3;
 };
-assert_struct_size(rct_large_scenery_text_glyph, 4);
 
 struct rct_large_scenery_text
 {
@@ -68,7 +66,6 @@ struct rct_large_scenery_text
     uint8_t num_images;                       // 0xD
     rct_large_scenery_text_glyph glyphs[256]; // 0xE
 };
-assert_struct_size(rct_large_scenery_text, 14 + 4 * 256);
 
 enum LARGE_SCENERY_TEXT_FLAGS
 {
