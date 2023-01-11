@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../world/Scenery.h"
 #include "SceneryObject.h"
+#include "WallSceneryEntry.h"
 
 class WallObject final : public SceneryObject
 {

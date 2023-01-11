@@ -12,6 +12,7 @@
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../object/SmallSceneryEntry.h"
+#include "../object/WallSceneryEntry.h"
 #include "../ride/Track.h"
 #include "../ride/TrackDesign.h"
 #include "../world/Banner.h"

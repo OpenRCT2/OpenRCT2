@@ -16,6 +16,7 @@
 #include "../interface/Viewport.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/StationObject.h"
+#include "../object/WallSceneryEntry.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
