@@ -8,7 +8,7 @@
 
 template<>
 template<>
-std::vector<uint32_t>* TreeContainer<uint32_t>::Get<PaintStructDescriptorKey>(const PaintStructDescriptorKey& location)
+const std::vector<uint32_t>* TreeContainer<uint32_t>::Get<PaintStructDescriptorKey>(const PaintStructDescriptorKey& location) const
 {
     return Get(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence });
 }
@@ -82,8 +82,8 @@ void PaintStructDescriptor::Paint(
         session.CurrentlyDrawnEntity = vehicle;
     }
 
-    if (!Key.MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle))
-        return;
+    //if (!Key.MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle))
+        //return;
 
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -101,13 +101,13 @@ void PaintStructDescriptor::Paint(
     }
 
     // transform the track sequence with the track mapping if there is one
-    if (Key.TrackSequenceMapping != nullptr)
+    /*if (Key.TrackSequenceMapping != nullptr)
     {
         const auto& sequenceMapping = *Key.TrackSequenceMapping;
         const auto& mapping = sequenceMapping[direction];
         if (trackSequence < mapping.size())
             trackSequence = mapping[trackSequence];
-    }
+    }*/
 
     uint8_t edges = 0;
     if (Edges != nullptr)

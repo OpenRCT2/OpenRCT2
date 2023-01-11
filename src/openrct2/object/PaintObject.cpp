@@ -11,6 +11,21 @@
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 
+template<>
+template<>
+const std::vector<PaintStructDescriptor>* TreeContainer<PaintStructDescriptor>::Get<PaintStructDescriptorKey>(
+    const PaintStructDescriptorKey& location) const
+{
+    return Get(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence });
+}
+
+template<>
+template<>
+void TreeContainer<PaintStructDescriptor>::Add(const PaintStructDescriptorKey& location, const PaintStructDescriptor& value)
+{
+    Add(std::vector<size_t>{ location.Direction, location.Element, location.TrackSequence }, value);
+}
+
 void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     try
@@ -450,6 +465,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         paint.HeightSupports = &_heightMapping[id];
                     }
                 }
+                _paintStructsTree.Add(paint.Key, paint);
                 _paintStructs.push_back(paint);
             }
         }
@@ -472,9 +488,26 @@ void PaintObject::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement) const
 {
-    for (const auto& paintStruct : _paintStructs)
-        paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
+    //for (const auto& paintStruct : _paintStructs)
+        //paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
 
+    PaintStructDescriptorKey key;
+    key.Direction = direction;
+    key.Element = trackElement.GetTrackType();
+
+    auto it = _sequenceMappings.find(key.Element);
+    if (it != _sequenceMappings.end())
+        trackSequence = it->second[direction][trackSequence];
+    key.TrackSequence = trackSequence;
+
+    auto paintStructs = _paintStructsTree.Get(key);
+    if (paintStructs != nullptr)
+    {
+        for (const auto& paintStruct : *paintStructs)
+        {
+            paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
+        }
+    }
 }
 
 void PaintObject::LoadPaintObjects()

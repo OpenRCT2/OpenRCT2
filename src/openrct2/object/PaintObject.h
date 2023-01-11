@@ -24,7 +24,7 @@ struct TrackElement;
 class PaintObject final : public Object
 {
 private:
-    TreeContainer<std::vector<PaintStructDescriptor>> _paintStructsTree;
+    TreeContainer<PaintStructDescriptor> _paintStructsTree;
 
     std::vector<PaintStructDescriptor> _paintStructs;
     std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;

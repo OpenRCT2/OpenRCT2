@@ -19,10 +19,10 @@ template<class T> class TreeContainer : public Node<T>
 public:
     TreeContainer();
 
-    template<class KeyType> std::vector<T>* Get(const KeyType& location);
+    template<class KeyType> const std::vector<T>* Get(const KeyType& location) const;
     template<class KeyType> void Add(const KeyType& location, const T& value);
 private:
-    std::vector<T>* Get(const std::vector<size_t>& location);
+    const std::vector<T>* Get(const std::vector<size_t>& location) const;
     void Add(const std::vector<size_t>& location, const T& value);
 };
 
@@ -37,9 +37,9 @@ template<class T> void Node<T>::Insert(size_t index)
     _children[index] = Node<T>();
 }
 
-template<class T> std::vector<T>* TreeContainer<T>::Get(const std::vector<size_t>& location)
+template<class T> const std::vector<T>* TreeContainer<T>::Get(const std::vector<size_t>& location) const
 {
-    Node<T>* nextNode = this;
+    const Node<T>* nextNode = this;
     for (const auto& loc : location)
     {
         if (loc < nextNode->_children.size())
