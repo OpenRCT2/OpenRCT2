@@ -35,11 +35,9 @@ struct PaintStructDescriptorKey
     {
     }
 
-    track_type_t Element;
+    uint32_t Element;
     uint32_t Direction;
     uint32_t TrackSequence;
-    PaintStructSequenceMapping* TrackSequenceMapping = nullptr;
-
     std::array<VehicleKey, OpenRCT2::Limits::MaxTrainsPerRide + 1> VehicleKey;
 };
 

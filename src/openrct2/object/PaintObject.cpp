@@ -230,7 +230,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     auto trackElement = paintStruct["trackElement"];
                     if (trackElement == "flat_track_3x3")
                         paint.Key.Element = TrackElemType::FlatTrack3x3;
-                    paint.Key.TrackSequenceMapping = &_sequenceMappings.at(paint.Key.Element);
                 }
 
                 if (paintStruct.contains("supports"))
