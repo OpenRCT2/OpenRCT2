@@ -851,6 +851,7 @@
     <ClCompile Include="rct2\T6Importer.cpp" />
     <ClCompile Include="ReplayManager.cpp" />
     <ClCompile Include="ride\CableLift.cpp" />
+    <ClCompile Include="ride\CarEntry.cpp" />
     <ClCompile Include="ride\coaster\AirPoweredVerticalCoaster.cpp" />
     <ClCompile Include="ride\coaster\AlpineCoaster.cpp" />
     <ClCompile Include="ride\coaster\BobsleighCoaster.cpp" />
