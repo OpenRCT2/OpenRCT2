@@ -126,9 +126,9 @@ struct PaintStructDescriptor
     std::optional<FloorType> Floor;
     const PaintStructEdgesTable* Edges;
     std::optional<FenceType> Fences;
-    std::optional<PaintType> PaintType;
+    std::optional<PaintType> PaintCode;
     std::optional<Scheme> ImageIdScheme;
-    ImageIdBase ImageIdBase;
+    ImageIdBase ImageId;
     Colour PrimaryColour;
     uint32_t PrimaryColourIndex;
     Colour SecondaryColour;
@@ -154,12 +154,36 @@ struct PaintStructJson
 {
     PaintStructJson(const PaintObject& object)
         : _object(object)
+        , ImageIdBase(PaintStructDescriptor::ImageIdBase::Car0)
+        , PrimaryColour(PaintStructDescriptor::Colour::VehicleBody)
+        , PrimaryColourIndex(0)
+        , SecondaryColour(PaintStructDescriptor::Colour::VehicleTrim)
+        , SecondaryColourIndex(0)
+        , ImageIdOffsetIndex(0)
     {
     }
     PaintStructKeyJson Key;
-    PaintStructDescriptor Value;
+    std::optional<PaintStructDescriptor::SupportsType> Supports;
+    std::optional<PaintStructDescriptor::FloorType> Floor;
+    std::string EdgesId;
+    std::optional<PaintStructDescriptor::FenceType> Fences;
+    std::optional<PaintStructDescriptor::PaintType> PaintType;
+    std::optional<PaintStructDescriptor::Scheme> ImageIdScheme;
+    PaintStructDescriptor::ImageIdBase ImageIdBase;
+    PaintStructDescriptor::Colour PrimaryColour;
+    uint32_t PrimaryColourIndex;
+    PaintStructDescriptor::Colour SecondaryColour;
+    uint32_t SecondaryColourIndex;
+
+    std::string ImageIdOffsetId;
+    uint32_t ImageIdOffsetIndex;
+
+    CoordsXYZ Offset;
+    BoundBoxXYZ BoundBox;
+    std::string HeightSupportsId;
     void FromJson(const json_t& paintStruct);
 
+    PaintStructDescriptor Value() const;
 private:
     const PaintObject& _object;
 };

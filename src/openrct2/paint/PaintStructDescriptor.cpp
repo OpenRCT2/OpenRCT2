@@ -16,6 +16,7 @@ PaintStructDescriptor::PaintStructDescriptor()
     , Edges(nullptr)
     , ImageIdOffset(nullptr)
     , HeightSupports(nullptr)
+    , ImageId(PaintStructDescriptor::ImageIdBase::Car0)
 {
 }
 
@@ -103,9 +104,9 @@ void PaintStructDescriptor::Paint(
             session.CurrentRotation);
     }
 
-    if (PaintType.has_value())
+    if (PaintCode.has_value())
     {
-        auto type = PaintType.value();
+        auto type = PaintCode.value();
         if (type == PaintType::AddImageAsParent || type == PaintType::AddImageAsChild)
         {
             colour_t primaryColour = 0;
@@ -142,11 +143,11 @@ void PaintStructDescriptor::Paint(
                     }
                     break;
             }
-            ImageId imageTemplate = ImageId(0, primaryColour, secondaryColour);
+            ::ImageId imageTemplate = ::ImageId(0, primaryColour, secondaryColour);
 
             if (ImageIdScheme.has_value())
             {
-                ImageId imageFlags;
+                ::ImageId imageFlags;
                 switch (ImageIdScheme.value())
                 {
                     case Scheme::Track:
@@ -164,7 +165,7 @@ void PaintStructDescriptor::Paint(
             }
 
             uint32_t imageIndex = 0;
-            switch (ImageIdBase)
+            switch (ImageId)
             {
                 case ImageIdBase::Car0:
                 default:
@@ -211,7 +212,7 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         if (supports.is_string())
         {
             if (supports == "wooden_a")
-                Value.Supports = PaintStructDescriptor::SupportsType::WoodenA;
+                Supports = PaintStructDescriptor::SupportsType::WoodenA;
         }
     }
 
@@ -221,7 +222,7 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         if (floor.is_string())
         {
             if (floor == "cork")
-                Value.Floor = PaintStructDescriptor::FloorType::Cork;
+                Floor = PaintStructDescriptor::FloorType::Cork;
         }
     }
 
@@ -230,10 +231,7 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         auto edges = paintStruct["edges"];
         if (edges.is_string())
         {
-            if (_object._edgeMappings.find(edges) != _object._edgeMappings.end())
-            {
-                Value.Edges = &_object._edgeMappings.at(edges);
-            }
+            EdgesId = edges;
         }
     }
 
@@ -243,7 +241,7 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         if (fences.is_string())
         {
             if (fences == "ropes")
-                Value.Fences = PaintStructDescriptor::FenceType::Ropes;
+                Fences = PaintStructDescriptor::FenceType::Ropes;
         }
     }
 
@@ -253,9 +251,9 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         if (paintType.is_string())
         {
             if (paintType == "addImageAsParent")
-                Value.PaintType = PaintStructDescriptor::PaintType::AddImageAsParent;
+                PaintType = PaintStructDescriptor::PaintType::AddImageAsParent;
             else if (paintType == "addImageAsChild")
-                Value.PaintType = PaintStructDescriptor::PaintType::AddImageAsChild;
+                PaintType = PaintStructDescriptor::PaintType::AddImageAsChild;
         }
     }
 
@@ -265,7 +263,7 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         if (imageIdBase.is_string())
         {
             if (imageIdBase == "car0")
-                Value.ImageIdBase = PaintStructDescriptor::ImageIdBase::Car0;
+                ImageIdBase = PaintStructDescriptor::ImageIdBase::Car0;
         }
     }
 
@@ -275,11 +273,11 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         if (primaryColour.is_string())
         {
             if (primaryColour == "vehicleBody")
-                Value.PrimaryColour = PaintStructDescriptor::Colour::VehicleBody;
+                PrimaryColour = PaintStructDescriptor::Colour::VehicleBody;
             else if (primaryColour == "vehicleTrim")
-                Value.PrimaryColour = PaintStructDescriptor::Colour::VehicleTrim;
+                PrimaryColour = PaintStructDescriptor::Colour::VehicleTrim;
             else if (primaryColour == "peepTShirt")
-                Value.PrimaryColour = PaintStructDescriptor::Colour::PeepTShirt;
+                PrimaryColour = PaintStructDescriptor::Colour::PeepTShirt;
         }
     }
 
@@ -289,11 +287,11 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         if (secondaryColour.is_string())
         {
             if (secondaryColour == "vehicleBody")
-                Value.SecondaryColour = PaintStructDescriptor::Colour::VehicleBody;
+                SecondaryColour = PaintStructDescriptor::Colour::VehicleBody;
             else if (secondaryColour == "vehicleTrim")
-                Value.SecondaryColour = PaintStructDescriptor::Colour::VehicleTrim;
+                SecondaryColour = PaintStructDescriptor::Colour::VehicleTrim;
             else if (secondaryColour == "peepTShirt")
-                Value.SecondaryColour = PaintStructDescriptor::Colour::PeepTShirt;
+                SecondaryColour = PaintStructDescriptor::Colour::PeepTShirt;
         }
     }
 
@@ -301,14 +299,14 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
     {
         auto primaryColourIndex = paintStruct["primaryColourIndex"];
         if (primaryColourIndex.is_number())
-            Value.PrimaryColourIndex = primaryColourIndex;
+            PrimaryColourIndex = primaryColourIndex;
     }
 
     if (paintStruct.contains("secondaryColourIndex"))
     {
         auto secondaryColourIndex = paintStruct["secondaryColourIndex"];
         if (secondaryColourIndex.is_number())
-            Value.SecondaryColourIndex = secondaryColourIndex;
+            SecondaryColourIndex = secondaryColourIndex;
     }
 
     if (paintStruct.contains("imageIdOffset"))
@@ -316,7 +314,7 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         auto imageIdOffset = paintStruct["imageIdOffset"];
         if (imageIdOffset.is_string())
         {
-            Value.ImageIdOffset = _object._imageIdOffsetMapping.at(imageIdOffset).get();
+            ImageIdOffsetId = imageIdOffset;
         }
     }
 
@@ -324,7 +322,7 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
     {
         auto imageIdOffsetIndex = paintStruct["imageIdOffsetIndex"];
         if (imageIdOffsetIndex.is_number())
-            Value.ImageIdOffsetIndex = imageIdOffsetIndex;
+            ImageIdOffsetIndex = imageIdOffsetIndex;
     }
 
     if (paintStruct.contains("imageIdScheme"))
@@ -333,7 +331,7 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         if (imageIdScheme.is_string())
         {
             if (imageIdScheme == "misc")
-                Value.ImageIdScheme = PaintStructDescriptor::Scheme::Misc;
+                ImageIdScheme = PaintStructDescriptor::Scheme::Misc;
         }
     }
 
@@ -341,72 +339,68 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
     {
         auto offsetX = paintStruct["offset_x"];
         if (offsetX.is_number())
-            Value.Offset.x = offsetX;
+            Offset.x = offsetX;
     }
 
     if (paintStruct.contains("offset_y"))
     {
         auto offsetY = paintStruct["offset_y"];
         if (offsetY.is_number())
-            Value.Offset.y = offsetY;
+            Offset.y = offsetY;
     }
 
     if (paintStruct.contains("offset_z"))
     {
         auto offsetZ = paintStruct["offset_z"];
         if (offsetZ.is_number())
-            Value.Offset.z = offsetZ;
+            Offset.z = offsetZ;
     }
 
     if (paintStruct.contains("bb_offset_x"))
     {
         auto bbOffsetX = paintStruct["bb_offset_x"];
         if (bbOffsetX.is_number())
-            Value.BoundBox.offset.x = bbOffsetX;
+            BoundBox.offset.x = bbOffsetX;
     }
 
     if (paintStruct.contains("bb_offset_y"))
     {
         auto bbOffsetY = paintStruct["bb_offset_y"];
         if (bbOffsetY.is_number())
-            Value.BoundBox.offset.y = bbOffsetY;
+            BoundBox.offset.y = bbOffsetY;
     }
 
     if (paintStruct.contains("bb_offset_z"))
     {
         auto bbOffsetZ = paintStruct["bb_offset_z"];
         if (bbOffsetZ.is_number())
-            Value.BoundBox.offset.z = bbOffsetZ;
+            BoundBox.offset.z = bbOffsetZ;
     }
 
     if (paintStruct.contains("bb_length_x"))
     {
         auto bbLengthX = paintStruct["bb_length_x"];
         if (bbLengthX.is_number())
-            Value.BoundBox.length.x = bbLengthX;
+            BoundBox.length.x = bbLengthX;
     }
 
     if (paintStruct.contains("bb_length_y"))
     {
         auto bbLengthY = paintStruct["bb_length_y"];
         if (bbLengthY.is_number())
-            Value.BoundBox.length.y = bbLengthY;
+            BoundBox.length.y = bbLengthY;
     }
 
     if (paintStruct.contains("bb_length_z"))
     {
         auto bbLengthZ = paintStruct["bb_length_z"];
         if (bbLengthZ.is_number())
-            Value.BoundBox.length.z = bbLengthZ;
+            BoundBox.length.z = bbLengthZ;
     }
 
     if (paintStruct.contains("supportsHeightId"))
     {
-        const auto& id = paintStruct["supportsHeightId"];
-        if (_object._heightMapping.find(id) != _object._heightMapping.end())
-        {
-            Value.HeightSupports = &_object._heightMapping.at(id);
-        }
+        HeightSupportsId = paintStruct["supportsHeightId"];
     }
 }
 
@@ -480,4 +474,37 @@ void ImageIdOffsetJson::FromJson(const json_t& imageIdOffset)
             Values.push_back(imageIds);
         }
     }
+}
+
+PaintStructDescriptor PaintStructJson::Value() const
+{
+    PaintStructDescriptor result;
+    result.Supports = Supports;
+    result.Floor = Floor;
+
+    auto it0 = _object._edgeMappings.find(EdgesId);
+    if (it0 != _object._edgeMappings.end())
+        result.Edges = &it0->second;
+
+    result.Fences = Fences;
+    result.PaintCode = PaintType;
+    result.ImageIdScheme = ImageIdScheme;
+    result.ImageId = ImageIdBase;
+    result.PrimaryColour = PrimaryColour;
+    result.PrimaryColourIndex = PrimaryColourIndex;
+    result.SecondaryColour = SecondaryColour;
+    result.SecondaryColourIndex = SecondaryColourIndex;
+
+    auto it1 = _object._imageIdOffsetMapping.find(ImageIdOffsetId);
+    if (it1 != _object._imageIdOffsetMapping.end())
+        result.ImageIdOffset = it1->second.get();
+
+    result.ImageIdOffsetIndex = ImageIdOffsetIndex;
+    result.Offset = Offset;
+    result.BoundBox = BoundBox;
+
+    auto it2 = _object._heightMapping.find(HeightSupportsId);
+    if (it2 != _object._heightMapping.end())
+        result.HeightSupports = &it2->second;
+    return result;
 }
