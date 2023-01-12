@@ -17,6 +17,7 @@
 - Fix: [#18911] Mini Golf station does not draw correctly from all angles.
 - Fix: [#18971] New Game does not prompt for save before quitting.
 - Fix: [#19026] Park loan is clamped to a 32-bit integer.
+- Fix: [#19114] [Plugin] GameActionResult does not comply to API specification.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------

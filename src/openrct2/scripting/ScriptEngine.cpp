@@ -1131,11 +1131,13 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
     DukStackFrame frame(_context);
     DukObject obj(_context);
 
-    auto player = action.GetPlayer();
-    if (player != -1)
+    obj.Set("error", static_cast<duk_int_t>(result.Error));
+    if (result.Error != GameActions::Status::Ok)
     {
-        obj.Set("player", action.GetPlayer());
+        obj.Set("errorTitle", result.GetErrorTitle());
+        obj.Set("errorMessage", result.GetErrorMessage());
     }
+
     if (result.Cost != MONEY32_UNDEFINED)
     {
         obj.Set("cost", result.Cost);
@@ -1144,12 +1146,12 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
     {
         obj.Set("position", ToDuk(_context, result.Position));
     }
-
     if (result.Expenditure != ExpenditureType::Count)
     {
         obj.Set("expenditureType", ExpenditureTypeToString(result.Expenditure));
     }
 
+    // RideCreateAction only
     if (action.GetType() == GameCommand::CreateRide)
     {
         if (result.Error == GameActions::Status::Ok)
@@ -1158,6 +1160,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
             obj.Set("ride", rideIndex.ToUnderlying());
         }
     }
+    // StaffHireNewAction only
     else if (action.GetType() == GameCommand::HireNewStaffMember)
     {
         if (result.Error == GameActions::Status::Ok)

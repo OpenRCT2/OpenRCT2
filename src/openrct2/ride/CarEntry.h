@@ -196,3 +196,5 @@ struct CarEntry
     uint32_t GroupImageId(SpriteGroupType spriteGroup) const;
     uint32_t SpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const;
 };
+
+void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages);

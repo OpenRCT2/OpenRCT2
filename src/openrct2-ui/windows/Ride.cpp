@@ -885,7 +885,7 @@ static void WindowRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int32_
  */
 static void WindowRideDrawTabMain(rct_drawpixelinfo* dpi, rct_window* w)
 {
-    WidgetIndex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_MAIN;
+    WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_MAIN);
     if (!WidgetIsDisabled(*w, widgetIndex))
     {
         auto ride = get_ride(w->rideId);
@@ -923,7 +923,7 @@ static void WindowRideDrawTabMain(rct_drawpixelinfo* dpi, rct_window* w)
  */
 static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
 {
-    WidgetIndex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_VEHICLE;
+    WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_VEHICLE);
     const auto& widget = w->widgets[widgetIndex];
 
     if (!WidgetIsDisabled(*w, widgetIndex))
@@ -994,7 +994,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
  */
 static void WindowRideDrawTabCustomer(rct_drawpixelinfo* dpi, rct_window* w)
 {
-    WidgetIndex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_CUSTOMER;
+    WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_CUSTOMER);
 
     if (!WidgetIsDisabled(*w, widgetIndex))
     {

@@ -317,7 +317,7 @@ public:
         if (frame_no >= TabAnimationLoops[_currentTab])
             frame_no = 0;
 
-        widget_invalidate(*this, WIDX_TAB_1 + _currentTab);
+        widget_invalidate(*this, WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
 
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
@@ -752,7 +752,7 @@ private:
 
     bool IsFilterInRideType(const rct_ride_entry& rideEntry)
     {
-        auto rideTypeName = get_ride_naming(rideEntry.ride_type[0], &rideEntry).Name;
+        auto rideTypeName = get_ride_naming(rideEntry.ride_type[0], rideEntry).Name;
         return String::Contains(std::string_view(language_get_string(rideTypeName)), _filter, true);
     }
 
@@ -797,7 +797,7 @@ private:
         {
             pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
         }
-        pressed_widgets |= 1LL << (WIDX_TAB_1 + _currentTab);
+        pressed_widgets |= 1LL << (WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
     }
 
     void RefreshWidgetSizing()
@@ -921,7 +921,7 @@ private:
     void DrawRideInformation(rct_drawpixelinfo& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
     {
         rct_ride_entry* rideEntry = get_ride_entry(item.EntryIndex);
-        RideNaming rideNaming = get_ride_naming(item.Type, rideEntry);
+        RideNaming rideNaming = get_ride_naming(item.Type, *rideEntry);
         auto ft = Formatter();
 
         UpdateVehicleAvailability(item.Type);
@@ -976,7 +976,7 @@ private:
 
     void DrawTabImage(rct_drawpixelinfo& dpi, NewRideTabId tab, int32_t spriteIndex)
     {
-        WidgetIndex widgetIndex = WIDX_TAB_1 + tab;
+        WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(tab);
 
         if (widgets[widgetIndex].type != WindowWidgetType::Empty && !WidgetIsDisabled(*this, widgetIndex))
         {

@@ -226,7 +226,7 @@ namespace RCT2
                         static_cast<RideObject*>(rawObject.get())->GetLegacyData());
                     if (rideEntry != nullptr)
                     {
-                        td->type = RCT2RideTypeToOpenRCT2RideType(td->type, rideEntry);
+                        td->type = RCT2RideTypeToOpenRCT2RideType(td->type, *rideEntry);
                     }
                     rawObject->Unload();
                 }

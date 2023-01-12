@@ -105,7 +105,7 @@ static void DrawResearchItem(
     if (researchItem.type == Research::EntryType::Ride
         && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        const StringId rideTypeName = get_ride_naming(researchItem.baseRideType, get_ride_entry(researchItem.entryIndex)).Name;
+        const StringId rideTypeName = get_ride_naming(researchItem.baseRideType, *get_ride_entry(researchItem.entryIndex)).Name;
 
         // Draw group name
         auto ft = Formatter();
@@ -413,7 +413,7 @@ public:
             && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             drawString = STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
-            StringId rideTypeName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).Name;
+            StringId rideTypeName = get_ride_naming(researchItem->baseRideType, *get_ride_entry(researchItem->entryIndex)).Name;
             ft.Add<StringId>(rideTypeName);
             ft.Add<StringId>(stringId);
         }
@@ -641,7 +641,8 @@ public:
         auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 
         DrawResearchItem(
-            dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, { COLOUR_BLACK | COLOUR_FLAG_OUTLINE });
+            dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID,
+            { COLOUR_BLACK | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE) });
     }
 
     void Init(ResearchItem& researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
