@@ -25,10 +25,10 @@ class PaintStructKeyGenerator
 public:
     PaintStructKeyGenerator();
     void Initialize(const std::vector<PaintStructKeyJson>& keysJson);
-    std::vector<PaintStructDescriptorKey> GenerateKeys(const PaintStructKeyJson& keyJson) const;
-
+    std::vector<std::vector<uint32_t>> GetParams(const PaintStructKeyJson& key) const;
     std::vector<uint32_t> GetParams(const PaintStructDescriptorKey& key) const;
 private:
+    std::vector<PaintStructDescriptorKey> GenerateKeys(const PaintStructKeyJson& keyJson) const;
     enum class KeyType
     {
         Element,

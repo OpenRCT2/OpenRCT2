@@ -28,7 +28,7 @@ class PaintObject final : public Object
 private:
     std::vector<PaintStructDescriptor> _paintStructs;
     PaintStructKeyGenerator _keyGen;
-    TreeContainer<PaintStructDescriptorKey, std::shared_ptr<PaintStructDescriptor>, PaintStructKeyGenerator> _paintStructsTree;
+    TreeContainer<PaintStructDescriptorKey, PaintStructKeyJson, std::shared_ptr<PaintStructDescriptor>, PaintStructKeyGenerator> _paintStructsTree;
 
     std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;

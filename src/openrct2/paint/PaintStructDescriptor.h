@@ -49,9 +49,9 @@ bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptor
 struct ImageIdOffset
 {
     std::string Id;
-    TreeContainer<PaintStructDescriptorKey, uint32_t, PaintStructKeyGenerator> Entries;
+    TreeContainer<PaintStructDescriptorKey, PaintStructKeyJson, uint32_t, PaintStructKeyGenerator> Entries;
 
-    ImageIdOffset(const PaintStructKeyGenerator& _keyGen): Entries(_keyGen)
+    ImageIdOffset(const PaintStructKeyGenerator& keyGenerator): Entries(keyGenerator)
     {
     }
 };

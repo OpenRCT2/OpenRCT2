@@ -158,7 +158,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     std::vector<std::vector<uint32_t>> imageIdTables;
                     for (const auto& entry : entries)
                     {
-                        PaintStructDescriptorKey key;
                         PaintStructKeyJson keyJson;
                         keyJson.FromJson(entry);
                         keysJson.push_back(keyJson);
@@ -169,21 +168,15 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         for (const auto& elem : table)
                             imageIds.push_back(elem);
                         imageIdTables.push_back(imageIds);
-                        for (const auto& imageId : imageIds)
-                            offset.Entries.Add(key, imageId);
                     }
 
                     _keyGen.Initialize(keysJson);
                     for (size_t index = 0; index < keysJson.size(); index++)
                     {
                         const auto& keyJson = keysJson[index];
-                        auto keys = _keyGen.GenerateKeys(keyJson);
-                        for (const auto& key : keys)
-                        {
-                            const auto& imageIdTable = imageIdTables[index];
-                            for (const auto& imageId : imageIdTable)
-                                offset.Entries.Add(key, imageId);
-                        }
+                        const auto& imageIdTable = imageIdTables[index];
+                        for (const auto& imageId : imageIdTable)
+                            offset.Entries.Add(keyJson, imageId);
                     }
                 }
                 _imageIdOffsetMapping[offset.Id] = std::make_shared<ImageIdOffset>(offset);
@@ -210,7 +203,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             for (const auto& paintStruct : paintStructs)
             {
                 PaintStructDescriptor paint;
-                PaintStructDescriptorKey key;
                 PaintStructKeyJson keyJson;
                 keyJson.FromJson(paintStruct);
 
@@ -425,18 +417,13 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             }
 
             //auto keyGen = PaintStructKeyGenerator(keysJson);
+            _keyGen.Initialize(keysJson);
             for (size_t index = 0; index < keysJson.size(); index++)
             {
                 const auto& keyJson = keysJson[index];
-                _keyGen.Initialize(keysJson);
-                auto keys = _keyGen.GenerateKeys(keyJson);
-
-                for (const auto& key : keys)
-                {
-                    const auto& paintStruct = _paintStructs[index];
-                    auto ptr = std::make_shared<PaintStructDescriptor>(paintStruct);
-                    _paintStructsTree.Add(key, ptr);
-                }
+                const auto& paintStruct = _paintStructs[index];
+                auto ptr = std::make_shared<PaintStructDescriptor>(paintStruct);
+                _paintStructsTree.Add(keyJson, ptr);
             }
         }
     }

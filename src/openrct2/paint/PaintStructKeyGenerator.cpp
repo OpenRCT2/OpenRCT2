@@ -284,3 +284,13 @@ std::vector<uint32_t> PaintStructKeyGenerator::GetParams(const PaintStructDescri
                                   key.TrackSequence,       key.VehicleKey[0].NumPeeps,
                                   key.VehicleKey[0].Pitch, key.VehicleKey[0].SpriteDirection };
 }
+
+std::vector<std::vector<uint32_t>> PaintStructKeyGenerator::GetParams(const PaintStructKeyJson& keyJson) const
+{
+    std::vector<std::vector<uint32_t>> result;
+    auto keys = GenerateKeys(keyJson);
+
+    for (const auto& key : keys)
+        result.push_back(GetParams(key));
+    return result;
+}
