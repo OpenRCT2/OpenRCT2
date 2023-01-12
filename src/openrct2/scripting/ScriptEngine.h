@@ -242,6 +242,7 @@ namespace OpenRCT2::Scripting
             const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
         void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
         [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
+        [[nodiscard]] DukValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
 
         void SaveSharedStorage();
 
@@ -275,7 +276,6 @@ namespace OpenRCT2::Scripting
         void ProcessREPL();
         void RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin);
         [[nodiscard]] GameActions::Result DukToGameActionResult(const DukValue& d);
-        [[nodiscard]] DukValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
         static ExpenditureType StringToExpenditureType(std::string_view expenditureType);
 
