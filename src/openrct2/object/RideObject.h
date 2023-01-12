@@ -55,8 +55,8 @@ private:
     vehicle_colour_preset_list ReadJsonCarColours(json_t& jCarColours);
     std::vector<VehicleColour> ReadJsonColourConfiguration(json_t& jColourConfig);
 
-    static uint8_t CalculateNumVerticalFrames(const CarEntry* carEntry);
-    static uint8_t CalculateNumHorizontalFrames(const CarEntry* carEntry);
+    static uint8_t CalculateNumVerticalFrames(const CarEntry& carEntry);
+    static uint8_t CalculateNumHorizontalFrames(const CarEntry& carEntry);
 
     static bool IsRideTypeShopOrFacility(ride_type_t rideType);
     static uint8_t ParseRideCategory(const std::string& s);

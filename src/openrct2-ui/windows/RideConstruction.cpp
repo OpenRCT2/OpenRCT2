@@ -2751,7 +2751,7 @@ static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType
             }
 
             // Any pieces that this ride entry supports must be taken out of the array.
-            auto supportedPieces = ride_entry_get_supported_track_pieces(currentRideEntry);
+            auto supportedPieces = ride_entry_get_supported_track_pieces(*currentRideEntry);
             disabledPieces &= supportedPieces.flip();
         }
     }

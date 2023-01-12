@@ -159,7 +159,7 @@ static bool award_is_deserved_best_rollercoasters([[maybe_unused]] int32_t activ
             continue;
         }
 
-        if (!ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+        if (!ride_entry_has_category(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
         {
             continue;
         }
@@ -446,7 +446,7 @@ static bool award_is_deserved_best_water_rides([[maybe_unused]] int32_t activeAw
             continue;
         }
 
-        if (!ride_entry_has_category(rideEntry, RIDE_CATEGORY_WATER))
+        if (!ride_entry_has_category(*rideEntry, RIDE_CATEGORY_WATER))
         {
             continue;
         }
@@ -553,7 +553,7 @@ static bool award_is_deserved_best_gentle_rides([[maybe_unused]] int32_t activeA
             continue;
         }
 
-        if (!ride_entry_has_category(rideEntry, RIDE_CATEGORY_GENTLE))
+        if (!ride_entry_has_category(*rideEntry, RIDE_CATEGORY_GENTLE))
         {
             continue;
         }

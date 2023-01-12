@@ -367,7 +367,7 @@ public:
 
         if (entry != nullptr)
         {
-            RideNaming rideName = get_ride_naming(_window_track_list_item.Type, entry);
+            RideNaming rideName = get_ride_naming(_window_track_list_item.Type, *entry);
             stringId = rideName.Name;
         }
 

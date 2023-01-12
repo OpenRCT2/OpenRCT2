@@ -769,7 +769,7 @@ namespace RCT2
                 auto* rideEntry = get_ride_entry(subtype);
                 if (rideEntry != nullptr)
                 {
-                    rideType = RCT2RideTypeToOpenRCT2RideType(src->type, rideEntry);
+                    rideType = RCT2RideTypeToOpenRCT2RideType(src->type, *rideEntry);
                 }
             }
 

@@ -4214,14 +4214,14 @@ void Ride::SetNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-RideNaming get_ride_naming(const ride_type_t rideType, rct_ride_entry* rideEntry)
+RideNaming get_ride_naming(const ride_type_t rideType, const rct_ride_entry& rideEntry)
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         return GetRideTypeDescriptor(rideType).Naming;
     }
 
-    return rideEntry->naming;
+    return rideEntry.naming;
 }
 
 /*
@@ -4487,105 +4487,6 @@ bool ride_has_any_track_elements(const Ride& ride)
 
 /**
  *
- *  rct2: 0x006847BA
- */
-void set_vehicle_type_image_max_sizes(CarEntry* vehicle_type, int32_t num_images)
-{
-    uint8_t bitmap[200][200] = { 0 };
-
-    rct_drawpixelinfo dpi = {
-        /*.bits = */ reinterpret_cast<uint8_t*>(bitmap),
-        /*.x = */ -100,
-        /*.y = */ -100,
-        /*.width = */ 200,
-        /*.height = */ 200,
-        /*.pitch = */ 0,
-        /*.zoom_level = */ ZoomLevel{ 0 },
-    };
-
-    for (int32_t i = 0; i < num_images; ++i)
-    {
-        gfx_draw_sprite_software(&dpi, ImageId(vehicle_type->base_image_id + i), { 0, 0 });
-    }
-    int32_t al = -1;
-    for (int32_t i = 99; i != 0; --i)
-    {
-        for (int32_t j = 0; j < 200; j++)
-        {
-            if (bitmap[j][100 - i] != 0)
-            {
-                al = i;
-                break;
-            }
-        }
-
-        if (al != -1)
-            break;
-
-        for (int32_t j = 0; j < 200; j++)
-        {
-            if (bitmap[j][100 + i] != 0)
-            {
-                al = i;
-                break;
-            }
-        }
-
-        if (al != -1)
-            break;
-    }
-
-    al++;
-    int32_t bl = -1;
-
-    for (int32_t i = 99; i != 0; --i)
-    {
-        for (int32_t j = 0; j < 200; j++)
-        {
-            if (bitmap[100 - i][j] != 0)
-            {
-                bl = i;
-                break;
-            }
-        }
-
-        if (bl != -1)
-            break;
-    }
-    bl++;
-
-    int32_t bh = -1;
-
-    for (int32_t i = 99; i != 0; --i)
-    {
-        for (int32_t j = 0; j < 200; j++)
-        {
-            if (bitmap[100 + i][j] != 0)
-            {
-                bh = i;
-                break;
-            }
-        }
-
-        if (bh != -1)
-            break;
-    }
-    bh++;
-
-    // Moved from object paint
-
-    if (vehicle_type->flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
-    {
-        bl += 16;
-    }
-
-    vehicle_type->sprite_width = al;
-    vehicle_type->sprite_height_negative = bl;
-    vehicle_type->sprite_height_positive = bh;
-}
-
-/**
- *
  *  rct2: 0x006B59C6
  */
 void invalidate_test_results(Ride& ride)
@@ -4711,7 +4612,7 @@ struct NecessarySpriteGroup
 };
 
 // Finds track pieces that a given ride entry has sprites for
-OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
+OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const rct_ride_entry& rideEntry)
 {
     // TODO: Use a std::span when C++20 available as 6 is due to jagged array
     static const std::array<NecessarySpriteGroup, 6> trackPieceRequiredSprites[TRACK_GROUP_COUNT] = {
@@ -4858,7 +4759,7 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> ride_entry_get_supported_track_pieces(const 
     // exception, at least)
     auto supportedPieces = OpenRCT2::BitSet<TRACK_GROUP_COUNT>();
     supportedPieces.flip();
-    auto defaultVehicle = rideEntry->GetDefaultCar();
+    auto defaultVehicle = rideEntry.GetDefaultCar();
     if (defaultVehicle != nullptr)
     {
         for (size_t i = 0; i < std::size(trackPieceRequiredSprites); i++)
@@ -5424,9 +5325,9 @@ void fix_invalid_vehicle_sprite_sizes()
     }
 }
 
-bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category)
+bool ride_entry_has_category(const rct_ride_entry& rideEntry, uint8_t category)
 {
-    auto rideType = rideEntry->GetFirstNonNullRideType();
+    auto rideType = rideEntry.GetFirstNonNullRideType();
     return GetRideTypeDescriptor(rideType).Category == category;
 }
 

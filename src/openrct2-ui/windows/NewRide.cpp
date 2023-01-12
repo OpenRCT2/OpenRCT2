@@ -825,7 +825,7 @@ private:
     void DrawRideInformation(rct_drawpixelinfo& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
     {
         rct_ride_entry* rideEntry = get_ride_entry(item.EntryIndex);
-        RideNaming rideNaming = get_ride_naming(item.Type, rideEntry);
+        RideNaming rideNaming = get_ride_naming(item.Type, *rideEntry);
         auto ft = Formatter();
 
         UpdateVehicleAvailability(item.Type);

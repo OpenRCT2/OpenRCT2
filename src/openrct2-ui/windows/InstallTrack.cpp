@@ -201,7 +201,7 @@ public:
             if (objectEntry != nullptr)
             {
                 auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
-                auto rideName = get_ride_naming(td6->type, get_ride_entry(groupIndex));
+                auto rideName = get_ride_naming(td6->type, *get_ride_entry(groupIndex));
                 ft.Add<StringId>(rideName.Name);
             }
             else
