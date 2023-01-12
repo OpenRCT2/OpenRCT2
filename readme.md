@@ -183,53 +183,52 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 
 ### macOS:
 <details>
-<summary>Show instructions</summary>
+  <summary>Show instructions</summary>
 
-#### CMake:
-CMake can build either a self-contained application bundle, which includes all the necessary game files and dependencies, or it can build a command line version that links against system installed dependencies. CMake will retrieve the dependencies from [Dependencies](https://github.com/OpenRCT2/Dependencies/) automatically. You can build the macOS app using CMake using the following commands:
-```
-cmake -S . -B build
-cmake --build build --target install
-```
-Then you can run the game by opening `OpenRCT2.app`
+  CMake can build either a self-contained application bundle, which includes all the necessary game files and dependencies, or it can build a command line version that links against system installed dependencies. CMake will retrieve the dependencies from [Dependencies](https://github.com/OpenRCT2/Dependencies/) automatically. You can build the macOS app using CMake using the following commands:
+  ```
+  cmake -S . -B build
+  cmake --build build --target install
+  ```
+  Then you can run the game by opening `OpenRCT2.app`
 
-To build the command line version, you'll need to disable the macOS app bundle:
-```
+  To build the command line version, you'll need to disable the macOS app bundle:
+  ```
 
-cmake -S . -B build -DMACOS_BUNDLE=off
-cmake --build build
-cmake --build build --target install
-ln -s ../data data
-```
-Then you can run the game by running `./openrct2`.
+  cmake -S . -B build -DMACOS_BUNDLE=off
+  cmake --build build
+  cmake --build build --target install
+  ln -s ../data data
+  ```
+  Then you can run the game by running `./openrct2`.
 
-To link against system dependencies instead of letting CMake download the dependencies from [Dependencies](https://github.com/OpenRCT2/Dependencies), add `-DMACOS_USE_DEPENDENCIES=off` to your cmake args.
+  To link against system dependencies instead of letting CMake download the dependencies from [Dependencies](https://github.com/OpenRCT2/Dependencies), add `-DMACOS_USE_DEPENDENCIES=off` to your cmake args.
 
-Detailed instructions can be found on [Building OpenRCT2 on macOS using CMake](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-macOS-using-CMake).
+  Detailed instructions can be found on [Building OpenRCT2 on macOS using CMake](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-macOS-using-CMake).
 </details>
 
 ### Linux:
 <details>
-<summary>Show instructions</summary>
+  <summary>Show instructions</summary>
 
-The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#linux), then:
-```
-cmake -S . -B build -DCMAKE_INSTALL_PREFIX=. # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
-cmake --build build # you can parallelise your build job with e.g. -j 8 or consider using ninja
-cmake --build build --target install # the install target creates all the necessary files in places we expect them
-```
+  The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#linux), then:
+  ```
+  cmake -S . -B build -DCMAKE_INSTALL_PREFIX=. # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  cmake --build build # you can parallelise your build job with e.g. -j 8 or consider using ninja
+  cmake --build build --target install # the install target creates all the necessary files in places we expect them
+  ```
 
-You can also use Ninja in place of Make using `-G Ninja` in the first command, if you prefer, see Wiki for details.
+  You can also use Ninja in place of Make using `-G Ninja` in the first command, if you prefer, see Wiki for details.
 
-Detailed instructions can be found on [Building OpenRCT2 on Linux](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
-
-Note: the `cmake -S . -B build` syntax is available for CMake >= 3.14. For older versions use:
-```
-mkdir build
-cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=. # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
-cmake --build . --target install
-```
+  Detailed instructions can be found on [Building OpenRCT2 on Linux](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
+  
+  Note: the `cmake -S . -B build` syntax is available for CMake >= 3.14. For older versions use:
+  ```
+  mkdir build
+  cd build
+  cmake .. -DCMAKE_INSTALL_PREFIX=. # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  cmake --build . --target install
+  ```
 </details>
 
 ---
