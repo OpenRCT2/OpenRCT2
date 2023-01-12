@@ -185,14 +185,17 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         for (const auto& paintStructJson : paintsJson)
             keysJson.push_back(paintStructJson.Key);
 
+        _keyGen.Initialize(keysJson);
+        keysJson.clear();
+
         for (const auto& offsetJson : offsetsJson)
             keysJson.insert(keysJson.end(), offsetJson.Keys.begin(), offsetJson.Keys.end());
 
-        _keyGen.Initialize(keysJson);
+        _imageIdGen.Initialize(keysJson);
 
         for (const auto& offsetJson : offsetsJson)
         {
-            ImageIdOffset offset(_keyGen);
+            ImageIdOffset offset(_imageIdGen);
             offset.Id = offsetJson.Id;
 
             for (size_t index = 0; index < offsetJson.Keys.size(); index++)

@@ -26,7 +26,7 @@ struct TrackElement;
 class PaintObject final : public Object
 {
 private:
-    PaintStructKeyGenerator _keyGen;
+    PaintStructKeyGenerator _keyGen, _imageIdGen;
     TreeContainer<PaintStructDescriptorKey, PaintStructKeyJson, std::shared_ptr<PaintStructDescriptor>, PaintStructKeyGenerator> _paintStructsTree;
 
     std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;

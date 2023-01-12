@@ -231,9 +231,28 @@ void PaintStructKeyGenerator::GenerateKeyField(
 
 std::vector<uint32_t> PaintStructKeyGenerator::GetParams(const PaintStructDescriptorKey& key) const
 {
-    return std::vector<uint32_t>{ key.Direction,           key.Element,
-                                  key.TrackSequence,       key.VehicleKey[0].NumPeeps,
-                                  key.VehicleKey[0].Pitch, key.VehicleKey[0].SpriteDirection };
+    std::vector<uint32_t> result;
+    result.reserve(32);
+
+    if (_directions.size() != 0)
+        result.push_back(key.Direction);
+
+    if (_elements.size() != 0)
+        result.push_back(key.Element);
+
+    if (_trackSequences.size() != 0)
+        result.push_back(key.TrackSequence);
+
+    if (_vehicleNumPeeps[0].size() != 0)
+        result.push_back(key.VehicleKey[0].NumPeeps);
+
+    if (_vehiclePitches[0].size() != 0)
+        result.push_back(key.VehicleKey[0].Pitch);
+
+    if (_vehicleSpriteDirections[0].size() != 0)
+        result.push_back(key.VehicleKey[0].SpriteDirection);
+
+    return result;
 }
 
 std::vector<std::vector<uint32_t>> PaintStructKeyGenerator::GetParams(const PaintStructKeyJson& keyJson) const
