@@ -48,13 +48,13 @@ bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptor
 class PaintStructKeyInserter
 {
 public:
-    std::vector<size_t> GetParams(const PaintStructDescriptorKey& key) const;
+    std::vector<uint32_t> GetParams(const PaintStructDescriptorKey& key) const;
 };
 
 class ImageIdKeyInserter
 {
 public:
-    std::vector<size_t> GetParams(const PaintStructDescriptorKey& key) const;
+    std::vector<uint32_t> GetParams(const PaintStructDescriptorKey& key) const;
 };
 
 struct ImageIdOffset
