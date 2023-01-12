@@ -458,3 +458,26 @@ void PaintStructKeyJson::FromJson(const json_t& paintStruct)
             VehicleNumPeeps[0] = vehicleNumPeeps;
     }
 }
+
+void ImageIdOffsetJson::FromJson(const json_t& imageIdOffset)
+{
+    Id = imageIdOffset["id"];
+
+    const auto& entries = imageIdOffset["entries"];
+    if (entries.is_array())
+    {
+        for (const auto& entry : entries)
+        {
+            PaintStructKeyJson keyJson;
+            keyJson.FromJson(entry);
+            Keys.push_back(keyJson);
+
+            const auto& table = entry["imageIdOffset"];
+            std::vector<uint32_t> imageIds;
+
+            for (const auto& elem : table)
+                imageIds.push_back(elem);
+            Values.push_back(imageIds);
+        }
+    }
+}

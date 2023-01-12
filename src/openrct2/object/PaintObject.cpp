@@ -146,37 +146,29 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         auto imageIdOffsets = root["imageIdOffsets"];
         if (imageIdOffsets.is_array())
         {
+            std::vector<ImageIdOffsetJson> offsetsJson;
             for (const auto& imageIdOffset : imageIdOffsets)
             {
+                
+                ImageIdOffsetJson offsetJson;
+                offsetJson.FromJson(imageIdOffset);
+                offsetsJson.push_back(offsetJson);
+            }
+
+            for (const auto& offsetJson : offsetsJson)
+            {
+                _keyGen.Initialize(offsetJson.Keys);
                 ImageIdOffset offset(_keyGen);
-                offset.Id = imageIdOffset["id"];
+                offset.Id = offsetJson.Id;
 
-                const auto& entries = imageIdOffset["entries"];
-                if (entries.is_array())
+                for (size_t index = 0; index < offsetJson.Keys.size(); index++)
                 {
-                    std::vector<PaintStructKeyJson> keysJson;
-                    std::vector<std::vector<uint32_t>> imageIdTables;
-                    for (const auto& entry : entries)
+                    const auto& key = offsetJson.Keys[index];
+                    const auto& values = offsetJson.Values[index];
+
+                    for (const auto& value : values)
                     {
-                        PaintStructKeyJson keyJson;
-                        keyJson.FromJson(entry);
-                        keysJson.push_back(keyJson);
-
-                        const auto& table = entry["imageIdOffset"];
-                        std::vector<uint32_t> imageIds;
-
-                        for (const auto& elem : table)
-                            imageIds.push_back(elem);
-                        imageIdTables.push_back(imageIds);
-                    }
-
-                    _keyGen.Initialize(keysJson);
-                    for (size_t index = 0; index < keysJson.size(); index++)
-                    {
-                        const auto& keyJson = keysJson[index];
-                        const auto& imageIdTable = imageIdTables[index];
-                        for (const auto& imageId : imageIdTable)
-                            offset.Entries.Add(keyJson, imageId);
+                        offset.Entries.Add(key, value);
                     }
                 }
                 _imageIdOffsetMapping[offset.Id] = std::make_shared<ImageIdOffset>(offset);

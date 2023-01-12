@@ -69,6 +69,15 @@ struct ImageIdOffset
     }
 };
 
+struct ImageIdOffsetJson
+{
+    std::string Id;
+    std::vector<PaintStructKeyJson> Keys;
+    std::vector<std::vector<uint32_t>> Values;
+
+    void FromJson(const json_t& element);
+};
+
 struct HeightSupportsTable
 {
     std::string Id;
