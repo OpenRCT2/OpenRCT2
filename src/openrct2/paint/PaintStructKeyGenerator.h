@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <array>
+#include <unordered_map>
 #include <optional>
 #include "../core/Json.hpp"
 #include "../Limits.h"
@@ -31,7 +32,8 @@ private:
     std::vector<uint32_t> _directions;
     std::vector<uint32_t> _trackSequences;
 
-    using VehicleParam = std::array<std::vector<uint32_t>, OpenRCT2::Limits::MaxTrainsPerRide + 1>;
+    std::vector<uint32_t> _vehicleIndices;
+    using VehicleParam = std::unordered_map<uint32_t, std::vector<uint32_t>>;
     VehicleParam _vehicleSpriteDirections;
     VehicleParam _vehiclePitches;
     VehicleParam _vehicleNumPeeps;
@@ -48,4 +50,6 @@ private:
         KeyType keyType, uint32_t vehicleIndex, const PaintStructKeyJson& keyJson,
         const std::vector<PaintStructKeyJson>& oldKeys, const std::optional<uint32_t>& value,
         const std::vector<uint32_t>& values, std::vector<PaintStructKeyJson>& newKeys) const;
+
+    bool HasVehicleKey(const PaintStructKeyJson& keyJson, uint32_t vehicleIndex) const;
 };

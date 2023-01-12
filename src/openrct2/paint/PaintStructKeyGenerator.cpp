@@ -11,23 +11,32 @@ void PaintStructKeyGenerator::Initialize(const std::vector<PaintStructKeyJson>& 
     _elements.clear();
     _directions.clear();
     _trackSequences.clear();
-    for (size_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
-    {
-        _vehicleSpriteDirections[index].clear();
-        _vehiclePitches[index].clear();
-        _vehicleNumPeeps[index].clear();
-    }
+    _vehicleSpriteDirections.clear();
+    _vehiclePitches.clear();
+    _vehicleNumPeeps.clear();
+    _vehicleIndices.clear();
 
     for (const auto& key : keysJson)
     {
         PushElement(_elements, key.Element);
         PushElement(_directions, key.Direction);
         PushElement(_trackSequences, key.TrackSequence);
-        for (size_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
+        for (uint32_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
         {
-            PushElement(_vehicleSpriteDirections[index], key.VehicleSpriteDirection[index]);
-            PushElement(_vehiclePitches[index], key.VehiclePitch[index]);
-            PushElement(_vehicleNumPeeps[index], key.VehicleNumPeeps[index]);
+            if (HasVehicleKey(key, index))
+            {
+                auto it = std::find(_vehicleIndices.begin(), _vehicleIndices.end(), index);
+                if (it == _vehicleIndices.end())
+                    _vehicleIndices.push_back(index);
+            }
+                
+        }
+
+        for (const auto& vehicleIndex : _vehicleIndices)
+        {
+            PushElement(_vehicleSpriteDirections[vehicleIndex], key.VehicleSpriteDirection[vehicleIndex]);
+            PushElement(_vehiclePitches[vehicleIndex], key.VehiclePitch[vehicleIndex]);
+            PushElement(_vehicleNumPeeps[vehicleIndex], key.VehicleNumPeeps[vehicleIndex]);
         }
     }
 }
@@ -46,12 +55,13 @@ std::vector<PaintStructDescriptorKey> PaintStructKeyGenerator::GenerateKeys(cons
     GenerateKeyField(directions, keyJson.Direction, _directions);
     GenerateKeyField(trackSequences, keyJson.TrackSequence, _trackSequences);
 
-    for (size_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
+    for (const auto& vehicleIndex : _vehicleIndices)
     {
         GenerateKeyField(
-            vehicleSpriteDirections[index], keyJson.VehicleSpriteDirection[index], _vehicleSpriteDirections[index]);
-        GenerateKeyField(vehiclePitches[index], keyJson.VehiclePitch[index], _vehiclePitches[index]);
-        GenerateKeyField(vehicleNumPeeps[index], keyJson.VehicleNumPeeps[index], _vehicleNumPeeps[index]);
+            vehicleSpriteDirections[vehicleIndex], keyJson.VehicleSpriteDirection[vehicleIndex],
+            _vehicleSpriteDirections.at(vehicleIndex));
+        GenerateKeyField(vehiclePitches[vehicleIndex], keyJson.VehiclePitch[vehicleIndex], _vehiclePitches.at(vehicleIndex));
+        GenerateKeyField(vehicleNumPeeps[vehicleIndex], keyJson.VehicleNumPeeps[vehicleIndex], _vehicleNumPeeps.at(vehicleIndex));
     }
 
     std::vector<PaintStructKeyJson> oldKeys, newKeys;
@@ -66,20 +76,24 @@ std::vector<PaintStructDescriptorKey> PaintStructKeyGenerator::GenerateKeys(cons
     oldKeys = newKeys;
     SetKeyField(KeyType::TrackSequence, keyJson, oldKeys, keyJson.TrackSequence, trackSequences, newKeys);
 
-    for (uint32_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
+    for (const auto& vehicleIndex : _vehicleIndices)
     {
         oldKeys = newKeys;
         SetKeyField(
-            KeyType::VehicleNumPeeps, index, keyJson, oldKeys, keyJson.VehicleNumPeeps[index], vehicleNumPeeps[index], newKeys);
+            KeyType::VehicleNumPeeps, vehicleIndex, keyJson, oldKeys, keyJson.VehicleNumPeeps[vehicleIndex],
+            vehicleNumPeeps[vehicleIndex],
+            newKeys);
 
         oldKeys = newKeys;
         SetKeyField(
-            KeyType::VehiclePitch, index, keyJson, oldKeys, keyJson.VehiclePitch[index], vehiclePitches[index], newKeys);
+            KeyType::VehiclePitch, vehicleIndex, keyJson, oldKeys, keyJson.VehiclePitch[vehicleIndex],
+            vehiclePitches[vehicleIndex],
+            newKeys);
 
         oldKeys = newKeys;
         SetKeyField(
-            KeyType::VehicleSpriteDirection, index, keyJson, oldKeys, keyJson.VehicleSpriteDirection[index],
-            vehicleSpriteDirections[index], newKeys);
+            KeyType::VehicleSpriteDirection, vehicleIndex, keyJson, oldKeys, keyJson.VehicleSpriteDirection[vehicleIndex],
+            vehicleSpriteDirections[vehicleIndex], newKeys);
     }
 
     // now, every key in newkeys should have all optionals completed, lets convert that to actual keys
@@ -91,11 +105,11 @@ std::vector<PaintStructDescriptorKey> PaintStructKeyGenerator::GenerateKeys(cons
         key.Direction = keyJ.Direction.value();
         key.TrackSequence = keyJ.TrackSequence.value();
 
-        for (size_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
+        for (const auto& vehicleIndex : _vehicleIndices)
         {
-            key.VehicleKey[index].NumPeeps = keyJ.VehicleNumPeeps[index].value();
-            key.VehicleKey[index].Pitch = keyJ.VehiclePitch[index].value();
-            key.VehicleKey[index].SpriteDirection = keyJ.VehicleSpriteDirection[index].value();
+            key.VehicleKey[vehicleIndex].NumPeeps = keyJ.VehicleNumPeeps[vehicleIndex].value();
+            key.VehicleKey[vehicleIndex].Pitch = keyJ.VehiclePitch[vehicleIndex].value();
+            key.VehicleKey[vehicleIndex].SpriteDirection = keyJ.VehicleSpriteDirection[vehicleIndex].value();
         }
         result.push_back(key);
     }
@@ -243,14 +257,17 @@ std::vector<uint32_t> PaintStructKeyGenerator::GetParams(const PaintStructDescri
     if (_trackSequences.size() != 0)
         result.push_back(key.TrackSequence);
 
-    if (_vehicleNumPeeps[0].size() != 0)
-        result.push_back(key.VehicleKey[0].NumPeeps);
+    for (const auto& vehicleIndex : _vehicleIndices)
+    {
+        if (_vehicleNumPeeps.at(vehicleIndex).size() != 0)
+            result.push_back(key.VehicleKey[vehicleIndex].NumPeeps);
 
-    if (_vehiclePitches[0].size() != 0)
-        result.push_back(key.VehicleKey[0].Pitch);
+        if (_vehiclePitches.at(vehicleIndex).size() != 0)
+            result.push_back(key.VehicleKey[vehicleIndex].Pitch);
 
-    if (_vehicleSpriteDirections[0].size() != 0)
-        result.push_back(key.VehicleKey[0].SpriteDirection);
+        if (_vehicleSpriteDirections.at(vehicleIndex).size() != 0)
+            result.push_back(key.VehicleKey[vehicleIndex].SpriteDirection);
+    }
 
     return result;
 }
@@ -263,4 +280,10 @@ std::vector<std::vector<uint32_t>> PaintStructKeyGenerator::GetParams(const Pain
     for (const auto& key : keys)
         result.push_back(GetParams(key));
     return result;
+}
+
+bool PaintStructKeyGenerator::HasVehicleKey(const PaintStructKeyJson& keyJson, uint32_t vehicleIndex) const
+{
+    return keyJson.VehicleNumPeeps[vehicleIndex].has_value() || keyJson.VehiclePitch[vehicleIndex].has_value()
+        || keyJson.VehicleSpriteDirection[vehicleIndex].has_value();
 }
