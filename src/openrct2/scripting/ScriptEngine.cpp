@@ -1035,16 +1035,16 @@ void ScriptEngine::RemoveNetworkPlugins()
     }
 }
 
-GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAction* customAction, bool isExecute)
+GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAction& customAction, bool isExecute)
 {
-    std::string actionz = customAction->GetId();
+    std::string actionz = customAction.GetId();
     auto kvp = _customActions.find(actionz);
     if (kvp != _customActions.end())
     {
         const auto& customActionInfo = kvp->second;
 
         // Deserialise the JSON args
-        std::string argsz = customAction->GetJson();
+        std::string argsz = customAction.GetJson();
 
         auto dukArgs = DuktapeTryParseJson(_context, argsz);
         if (!dukArgs)
@@ -1062,16 +1062,13 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
         }
         else
         {
-            log_info(
-                "Current player id = %i, action player id = %i", network_get_current_player_id(), customAction->GetPlayer());
-
             DukObject obj(_context);
             obj.Set("action", actionz);
             obj.Set("args", *dukArgs);
-            obj.Set("player", customAction->GetPlayer());
-            obj.Set("type", EnumValue(customAction->GetType()));
+            obj.Set("player", customAction.GetPlayer());
+            obj.Set("type", EnumValue(customAction.GetType()));
 
-            auto flags = customAction->GetActionFlags();
+            auto flags = customAction.GetActionFlags();
             obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
             pluginCallArgs = { obj.Take() };
         }
@@ -1495,7 +1492,6 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
     auto jsonz = duk_json_encode(ctx, -1);
     auto json = std::string(jsonz);
     duk_pop(ctx);
-    log_info("Create custom game action %s for player %i", actionid.c_str(), network_get_current_player_id());
     auto customAction = std::make_unique<CustomAction>(actionid, json);
 
     if (customAction->GetPlayer() == -1 && network_get_mode() != NETWORK_MODE_NONE)

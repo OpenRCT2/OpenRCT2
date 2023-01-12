@@ -238,7 +238,7 @@ namespace OpenRCT2::Scripting
         void AddNetworkPlugin(std::string_view code);
         void RemoveNetworkPlugins();
 
-        [[nodiscard]] GameActions::Result QueryOrExecuteCustomGameAction(const CustomAction* action, bool isExecute);
+        [[nodiscard]] GameActions::Result QueryOrExecuteCustomGameAction(const CustomAction& action, bool isExecute);
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
         void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
