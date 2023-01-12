@@ -3,6 +3,7 @@
 #include "../Limits.h"
 #include "../ride/TrackData.h"
 #include "TreeContainer.h"
+#include "PaintStructKeyGenerator.h"
 
 #include <array>
 #include <optional>
@@ -45,22 +46,14 @@ struct PaintStructDescriptorKey
 
 bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptorKey& rhs);
 
-class PaintStructKeyInserter
-{
-public:
-    std::vector<uint32_t> GetParams(const PaintStructDescriptorKey& key) const;
-};
-
-class ImageIdKeyInserter
-{
-public:
-    std::vector<uint32_t> GetParams(const PaintStructDescriptorKey& key) const;
-};
-
 struct ImageIdOffset
 {
     std::string Id;
-    TreeContainer<PaintStructDescriptorKey, uint32_t, ImageIdKeyInserter> Entries;
+    TreeContainer<PaintStructDescriptorKey, uint32_t, PaintStructKeyGenerator> Entries;
+
+    ImageIdOffset(const PaintStructKeyGenerator& _keyGen): Entries(_keyGen)
+    {
+    }
 };
 
 struct HeightSupportsTable

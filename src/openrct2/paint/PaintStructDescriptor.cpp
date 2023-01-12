@@ -201,17 +201,3 @@ void PaintStructDescriptor::Paint(
         }
     }
 }
-
-std::vector<uint32_t> PaintStructKeyInserter::GetParams(const PaintStructDescriptorKey& key) const
-{
-    return std::vector<uint32_t>{ key.Direction,           key.Element,
-                                key.TrackSequence,       key.VehicleKey[0].NumPeeps,
-                                key.VehicleKey[0].Pitch, key.VehicleKey[0].SpriteDirection };
-}
-
-// don't put the track sequence for the image id
-std::vector<uint32_t> ImageIdKeyInserter::GetParams(const PaintStructDescriptorKey& key) const
-{
-    return std::vector<uint32_t>{ key.Direction, key.Element, key.VehicleKey[0].NumPeeps, key.VehicleKey[0].Pitch,
-                                key.VehicleKey[0].SpriteDirection };
-}

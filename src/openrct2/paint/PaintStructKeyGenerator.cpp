@@ -51,8 +51,22 @@ void PaintStructKeyJson::FromJson(const json_t& paintStruct)
     }
 }
 
-PaintStructKeyGenerator::PaintStructKeyGenerator(const std::vector<PaintStructKeyJson>& keysJson)
+PaintStructKeyGenerator::PaintStructKeyGenerator()
 {
+}
+
+void PaintStructKeyGenerator::Initialize(const std::vector<PaintStructKeyJson>& keysJson)
+{
+    _elements.clear();
+    _directions.clear();
+    _trackSequences.clear();
+    for (size_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
+    {
+        _vehicleSpriteDirections[index].clear();
+        _vehiclePitches[index].clear();
+        _vehicleNumPeeps[index].clear();
+    }
+
     for (const auto& key : keysJson)
     {
         PushElement(_elements, key.Element);
@@ -262,4 +276,11 @@ void PaintStructKeyGenerator::GenerateKeyField(
     {
         vector = refVector;
     }
+}
+
+std::vector<uint32_t> PaintStructKeyGenerator::GetParams(const PaintStructDescriptorKey& key) const
+{
+    return std::vector<uint32_t>{ key.Direction,           key.Element,
+                                  key.TrackSequence,       key.VehicleKey[0].NumPeeps,
+                                  key.VehicleKey[0].Pitch, key.VehicleKey[0].SpriteDirection };
 }

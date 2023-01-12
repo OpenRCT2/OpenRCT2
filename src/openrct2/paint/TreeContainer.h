@@ -19,7 +19,8 @@ struct PaintStructDescriptorKey;
 template<class KeyType, class ValueType, class KeyInserter> class TreeContainer : public Node<KeyType, ValueType, KeyInserter>
 {
 public:
-    TreeContainer()
+    TreeContainer(const KeyInserter& keyInserter)
+        : _keyInserter(keyInserter)
     {
     }
     void Add(const KeyType& location, const ValueType& value);
@@ -29,7 +30,7 @@ private:
     const std::vector<ValueType>* Get(const std::vector<uint32_t>& location) const;
     void Add(const std::vector<uint32_t>& location, const ValueType& value);
 
-    KeyInserter _keyInserter;
+    const KeyInserter& _keyInserter;
 };
 
 template<class KeyType, class ValueType, class KeyInserter> void Node<KeyType, ValueType, KeyInserter>::Insert(uint32_t index)

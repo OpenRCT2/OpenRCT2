@@ -13,6 +13,7 @@
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../ride/Track.h"
 #include "../paint/PaintStructDescriptor.h"
+#include "../paint/PaintStructKeyGenerator.h"
 #include "Object.h"
 
 #include <array>
@@ -26,16 +27,19 @@ class PaintObject final : public Object
 {
 private:
     std::vector<PaintStructDescriptor> _paintStructs;
-    TreeContainer<PaintStructDescriptorKey, std::shared_ptr<PaintStructDescriptor>, PaintStructKeyInserter> _paintStructsTree;
+    PaintStructKeyGenerator _keyGen;
+    TreeContainer<PaintStructDescriptorKey, std::shared_ptr<PaintStructDescriptor>, PaintStructKeyGenerator> _paintStructsTree;
 
     std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;
     std::map<std::string, HeightSupportsTable> _heightMapping;
-    std::map<std::string, ImageIdOffset> _imageIdOffsetMapping;
+    std::map<std::string, std::shared_ptr<ImageIdOffset>> _imageIdOffsetMapping;
 
     std::vector<uint32_t> _vehicleIndices;
     std::vector<PaintStructDescriptorKey> _keys;
 public:
+    PaintObject();
+
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;

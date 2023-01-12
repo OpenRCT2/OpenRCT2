@@ -13,6 +13,11 @@
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 
+PaintObject::PaintObject()
+    : _paintStructsTree(_keyGen)
+{
+}
+
 void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     try
@@ -143,7 +148,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         {
             for (const auto& imageIdOffset : imageIdOffsets)
             {
-                ImageIdOffset offset;
+                ImageIdOffset offset(_keyGen);
                 offset.Id = imageIdOffset["id"];
 
                 const auto& entries = imageIdOffset["entries"];
@@ -168,11 +173,11 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                             offset.Entries.Add(key, imageId);
                     }
 
-                    auto keyGen = PaintStructKeyGenerator(keysJson);
+                    _keyGen.Initialize(keysJson);
                     for (size_t index = 0; index < keysJson.size(); index++)
                     {
                         const auto& keyJson = keysJson[index];
-                        auto keys = keyGen.GenerateKeys(keyJson);
+                        auto keys = _keyGen.GenerateKeys(keyJson);
                         for (const auto& key : keys)
                         {
                             const auto& imageIdTable = imageIdTables[index];
@@ -181,7 +186,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         }
                     }
                 }
-                _imageIdOffsetMapping[offset.Id] = offset;
+                _imageIdOffsetMapping[offset.Id] = std::make_shared<ImageIdOffset>(offset);
             }
         }
 
@@ -320,7 +325,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     auto imageIdOffset = paintStruct["imageIdOffset"];
                     if (imageIdOffset.is_string())
                     {
-                        paint.ImageIdOffset = &_imageIdOffsetMapping[imageIdOffset];
+                        paint.ImageIdOffset = _imageIdOffsetMapping[imageIdOffset].get();
                     }
                 }
 
@@ -419,11 +424,12 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 _paintStructs.push_back(paint);
             }
 
-            auto keyGen = PaintStructKeyGenerator(keysJson);
+            //auto keyGen = PaintStructKeyGenerator(keysJson);
             for (size_t index = 0; index < keysJson.size(); index++)
             {
                 const auto& keyJson = keysJson[index];
-                auto keys = keyGen.GenerateKeys(keyJson);
+                _keyGen.Initialize(keysJson);
+                auto keys = _keyGen.GenerateKeys(keyJson);
 
                 for (const auto& key : keys)
                 {
