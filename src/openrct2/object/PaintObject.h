@@ -51,4 +51,6 @@ public:
     // used to load the paint objects at the start of the game
     // when RTD become a thing, load these when they are required by rtds
     static void LoadPaintObjects();
+
+    friend struct PaintStructJson;
 };

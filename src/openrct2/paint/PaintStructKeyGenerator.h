@@ -6,20 +6,8 @@
 #include "../core/Json.hpp"
 #include "../Limits.h"
 
+struct PaintStructKeyJson;
 struct PaintStructDescriptorKey;
-struct PaintStructKeyJson
-{
-    using VehicleParam = std::array<std::optional<uint32_t>, OpenRCT2::Limits::MaxTrainsPerRide + 1>;
-    std::optional<uint32_t> Element;
-    std::optional<uint32_t> Direction;
-    std::optional<uint32_t> TrackSequence;
-    VehicleParam VehicleSpriteDirection;
-    VehicleParam VehiclePitch;
-    VehicleParam VehicleNumPeeps;
-
-    void FromJson(const json_t& element);
-};
-
 class PaintStructKeyGenerator
 {
 public:

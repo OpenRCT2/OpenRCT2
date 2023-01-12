@@ -2,55 +2,6 @@
 #include "../ride/TrackData.h"
 #include "PaintStructDescriptor.h"
 
-void PaintStructKeyJson::FromJson(const json_t& paintStruct)
-{
-    if (paintStruct.contains("trackElement"))
-    {
-        auto trackElement = paintStruct["trackElement"];
-        if (trackElement == "flat_track_3x3")
-            Element = TrackElemType::FlatTrack3x3;
-    }
-
-    if (paintStruct.contains("trackSequence"))
-    {
-        auto trackSequence = paintStruct["trackSequence"];
-        if (trackSequence.is_number())
-        {
-            TrackSequence = trackSequence;
-        }
-    }
-
-    if (paintStruct.contains("direction"))
-    {
-        auto direction = paintStruct["direction"];
-        if (direction.is_number())
-        {
-            Direction = direction;
-        }
-    }
-
-    if (paintStruct.contains("vehicleSpriteDirection"))
-    {
-        auto vehicleSpriteDirection = paintStruct["vehicleSpriteDirection"];
-        if (vehicleSpriteDirection.is_number())
-            VehicleSpriteDirection[0] = vehicleSpriteDirection;
-    }
-
-    if (paintStruct.contains("vehiclePitch"))
-    {
-        auto vehiclePitch = paintStruct["vehiclePitch"];
-        if (vehiclePitch.is_number())
-            VehiclePitch[0] = vehiclePitch;
-    }
-
-    if (paintStruct.contains("vehicleNumPeeps"))
-    {
-        auto vehicleNumPeeps = paintStruct["vehicleNumPeeps"];
-        if (vehicleNumPeeps.is_number())
-            VehicleNumPeeps[0] = vehicleNumPeeps;
-    }
-}
-
 PaintStructKeyGenerator::PaintStructKeyGenerator()
 {
 }

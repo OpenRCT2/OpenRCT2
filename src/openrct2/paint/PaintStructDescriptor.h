@@ -46,6 +46,19 @@ struct PaintStructDescriptorKey
 
 bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptorKey& rhs);
 
+struct PaintStructKeyJson
+{
+    using VehicleParam = std::array<std::optional<uint32_t>, OpenRCT2::Limits::MaxTrainsPerRide + 1>;
+    std::optional<uint32_t> Element;
+    std::optional<uint32_t> Direction;
+    std::optional<uint32_t> TrackSequence;
+    VehicleParam VehicleSpriteDirection;
+    VehicleParam VehiclePitch;
+    VehicleParam VehicleNumPeeps;
+
+    void FromJson(const json_t& element);
+};
+
 struct ImageIdOffset
 {
     std::string Id;
@@ -102,7 +115,7 @@ struct PaintStructDescriptor
 
     std::optional<SupportsType> Supports;
     std::optional<FloorType> Floor;
-    PaintStructEdgesTable* Edges;
+    const PaintStructEdgesTable* Edges;
     std::optional<FenceType> Fences;
     std::optional<PaintType> PaintType;
     std::optional<Scheme> ImageIdScheme;
@@ -112,12 +125,12 @@ struct PaintStructDescriptor
     Colour SecondaryColour;
     uint32_t SecondaryColourIndex;
 
-    ImageIdOffset* ImageIdOffset;
+    const ImageIdOffset* ImageIdOffset;
     uint32_t ImageIdOffsetIndex;
 
     CoordsXYZ Offset;
     BoundBoxXYZ BoundBox;
-    HeightSupportsTable* HeightSupports;
+    const HeightSupportsTable* HeightSupports;
 
     //to-do : in the future, send a list of vehicle pointers so we can get the peep tshirt colours from every vehicle...
     void Paint(
@@ -127,3 +140,17 @@ struct PaintStructDescriptor
     PaintStructDescriptor();
 };
 
+class PaintObject;
+struct PaintStructJson
+{
+    PaintStructJson(const PaintObject& object)
+        : _object(object)
+    {
+    }
+    PaintStructKeyJson Key;
+    PaintStructDescriptor Value;
+    void FromJson(const json_t& paintStruct);
+
+private:
+    const PaintObject& _object;
+};

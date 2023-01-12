@@ -5,6 +5,7 @@
 #include "../paint/Supports.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
+#include "../object/PaintObject.h"
 
 PaintStructDescriptor::PaintStructDescriptor()
     : PrimaryColour(Colour::VehicleBody)
@@ -199,5 +200,261 @@ void PaintStructDescriptor::Paint(
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~segments, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + HeightSupports->HeightOffset, 0x20);
         }
+    }
+}
+
+void PaintStructJson::FromJson(const json_t& paintStruct)
+{
+    if (paintStruct.contains("supports"))
+    {
+        auto supports = paintStruct["supports"];
+        if (supports.is_string())
+        {
+            if (supports == "wooden_a")
+                Value.Supports = PaintStructDescriptor::SupportsType::WoodenA;
+        }
+    }
+
+    if (paintStruct.contains("floor"))
+    {
+        auto floor = paintStruct["floor"];
+        if (floor.is_string())
+        {
+            if (floor == "cork")
+                Value.Floor = PaintStructDescriptor::FloorType::Cork;
+        }
+    }
+
+    if (paintStruct.contains("edges"))
+    {
+        auto edges = paintStruct["edges"];
+        if (edges.is_string())
+        {
+            if (_object._edgeMappings.find(edges) != _object._edgeMappings.end())
+            {
+                Value.Edges = &_object._edgeMappings.at(edges);
+            }
+        }
+    }
+
+    if (paintStruct.contains("fences"))
+    {
+        auto fences = paintStruct["fences"];
+        if (fences.is_string())
+        {
+            if (fences == "ropes")
+                Value.Fences = PaintStructDescriptor::FenceType::Ropes;
+        }
+    }
+
+    if (paintStruct.contains("paintType"))
+    {
+        auto paintType = paintStruct["paintType"];
+        if (paintType.is_string())
+        {
+            if (paintType == "addImageAsParent")
+                Value.PaintType = PaintStructDescriptor::PaintType::AddImageAsParent;
+            else if (paintType == "addImageAsChild")
+                Value.PaintType = PaintStructDescriptor::PaintType::AddImageAsChild;
+        }
+    }
+
+    if (paintStruct.contains("imageIdBase"))
+    {
+        auto imageIdBase = paintStruct["imageIdBase"];
+        if (imageIdBase.is_string())
+        {
+            if (imageIdBase == "car0")
+                Value.ImageIdBase = PaintStructDescriptor::ImageIdBase::Car0;
+        }
+    }
+
+    if (paintStruct.contains("primaryColour"))
+    {
+        auto primaryColour = paintStruct["primaryColour"];
+        if (primaryColour.is_string())
+        {
+            if (primaryColour == "vehicleBody")
+                Value.PrimaryColour = PaintStructDescriptor::Colour::VehicleBody;
+            else if (primaryColour == "vehicleTrim")
+                Value.PrimaryColour = PaintStructDescriptor::Colour::VehicleTrim;
+            else if (primaryColour == "peepTShirt")
+                Value.PrimaryColour = PaintStructDescriptor::Colour::PeepTShirt;
+        }
+    }
+
+    if (paintStruct.contains("secondaryColour"))
+    {
+        auto secondaryColour = paintStruct["secondaryColour"];
+        if (secondaryColour.is_string())
+        {
+            if (secondaryColour == "vehicleBody")
+                Value.SecondaryColour = PaintStructDescriptor::Colour::VehicleBody;
+            else if (secondaryColour == "vehicleTrim")
+                Value.SecondaryColour = PaintStructDescriptor::Colour::VehicleTrim;
+            else if (secondaryColour == "peepTShirt")
+                Value.SecondaryColour = PaintStructDescriptor::Colour::PeepTShirt;
+        }
+    }
+
+    if (paintStruct.contains("primaryColourIndex"))
+    {
+        auto primaryColourIndex = paintStruct["primaryColourIndex"];
+        if (primaryColourIndex.is_number())
+            Value.PrimaryColourIndex = primaryColourIndex;
+    }
+
+    if (paintStruct.contains("secondaryColourIndex"))
+    {
+        auto secondaryColourIndex = paintStruct["secondaryColourIndex"];
+        if (secondaryColourIndex.is_number())
+            Value.SecondaryColourIndex = secondaryColourIndex;
+    }
+
+    if (paintStruct.contains("imageIdOffset"))
+    {
+        auto imageIdOffset = paintStruct["imageIdOffset"];
+        if (imageIdOffset.is_string())
+        {
+            Value.ImageIdOffset = _object._imageIdOffsetMapping.at(imageIdOffset).get();
+        }
+    }
+
+    if (paintStruct.contains("imageIdOffsetIndex"))
+    {
+        auto imageIdOffsetIndex = paintStruct["imageIdOffsetIndex"];
+        if (imageIdOffsetIndex.is_number())
+            Value.ImageIdOffsetIndex = imageIdOffsetIndex;
+    }
+
+    if (paintStruct.contains("imageIdScheme"))
+    {
+        auto imageIdScheme = paintStruct["imageIdScheme"];
+        if (imageIdScheme.is_string())
+        {
+            if (imageIdScheme == "misc")
+                Value.ImageIdScheme = PaintStructDescriptor::Scheme::Misc;
+        }
+    }
+
+    if (paintStruct.contains("offset_x"))
+    {
+        auto offsetX = paintStruct["offset_x"];
+        if (offsetX.is_number())
+            Value.Offset.x = offsetX;
+    }
+
+    if (paintStruct.contains("offset_y"))
+    {
+        auto offsetY = paintStruct["offset_y"];
+        if (offsetY.is_number())
+            Value.Offset.y = offsetY;
+    }
+
+    if (paintStruct.contains("offset_z"))
+    {
+        auto offsetZ = paintStruct["offset_z"];
+        if (offsetZ.is_number())
+            Value.Offset.z = offsetZ;
+    }
+
+    if (paintStruct.contains("bb_offset_x"))
+    {
+        auto bbOffsetX = paintStruct["bb_offset_x"];
+        if (bbOffsetX.is_number())
+            Value.BoundBox.offset.x = bbOffsetX;
+    }
+
+    if (paintStruct.contains("bb_offset_y"))
+    {
+        auto bbOffsetY = paintStruct["bb_offset_y"];
+        if (bbOffsetY.is_number())
+            Value.BoundBox.offset.y = bbOffsetY;
+    }
+
+    if (paintStruct.contains("bb_offset_z"))
+    {
+        auto bbOffsetZ = paintStruct["bb_offset_z"];
+        if (bbOffsetZ.is_number())
+            Value.BoundBox.offset.z = bbOffsetZ;
+    }
+
+    if (paintStruct.contains("bb_length_x"))
+    {
+        auto bbLengthX = paintStruct["bb_length_x"];
+        if (bbLengthX.is_number())
+            Value.BoundBox.length.x = bbLengthX;
+    }
+
+    if (paintStruct.contains("bb_length_y"))
+    {
+        auto bbLengthY = paintStruct["bb_length_y"];
+        if (bbLengthY.is_number())
+            Value.BoundBox.length.y = bbLengthY;
+    }
+
+    if (paintStruct.contains("bb_length_z"))
+    {
+        auto bbLengthZ = paintStruct["bb_length_z"];
+        if (bbLengthZ.is_number())
+            Value.BoundBox.length.z = bbLengthZ;
+    }
+
+    if (paintStruct.contains("supportsHeightId"))
+    {
+        const auto& id = paintStruct["supportsHeightId"];
+        if (_object._heightMapping.find(id) != _object._heightMapping.end())
+        {
+            Value.HeightSupports = &_object._heightMapping.at(id);
+        }
+    }
+}
+
+void PaintStructKeyJson::FromJson(const json_t& paintStruct)
+{
+    if (paintStruct.contains("trackElement"))
+    {
+        auto trackElement = paintStruct["trackElement"];
+        if (trackElement == "flat_track_3x3")
+            Element = TrackElemType::FlatTrack3x3;
+    }
+
+    if (paintStruct.contains("trackSequence"))
+    {
+        auto trackSequence = paintStruct["trackSequence"];
+        if (trackSequence.is_number())
+        {
+            TrackSequence = trackSequence;
+        }
+    }
+
+    if (paintStruct.contains("direction"))
+    {
+        auto direction = paintStruct["direction"];
+        if (direction.is_number())
+        {
+            Direction = direction;
+        }
+    }
+
+    if (paintStruct.contains("vehicleSpriteDirection"))
+    {
+        auto vehicleSpriteDirection = paintStruct["vehicleSpriteDirection"];
+        if (vehicleSpriteDirection.is_number())
+            VehicleSpriteDirection[0] = vehicleSpriteDirection;
+    }
+
+    if (paintStruct.contains("vehiclePitch"))
+    {
+        auto vehiclePitch = paintStruct["vehiclePitch"];
+        if (vehiclePitch.is_number())
+            VehiclePitch[0] = vehiclePitch;
+    }
+
+    if (paintStruct.contains("vehicleNumPeeps"))
+    {
+        auto vehicleNumPeeps = paintStruct["vehicleNumPeeps"];
+        if (vehicleNumPeeps.is_number())
+            VehicleNumPeeps[0] = vehicleNumPeeps;
     }
 }
