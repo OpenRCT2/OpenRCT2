@@ -582,7 +582,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
             if (!selectionResult.Successful)
             {
                 _gSceneryGroupPartialSelectError = selectionResult.Message;
-                log_error("Could not find object: %s", std::string(sgEntry.GetName()).c_str());
+                LOG_ERROR("Could not find object: %s", std::string(sgEntry.GetName()).c_str());
             }
         }
     }
