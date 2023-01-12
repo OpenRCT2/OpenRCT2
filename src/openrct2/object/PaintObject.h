@@ -26,7 +26,6 @@ struct TrackElement;
 class PaintObject final : public Object
 {
 private:
-    std::vector<PaintStructDescriptor> _paintStructs;
     PaintStructKeyGenerator _keyGen;
     TreeContainer<PaintStructDescriptorKey, PaintStructKeyJson, std::shared_ptr<PaintStructDescriptor>, PaintStructKeyGenerator> _paintStructsTree;
 

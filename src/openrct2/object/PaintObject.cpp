@@ -143,13 +143,13 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             }
         }
 
+        std::vector<ImageIdOffsetJson> offsetsJson;
         auto imageIdOffsets = root["imageIdOffsets"];
         if (imageIdOffsets.is_array())
         {
-            std::vector<ImageIdOffsetJson> offsetsJson;
+            
             for (const auto& imageIdOffset : imageIdOffsets)
             {
-                
                 ImageIdOffsetJson offsetJson;
                 offsetJson.FromJson(imageIdOffset);
                 offsetsJson.push_back(offsetJson);
@@ -190,28 +190,28 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         auto paintStructs = root["paintStructs"];
         if (paintStructs.is_array())
         {
-            std::vector<PaintStructKeyJson> keysJson;
+            std::vector<PaintStructJson> paintsJson;
 
             for (const auto& paintStruct : paintStructs)
             {
                 PaintStructJson paintJson(*this);
                 paintJson.FromJson(paintStruct);
                 paintJson.Key.FromJson(paintStruct);
-
-                // we need to check if the key exists
-                //_keys.push_back(key);
-                keysJson.push_back(paintJson.Key);
-                _paintStructs.push_back(paintJson.Value);
+                paintsJson.push_back(paintJson);
             }
 
             //auto keyGen = PaintStructKeyGenerator(keysJson);
+            std::vector<PaintStructKeyJson> keysJson;
+            for (const auto& paintStructJson : paintsJson)
+                keysJson.push_back(paintStructJson.Key);
+
             _keyGen.Initialize(keysJson);
-            for (size_t index = 0; index < keysJson.size(); index++)
+            for (const auto& paintStructJson : paintsJson)
             {
-                const auto& keyJson = keysJson[index];
-                const auto& paintStruct = _paintStructs[index];
-                auto ptr = std::make_shared<PaintStructDescriptor>(paintStruct);
-                _paintStructsTree.Add(keyJson, ptr);
+                const auto& key = paintStructJson.Key;
+                const auto& value = paintStructJson.Value;
+                auto ptr = std::make_shared<PaintStructDescriptor>(value);
+                _paintStructsTree.Add(key, ptr);
             }
         }
     }
